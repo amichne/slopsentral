@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "marketplace": "slopsentral",
+  "policy": "prove-then-remove",
+  "entries": [
+    {
+      "action": "excluded-from-promotion",
+      "path": "/Users/amichne/code/intelligence/source/skills/.system",
+      "reason": "First-party/system skills are upstream-owned, not slopsentral-owned.",
+      "replacement": "Reference upstream system skills from their original distribution when needed.",
+      "status": "deferred-upstream-reference"
+    },
+    {
+      "action": "excluded-from-promotion",
+      "path": "/Users/amichne/code/intelligence/source/skills/yeet",
+      "reason": "Exact duplicate of source/skills/git-change-flow with the same frontmatter name.",
+      "replacement": "source/skills/git-change-flow",
+      "status": "removed-from-new-canonical-source"
+    },
+    {
+      "action": "excluded-from-promotion",
+      "path": "/Users/amichne/code/intelligence/source/skills/segment-codebase-agents-md",
+      "reason": "Broken symlink in the seed source tree, not a valid canonical primitive root.",
+      "replacement": "source/skills/repo-instruction-topology",
+      "status": "deferred-source-cleanup"
+    },
+    {
+      "action": "retained-for-review",
+      "path": "/Users/amichne/code/slopsentral/source/skills",
+      "reason": "Ambiguous or provenance-unclear non-system skills are retained as standalone primitives for the first pass.",
+      "replacement": null,
+      "status": "needs-later-audit"
+    }
+  ]
+}

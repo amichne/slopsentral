@@ -1,0 +1,691 @@
+{
+  "schemaVersion": 1,
+  "marketplace": "slopsentral",
+  "sourceOfTruth": "/Users/amichne/code/slopsentral/source",
+  "seededFrom": "/Users/amichne/code/intelligence/source",
+  "policy": {
+    "canonicalPreference": "Prefer intelligence source files over installed plugin caches.",
+    "firstPartyHandling": "Do not re-own first-party or system skills; reference upstream provenance or author local rewrites with non-colliding names."
+  },
+  "entries": [
+    {
+      "type": "SKILL",
+      "name": "agent-profile-authoring",
+      "canonicalPath": "source/skills/agent-profile-authoring",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/agent-profile-authoring",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "agents-sdk",
+      "canonicalPath": "source/skills/agents-sdk",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/agents-sdk",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "circleci-cli",
+      "canonicalPath": "source/skills/cli",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/cli",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "cli-creator",
+      "canonicalPath": "source/skills/cli-creator",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/cli-creator",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "define-goal",
+      "canonicalPath": "source/skills/define-goal",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/define-goal",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "doc-coauthoring",
+      "canonicalPath": "source/skills/doc-coauthoring",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/doc-coauthoring",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "frontend-design",
+      "canonicalPath": "source/skills/frontend-design",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/frontend-design",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "gh-cli",
+      "canonicalPath": "source/skills/gh-cli",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/gh-cli",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "gh-fix-ci",
+      "canonicalPath": "source/skills/gh-fix-ci",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/gh-fix-ci",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "git-change-flow",
+      "canonicalPath": "source/skills/git-change-flow",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/git-change-flow",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "github-ci-operations",
+      "canonicalPath": "source/skills/github-ci-operations",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/github-ci-operations",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "grill-me-with-docs",
+      "canonicalPath": "source/skills/grill-me-with-docs",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/grill-me-with-docs",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "hook-primitive-authoring",
+      "canonicalPath": "source/skills/hook-primitive-authoring",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/hook-primitive-authoring",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "ink",
+      "canonicalPath": "source/skills/ink",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/ink",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "jira-resolve-ticket",
+      "canonicalPath": "source/skills/jira-resolve-ticket",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/jira-resolve-ticket",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "kotlin-agentic-correctness",
+      "canonicalPath": "source/skills/kotlin-agentic-correctness",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/kotlin-agentic-correctness",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "kotlin-gradle-loop",
+      "canonicalPath": "source/skills/kotlin-gradle-loop",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/kotlin-gradle-loop",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "kotlin-gradle-validation",
+      "canonicalPath": "source/skills/kotlin-gradle-validation",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/kotlin-gradle-validation",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "kotlin-review",
+      "canonicalPath": "source/skills/kotlin-review",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/kotlin-review",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "kotlin-standards",
+      "canonicalPath": "source/skills/kotlin-standards",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/kotlin-standards",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "local-repository-navigation",
+      "canonicalPath": "source/skills/local-repository-navigation",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/local-repository-navigation",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "manage-json-schemas",
+      "canonicalPath": "source/skills/manage-json-schemas",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/manage-json-schemas",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "migrate-to-codex",
+      "canonicalPath": "source/skills/migrate-to-codex",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/migrate-to-codex",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "negative-capability-proof",
+      "canonicalPath": "source/skills/negative-capability-proof",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/negative-capability-proof",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "openapi-contract-authoring",
+      "canonicalPath": "source/skills/openapi-contract-authoring",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/openapi-contract-authoring",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "openapi-contract-rating",
+      "canonicalPath": "source/skills/openapi-contract-rating",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/openapi-contract-rating",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "openapi-schema-modeling",
+      "canonicalPath": "source/skills/openapi-schema-modeling",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/openapi-schema-modeling",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "plugin-composition-authoring",
+      "canonicalPath": "source/skills/plugin-composition-authoring",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/plugin-composition-authoring",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "primitive-quality-audit",
+      "canonicalPath": "source/skills/primitive-quality-audit",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/primitive-quality-audit",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "primitive-routing-evaluation",
+      "canonicalPath": "source/skills/primitive-routing-evaluation",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/primitive-routing-evaluation",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "pull-request-lifecycle",
+      "canonicalPath": "source/skills/pull-request-lifecycle",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/pull-request-lifecycle",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "react-best-practices",
+      "canonicalPath": "source/skills/react-best-practices",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/react-best-practices",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "refactor",
+      "canonicalPath": "source/skills/refactor",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/refactor",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "reference-doc-workflow",
+      "canonicalPath": "source/skills/reference-doc-workflow",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/reference-doc-workflow",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "repo-instruction-topology",
+      "canonicalPath": "source/skills/repo-instruction-topology",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/repo-instruction-topology",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "repository-onboarding",
+      "canonicalPath": "source/skills/repository-onboarding",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/repository-onboarding",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "repository-signature-indexing",
+      "canonicalPath": "source/skills/repository-signature-indexing",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/repository-signature-indexing",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "review-duplication",
+      "canonicalPath": "source/skills/review-duplication",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/review-duplication",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "runtime-linking",
+      "canonicalPath": "source/skills/runtime-linking",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/runtime-linking",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "shell-script-safety",
+      "canonicalPath": "source/skills/shell-script-safety",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/shell-script-safety",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "site-docs-authoring",
+      "canonicalPath": "source/skills/site-docs-authoring",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/site-docs-authoring",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "skill-creator",
+      "canonicalPath": "source/skills/skill-creator",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/skill-creator",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "skill-primitive-authoring",
+      "canonicalPath": "source/skills/skill-primitive-authoring",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/skill-primitive-authoring",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "source-graph-consolidation",
+      "canonicalPath": "source/skills/source-graph-consolidation",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/source-graph-consolidation",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "stripe-best-practices",
+      "canonicalPath": "source/skills/stripe-best-practices",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/stripe-best-practices",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "tdd",
+      "canonicalPath": "source/skills/tdd",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/tdd",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "tdd-red-green-refactor",
+      "canonicalPath": "source/skills/tdd-red-green-refactor",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/tdd-red-green-refactor",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "typed-service-contracts",
+      "canonicalPath": "source/skills/typed-service-contracts",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/typed-service-contracts",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "web-artifacts-builder",
+      "canonicalPath": "source/skills/web-artifacts-builder",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/web-artifacts-builder",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
+      "name": "workflow",
+      "canonicalPath": "source/skills/workflow",
+      "sourcePath": "/Users/amichne/code/intelligence/source/skills/workflow",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "PLUGIN",
+      "name": "engineering-baseline",
+      "canonicalPath": "source/plugins/engineering-baseline",
+      "sourcePath": "/Users/amichne/code/intelligence/source/plugins/engineering-baseline",
+      "handling": "promoted-referential-composition"
+    },
+    {
+      "type": "PLUGIN",
+      "name": "api-contracts",
+      "canonicalPath": "source/plugins/api-contracts",
+      "sourcePath": "/Users/amichne/code/intelligence/source/plugins/api-contracts",
+      "handling": "promoted-referential-composition"
+    },
+    {
+      "type": "PLUGIN",
+      "name": "kotlin-engineering",
+      "canonicalPath": "source/plugins/kotlin-engineering",
+      "sourcePath": "/Users/amichne/code/intelligence/source/plugins/kotlin-engineering",
+      "handling": "promoted-referential-composition"
+    },
+    {
+      "type": "PLUGIN",
+      "name": "git-ci-operations",
+      "canonicalPath": "source/plugins/git-ci-operations",
+      "sourcePath": "/Users/amichne/code/intelligence/source/plugins/git-ci-operations",
+      "handling": "promoted-referential-composition"
+    },
+    {
+      "type": "PLUGIN",
+      "name": "agent-platform-authoring",
+      "canonicalPath": "source/plugins/agent-platform-authoring",
+      "sourcePath": "/Users/amichne/code/intelligence/source/plugins/agent-platform-authoring",
+      "handling": "promoted-referential-composition"
+    },
+    {
+      "type": "AGENT",
+      "name": "AGENTS",
+      "canonicalPath": "source/agents/AGENTS.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/AGENTS.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "AGENT",
+      "canonicalPath": "source/agents/codebase-navigator/AGENT.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/codebase-navigator/AGENT.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "chatmode",
+      "canonicalPath": "source/agents/codebase-navigator/copilot/chatmode.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/codebase-navigator/copilot/chatmode.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "instructions-snippet",
+      "canonicalPath": "source/agents/codebase-navigator/copilot/instructions-snippet.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/codebase-navigator/copilot/instructions-snippet.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "bootstrap.prompt",
+      "canonicalPath": "source/agents/codebase-navigator/copilot/prompts/bootstrap.prompt.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/codebase-navigator/copilot/prompts/bootstrap.prompt.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "process-outdated.prompt",
+      "canonicalPath": "source/agents/codebase-navigator/copilot/prompts/process-outdated.prompt.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/codebase-navigator/copilot/prompts/process-outdated.prompt.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "update-dir.prompt",
+      "canonicalPath": "source/agents/codebase-navigator/copilot/prompts/update-dir.prompt.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/codebase-navigator/copilot/prompts/update-dir.prompt.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "openai",
+      "canonicalPath": "source/agents/codebase-navigator/openai.yaml",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/codebase-navigator/openai.yaml",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "gen-agents-local",
+      "canonicalPath": "source/agents/codebase-navigator/scripts/gen-agents-local.py",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/codebase-navigator/scripts/gen-agents-local.py",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "setup-local-nav",
+      "canonicalPath": "source/agents/codebase-navigator/scripts/setup-local-nav.sh",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/codebase-navigator/scripts/setup-local-nav.sh",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "kotlin-boundary-contract-reviewer.agent",
+      "canonicalPath": "source/agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "kotlin-package-cohesion-reviewer.agent",
+      "canonicalPath": "source/agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "kotlin-review-captain.agent",
+      "canonicalPath": "source/agents/kotlin-review/kotlin-review-captain.agent.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/kotlin-review/kotlin-review-captain.agent.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "kotlin-type-safety-reviewer.agent",
+      "canonicalPath": "source/agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "openapi-contract-rater.agent",
+      "canonicalPath": "source/agents/openapi/openapi-contract-rater.agent.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/openapi/openapi-contract-rater.agent.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "AGENT",
+      "name": "schema-type-enforcer.agent",
+      "canonicalPath": "source/agents/schema-type-enforcer.agent.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/agents/schema-type-enforcer.agent.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "AGENTS",
+      "canonicalPath": "source/hooks/AGENTS.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/AGENTS.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "agents-md-turn-refresh.hook",
+      "canonicalPath": "source/hooks/agents-md-turn-refresh.hook.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/agents-md-turn-refresh.hook.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "agents-md-turn-refresh",
+      "canonicalPath": "source/hooks/agents-md-turn-refresh.sh",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/agents-md-turn-refresh.sh",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "agents-md-turn-refresh.hooks",
+      "canonicalPath": "source/hooks/codex/agents-md-turn-refresh.hooks.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/codex/agents-md-turn-refresh.hooks.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "gradle-check-green.hooks",
+      "canonicalPath": "source/hooks/codex/gradle-check-green.hooks.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/codex/gradle-check-green.hooks.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "kotlin-horizontalization-check.hooks",
+      "canonicalPath": "source/hooks/codex/kotlin-horizontalization-check.hooks.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/codex/kotlin-horizontalization-check.hooks.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "required-skill-read.hooks",
+      "canonicalPath": "source/hooks/codex/required-skill-read.hooks.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/codex/required-skill-read.hooks.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "gradle-check-green.hook",
+      "canonicalPath": "source/hooks/gradle-check-green.hook.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/gradle-check-green.hook.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "gradle-check-green",
+      "canonicalPath": "source/hooks/gradle-check-green.sh",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/gradle-check-green.sh",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "kotlin-horizontalization-check.hook",
+      "canonicalPath": "source/hooks/kotlin-horizontalization-check.hook.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/kotlin-horizontalization-check.hook.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "kotlin-horizontalization-check",
+      "canonicalPath": "source/hooks/kotlin-horizontalization-check.py",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/kotlin-horizontalization-check.py",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "required-skill-read.hook",
+      "canonicalPath": "source/hooks/required-skill-read.hook.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/required-skill-read.hook.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "required-skill-read",
+      "canonicalPath": "source/hooks/required-skill-read.py",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/required-skill-read.py",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "HOOK",
+      "name": "required-skill-read.requirements",
+      "canonicalPath": "source/hooks/required-skill-read.requirements.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/hooks/required-skill-read.requirements.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "AGENTS",
+      "canonicalPath": "source/concepts/AGENTS.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/AGENTS.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "core",
+      "canonicalPath": "source/concepts/schema-driven-design/core.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/schema-driven-design/core.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "lifecycle-events.schema",
+      "canonicalPath": "source/concepts/schema-driven-design/json/lifecycle-events.schema.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/schema-driven-design/json/lifecycle-events.schema.json",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "boundary-assertion",
+      "canonicalPath": "source/concepts/schema-driven-design/kotlin/boundary-assertion.kt",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/schema-driven-design/kotlin/boundary-assertion.kt",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "core",
+      "canonicalPath": "source/concepts/type-safety/core.md",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/type-safety/core.md",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "command-metadata",
+      "canonicalPath": "source/concepts/type-safety/kotlin/command-metadata.kt",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/type-safety/kotlin/command-metadata.kt",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "composite-encoding",
+      "canonicalPath": "source/concepts/type-safety/kotlin/composite-encoding.kt",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/type-safety/kotlin/composite-encoding.kt",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "config-value",
+      "canonicalPath": "source/concepts/type-safety/kotlin/config-value.kt",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/type-safety/kotlin/config-value.kt",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "email-display",
+      "canonicalPath": "source/concepts/type-safety/kotlin/email-display.kt",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/type-safety/kotlin/email-display.kt",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "payment-method",
+      "canonicalPath": "source/concepts/type-safety/kotlin/payment-method.kt",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/type-safety/kotlin/payment-method.kt",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
+      "name": "value-construction",
+      "canonicalPath": "source/concepts/type-safety/kotlin/value-construction.kt",
+      "sourcePath": "/Users/amichne/code/intelligence/source/concepts/type-safety/kotlin/value-construction.kt",
+      "handling": "promoted-supporting-primitive"
+    },
+    {
+      "type": "PROFILE",
+      "name": "kotlin-repo-default",
+      "canonicalPath": "source/profiles/kotlin-repo-default.json",
+      "sourcePath": "/Users/amichne/code/intelligence/source/profiles/kotlin-repo-default.json",
+      "handling": "promoted-supporting-primitive"
+    }
+  ]
+}
