@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-10T00:48:25-04:00",
+  "generatedAt": "2026-06-17T17:04:41-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -398,7 +398,7 @@
         },
         {
           "name": "repository-signature-indexing",
-          "sha256": "sha256:997856503528635205d0a07abe6d6a2cead66a4dd53eebad7c925064999bb40e",
+          "sha256": "sha256:926b7f851d89de3ec082c3f826ee9cca8b3ff5de9b48d545489d09e318fd2b1f",
           "sourcePath": "source/skills/repository-signature-indexing",
           "targetPath": "skills/repository-signature-indexing",
           "type": "SKILL"
@@ -427,9 +427,65 @@
       ],
       "sourceManifest": "source/plugins/agent-platform-authoring/plugin.json",
       "version": "0.1.0"
+    },
+    {
+      "name": "code-knowledge-base",
+      "references": [
+        {
+          "name": "code-knowledge-drift",
+          "sha256": "sha256:886d65965f45d688c0c8182106a60d58b51460daeff546f849f7d9f124fddbe2",
+          "sourcePath": "source/hooks/code-knowledge-drift.hook.json",
+          "targetPath": "hooks/code-knowledge-drift.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "schema-driven-design",
+          "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
+          "sourcePath": "source/concepts/schema-driven-design/core.md",
+          "targetPath": "instructions/schema-driven-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "type-safety",
+          "sha256": "sha256:8355ec7411fc3213262f45647f6222a217706358a50db3494c5dc51185835cf5",
+          "sourcePath": "source/concepts/type-safety/core.md",
+          "targetPath": "instructions/type-safety.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "code-knowledge-base",
+          "sha256": "sha256:71218bb7130e1a584d579e0acff19b81230499e3f33e98154600706b741a2ff9",
+          "sourcePath": "source/skills/code-knowledge-base",
+          "targetPath": "skills/code-knowledge-base",
+          "type": "SKILL"
+        },
+        {
+          "name": "reference-doc-workflow",
+          "sha256": "sha256:ceb1ae27634f8036acdb46ae7e3fabeab6ace315c6bda6f1a4587d7d0edba20d",
+          "sourcePath": "source/skills/reference-doc-workflow",
+          "targetPath": "skills/reference-doc-workflow",
+          "type": "SKILL"
+        },
+        {
+          "name": "repository-signature-indexing",
+          "sha256": "sha256:926b7f851d89de3ec082c3f826ee9cca8b3ff5de9b48d545489d09e318fd2b1f",
+          "sourcePath": "source/skills/repository-signature-indexing",
+          "targetPath": "skills/repository-signature-indexing",
+          "type": "SKILL"
+        },
+        {
+          "name": "site-docs-authoring",
+          "sha256": "sha256:02256bdc784cadb464ed5a0bd6dc6d6e0c3f39595d6d1a9da48cd6aadc7f8ab1",
+          "sourcePath": "source/skills/site-docs-authoring",
+          "targetPath": "skills/site-docs-authoring",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/code-knowledge-base/plugin.json",
+      "version": "0.1.0"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "b151798aec92d743fed490e4a1a7302ba7b8f38f",
+  "sourceSha": "2ffcdf745e45b7aa7e72983e5b8a3d0e7f492ac1",
   "type": "HYDRATED_MARKETPLACE"
 }

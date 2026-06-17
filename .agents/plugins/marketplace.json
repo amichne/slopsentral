@@ -12,7 +12,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/plugins/engineering-baseline",
+        "path": "./plugins/engineering-baseline",
         "source": "local"
       }
     },
@@ -24,7 +24,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/plugins/api-contracts",
+        "path": "./plugins/api-contracts",
         "source": "local"
       }
     },
@@ -36,7 +36,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/plugins/kotlin-engineering",
+        "path": "./plugins/kotlin-engineering",
         "source": "local"
       }
     },
@@ -48,7 +48,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/plugins/git-ci-operations",
+        "path": "./plugins/git-ci-operations",
         "source": "local"
       }
     },
@@ -60,7 +60,19 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/plugins/agent-platform-authoring",
+        "path": "./plugins/agent-platform-authoring",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Coding",
+      "name": "code-knowledge-base",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./plugins/code-knowledge-base",
         "source": "local"
       }
     }

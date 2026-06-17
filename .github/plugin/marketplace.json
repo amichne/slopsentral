@@ -218,6 +218,51 @@
         "workflow"
       ],
       "version": "0.1.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Coding",
+      "description": "Provider-neutral workflow for OKF knowledge bundles: Kotlin/Gradle concepts, signature-backed routing, code_sources impact checks, and advisory drift hooks.",
+      "hooks": "./hooks",
+      "keywords": [
+        "code-knowledge-base",
+        "docs",
+        "generation",
+        "gradle",
+        "hooks",
+        "impact",
+        "knowledge-base",
+        "kotlin",
+        "okf",
+        "repository",
+        "signatures",
+        "skills",
+        "source-backed",
+        "validation"
+      ],
+      "license": "UNLICENSED",
+      "name": "code-knowledge-base",
+      "skills": "./skills",
+      "source": "code-knowledge-base",
+      "strict": true,
+      "tags": [
+        "docs",
+        "generation",
+        "hooks",
+        "impact",
+        "kotlin",
+        "gradle",
+        "knowledge-base",
+        "okf",
+        "repository",
+        "signatures",
+        "skills",
+        "source-backed",
+        "validation"
+      ],
+      "version": "0.1.0"
     }
   ]
 }

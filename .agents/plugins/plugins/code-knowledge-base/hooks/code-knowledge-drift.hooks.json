@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/codex-hooks.json",
+  "description": "Advisory check for OKF concept documents that may need refresh after code changes.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/code-knowledge-drift.py --repo . --docs docs --advisory",
+            "timeout": 60,
+            "statusMessage": "Checking OKF knowledge drift"
+          }
+        ]
+      }
+    ]
+  }
+}
