@@ -148,6 +148,35 @@
         "skills",
         "workflow"
       ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "code-knowledge-base",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "code-knowledge-base",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/code-knowledge-base"
+        },
+        "version": "0.1.0"
+      },
+      "description": "Provider-neutral workflow for OKF knowledge bundles: Kotlin/Gradle concepts, signature-backed routing, code_sources impact checks, and advisory drift hooks.",
+      "tags": [
+        "docs",
+        "generation",
+        "hooks",
+        "impact",
+        "kotlin",
+        "gradle",
+        "knowledge-base",
+        "okf",
+        "repository",
+        "signatures",
+        "skills",
+        "source-backed",
+        "validation"
+      ]
     }
   ],
   "skills": [
@@ -252,6 +281,15 @@
       },
       "path": "skills/repository-signature-indexing",
       "name": "repository-signature-indexing"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/code-knowledge-base",
+      "name": "code-knowledge-base"
     },
     {
       "type": "SKILL",
@@ -791,6 +829,15 @@
       },
       "path": "hooks/gradle-check-green.hook.json",
       "name": "gradle-check-green"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/code-knowledge-drift.hook.json",
+      "name": "code-knowledge-drift"
     }
   ],
   "metadata": {

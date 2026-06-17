@@ -1,0 +1,85 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "code-knowledge-base",
+  "version": "0.1.0",
+  "description": "Provider-neutral workflow for OKF knowledge bundles: Kotlin/Gradle concepts, signature-backed routing, code_sources impact checks, and advisory drift hooks.",
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/code-knowledge-base",
+      "name": "code-knowledge-base"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/repository-signature-indexing",
+      "name": "repository-signature-indexing"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/reference-doc-workflow",
+      "name": "reference-doc-workflow"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/site-docs-authoring",
+      "name": "site-docs-authoring"
+    }
+  ],
+  "agents": [],
+  "instructions": [
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "concepts/type-safety/core.md",
+      "name": "type-safety"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "concepts/schema-driven-design/core.md",
+      "name": "schema-driven-design"
+    }
+  ],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/code-knowledge-drift.hook.json",
+      "name": "code-knowledge-drift"
+    }
+  ],
+  "metadata": {
+    "composition": "referential",
+    "harness": "provider-neutral",
+    "owner": "knowledge-base-platform",
+    "principle": "docs-derive-from-code",
+    "role": "source-backed-knowledge",
+    "scope": "Generate and maintain OKF Markdown concept bundles for Kotlin/Gradle codebases with impact-aware refresh guidance."
+  }
+}
