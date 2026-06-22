@@ -72,6 +72,82 @@
         "Additional team-specific observations should be added as real users hit new routing misses or bypasses."
       ],
       "nextAction": "Use the default replay runner as the daily-driver production source gate and node source/tools/run-routing-evals.mjs --require-all-observed before claiming full-corpus routing readiness."
+    },
+    {
+      "type": "PRIMITIVE_AUDIT",
+      "id": "kotlin-engineering-plugin-production-readiness",
+      "target": {
+        "kind": "PLUGIN",
+        "name": "kotlin-engineering",
+        "paths": [
+          "source/plugins/kotlin-engineering/plugin.json",
+          "source/skills/kotlin-agentic-correctness",
+          "source/skills/kotlin-gradle-validation",
+          "source/skills/kotlin-review",
+          "source/skills/kotlin-standards",
+          "source/skills/negative-capability-proof",
+          "source/agents/kotlin-review",
+          "source/hooks/kotlin-horizontalization-check.hook.json",
+          "source/hooks/gradle-check-green.hook.json",
+          "source/profiles/kotlin-repo-default.json",
+          "source/evals/routing/kotlin-engineering-workflows.json"
+        ]
+      },
+      "baseline": "Kotlin Engineering had source primitives, a referential plugin manifest, and routing cases, but the plugin family did not yet have a durable production-readiness audit tying composition, provenance, validation, and residual rollout risks together.",
+      "decision": "PROMOTE_READY",
+      "confidence": "HIGH",
+      "reviewedAt": "2026-06-22",
+      "reviewedBy": "codex",
+      "capabilityBoundary": {
+        "status": "PASS",
+        "evidence": [
+          "source/plugins/kotlin-engineering/plugin.json scopes the plugin to typed Kotlin workflow, Kast-backed navigation, focused review, Gradle proof, and Kotlin-specific hooks.",
+          "The plugin metadata explicitly excludes non-Kotlin repositories, generic Git/CI delivery, API-only contract governance, and platform marketplace authoring work.",
+          "source/profiles/kotlin-repo-default.json composes kotlin-engineering with engineering-baseline and git-ci-operations instead of moving generic delivery ownership into the Kotlin plugin."
+        ]
+      },
+      "schemaCoverage": {
+        "status": "PASS",
+        "evidence": [
+          "source/tools/validate-source-graph.mjs validates plugin references, hook dependencies, profile duplicate ownership, audit target paths, and routing case expected primitives.",
+          "source/evals/routing/kotlin-engineering-workflows.json records Kotlin-specific route expectations for invariant work, Gradle failure diagnosis, negative capability proof, and companion delivery boundaries.",
+          "source/evals/routing/fixtures/golden-routing-observations.json covers the Kotlin Engineering routing cases through the full-corpus replay gate."
+        ]
+      },
+      "provenance": {
+        "status": "PASS",
+        "firstPartyCollisionCheck": "CHECKED_NO_COLLISION",
+        "evidence": [
+          "garden/manifests/promotions.json records kotlin-engineering as a promoted referential composition and records the bundled Kotlin skills, review agents, hooks, concepts, and kotlin-repo-default profile.",
+          "The plugin manifest references canonical source primitives by path instead of copying primitive payloads into source/plugins/kotlin-engineering.",
+          "The canonical primitive names are local Kotlin workflow names and do not collide with first-party system skill names in this repository."
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "commands": [
+          "node source/tools/validate-source-graph.mjs",
+          "node source/tools/run-routing-evals.mjs --require-all-observed",
+          "intelligence validate --repo . --portable",
+          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
+          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "git diff --check"
+        ]
+      },
+      "runtimeSafety": {
+        "status": "PASS",
+        "evidence": [
+          "Kotlin Engineering is exposed through source marketplace composition and does not require direct writes to runtime targets in this audit.",
+          "The Kotlin hooks are represented as source hook manifests with explicit dependencies; runtime activation remains a separate workflow-profile or provider materialization concern.",
+          "No cleanup or symlink replacement is recommended by this audit."
+        ]
+      },
+      "residualRisks": [
+        "Live Kotlin repository sessions should be sampled against the routing cases to catch trigger drift and loaded-but-bypassed behavior.",
+        "Team sharing still needs consumer-side install or profile activation evidence in the target environment.",
+        "Kast availability varies by repository, so runs should record when they fall back to file-backed or text evidence instead of semantic tooling."
+      ],
+      "nextAction": "Use Kotlin Engineering as the production Kotlin workflow plugin with kotlin-repo-default for end-to-end repository delivery, then add live replay observations when real sessions expose new routing misses."
     }
   ]
 }
