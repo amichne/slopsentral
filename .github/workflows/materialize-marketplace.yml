@@ -89,14 +89,15 @@ jobs:
           fi
 
           git fetch origin "${GITHUB_REF_NAME}"
-          if [ "$(git rev-parse HEAD)" != "$(git rev-parse "origin/${GITHUB_REF_NAME}")" ]; then
+          remote_sha="$(git rev-parse "origin/${GITHUB_REF_NAME}")"
+          if [ "$(git rev-parse HEAD)" != "${remote_sha}" ]; then
             echo "::notice::${GITHUB_REF_NAME} advanced while materializing; a newer workflow run will publish the latest outputs."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A .agents/plugins .github/plugin
+          git add --force --all -- .agents/plugins .github/plugin
           git diff --cached --check
           git commit -m "chore: materialize marketplace outputs"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git push --force-with-lease="refs/heads/${GITHUB_REF_NAME}:${remote_sha}" origin "HEAD:${GITHUB_REF_NAME}"
