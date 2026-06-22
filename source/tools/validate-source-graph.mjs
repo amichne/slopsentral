@@ -402,6 +402,7 @@ for (const requirementsPath of listFiles("source/hooks", (file) => file.endsWith
 }
 
 validatePrimitiveAuditManifest("garden/manifests/primitive-audits.json");
+validateRuntimeLinkManifest("garden/manifests/runtime-links.json");
 
 const primitiveIndex = buildPrimitiveIndex();
 for (const casesPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
@@ -561,6 +562,88 @@ function validatePrimitiveAuditManifest(relativePath) {
     if (entry.decision === "ACTIVATE_READY" && entry.runtimeSafety?.status !== "PASS") {
       fail(`${owner}: ACTIVATE_READY requires PASS runtimeSafety`);
     }
+  }
+}
+
+function validateRuntimeLinkManifest(relativePath) {
+  if (!fs.existsSync(path.join(repoRoot, relativePath))) return;
+  const payload = readJson(relativePath);
+  if (!payload) return;
+  if (payload.type !== "RUNTIME_LINK_MANIFEST") {
+    fail(`${relativePath}: type must be RUNTIME_LINK_MANIFEST`);
+  }
+  if (payload.schemaVersion !== 1) {
+    fail(`${relativePath}: schemaVersion must be 1`);
+  }
+  if (payload.marketplace !== marketplace.name) {
+    fail(`${relativePath}: marketplace must match ${marketplace.name}`);
+  }
+  validateSchemaLink(relativePath, payload.$schema);
+  if (!Array.isArray(payload.entries) || payload.entries.length === 0) {
+    fail(`${relativePath}: entries must be a non-empty array`);
+    return;
+  }
+
+  const ids = new Set();
+  const runtimes = new Set(["CODEX", "AGENTS", "CLAUDE", "COPILOT", "OTHER"]);
+  const primitiveTypes = new Set(["PLUGIN", "SKILL", "AGENT", "HOOK", "PROFILE", "INSTRUCTION"]);
+  const strategies = new Set(["MARKETPLACE_IMPORT", "CHILD_SYMLINKS", "FILE_SYMLINK", "TREE_SYMLINK"]);
+  const statuses = new Set(["READY", "REVIEW_REQUIRED", "PLANNED"]);
+  const collisionPolicies = new Set(["SKIP_EXISTING", "FAIL_IF_EXISTS", "BACKUP_THEN_LINK"]);
+
+  for (const [index, entry] of payload.entries.entries()) {
+    const owner = `${relativePath}: entries[${index}]`;
+    validateNoPrivateLocalStrings(owner, entry);
+    if (entry.type !== "RUNTIME_LINK") fail(`${owner}: type must be RUNTIME_LINK`);
+    if (typeof entry.id !== "string" || !entry.id.match(/^[a-z0-9][a-z0-9-]+$/)) {
+      fail(`${owner}: id must be kebab-case`);
+    } else if (ids.has(entry.id)) {
+      fail(`${owner}: duplicate id ${entry.id}`);
+    } else {
+      ids.add(entry.id);
+    }
+    if (!runtimes.has(entry.runtime)) fail(`${owner}: runtime is invalid`);
+    if (!strategies.has(entry.strategy)) fail(`${owner}: strategy is invalid`);
+    if (!statuses.has(entry.status)) fail(`${owner}: status is invalid`);
+    if (!collisionPolicies.has(entry.collisionPolicy)) fail(`${owner}: collisionPolicy is invalid`);
+    if (typeof entry.requiresApproval !== "boolean") fail(`${owner}: requiresApproval must be boolean`);
+    for (const field of ["sourcePath", "targetPath", "activationCommand", "notes"]) {
+      if (typeof entry[field] !== "string" || !entry[field].trim()) fail(`${owner}: ${field} is required`);
+    }
+    validateRuntimeSourcePath(owner, entry.sourcePath);
+    validateNonEmptyStringArray(`${owner}: primitiveTypes`, entry.primitiveTypes);
+    for (const primitiveType of entry.primitiveTypes ?? []) {
+      if (!primitiveTypes.has(primitiveType)) fail(`${owner}: primitiveTypes contains invalid value ${primitiveType}`);
+    }
+    validateNonEmptyStringArray(`${owner}: validationCommands`, entry.validationCommands);
+    if (!(entry.validationCommands ?? []).includes("node source/tools/validate-source-graph.mjs")) {
+      fail(`${owner}: validationCommands must include node source/tools/validate-source-graph.mjs`);
+    }
+    if (entry.runtime === "CODEX" && entry.strategy === "MARKETPLACE_IMPORT") {
+      if (!entry.targetPath?.includes("@")) {
+        fail(`${owner}: CODEX MARKETPLACE_IMPORT targetPath must be a plugin coordinate`);
+      }
+      if (!entry.activationCommand?.startsWith("codex plugin add ")) {
+        fail(`${owner}: CODEX MARKETPLACE_IMPORT activationCommand must start with codex plugin add`);
+      }
+      if (entry.collisionPolicy !== "SKIP_EXISTING") {
+        fail(`${owner}: CODEX MARKETPLACE_IMPORT should use SKIP_EXISTING collision policy`);
+      }
+    }
+    if (entry.collisionPolicy === "BACKUP_THEN_LINK" && !entry.requiresApproval) {
+      fail(`${owner}: BACKUP_THEN_LINK requires explicit approval`);
+    }
+  }
+}
+
+function validateRuntimeSourcePath(owner, sourcePath) {
+  if (typeof sourcePath !== "string" || !sourcePath.trim()) return;
+  if (sourcePath.startsWith("/") || sourcePath.includes("..")) {
+    fail(`${owner}: sourcePath must be repository-relative: ${sourcePath}`);
+    return;
+  }
+  if (!fs.existsSync(path.join(repoRoot, sourcePath))) {
+    fail(`${owner}: sourcePath is missing: ${sourcePath}`);
   }
 }
 

@@ -90,6 +90,7 @@
           "source/hooks/kotlin-horizontalization-check.hook.json",
           "source/hooks/gradle-check-green.hook.json",
           "source/profiles/kotlin-repo-default.json",
+          "garden/manifests/runtime-links.json",
           "source/evals/routing/kotlin-engineering-workflows.json"
         ]
       },
@@ -110,6 +111,7 @@
         "status": "PASS",
         "evidence": [
           "source/tools/validate-source-graph.mjs validates plugin references, hook dependencies, profile duplicate ownership, audit target paths, and routing case expected primitives.",
+          "source/tools/validate-source-graph.mjs validates garden/manifests/runtime-links.json source paths, approval boundaries, and Codex marketplace-import command shape.",
           "source/evals/routing/kotlin-engineering-workflows.json records Kotlin-specific route expectations for invariant work, Gradle failure diagnosis, negative capability proof, and companion delivery boundaries.",
           "source/evals/routing/fixtures/golden-routing-observations.json covers the Kotlin Engineering routing cases through the full-corpus replay gate."
         ]
@@ -127,6 +129,7 @@
         "status": "PASS",
         "commands": [
           "node source/tools/validate-source-graph.mjs",
+          "node <manage-json-schemas-skill>/scripts/schema-contracts.js policy --schema source/schemas/runtime/runtime-links.schema.json",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
           "intelligence validate --repo . --portable",
           "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
@@ -138,16 +141,17 @@
         "status": "PASS",
         "evidence": [
           "Kotlin Engineering is exposed through source marketplace composition and does not require direct writes to runtime targets in this audit.",
-          "The Kotlin hooks are represented as source hook manifests with explicit dependencies; runtime activation remains a separate workflow-profile or provider materialization concern.",
+          "garden/manifests/runtime-links.json records an approval-gated Codex marketplace import plan for kotlin-engineering@slopsentral.",
+          "The Kotlin hooks are represented as source hook manifests with explicit dependencies; runtime activation remains separate from provider materialization.",
           "No cleanup or symlink replacement is recommended by this audit."
         ]
       },
       "residualRisks": [
         "Live Kotlin repository sessions should be sampled against the routing cases to catch trigger drift and loaded-but-bypassed behavior.",
-        "Team sharing still needs consumer-side install or profile activation evidence in the target environment.",
+        "Team sharing still needs approved execution of the runtime link plan and provider-visible installed-state evidence in the target environment.",
         "Kast availability varies by repository, so runs should record when they fall back to file-backed or text evidence instead of semantic tooling."
       ],
-      "nextAction": "Use Kotlin Engineering as the production Kotlin workflow plugin with kotlin-repo-default for end-to-end repository delivery, then add live replay observations when real sessions expose new routing misses."
+      "nextAction": "When activation is approved, execute the Codex marketplace import plan in garden/manifests/runtime-links.json, verify installed state, and add live replay observations when real sessions expose new routing misses."
     }
   ]
 }

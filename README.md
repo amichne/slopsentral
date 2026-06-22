@@ -42,5 +42,8 @@ any routing case lacks a replay observation.
 - `garden/manifests/promotions.json` records promoted source roots.
 - `garden/manifests/primitive-audits.json` records production-readiness and
   quality decisions for primitive families.
+- `garden/manifests/runtime-links.json` records approval-gated runtime
+  activation plans; it is not an installer log and does not authorize writes by
+  itself.
 - `garden/manifests/cleanup-ledger.json` records skipped duplicates, upstream
   exclusions, and deferred cleanup decisions.

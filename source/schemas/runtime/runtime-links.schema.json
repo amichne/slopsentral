@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.local/schemas/runtime/runtime-links.schema.json",
+  "title": "Runtime Link Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "examples": [
+    {
+      "$schema": "../../source/schemas/runtime/runtime-links.schema.json",
+      "type": "RUNTIME_LINK_MANIFEST",
+      "schemaVersion": 1,
+      "marketplace": "slopsentral",
+      "entries": [
+        {
+          "type": "RUNTIME_LINK",
+          "id": "codex-kotlin-engineering-marketplace-import",
+          "runtime": "CODEX",
+          "sourcePath": "source/plugins/kotlin-engineering/plugin.json",
+          "targetPath": "kotlin-engineering@slopsentral",
+          "primitiveTypes": [
+            "PLUGIN",
+            "SKILL",
+            "AGENT",
+            "HOOK"
+          ],
+          "strategy": "MARKETPLACE_IMPORT",
+          "status": "READY",
+          "requiresApproval": true,
+          "collisionPolicy": "SKIP_EXISTING",
+          "activationCommand": "codex plugin add kotlin-engineering@slopsentral",
+          "validationCommands": [
+            "node source/tools/validate-source-graph.mjs"
+          ],
+          "notes": "Example marketplace import plan; runtime writes require explicit approval."
+        }
+      ]
+    }
+  ],
+  "required": [
+    "$schema",
+    "type",
+    "schemaVersion",
+    "marketplace",
+    "entries"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1,
+      "examples": [
+        "../../source/schemas/runtime/runtime-links.schema.json"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "RUNTIME_LINK_MANIFEST"
+      ],
+      "examples": [
+        "RUNTIME_LINK_MANIFEST"
+      ]
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "enum": [
+        1
+      ],
+      "examples": [
+        1
+      ]
+    },
+    "marketplace": {
+      "type": "string",
+      "minLength": 1,
+      "examples": [
+        "slopsentral"
+      ]
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "examples": [
+        [
+          {
+            "type": "RUNTIME_LINK",
+            "id": "codex-kotlin-engineering-marketplace-import",
+            "runtime": "CODEX",
+            "sourcePath": "source/plugins/kotlin-engineering/plugin.json",
+            "targetPath": "kotlin-engineering@slopsentral",
+            "primitiveTypes": [
+              "PLUGIN"
+            ],
+            "strategy": "MARKETPLACE_IMPORT",
+            "status": "READY",
+            "requiresApproval": true,
+            "collisionPolicy": "SKIP_EXISTING",
+            "activationCommand": "codex plugin add kotlin-engineering@slopsentral",
+            "validationCommands": [
+              "node source/tools/validate-source-graph.mjs"
+            ],
+            "notes": "Import the plugin through the generated marketplace."
+          }
+        ]
+      ],
+      "items": {
+        "$ref": "#/$defs/runtimeLink"
+      }
+    }
+  },
+  "$defs": {
+    "runtimeLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "examples": [
+        {
+          "type": "RUNTIME_LINK",
+          "id": "codex-kotlin-engineering-marketplace-import",
+          "runtime": "CODEX",
+          "sourcePath": "source/plugins/kotlin-engineering/plugin.json",
+          "targetPath": "kotlin-engineering@slopsentral",
+          "primitiveTypes": [
+            "PLUGIN",
+            "SKILL",
+            "AGENT",
+            "HOOK"
+          ],
+          "strategy": "MARKETPLACE_IMPORT",
+          "status": "READY",
+          "requiresApproval": true,
+          "collisionPolicy": "SKIP_EXISTING",
+          "activationCommand": "codex plugin add kotlin-engineering@slopsentral",
+          "validationCommands": [
+            "node source/tools/validate-source-graph.mjs"
+          ],
+          "notes": "Codex should import the plugin through the generated marketplace rather than by linking source folders."
+        }
+      ],
+      "required": [
+        "type",
+        "id",
+        "runtime",
+        "sourcePath",
+        "targetPath",
+        "primitiveTypes",
+        "strategy",
+        "status",
+        "requiresApproval",
+        "collisionPolicy",
+        "activationCommand",
+        "validationCommands",
+        "notes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "RUNTIME_LINK"
+          ],
+          "examples": [
+            "RUNTIME_LINK"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]+$",
+          "examples": [
+            "codex-kotlin-engineering-marketplace-import"
+          ]
+        },
+        "runtime": {
+          "type": "string",
+          "enum": [
+            "CODEX",
+            "AGENTS",
+            "CLAUDE",
+            "COPILOT",
+            "OTHER"
+          ],
+          "examples": [
+            "CODEX"
+          ]
+        },
+        "sourcePath": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "targetPath": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "kotlin-engineering@slopsentral"
+          ]
+        },
+        "primitiveTypes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "examples": [
+            [
+              "PLUGIN",
+              "SKILL"
+            ]
+          ],
+          "items": {
+            "type": "string",
+            "enum": [
+              "PLUGIN",
+              "SKILL",
+              "AGENT",
+              "HOOK",
+              "PROFILE",
+              "INSTRUCTION"
+            ],
+            "examples": [
+              "PLUGIN"
+            ]
+          }
+        },
+        "strategy": {
+          "type": "string",
+          "enum": [
+            "MARKETPLACE_IMPORT",
+            "CHILD_SYMLINKS",
+            "FILE_SYMLINK",
+            "TREE_SYMLINK"
+          ],
+          "examples": [
+            "MARKETPLACE_IMPORT"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "READY",
+            "REVIEW_REQUIRED",
+            "PLANNED"
+          ],
+          "examples": [
+            "READY"
+          ]
+        },
+        "requiresApproval": {
+          "type": "boolean",
+          "examples": [
+            true
+          ]
+        },
+        "collisionPolicy": {
+          "type": "string",
+          "enum": [
+            "SKIP_EXISTING",
+            "FAIL_IF_EXISTS",
+            "BACKUP_THEN_LINK"
+          ],
+          "examples": [
+            "SKIP_EXISTING"
+          ]
+        },
+        "activationCommand": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "codex plugin add kotlin-engineering@slopsentral"
+          ]
+        },
+        "validationCommands": {
+          "type": "array",
+          "minItems": 1,
+          "examples": [
+            [
+              "node source/tools/validate-source-graph.mjs"
+            ]
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "node source/tools/validate-source-graph.mjs"
+            ]
+          }
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "Codex should import the plugin through the generated marketplace."
+          ]
+        }
+      }
+    },
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*\\.\\.)[^\\0]+$",
+      "examples": [
+        "source/plugins/kotlin-engineering/plugin.json"
+      ]
+    }
+  }
+}

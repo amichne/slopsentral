@@ -1,0 +1,34 @@
+{
+  "$schema": "../../source/schemas/runtime/runtime-links.schema.json",
+  "type": "RUNTIME_LINK_MANIFEST",
+  "schemaVersion": 1,
+  "marketplace": "slopsentral",
+  "entries": [
+    {
+      "type": "RUNTIME_LINK",
+      "id": "codex-kotlin-engineering-marketplace-import",
+      "runtime": "CODEX",
+      "sourcePath": "source/plugins/kotlin-engineering/plugin.json",
+      "targetPath": "kotlin-engineering@slopsentral",
+      "primitiveTypes": [
+        "PLUGIN",
+        "SKILL",
+        "AGENT",
+        "HOOK"
+      ],
+      "strategy": "MARKETPLACE_IMPORT",
+      "status": "READY",
+      "requiresApproval": true,
+      "collisionPolicy": "SKIP_EXISTING",
+      "activationCommand": "codex plugin add kotlin-engineering@slopsentral",
+      "validationCommands": [
+        "node source/tools/validate-source-graph.mjs",
+        "node source/tools/run-routing-evals.mjs --require-all-observed",
+        "intelligence validate --repo . --portable",
+        "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
+        "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace"
+      ],
+      "notes": "Codex should consume Kotlin Engineering through the generated marketplace import path. Do not link source folders or edit installed cache payloads; activation requires explicit approval and provider-visible installed-state verification."
+    }
+  ]
+}
