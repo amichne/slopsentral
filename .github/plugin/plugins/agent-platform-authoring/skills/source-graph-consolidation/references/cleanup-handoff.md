@@ -5,18 +5,20 @@ source paths.
 
 ## Cleanup Boundary
 
-Promotion does not imply cleanup. Cleanup starts only after:
+Promotion does not imply cleanup, but proven-dead source should not remain in
+the tree for historical evidence. Cleanup starts only after:
 
 - the canonical primitive exists and validates;
 - the original source path is recorded in `garden/manifests/promotions.json`;
 - the generated inventory confirms the canonical replacement;
 - duplicate digest or explicit review proves replacement equivalence;
 - rollback or backup path is known;
-- the user explicitly approves cleanup.
+- cleanup is in the current user-approved scope.
 
 ## Ledger Intent
 
-`garden/manifests/cleanup-ledger.json` is the approval gate. A future entry should
+`garden/manifests/cleanup-ledger.json` is the approval and rollback gate for
+risky runtime, symlink, or cross-root replacement work. A future entry should
 record:
 
 - original `sourcePath`;
@@ -25,15 +27,15 @@ record:
 - verification evidence;
 - rollback path.
 
-Do not add ledger entries as a substitute for promotion evidence. Do not run
-filesystem cleanup from this skill unless the user asks for cleanup work in the
-current turn.
+Do not add ledger entries as a substitute for promotion evidence. Do not keep
+dead authored source for archaeology once deletion is in scope and validation
+passes.
 
 ## Validation
 
-`cleanup-ledger.json` is governed by
-`garden/schemas/intelligence/cleanup-ledger.schema.json`. Validate with:
+`cleanup-ledger.json` is governed by the source graph validation contract.
+Validate with:
 
 ```sh
-node scripts/validate-manifests.mjs
+node source/tools/validate-source-graph.mjs
 ```

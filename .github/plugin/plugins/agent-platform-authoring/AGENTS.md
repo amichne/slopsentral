@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Agent platform authoring kit for maintaining source-graph primitives, plugin manifests, routing quality, repository maps, and docs surfaces.
+Agent platform source-graph authoring package for referential plugin composition, primitive quality audits, routing eval proof, repository maps, and docs surfaces.
 
 ## Operating Rules
 

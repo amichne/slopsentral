@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22T14:15:17-04:00",
+  "generatedAt": "2026-06-22T15:37:54-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -293,7 +293,7 @@
         },
         {
           "name": "hook-primitive-authoring",
-          "sha256": "sha256:1a236237d97ed53e4d1bc9f332dcca4a4f09fd34357695f5cfcea34266005037",
+          "sha256": "sha256:f7f4e679b9fa2a22c5cc14ba3efd2d3e8afe40ae6a87149e450933fdcacdcd1f",
           "sourcePath": "source/skills/hook-primitive-authoring",
           "targetPath": "skills/hook-primitive-authoring",
           "type": "SKILL"
@@ -314,21 +314,21 @@
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:01271eb35748a07c9f3f6aa5c990980555f2a089e71608dd9da64444c401d2fb",
+          "sha256": "sha256:54471b1cced151ea5dbe4b7153d667331d39118ec07724cbeb80404cd230d891",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
         },
         {
           "name": "primitive-quality-audit",
-          "sha256": "sha256:ae1153217a3469582df02af71936cc0801ca70b0fe35ae513e56d7a2c5a4d4fc",
+          "sha256": "sha256:42fefa33096f2e4fc924aa6b04ec49699dd7101e05e702a8bf84fdba14245a4e",
           "sourcePath": "source/skills/primitive-quality-audit",
           "targetPath": "skills/primitive-quality-audit",
           "type": "SKILL"
         },
         {
           "name": "primitive-routing-evaluation",
-          "sha256": "sha256:e30a0939f4d8449573232ddac2adf4924a1bdc0eb973e185ec5caf18825dcd48",
+          "sha256": "sha256:a7b3ce329152af24cd6b5f7a5550e3f87c898bf86cdb555d660491e8dcea04e1",
           "sourcePath": "source/skills/primitive-routing-evaluation",
           "targetPath": "skills/primitive-routing-evaluation",
           "type": "SKILL"
@@ -377,7 +377,7 @@
         },
         {
           "name": "source-graph-consolidation",
-          "sha256": "sha256:420e4187637df78e17e88e9a02c4458852b731554a01f6406b7738fd0265c07f",
+          "sha256": "sha256:ec932cfe6eb069e25792cdc4a3e1292b17104e4ca243ebbef270c6c63526882c",
           "sourcePath": "source/skills/source-graph-consolidation",
           "targetPath": "skills/source-graph-consolidation",
           "type": "SKILL"
@@ -444,6 +444,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "943872538dba2b5f4de62b50858b6e858e74cf47",
+  "sourceSha": "c8cd5e65b03688fa664ce1585ac718c7173e138b",
   "type": "HYDRATED_MARKETPLACE"
 }

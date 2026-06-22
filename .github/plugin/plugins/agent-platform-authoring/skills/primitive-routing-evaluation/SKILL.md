@@ -95,10 +95,11 @@ corpus file.
 In this repository, durable cases live under `source/evals/routing/` and use
 `source/schemas/evals/routing-cases.schema.json`. The source graph validator
 checks that cases are sanitized, schema-linked, and point at existing canonical
-primitives:
+primitives. The replay runner checks observed routing coverage:
 
 ```bash
 node source/tools/validate-source-graph.mjs
+node source/tools/run-routing-evals.mjs --require-all-observed
 ```
 
 ## Source Promotion Guidance
@@ -110,8 +111,9 @@ When consolidating from repo-specific routing playbooks:
 - Preserve the handoff process: raw evidence becomes sanitized cases; cases
   drive the narrowest prompt, metadata, or adapter change; fresh runs prove the
   change.
-- Keep old repo-local maintenance fixtures in place until their owning repo has
-  its own cleanup approval.
+- Do not keep dead routing fixtures for archaeology. If a fixture no longer
+  proves a current case, delete it in the same source-backed cleanup that keeps
+  the corpus and replay runner green.
 
 ## Completion Criteria
 

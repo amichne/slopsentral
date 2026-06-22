@@ -6,32 +6,30 @@ only to create activity; run them because the decision depends on their result.
 ## Source Graph
 
 ```sh
-python3 garden/scripts/inventory-primitives.py
-python3 garden/scripts/inventory-primitives.py --check
-python3 garden/scripts/analyze-consolidation.py
-python3 garden/scripts/analyze-consolidation.py --check
+node source/tools/validate-source-graph.mjs
 ```
 
-Use these after adding, moving, renaming, or removing canonical primitive
-references. The generated manifests and docs should agree with the changed
-source graph.
+Use this after adding, moving, renaming, or removing canonical primitive
+references. It checks plugin references, marketplace entries, hooks, profiles,
+routing cases, benchmarks, audit records, and runtime-link records.
 
 ## Structured Data
 
 ```sh
-node --check scripts/validate-manifests.mjs
-node scripts/validate-manifests.mjs
+node source/tools/validate-source-graph.mjs
+python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check --audit-id <id>
 ```
 
 Use these after changing JSON schemas, manifests, plugin manifests, marketplace
-catalogs, hook metadata, or hook adapters.
+catalogs, audit records, hook metadata, or hook adapters.
 
 ## Syntax And Scripts
 
 ```sh
 bash -n source/hooks/*.sh
-python3 -m py_compile garden/scripts/inventory-primitives.py garden/scripts/analyze-consolidation.py source/hooks/kotlin-horizontalization-check.py
+python3 -m py_compile source/hooks/*.py source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py source/skills/primitive-quality-audit/scripts/primitive_audit_record.py
 node source/skills/manage-json-schemas/scripts/schema-contracts.js policy-tree --root source/skills/manage-json-schemas/references/schemas
+node source/tools/run-routing-evals.mjs --require-all-observed
 git diff --check
 ```
 
@@ -41,7 +39,8 @@ documentation site builds for docs plugins.
 
 ## Evidence Recording
 
-Record durable audit decisions in `garden/manifests/primitive-audits.json` when the
-decision affects promotion, runtime activation, or cleanup. Store transient raw
-outputs outside packaged primitive directories unless the output itself is a
-maintained fixture.
+Record durable audit decisions in `garden/manifests/primitive-audits.json` when
+the decision affects promotion, runtime activation, or cleanup. Store transient
+raw outputs outside packaged primitive directories unless the output itself is a
+maintained fixture. Do not keep dead source as evidence; preserve history in Git
+and manifests.

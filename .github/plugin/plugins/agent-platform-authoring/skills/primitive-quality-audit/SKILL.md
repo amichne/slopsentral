@@ -56,12 +56,18 @@ promotion, runtime activation, and later cleanup from evidence.
    Use `garden/manifests/primitive-audits.json` for quality decisions,
    `garden/manifests/promotions.json` for copied canonical primitives,
    `garden/manifests/runtime-links.json` for activation plans, and
-   `garden/manifests/cleanup-ledger.json` only when cleanup is ready for explicit
-   approval.
+   `garden/manifests/cleanup-ledger.json` only when cleanup needs an approval
+   handoff or rollback plan.
 
 7. Validate.
    Regenerate inventory/report outputs when canonical primitives or plugins
-   change, then run manifest validation and relevant syntax checks.
+   change, run the source graph gate, and use the audit helper for durable
+   audit entries:
+
+   ```sh
+   node source/tools/validate-source-graph.mjs
+   python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check --audit-id <id>
+   ```
 
 ## Reference Routing
 
