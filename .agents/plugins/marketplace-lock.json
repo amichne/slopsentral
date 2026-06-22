@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-21T22:16:21-04:00",
+  "generatedAt": "2026-06-22T14:15:17-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -167,14 +167,14 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:fe055b9c2fa91b37452054a26414983a613f52629daf81e01c6f33c8c07c4744",
+          "sha256": "sha256:0e2b60d3c21da15ddc493cfd257b6f9a00ee456bd4efa81e8a1ba02d570bd891",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:cd541aa4ac2e11c78df923fd039dbd295ec78c47fcae459342e3270c2a767d8d",
+          "sha256": "sha256:db3951fbde33b660d88a61e3815d347f94474ce4642758762abdded4559427c8",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -195,7 +195,7 @@
         },
         {
           "name": "negative-capability-proof",
-          "sha256": "sha256:83148608c99baf1e16b2f9e7793c9740b8eea2c39bfef1e90099db9d6bd77a81",
+          "sha256": "sha256:6a11a061df5d5f5d7d545544902f1eabde28f43c98e23ada63cf6b80b013f167",
           "sourcePath": "source/skills/negative-capability-proof",
           "targetPath": "skills/negative-capability-proof",
           "type": "SKILL"
@@ -444,6 +444,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "cc93f4bea749f7b61297391c4a78f1974edc2144",
+  "sourceSha": "943872538dba2b5f4de62b50858b6e858e74cf47",
   "type": "HYDRATED_MARKETPLACE"
 }

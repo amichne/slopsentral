@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 
 usage() {
-  cat <<'USAGE'
+  cat >&2 <<'USAGE'
 Usage: gradle-check-green.sh [--repo PATH]
 
 Runs a Gradle green check when Kotlin, Java, Gradle, or build-logic files changed.
@@ -14,15 +14,17 @@ Environment:
 USAGE
 }
 
+die() {
+  printf 'gradle-check-green: error: %s\n' "$*" >&2
+  exit 2
+}
+
 repo_arg="."
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --repo)
-      if [[ $# -lt 2 ]]; then
-        echo "--repo requires a path" >&2
-        exit 2
-      fi
+      [[ $# -ge 2 ]] || die "--repo requires a path"
       repo_arg="$2"
       shift 2
       ;;
@@ -31,7 +33,7 @@ while [[ $# -gt 0 ]]; do
       exit 0
       ;;
     *)
-      echo "unknown argument: $1" >&2
+      printf 'unknown argument: %s\n' "$1" >&2
       usage >&2
       exit 2
       ;;
@@ -54,6 +56,10 @@ if [[ ! -x "$repo_root/gradlew" ]]; then
   echo "gradle-check-green: no executable Gradle wrapper found; skipping"
   exit 0
 fi
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+runner="$script_dir/../skills/kotlin-gradle-validation/scripts/run_gradle_task.sh"
+[[ -x "$runner" ]] || die "missing executable Gradle validation runner: $runner"
 
 changed_files() {
   if [[ -n "${INTELLIGENCE_CHANGED_FILES:-}" ]]; then
@@ -96,20 +102,33 @@ mkdir -p "$log_dir"
 
 timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
 safe_spec="$(printf '%s' "$check_spec" | tr -c 'A-Za-z0-9_.-' '_')"
-log_file="$log_dir/${timestamp}-${safe_spec}.log"
+evidence_file="$log_dir/${timestamp}-${safe_spec}.json"
+task_name="${gradle_args[0]}"
+extra_args=("${gradle_args[@]:1}")
 
 set +e
-(
-  cd "$repo_root"
-  ./gradlew --no-daemon "${gradle_args[@]}"
-) >"$log_file" 2>&1
+"$runner" --repo "$repo_root" --task "$task_name" --log-dir "$log_dir" -- "${extra_args[@]}" >"$evidence_file"
 status=$?
 set -e
 
 if [[ "$status" -ne 0 ]]; then
-  echo "gradle-check-green: ./gradlew --no-daemon $check_spec failed; log: $log_file" >&2
-  tail -n 80 "$log_file" >&2 || true
+  log_file="$(
+    python3 - "$evidence_file" <<'PY'
+import json
+import sys
+
+try:
+    with open(sys.argv[1], encoding="utf-8") as handle:
+        print(json.load(handle).get("logFile", ""))
+except Exception:
+    print("")
+PY
+  )"
+  echo "gradle-check-green: ./gradlew --no-daemon $check_spec failed; evidence: $evidence_file; log: $log_file" >&2
+  if [[ -n "$log_file" && -f "$log_file" ]]; then
+    tail -n 80 "$log_file" >&2 || true
+  fi
   exit "$status"
 fi
 
-echo "gradle-check-green: ./gradlew --no-daemon $check_spec passed; log: $log_file"
+echo "gradle-check-green: ./gradlew --no-daemon $check_spec passed; evidence: $evidence_file"

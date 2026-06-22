@@ -2,14 +2,14 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks.",
+  "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, and Kotlin package-layout hooks.",
   "interface": {
-    "brandColor": "#0F766E",
+    "brandColor": "#2563EB",
     "capabilities": [
       "Interactive",
       "Write"
     ],
-    "category": "Engineering",
+    "category": "Coding",
     "defaultPrompt": [
       "Use Kotlin Engineering for this task.",
       "Review this repo with Kotlin Engineering.",
@@ -17,26 +17,25 @@
     ],
     "developerName": "Amichne",
     "displayName": "Kotlin Engineering",
-    "longDescription": "Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks.",
-    "shortDescription": "Kotlin engineering workflow for typed design, Kast semantics, focused..."
+    "longDescription": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, and Kotlin package-layout hooks.",
+    "shortDescription": "Kotlin best-practices package for type-driven design, parse-dont-vali..."
   },
   "keywords": [
     "agents",
-    "ci",
-    "daily-driver",
-    "delivery",
+    "best-practices",
     "evidence",
     "gradle",
     "hooks",
     "kast",
     "kotlin",
     "kotlin-engineering",
-    "operating-procedure",
-    "quality",
+    "package-cohesion",
+    "proof",
     "review",
-    "schemas",
+    "semantic-navigation",
     "skills",
     "testing",
+    "type-safety",
     "validation"
   ],
   "license": "UNLICENSED",
