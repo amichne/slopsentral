@@ -150,6 +150,282 @@
         "Recommend cleanup or runtime activation without a durable manifest or approval boundary."
       ],
       "notes": "A passing readiness run uses the audit manifest and keeps rollout claims bounded by evidence."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "kotlin-invariant-work-uses-semantic-evidence",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-agentic-correctness"
+      },
+      "satisfiedAllowedActions": [
+        "Frame the trusted domain shape before editing.",
+        "Use Kast or file-backed semantic evidence for Kotlin identity, references, or diagnostics.",
+        "Run the narrowest Gradle compile or test task that proves the affected module."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run records Kast or file-backed semantic evidence for affected Kotlin symbols.",
+        "Focused Gradle proof covers the affected module or test target."
+      ],
+      "avoidedForbiddenActions": [
+        "Use regex-only caller discovery for Kotlin symbol identity.",
+        "Replace a raw string with another raw string plus comments or caller discipline.",
+        "Claim Gradle proof without a successful focused command."
+      ],
+      "notes": "A passing run proves this route by delivering: Kotlin invariant changes are grounded in semantic evidence and type-level enforcement rather than search-and-replace edits."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "gradle-failure-uses-structured-reports",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-gradle-validation"
+      },
+      "satisfiedAllowedActions": [
+        "Discover the Gradle module and choose a targeted task.",
+        "Read JUnit XML, Gradle problem reports, or Kotlin build reports when present.",
+        "Report the exact successful Gradle command and relevant report path."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The diagnosis cites JUnit XML, problem reports, Kotlin build reports, or their absence.",
+        "The final result includes the smallest successful relevant Gradle command."
+      ],
+      "avoidedForbiddenActions": [
+        "Diagnose only from the first console line when structured reports exist.",
+        "Run only a broad aggregate task when a focused test target is available.",
+        "Call the build green after a failed or skipped relevant task."
+      ],
+      "notes": "A passing run proves this route by delivering: Gradle failure repair gets faster and more reliable by using structured reports and focused reruns."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "negative-capability-proof-requires-before-after-misuse",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "negative-capability-proof"
+      },
+      "satisfiedAllowedActions": [
+        "Show the currently representable misuse before the fix.",
+        "Move enforcement into Kotlin types, constructors, or sealed APIs.",
+        "Show the post-change misuse is no longer reachable or no longer compiles."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run records a before-state misuse or representable invalid state.",
+        "The after-state proof shows the misuse no longer compiles or is no longer constructible."
+      ],
+      "avoidedForbiddenActions": [
+        "Replace negative capability proof with only happy-path unit tests.",
+        "Depend on comments, boolean flags, or caller discipline for the invariant.",
+        "Leave an alternate public constructor or raw primitive path that recreates the misuse."
+      ],
+      "notes": "A passing run proves this route by delivering: Advanced type-safety work proves the invalid operation was removed, not merely that happy paths still pass."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "kotlin-delivery-keeps-git-ci-companion-boundary",
+      "routedPrimitive": {
+        "type": "PROFILE",
+        "name": "kotlin-repo-default"
+      },
+      "satisfiedAllowedActions": [
+        "Use Kotlin Engineering for Kotlin semantic work and Gradle proof.",
+        "Use git-ci-operations for staging, commit, push, PR, CI, and release follow-through.",
+        "Use the profile to compose both without duplicate skills, agents, or hooks."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Kotlin proof includes semantic or Gradle evidence.",
+        "Delivery proof includes scoped staging, commit, push, PR, CI, or release evidence as requested."
+      ],
+      "avoidedForbiddenActions": [
+        "Move generic Git, PR, CI, or release instructions into Kotlin Engineering.",
+        "Handle a Kotlin code change with only delivery primitives and no semantic Kotlin evidence.",
+        "Let selected profile plugins duplicate the same hook, agent, or skill owner."
+      ],
+      "notes": "A passing run proves this route by delivering: End-to-end Kotlin delivery remains attributable: semantic implementation evidence from Kotlin Engineering and publication evidence from Git/CI Operations."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "source-over-generated-provider-output",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
+      },
+      "satisfiedAllowedActions": [
+        "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and garden manifests.",
+        "Use materialization only as proof after source quality checks pass.",
+        "Add source-owned validation when overlap or routing quality is the failure mode."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The changed files are under source or validation tooling unless provider publication is explicitly in scope.",
+        "Validation includes the source graph gate and, when provider output matters, materialization from source."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch .agents or .github provider output by hand.",
+        "Treat installed plugin cache payloads as canonical source.",
+        "Report generated provider drift as the primary answer when the source graph is the target."
+      ],
+      "notes": "A passing run proves this route by delivering: Source-graph audits spend time on canonical authored material and only touch provider output through regeneration, reducing churn and review noise."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "kotlin-specific-work-keeps-generic-delivery-separate",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "kotlin-engineering"
+      },
+      "satisfiedAllowedActions": [
+        "Use kotlin-engineering for Kotlin invariants, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
+        "Use git-ci-operations as the companion for branch, commit, PR, CI, release, and shell-safe automation.",
+        "Use the kotlin-repo-default profile to compose both plugins without duplicate skills, agents, or hooks."
+      ],
+      "satisfiedVerificationEvidence": [
+        "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
+        "git-ci-operations owns branch, PR, CI, release, and shell automation primitives."
+      ],
+      "avoidedForbiddenActions": [
+        "Put generic Git, CI, PR, or shell automation skills inside kotlin-engineering.",
+        "Route Kotlin type-safety review through generic Git/CI primitives.",
+        "Let two selected plugins provide the same hook or agent in a profile."
+      ],
+      "notes": "A passing run proves this route by delivering: Kotlin semantic work and Git/CI delivery compose cleanly without duplicate owners or bloated plugin prompts."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "repository-consumer-setup-uses-current-marketplace-cli",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "repository-onboarding"
+      },
+      "satisfiedAllowedActions": [
+        "Prefer the current intelligence CLI for marketplace import, install, inspect, and validate workflows.",
+        "Treat slopsentral source files as canonical marketplace content.",
+        "Use repository-onboarding for consumer-repo setup and baseline marketplace guidance."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Commands refer to the current intelligence marketplace workflow.",
+        "Consumer setup preserves source manifests and lock/install evidence instead of vendoring generated payloads."
+      ],
+      "avoidedForbiddenActions": [
+        "Route current setup through deprecated APM, NPM, Node, Python, or wrapper-era implementation paths.",
+        "Invent a new marketplace schema when import, install, and lock behavior already exist.",
+        "Vendor generated provider payloads into a consumer repository as the durable source of truth."
+      ],
+      "notes": "A passing run proves this route by delivering: Repository setup uses the current marketplace CLI and source-of-truth split, avoiding obsolete package-manager paths."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "plugin-install-cache-failure-is-setup-friction",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "repository-onboarding"
+      },
+      "satisfiedAllowedActions": [
+        "Inspect configured marketplace/cache state and confirm installed plugin state with the provider CLI.",
+        "Materialize a fresh marketplace snapshot from source when remote refresh fails.",
+        "Validate source and hydrated marketplace output before retrying installation."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run inspects configured marketplace and installed plugin state.",
+        "A fresh source materialization and validation precede any retry when cache refresh fails."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch installed cache payloads as if they were source.",
+        "Edit generated provider output to satisfy one local install.",
+        "Stop after source validation without proving the actual install state when the request is global installation."
+      ],
+      "notes": "A passing run proves this route by delivering: Plugin install failures are recovered reproducibly from source instead of corrupting local caches."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "okf-knowledge-work-is-not-generic-doc-authoring",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "code-knowledge-base"
+      },
+      "satisfiedAllowedActions": [
+        "Use code-knowledge-base when the deliverable is an OKF bundle, signature index, code_sources impact check, or drift hook.",
+        "Use shared doc primitives only as supporting workflow inside the code-knowledge-base boundary.",
+        "Keep source-backed evidence explicit in generated knowledge artifacts."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Generated or updated knowledge artifacts retain code_sources or signature evidence.",
+        "The code-knowledge-base plugin boundary remains the primary route."
+      ],
+      "avoidedForbiddenActions": [
+        "Treat OKF generation as generic prose editing.",
+        "Route the work through Kotlin implementation loops when no code change is requested.",
+        "Drop code_sources or signature evidence from the output."
+      ],
+      "notes": "A passing run proves this route by delivering: Knowledge-base work leaves source-backed OKF artifacts with signature and drift evidence instead of generic prose."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "api-boundary-work-belongs-to-api-contracts",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "api-contracts"
+      },
+      "satisfiedAllowedActions": [
+        "Use api-contracts for JSON Schema and OpenAPI boundary design.",
+        "Use manage-json-schemas as a shared primitive inside the broader API contract workflow.",
+        "Validate examples, variant constraints, and operation contracts."
+      ],
+      "satisfiedVerificationEvidence": [
+        "JSON Schema and OpenAPI examples or constraints are validated.",
+        "The api-contracts plugin owns the workflow when persisted API boundaries are in scope."
+      ],
+      "avoidedForbiddenActions": [
+        "Route API boundary design to Kotlin implementation because both mention types.",
+        "Stop at standalone JSON Schema maintenance when OpenAPI operation contracts are in scope.",
+        "Promote unconstrained primitives where the schema can encode invalid states."
+      ],
+      "notes": "A passing run proves this route by delivering: API boundary work produces schema and OpenAPI contracts that encode invariants and examples at the correct boundary."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "hook-skill-requirements-need-schema-coverage",
+      "routedPrimitive": {
+        "type": "HOOK",
+        "name": "required-skill-read"
+      },
+      "satisfiedAllowedActions": [
+        "Use a schema-backed requirements file with explicit type and schemaVersion fields.",
+        "Validate required skills against canonical source frontmatter.",
+        "Fail source validation when the requirement references missing or hidden skills."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Requirement files include schema metadata and validate through source graph checks.",
+        "Referenced required skills exist in canonical source and are marketplace-visible."
+      ],
+      "avoidedForbiddenActions": [
+        "Persist hook requirements without a schema pointer.",
+        "Reference a required skill that is absent from source or hidden from marketplace exposure.",
+        "Treat hook adapter JSON as proof that its requirement payload is valid."
+      ],
+      "notes": "A passing run proves this route by delivering: Hook requirements remain machine-checkable and cannot silently point at missing or hidden skills."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "placeholder-skills-are-quality-audit-not-marketplace-products",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-quality-audit"
+      },
+      "satisfiedAllowedActions": [
+        "Quarantine placeholder-only skills from marketplace exposure.",
+        "Record deferred rewrite or removal decisions in the cleanup ledger.",
+        "Fail validation if marketplace-visible skills expose placeholder migration descriptions."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Marketplace-visible skills have routeable descriptions rather than placeholder migration text.",
+        "Unfinished primitive candidates are handled through quality audit or consolidation manifests before promotion."
+      ],
+      "avoidedForbiddenActions": [
+        "Keep placeholder-only skills in the standalone marketplace catalog.",
+        "Replace a real canonical skill with a placeholder duplicate.",
+        "Treat syntactic validity as quality readiness."
+      ],
+      "notes": "A passing run proves this route by delivering: Team-shared marketplace listings contain usable primitives, while unfinished migration placeholders stay out of daily-driver routing."
     }
   ]
 }

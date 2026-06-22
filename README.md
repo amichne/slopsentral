@@ -34,8 +34,8 @@ git diff --check
 ```
 
 Use the default routing eval command as the daily-driver production gate. Use
-`--require-all-observed` when promoting the full routing corpus, because it
-fails until every routing case has a replay observation.
+`--require-all-observed` when promoting the full routing corpus; it fails when
+any routing case lacks a replay observation.
 
 ## Provenance
 

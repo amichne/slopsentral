@@ -52,6 +52,7 @@
         "commands": [
           "node source/tools/validate-source-graph.mjs",
           "node source/tools/run-routing-evals.mjs",
+          "node source/tools/run-routing-evals.mjs --require-all-observed",
           "intelligence validate --repo . --portable",
           "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
           "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
@@ -66,11 +67,11 @@
         ]
       },
       "residualRisks": [
-        "The default checked-in golden replay proves the daily-driver gate; full-corpus promotion should use --require-all-observed and add observations for every routing case.",
+        "The checked-in golden replay now covers every routing case; future routing cases should add replay observations in the same change.",
         "Live model sessions should still be monitored for drift against these cases.",
         "Additional team-specific observations should be added as real users hit new routing misses or bypasses."
       ],
-      "nextAction": "Use the default replay runner as the daily-driver production source gate; before claiming full-corpus readiness, add observations for every routing case and run node source/tools/run-routing-evals.mjs --require-all-observed."
+      "nextAction": "Use the default replay runner as the daily-driver production source gate and node source/tools/run-routing-evals.mjs --require-all-observed before claiming full-corpus routing readiness."
     }
   ]
 }
