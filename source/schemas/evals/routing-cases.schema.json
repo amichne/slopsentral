@@ -20,7 +20,7 @@
       "const": "ROUTING_CASE_SET"
     },
     "schemaVersion": {
-      "const": 1
+      "const": 2
     },
     "name": {
       "type": "string",
@@ -52,6 +52,8 @@
         "allowedActions",
         "forbiddenActions",
         "recoveryExpectation",
+        "productiveOutcome",
+        "verificationEvidence",
         "notes"
       ],
       "properties": {
@@ -92,6 +94,13 @@
         "recoveryExpectation": {
           "type": "string",
           "minLength": 1
+        },
+        "productiveOutcome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verificationEvidence": {
+          "$ref": "#/$defs/nonEmptyStrings"
         },
         "notes": {
           "type": "string",

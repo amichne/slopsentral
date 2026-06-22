@@ -1,0 +1,147 @@
+{
+  "$schema": "../../../schemas/evals/routing-replay.schema.json",
+  "type": "ROUTING_REPLAY_SET",
+  "schemaVersion": 1,
+  "name": "daily-driver-golden-routing-observations",
+  "description": "Golden provider-neutral replay observations for the daily-driver routing cases.",
+  "observations": [
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "active-goal-continuation-keeps-original-scope",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "define-goal"
+      },
+      "satisfiedAllowedActions": [
+        "Preserve the original objective and derive concrete requirements before claiming completion.",
+        "Use the current worktree and validation output as authoritative evidence.",
+        "Leave the goal active when production-readiness and team-sharing evidence remain incomplete."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run inspects current files or external state before acting.",
+        "The final handoff names completed evidence and leaves unproven production-sharing scope open when appropriate."
+      ],
+      "avoidedForbiddenActions": [
+        "Redefine success around the easiest passing subset.",
+        "Mark the goal complete from intent, partial progress, or plausible final wording.",
+        "Skip current-state inspection because earlier context sounds familiar."
+      ],
+      "notes": "A passing continuation keeps the active objective intact and reports incomplete rollout evidence instead of claiming done."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "source-graph-edits-use-canonical-source-and-gates",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "source-graph-consolidation"
+      },
+      "satisfiedAllowedActions": [
+        "Edit source-owned primitives, plugin manifests, schemas, evals, or source validation tools.",
+        "Regenerate provider output only from source when publication proof is required.",
+        "Run the source graph gate before broader marketplace validation."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Changed structured source files are covered by schema or source graph validation.",
+        "Provider output proof, when needed, comes from materialization rather than hand edits."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output as the primary fix.",
+        "Treat installed caches as source material.",
+        "Add marketplace content without schema or validator coverage for structured data."
+      ],
+      "notes": "A passing source-graph run edits canonical source and uses provider materialization only as proof."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "push-request-means-branch-commit-push-pr",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "pull-request-lifecycle"
+      },
+      "satisfiedAllowedActions": [
+        "Inspect status and preserve unrelated dirty or untracked files.",
+        "Stage only the scoped change set.",
+        "Commit, push, open the PR, and include validation evidence when the user asked for that delivery."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Git status before staging shows unrelated work was identified.",
+        "The PR or pushed branch contains only scoped files and cites validation commands."
+      ],
+      "avoidedForbiddenActions": [
+        "Stop after local validation when the user explicitly asked to push or raise a PR.",
+        "Use broad staging that captures unrelated user work.",
+        "Open a PR without a concise rationale and residual-risk note."
+      ],
+      "notes": "A passing delivery run treats push/PR language as an end-to-end delivery request while preserving unrelated work."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "ci-failure-triage-uses-remote-check-evidence",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "satisfiedAllowedActions": [
+        "Inspect current PR, run, job, and log state with GitHub-backed evidence.",
+        "Patch the narrow source or workflow surface that explains the failing job.",
+        "Push and re-check the relevant run or PR checks when remote verification is in scope."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The handoff cites the current PR, run ID, job name, or check conclusion.",
+        "The repair is validated by a local command or the updated remote check result."
+      ],
+      "avoidedForbiddenActions": [
+        "Rely only on stale local assumptions about which check failed.",
+        "Treat a workflow edit as successful without checking the new remote result.",
+        "Ignore the same failure signature repeating across jobs."
+      ],
+      "notes": "A passing CI triage run ties the fix to live check evidence and re-verifies after the repair."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "plugin-install-recovery-proves-installed-state",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "repository-onboarding"
+      },
+      "satisfiedAllowedActions": [
+        "Validate source and materialized marketplace output before retrying install.",
+        "Use a local materialized snapshot when remote refresh or sparse checkout state is the blocker.",
+        "Verify installed plugin state with the provider's list or inspection command."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Source or hydrated marketplace validation succeeds before install retry.",
+        "The final output includes provider-visible installed plugin evidence."
+      ],
+      "avoidedForbiddenActions": [
+        "Hand-edit installed cache payloads as the durable fix.",
+        "Conflate source validity with successful installation.",
+        "Use obsolete install subcommands when current CLI help shows a different surface."
+      ],
+      "notes": "A passing install recovery run proves both source validity and consumer-visible installed state."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "production-sharing-requires-quality-audit-evidence",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-quality-audit"
+      },
+      "satisfiedAllowedActions": [
+        "Audit the concrete primitive, plugin, or eval family against a baseline.",
+        "Record evidence for capability boundary, trigger clarity, independence, schema coverage, provenance, executable proof, and runtime safety.",
+        "Defer production-sharing claims when evidence is thin or validation does not cover the changed surface."
+      ],
+      "satisfiedVerificationEvidence": [
+        "A quality audit names the target, baseline, findings, manifest needs, validation, and next action.",
+        "Structured artifacts changed by the workflow pass the source graph and marketplace validation gates."
+      ],
+      "avoidedForbiddenActions": [
+        "Treat new eval cases alone as production readiness.",
+        "Share primitives that are not independently usable outside a plugin composition.",
+        "Recommend cleanup or runtime activation without a durable manifest or approval boundary."
+      ],
+      "notes": "A passing readiness run uses the audit manifest and keeps rollout claims bounded by evidence."
+    }
+  ]
+}

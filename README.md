@@ -20,6 +20,7 @@ plugins, hooks, agents, concepts, and workflow profiles.
 
 ```bash
 node source/tools/validate-source-graph.mjs
+node source/tools/run-routing-evals.mjs
 intelligence validate --repo /Users/amichne/code/slopsentral --portable
 intelligence marketplace browse --provider source --format json /Users/amichne/code/slopsentral
 intelligence marketplace materialize --repo /Users/amichne/code/slopsentral --provider codex --out /tmp/slopsentral-codex
@@ -34,5 +35,7 @@ git diff --check
 ## Provenance
 
 - `garden/manifests/promotions.json` records promoted source roots.
+- `garden/manifests/primitive-audits.json` records production-readiness and
+  quality decisions for primitive families.
 - `garden/manifests/cleanup-ledger.json` records skipped duplicates, upstream
   exclusions, and deferred cleanup decisions.

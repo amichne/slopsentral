@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.local/schemas/evals/routing-replay.schema.json",
+  "title": "Primitive Routing Replay Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "type",
+    "schemaVersion",
+    "name",
+    "description",
+    "observations"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "const": "ROUTING_REPLAY_SET"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/observation"
+      }
+    }
+  },
+  "$defs": {
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "caseId",
+        "routedPrimitive",
+        "satisfiedAllowedActions",
+        "satisfiedVerificationEvidence",
+        "avoidedForbiddenActions",
+        "notes"
+      ],
+      "properties": {
+        "type": {
+          "const": "ROUTING_OBSERVATION"
+        },
+        "caseId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]+$"
+        },
+        "routedPrimitive": {
+          "$ref": "#/$defs/primitive"
+        },
+        "satisfiedAllowedActions": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "satisfiedVerificationEvidence": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "avoidedForbiddenActions": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "primitive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AGENT",
+            "HOOK",
+            "PLUGIN",
+            "PROFILE",
+            "SKILL"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

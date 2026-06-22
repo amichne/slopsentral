@@ -1,7 +1,7 @@
 {
   "$schema": "../../schemas/evals/routing-cases.schema.json",
   "type": "ROUTING_CASE_SET",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "name": "marketplace-workflow-routing",
   "description": "Sanitized routing cases for source-owned marketplace, plugin, and primitive workflow decisions.",
   "cases": [
@@ -38,7 +38,12 @@
         "Report generated provider drift as the primary answer when the source graph is the target."
       ],
       "recoveryExpectation": "If generated output is stale, first make the authored source graph coherent and validated, then regenerate provider output from source only when publication requires it.",
-      "notes": "This protects the user-stated source ownership boundary and prevents adapter output from hiding source-quality regressions."
+      "notes": "This protects the user-stated source ownership boundary and prevents adapter output from hiding source-quality regressions.",
+      "productiveOutcome": "Source-graph audits spend time on canonical authored material and only touch provider output through regeneration, reducing churn and review noise.",
+      "verificationEvidence": [
+        "The changed files are under source or validation tooling unless provider publication is explicitly in scope.",
+        "Validation includes the source graph gate and, when provider output matters, materialization from source."
+      ]
     },
     {
       "id": "kotlin-specific-work-keeps-generic-delivery-separate",
@@ -76,7 +81,12 @@
         "Let two selected plugins provide the same hook or agent in a profile."
       ],
       "recoveryExpectation": "Composition should keep Kotlin semantic work and generic delivery work in separate plugins while the profile validates that no duplicate owners are selected.",
-      "notes": "This is the main overlap case fixed by narrowing kotlin-engineering and adding profile-level duplicate validation."
+      "notes": "This is the main overlap case fixed by narrowing kotlin-engineering and adding profile-level duplicate validation.",
+      "productiveOutcome": "Kotlin semantic work and Git/CI delivery compose cleanly without duplicate owners or bloated plugin prompts.",
+      "verificationEvidence": [
+        "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
+        "git-ci-operations owns branch, PR, CI, release, and shell automation primitives."
+      ]
     },
     {
       "id": "repository-consumer-setup-uses-current-marketplace-cli",
@@ -110,7 +120,12 @@
         "Vendor generated provider payloads into a consumer repository as the durable source of truth."
       ],
       "recoveryExpectation": "When older memory conflicts with current source, agents should re-check the source checkout and current intelligence CLI before acting.",
-      "notes": "This preserves current workflow attribution: slopsentral owns marketplace source; intelligence owns CLI validation and install flows."
+      "notes": "This preserves current workflow attribution: slopsentral owns marketplace source; intelligence owns CLI validation and install flows.",
+      "productiveOutcome": "Repository setup uses the current marketplace CLI and source-of-truth split, avoiding obsolete package-manager paths.",
+      "verificationEvidence": [
+        "Commands refer to the current intelligence marketplace workflow.",
+        "Consumer setup preserves source manifests and lock/install evidence instead of vendoring generated payloads."
+      ]
     },
     {
       "id": "plugin-install-cache-failure-is-setup-friction",
@@ -144,7 +159,12 @@
         "Stop after source validation without proving the actual install state when the request is global installation."
       ],
       "recoveryExpectation": "Treat cache and network failures as setup friction: refresh or rematerialize from source, validate, retry install, and verify installed state.",
-      "notes": "This avoids conflating consumer cache problems with marketplace source quality."
+      "notes": "This avoids conflating consumer cache problems with marketplace source quality.",
+      "productiveOutcome": "Plugin install failures are recovered reproducibly from source instead of corrupting local caches.",
+      "verificationEvidence": [
+        "The run inspects configured marketplace and installed plugin state.",
+        "A fresh source materialization and validation precede any retry when cache refresh fails."
+      ]
     },
     {
       "id": "okf-knowledge-work-is-not-generic-doc-authoring",
@@ -181,7 +201,12 @@
         "Drop code_sources or signature evidence from the output."
       ],
       "recoveryExpectation": "The code-knowledge-base metadata and routing case should distinguish source-backed knowledge work from general docs and Kotlin delivery.",
-      "notes": "This covers an intentional shared-skill overlap where the plugin boundary changes the expected output."
+      "notes": "This covers an intentional shared-skill overlap where the plugin boundary changes the expected output.",
+      "productiveOutcome": "Knowledge-base work leaves source-backed OKF artifacts with signature and drift evidence instead of generic prose.",
+      "verificationEvidence": [
+        "Generated or updated knowledge artifacts retain code_sources or signature evidence.",
+        "The code-knowledge-base plugin boundary remains the primary route."
+      ]
     },
     {
       "id": "api-boundary-work-belongs-to-api-contracts",
@@ -219,7 +244,12 @@
         "Promote unconstrained primitives where the schema can encode invalid states."
       ],
       "recoveryExpectation": "Shared schema skills should remain allowed overlap, but API contract prompts should load the api-contracts plugin when OpenAPI or operation boundaries are mentioned.",
-      "notes": "This protects a deliberate overlap from becoming an ownership ambiguity."
+      "notes": "This protects a deliberate overlap from becoming an ownership ambiguity.",
+      "productiveOutcome": "API boundary work produces schema and OpenAPI contracts that encode invariants and examples at the correct boundary.",
+      "verificationEvidence": [
+        "JSON Schema and OpenAPI examples or constraints are validated.",
+        "The api-contracts plugin owns the workflow when persisted API boundaries are in scope."
+      ]
     },
     {
       "id": "hook-skill-requirements-need-schema-coverage",
@@ -256,7 +286,12 @@
         "Treat hook adapter JSON as proof that its requirement payload is valid."
       ],
       "recoveryExpectation": "The source validator should block schema drift, missing required skills, and hook adapter command drift.",
-      "notes": "This case keeps hook data contracts aligned with the repo's schema-first rule."
+      "notes": "This case keeps hook data contracts aligned with the repo's schema-first rule.",
+      "productiveOutcome": "Hook requirements remain machine-checkable and cannot silently point at missing or hidden skills.",
+      "verificationEvidence": [
+        "Requirement files include schema metadata and validate through source graph checks.",
+        "Referenced required skills exist in canonical source and are marketplace-visible."
+      ]
     },
     {
       "id": "placeholder-skills-are-quality-audit-not-marketplace-products",
@@ -291,7 +326,12 @@
         "Treat syntactic validity as quality readiness."
       ],
       "recoveryExpectation": "Primitive quality audit should either rewrite a placeholder into a real workflow or keep it out of marketplace exposure until it is ready.",
-      "notes": "This turns token-wasting placeholder exposure into a source validation failure."
+      "notes": "This turns token-wasting placeholder exposure into a source validation failure.",
+      "productiveOutcome": "Team-shared marketplace listings contain usable primitives, while unfinished migration placeholders stay out of daily-driver routing.",
+      "verificationEvidence": [
+        "Marketplace-visible skills have routeable descriptions rather than placeholder migration text.",
+        "Unfinished primitive candidates are handled through quality audit or consolidation manifests before promotion."
+      ]
     }
   ]
 }

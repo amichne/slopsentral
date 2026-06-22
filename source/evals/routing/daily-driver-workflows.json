@@ -1,0 +1,254 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 2,
+  "name": "daily-driver-workflow-routing",
+  "description": "Sanitized routing cases for the recurring workflows that should improve the user's day-to-day engineering agent experience.",
+  "cases": [
+    {
+      "id": "active-goal-continuation-keeps-original-scope",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "MEMORY_INDEX",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "active goal continuation instructions",
+          "recurring preference for evidence-backed end-to-end delivery"
+        ]
+      },
+      "prompt": "Continue the active thread goal to refine critical workflows and evals until the additions are ready for production and team sharing.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "define-goal"
+      },
+      "observedRoute": {
+        "summary": "A continuation can collapse the long objective into a smaller local edit, then claim success without auditing the original requirements.",
+        "risk": "The workflow looks busy but drifts away from the user's actual end state and leaves completion unproven.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Preserve the original objective and derive concrete requirements before claiming completion.",
+        "Use the current worktree and validation output as authoritative evidence.",
+        "Leave the goal active when production-readiness and team-sharing evidence remain incomplete."
+      ],
+      "forbiddenActions": [
+        "Redefine success around the easiest passing subset.",
+        "Mark the goal complete from intent, partial progress, or plausible final wording.",
+        "Skip current-state inspection because earlier context sounds familiar."
+      ],
+      "recoveryExpectation": "A good continuation should make concrete progress, keep the original goal intact, and distinguish achieved evidence from remaining scope.",
+      "productiveOutcome": "Long-running workflow refinement stays aligned with the user's real objective instead of accumulating disconnected local improvements.",
+      "verificationEvidence": [
+        "The run inspects current files or external state before acting.",
+        "The final handoff names completed evidence and leaves unproven production-sharing scope open when appropriate."
+      ],
+      "notes": "This is the guardrail for multi-turn, goal-backed work where local momentum can otherwise substitute for verified completion."
+    },
+    {
+      "id": "source-graph-edits-use-canonical-source-and-gates",
+      "type": "ADAPTER_DRIFT",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "AGENTS.md marketplace ownership",
+          "source/adaptable.marketplace.json",
+          "source/tools/validate-source-graph.mjs"
+        ]
+      },
+      "prompt": "Refine marketplace skills, plugins, hooks, and evals so the team can share productive agent workflows.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "source-graph-consolidation"
+      },
+      "observedRoute": {
+        "summary": "Marketplace work can route to generated provider payloads or installed caches instead of the canonical source graph.",
+        "risk": "The source of truth remains wrong while generated outputs or local caches receive unreviewable drift.",
+        "loadedPrimitives": [
+          "primitive-quality-audit",
+          "primitive-routing-evaluation"
+        ]
+      },
+      "allowedActions": [
+        "Edit source-owned primitives, plugin manifests, schemas, evals, or source validation tools.",
+        "Regenerate provider output only from source when publication proof is required.",
+        "Run the source graph gate before broader marketplace validation."
+      ],
+      "forbiddenActions": [
+        "Patch generated provider output as the primary fix.",
+        "Treat installed caches as source material.",
+        "Add marketplace content without schema or validator coverage for structured data."
+      ],
+      "recoveryExpectation": "If generated output or cache state is stale, repair canonical source first, then materialize and validate output from that source.",
+      "productiveOutcome": "Marketplace improvements become reviewable, reproducible source changes that teammates can trust and regenerate.",
+      "verificationEvidence": [
+        "Changed structured source files are covered by schema or source graph validation.",
+        "Provider output proof, when needed, comes from materialization rather than hand edits."
+      ],
+      "notes": "This captures the strongest repo-specific ownership rule for every workflow addition in this marketplace."
+    },
+    {
+      "id": "push-request-means-branch-commit-push-pr",
+      "type": "TRIGGER_MISS",
+      "source": {
+        "type": "MEMORY_INDEX",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "recurring push and pull request preference",
+          "scoped staging and unrelated work preservation preference"
+        ]
+      },
+      "prompt": "Push please. Commit the validated workflow changes, push the branch, and raise a PR with evidence, rationale, validation, and residual risks.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pull-request-lifecycle"
+      },
+      "observedRoute": {
+        "summary": "A push request can be answered with only a local summary or an unscoped commit that sweeps unrelated dirt into the branch.",
+        "risk": "The user still has to perform the delivery work, or the PR contains unrelated changes that are hard to review.",
+        "loadedPrimitives": [
+          "git-change-flow"
+        ]
+      },
+      "allowedActions": [
+        "Inspect status and preserve unrelated dirty or untracked files.",
+        "Stage only the scoped change set.",
+        "Commit, push, open the PR, and include validation evidence when the user asked for that delivery."
+      ],
+      "forbiddenActions": [
+        "Stop after local validation when the user explicitly asked to push or raise a PR.",
+        "Use broad staging that captures unrelated user work.",
+        "Open a PR without a concise rationale and residual-risk note."
+      ],
+      "recoveryExpectation": "If unrelated dirt exists, leave it unstaged and report it; if remote state moved, fetch and integrate safely before pushing.",
+      "productiveOutcome": "Validated improvements move from local workspace to a reviewable team artifact with low review noise.",
+      "verificationEvidence": [
+        "Git status before staging shows unrelated work was identified.",
+        "The PR or pushed branch contains only scoped files and cites validation commands."
+      ],
+      "notes": "This turns a frequent user shorthand into a measurable full-delivery workflow."
+    },
+    {
+      "id": "ci-failure-triage-uses-remote-check-evidence",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "MEMORY_INDEX",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "recurring GitHub Actions babysitting workflows",
+          "preference for exact run IDs and current remote state"
+        ]
+      },
+      "prompt": "The PR checks are failing. Find the real failing job, fix the workflow or source issue, push the repair, and verify the checks turn green.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "observedRoute": {
+        "summary": "Agents can inspect local workflow YAML or guess from stale console snippets without checking the live run and job evidence.",
+        "risk": "The patch may fix the wrong thing, miss a repeated failure signature, or claim success before GitHub has verified it.",
+        "loadedPrimitives": [
+          "git-change-flow"
+        ]
+      },
+      "allowedActions": [
+        "Inspect current PR, run, job, and log state with GitHub-backed evidence.",
+        "Patch the narrow source or workflow surface that explains the failing job.",
+        "Push and re-check the relevant run or PR checks when remote verification is in scope."
+      ],
+      "forbiddenActions": [
+        "Rely only on stale local assumptions about which check failed.",
+        "Treat a workflow edit as successful without checking the new remote result.",
+        "Ignore the same failure signature repeating across jobs."
+      ],
+      "recoveryExpectation": "If remote checks are unavailable or still running, report the exact run state and continue monitoring when the user asked for green checks.",
+      "productiveOutcome": "CI repair work converges on the real failing job and leaves exact remote evidence the team can audit.",
+      "verificationEvidence": [
+        "The handoff cites the current PR, run ID, job name, or check conclusion.",
+        "The repair is validated by a local command or the updated remote check result."
+      ],
+      "notes": "This protects the user's repeated expectation that remote state, not local plausibility, decides CI work."
+    },
+    {
+      "id": "plugin-install-recovery-proves-installed-state",
+      "type": "SETUP_FRICTION",
+      "source": {
+        "type": "MEMORY_INDEX",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "global plugin install memory",
+          "local marketplace snapshot fallback memory"
+        ]
+      },
+      "prompt": "Install or refresh the shared marketplace plugin for my Codex setup, recover from missing plugin manifests, and prove the plugin is installed.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "repository-onboarding"
+      },
+      "observedRoute": {
+        "summary": "Install recovery can stop at source validation or mutate cache files directly without proving the consumer CLI sees the plugin.",
+        "risk": "The marketplace source may be valid while the user's actual Codex environment still cannot load the shared workflow.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Validate source and materialized marketplace output before retrying install.",
+        "Use a local materialized snapshot when remote refresh or sparse checkout state is the blocker.",
+        "Verify installed plugin state with the provider's list or inspection command."
+      ],
+      "forbiddenActions": [
+        "Hand-edit installed cache payloads as the durable fix.",
+        "Conflate source validity with successful installation.",
+        "Use obsolete install subcommands when current CLI help shows a different surface."
+      ],
+      "recoveryExpectation": "A good recovery should prove both source validity and the final consumer-visible installed state.",
+      "productiveOutcome": "Team-shared plugin updates become actually usable in the local agent environment, not merely valid in the source repo.",
+      "verificationEvidence": [
+        "Source or hydrated marketplace validation succeeds before install retry.",
+        "The final output includes provider-visible installed plugin evidence."
+      ],
+      "notes": "This is the setup counterpart to source-graph quality: the user cares that the shared workflow can be consumed."
+    },
+    {
+      "id": "production-sharing-requires-quality-audit-evidence",
+      "type": "TRIGGER_MISS",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/skills/primitive-quality-audit/SKILL.md",
+          "source/schemas/evals/routing-cases.schema.json",
+          "garden/manifests/promotions.json"
+        ]
+      },
+      "prompt": "Decide whether the new workflow additions are production-ready and safe to share with the team.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-quality-audit"
+      },
+      "observedRoute": {
+        "summary": "A share-readiness decision can be based on passing JSON syntax and positive wording rather than evidence of routing clarity, independence, provenance, validation, and runtime safety.",
+        "risk": "The team receives primitives that load in the wrong situations, duplicate ownership, or lack reproducible validation.",
+        "loadedPrimitives": [
+          "primitive-routing-evaluation"
+        ]
+      },
+      "allowedActions": [
+        "Audit the concrete primitive, plugin, or eval family against a baseline.",
+        "Record evidence for capability boundary, trigger clarity, independence, schema coverage, provenance, executable proof, and runtime safety.",
+        "Defer production-sharing claims when evidence is thin or validation does not cover the changed surface."
+      ],
+      "forbiddenActions": [
+        "Treat new eval cases alone as production readiness.",
+        "Share primitives that are not independently usable outside a plugin composition.",
+        "Recommend cleanup or runtime activation without a durable manifest or approval boundary."
+      ],
+      "recoveryExpectation": "A good readiness pass should narrow the claim to what current evidence proves and leave explicit residual risks for anything unproven.",
+      "productiveOutcome": "Team-shared additions are promoted from evidence rather than optimism, reducing routing regressions and support load.",
+      "verificationEvidence": [
+        "A quality audit names the target, baseline, findings, manifest needs, validation, and next action.",
+        "Structured artifacts changed by the workflow pass the source graph and marketplace validation gates."
+      ],
+      "notes": "This is the explicit production-sharing gate for the broader goal."
+    }
+  ]
+}

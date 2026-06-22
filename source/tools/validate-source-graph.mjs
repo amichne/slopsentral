@@ -401,6 +401,8 @@ for (const requirementsPath of listFiles("source/hooks", (file) => file.endsWith
   validateHookRequirements(relativeToRepo(requirementsPath));
 }
 
+validatePrimitiveAuditManifest("garden/manifests/primitive-audits.json");
+
 const primitiveIndex = buildPrimitiveIndex();
 for (const casesPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
   validateRoutingCaseSet(relativeToRepo(casesPath), primitiveIndex);
@@ -487,13 +489,88 @@ function validateHookRequirements(relativePath) {
   }
 }
 
+function validatePrimitiveAuditManifest(relativePath) {
+  if (!fs.existsSync(path.join(repoRoot, relativePath))) return;
+  const payload = readJson(relativePath);
+  if (!payload) return;
+  if (payload.type !== "PRIMITIVE_AUDIT_MANIFEST") {
+    fail(`${relativePath}: type must be PRIMITIVE_AUDIT_MANIFEST`);
+  }
+  if (payload.schemaVersion !== 1) {
+    fail(`${relativePath}: schemaVersion must be 1`);
+  }
+  if (payload.marketplace !== marketplace.name) {
+    fail(`${relativePath}: marketplace must match ${marketplace.name}`);
+  }
+  validateSchemaLink(relativePath, payload.$schema);
+  if (!Array.isArray(payload.entries) || payload.entries.length === 0) {
+    fail(`${relativePath}: entries must be a non-empty array`);
+    return;
+  }
+
+  const ids = new Set();
+  const decisions = new Set([
+    "PROMOTE_READY",
+    "SYNTHESIZE_FIRST",
+    "REWRITE_FIRST",
+    "DEFER",
+    "ACTIVATE_READY",
+    "CLEANUP_READY",
+    "IGNORE",
+  ]);
+  const statuses = new Set(["PASS", "PARTIAL", "BLOCKED"]);
+  const confidence = new Set(["LOW", "MEDIUM", "HIGH"]);
+  const targetKinds = new Set(["AGENT", "EVAL_FAMILY", "HOOK", "PLUGIN", "PROFILE", "SKILL"]);
+  const collisionChecks = new Set(["NOT_APPLICABLE", "CHECKED_NO_COLLISION", "BLOCKED_COLLISION_RISK"]);
+
+  for (const [index, entry] of payload.entries.entries()) {
+    const owner = `${relativePath}: entries[${index}]`;
+    validateNoPrivateLocalStrings(owner, entry);
+    if (entry.type !== "PRIMITIVE_AUDIT") fail(`${owner}: type must be PRIMITIVE_AUDIT`);
+    if (typeof entry.id !== "string" || !entry.id.match(/^[a-z0-9][a-z0-9-]+$/)) {
+      fail(`${owner}: id must be kebab-case`);
+    } else if (ids.has(entry.id)) {
+      fail(`${owner}: duplicate id ${entry.id}`);
+    } else {
+      ids.add(entry.id);
+    }
+    if (!decisions.has(entry.decision)) fail(`${owner}: decision is invalid`);
+    if (!confidence.has(entry.confidence)) fail(`${owner}: confidence is invalid`);
+    if (typeof entry.reviewedAt !== "string" || !entry.reviewedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      fail(`${owner}: reviewedAt must be YYYY-MM-DD`);
+    }
+    for (const field of ["baseline", "reviewedBy", "nextAction"]) {
+      if (typeof entry[field] !== "string" || !entry[field].trim()) fail(`${owner}: ${field} is required`);
+    }
+    validateAuditTarget(owner, entry.target, targetKinds);
+    for (const block of ["capabilityBoundary", "schemaCoverage", "runtimeSafety"]) {
+      validateEvidenceBlock(`${owner}: ${block}`, entry[block], statuses);
+    }
+    validateEvidenceBlock(`${owner}: provenance`, entry.provenance, statuses);
+    if (!collisionChecks.has(entry.provenance?.firstPartyCollisionCheck)) {
+      fail(`${owner}: provenance.firstPartyCollisionCheck is invalid`);
+    }
+    validateValidationBlock(`${owner}: validation`, entry.validation, statuses);
+    validateNonEmptyStringArray(`${owner}: residualRisks`, entry.residualRisks);
+    if (
+      entry.decision === "PROMOTE_READY" &&
+      !["capabilityBoundary", "schemaCoverage", "provenance", "validation"].every((field) => entry[field]?.status === "PASS")
+    ) {
+      fail(`${owner}: PROMOTE_READY requires PASS capabilityBoundary, schemaCoverage, provenance, and validation`);
+    }
+    if (entry.decision === "ACTIVATE_READY" && entry.runtimeSafety?.status !== "PASS") {
+      fail(`${owner}: ACTIVATE_READY requires PASS runtimeSafety`);
+    }
+  }
+}
+
 function validateRoutingCaseSet(relativePath, primitiveIndex) {
   const payload = readJson(relativePath);
   if (!payload) return;
   if (payload.type !== "ROUTING_CASE_SET") return;
 
-  if (payload.schemaVersion !== 1) {
-    fail(`${relativePath}: schemaVersion must be 1`);
+  if (payload.schemaVersion !== 2) {
+    fail(`${relativePath}: schemaVersion must be 2`);
   }
   if (!payload.$schema) {
     fail(`${relativePath}: missing $schema`);
@@ -535,12 +612,12 @@ function validateRoutingCaseSet(relativePath, primitiveIndex) {
     validateExpectedPrimitive(owner, routingCase.expectedPrimitive, primitiveIndex);
     validateObservedRoute(owner, routingCase.observedRoute);
 
-    for (const field of ["prompt", "recoveryExpectation", "notes"]) {
+    for (const field of ["prompt", "recoveryExpectation", "productiveOutcome", "notes"]) {
       if (typeof routingCase[field] !== "string" || !routingCase[field].trim()) {
         fail(`${owner}: ${field} is required`);
       }
     }
-    for (const field of ["allowedActions", "forbiddenActions"]) {
+    for (const field of ["allowedActions", "forbiddenActions", "verificationEvidence"]) {
       if (!Array.isArray(routingCase[field]) || routingCase[field].length === 0) {
         fail(`${owner}: ${field} must be a non-empty array`);
       } else {
@@ -550,6 +627,66 @@ function validateRoutingCaseSet(relativePath, primitiveIndex) {
           }
         }
       }
+    }
+  }
+}
+
+function validateSchemaLink(relativePath, schemaRef) {
+  if (typeof schemaRef !== "string" || !schemaRef.trim()) {
+    fail(`${relativePath}: missing $schema`);
+    return;
+  }
+  const schemaPath = path.normalize(path.join(path.dirname(path.join(repoRoot, relativePath)), schemaRef));
+  if (!schemaPath.startsWith(repoRoot) || !fs.existsSync(schemaPath)) {
+    fail(`${relativePath}: $schema points at missing ${schemaRef}`);
+  }
+}
+
+function validateAuditTarget(owner, target, targetKinds) {
+  if (!target || typeof target !== "object") {
+    fail(`${owner}: target is required`);
+    return;
+  }
+  if (!targetKinds.has(target.kind)) fail(`${owner}: target.kind is invalid`);
+  if (typeof target.name !== "string" || !target.name.trim()) fail(`${owner}: target.name is required`);
+  validateNonEmptyStringArray(`${owner}: target.paths`, target.paths);
+  for (const targetPath of target.paths ?? []) {
+    if (targetPath.startsWith("/") || targetPath.includes("..")) {
+      fail(`${owner}: target path must be repository-relative: ${targetPath}`);
+      continue;
+    }
+    if (!fs.existsSync(path.join(repoRoot, targetPath))) {
+      fail(`${owner}: target path is missing: ${targetPath}`);
+    }
+  }
+}
+
+function validateEvidenceBlock(owner, block, statuses) {
+  if (!block || typeof block !== "object") {
+    fail(`${owner}: block is required`);
+    return;
+  }
+  if (!statuses.has(block.status)) fail(`${owner}: status is invalid`);
+  validateNonEmptyStringArray(`${owner}: evidence`, block.evidence);
+}
+
+function validateValidationBlock(owner, block, statuses) {
+  if (!block || typeof block !== "object") {
+    fail(`${owner}: block is required`);
+    return;
+  }
+  if (!statuses.has(block.status)) fail(`${owner}: status is invalid`);
+  validateNonEmptyStringArray(`${owner}: commands`, block.commands);
+}
+
+function validateNonEmptyStringArray(owner, value) {
+  if (!Array.isArray(value) || value.length === 0) {
+    fail(`${owner} must be a non-empty array`);
+    return;
+  }
+  for (const [index, item] of value.entries()) {
+    if (typeof item !== "string" || !item.trim()) {
+      fail(`${owner}[${index}] must be a non-empty string`);
     }
   }
 }

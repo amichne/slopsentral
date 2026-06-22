@@ -1,0 +1,75 @@
+{
+  "$schema": "../../source/schemas/audits/primitive-audits.schema.json",
+  "type": "PRIMITIVE_AUDIT_MANIFEST",
+  "schemaVersion": 1,
+  "marketplace": "slopsentral",
+  "entries": [
+    {
+      "type": "PRIMITIVE_AUDIT",
+      "id": "routing-eval-family-productivity-evidence",
+      "target": {
+        "kind": "EVAL_FAMILY",
+        "name": "routing-evals",
+        "paths": [
+          "source/evals/routing",
+          "source/schemas/evals/routing-cases.schema.json",
+          "source/schemas/evals/routing-replay.schema.json",
+          "source/tools/run-routing-evals.mjs",
+          "source/tools/validate-source-graph.mjs"
+        ]
+      },
+      "baseline": "Earlier routing cases identified expected primitives and failure modes, but did not require each case to name the productive outcome or the evidence a good run must leave behind.",
+      "decision": "PROMOTE_READY",
+      "confidence": "HIGH",
+      "reviewedAt": "2026-06-22",
+      "reviewedBy": "codex",
+      "capabilityBoundary": {
+        "status": "PASS",
+        "evidence": [
+          "Routing evals are limited to primitive selection, forbidden fallbacks, recovery behavior, productive outcomes, and verification evidence.",
+          "Daily-driver cases cover active-goal continuation, source-graph ownership, branch and PR delivery, CI triage, plugin install recovery, and production-sharing audit gates."
+        ]
+      },
+      "schemaCoverage": {
+        "status": "PASS",
+        "evidence": [
+          "source/schemas/evals/routing-cases.schema.json requires productiveOutcome and verificationEvidence for schemaVersion 2 cases.",
+          "source/schemas/evals/routing-replay.schema.json defines provider-neutral replay observations for scored routing behavior.",
+          "source/tools/validate-source-graph.mjs validates routing case schemaVersion, schema links, existing expected primitives, sanitized strings, and non-empty evidence fields.",
+          "source/tools/run-routing-evals.mjs scores golden observations against exact case contracts and required daily-driver coverage."
+        ]
+      },
+      "provenance": {
+        "status": "PASS",
+        "firstPartyCollisionCheck": "NOT_APPLICABLE",
+        "evidence": [
+          "The cases are sanitized from local usage patterns and current repository contracts rather than copied from first-party provider material.",
+          "Evidence references use source paths, memory-index summaries, and validation gates rather than raw transcripts, private absolute paths, or installed caches."
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "commands": [
+          "node source/tools/validate-source-graph.mjs",
+          "node source/tools/run-routing-evals.mjs",
+          "intelligence validate --repo . --portable",
+          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
+          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "git diff --check"
+        ]
+      },
+      "runtimeSafety": {
+        "status": "PASS",
+        "evidence": [
+          "The eval family is source evidence and does not require runtime-link activation before marketplace publication.",
+          "The replay runner reads checked-in source and fixture data only; it does not install hooks, mutate provider caches, or write runtime targets."
+        ]
+      },
+      "residualRisks": [
+        "The checked-in golden replay proves the harness and source-quality contract, but live model sessions should still be monitored for drift against these cases.",
+        "Additional team-specific observations should be added as real users hit new routing misses or bypasses."
+      ],
+      "nextAction": "Use the replay runner and audit manifest as the production source gate for workflow refinements, then add live team observations as they appear."
+    }
+  ]
+}
