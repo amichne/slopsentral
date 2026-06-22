@@ -14,6 +14,9 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 - Verify the repository and GitHub CLI context before using `gh`.
 - Use live PR checks, workflow runs, logs, annotations, and job summaries as
   evidence when debugging failures.
+- Prefer structured `gh --json` output and the bundled CI evidence helper over
+  display-output scraping when deciding whether checks are green, failing, or
+  still pending.
 - Treat non-GitHub providers as external checks unless the repo has local
   tooling for them. Report their details URL rather than scraping unrelated
   systems.
@@ -36,7 +39,13 @@ when the live run, YAML, scripts, or package metadata can be inspected.
    Use `gh auth status`, `gh pr view`, `gh pr checks`, `gh run view`,
    `gh run list`, and workflow YAML under `.github/workflows/` as appropriate.
    Capture the failing job name, command, error snippet, run URL, head SHA, and
-   local file that owns the failing behavior.
+   local file that owns the failing behavior. When check status is part of the
+   claim, save JSON and validate it:
+
+   ```sh
+   gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow > /tmp/pr-checks.json
+   python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input /tmp/pr-checks.json
+   ```
 
 3. Classify the failure.
    Separate product/test failures from CI-environment failures, dependency
@@ -51,7 +60,8 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 5. Validate.
    Run the local equivalent of the failing command. For workflow YAML changes,
    run `actionlint` when present, parse YAML with available tooling when not,
-   and then recheck `gh pr checks` or the relevant run.
+   run reusable shell/script checks for touched CI scripts, and then recheck
+   `gh pr checks` or the relevant run with structured evidence.
 
 6. Hand off.
    Summarize the failed signal, root cause, files changed, checks run, and any
@@ -72,4 +82,5 @@ when the live run, YAML, scripts, or package metadata can be inspected.
   available.
 - The fix targets the owning source rather than masking the symptom.
 - Local validation passed, or the missing environment/tool is stated.
-- Remote checks were re-read or the exact pending verification is documented.
+- Remote checks were re-read through structured evidence, or the exact pending
+  verification is documented.

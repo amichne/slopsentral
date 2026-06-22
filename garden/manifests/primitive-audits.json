@@ -249,6 +249,95 @@
         "Future cleanup of dead source should remain scoped and validated rather than bundled with unrelated promotion work."
       ],
       "nextAction": "Run source/evals/plugin-benchmarks/agent-platform-authoring.json against a representative source-graph change, feed benchmark-usage.jsonl into plugin-eval analyze --observed-usage, and add field observations for any routing misses."
+    },
+    {
+      "type": "PRIMITIVE_AUDIT",
+      "id": "git-ci-operations-plugin-production-readiness",
+      "target": {
+        "kind": "PLUGIN",
+        "name": "git-ci-operations",
+        "paths": [
+          "source/plugins/git-ci-operations/plugin.json",
+          "source/skills/define-goal",
+          "source/skills/tdd",
+          "source/skills/git-change-flow",
+          "source/skills/github-ci-operations",
+          "source/skills/github-ci-operations/scripts/ci_check_evidence.py",
+          "source/skills/pull-request-lifecycle",
+          "source/skills/shell-script-safety",
+          "source/skills/shell-script-safety/scripts/check_shell_safety.py",
+          "source/evals/routing/daily-driver-workflows.json",
+          "source/evals/routing/fixtures/golden-routing-observations.json",
+          "source/evals/plugin-benchmarks/git-ci-operations.json",
+          ".github/workflows/validate-source.yml",
+          ".github/workflows/materialize-marketplace.yml"
+        ]
+      },
+      "baseline": "Git/CI Operations already composed goal, TDD, Git, PR, GitHub Actions, release, and shell-safety primitives, but the plugin lacked reusable CI evidence helpers, explicit composable workflow routing cases, a benchmark corpus, and a durable production-readiness audit.",
+      "decision": "PROMOTE_READY",
+      "confidence": "HIGH",
+      "reviewedAt": "2026-06-22",
+      "reviewedBy": "codex",
+      "capabilityBoundary": {
+        "status": "PASS",
+        "evidence": [
+          "source/plugins/git-ci-operations/plugin.json scopes the plugin to reusable delivery workflows, structured CI evidence, composable GitHub Actions, PR lifecycle, releases, TDD, Git hygiene, and shell-safe automation.",
+          "source/skills/github-ci-operations keeps CI ownership on live GitHub check/run evidence, workflow design, releases, and provider-specific CI triage.",
+          "source/skills/pull-request-lifecycle composes Git hygiene and CI watching without absorbing GitHub Actions internals.",
+          "source/skills/shell-script-safety remains provider-neutral and supplies reusable script hardening for CI, hooks, release scripts, installers, and local tooling."
+        ]
+      },
+      "schemaCoverage": {
+        "status": "PASS",
+        "evidence": [
+          "source/tools/validate-source-graph.mjs validates plugin references, standalone skill exposure, routing cases, plugin benchmarks, audit records, profiles, hooks, and runtime-link records.",
+          "source/skills/github-ci-operations/scripts/ci_check_evidence.py validates structured gh pr checks and gh run view JSON before green, failing, pending, or unknown CI claims.",
+          "source/skills/shell-script-safety/scripts/check_shell_safety.py gives CI and hook shell scripts a reusable local safety gate for shebangs, strict mode, temp cleanup, eval, curl-pipe-shell, and unsafe rm variable usage.",
+          "source/evals/routing/daily-driver-workflows.json records CI-specific expectations for current check evidence, composable workflow authoring, and reusable shell-script safety.",
+          "source/evals/plugin-benchmarks/git-ci-operations.json defines Codex benchmark scenarios for CI triage, structured green claims, composable workflow authoring, reusable shell script safety, and PR green-loop delivery."
+        ]
+      },
+      "provenance": {
+        "status": "PASS",
+        "firstPartyCollisionCheck": "CHECKED_NO_COLLISION",
+        "evidence": [
+          "garden/manifests/promotions.json records git-ci-operations as a promoted referential composition and records the composed CI, Git, PR, TDD, goal, and shell-safety primitives.",
+          "The plugin manifest references canonical source primitives by path instead of copying payloads into source/plugins/git-ci-operations.",
+          "The new helper scripts are local source additions that wrap repository-neutral evidence checks rather than copied first-party provider material."
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "commands": [
+          "node source/tools/validate-source-graph.mjs",
+          "python3 -m py_compile source/skills/github-ci-operations/scripts/ci_check_evidence.py source/skills/shell-script-safety/scripts/check_shell_safety.py",
+          "printf '%s\\n' '[{\"name\":\"Validate\",\"state\":\"SUCCESS\",\"bucket\":\"pass\",\"link\":\"https://example.invalid/run\"}]' | python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input -",
+          "printf '%s\\n' '[{\"name\":\"Validate\",\"state\":\"FAILURE\",\"bucket\":\"fail\",\"link\":\"https://example.invalid/run\"}]' | python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input -; test $? -eq 1",
+          "python3 source/skills/shell-script-safety/scripts/check_shell_safety.py source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
+          "bash -n source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
+          "node source/tools/run-routing-evals.mjs --require-all-observed",
+          "intelligence validate --repo . --portable",
+          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
+          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "git diff --check"
+        ]
+      },
+      "runtimeSafety": {
+        "status": "PASS",
+        "evidence": [
+          "Git/CI Operations is exposed through source marketplace composition and this audit does not require direct runtime writes.",
+          "The CI evidence helper reads caller-supplied gh JSON and prints classification JSON; it does not mutate repositories, rerun workflows, or require token writes.",
+          "The shell safety helper reads local shell scripts and reports findings; it does not execute the scripts or perform filesystem mutation.",
+          "Provider output remains a materialized proof target rather than an authored change surface."
+        ]
+      },
+      "residualRisks": [
+        "source/evals/plugin-benchmarks/git-ci-operations.json still needs observed benchmark usage from a live repository with real PR checks.",
+        "The CI evidence helper intentionally classifies saved gh JSON and should stay paired with current-head gh commands in live sessions.",
+        "The shell safety helper is a lightweight guardrail, not a replacement for shellcheck when shellcheck is available.",
+        "Live release or deployment workflows still require separate approval before tags, releases, protected environments, or secrets are changed."
+      ],
+      "nextAction": "Run source/evals/plugin-benchmarks/git-ci-operations.json against a representative repository with GitHub Actions checks, feed benchmark-usage.jsonl into plugin-eval analyze --observed-usage, and record field observations for any CI routing misses."
     }
   ]
 }

@@ -23,6 +23,8 @@ preserve data, and remain maintainable when run by agents, hooks, CI, or humans.
   output.
 - If the script emits persisted structured data, define or reuse the schema,
   parser, or validator before writing it.
+- Prefer reusable repo scripts over long inline CI workflow shell when the logic
+  is shared, stateful, or needs local reproduction.
 
 ## Workflow
 
@@ -50,8 +52,13 @@ preserve data, and remain maintainable when run by agents, hooks, CI, or humans.
 
 6. Test the important paths.
    Run syntax checks, a dry-run path, a success path, and at least one expected
-   failure path. For hooks, run a representative local invocation with explicit
-   input.
+   failure path. For hooks and CI scripts, run the bundled safety helper with
+   explicit paths:
+
+   ```sh
+   python3 source/skills/shell-script-safety/scripts/check_shell_safety.py <script.sh>
+   bash -n <script.sh>
+   ```
 
 ## Review Checklist
 
@@ -62,6 +69,8 @@ preserve data, and remain maintainable when run by agents, hooks, CI, or humans.
 - Are temporary files cleaned up on success and failure?
 - Does error output go to stderr?
 - Does CI or hook usage have a deterministic validation command?
+- Is shared CI logic in a reusable script rather than copied across workflow
+  YAML?
 - If JSON, YAML, TOML, or another structured format is written, does a schema or
   parser validate it?
 

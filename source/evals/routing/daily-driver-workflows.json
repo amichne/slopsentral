@@ -170,6 +170,132 @@
       "notes": "This protects the user's repeated expectation that remote state, not local plausibility, decides CI work."
     },
     {
+      "id": "ci-status-claims-use-structured-check-evidence",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/skills/github-ci-operations/SKILL.md",
+          "source/skills/github-ci-operations/scripts/ci_check_evidence.py",
+          "source/skills/pull-request-lifecycle/SKILL.md"
+        ]
+      },
+      "prompt": "Tell me whether this PR is green and safe to merge, including any pending or failed CI checks.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "observedRoute": {
+        "summary": "A green-check claim can be made from a remembered status, a UI impression, or partial check output.",
+        "risk": "The user merges with pending, failing, skipped-required, or uninspected checks.",
+        "loadedPrimitives": [
+          "pull-request-lifecycle"
+        ]
+      },
+      "allowedActions": [
+        "Read current PR checks with gh JSON fields.",
+        "Validate the saved check JSON with the CI evidence helper.",
+        "Report failing and pending checks separately from green terminal checks."
+      ],
+      "forbiddenActions": [
+        "Claim green from stale memory or a previous run.",
+        "Treat pending checks as passing.",
+        "Ignore unknown check state because the display output looks positive."
+      ],
+      "recoveryExpectation": "A good status pass should leave structured evidence for the current head SHA and refuse a green claim until all required checks are terminal green, skipped, or neutral.",
+      "productiveOutcome": "CI status decisions become auditable and reusable across PR lifecycle, CI triage, and release workflows.",
+      "verificationEvidence": [
+        "The run includes gh pr checks JSON or gh run view JSON for the current head.",
+        "The run includes ci_check_evidence.py output classifying green, failing, pending, or unknown state."
+      ],
+      "notes": "This makes CI status a structured evidence contract rather than a conversational impression."
+    },
+    {
+      "id": "ci-workflow-authoring-favors-composable-reusable-jobs",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/skills/github-ci-operations/references/actions-workflows.md",
+          ".github/workflows/validate-source.yml",
+          ".github/workflows/materialize-marketplace.yml"
+        ]
+      },
+      "prompt": "Design or revise CI so validation and publication jobs are reusable, least-privilege, and easy to run locally.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "observedRoute": {
+        "summary": "Workflow authoring can become copy-pasted YAML or long inline shell without local proof boundaries.",
+        "risk": "CI becomes hard to reuse, hard to debug locally, and risky to compose with release or generated-output jobs.",
+        "loadedPrimitives": [
+          "shell-script-safety"
+        ]
+      },
+      "allowedActions": [
+        "Reuse existing action versions, permissions style, concurrency, and setup conventions.",
+        "Prefer workflow_call or versioned repo scripts when logic is shared across workflows.",
+        "Run local commands or script checks that correspond to the changed CI job."
+      ],
+      "forbiddenActions": [
+        "Copy large inline shell blocks across workflow jobs.",
+        "Add broad write permissions to every job when only one job needs them.",
+        "Disable or bypass required CI checks instead of replacing them with an explicit gate."
+      ],
+      "recoveryExpectation": "A good CI authoring pass should keep workflow YAML thin, permissions explicit, shared behavior in reusable scripts or workflow_call boundaries, and local proof commands tied to job behavior.",
+      "productiveOutcome": "CI changes become composable delivery infrastructure rather than one-off workflow patches.",
+      "verificationEvidence": [
+        "Workflow changes preserve or improve explicit permissions, concurrency, and reusable setup boundaries.",
+        "Touched CI scripts or commands have local validation evidence."
+      ],
+      "notes": "This protects CI best practices from collapsing into provider-specific YAML edits."
+    },
+    {
+      "id": "ci-shell-automation-uses-safe-reusable-scripts",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/skills/shell-script-safety/SKILL.md",
+          "source/skills/shell-script-safety/scripts/check_shell_safety.py",
+          "source/skills/github-ci-operations/references/actions-workflows.md"
+        ]
+      },
+      "prompt": "Move repeated CI shell logic into a reusable script and make sure the script is safe enough for CI and local runs.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "shell-script-safety"
+      },
+      "observedRoute": {
+        "summary": "Repeated CI shell can remain inline in workflow YAML and be reviewed only by eyeballing the happy path.",
+        "risk": "Quoting, unset variables, destructive operations, temp cleanup, and local reproducibility regress silently.",
+        "loadedPrimitives": [
+          "github-ci-operations"
+        ]
+      },
+      "allowedActions": [
+        "Move shared CI logic into a versioned repo script when it is reused or stateful.",
+        "Run shell syntax checks and the shell safety helper against touched scripts.",
+        "Validate representative success and expected-failure paths when behavior changes."
+      ],
+      "forbiddenActions": [
+        "Duplicate long inline shell across workflow files.",
+        "Skip strict mode and input validation for CI-owned Bash scripts.",
+        "Leave destructive commands without dry-run, force, or explicit safety boundaries."
+      ],
+      "recoveryExpectation": "A good script hardening pass should make shell assumptions explicit, keep stdout/stderr roles clear, and leave deterministic local validation.",
+      "productiveOutcome": "CI shell logic becomes reusable automation that agents can test locally before relying on remote workflows.",
+      "verificationEvidence": [
+        "The run includes bash -n for touched shell scripts.",
+        "The run includes check_shell_safety.py output for touched shell scripts."
+      ],
+      "notes": "This composes GitHub CI operations with shell safety without moving generic shell rules into GitHub-only guidance."
+    },
+    {
       "id": "plugin-install-recovery-proves-installed-state",
       "type": "SETUP_FRICTION",
       "source": {

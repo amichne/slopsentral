@@ -16,6 +16,9 @@ Use this reference when creating or editing `.github/workflows/*.yml`.
 
 - Give each workflow a narrow purpose: CI, release, docs, deploy, or scheduled
   maintenance.
+- Prefer reusable workflow boundaries (`workflow_call`) or versioned repo
+  scripts when multiple workflows need the same setup, validation, or
+  publication logic.
 - Use explicit `permissions`; start with read-only and add write scopes only
   for jobs that need them.
 - Use `concurrency` for branch or deployment workflows where duplicate runs are
@@ -31,6 +34,8 @@ Use this reference when creating or editing `.github/workflows/*.yml`.
 
 - Change the smallest workflow surface that owns the behavior.
 - Keep shell snippets short; move complex logic into versioned scripts.
+- Keep reusable CI scripts provider-neutral when practical, then call them from
+  GitHub Actions, hooks, or local validation with explicit arguments.
 - Pin third-party actions to stable versions already used by the repo, or
   explain a version change.
 - Do not disable a required check to get a green PR unless the user asks and the
@@ -42,4 +47,6 @@ Use this reference when creating or editing `.github/workflows/*.yml`.
 - If no workflow linter exists, at least parse YAML with local tooling and check
   indentation, event filters, permissions, expressions, and referenced scripts.
 - Run the commands invoked by the changed jobs locally when practical.
+- Run `python3 source/skills/shell-script-safety/scripts/check_shell_safety.py`
+  on touched Bash CI scripts and `bash -n` on the same scripts.
 - For docs or generated-output jobs, run the generator before local tests.
