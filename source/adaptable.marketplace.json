@@ -73,7 +73,7 @@
         },
         "version": "0.1.0"
       },
-      "description": "Kotlin engineering workflow for code changes that need typed design, Kast semantics, review, filesystem evidence, Gradle proof, CI, and PR delivery.",
+      "description": "Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks. Pair with git-ci-operations for branch, PR, CI, and release delivery.",
       "tags": [
         "agents",
         "ci",
@@ -133,7 +133,7 @@
         },
         "version": "0.1.0"
       },
-      "description": "Agent platform authoring kit for maintaining the source graph: skills, agents, hooks, schemas, plugin manifests, repo maps, and docs surfaces.",
+      "description": "Agent platform authoring kit for maintaining source-graph primitives, plugin manifests, routing quality, repository maps, and docs surfaces.",
       "tags": [
         "agents",
         "authoring",
@@ -551,26 +551,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/gh-cli",
-      "name": "gh-cli"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/gh-fix-ci",
       "name": "gh-fix-ci"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/ink",
-      "name": "ink"
     },
     {
       "type": "SKILL",
@@ -641,15 +623,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/review-duplication",
-      "name": "review-duplication"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/runtime-linking",
       "name": "runtime-linking"
     },
@@ -679,24 +652,6 @@
       },
       "path": "skills/stripe-best-practices",
       "name": "stripe-best-practices"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/tdd-red-green-refactor",
-      "name": "tdd-red-green-refactor"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/typed-service-contracts",
-      "name": "typed-service-contracts"
     },
     {
       "type": "SKILL",

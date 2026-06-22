@@ -30,6 +30,41 @@
       "reason": "Ambiguous or provenance-unclear non-system skills are retained as standalone primitives for the first pass.",
       "replacement": null,
       "status": "needs-later-audit"
+    },
+    {
+      "action": "quarantined-from-marketplace",
+      "path": "/Users/amichne/code/slopsentral/source/skills/gh-cli",
+      "reason": "Skill body is only placeholder migration frontmatter and has no independent workflow contract.",
+      "replacement": null,
+      "status": "needs-rewrite-or-removal"
+    },
+    {
+      "action": "quarantined-from-marketplace",
+      "path": "/Users/amichne/code/slopsentral/source/skills/ink",
+      "reason": "Skill body is only placeholder migration frontmatter and has no independent workflow contract.",
+      "replacement": null,
+      "status": "needs-rewrite-or-removal"
+    },
+    {
+      "action": "quarantined-from-marketplace",
+      "path": "/Users/amichne/code/slopsentral/source/skills/review-duplication",
+      "reason": "Skill body is only placeholder migration frontmatter and has no independent workflow contract.",
+      "replacement": null,
+      "status": "needs-rewrite-or-removal"
+    },
+    {
+      "action": "quarantined-from-marketplace",
+      "path": "/Users/amichne/code/slopsentral/source/skills/tdd-red-green-refactor",
+      "reason": "Skill body is only placeholder migration frontmatter and overlaps the canonical tdd skill.",
+      "replacement": "source/skills/tdd",
+      "status": "needs-rewrite-or-removal"
+    },
+    {
+      "action": "quarantined-from-marketplace",
+      "path": "/Users/amichne/code/slopsentral/source/skills/typed-service-contracts",
+      "reason": "Skill body is only placeholder migration frontmatter and has no independent workflow contract.",
+      "replacement": null,
+      "status": "needs-rewrite-or-removal"
     }
   ]
 }

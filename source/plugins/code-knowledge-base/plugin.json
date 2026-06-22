@@ -76,7 +76,9 @@
   ],
   "metadata": {
     "composition": "referential",
+    "dailyDriver": "Use when durable source-backed knowledge pages, signature indexes, or OKF drift checks are the task output.",
     "harness": "provider-neutral",
+    "notFor": "General documentation drafting, source-graph primitive authoring, or Kotlin implementation work unless the deliverable is a knowledge bundle or impact check.",
     "owner": "knowledge-base-platform",
     "principle": "docs-derive-from-code",
     "role": "source-backed-knowledge",

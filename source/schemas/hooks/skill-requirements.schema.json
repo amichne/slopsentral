@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "skill-requirements.schema.json",
+  "title": "HookSkillRequirements",
+  "type": "object",
+  "discriminator": {
+    "propertyName": "type"
+  },
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "HOOK_SKILL_REQUIREMENTS"
+      ]
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "enum": [
+        1
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "ADVISORY",
+        "BLOCKING"
+      ]
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/RequiredSkill"
+      },
+      "examples": [
+        [
+          {
+            "type": "REQUIRED_SKILL",
+            "id": "manage-json-schemas",
+            "skillPath": "skills/manage-json-schemas/SKILL.md",
+            "requireRead": true,
+            "notes": "Structured data changes should load schema guidance."
+          }
+        ]
+      ]
+    }
+  },
+  "required": [
+    "type",
+    "schemaVersion",
+    "mode",
+    "skills"
+  ],
+  "$defs": {
+    "RequiredSkill": {
+      "type": "object",
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "REQUIRED_SKILL"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skillPath": {
+          "type": "string",
+          "pattern": "^skills/[^/]+/SKILL\\.md$"
+        },
+        "requireRead": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "skillPath",
+        "requireRead",
+        "notes"
+      ],
+      "examples": [
+        {
+          "type": "REQUIRED_SKILL",
+          "id": "manage-json-schemas",
+          "skillPath": "skills/manage-json-schemas/SKILL.md",
+          "requireRead": true,
+          "notes": "Structured data changes should load schema guidance."
+        }
+      ]
+    }
+  }
+}

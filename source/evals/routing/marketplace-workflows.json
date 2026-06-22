@@ -1,0 +1,297 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 1,
+  "name": "marketplace-workflow-routing",
+  "description": "Sanitized routing cases for source-owned marketplace, plugin, and primitive workflow decisions.",
+  "cases": [
+    {
+      "id": "source-over-generated-provider-output",
+      "type": "ADAPTER_DRIFT",
+      "source": {
+        "type": "USER_CLARIFICATION",
+        "capturedAt": "2026-06-20",
+        "evidenceRefs": [
+          "user clarified that invisible generated provider output is not the quality target",
+          "source/adaptable.marketplace.json",
+          "source/plugins"
+        ]
+      },
+      "prompt": "Evaluate overlap between the plugin definitions in the source directory and marketplace, focusing on existing source material, efficacy, overlap, and token waste rather than generated provider drift.",
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
+      },
+      "observedRoute": {
+        "summary": "A provider-adapter route can spend the turn diffing generated marketplace payloads instead of auditing canonical source plugins and primitives.",
+        "risk": "Token budget is wasted on generated churn and the source graph remains ambiguous.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and garden manifests.",
+        "Use materialization only as proof after source quality checks pass.",
+        "Add source-owned validation when overlap or routing quality is the failure mode."
+      ],
+      "forbiddenActions": [
+        "Patch .agents or .github provider output by hand.",
+        "Treat installed plugin cache payloads as canonical source.",
+        "Report generated provider drift as the primary answer when the source graph is the target."
+      ],
+      "recoveryExpectation": "If generated output is stale, first make the authored source graph coherent and validated, then regenerate provider output from source only when publication requires it.",
+      "notes": "This protects the user-stated source ownership boundary and prevents adapter output from hiding source-quality regressions."
+    },
+    {
+      "id": "kotlin-specific-work-keeps-generic-delivery-separate",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-20",
+        "evidenceRefs": [
+          "source/plugins/kotlin-engineering/plugin.json",
+          "source/plugins/git-ci-operations/plugin.json",
+          "source/profiles/kotlin-repo-default.json"
+        ]
+      },
+      "prompt": "Make a Kotlin change that needs Kast-backed navigation, Gradle proof, Git hygiene, CI triage, and a pull request.",
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "kotlin-engineering"
+      },
+      "observedRoute": {
+        "summary": "A broad Kotlin plugin can absorb generic Git, PR, CI, TDD, and shell-safety primitives, duplicating the git-ci-operations plugin.",
+        "risk": "The same delivery workflow loads twice and the Kotlin trigger becomes too broad for non-Kotlin operational tasks.",
+        "loadedPrimitives": [
+          "git-ci-operations",
+          "kotlin-engineering"
+        ]
+      },
+      "allowedActions": [
+        "Use kotlin-engineering for Kotlin invariants, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
+        "Use git-ci-operations as the companion for branch, commit, PR, CI, release, and shell-safe automation.",
+        "Use the kotlin-repo-default profile to compose both plugins without duplicate skills, agents, or hooks."
+      ],
+      "forbiddenActions": [
+        "Put generic Git, CI, PR, or shell automation skills inside kotlin-engineering.",
+        "Route Kotlin type-safety review through generic Git/CI primitives.",
+        "Let two selected plugins provide the same hook or agent in a profile."
+      ],
+      "recoveryExpectation": "Composition should keep Kotlin semantic work and generic delivery work in separate plugins while the profile validates that no duplicate owners are selected.",
+      "notes": "This is the main overlap case fixed by narrowing kotlin-engineering and adding profile-level duplicate validation."
+    },
+    {
+      "id": "repository-consumer-setup-uses-current-marketplace-cli",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "MEMORY_INDEX",
+        "capturedAt": "2026-06-20",
+        "evidenceRefs": [
+          "intelligence Kotlin-primary routing memory",
+          "slopsentral marketplace source-of-truth memory"
+        ]
+      },
+      "prompt": "Set up a repository to consume this marketplace, install plugins, and keep the resolved marketplace state locked and validated.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "repository-onboarding"
+      },
+      "observedRoute": {
+        "summary": "Older Intelligence memories can route setup work toward deprecated APM, Node, Python, or package-manager-era flows.",
+        "risk": "Agents use obsolete commands and miss the current source-of-truth split between marketplace source and CLI validation.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Prefer the current intelligence CLI for marketplace import, install, inspect, and validate workflows.",
+        "Treat slopsentral source files as canonical marketplace content.",
+        "Use repository-onboarding for consumer-repo setup and baseline marketplace guidance."
+      ],
+      "forbiddenActions": [
+        "Route current setup through deprecated APM, NPM, Node, Python, or wrapper-era implementation paths.",
+        "Invent a new marketplace schema when import, install, and lock behavior already exist.",
+        "Vendor generated provider payloads into a consumer repository as the durable source of truth."
+      ],
+      "recoveryExpectation": "When older memory conflicts with current source, agents should re-check the source checkout and current intelligence CLI before acting.",
+      "notes": "This preserves current workflow attribution: slopsentral owns marketplace source; intelligence owns CLI validation and install flows."
+    },
+    {
+      "id": "plugin-install-cache-failure-is-setup-friction",
+      "type": "SETUP_FRICTION",
+      "source": {
+        "type": "MEMORY_INDEX",
+        "capturedAt": "2026-06-20",
+        "evidenceRefs": [
+          "slopsentral global plugin install memory",
+          "code-knowledge-base install memory"
+        ]
+      },
+      "prompt": "Install a slopsentral plugin globally, but the configured marketplace cache reports a missing plugin manifest.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "repository-onboarding"
+      },
+      "observedRoute": {
+        "summary": "A setup failure can be misread as source corruption or fixed by hand-editing generated caches.",
+        "risk": "Local caches diverge from source and the successful install path is not reproducible.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Inspect configured marketplace/cache state and confirm installed plugin state with the provider CLI.",
+        "Materialize a fresh marketplace snapshot from source when remote refresh fails.",
+        "Validate source and hydrated marketplace output before retrying installation."
+      ],
+      "forbiddenActions": [
+        "Patch installed cache payloads as if they were source.",
+        "Edit generated provider output to satisfy one local install.",
+        "Stop after source validation without proving the actual install state when the request is global installation."
+      ],
+      "recoveryExpectation": "Treat cache and network failures as setup friction: refresh or rematerialize from source, validate, retry install, and verify installed state.",
+      "notes": "This avoids conflating consumer cache problems with marketplace source quality."
+    },
+    {
+      "id": "okf-knowledge-work-is-not-generic-doc-authoring",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-20",
+        "evidenceRefs": [
+          "source/plugins/code-knowledge-base/plugin.json",
+          "source/hooks/code-knowledge-drift.hook.json"
+        ]
+      },
+      "prompt": "Create source-backed Kotlin concept docs, signature indexes, impact checks, and drift hooks for an OKF knowledge bundle.",
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "code-knowledge-base"
+      },
+      "observedRoute": {
+        "summary": "The request can be routed to generic documentation authoring or Kotlin implementation because it mentions docs and Kotlin.",
+        "risk": "Generated knowledge pages lose code-source backing, signature evidence, and drift checks.",
+        "loadedPrimitives": [
+          "reference-doc-workflow",
+          "kotlin-engineering"
+        ]
+      },
+      "allowedActions": [
+        "Use code-knowledge-base when the deliverable is an OKF bundle, signature index, code_sources impact check, or drift hook.",
+        "Use shared doc primitives only as supporting workflow inside the code-knowledge-base boundary.",
+        "Keep source-backed evidence explicit in generated knowledge artifacts."
+      ],
+      "forbiddenActions": [
+        "Treat OKF generation as generic prose editing.",
+        "Route the work through Kotlin implementation loops when no code change is requested.",
+        "Drop code_sources or signature evidence from the output."
+      ],
+      "recoveryExpectation": "The code-knowledge-base metadata and routing case should distinguish source-backed knowledge work from general docs and Kotlin delivery.",
+      "notes": "This covers an intentional shared-skill overlap where the plugin boundary changes the expected output."
+    },
+    {
+      "id": "api-boundary-work-belongs-to-api-contracts",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-20",
+        "evidenceRefs": [
+          "source/plugins/api-contracts/plugin.json",
+          "source/skills/manage-json-schemas/SKILL.md",
+          "source/skills/openapi-contract-authoring/SKILL.md"
+        ]
+      },
+      "prompt": "Design persisted JSON and OpenAPI contracts with discriminated variants, typed errors, examples, and validation evidence.",
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "api-contracts"
+      },
+      "observedRoute": {
+        "summary": "Type-safety language can route API boundary work into Kotlin engineering or general schema maintenance alone.",
+        "risk": "Operation-level examples, OpenAPI review, and typed error modeling are missed.",
+        "loadedPrimitives": [
+          "kotlin-engineering",
+          "manage-json-schemas"
+        ]
+      },
+      "allowedActions": [
+        "Use api-contracts for JSON Schema and OpenAPI boundary design.",
+        "Use manage-json-schemas as a shared primitive inside the broader API contract workflow.",
+        "Validate examples, variant constraints, and operation contracts."
+      ],
+      "forbiddenActions": [
+        "Route API boundary design to Kotlin implementation because both mention types.",
+        "Stop at standalone JSON Schema maintenance when OpenAPI operation contracts are in scope.",
+        "Promote unconstrained primitives where the schema can encode invalid states."
+      ],
+      "recoveryExpectation": "Shared schema skills should remain allowed overlap, but API contract prompts should load the api-contracts plugin when OpenAPI or operation boundaries are mentioned.",
+      "notes": "This protects a deliberate overlap from becoming an ownership ambiguity."
+    },
+    {
+      "id": "hook-skill-requirements-need-schema-coverage",
+      "type": "SCHEMA_FRICTION",
+      "source": {
+        "type": "LOCAL_VALIDATION",
+        "capturedAt": "2026-06-20",
+        "evidenceRefs": [
+          "source/hooks/required-skill-read.requirements.json",
+          "source/schemas/hooks/skill-requirements.schema.json",
+          "source/tools/validate-source-graph.mjs"
+        ]
+      },
+      "prompt": "Add a hook requirement file that tells the required-skill-read hook which skills must be read.",
+      "expectedPrimitive": {
+        "type": "HOOK",
+        "name": "required-skill-read"
+      },
+      "observedRoute": {
+        "summary": "Hook requirement data can be persisted as ad hoc JSON without a schema or reference checks.",
+        "risk": "A hook silently points at a missing skill, stale schema, or non-marketplace-visible required primitive.",
+        "loadedPrimitives": [
+          "required-skill-read"
+        ]
+      },
+      "allowedActions": [
+        "Use a schema-backed requirements file with explicit type and schemaVersion fields.",
+        "Validate required skills against canonical source frontmatter.",
+        "Fail source validation when the requirement references missing or hidden skills."
+      ],
+      "forbiddenActions": [
+        "Persist hook requirements without a schema pointer.",
+        "Reference a required skill that is absent from source or hidden from marketplace exposure.",
+        "Treat hook adapter JSON as proof that its requirement payload is valid."
+      ],
+      "recoveryExpectation": "The source validator should block schema drift, missing required skills, and hook adapter command drift.",
+      "notes": "This case keeps hook data contracts aligned with the repo's schema-first rule."
+    },
+    {
+      "id": "placeholder-skills-are-quality-audit-not-marketplace-products",
+      "type": "TRIGGER_MISS",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-20",
+        "evidenceRefs": [
+          "garden/manifests/cleanup-ledger.json",
+          "source/adaptable.marketplace.json",
+          "source/tools/validate-source-graph.mjs"
+        ]
+      },
+      "prompt": "Audit marketplace-visible standalone skills for placeholder migration text and overlap with existing canonical skills.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-quality-audit"
+      },
+      "observedRoute": {
+        "summary": "Placeholder skills can remain marketplace-visible because they are syntactically valid primitive directories.",
+        "risk": "Agents load useless skills, waste context, and attribute capability to empty migration shells.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Quarantine placeholder-only skills from marketplace exposure.",
+        "Record deferred rewrite or removal decisions in the cleanup ledger.",
+        "Fail validation if marketplace-visible skills expose placeholder migration descriptions."
+      ],
+      "forbiddenActions": [
+        "Keep placeholder-only skills in the standalone marketplace catalog.",
+        "Replace a real canonical skill with a placeholder duplicate.",
+        "Treat syntactic validity as quality readiness."
+      ],
+      "recoveryExpectation": "Primitive quality audit should either rewrite a placeholder into a real workflow or keep it out of marketplace exposure until it is ready.",
+      "notes": "This turns token-wasting placeholder exposure into a source validation failure."
+    }
+  ]
+}

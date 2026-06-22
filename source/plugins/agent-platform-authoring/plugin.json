@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "name": "agent-platform-authoring",
   "version": "0.1.0",
-  "description": "Agent platform authoring kit for maintaining the source graph: skills, agents, hooks, schemas, plugin manifests, repo maps, and docs surfaces.",
+  "description": "Agent platform authoring kit for maintaining source-graph primitives, plugin manifests, routing quality, repository maps, and docs surfaces.",
   "skills": [
     {
       "type": "SKILL",
@@ -31,6 +31,33 @@
       },
       "path": "skills/plugin-composition-authoring",
       "name": "plugin-composition-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/source-graph-consolidation",
+      "name": "source-graph-consolidation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/primitive-quality-audit",
+      "name": "primitive-quality-audit"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/primitive-routing-evaluation",
+      "name": "primitive-routing-evaluation"
     },
     {
       "type": "SKILL",
@@ -129,11 +156,11 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Use for maintaining the canonical source graph and provider marketplace projections.",
+    "dailyDriver": "Use for maintaining the canonical source graph, provider marketplace projections, and routing or quality evidence for promoted primitives.",
     "notFor": "Product-code delivery, Kotlin implementation loops, or runtime activation plans until consolidation and linking primitives are hardened.",
     "owner": "intelligence-source-graph-platform",
     "principle": "primitives-remain-independent",
     "role": "agent-platform-authoring",
-    "scope": "Author and validate independent skills, agents, hooks, plugin manifests, repository instructions, signature indexes, navigation maps, and docs-site guidance."
+    "scope": "Author, audit, route-test, consolidate, and validate independent skills, agents, hooks, plugin manifests, repository instructions, signature indexes, navigation maps, and docs-site guidance."
   }
 }

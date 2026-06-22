@@ -6,6 +6,10 @@ plugins, hooks, agents, concepts, and workflow profiles.
 ## Source Of Truth
 
 - Edit authored primitives under `source/`.
+- Keep routing and quality evaluation cases under `source/evals/`; they are
+  source evidence, not generated marketplace output.
+- Keep source-graph schemas under `source/schemas/` and reusable validation
+  utilities under `source/tools/`.
 - Treat `.agents/plugins/` and `.github/plugin/` as generated provider output.
 - Prefer this repository over installed plugin caches such as
   `~/.codex/plugins/cache`.
@@ -15,6 +19,7 @@ plugins, hooks, agents, concepts, and workflow profiles.
 ## Validation
 
 ```bash
+node source/tools/validate-source-graph.mjs
 intelligence validate --repo /Users/amichne/code/slopsentral --portable
 intelligence marketplace browse --provider source --format json /Users/amichne/code/slopsentral
 intelligence marketplace materialize --repo /Users/amichne/code/slopsentral --provider codex --out /tmp/slopsentral-codex

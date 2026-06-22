@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 1,
   "name": "kotlin-repo-default",
-  "description": "Default enterprise Kotlin repository workflow using the engineering baseline, Kotlin engineering workflow, Git/CI operations, and Codex hook adapters.",
+  "description": "Default Kotlin repository workflow that composes baseline instruction hygiene, Kotlin-specific engineering checks, generic Git/CI delivery, and Codex hook adapters without duplicate primitive ownership.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -43,6 +43,7 @@
   "validation": {
     "type": "WORKFLOW_VALIDATION",
     "commands": [
+      "node source/tools/validate-source-graph.mjs",
       "intelligence validate --portable"
     ]
   }
