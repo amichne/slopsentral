@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Agent platform authoring kit for maintaining the source graph: skills, agents, hooks, schemas, plugin manifests, repo maps, and docs surfaces.",
+  "description": "Agent platform authoring kit for maintaining source-graph primitives, plugin manifests, routing quality, repository maps, and docs surfaces.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,8 +17,8 @@
     ],
     "developerName": "Amichne",
     "displayName": "Agent Platform Authoring",
-    "longDescription": "Agent platform authoring kit for maintaining the source graph: skills, agents, hooks, schemas, plugin manifests, repo maps, and docs surfaces.",
-    "shortDescription": "Agent platform authoring kit for maintaining the source graph: skills..."
+    "longDescription": "Agent platform authoring kit for maintaining source-graph primitives, plugin manifests, routing quality, repository maps, and docs surfaces.",
+    "shortDescription": "Agent platform authoring kit for maintaining source-graph primitives,..."
   },
   "keywords": [
     "agent-platform-authoring",

@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Kotlin engineering workflow for code changes that need typed design, Kast semantics, review, filesystem evidence, Gradle proof, CI, and PR delivery.",
+  "description": "Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,8 +17,8 @@
     ],
     "developerName": "Amichne",
     "displayName": "Kotlin Engineering",
-    "longDescription": "Kotlin engineering workflow for code changes that need typed design, Kast semantics, review, filesystem evidence, Gradle proof, CI, and PR delivery.",
-    "shortDescription": "Kotlin engineering workflow for code changes that need typed design,..."
+    "longDescription": "Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks.",
+    "shortDescription": "Kotlin engineering workflow for typed design, Kast semantics, focused..."
   },
   "keywords": [
     "agents",

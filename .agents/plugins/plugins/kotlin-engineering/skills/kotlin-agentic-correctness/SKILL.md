@@ -7,8 +7,8 @@ description: Use when Kotlin work needs typed design discipline, invariant-orien
 
 Use this skill as the workflow wrapper for Kotlin changes where correctness
 depends on domain shape, semantic code understanding, and executable evidence.
-It composes the Kotlin standards, typed design principles, evidence-driven
-delivery loop, shell-script safety rules, and Kast semantic tooling.
+It composes the Kotlin standards, typed design principles, Gradle validation,
+Kotlin review, and Kast semantic tooling.
 
 ## Operating Contract
 
@@ -111,7 +111,9 @@ Mark each dimension `Pass`, `Concern`, or `Fail` before finishing:
   - `scripts/kotlin_workflow_state.py`
   - `scripts/kast_rpc_file.sh`
 
-Use the bundled `negative-capability-proof`, `kotlin-standards`,
-`kotlin-gradle-validation`, `tdd`, `git-change-flow`,
-`github-ci-operations`, `pull-request-lifecycle`, and `shell-script-safety`
-skills for their narrower procedures when the turn enters their scope.
+Use the bundled `negative-capability-proof`, `kotlin-standards`, and
+`kotlin-gradle-validation` skills for their narrower procedures when the turn
+enters their scope. When the repository also installs `git-ci-operations`, use
+that plugin's `tdd`, `git-change-flow`, `github-ci-operations`,
+`pull-request-lifecycle`, and `shell-script-safety` skills for generic delivery
+work instead of treating those concerns as Kotlin-specific ownership.

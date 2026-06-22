@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Kotlin engineering workflow for code changes that need typed design, Kast semantics, review, filesystem evidence, Gradle proof, CI, and PR delivery.
+Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks.
 
 ## Operating Rules
 
@@ -32,25 +32,16 @@ Kotlin engineering workflow for code changes that need typed design, Kast semant
 - `kotlin-package-cohesion-reviewer`: `agents/kotlin-package-cohesion-reviewer.agent.md` (source: `source/agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md`)
 - `kotlin-review-captain`: `agents/kotlin-review-captain.agent.md` (source: `source/agents/kotlin-review/kotlin-review-captain.agent.md`)
 - `kotlin-type-safety-reviewer`: `agents/kotlin-type-safety-reviewer.agent.md` (source: `source/agents/kotlin-review/kotlin-type-safety-reviewer.agent.md`)
-- `schema-type-enforcer`: `agents/schema-type-enforcer.agent.md` (source: `source/agents/schema-type-enforcer.agent.md`)
 
 ## Skill Primitives
 
-- `define-goal`: `skills/define-goal` (source: `source/skills/define-goal`)
-- `git-change-flow`: `skills/git-change-flow` (source: `source/skills/git-change-flow`)
-- `github-ci-operations`: `skills/github-ci-operations` (source: `source/skills/github-ci-operations`)
 - `kotlin-agentic-correctness`: `skills/kotlin-agentic-correctness` (source: `source/skills/kotlin-agentic-correctness`)
 - `kotlin-gradle-validation`: `skills/kotlin-gradle-validation` (source: `source/skills/kotlin-gradle-validation`)
 - `kotlin-review`: `skills/kotlin-review` (source: `source/skills/kotlin-review`)
 - `kotlin-standards`: `skills/kotlin-standards` (source: `source/skills/kotlin-standards`)
 - `negative-capability-proof`: `skills/negative-capability-proof` (source: `source/skills/negative-capability-proof`)
-- `pull-request-lifecycle`: `skills/pull-request-lifecycle` (source: `source/skills/pull-request-lifecycle`)
-- `shell-script-safety`: `skills/shell-script-safety` (source: `source/skills/shell-script-safety`)
-- `tdd`: `skills/tdd` (source: `source/skills/tdd`)
 
 ## Hook Primitives
 
-- `agents-md-turn-refresh`: `hooks/agents-md-turn-refresh.hooks.json` (source: `source/hooks/agents-md-turn-refresh.hook.json`)
 - `gradle-check-green`: `hooks/gradle-check-green.hooks.json` (source: `source/hooks/gradle-check-green.hook.json`)
 - `kotlin-horizontalization-check`: `hooks/kotlin-horizontalization-check.hooks.json` (source: `source/hooks/kotlin-horizontalization-check.hook.json`)
-- `required-skill-read`: `hooks/required-skill-read.hooks.json` (source: `source/hooks/required-skill-read.hook.json`)

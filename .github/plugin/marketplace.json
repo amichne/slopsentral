@@ -89,7 +89,7 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Kotlin engineering workflow for code changes that need typed design, Kast semantics, review, filesystem evidence, Gradle proof, CI, and PR delivery.",
+      "description": "Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks.",
       "hooks": "./hooks",
       "keywords": [
         "agents",
@@ -182,7 +182,7 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Agent platform authoring kit for maintaining the source graph: skills, agents, hooks, schemas, plugin manifests, repo maps, and docs surfaces.",
+      "description": "Agent platform authoring kit for maintaining source-graph primitives, plugin manifests, routing quality, repository maps, and docs surfaces.",
       "keywords": [
         "agent-platform-authoring",
         "agents",

@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Agent platform authoring kit for maintaining the source graph: skills, agents, hooks, schemas, plugin manifests, repo maps, and docs surfaces.
+Agent platform authoring kit for maintaining source-graph primitives, plugin manifests, routing quality, repository maps, and docs surfaces.
 
 ## Operating Rules
 
@@ -33,9 +33,12 @@ Agent platform authoring kit for maintaining the source graph: skills, agents, h
 - `local-repository-navigation`: `skills/local-repository-navigation` (source: `source/skills/local-repository-navigation`)
 - `manage-json-schemas`: `skills/manage-json-schemas` (source: `source/skills/manage-json-schemas`)
 - `plugin-composition-authoring`: `skills/plugin-composition-authoring` (source: `source/skills/plugin-composition-authoring`)
+- `primitive-quality-audit`: `skills/primitive-quality-audit` (source: `source/skills/primitive-quality-audit`)
+- `primitive-routing-evaluation`: `skills/primitive-routing-evaluation` (source: `source/skills/primitive-routing-evaluation`)
 - `reference-doc-workflow`: `skills/reference-doc-workflow` (source: `source/skills/reference-doc-workflow`)
 - `repo-instruction-topology`: `skills/repo-instruction-topology` (source: `source/skills/repo-instruction-topology`)
 - `repository-signature-indexing`: `skills/repository-signature-indexing` (source: `source/skills/repository-signature-indexing`)
 - `shell-script-safety`: `skills/shell-script-safety` (source: `source/skills/shell-script-safety`)
 - `site-docs-authoring`: `skills/site-docs-authoring` (source: `source/skills/site-docs-authoring`)
 - `skill-primitive-authoring`: `skills/skill-primitive-authoring` (source: `source/skills/skill-primitive-authoring`)
+- `source-graph-consolidation`: `skills/source-graph-consolidation` (source: `source/skills/source-graph-consolidation`)
