@@ -1,0 +1,157 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 1,
+  "name": "kotlin-engineering-workflow-routing",
+  "description": "Concrete routing cases for measuring whether Kotlin Engineering improves real Kotlin repository work rather than only plugin manifest score.",
+  "cases": [
+    {
+      "id": "kotlin-invariant-work-uses-semantic-evidence",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/skills/kotlin-agentic-correctness/SKILL.md",
+          "source/skills/kotlin-standards/SKILL.md",
+          "source/skills/kotlin-agentic-correctness/references/kast-file-first.md"
+        ]
+      },
+      "prompt": "Change a Kotlin API so invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-agentic-correctness"
+      },
+      "observedRoute": {
+        "summary": "The Kotlin workflow can be loaded but bypassed by text search, primitive string edits, and broad Gradle commands without semantic evidence.",
+        "risk": "The change may compile only by accident, miss call sites, or preserve invalid states behind new helper names.",
+        "loadedPrimitives": [
+          "kotlin-agentic-correctness",
+          "kotlin-standards"
+        ]
+      },
+      "allowedActions": [
+        "Frame the trusted domain shape before editing.",
+        "Use Kast or file-backed semantic evidence for Kotlin identity, references, or diagnostics.",
+        "Run the narrowest Gradle compile or test task that proves the affected module."
+      ],
+      "forbiddenActions": [
+        "Use regex-only caller discovery for Kotlin symbol identity.",
+        "Replace a raw string with another raw string plus comments or caller discipline.",
+        "Claim Gradle proof without a successful focused command."
+      ],
+      "recoveryExpectation": "A good run should leave filesystem evidence, a type-level invariant, and a focused Gradle result that can be compared across benchmark runs.",
+      "notes": "This case measures whether Kotlin Engineering changes the implementation path, not just whether it was mentioned."
+    },
+    {
+      "id": "gradle-failure-uses-structured-reports",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/skills/kotlin-gradle-validation/SKILL.md"
+        ]
+      },
+      "prompt": "A Kotlin test fails in Gradle; diagnose the failure, fix it, and rerun the smallest useful task before saying it is green.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-gradle-validation"
+      },
+      "observedRoute": {
+        "summary": "Agents can skim console text, patch a likely file, and rerun a broad task without reading structured test or problem reports.",
+        "risk": "The root cause may be misdiagnosed, flaky failures may be hidden, and validation cost grows without better confidence.",
+        "loadedPrimitives": [
+          "kotlin-gradle-validation"
+        ]
+      },
+      "allowedActions": [
+        "Discover the Gradle module and choose a targeted task.",
+        "Read JUnit XML, Gradle problem reports, or Kotlin build reports when present.",
+        "Report the exact successful Gradle command and relevant report path."
+      ],
+      "forbiddenActions": [
+        "Diagnose only from the first console line when structured reports exist.",
+        "Run only a broad aggregate task when a focused test target is available.",
+        "Call the build green after a failed or skipped relevant task."
+      ],
+      "recoveryExpectation": "A good run should produce shorter feedback loops and stronger evidence than generic Gradle troubleshooting.",
+      "notes": "This case gives Kotlin Engineering an observable build-diagnosis behavior target."
+    },
+    {
+      "id": "negative-capability-proof-requires-before-after-misuse",
+      "type": "TRIGGER_MISS",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/skills/negative-capability-proof/SKILL.md",
+          "source/skills/kotlin-standards/references/type-safety-patterns.md"
+        ]
+      },
+      "prompt": "Prove that an invalid Kotlin operation used to be representable, then refactor the API so the same misuse no longer compiles.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "negative-capability-proof"
+      },
+      "observedRoute": {
+        "summary": "Type-safety requests can stop at normal tests or prose assertions instead of demonstrating the before-and-after negative capability.",
+        "risk": "The implementation may still allow the bad operation through another constructor, nullable flag, or primitive escape hatch.",
+        "loadedPrimitives": [
+          "kotlin-agentic-correctness",
+          "kotlin-standards"
+        ]
+      },
+      "allowedActions": [
+        "Show the currently representable misuse before the fix.",
+        "Move enforcement into Kotlin types, constructors, or sealed APIs.",
+        "Show the post-change misuse is no longer reachable or no longer compiles."
+      ],
+      "forbiddenActions": [
+        "Replace negative capability proof with only happy-path unit tests.",
+        "Depend on comments, boolean flags, or caller discipline for the invariant.",
+        "Leave an alternate public constructor or raw primitive path that recreates the misuse."
+      ],
+      "recoveryExpectation": "A good run should include an explicit before state, the type-system move, and the after-state proof.",
+      "notes": "This separates advanced Kotlin type-safety work from generic correctness testing."
+    },
+    {
+      "id": "kotlin-delivery-keeps-git-ci-companion-boundary",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/plugins/kotlin-engineering/plugin.json",
+          "source/plugins/git-ci-operations/plugin.json",
+          "source/profiles/kotlin-repo-default.json"
+        ]
+      },
+      "prompt": "Make a Kotlin type-safety change, validate it with Gradle, commit it, push the branch, and monitor CI.",
+      "expectedPrimitive": {
+        "type": "PROFILE",
+        "name": "kotlin-repo-default"
+      },
+      "observedRoute": {
+        "summary": "Kotlin implementation and generic delivery can collapse into one plugin, causing duplicate skills or missing Git/CI handoff discipline.",
+        "risk": "The run either ignores Kotlin semantic evidence or bloats Kotlin Engineering with branch, PR, and CI ownership it should not own.",
+        "loadedPrimitives": [
+          "kotlin-engineering",
+          "git-ci-operations"
+        ]
+      },
+      "allowedActions": [
+        "Use Kotlin Engineering for Kotlin semantic work and Gradle proof.",
+        "Use git-ci-operations for staging, commit, push, PR, CI, and release follow-through.",
+        "Use the profile to compose both without duplicate skills, agents, or hooks."
+      ],
+      "forbiddenActions": [
+        "Move generic Git, PR, CI, or release instructions into Kotlin Engineering.",
+        "Handle a Kotlin code change with only delivery primitives and no semantic Kotlin evidence.",
+        "Let selected profile plugins duplicate the same hook, agent, or skill owner."
+      ],
+      "recoveryExpectation": "A good run should be attributable: Kotlin Engineering owns the code semantics; git-ci-operations owns publication and CI.",
+      "notes": "This is the high-value companion-plugin benchmark for end-to-end Kotlin repository work."
+    }
+  ]
+}

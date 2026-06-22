@@ -4,6 +4,11 @@
   "name": "kotlin-engineering",
   "version": "0.1.0",
   "description": "Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
   "skills": [
     {
       "type": "SKILL",
