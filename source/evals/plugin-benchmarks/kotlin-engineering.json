@@ -1,0 +1,121 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "kotlin-engineering",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": "../kast",
+    "setupMode": "git-worktree",
+    "preserve": "on-failure"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run this benchmark from the slopsentral checkout after materializing the Kotlin Engineering plugin.",
+    "The default workspace.sourcePath assumes a sibling Kotlin repository; teams should replace it with their own Kotlin/Gradle repository path before collecting baseline usage.",
+    "Feed the resulting benchmark-usage.jsonl back into plugin-eval analyze with --observed-usage before treating static budget warnings as production blockers."
+  ],
+  "setupQuestions": [
+    "Which Kotlin/Gradle repository should represent the daily-driver team workflow?",
+    "Which scenario must pass before Kotlin Engineering is promoted to a team default?",
+    "Which focused Gradle task proves each scenario without hiding failures behind a broad aggregate build?",
+    "What token and retry budget is acceptable for a successful Kotlin Engineering run?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-invariant-semantic-evidence",
+      "title": "Kotlin invariant semantic evidence",
+      "purpose": "Measure whether Kotlin Engineering changes the implementation path for a type-safety task instead of allowing stringly edits plus broad validation.",
+      "routingCaseIds": [
+        "kotlin-invariant-work-uses-semantic-evidence"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-agentic-correctness"
+      },
+      "userInput": "Use Kotlin Engineering for this Kotlin repository. Change a Kotlin API so an invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass.",
+      "successChecklist": [
+        "The run records Kast or file-backed semantic evidence for affected Kotlin symbols.",
+        "The implementation moves the invariant into Kotlin types rather than comments, nullable flags, or caller discipline.",
+        "The final answer includes the focused successful Gradle command."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "gradle-failure-structured-reports",
+      "title": "Gradle failure structured reports",
+      "purpose": "Measure whether Kotlin Engineering diagnoses a failed Kotlin test from structured reports and keeps the rerun narrow.",
+      "routingCaseIds": [
+        "gradle-failure-uses-structured-reports"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-gradle-validation"
+      },
+      "userInput": "Use Kotlin Engineering for this Kotlin repository. A Kotlin test fails in Gradle; diagnose the failure, fix it, and rerun the smallest useful Gradle task before saying it is green.",
+      "successChecklist": [
+        "The diagnosis cites JUnit XML, Gradle problem reports, Kotlin build reports, or explicitly records that they were absent.",
+        "The fix is grounded in the failing test behavior, not only the first console line.",
+        "The final answer includes the smallest successful relevant Gradle command."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "negative-capability-before-after",
+      "title": "Negative capability before and after",
+      "purpose": "Measure whether advanced Kotlin type-safety work proves a previously reachable misuse and removes it from the API surface.",
+      "routingCaseIds": [
+        "negative-capability-proof-requires-before-after-misuse"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "negative-capability-proof"
+      },
+      "userInput": "Use Kotlin Engineering for this Kotlin repository. Prove that an invalid Kotlin operation used to be representable, then refactor the API so the same misuse no longer compiles.",
+      "successChecklist": [
+        "The run records a before-state misuse or representable invalid state.",
+        "The fix moves enforcement into Kotlin types, constructors, or sealed APIs.",
+        "The after-state proof shows the misuse no longer compiles or is no longer constructible."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-delivery-companion-boundary",
+      "title": "Kotlin delivery companion boundary",
+      "purpose": "Measure whether end-to-end Kotlin delivery composes Kotlin Engineering with Git/CI Operations without absorbing generic branch and PR ownership.",
+      "routingCaseIds": [
+        "kotlin-delivery-keeps-git-ci-companion-boundary"
+      ],
+      "expectedPrimitive": {
+        "type": "PROFILE",
+        "name": "kotlin-repo-default"
+      },
+      "userInput": "Use the Kotlin repository default workflow. Make a Kotlin type-safety change, validate it with Gradle, commit it, push the branch, and monitor CI.",
+      "successChecklist": [
+        "Kotlin proof includes semantic or Gradle evidence from Kotlin Engineering.",
+        "Delivery proof includes scoped staging, commit, push, PR, CI, or release evidence from Git/CI Operations as requested.",
+        "The run does not move generic Git, PR, CI, or release instructions into Kotlin Engineering."
+      ]
+    }
+  ]
+}

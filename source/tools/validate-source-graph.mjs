@@ -412,6 +412,9 @@ const routingCases = buildRoutingCaseIndex();
 for (const observationsPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
   validateRoutingFieldObservationSet(relativeToRepo(observationsPath), routingCases);
 }
+for (const benchmarkPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
+  validatePluginEvalBenchmark(relativeToRepo(benchmarkPath), routingCases);
+}
 
 for (const skillDir of readDirNames("source/skills")) {
   const skillFile = `source/skills/${skillDir}/SKILL.md`;
@@ -809,6 +812,116 @@ function validateRoutingFieldObservationSet(relativePath, routingCases) {
     for (const field of ["productiveOutcomeObserved", "followUpAction"]) {
       if (typeof observation[field] !== "string" || !observation[field].trim()) fail(`${owner}: ${field} is required`);
     }
+  }
+}
+
+function validatePluginEvalBenchmark(relativePath, routingCases) {
+  const payload = readJson(relativePath);
+  if (!payload) return;
+  if (payload.kind !== "plugin-eval-benchmark") return;
+
+  validateNoPrivateLocalStrings(relativePath, payload);
+  validateSchemaLink(relativePath, payload.$schema);
+  if (payload.type !== "PLUGIN_EVAL_BENCHMARK") fail(`${relativePath}: type must be PLUGIN_EVAL_BENCHMARK`);
+  if (payload.kind !== "plugin-eval-benchmark") fail(`${relativePath}: kind must be plugin-eval-benchmark`);
+  if (payload.schemaVersion !== 2) fail(`${relativePath}: schemaVersion must be 2`);
+  if (payload.version !== 2) fail(`${relativePath}: version must be 2`);
+  if (payload.targetKind !== "plugin") fail(`${relativePath}: targetKind must be plugin`);
+  if (!pluginManifests.has(payload.targetName)) {
+    fail(`${relativePath}: targetName ${payload.targetName ?? "<missing>"} must name an existing source plugin`);
+  }
+  validatePluginEvalRunner(`${relativePath}: runner`, payload.runner);
+  validatePluginEvalWorkspace(`${relativePath}: workspace`, payload.workspace);
+  if (payload.targetProvisioning?.type !== "PLUGIN_EVAL_TARGET_PROVISIONING") {
+    fail(`${relativePath}: targetProvisioning.type must be PLUGIN_EVAL_TARGET_PROVISIONING`);
+  }
+  if (payload.targetProvisioning?.mode !== "workspace-plugin-marketplace") {
+    fail(`${relativePath}: targetProvisioning.mode must be workspace-plugin-marketplace`);
+  }
+  if (payload.verifiers?.type !== "PLUGIN_EVAL_VERIFIERS") {
+    fail(`${relativePath}: verifiers.type must be PLUGIN_EVAL_VERIFIERS`);
+  }
+  validateNonEmptyStringArray(`${relativePath}: verifiers.commands`, payload.verifiers?.commands);
+  validateNonEmptyStringArray(`${relativePath}: notes`, payload.notes);
+  validateNonEmptyStringArray(`${relativePath}: setupQuestions`, payload.setupQuestions);
+  if (!Array.isArray(payload.scenarios) || payload.scenarios.length === 0) {
+    fail(`${relativePath}: scenarios must be a non-empty array`);
+    return;
+  }
+
+  const ids = new Set();
+  for (const [index, scenario] of payload.scenarios.entries()) {
+    const owner = `${relativePath}: scenarios[${index}]`;
+    if (typeof scenario.id !== "string" || !scenario.id.match(/^[a-z0-9][a-z0-9-]+$/)) {
+      fail(`${owner}: id must be kebab-case`);
+    } else if (ids.has(scenario.id)) {
+      fail(`${owner}: duplicate id ${scenario.id}`);
+    } else {
+      ids.add(scenario.id);
+    }
+    if (scenario.type !== "PLUGIN_EVAL_SCENARIO") fail(`${owner}: type must be PLUGIN_EVAL_SCENARIO`);
+    for (const field of ["title", "purpose", "userInput"]) {
+      if (typeof scenario[field] !== "string" || !scenario[field].trim()) {
+        fail(`${owner}: ${field} is required`);
+      }
+    }
+    validateNonEmptyStringArray(`${owner}: successChecklist`, scenario.successChecklist);
+    validateNonEmptyStringArray(`${owner}: routingCaseIds`, scenario.routingCaseIds);
+    if (!scenario.expectedPrimitive || typeof scenario.expectedPrimitive !== "object") {
+      fail(`${owner}: expectedPrimitive is required`);
+      continue;
+    }
+    for (const caseId of scenario.routingCaseIds ?? []) {
+      const routingCase = routingCases.get(caseId);
+      if (!routingCase) {
+        fail(`${owner}: routingCaseIds references missing routing case ${caseId}`);
+        continue;
+      }
+      if (
+        scenario.expectedPrimitive.type !== routingCase.expectedPrimitive?.type ||
+        scenario.expectedPrimitive.name !== routingCase.expectedPrimitive?.name
+      ) {
+        fail(
+          `${owner}: expectedPrimitive ${scenario.expectedPrimitive.type ?? "<missing>"}/${
+            scenario.expectedPrimitive.name ?? "<missing>"
+          } does not match routing case ${caseId} expected ${routingCase.expectedPrimitive?.type}/${
+            routingCase.expectedPrimitive?.name
+          }`,
+        );
+      }
+    }
+  }
+}
+
+function validatePluginEvalRunner(owner, runner) {
+  if (!runner || typeof runner !== "object") {
+    fail(`${owner}: runner is required`);
+    return;
+  }
+  if (runner.type !== "codex-cli") fail(`${owner}: type must be codex-cli`);
+  for (const field of ["model", "sandbox", "approvalPolicy"]) {
+    if (typeof runner[field] !== "string" || !runner[field].trim()) fail(`${owner}: ${field} is required`);
+  }
+  if (!Array.isArray(runner.extraArgs)) fail(`${owner}: extraArgs must be an array`);
+}
+
+function validatePluginEvalWorkspace(owner, workspace) {
+  if (!workspace || typeof workspace !== "object") {
+    fail(`${owner}: workspace is required`);
+    return;
+  }
+  for (const field of ["sourcePath", "setupMode", "preserve"]) {
+    if (typeof workspace[field] !== "string" || !workspace[field].trim()) fail(`${owner}: ${field} is required`);
+  }
+  if (workspace.type !== "PLUGIN_EVAL_WORKSPACE") fail(`${owner}: type must be PLUGIN_EVAL_WORKSPACE`);
+  if (typeof workspace.sourcePath === "string" && workspace.sourcePath.startsWith("/")) {
+    fail(`${owner}: sourcePath must not be a private absolute path`);
+  }
+  if (!["copy", "git-worktree"].includes(workspace.setupMode)) {
+    fail(`${owner}: setupMode must be copy or git-worktree`);
+  }
+  if (!["always", "on-failure", "never"].includes(workspace.preserve)) {
+    fail(`${owner}: preserve must be always, on-failure, or never`);
   }
 }
 

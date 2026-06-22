@@ -39,6 +39,11 @@ any routing case lacks a replay observation.
 Record real rollout and session evidence in
 `source/evals/routing/field-observations.json`; source validation checks that
 each observation points at an existing routing case and remains sanitized.
+Use `source/evals/plugin-benchmarks/kotlin-engineering.json` to collect real
+Codex benchmark usage for Kotlin Engineering. It is a `plugin-eval benchmark`
+config linked back to the routing corpus; after a run, feed the generated
+`benchmark-usage.jsonl` into `plugin-eval analyze --observed-usage` before
+treating static token-budget warnings as production blockers.
 
 ## Provenance
 

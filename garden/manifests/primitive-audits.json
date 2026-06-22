@@ -91,7 +91,9 @@
           "source/hooks/gradle-check-green.hook.json",
           "source/profiles/kotlin-repo-default.json",
           "garden/manifests/runtime-links.json",
-          "source/evals/routing/kotlin-engineering-workflows.json"
+          "source/evals/routing/kotlin-engineering-workflows.json",
+          "source/evals/plugin-benchmarks/kotlin-engineering.json",
+          "source/schemas/evals/plugin-eval-benchmark.schema.json"
         ]
       },
       "baseline": "Kotlin Engineering had source primitives, a referential plugin manifest, and routing cases, but the plugin family did not yet have a durable production-readiness audit tying composition, provenance, validation, and residual rollout risks together.",
@@ -113,7 +115,8 @@
           "source/tools/validate-source-graph.mjs validates plugin references, hook dependencies, profile duplicate ownership, audit target paths, and routing case expected primitives.",
           "source/tools/validate-source-graph.mjs validates garden/manifests/runtime-links.json source paths, approval boundaries, and Codex marketplace-import command shape.",
           "source/evals/routing/kotlin-engineering-workflows.json records Kotlin-specific route expectations for invariant work, Gradle failure diagnosis, negative capability proof, and companion delivery boundaries.",
-          "source/evals/routing/fixtures/golden-routing-observations.json covers the Kotlin Engineering routing cases through the full-corpus replay gate."
+          "source/evals/routing/fixtures/golden-routing-observations.json covers the Kotlin Engineering routing cases through the full-corpus replay gate.",
+          "source/evals/plugin-benchmarks/kotlin-engineering.json defines real Codex benchmark scenarios for Kotlin Engineering and links each scenario back to an existing routing case and expected primitive."
         ]
       },
       "provenance": {
@@ -150,10 +153,11 @@
       },
       "residualRisks": [
         "Live Kotlin repository sessions should continue to add source/evals/routing/field-observations.json entries for trigger drift and loaded-but-bypassed behavior.",
+        "source/evals/plugin-benchmarks/kotlin-engineering.json still needs observed benchmark usage before token-budget warnings can be accepted or prioritized for trimming.",
         "Team sharing still needs approved execution or verification of the runtime link plan in each target environment.",
         "Kast availability varies by repository, so runs should record when they fall back to file-backed or text evidence instead of semantic tooling."
       ],
-      "nextAction": "When team rollout is approved, verify garden/manifests/runtime-links.json in each target Codex environment and add field observations when real sessions expose new routing misses."
+      "nextAction": "Run source/evals/plugin-benchmarks/kotlin-engineering.json against the selected Kotlin daily-driver repository, feed benchmark-usage.jsonl into plugin-eval analyze --observed-usage, and record field observations for any routing misses."
     }
   ]
 }

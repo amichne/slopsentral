@@ -1,0 +1,452 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.local/schemas/evals/plugin-eval-benchmark.schema.json",
+  "title": "Plugin Eval Benchmark",
+  "type": "object",
+  "additionalProperties": false,
+  "examples": [
+    {
+      "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+      "type": "PLUGIN_EVAL_BENCHMARK",
+      "kind": "plugin-eval-benchmark",
+      "schemaVersion": 2,
+      "version": 2,
+      "targetKind": "plugin",
+      "targetName": "kotlin-engineering",
+      "runner": {
+        "type": "codex-cli",
+        "model": "gpt-5.4",
+        "sandbox": "workspace-write",
+        "approvalPolicy": "never",
+        "extraArgs": []
+      },
+      "workspace": {
+        "type": "PLUGIN_EVAL_WORKSPACE",
+        "sourcePath": "../kast",
+        "setupMode": "git-worktree",
+        "preserve": "on-failure"
+      },
+      "targetProvisioning": {
+        "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+        "mode": "workspace-plugin-marketplace"
+      },
+      "verifiers": {
+        "type": "PLUGIN_EVAL_VERIFIERS",
+        "commands": [
+          "git diff --check"
+        ]
+      },
+      "notes": [
+        "Run from the slopsentral checkout; adjust workspace.sourcePath for another Kotlin repository."
+      ],
+      "setupQuestions": [
+        "Which Kotlin repository should this benchmark run against?"
+      ],
+      "scenarios": [
+        {
+          "type": "PLUGIN_EVAL_SCENARIO",
+          "id": "kotlin-invariant-semantic-evidence",
+          "title": "Kotlin invariant semantic evidence",
+          "purpose": "Measure whether Kotlin Engineering changes the implementation path for a type-safety task.",
+          "routingCaseIds": [
+            "kotlin-invariant-work-uses-semantic-evidence"
+          ],
+          "expectedPrimitive": {
+            "type": "SKILL",
+            "name": "kotlin-agentic-correctness"
+          },
+          "userInput": "Use Kotlin Engineering for this Kotlin repository. Change a Kotlin API so an invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass.",
+          "successChecklist": [
+            "The run records Kast or file-backed semantic evidence for affected Kotlin symbols.",
+            "The implementation moves the invariant into Kotlin types rather than comments or caller discipline.",
+            "The final answer includes the focused successful Gradle command."
+          ]
+        }
+      ]
+    }
+  ],
+  "required": [
+    "$schema",
+    "type",
+    "kind",
+    "schemaVersion",
+    "version",
+    "targetKind",
+    "targetName",
+    "runner",
+    "workspace",
+    "targetProvisioning",
+    "verifiers",
+    "notes",
+    "setupQuestions",
+    "scenarios"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1,
+      "examples": [
+        "../../schemas/evals/plugin-eval-benchmark.schema.json"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "PLUGIN_EVAL_BENCHMARK"
+      ],
+      "examples": [
+        "PLUGIN_EVAL_BENCHMARK"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "plugin-eval-benchmark"
+      ],
+      "examples": [
+        "plugin-eval-benchmark"
+      ]
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "enum": [
+        2
+      ],
+      "examples": [
+        2
+      ]
+    },
+    "version": {
+      "type": "integer",
+      "enum": [
+        2
+      ],
+      "examples": [
+        2
+      ]
+    },
+    "targetKind": {
+      "type": "string",
+      "enum": [
+        "plugin"
+      ],
+      "examples": [
+        "plugin"
+      ]
+    },
+    "targetName": {
+      "type": "string",
+      "minLength": 1,
+      "examples": [
+        "kotlin-engineering"
+      ]
+    },
+    "runner": {
+      "$ref": "#/$defs/runner"
+    },
+    "workspace": {
+      "$ref": "#/$defs/workspace"
+    },
+    "targetProvisioning": {
+      "$ref": "#/$defs/targetProvisioning"
+    },
+    "verifiers": {
+      "$ref": "#/$defs/verifiers"
+    },
+    "notes": {
+      "$ref": "#/$defs/nonEmptyStrings"
+    },
+    "setupQuestions": {
+      "$ref": "#/$defs/nonEmptyStrings"
+    },
+    "scenarios": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/scenario"
+      },
+      "examples": [
+        [
+          {
+            "id": "kotlin-invariant-semantic-evidence",
+            "title": "Kotlin invariant semantic evidence",
+            "purpose": "Measure whether Kotlin Engineering changes the implementation path for a type-safety task.",
+            "routingCaseIds": [
+              "kotlin-invariant-work-uses-semantic-evidence"
+            ],
+            "expectedPrimitive": {
+              "type": "SKILL",
+              "name": "kotlin-agentic-correctness"
+            },
+            "userInput": "Use Kotlin Engineering for this Kotlin repository.",
+            "successChecklist": [
+              "The run records semantic evidence."
+            ]
+          }
+        ]
+      ]
+    }
+  },
+  "$defs": {
+    "runner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "model",
+        "sandbox",
+        "approvalPolicy",
+        "extraArgs"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "codex-cli"
+          ],
+          "examples": [
+            "codex-cli"
+          ]
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "gpt-5.4"
+          ]
+        },
+        "sandbox": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "workspace-write"
+          ]
+        },
+        "approvalPolicy": {
+          "type": "string",
+          "enum": [
+            "never",
+            "on-request",
+            "on-failure"
+          ],
+          "examples": [
+            "never"
+          ]
+        },
+        "extraArgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            []
+          ]
+        }
+      }
+    },
+    "workspace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "sourcePath",
+        "setupMode",
+        "preserve"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "PLUGIN_EVAL_WORKSPACE"
+          ],
+          "examples": [
+            "PLUGIN_EVAL_WORKSPACE"
+          ]
+        },
+        "sourcePath": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "../kast"
+          ]
+        },
+        "setupMode": {
+          "type": "string",
+          "enum": [
+            "copy",
+            "git-worktree"
+          ],
+          "examples": [
+            "git-worktree"
+          ]
+        },
+        "preserve": {
+          "type": "string",
+          "enum": [
+            "always",
+            "on-failure",
+            "never"
+          ],
+          "examples": [
+            "on-failure"
+          ]
+        }
+      }
+    },
+    "targetProvisioning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "mode"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "PLUGIN_EVAL_TARGET_PROVISIONING"
+          ],
+          "examples": [
+            "PLUGIN_EVAL_TARGET_PROVISIONING"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "workspace-plugin-marketplace"
+          ],
+          "examples": [
+            "workspace-plugin-marketplace"
+          ]
+        }
+      }
+    },
+    "verifiers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "commands"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "PLUGIN_EVAL_VERIFIERS"
+          ],
+          "examples": [
+            "PLUGIN_EVAL_VERIFIERS"
+          ]
+        },
+        "commands": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "title",
+        "purpose",
+        "routingCaseIds",
+        "expectedPrimitive",
+        "userInput",
+        "successChecklist"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "PLUGIN_EVAL_SCENARIO"
+          ],
+          "examples": [
+            "PLUGIN_EVAL_SCENARIO"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]+$",
+          "examples": [
+            "kotlin-invariant-semantic-evidence"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "Kotlin invariant semantic evidence"
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "Measure whether Kotlin Engineering changes the implementation path for a type-safety task."
+          ]
+        },
+        "routingCaseIds": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "expectedPrimitive": {
+          "$ref": "#/$defs/primitive"
+        },
+        "userInput": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "Use Kotlin Engineering for this Kotlin repository."
+          ]
+        },
+        "successChecklist": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      }
+    },
+    "primitive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AGENT",
+            "HOOK",
+            "PLUGIN",
+            "PROFILE",
+            "SKILL"
+          ],
+          "examples": [
+            "SKILL"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "kotlin-agentic-correctness"
+          ]
+        }
+      }
+    },
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "examples": [
+        [
+          "Example value."
+        ]
+      ]
+    }
+  }
+}
