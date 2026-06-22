@@ -8,6 +8,7 @@ const args = process.argv.slice(2);
 const repoArgIndex = args.indexOf("--repo");
 const observationsArgIndex = args.indexOf("--observations");
 const jsonOutput = args.includes("--json");
+const requireAllObserved = args.includes("--require-all-observed");
 const repoRoot =
   repoArgIndex >= 0 && args[repoArgIndex + 1]
     ? path.resolve(args[repoArgIndex + 1])
@@ -16,15 +17,6 @@ const observationsPath =
   observationsArgIndex >= 0 && args[observationsArgIndex + 1]
     ? path.resolve(repoRoot, args[observationsArgIndex + 1])
     : path.join(repoRoot, "source/evals/routing/fixtures/golden-routing-observations.json");
-
-const requiredDailyDriverCases = new Set([
-  "active-goal-continuation-keeps-original-scope",
-  "source-graph-edits-use-canonical-source-and-gates",
-  "push-request-means-branch-commit-push-pr",
-  "ci-failure-triage-uses-remote-check-evidence",
-  "plugin-install-recovery-proves-installed-state",
-  "production-sharing-requires-quality-audit-evidence",
-]);
 
 const findings = [];
 
@@ -95,9 +87,6 @@ function loadRoutingCases() {
       }
     }
   }
-  for (const caseId of requiredDailyDriverCases) {
-    if (!cases.has(caseId)) fail(`missing required daily-driver case ${caseId}`);
-  }
   return { cases, caseFiles };
 }
 
@@ -122,14 +111,27 @@ function assertSameSet(owner, field, observed, expected) {
 
 function scoreObservations(cases) {
   const payload = readJson(observationsPath);
-  if (!payload) return { observationCount: 0, passed: 0 };
+  if (!payload) {
+    return {
+      observationCount: 0,
+      passed: 0,
+      observedCaseIds: new Set(),
+      requiredCaseIds: new Set(),
+    };
+  }
   const ownerPath = relativeToRepo(observationsPath);
   assertNoPrivateLocalStrings(ownerPath, payload);
   if (payload.type !== "ROUTING_REPLAY_SET") fail(`${ownerPath}: type must be ROUTING_REPLAY_SET`);
   if (payload.schemaVersion !== 1) fail(`${ownerPath}: schemaVersion must be 1`);
+  const requiredCaseIds = requiredCasesFromPayload(ownerPath, payload, cases);
   if (!Array.isArray(payload.observations) || payload.observations.length === 0) {
     fail(`${ownerPath}: observations must be a non-empty array`);
-    return { observationCount: 0, passed: 0 };
+    return {
+      observationCount: 0,
+      passed: 0,
+      observedCaseIds: new Set(),
+      requiredCaseIds,
+    };
   }
 
   const seen = new Set();
@@ -172,27 +174,54 @@ function scoreObservations(cases) {
     passed += 1;
   }
 
-  for (const caseId of requiredDailyDriverCases) {
-    if (!seen.has(caseId)) fail(`${ownerPath}: missing golden observation for required daily-driver case ${caseId}`);
+  for (const caseId of requiredCaseIds) {
+    if (!seen.has(caseId)) fail(`${ownerPath}: missing golden observation for required case ${caseId}`);
+  }
+  if (requireAllObserved) {
+    for (const caseId of cases.keys()) {
+      if (!seen.has(caseId)) fail(`${ownerPath}: missing observation for routing case ${caseId}`);
+    }
   }
 
-  return { observationCount: payload.observations.length, passed };
+  return { observationCount: payload.observations.length, passed, observedCaseIds: seen, requiredCaseIds };
+}
+
+function requiredCasesFromPayload(ownerPath, payload, cases) {
+  if (payload.requiredCaseIds === undefined) return new Set();
+  if (!Array.isArray(payload.requiredCaseIds) || payload.requiredCaseIds.length === 0) {
+    fail(`${ownerPath}: requiredCaseIds must be a non-empty array when provided`);
+    return new Set();
+  }
+  const required = new Set();
+  for (const caseId of payload.requiredCaseIds) {
+    if (typeof caseId !== "string" || !caseId.trim()) {
+      fail(`${ownerPath}: requiredCaseIds contains a non-string or empty value`);
+      continue;
+    }
+    if (!cases.has(caseId)) fail(`${ownerPath}: requiredCaseIds references missing routing case ${caseId}`);
+    required.add(caseId);
+  }
+  return required;
 }
 
 const { cases, caseFiles } = loadRoutingCases();
 const replay = scoreObservations(cases);
+const unobservedCases = [...cases.keys()].filter((caseId) => !replay.observedCaseIds.has(caseId)).sort();
 
 const summary = {
   routingCaseFiles: caseFiles.length,
   routingCases: cases.size,
-  requiredDailyDriverCases: requiredDailyDriverCases.size,
+  requiredCases: replay.requiredCaseIds.size,
   observations: replay.observationCount,
+  observedRoutingCases: replay.observedCaseIds.size,
+  unobservedRoutingCases: unobservedCases.length,
   passedObservations: findings.length === 0 ? replay.passed : 0,
+  coveragePercent: cases.size === 0 ? 0 : Math.round((replay.observedCaseIds.size / cases.size) * 100),
 };
 
 if (findings.length > 0) {
   if (jsonOutput) {
-    console.log(JSON.stringify({ ok: false, summary, findings }, null, 2));
+    console.log(JSON.stringify({ ok: false, summary, unobservedCases, findings }, null, 2));
   } else {
     for (const finding of findings) console.error(`ERROR ${finding}`);
   }
@@ -200,9 +229,9 @@ if (findings.length > 0) {
 }
 
 if (jsonOutput) {
-  console.log(JSON.stringify({ ok: true, summary }, null, 2));
+  console.log(JSON.stringify({ ok: true, summary, unobservedCases }, null, 2));
 } else {
   console.log(
-    `OK routing evals: ${summary.routingCases} cases, ${summary.passedObservations}/${summary.observations} observations passed`,
+    `OK routing evals: ${summary.routingCases} cases, ${summary.passedObservations}/${summary.requiredCases} required observations passed, ${summary.observedRoutingCases}/${summary.routingCases} cases observed`,
   );
 }

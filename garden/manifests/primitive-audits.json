@@ -36,7 +36,7 @@
           "source/schemas/evals/routing-cases.schema.json requires productiveOutcome and verificationEvidence for schemaVersion 2 cases.",
           "source/schemas/evals/routing-replay.schema.json defines provider-neutral replay observations for scored routing behavior.",
           "source/tools/validate-source-graph.mjs validates routing case schemaVersion, schema links, existing expected primitives, sanitized strings, and non-empty evidence fields.",
-          "source/tools/run-routing-evals.mjs scores golden observations against exact case contracts and required daily-driver coverage."
+          "source/tools/run-routing-evals.mjs scores golden observations against exact case contracts, fixture-declared required cases, and explicit full-corpus coverage mode."
         ]
       },
       "provenance": {
@@ -66,10 +66,11 @@
         ]
       },
       "residualRisks": [
-        "The checked-in golden replay proves the harness and source-quality contract, but live model sessions should still be monitored for drift against these cases.",
+        "The default checked-in golden replay proves the daily-driver gate; full-corpus promotion should use --require-all-observed and add observations for every routing case.",
+        "Live model sessions should still be monitored for drift against these cases.",
         "Additional team-specific observations should be added as real users hit new routing misses or bypasses."
       ],
-      "nextAction": "Use the replay runner and audit manifest as the production source gate for workflow refinements, then add live team observations as they appear."
+      "nextAction": "Use the default replay runner as the daily-driver production source gate; before claiming full-corpus readiness, add observations for every routing case and run node source/tools/run-routing-evals.mjs --require-all-observed."
     }
   ]
 }

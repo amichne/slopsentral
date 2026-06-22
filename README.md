@@ -21,6 +21,7 @@ plugins, hooks, agents, concepts, and workflow profiles.
 ```bash
 node source/tools/validate-source-graph.mjs
 node source/tools/run-routing-evals.mjs
+node source/tools/run-routing-evals.mjs --require-all-observed
 intelligence validate --repo /Users/amichne/code/slopsentral --portable
 intelligence marketplace browse --provider source --format json /Users/amichne/code/slopsentral
 intelligence marketplace materialize --repo /Users/amichne/code/slopsentral --provider codex --out /tmp/slopsentral-codex
@@ -31,6 +32,10 @@ intelligence marketplace publish --repo /Users/amichne/code/slopsentral
 intelligence validate --repo /Users/amichne/code/slopsentral --portable --hydrated /Users/amichne/code/slopsentral
 git diff --check
 ```
+
+Use the default routing eval command as the daily-driver production gate. Use
+`--require-all-observed` when promoting the full routing corpus, because it
+fails until every routing case has a replay observation.
 
 ## Provenance
 

@@ -4,6 +4,14 @@
   "schemaVersion": 1,
   "name": "daily-driver-golden-routing-observations",
   "description": "Golden provider-neutral replay observations for the daily-driver routing cases.",
+  "requiredCaseIds": [
+    "active-goal-continuation-keeps-original-scope",
+    "source-graph-edits-use-canonical-source-and-gates",
+    "push-request-means-branch-commit-push-pr",
+    "ci-failure-triage-uses-remote-check-evidence",
+    "plugin-install-recovery-proves-installed-state",
+    "production-sharing-requires-quality-audit-evidence"
+  ],
   "observations": [
     {
       "type": "ROUTING_OBSERVATION",
