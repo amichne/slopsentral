@@ -129,7 +129,7 @@
         "status": "PASS",
         "commands": [
           "node source/tools/validate-source-graph.mjs",
-          "node <manage-json-schemas-skill>/scripts/schema-contracts.js policy --schema source/schemas/runtime/runtime-links.schema.json",
+          "node source/skills/manage-json-schemas/scripts/schema-contracts.js policy --schema source/schemas/runtime/runtime-links.schema.json",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
           "intelligence validate --repo . --portable",
           "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",

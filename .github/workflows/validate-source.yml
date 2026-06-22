@@ -1,0 +1,68 @@
+name: Validate Source
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-source-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate marketplace source
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install intelligence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          release_dir="${RUNNER_TEMP}/intelligence-release"
+          install_dir="${RUNNER_TEMP}/intelligence"
+          mkdir -p "${release_dir}" "${install_dir}"
+
+          gh release download \
+            --repo amichne/intelligence \
+            --pattern "intelligence-*-linux-x64.tar.gz" \
+            --dir "${release_dir}"
+
+          tar -xzf "${release_dir}"/intelligence-*-linux-x64.tar.gz -C "${install_dir}"
+          chmod +x "${install_dir}/intelligence"
+          echo "${install_dir}" >> "${GITHUB_PATH}"
+
+      - name: Validate source graph and evals
+        run: |
+          set -euo pipefail
+
+          node source/tools/validate-source-graph.mjs
+          node source/tools/run-routing-evals.mjs --require-all-observed
+          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
+            policy \
+            --schema source/schemas/runtime/runtime-links.schema.json
+
+      - name: Validate marketplace materialization
+        run: |
+          set -euo pipefail
+
+          out="${RUNNER_TEMP}/slopsentral-marketplace"
+          intelligence validate --repo "${GITHUB_WORKSPACE}" --portable
+          intelligence marketplace materialize \
+            --repo "${GITHUB_WORKSPACE}" \
+            --provider all \
+            --out "${out}"
+          intelligence validate \
+            --repo "${GITHUB_WORKSPACE}" \
+            --portable \
+            --hydrated "${out}"
