@@ -270,6 +270,52 @@
     },
     {
       "type": "ROUTING_OBSERVATION",
+      "caseId": "referential-plugin-composition-uses-focused-proof",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "plugin-composition-authoring"
+      },
+      "satisfiedAllowedActions": [
+        "Compose only existing independent primitives with LOCAL_SOURCE ./ references.",
+        "Keep primitive payload directories out of source/plugins/<name>.",
+        "Run the focused composition helper and the source graph gate."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run uses check_plugin_composition.py for the edited plugin.",
+        "The run uses node source/tools/validate-source-graph.mjs after source edits."
+      ],
+      "avoidedForbiddenActions": [
+        "Copy skills, agents, hooks, or concepts into a plugin directory as payload.",
+        "Add a plugin manifest without a matching marketplace entry.",
+        "Treat installed plugin caches as proof of source composition."
+      ],
+      "notes": "A passing run proves this route by delivering: Referential plugin work remains reviewable and mechanically checked at the composition boundary."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "routing-miss-becomes-full-corpus-replay",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "satisfiedAllowedActions": [
+        "Classify one primary routing miss type.",
+        "Persist a sanitized schema-backed routing case tied to a canonical primitive.",
+        "Run full-corpus replay before claiming routing readiness."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The routing case is schema-backed, sanitized, and points at an existing primitive.",
+        "The run includes node source/tools/run-routing-evals.mjs --require-all-observed."
+      ],
+      "avoidedForbiddenActions": [
+        "Store raw private transcripts or local absolute paths in routing cases.",
+        "Patch several trigger surfaces from one miss without evidence.",
+        "Keep dead routing fixtures for archaeology after their cases are removed."
+      ],
+      "notes": "A passing run proves this route by delivering: Routing fixes become reproducible corpus improvements with full-corpus coverage evidence."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
       "caseId": "kotlin-specific-work-keeps-generic-delivery-separate",
       "routedPrimitive": {
         "type": "PLUGIN",

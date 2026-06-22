@@ -22,8 +22,11 @@ Neutral metadata is the canonical hook primitive. It should include:
 - stable hook `name`;
 - optional `dependsOn` references to skills, agents, hooks, or concepts.
 
-The metadata shape is owned by `schemas/core/hook.schema.json` and
-validated by `node scripts/validate-manifests.mjs`.
+The metadata shape is covered by the source graph validator:
+
+```sh
+node source/tools/validate-source-graph.mjs
+```
 
 Keep dependency references local and canonical:
 

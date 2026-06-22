@@ -1,7 +1,8 @@
 # Review Queue
 
-Use this reference when deciding what to promote from
-`garden/docs/consolidation-queue.md` or `garden/manifests/consolidation-report.json`.
+Use this reference when deciding what to promote from local source graph
+evidence, promotion manifests, duplicate reports, or user-identified scattered
+primitive roots.
 
 ## Queue Meaning
 
@@ -29,11 +30,11 @@ Use this reference when deciding what to promote from
 ## Evidence Commands
 
 ```sh
-python3 garden/scripts/inventory-primitives.py
-python3 garden/scripts/analyze-consolidation.py
-python3 garden/scripts/inventory-primitives.py --check
-python3 garden/scripts/analyze-consolidation.py --check
+node source/tools/validate-source-graph.mjs
+python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check
 ```
 
-After running these, inspect `garden/docs/consolidation-queue.md` for human-readable
-triage and `garden/manifests/consolidation-report.json` for exact paths and digests.
+After running these, inspect the changed source roots, `garden/manifests/promotions.json`,
+`garden/manifests/primitive-audits.json`, and any current duplicate evidence the
+user supplied or generated for the task. Do not keep stale generated reports in
+source merely to explain old promotion history.
