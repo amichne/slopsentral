@@ -36,6 +36,9 @@ git diff --check
 Use the default routing eval command as the daily-driver production gate. Use
 `--require-all-observed` when promoting the full routing corpus; it fails when
 any routing case lacks a replay observation.
+Record real rollout and session evidence in
+`source/evals/routing/field-observations.json`; source validation checks that
+each observation points at an existing routing case and remains sanitized.
 
 ## Provenance
 

@@ -408,6 +408,10 @@ const primitiveIndex = buildPrimitiveIndex();
 for (const casesPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
   validateRoutingCaseSet(relativeToRepo(casesPath), primitiveIndex);
 }
+const routingCases = buildRoutingCaseIndex();
+for (const observationsPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
+  validateRoutingFieldObservationSet(relativeToRepo(observationsPath), routingCases);
+}
 
 for (const skillDir of readDirNames("source/skills")) {
   const skillFile = `source/skills/${skillDir}/SKILL.md`;
@@ -734,6 +738,76 @@ function validateRoutingCaseSet(relativePath, primitiveIndex) {
           }
         }
       }
+    }
+  }
+}
+
+function buildRoutingCaseIndex() {
+  const cases = new Map();
+  for (const casesPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
+    const relativePath = relativeToRepo(casesPath);
+    const payload = readJson(relativePath);
+    if (!payload || payload.type !== "ROUTING_CASE_SET") continue;
+    for (const routingCase of payload.cases ?? []) {
+      if (routingCase?.id && !cases.has(routingCase.id)) {
+        cases.set(routingCase.id, { file: relativePath, ...routingCase });
+      }
+    }
+  }
+  return cases;
+}
+
+function validateRoutingFieldObservationSet(relativePath, routingCases) {
+  const payload = readJson(relativePath);
+  if (!payload) return;
+  if (payload.type !== "ROUTING_FIELD_OBSERVATION_SET") return;
+
+  validateNoPrivateLocalStrings(relativePath, payload);
+  validateSchemaLink(relativePath, payload.$schema);
+  if (payload.schemaVersion !== 1) fail(`${relativePath}: schemaVersion must be 1`);
+  for (const field of ["name", "description"]) {
+    if (typeof payload[field] !== "string" || !payload[field].trim()) fail(`${relativePath}: ${field} is required`);
+  }
+  if (!Array.isArray(payload.observations) || payload.observations.length === 0) {
+    fail(`${relativePath}: observations must be a non-empty array`);
+    return;
+  }
+
+  const ids = new Set();
+  const sourceTypes = new Set(["LIVE_SESSION", "PR_VALIDATION", "RUNTIME_VERIFICATION", "TEAM_FEEDBACK"]);
+  const outcomes = new Set(["PASS", "DRIFT", "BLOCKED", "NEEDS_REPLAY_CASE"]);
+  for (const [index, observation] of payload.observations.entries()) {
+    const owner = `${relativePath}: observations[${index}]`;
+    if (observation.type !== "ROUTING_FIELD_OBSERVATION") fail(`${owner}: type must be ROUTING_FIELD_OBSERVATION`);
+    if (typeof observation.id !== "string" || !observation.id.match(/^[a-z0-9][a-z0-9-]+$/)) {
+      fail(`${owner}: id must be kebab-case`);
+    } else if (ids.has(observation.id)) {
+      fail(`${owner}: duplicate id ${observation.id}`);
+    } else {
+      ids.add(observation.id);
+    }
+    if (typeof observation.capturedAt !== "string" || !observation.capturedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      fail(`${owner}: capturedAt must be YYYY-MM-DD`);
+    }
+    if (!sourceTypes.has(observation.sourceType)) fail(`${owner}: sourceType is invalid`);
+    if (!outcomes.has(observation.outcome)) fail(`${owner}: outcome is invalid`);
+    const routingCase = routingCases.get(observation.caseId);
+    if (!routingCase) {
+      fail(`${owner}: caseId ${observation.caseId ?? "<missing>"} does not exist in routing corpus`);
+    } else if (
+      observation.routedPrimitive?.type !== routingCase.expectedPrimitive?.type ||
+      observation.routedPrimitive?.name !== routingCase.expectedPrimitive?.name
+    ) {
+      fail(
+        `${owner}: routedPrimitive ${observation.routedPrimitive?.type ?? "<missing>"}/${
+          observation.routedPrimitive?.name ?? "<missing>"
+        } does not match routing case expected ${routingCase.expectedPrimitive?.type}/${routingCase.expectedPrimitive?.name}`,
+      );
+    }
+    validateNonEmptyStringArray(`${owner}: evidenceRefs`, observation.evidenceRefs);
+    validateNonEmptyStringArray(`${owner}: limitations`, observation.limitations);
+    for (const field of ["productiveOutcomeObserved", "followUpAction"]) {
+      if (typeof observation[field] !== "string" || !observation[field].trim()) fail(`${owner}: ${field} is required`);
     }
   }
 }

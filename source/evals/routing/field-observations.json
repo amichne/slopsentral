@@ -1,0 +1,51 @@
+{
+  "$schema": "../../schemas/evals/routing-field-observations.schema.json",
+  "type": "ROUTING_FIELD_OBSERVATION_SET",
+  "schemaVersion": 1,
+  "name": "post-readiness-field-observations",
+  "description": "Sanitized observations from real workflow execution after routing readiness work.",
+  "observations": [
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "pr-ci-remote-check-evidence-2026-06-22",
+      "caseId": "ci-failure-triage-uses-remote-check-evidence",
+      "capturedAt": "2026-06-22",
+      "sourceType": "PR_VALIDATION",
+      "outcome": "PASS",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "evidenceRefs": [
+        "PR 5 Validate Source run 27964536885 completed successfully.",
+        "The run was checked after pushing head cc4cbfb."
+      ],
+      "productiveOutcomeObserved": "Remote check evidence was read after the branch changed, and the PR handoff was updated with the current successful run.",
+      "followUpAction": "Keep PR checks green after future pushes and continue citing the latest run for review handoff.",
+      "limitations": [
+        "This observation proves remote check handling, not Kotlin code execution."
+      ]
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "runtime-installed-state-visible-2026-06-22",
+      "caseId": "plugin-install-recovery-proves-installed-state",
+      "capturedAt": "2026-06-22",
+      "sourceType": "RUNTIME_VERIFICATION",
+      "outcome": "PASS",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "repository-onboarding"
+      },
+      "evidenceRefs": [
+        "codex plugin list reported kotlin-engineering@slopsentral installed and enabled."
+      ],
+      "productiveOutcomeObserved": "Provider-visible installed-state evidence was captured without editing installed caches or generated provider output.",
+      "followUpAction": "Repeat the installed-state check in each target team environment before treating rollout as complete.",
+      "limitations": [
+        "This does not prove the installed cache contains this branch head.",
+        "This observation is local to one Codex environment."
+      ]
+    }
+  ]
+}

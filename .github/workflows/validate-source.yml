@@ -51,6 +51,9 @@ jobs:
           node source/skills/manage-json-schemas/scripts/schema-contracts.js \
             policy \
             --schema source/schemas/runtime/runtime-links.schema.json
+          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
+            policy \
+            --schema source/schemas/evals/routing-field-observations.schema.json
 
       - name: Validate marketplace materialization
         run: |

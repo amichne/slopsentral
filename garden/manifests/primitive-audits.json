@@ -130,6 +130,7 @@
         "commands": [
           "node source/tools/validate-source-graph.mjs",
           "node source/skills/manage-json-schemas/scripts/schema-contracts.js policy --schema source/schemas/runtime/runtime-links.schema.json",
+          "node source/skills/manage-json-schemas/scripts/schema-contracts.js policy --schema source/schemas/evals/routing-field-observations.schema.json",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
           "intelligence validate --repo . --portable",
           "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
@@ -148,11 +149,11 @@
         ]
       },
       "residualRisks": [
-        "Live Kotlin repository sessions should be sampled against the routing cases to catch trigger drift and loaded-but-bypassed behavior.",
+        "Live Kotlin repository sessions should continue to add source/evals/routing/field-observations.json entries for trigger drift and loaded-but-bypassed behavior.",
         "Team sharing still needs approved execution or verification of the runtime link plan in each target environment.",
         "Kast availability varies by repository, so runs should record when they fall back to file-backed or text evidence instead of semantic tooling."
       ],
-      "nextAction": "When team rollout is approved, verify garden/manifests/runtime-links.json in each target Codex environment and add live replay observations when real sessions expose new routing misses."
+      "nextAction": "When team rollout is approved, verify garden/manifests/runtime-links.json in each target Codex environment and add field observations when real sessions expose new routing misses."
     }
   ]
 }
