@@ -73,23 +73,22 @@
         },
         "version": "0.1.0"
       },
-      "description": "Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks. Pair with git-ci-operations for branch, PR, CI, and release delivery.",
+      "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, and Kotlin package-layout hooks. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
       "tags": [
         "agents",
-        "ci",
-        "daily-driver",
-        "delivery",
+        "best-practices",
         "evidence",
         "gradle",
         "hooks",
         "kast",
         "kotlin",
-        "operating-procedure",
-        "quality",
+        "package-cohesion",
+        "proof",
         "review",
-        "schemas",
+        "semantic-navigation",
         "skills",
         "testing",
+        "type-safety",
         "validation"
       ]
     },
@@ -562,15 +561,6 @@
       },
       "path": "skills/jira-resolve-ticket",
       "name": "jira-resolve-ticket"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/kotlin-gradle-loop",
-      "name": "kotlin-gradle-loop"
     },
     {
       "type": "SKILL",

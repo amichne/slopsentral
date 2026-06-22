@@ -122,13 +122,6 @@
     },
     {
       "type": "SKILL",
-      "name": "kotlin-gradle-loop",
-      "canonicalPath": "source/skills/kotlin-gradle-loop",
-      "sourcePath": "/Users/amichne/code/intelligence/source/skills/kotlin-gradle-loop",
-      "handling": "promoted-canonical"
-    },
-    {
-      "type": "SKILL",
       "name": "kotlin-gradle-validation",
       "canonicalPath": "source/skills/kotlin-gradle-validation",
       "sourcePath": "/Users/amichne/code/intelligence/source/skills/kotlin-gradle-validation",

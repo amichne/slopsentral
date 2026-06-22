@@ -71,7 +71,7 @@
         ]
       },
       "allowedActions": [
-        "Use kotlin-engineering for Kotlin invariants, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
+        "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
         "Use git-ci-operations as the companion for branch, commit, PR, CI, release, and shell-safe automation.",
         "Use the kotlin-repo-default profile to compose both plugins without duplicate skills, agents, or hooks."
       ],
@@ -81,7 +81,7 @@
         "Let two selected plugins provide the same hook or agent in a profile."
       ],
       "recoveryExpectation": "Composition should keep Kotlin semantic work and generic delivery work in separate plugins while the profile validates that no duplicate owners are selected.",
-      "notes": "This is the main overlap case fixed by narrowing kotlin-engineering and adding profile-level duplicate validation.",
+      "notes": "This is the main overlap case fixed by exposing kotlin-engineering as a Kotlin best-practices package and keeping delivery composition at the profile boundary.",
       "productiveOutcome": "Kotlin semantic work and Git/CI delivery compose cleanly without duplicate owners or bloated plugin prompts.",
       "verificationEvidence": [
         "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",

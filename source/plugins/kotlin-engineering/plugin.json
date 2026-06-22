@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "name": "kotlin-engineering",
   "version": "0.1.0",
-  "description": "Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks.",
+  "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, and Kotlin package-layout hooks.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -26,81 +26,7 @@
         "path": "./"
       },
       "path": "skills/kotlin-review",
-      "name": "kotlin-review",
-      "dependsOn": [
-        {
-          "type": "SKILL",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "skills/kotlin-standards",
-          "name": "kotlin-standards"
-        },
-        {
-          "type": "SKILL",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "skills/kotlin-gradle-validation",
-          "name": "kotlin-gradle-validation"
-        },
-        {
-          "type": "AGENT",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "agents/kotlin-review/kotlin-review-captain.agent.md",
-          "name": "kotlin-review-captain"
-        },
-        {
-          "type": "AGENT",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
-          "name": "kotlin-type-safety-reviewer"
-        },
-        {
-          "type": "AGENT",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
-          "name": "kotlin-boundary-contract-reviewer"
-        },
-        {
-          "type": "AGENT",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
-          "name": "kotlin-package-cohesion-reviewer"
-        },
-        {
-          "type": "INSTRUCTION",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "concepts/type-safety/core.md",
-          "name": "type-safety"
-        },
-        {
-          "type": "INSTRUCTION",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "concepts/schema-driven-design/core.md",
-          "name": "schema-driven-design"
-        }
-      ]
+      "name": "kotlin-review"
     },
     {
       "type": "SKILL",
@@ -209,15 +135,17 @@
     }
   ],
   "metadata": {
-    "composition": "curated-synthesis",
-    "dailyDriver": "Install with engineering-baseline and git-ci-operations for end-to-end Kotlin repository delivery.",
+    "composition": "referential",
+    "dailyDriver": "Install in Kotlin/Gradle repositories where agents write or review Kotlin; compose through kotlin-repo-default with engineering-baseline and git-ci-operations for repository delivery.",
+    "companionProfile": "kotlin-repo-default",
     "deliveryCompanion": "git-ci-operations",
-    "informationExchange": "filesystem-first",
-    "kast": "prefer-packaged-kast-skill-or-request-file-rpc",
-    "notFor": "Non-Kotlin repositories, generic Git/CI delivery, API-only contract governance, or platform marketplace authoring work.",
-    "owner": "kotlin-engineering-platform",
-    "principle": "typed-kotlin-workflow-with-file-backed-evidence",
-    "role": "kotlin-engineering",
-    "scope": "Kotlin agent work from invariant framing through Kast-backed navigation, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hook checks."
+    "informationExchange": "filesystem-and-semantic-evidence",
+    "kast": "prefer-packaged-kast-skill-or-file-backed-rpc",
+    "notFor": "Non-Kotlin repositories, generic Git/CI delivery, release management, API-only contract governance, or platform marketplace authoring work.",
+    "owner": "kotlin-engineering",
+    "packageBoundary": "Kotlin semantics and proof only; generic branch, PR, CI, and release work stays in git-ci-operations.",
+    "principle": "encode-kotlin-invariants-in-types-and-prove-them-with-focused-evidence",
+    "role": "kotlin-best-practices",
+    "scope": "Kotlin implementation and review best practices: domain modeling, parse-dont-validate boundaries, package cohesion, Kast or file-backed semantic navigation, negative capability proof, Gradle validation, and Kotlin-specific hook checks."
   }
 }

@@ -77,8 +77,32 @@ The red proof must identify:
 - The mechanism currently responsible for rejection.
 - Why the compiler cannot currently prevent the misuse.
 
+Create a proof record before or with the red proof:
+
+```bash
+python3 scripts/negative_capability_proof.py init \
+  --repo . \
+  --output .agent-turn/negative-capability-proof/proof.json \
+  --scope ":module package.path" \
+  --invariant "only connected clients can send commands" \
+  --current-enforcement "runtime check in send()" \
+  --misuse "DisconnectedClient.send(command) is callable" \
+  --target-shape "ConnectedClient exposes send; DisconnectedClient does not"
+```
+
 Run the narrowest test command that executes the red proof and record the
 expected failing or counterexample-producing result.
+
+```bash
+python3 scripts/negative_capability_proof.py record-phase \
+  --repo . \
+  --proof-file .agent-turn/negative-capability-proof/proof.json \
+  --phase red \
+  --claim "DisconnectedClient.send(command) is currently expressible" \
+  --command "./gradlew :module:test --tests ClientCapabilityProofTest" \
+  --exit-code 0 \
+  --evidence-file .agent-turn/kotlin-gradle-validation/logs/red-proof.log
+```
 
 ## Refactor
 
@@ -118,6 +142,23 @@ Acceptable green proof forms:
 Compilation failure is strong supporting evidence, but the primary claim must be
 about the missing construction path, missing operation, or smaller state space.
 
+Record the green proof after the refactor:
+
+```bash
+python3 scripts/negative_capability_proof.py record-phase \
+  --repo . \
+  --proof-file .agent-turn/negative-capability-proof/proof.json \
+  --phase green \
+  --claim "DisconnectedClient no longer exposes send(command)" \
+  --command "./gradlew :module:test --tests ClientCapabilityProofTest" \
+  --exit-code 0
+
+python3 scripts/negative_capability_proof.py check \
+  --repo . \
+  --proof-file .agent-turn/negative-capability-proof/proof.json \
+  --require-green-pass
+```
+
 ## Verification
 
 Use the repository's own proof loop. Prefer the narrowest executable sequence:
@@ -137,7 +178,8 @@ Finish with:
 - Architectural summary: invariant, original enforcement mechanism, and new
   enforcement mechanism.
 - State-space analysis: invalid states or operations before and after.
-- Evidence: red proof, green proof, test outputs, and compilation outputs.
+- Evidence: proof record path, red proof, green proof, test outputs, and
+  compilation outputs.
 - Change report: files modified, public APIs modified, and migration impact.
 
 The work is complete only when a real invariant was identified, a previously

@@ -205,11 +205,13 @@
         "name": "negative-capability-proof"
       },
       "satisfiedAllowedActions": [
+        "Create or update a negative-capability proof record when the helper is available.",
         "Show the currently representable misuse before the fix.",
         "Move enforcement into Kotlin types, constructors, or sealed APIs.",
         "Show the post-change misuse is no longer reachable or no longer compiles."
       ],
       "satisfiedVerificationEvidence": [
+        "The run records a proof JSON path or explains why the helper was unavailable.",
         "The run records a before-state misuse or representable invalid state.",
         "The after-state proof shows the misuse no longer compiles or is no longer constructible."
       ],
@@ -228,7 +230,7 @@
         "name": "kotlin-repo-default"
       },
       "satisfiedAllowedActions": [
-        "Use Kotlin Engineering for Kotlin semantic work and Gradle proof.",
+        "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
         "Use git-ci-operations for staging, commit, push, PR, CI, and release follow-through.",
         "Use the profile to compose both without duplicate skills, agents, or hooks."
       ],
@@ -274,7 +276,7 @@
         "name": "kotlin-engineering"
       },
       "satisfiedAllowedActions": [
-        "Use kotlin-engineering for Kotlin invariants, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
+        "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
         "Use git-ci-operations as the companion for branch, commit, PR, CI, release, and shell-safe automation.",
         "Use the kotlin-repo-default profile to compose both plugins without duplicate skills, agents, or hooks."
       ],

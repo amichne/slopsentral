@@ -116,7 +116,9 @@
           "source/tools/validate-source-graph.mjs validates garden/manifests/runtime-links.json source paths, approval boundaries, and Codex marketplace-import command shape.",
           "source/evals/routing/kotlin-engineering-workflows.json records Kotlin-specific route expectations for invariant work, Gradle failure diagnosis, negative capability proof, and companion delivery boundaries.",
           "source/evals/routing/fixtures/golden-routing-observations.json covers the Kotlin Engineering routing cases through the full-corpus replay gate.",
-          "source/evals/plugin-benchmarks/kotlin-engineering.json defines real Codex benchmark scenarios for Kotlin Engineering and links each scenario back to an existing routing case and expected primitive."
+          "source/evals/plugin-benchmarks/kotlin-engineering.json defines real Codex benchmark scenarios for Kotlin Engineering and links each scenario back to an existing routing case and expected primitive.",
+          "source/skills/kotlin-gradle-validation now owns the script-backed Gradle runner and JUnit, JaCoCo, and Kotlin build report parsers, removing the older duplicate Gradle-loop owner from active source.",
+          "source/skills/negative-capability-proof now includes a proof-record helper that validates red and green proof phases before completion."
         ]
       },
       "provenance": {
@@ -154,6 +156,7 @@
       "residualRisks": [
         "Live Kotlin repository sessions should continue to add source/evals/routing/field-observations.json entries for trigger drift and loaded-but-bypassed behavior.",
         "source/evals/plugin-benchmarks/kotlin-engineering.json still needs observed benchmark usage before token-budget warnings can be accepted or prioritized for trimming.",
+        "Observed benchmark usage is still needed to decide whether the new script-backed proof path materially reduces retries and transcript-only Gradle diagnosis.",
         "Team sharing still needs approved execution or verification of the runtime link plan in each target environment.",
         "Kast availability varies by repository, so runs should record when they fall back to file-backed or text evidence instead of semantic tooling."
       ],

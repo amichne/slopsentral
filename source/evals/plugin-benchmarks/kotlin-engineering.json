@@ -30,7 +30,7 @@
     ]
   },
   "notes": [
-    "Run this benchmark from the slopsentral checkout after materializing the Kotlin Engineering plugin.",
+    "Run this benchmark from the slopsentral checkout after materializing the Kotlin Engineering best-practices package.",
     "The default workspace.sourcePath assumes a sibling Kotlin repository; teams should replace it with their own Kotlin/Gradle repository path before collecting baseline usage.",
     "Feed the resulting benchmark-usage.jsonl back into plugin-eval analyze with --observed-usage before treating static budget warnings as production blockers."
   ],
@@ -45,7 +45,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "kotlin-invariant-semantic-evidence",
       "title": "Kotlin invariant semantic evidence",
-      "purpose": "Measure whether Kotlin Engineering changes the implementation path for a type-safety task instead of allowing stringly edits plus broad validation.",
+      "purpose": "Measure whether the Kotlin Engineering package changes the implementation path for a type-safety task instead of allowing stringly edits plus broad validation.",
       "routingCaseIds": [
         "kotlin-invariant-work-uses-semantic-evidence"
       ],
@@ -64,7 +64,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "gradle-failure-structured-reports",
       "title": "Gradle failure structured reports",
-      "purpose": "Measure whether Kotlin Engineering diagnoses a failed Kotlin test from structured reports and keeps the rerun narrow.",
+      "purpose": "Measure whether the Kotlin Engineering package diagnoses a failed Kotlin test from structured reports and keeps the rerun narrow.",
       "routingCaseIds": [
         "gradle-failure-uses-structured-reports"
       ],
@@ -74,6 +74,7 @@
       },
       "userInput": "Use Kotlin Engineering for this Kotlin repository. A Kotlin test fails in Gradle; diagnose the failure, fix it, and rerun the smallest useful Gradle task before saying it is green.",
       "successChecklist": [
+        "The run records kotlin-gradle-validation runner JSON or parser JSON when the bundled scripts are available.",
         "The diagnosis cites JUnit XML, Gradle problem reports, Kotlin build reports, or explicitly records that they were absent.",
         "The fix is grounded in the failing test behavior, not only the first console line.",
         "The final answer includes the smallest successful relevant Gradle command."
@@ -93,6 +94,7 @@
       },
       "userInput": "Use Kotlin Engineering for this Kotlin repository. Prove that an invalid Kotlin operation used to be representable, then refactor the API so the same misuse no longer compiles.",
       "successChecklist": [
+        "The run records a negative-capability proof JSON path or explains why the helper was unavailable.",
         "The run records a before-state misuse or representable invalid state.",
         "The fix moves enforcement into Kotlin types, constructors, or sealed APIs.",
         "The after-state proof shows the misuse no longer compiles or is no longer constructible."
@@ -102,7 +104,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "kotlin-delivery-companion-boundary",
       "title": "Kotlin delivery companion boundary",
-      "purpose": "Measure whether end-to-end Kotlin delivery composes Kotlin Engineering with Git/CI Operations without absorbing generic branch and PR ownership.",
+      "purpose": "Measure whether end-to-end Kotlin delivery composes the Kotlin Engineering best-practices package with Git/CI Operations without absorbing generic branch and PR ownership.",
       "routingCaseIds": [
         "kotlin-delivery-keeps-git-ci-companion-boundary"
       ],

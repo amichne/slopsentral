@@ -3,7 +3,7 @@
   "type": "ROUTING_CASE_SET",
   "schemaVersion": 2,
   "name": "kotlin-engineering-workflow-routing",
-  "description": "Concrete routing cases for measuring whether Kotlin Engineering improves real Kotlin repository work rather than only plugin manifest score.",
+  "description": "Concrete routing cases for measuring whether the Kotlin Engineering best-practices package improves real Kotlin repository work rather than only plugin manifest score.",
   "cases": [
     {
       "id": "kotlin-invariant-work-uses-semantic-evidence",
@@ -72,6 +72,7 @@
       },
       "allowedActions": [
         "Discover the Gradle module and choose a targeted task.",
+        "Use the kotlin-gradle-validation runner and report parsers when they are available.",
         "Read JUnit XML, Gradle problem reports, or Kotlin build reports when present.",
         "Report the exact successful Gradle command and relevant report path."
       ],
@@ -84,6 +85,7 @@
       "notes": "This case gives Kotlin Engineering an observable build-diagnosis behavior target.",
       "productiveOutcome": "Gradle failure repair gets faster and more reliable by using structured reports and focused reruns.",
       "verificationEvidence": [
+        "The run records runner JSON or parser JSON from kotlin-gradle-validation scripts when available.",
         "The diagnosis cites JUnit XML, problem reports, Kotlin build reports, or their absence.",
         "The final result includes the smallest successful relevant Gradle command."
       ]
@@ -113,6 +115,7 @@
         ]
       },
       "allowedActions": [
+        "Create or update a negative-capability proof record when the helper is available.",
         "Show the currently representable misuse before the fix.",
         "Move enforcement into Kotlin types, constructors, or sealed APIs.",
         "Show the post-change misuse is no longer reachable or no longer compiles."
@@ -126,6 +129,7 @@
       "notes": "This separates advanced Kotlin type-safety work from generic correctness testing.",
       "productiveOutcome": "Advanced type-safety work proves the invalid operation was removed, not merely that happy paths still pass.",
       "verificationEvidence": [
+        "The run records a proof JSON path or explains why the helper was unavailable.",
         "The run records a before-state misuse or representable invalid state.",
         "The after-state proof shows the misuse no longer compiles or is no longer constructible."
       ]
@@ -148,7 +152,7 @@
         "name": "kotlin-repo-default"
       },
       "observedRoute": {
-        "summary": "Kotlin implementation and generic delivery can collapse into one plugin, causing duplicate skills or missing Git/CI handoff discipline.",
+        "summary": "Kotlin best-practice implementation and generic delivery can collapse into one package, causing duplicate skills or missing Git/CI handoff discipline.",
         "risk": "The run either ignores Kotlin semantic evidence or bloats Kotlin Engineering with branch, PR, and CI ownership it should not own.",
         "loadedPrimitives": [
           "kotlin-engineering",
@@ -156,7 +160,7 @@
         ]
       },
       "allowedActions": [
-        "Use Kotlin Engineering for Kotlin semantic work and Gradle proof.",
+        "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
         "Use git-ci-operations for staging, commit, push, PR, CI, and release follow-through.",
         "Use the profile to compose both without duplicate skills, agents, or hooks."
       ],
