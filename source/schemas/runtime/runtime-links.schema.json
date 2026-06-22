@@ -31,6 +31,18 @@
           "validationCommands": [
             "node source/tools/validate-source-graph.mjs"
           ],
+          "verification": {
+            "type": "RUNTIME_LINK_VERIFICATION",
+            "verifiedAt": "2026-06-22",
+            "status": "INSTALLED_ENABLED",
+            "command": "codex plugin list",
+            "evidence": [
+              "kotlin-engineering@slopsentral is provider-visible as installed and enabled."
+            ],
+            "limitations": [
+              "This verifies the local runtime coordinate, not that the installed cache contains this branch head."
+            ]
+          },
           "notes": "Example marketplace import plan; runtime writes require explicit approval."
         }
       ]
@@ -98,6 +110,18 @@
             "validationCommands": [
               "node source/tools/validate-source-graph.mjs"
             ],
+            "verification": {
+              "type": "RUNTIME_LINK_VERIFICATION",
+              "verifiedAt": "2026-06-22",
+              "status": "INSTALLED_ENABLED",
+              "command": "codex plugin list",
+              "evidence": [
+                "kotlin-engineering@slopsentral is provider-visible as installed and enabled."
+              ],
+              "limitations": [
+                "This verifies the local runtime coordinate, not that the installed cache contains this branch head."
+              ]
+            },
             "notes": "Import the plugin through the generated marketplace."
           }
         ]
@@ -132,6 +156,18 @@
           "validationCommands": [
             "node source/tools/validate-source-graph.mjs"
           ],
+          "verification": {
+            "type": "RUNTIME_LINK_VERIFICATION",
+            "verifiedAt": "2026-06-22",
+            "status": "INSTALLED_ENABLED",
+            "command": "codex plugin list",
+            "evidence": [
+              "kotlin-engineering@slopsentral is provider-visible as installed and enabled."
+            ],
+            "limitations": [
+              "This verifies the local runtime coordinate, not that the installed cache contains this branch head."
+            ]
+          },
           "notes": "Codex should import the plugin through the generated marketplace rather than by linking source folders."
         }
       ],
@@ -278,12 +314,111 @@
             ]
           }
         },
+        "verification": {
+          "$ref": "#/$defs/runtimeLinkVerification"
+        },
         "notes": {
           "type": "string",
           "minLength": 1,
           "examples": [
             "Codex should import the plugin through the generated marketplace."
           ]
+        }
+      }
+    },
+    "runtimeLinkVerification": {
+      "type": "object",
+      "additionalProperties": false,
+      "examples": [
+        {
+          "type": "RUNTIME_LINK_VERIFICATION",
+          "verifiedAt": "2026-06-22",
+          "status": "INSTALLED_ENABLED",
+          "command": "codex plugin list",
+          "evidence": [
+            "kotlin-engineering@slopsentral is provider-visible as installed and enabled."
+          ],
+          "limitations": [
+            "This verifies the local runtime coordinate, not that the installed cache contains this branch head."
+          ]
+        }
+      ],
+      "required": [
+        "type",
+        "verifiedAt",
+        "status",
+        "command",
+        "evidence",
+        "limitations"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "RUNTIME_LINK_VERIFICATION"
+          ],
+          "examples": [
+            "RUNTIME_LINK_VERIFICATION"
+          ]
+        },
+        "verifiedAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "examples": [
+            "2026-06-22"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "INSTALLED_ENABLED",
+            "INSTALLED_DISABLED",
+            "AVAILABLE_NOT_INSTALLED",
+            "NOT_VISIBLE",
+            "NOT_CHECKED"
+          ],
+          "examples": [
+            "INSTALLED_ENABLED"
+          ]
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "codex plugin list"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "examples": [
+            [
+              "kotlin-engineering@slopsentral is provider-visible as installed and enabled."
+            ]
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "kotlin-engineering@slopsentral is provider-visible as installed and enabled."
+            ]
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "examples": [
+            [
+              "This verifies the local runtime coordinate, not that the installed cache contains this branch head."
+            ]
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "This verifies the local runtime coordinate, not that the installed cache contains this branch head."
+            ]
+          }
         }
       }
     },

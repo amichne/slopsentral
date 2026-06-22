@@ -633,7 +633,31 @@ function validateRuntimeLinkManifest(relativePath) {
     if (entry.collisionPolicy === "BACKUP_THEN_LINK" && !entry.requiresApproval) {
       fail(`${owner}: BACKUP_THEN_LINK requires explicit approval`);
     }
+    if (entry.verification !== undefined) validateRuntimeLinkVerification(`${owner}: verification`, entry.verification);
   }
+}
+
+function validateRuntimeLinkVerification(owner, verification) {
+  if (!verification || typeof verification !== "object") {
+    fail(`${owner}: verification must be an object`);
+    return;
+  }
+  if (verification.type !== "RUNTIME_LINK_VERIFICATION") fail(`${owner}: type must be RUNTIME_LINK_VERIFICATION`);
+  if (typeof verification.verifiedAt !== "string" || !verification.verifiedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    fail(`${owner}: verifiedAt must be YYYY-MM-DD`);
+  }
+  if (
+    !["INSTALLED_ENABLED", "INSTALLED_DISABLED", "AVAILABLE_NOT_INSTALLED", "NOT_VISIBLE", "NOT_CHECKED"].includes(
+      verification.status,
+    )
+  ) {
+    fail(`${owner}: status is invalid`);
+  }
+  if (typeof verification.command !== "string" || !verification.command.trim()) {
+    fail(`${owner}: command is required`);
+  }
+  validateNonEmptyStringArray(`${owner}: evidence`, verification.evidence);
+  validateNonEmptyStringArray(`${owner}: limitations`, verification.limitations);
 }
 
 function validateRuntimeSourcePath(owner, sourcePath) {

@@ -28,6 +28,19 @@
         "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
         "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace"
       ],
+      "verification": {
+        "type": "RUNTIME_LINK_VERIFICATION",
+        "verifiedAt": "2026-06-22",
+        "status": "INSTALLED_ENABLED",
+        "command": "codex plugin list",
+        "evidence": [
+          "kotlin-engineering@slopsentral is provider-visible as installed and enabled in the local Codex plugin list."
+        ],
+        "limitations": [
+          "This verifies the local runtime coordinate, not that the installed cache contains this branch head.",
+          "Team rollout still needs the same provider-visible check in each target environment."
+        ]
+      },
       "notes": "Codex should consume Kotlin Engineering through the generated marketplace import path. Do not link source folders or edit installed cache payloads; activation requires explicit approval and provider-visible installed-state verification."
     }
   ]
