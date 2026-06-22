@@ -10,8 +10,9 @@ by hand when the authored source can be fixed instead.
   for `slopsentral`.
 - `source/plugins/*/plugin.json` composes primitives by reference. Do not copy
   primitive payloads into plugin folders.
-- `source/skills`, `source/agents`, `source/hooks`, `source/concepts`, and
-  `source/profiles` are canonical authored roots.
+- `source/skills`, `source/agents`, `source/hooks`, `source/concepts`,
+  `source/profiles`, `source/evals`, `source/schemas`, and `source/tools` are
+  canonical authored roots.
 - `.agents/plugins` and `.github/plugin` are generated output from
   `intelligence marketplace publish --repo /Users/amichne/code/slopsentral`.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
@@ -27,6 +28,7 @@ Run the smallest check that proves the edited surface. For marketplace or plugin
 composition edits, run:
 
 ```bash
+node source/tools/validate-source-graph.mjs
 intelligence validate --repo /Users/amichne/code/slopsentral --portable
 intelligence marketplace materialize --repo /Users/amichne/code/slopsentral --provider all --out /tmp/slopsentral-marketplace
 intelligence validate --repo /Users/amichne/code/slopsentral --portable --hydrated /tmp/slopsentral-marketplace

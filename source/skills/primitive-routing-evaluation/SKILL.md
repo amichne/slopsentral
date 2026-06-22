@@ -90,6 +90,17 @@ Persisted routing cases should have a schema-backed shape equivalent to:
 Do not store this as untyped JSON. Add or reuse a schema before committing a
 corpus file.
 
+## Slopsentral Corpus
+
+In this repository, durable cases live under `source/evals/routing/` and use
+`source/schemas/evals/routing-cases.schema.json`. The source graph validator
+checks that cases are sanitized, schema-linked, and point at existing canonical
+primitives:
+
+```bash
+node source/tools/validate-source-graph.mjs
+```
+
 ## Source Promotion Guidance
 
 When consolidating from repo-specific routing playbooks:

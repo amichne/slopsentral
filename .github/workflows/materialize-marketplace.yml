@@ -49,7 +49,10 @@ jobs:
           echo "${install_dir}" >> "${GITHUB_PATH}"
 
       - name: Validate source marketplace
-        run: intelligence validate --repo "${GITHUB_WORKSPACE}" --portable
+        run: |
+          set -euo pipefail
+          node source/tools/validate-source-graph.mjs
+          intelligence validate --repo "${GITHUB_WORKSPACE}" --portable
 
       - name: Materialize provider outputs
         run: |
