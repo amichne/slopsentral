@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22T16:29:44-04:00",
+  "generatedAt": "2026-06-22T21:05:35-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -237,14 +237,14 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:97d85225ff7db13df36ef57a82d8ebb32804b7f6c9f26d03af4ef1c426956c77",
+          "sha256": "sha256:00c7dec96fa04f48bc3d0869e10f36c2bd39fb917fe60a3125136f4b373b7524",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:07716a9883cda7e942ee15462f01a72847b59c96d43d7e829067d95367f117f6",
+          "sha256": "sha256:4e440ed1444fa2b1a05d94fac22fe7c6a3163eb50d34b9a190b2aca15f59c24e",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
@@ -444,6 +444,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "4da5cd7770b9c492ac396f921b32dcb681361d25",
+  "sourceSha": "c4f70da4e6c08d814b16566de0f99d72aaf451ce",
   "type": "HYDRATED_MARKETPLACE"
 }

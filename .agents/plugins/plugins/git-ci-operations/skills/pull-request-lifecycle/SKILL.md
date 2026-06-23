@@ -29,8 +29,11 @@ Related primitives in this repository:
   `main` by reflex when a stacked branch is visible.
 - Do not mark a PR ready for review until the branch has a focused diff,
   validation evidence, and no known deterministic failures.
-- Babysit checks by reading live check state, logs, and annotations. Fix the
-  owning source instead of rerunning deterministic failures.
+- Babysit checks by reading live check state, logs, and annotations. For
+  pending GitHub Actions runs, use the quiet waiter from
+  `skills/github-ci-operations/scripts/ci_wait_for_actions.py` so status is
+  reported only when the remote state changes. Fix the owning source instead of
+  rerunning deterministic failures.
 - Never claim a PR is green until `gh pr checks` or the repository's check
   surface reports passing, skipped, or neutral terminal states for required
   checks. Prefer the CI evidence helper when `gh --json` output is available.
@@ -65,15 +68,11 @@ Related primitives in this repository:
 
 6. Watch checks.
    Use `gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt`
-   and validate the JSON with:
-
-   ```sh
-   python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input <file>
-   ```
-
-   For failing GitHub Actions runs, use `gh run view` with logs. Separate
-   product/test failures, generated drift, dependency setup, permissions,
-   secrets, cache, and flaky behavior.
+   for a snapshot. When checks are pending, wait with
+   `python "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions.py" --pr <pr>`,
+   not a chatty watch loop. For failing GitHub Actions runs, inspect
+   `gh run view` with logs. Separate product/test failures, generated drift,
+   dependency setup, permissions, secrets, cache, and flaky behavior.
 
 7. Repair or hand off.
    For deterministic failures, patch the owning source, rerun the local
@@ -85,7 +84,8 @@ Related primitives in this repository:
 
 When asked to babysit until green:
 
-1. Poll check state only after a push or rerun changes the remote state.
+1. Wait with a transition-only backoff watcher, and emit updates only when the
+   remote check or run state changes.
 2. Treat `failure`, `cancelled`, `timed_out`, and required `action_required` as
    stop conditions that need diagnosis.
 3. Treat `pending`, `queued`, and `in_progress` as wait states only while the

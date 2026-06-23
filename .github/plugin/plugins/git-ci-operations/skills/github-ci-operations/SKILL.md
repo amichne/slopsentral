@@ -14,9 +14,9 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 - Verify the repository and GitHub CLI context before using `gh`.
 - Use live PR checks, workflow runs, logs, annotations, and job summaries as
   evidence when debugging failures.
-- Prefer structured `gh --json` output and the bundled CI evidence helper over
-  display-output scraping when deciding whether checks are green, failing, or
-  still pending.
+- When waiting on ongoing GitHub Actions, prefer the script-backed quiet waiter
+  over `gh run watch` or `gh pr checks --watch`. Emit only state transitions,
+  and fetch logs only after terminal failure.
 - Treat non-GitHub providers as external checks unless the repo has local
   tooling for them. Report their details URL rather than scraping unrelated
   systems.
@@ -60,8 +60,9 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 5. Validate.
    Run the local equivalent of the failing command. For workflow YAML changes,
    run `actionlint` when present, parse YAML with available tooling when not,
-   run reusable shell/script checks for touched CI scripts, and then recheck
-   `gh pr checks` or the relevant run with structured evidence.
+   and then recheck `gh pr checks` or the relevant run. When a remote run is
+   pending, use `scripts/ci_wait_for_actions.py` with a bounded timeout instead
+   of repeatedly polling by hand.
 
 6. Hand off.
    Summarize the failed signal, root cause, files changed, checks run, and any
@@ -75,6 +76,15 @@ when the live run, YAML, scripts, or package metadata can be inspected.
   editing `.github/workflows/*.yml`.
 - Load [release-flow.md](references/release-flow.md) for GitHub releases, tags,
   generated notes, artifacts, or release automation.
+
+## Scripts
+
+- `scripts/ci_wait_for_actions.py --run-id <id>` waits for one GitHub Actions
+  run with backoff and transition-only output.
+- `scripts/ci_wait_for_actions.py --pr <number-or-url>` waits for PR checks,
+  classifies terminal failures, and captures failed run logs once.
+- Use `--evidence <path>` when the wait result should be persisted as JSON for
+  handoff or later inspection.
 
 ## Completion Criteria
 
