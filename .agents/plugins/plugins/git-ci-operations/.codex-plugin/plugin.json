@@ -1,0 +1,45 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Git CI Operations for this task.",
+      "Review this repo with Git CI Operations.",
+      "Show the Git CI Operations workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Git CI Operations",
+    "longDescription": "Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+    "shortDescription": "Git and CI best-practices package for reusable delivery workflows: go..."
+  },
+  "keywords": [
+    "automation",
+    "best-practices",
+    "ci",
+    "composable",
+    "evidence",
+    "git",
+    "git-ci-operations",
+    "github",
+    "operations",
+    "planning",
+    "pull-requests",
+    "release",
+    "skills",
+    "tdd",
+    "testing",
+    "workflow"
+  ],
+  "license": "UNLICENSED",
+  "name": "git-ci-operations",
+  "skills": "./skills/",
+  "version": "0.1.0"
+}
