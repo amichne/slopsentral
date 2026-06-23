@@ -12,10 +12,23 @@ gh pr view --json number,url,headRefName,headRefOid,baseRefName
 gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow
 gh run view <run-id> --json name,workflowName,status,conclusion,url,event,headBranch,headSha
 gh run view <run-id> --log
+python "<path-to-skill>/scripts/ci_wait_for_actions.py" --pr <pr> --timeout 1800 --evidence /tmp/actions-wait.json
+python "<path-to-skill>/scripts/ci_wait_for_actions.py" --run-id <run-id> --timeout 1800 --evidence /tmp/actions-wait.json
 ```
 
 If a `gh` JSON field is rejected, rerun with the fields reported by the local
 CLI. The installed `gh` version can lag behind examples.
+
+## Quiet Waiting
+
+Use `scripts/ci_wait_for_actions.py` when an Actions run or PR check suite is
+still pending. It polls with backoff, prints only state transitions, exits
+non-zero on terminal failure, and fetches failed logs only after the run or
+check suite has reached a terminal state.
+
+Use `gh run watch` or `gh pr checks --watch` only as a fallback for an
+interactive human-facing terminal. If used, increase the interval and prefer
+compact output.
 
 ## Triage Order
 
@@ -27,6 +40,10 @@ CLI. The installed `gh` version can lag behind examples.
 5. Fix the owning source.
 6. Re-run the local check.
 7. Re-read PR checks or the run state.
+
+When step 7 requires waiting, do not emit status updates between unchanged
+states. Report queued, in-progress, terminal pass, terminal failure, and any
+timeout as separate events backed by the wait evidence.
 
 ## Failure Classes
 
