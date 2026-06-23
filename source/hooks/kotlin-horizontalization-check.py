@@ -111,6 +111,12 @@ def all_kotlin_source_files(repo: Path) -> list[Path]:
 
 
 def read_changed_files(args: argparse.Namespace, repo: Path) -> list[Path]:
+    if args.all:
+        return all_kotlin_source_files(repo)
+    return changed_kotlin_files(repo, changed_file_values(args, repo))
+
+
+def changed_file_values(args: argparse.Namespace, repo: Path) -> list[str]:
     values = list(args.changed_file)
     if args.changed_files_file:
         state_file = (repo / args.changed_files_file).resolve()
@@ -120,11 +126,12 @@ def read_changed_files(args: argparse.Namespace, repo: Path) -> list[Path]:
                 for line in state_file.read_text(encoding="utf-8").splitlines()
                 if line.strip()
             )
-    if args.all:
-        return all_kotlin_source_files(repo)
     if not values:
         values.extend(git_changed_files(repo))
+    return values
 
+
+def changed_kotlin_files(repo: Path, values: list[str]) -> list[Path]:
     files: list[Path] = []
     for value in values:
         path = Path(value)
@@ -152,13 +159,20 @@ def impacted_directories(files: list[Path]) -> set[Path]:
     directories: set[Path] = set()
     for file_path in files:
         source_root = nearest_source_root(file_path.parent)
-        current = file_path.parent
-        while source_root is not None and source_root in [current, *current.parents]:
-            directories.add(current)
-            if current == source_root:
-                break
-            current = current.parent
+        if source_root is not None:
+            directories.update(directory_ancestors_until(file_path.parent, source_root))
     return directories
+
+
+def directory_ancestors_until(directory: Path, stop: Path) -> list[Path]:
+    values: list[Path] = []
+    current = directory
+    while stop in [current, *current.parents]:
+        values.append(current)
+        if current == stop:
+            break
+        current = current.parent
+    return values
 
 
 def kotlin_files(directory: Path) -> list[Path]:
