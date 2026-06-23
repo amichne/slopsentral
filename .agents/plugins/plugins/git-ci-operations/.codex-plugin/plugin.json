@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Git and CI operations workflow for evidence-backed changes: goals, TDD, Git hygiene, PRs, GitHub Actions, releases, and shell-safe automation.",
+  "description": "Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,12 +17,15 @@
     ],
     "developerName": "Amichne",
     "displayName": "Git CI Operations",
-    "longDescription": "Git and CI operations workflow for evidence-backed changes: goals, TDD, Git hygiene, PRs, GitHub Actions, releases, and shell-safe automation.",
-    "shortDescription": "Git and CI operations workflow for evidence-backed changes: goals, TD..."
+    "longDescription": "Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+    "shortDescription": "Git and CI best-practices package for reusable delivery workflows: go..."
   },
   "keywords": [
     "automation",
+    "best-practices",
     "ci",
+    "composable",
+    "evidence",
     "git",
     "git-ci-operations",
     "github",

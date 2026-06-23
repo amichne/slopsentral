@@ -104,10 +104,13 @@
         },
         "version": "0.1.0"
       },
-      "description": "Git and CI operations workflow for evidence-backed changes: goals, TDD, Git hygiene, PRs, GitHub Actions, releases, and shell-safe automation.",
+      "description": "Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
       "tags": [
         "automation",
+        "best-practices",
         "ci",
+        "composable",
+        "evidence",
         "git",
         "github",
         "operations",
@@ -132,7 +135,7 @@
         },
         "version": "0.1.0"
       },
-      "description": "Agent platform authoring kit for maintaining source-graph primitives, plugin manifests, routing quality, repository maps, and docs surfaces.",
+      "description": "Agent platform source-graph authoring package for referential plugin composition, primitive quality audits, routing eval proof, repository maps, and docs surfaces.",
       "tags": [
         "agents",
         "authoring",
@@ -141,7 +144,9 @@
         "hooks",
         "marketplace",
         "plugins",
+        "proof",
         "repository",
+        "routing",
         "schemas",
         "shell",
         "skills",

@@ -35,9 +35,9 @@ sources unless intentional handling is recorded.
 
 ## Structured Data Rule
 
-`promotions.json` is governed by
-`garden/schemas/intelligence/promotions.schema.json`. After editing it, run:
+`promotions.json` is governed by the source graph validation contract. After
+editing it, run:
 
 ```sh
-node scripts/validate-manifests.mjs
+node source/tools/validate-source-graph.mjs
 ```

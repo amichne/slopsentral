@@ -107,6 +107,75 @@
     },
     {
       "type": "ROUTING_OBSERVATION",
+      "caseId": "ci-status-claims-use-structured-check-evidence",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "satisfiedAllowedActions": [
+        "Read current PR checks with gh JSON fields.",
+        "Validate the saved check JSON with the CI evidence helper.",
+        "Report failing and pending checks separately from green terminal checks."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run includes gh pr checks JSON or gh run view JSON for the current head.",
+        "The run includes ci_check_evidence.py output classifying green, failing, pending, or unknown state."
+      ],
+      "avoidedForbiddenActions": [
+        "Claim green from stale memory or a previous run.",
+        "Treat pending checks as passing.",
+        "Ignore unknown check state because the display output looks positive."
+      ],
+      "notes": "A passing run proves this route by delivering: CI status decisions become auditable and reusable across PR lifecycle, CI triage, and release workflows."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "ci-workflow-authoring-favors-composable-reusable-jobs",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "satisfiedAllowedActions": [
+        "Reuse existing action versions, permissions style, concurrency, and setup conventions.",
+        "Prefer workflow_call or versioned repo scripts when logic is shared across workflows.",
+        "Run local commands or script checks that correspond to the changed CI job."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Workflow changes preserve or improve explicit permissions, concurrency, and reusable setup boundaries.",
+        "Touched CI scripts or commands have local validation evidence."
+      ],
+      "avoidedForbiddenActions": [
+        "Copy large inline shell blocks across workflow jobs.",
+        "Add broad write permissions to every job when only one job needs them.",
+        "Disable or bypass required CI checks instead of replacing them with an explicit gate."
+      ],
+      "notes": "A passing run proves this route by delivering: CI changes become composable delivery infrastructure rather than one-off workflow patches."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "ci-shell-automation-uses-safe-reusable-scripts",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "shell-script-safety"
+      },
+      "satisfiedAllowedActions": [
+        "Move shared CI logic into a versioned repo script when it is reused or stateful.",
+        "Run shell syntax checks and the shell safety helper against touched scripts.",
+        "Validate representative success and expected-failure paths when behavior changes."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run includes bash -n for touched shell scripts.",
+        "The run includes check_shell_safety.py output for touched shell scripts."
+      ],
+      "avoidedForbiddenActions": [
+        "Duplicate long inline shell across workflow files.",
+        "Skip strict mode and input validation for CI-owned Bash scripts.",
+        "Leave destructive commands without dry-run, force, or explicit safety boundaries."
+      ],
+      "notes": "A passing run proves this route by delivering: CI shell logic becomes reusable automation that agents can test locally before relying on remote workflows."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
       "caseId": "plugin-install-recovery-proves-installed-state",
       "routedPrimitive": {
         "type": "SKILL",
@@ -267,6 +336,52 @@
         "Report generated provider drift as the primary answer when the source graph is the target."
       ],
       "notes": "A passing run proves this route by delivering: Source-graph audits spend time on canonical authored material and only touch provider output through regeneration, reducing churn and review noise."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "referential-plugin-composition-uses-focused-proof",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "plugin-composition-authoring"
+      },
+      "satisfiedAllowedActions": [
+        "Compose only existing independent primitives with LOCAL_SOURCE ./ references.",
+        "Keep primitive payload directories out of source/plugins/<name>.",
+        "Run the focused composition helper and the source graph gate."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run uses check_plugin_composition.py for the edited plugin.",
+        "The run uses node source/tools/validate-source-graph.mjs after source edits."
+      ],
+      "avoidedForbiddenActions": [
+        "Copy skills, agents, hooks, or concepts into a plugin directory as payload.",
+        "Add a plugin manifest without a matching marketplace entry.",
+        "Treat installed plugin caches as proof of source composition."
+      ],
+      "notes": "A passing run proves this route by delivering: Referential plugin work remains reviewable and mechanically checked at the composition boundary."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "routing-miss-becomes-full-corpus-replay",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "satisfiedAllowedActions": [
+        "Classify one primary routing miss type.",
+        "Persist a sanitized schema-backed routing case tied to a canonical primitive.",
+        "Run full-corpus replay before claiming routing readiness."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The routing case is schema-backed, sanitized, and points at an existing primitive.",
+        "The run includes node source/tools/run-routing-evals.mjs --require-all-observed."
+      ],
+      "avoidedForbiddenActions": [
+        "Store raw private transcripts or local absolute paths in routing cases.",
+        "Patch several trigger surfaces from one miss without evidence.",
+        "Keep dead routing fixtures for archaeology after their cases are removed."
+      ],
+      "notes": "A passing run proves this route by delivering: Routing fixes become reproducible corpus improvements with full-corpus coverage evidence."
     },
     {
       "type": "ROUTING_OBSERVATION",

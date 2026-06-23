@@ -10,6 +10,10 @@ workflow favors structured artifacts over raw console output: Gradle output is
 captured, test and coverage reports are parsed from files, and every fix is
 verified with the narrowest useful task before broad validation.
 
+Use the bundled scripts whenever they are available. They make the workflow
+observable: raw Gradle output goes to log files, report parsers emit JSON, and
+the final answer can cite evidence files instead of terminal scrollback.
+
 ## Operating Contract
 
 - Discover the Gradle project before running broad tasks.
@@ -37,15 +41,27 @@ verified with the narrowest useful task before broad validation.
 
 3. Run the narrowest task.
    Prefer `./gradlew :module:test --tests ...` or `:module:compileKotlin`
-   before full `test` or `build`. Use `--stacktrace` only when the structured
-   report is insufficient.
+   before full `test` or `build`. Use the runner so the command produces JSON
+   evidence and a log file:
+
+   ```bash
+   bash scripts/run_gradle_task.sh \
+     --repo . \
+     --task :module:test \
+     -- --tests 'com.example.FocusedTest'
+   ```
+
+   Use `--stacktrace` only when the structured report is insufficient.
 
 4. Parse artifacts.
    Inspect:
 
-   - `build/test-results/**/TEST-*.xml` for test failures;
-   - `build/reports/jacoco/**/jacoco*.xml` for coverage;
-   - Kotlin build report files when incremental compilation matters;
+   - `python3 scripts/parse/junit_results.py .` for
+     `build/test-results/**/TEST-*.xml` failures;
+   - `python3 scripts/parse/jacoco_report.py .` for
+     `build/reports/jacoco/**/jacoco*.xml` coverage;
+   - `python3 scripts/parse/kotlin_build_report.py .` for Kotlin build reports
+     when incremental compilation matters;
    - Gradle problem reports when configuration or deprecation issues appear.
 
 5. Fix from evidence.
@@ -74,16 +90,26 @@ verified with the narrowest useful task before broad validation.
 Report:
 
 - discovery summary when it affected the command choice;
-- commands run and exit outcomes;
-- report files used for diagnosis;
+- runner JSON, log files, commands run, and exit outcomes;
+- report parser JSON used for diagnosis;
 - failing tests or modules fixed;
 - remaining risk when full validation was not run.
 
 ## Completion Criteria
 
 - The relevant Gradle task succeeds.
-- Test, coverage, or compile claims are backed by report files or command
-  output.
+- Test, coverage, or compile claims are backed by runner JSON, report parser
+  JSON, report files, or command output.
 - Fixes are scoped to the failure evidence.
 - Any generated summaries or persisted structured build data have a schema,
   parser, or validation path.
+
+## Script Map
+
+- `scripts/run_gradle_task.sh`: run one Gradle task with optional extra Gradle
+  arguments, capture raw output to a log, and emit structured JSON evidence.
+- `scripts/parse/junit_results.py`: summarize JUnit XML suites and failures.
+- `scripts/parse/jacoco_report.py`: summarize JaCoCo XML coverage and lowest
+  covered classes.
+- `scripts/parse/kotlin_build_report.py`: summarize Kotlin build reports and
+  non-incremental compilation causes.

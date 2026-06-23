@@ -4,27 +4,19 @@ Use this reference for repo-local hook validation.
 
 ## Schema Dependency
 
-This repository owns the schema reference material used by hook validation. The
-manifest validator loads schemas from:
-
-```text
-schemas/core/
-schemas/adapters/
-schemas/marketplace/
-```
-
-Hook metadata is validated with `hook.schema.json`, plugin composition with
-`plugin.schema.json`, and marketplace entries with `adaptable-marketplace.schema.json`
-through:
+This repository owns the validation path used by hook metadata, runtime adapter
+projections, hook sidecars, plugin composition, and marketplace entries. The
+source graph validator checks hook references, executable paths, adapter command
+shape, dependency references, and schema-linked hook requirement sidecars:
 
 ```sh
-node scripts/validate-manifests.mjs
+node source/tools/validate-source-graph.mjs
 ```
 
-Adapter projections under `source/hooks/<adapter>/` validate against the
-matching schema in `schemas/adapters/<adapter>/`. The same command also
-checks local primitive references and rejects any JSON file that is not covered
-by a schema validation path.
+Adapter projections under `source/hooks/<adapter>/` must still parse as JSON and
+point at existing executable hook implementations. The same source graph command
+also checks local primitive references and rejects unsupported hook command
+shape.
 
 This is mandatory for every structured hook or plugin data change. If a new
 structured hook artifact does not fit an existing schema, add or update the
@@ -33,12 +25,13 @@ owning schema before treating the artifact as accepted.
 ## Validation Checklist
 
 - `source/hooks/<name>.hook.json` parses as JSON.
-- The hook metadata validates against `schemas/core/hook.schema.json`.
-- Adapter projections validate against their adapter schema, such as
-  `schemas/adapters/codex/hooks.schema.json` for
-  `source/hooks/codex/*.json`.
+- Hook metadata is covered by `node source/tools/validate-source-graph.mjs`.
+- Adapter projections under `source/hooks/codex/*.json` parse as JSON and call
+  existing hook scripts through supported command runners.
 - Every local `path` exists.
 - Every `dependsOn` reference points at a canonical primitive.
+- Hook sidecars such as `*.requirements.json` carry a `$schema` pointer under
+  `source/schemas/` when they introduce their own structured data.
 - Any plugin that composes the hook references it from `hooks/*` inside the
   `source/` graph, not from a plugin-local payload copy.
 - Public-safe provenance is recorded when a hook is promoted from another

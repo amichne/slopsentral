@@ -39,7 +39,13 @@ when the live run, YAML, scripts, or package metadata can be inspected.
    Use `gh auth status`, `gh pr view`, `gh pr checks`, `gh run view`,
    `gh run list`, and workflow YAML under `.github/workflows/` as appropriate.
    Capture the failing job name, command, error snippet, run URL, head SHA, and
-   local file that owns the failing behavior.
+   local file that owns the failing behavior. When check status is part of the
+   claim, save JSON and validate it:
+
+   ```sh
+   gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow > /tmp/pr-checks.json
+   python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input /tmp/pr-checks.json
+   ```
 
 3. Classify the failure.
    Separate product/test failures from CI-environment failures, dependency
@@ -86,4 +92,5 @@ when the live run, YAML, scripts, or package metadata can be inspected.
   available.
 - The fix targets the owning source rather than masking the symptom.
 - Local validation passed, or the missing environment/tool is stated.
-- Remote checks were re-read or the exact pending verification is documented.
+- Remote checks were re-read through structured evidence, or the exact pending
+  verification is documented.

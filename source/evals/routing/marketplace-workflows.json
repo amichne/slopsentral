@@ -46,6 +46,90 @@
       ]
     },
     {
+      "id": "referential-plugin-composition-uses-focused-proof",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/skills/plugin-composition-authoring/SKILL.md",
+          "source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py",
+          "source/tools/validate-source-graph.mjs"
+        ]
+      },
+      "prompt": "Add or revise a plugin composition from canonical primitives, keep the plugin referential, update the marketplace entry, and prove the package validates.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "plugin-composition-authoring"
+      },
+      "observedRoute": {
+        "summary": "A plugin composition change can be implemented by copying skill payloads into the plugin folder or by relying only on broad source validation.",
+        "risk": "Primitive ownership becomes hidden inside the plugin and manifest/catalog drift is not caught near the edited surface.",
+        "loadedPrimitives": [
+          "source-graph-consolidation"
+        ]
+      },
+      "allowedActions": [
+        "Compose only existing independent primitives with LOCAL_SOURCE ./ references.",
+        "Keep primitive payload directories out of source/plugins/<name>.",
+        "Run the focused composition helper and the source graph gate."
+      ],
+      "forbiddenActions": [
+        "Copy skills, agents, hooks, or concepts into a plugin directory as payload.",
+        "Add a plugin manifest without a matching marketplace entry.",
+        "Treat installed plugin caches as proof of source composition."
+      ],
+      "recoveryExpectation": "A good composition pass should prove manifest/catalog agreement, local primitive paths, standalone skill exposure, and absence of accidental plugin-owned primitive payloads.",
+      "notes": "This keeps plugin composition as a thin installable surface instead of a second primitive source tree.",
+      "productiveOutcome": "Referential plugin work remains reviewable and mechanically checked at the composition boundary.",
+      "verificationEvidence": [
+        "The run uses check_plugin_composition.py for the edited plugin.",
+        "The run uses node source/tools/validate-source-graph.mjs after source edits."
+      ]
+    },
+    {
+      "id": "routing-miss-becomes-full-corpus-replay",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-06-22",
+        "evidenceRefs": [
+          "source/skills/primitive-routing-evaluation/SKILL.md",
+          "source/evals/routing/fixtures/golden-routing-observations.json",
+          "source/tools/run-routing-evals.mjs"
+        ]
+      },
+      "prompt": "Turn a marketplace routing miss into a durable eval case and prove the routing corpus still passes.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "observedRoute": {
+        "summary": "A routing miss can be handled as a one-off prompt tweak without adding a sanitized case or replay observation.",
+        "risk": "The same miss regresses later because no corpus contract exercises the intended primitive route.",
+        "loadedPrimitives": [
+          "primitive-quality-audit"
+        ]
+      },
+      "allowedActions": [
+        "Classify one primary routing miss type.",
+        "Persist a sanitized schema-backed routing case tied to a canonical primitive.",
+        "Run full-corpus replay before claiming routing readiness."
+      ],
+      "forbiddenActions": [
+        "Store raw private transcripts or local absolute paths in routing cases.",
+        "Patch several trigger surfaces from one miss without evidence.",
+        "Keep dead routing fixtures for archaeology after their cases are removed."
+      ],
+      "recoveryExpectation": "A good routing repair should add or update the narrowest case and observation, then prove every checked-in case is still covered by replay.",
+      "notes": "This makes routing quality a replayed source artifact rather than a memory of a prompt correction.",
+      "productiveOutcome": "Routing fixes become reproducible corpus improvements with full-corpus coverage evidence.",
+      "verificationEvidence": [
+        "The routing case is schema-backed, sanitized, and points at an existing primitive.",
+        "The run includes node source/tools/run-routing-evals.mjs --require-all-observed."
+      ]
+    },
+    {
       "id": "kotlin-specific-work-keeps-generic-delivery-separate",
       "type": "WRONG_PRIMITIVE",
       "source": {

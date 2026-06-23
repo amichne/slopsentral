@@ -1,0 +1,124 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "agent-platform-authoring",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "on-failure"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "node source/tools/validate-source-graph.mjs",
+      "node source/tools/run-routing-evals.mjs --require-all-observed",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run this benchmark from a slopsentral checkout after materializing the Agent Platform Authoring package.",
+    "The scenarios intentionally target source-owned primitives and should not edit generated provider output directly.",
+    "Feed benchmark usage back into plugin-eval analysis before treating static context-size warnings as production blockers."
+  ],
+  "setupQuestions": [
+    "Which source-graph workflow should represent the daily-driver platform-authoring path?",
+    "Which plugin or primitive family is safe to edit during the benchmark?",
+    "Which validation gates must pass before the result is considered shareable?",
+    "What token, retry, and changed-file budget is acceptable for a successful platform-authoring run?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "source-owned-marketplace-uplift",
+      "title": "Source-owned marketplace uplift",
+      "purpose": "Measure whether platform-authoring work stays on canonical source and uses generated provider output only as proof.",
+      "routingCaseIds": [
+        "source-over-generated-provider-output"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
+      },
+      "userInput": "Use Agent Platform Authoring to improve one marketplace plugin from source. Keep generated provider output untouched, run the source graph gate, and use materialization only as proof.",
+      "successChecklist": [
+        "The run edits source-owned primitives, plugin manifests, schemas, evals, or source validation tooling.",
+        "Generated provider output is not patched by hand.",
+        "The final evidence includes source graph validation and hydrated marketplace validation when provider output matters."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "referential-plugin-composition-proof",
+      "title": "Referential plugin composition proof",
+      "purpose": "Measure whether a plugin composition change keeps primitive ownership independent and validates the manifest/catalog boundary.",
+      "routingCaseIds": [
+        "referential-plugin-composition-uses-focused-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "plugin-composition-authoring"
+      },
+      "userInput": "Use Agent Platform Authoring to add or revise a referential plugin composition. Keep primitives independent, update the marketplace entry, and prove the composition with the focused helper plus source graph validation.",
+      "successChecklist": [
+        "The plugin manifest references canonical source primitives with LOCAL_SOURCE ./ references.",
+        "The plugin directory does not receive copied primitive payloads.",
+        "The run uses check_plugin_composition.py and source/tools/validate-source-graph.mjs as evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "production-readiness-audit",
+      "title": "Production readiness audit",
+      "purpose": "Measure whether a share-readiness decision records durable quality evidence instead of relying on passing syntax and positive wording.",
+      "routingCaseIds": [
+        "production-sharing-requires-quality-audit-evidence",
+        "placeholder-skills-are-quality-audit-not-marketplace-products"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-quality-audit"
+      },
+      "userInput": "Use Agent Platform Authoring to decide whether a plugin family is ready to share. Record capability boundary, schema coverage, provenance, validation, runtime safety, residual risks, and a next action in the audit manifest.",
+      "successChecklist": [
+        "The audit names the target, baseline, decision, evidence, validation, residual risks, and next action.",
+        "The audit entry passes primitive_audit_record.py and source graph validation.",
+        "The result does not recommend runtime activation or cleanup without the appropriate manifest boundary."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "routing-corpus-replay",
+      "title": "Routing corpus replay",
+      "purpose": "Measure whether routing fixes create sanitized cases and full-corpus replay evidence rather than one-off prompt tweaks.",
+      "routingCaseIds": [
+        "routing-miss-becomes-full-corpus-replay"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "userInput": "Use Agent Platform Authoring to turn a marketplace routing miss into a sanitized eval case, update the narrowest primitive surface, and run full-corpus routing replay.",
+      "successChecklist": [
+        "The case is schema-backed, sanitized, and tied to an existing canonical primitive.",
+        "The fix surface is limited to the primitive, plugin metadata, or adapter layer that explains the miss.",
+        "The run includes node source/tools/run-routing-evals.mjs --require-all-observed."
+      ]
+    }
+  ]
+}

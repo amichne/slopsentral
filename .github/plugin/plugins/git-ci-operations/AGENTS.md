@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Git and CI operations workflow for evidence-backed changes: goals, TDD, Git hygiene, PRs, GitHub Actions, releases, and shell-safe automation.
+Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.
 
 ## Operating Rules
 

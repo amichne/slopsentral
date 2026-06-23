@@ -52,6 +52,19 @@ Kotlin review, and Kast semantic tooling.
    - proof target: focused test, Kast diagnostics, Gradle task, CI check, or PR
      status.
 
+   Record that frame before editing so the turn can be audited:
+
+   ```bash
+   python3 scripts/kotlin_workflow_state.py intent \
+     --repo . \
+     --invariant "raw customer status cannot enter core state" \
+     --boundary-input "CLI status argument" \
+     --domain-type "CustomerStatus" \
+     --expected-failure "InvalidCustomerStatus" \
+     --package-owner "src/main/kotlin/.../customer" \
+     --proof-target ":customer:test --tests CustomerStatusTest"
+   ```
+
 3. Orient semantically with Kast before touching Kotlin symbols. Prefer the
    installed `kast` skill when available. For CLI fallback, write a JSON-RPC
    request file and call:

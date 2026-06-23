@@ -10,7 +10,11 @@ Run these from the repository root.
 gh auth status
 gh pr view --json number,url,headRefName,headRefOid,baseRefName
 gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow
+gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow > /tmp/pr-checks.json
+python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input /tmp/pr-checks.json
 gh run view <run-id> --json name,workflowName,status,conclusion,url,event,headBranch,headSha
+gh run view <run-id> --json name,workflowName,status,conclusion,url,event,headBranch,headSha > /tmp/run.json
+python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py run --input /tmp/run.json
 gh run view <run-id> --log
 python "<path-to-skill>/scripts/ci_wait_for_actions.py" --pr <pr> --timeout 1800 --evidence /tmp/actions-wait.json
 python "<path-to-skill>/scripts/ci_wait_for_actions.py" --run-id <run-id> --timeout 1800 --evidence /tmp/actions-wait.json
@@ -39,7 +43,8 @@ compact output.
 4. Reproduce locally with the closest command.
 5. Fix the owning source.
 6. Re-run the local check.
-7. Re-read PR checks or the run state.
+7. Re-read PR checks or the run state with structured JSON and the evidence
+   helper before claiming the branch is green.
 
 When step 7 requires waiting, do not emit status updates between unchanged
 states. Report queued, in-progress, terminal pass, terminal failure, and any
@@ -59,6 +64,8 @@ timeout as separate events backed by the wait evidence.
   tied to lockfiles.
 - Flake: rerun once for evidence, then look for timing, ordering, network, or
   isolation failures before changing assertions.
+- Unknown status shape: update the helper or command fields rather than
+  downgrading to display-output parsing.
 
 ## Reruns
 

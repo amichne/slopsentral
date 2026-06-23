@@ -33,7 +33,7 @@ Related primitives in this repository:
   owning source instead of rerunning deterministic failures.
 - Never claim a PR is green until `gh pr checks` or the repository's check
   surface reports passing, skipped, or neutral terminal states for required
-  checks.
+  checks. Prefer the CI evidence helper when `gh --json` output is available.
 
 ## Workflow
 
@@ -65,7 +65,13 @@ Related primitives in this repository:
 
 6. Watch checks.
    Use `gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt`
-   and, for failing GitHub Actions runs, `gh run view` with logs. Separate
+   and validate the JSON with:
+
+   ```sh
+   python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input <file>
+   ```
+
+   For failing GitHub Actions runs, use `gh run view` with logs. Separate
    product/test failures, generated drift, dependency setup, permissions,
    secrets, cache, and flaky behavior.
 
@@ -104,4 +110,4 @@ Report:
 - User-owned unrelated work remains untouched.
 - Local validation was run or the missing tool/environment is named.
 - Remote checks were read after the latest push, and green claims are backed by
-  check state rather than expectation.
+  structured check state rather than expectation.

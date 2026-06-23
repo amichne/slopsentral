@@ -36,7 +36,7 @@ Related primitives in this repository:
   rerunning deterministic failures.
 - Never claim a PR is green until `gh pr checks` or the repository's check
   surface reports passing, skipped, or neutral terminal states for required
-  checks.
+  checks. Prefer the CI evidence helper when `gh --json` output is available.
 
 ## Workflow
 
@@ -110,4 +110,4 @@ Report:
 - User-owned unrelated work remains untouched.
 - Local validation was run or the missing tool/environment is named.
 - Remote checks were read after the latest push, and green claims are backed by
-  check state rather than expectation.
+  structured check state rather than expectation.

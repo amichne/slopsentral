@@ -21,7 +21,7 @@ the primitive remains usable without the plugin.
 - Add marketplace entries only after the plugin manifest exists.
 - Keep source provenance public-safe; the plugin itself should not be the only
   place provenance lives.
-- Validate against the repository schema and local reference checks.
+- Validate against the repository source graph and local reference checks.
 
 ## Workflow
 
@@ -42,7 +42,13 @@ the primitive remains usable without the plugin.
    Preserve existing ordering unless a new order is part of the request.
 
 5. Validate.
-   Run manifest validation.
+   Run the source graph gate and, for focused plugin review, the composition
+   checker:
+
+   ```sh
+   node source/tools/validate-source-graph.mjs
+   python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py --plugin <name>
+   ```
 
 ## Reference Routing
 

@@ -1,18 +1,21 @@
 ---
 name: "source-graph-consolidation"
-description: "Inventory, review, promote, synthesize, validate, and prepare cleanup for scattered AI tooling primitives while preserving originals. Use when consolidating skills, agents, hooks, concepts, instructions, or plugin manifests into a single source graph, updating promotion manifests, interpreting duplicate queues, or preparing later symlink/deletion handoff ledgers."
+description: "Inventory, review, promote, synthesize, validate, and clean up scattered AI tooling primitives while preserving provenance. Use when consolidating skills, agents, hooks, concepts, instructions, or plugin manifests into a single source graph, updating promotion manifests, interpreting duplicate queues, or removing proven-dead source."
 ---
 
 # Source Graph Consolidation
 
 Use this skill to move scattered AI tooling primitives toward this repository as
 the source of truth. Consolidation is evidence-first: inventory before moving,
-promote before cleanup, validate before trusting, and keep every original in
-place until the cleanup ledger proves the replacement and rollback path.
+promote before cleanup, validate before trusting, and preserve provenance in
+Git and manifests instead of leaving dead source in place as evidence.
 
 ## Operating Contract
 
-- Do not delete, rewrite, or replace scattered originals during promotion.
+- Do not delete, rewrite, or replace unrelated external originals during
+  promotion.
+- When cleanup is in scope and replacement is proven, remove dead authored
+  source instead of retaining it for archaeology.
 - Treat generated inventory and consolidation reports as evidence, not as the
   final decision.
 - Promote primitives into canonical roots under `source/`: `source/skills/`,
@@ -21,8 +24,8 @@ place until the cleanup ledger proves the replacement and rollback path.
   the only copy of a primitive.
 - Record every promotion in `garden/manifests/promotions.json` with source paths and
   first-party handling when applicable.
-- Treat every persisted JSON edit as schema-driven. `node scripts/validate-manifests.mjs`
-  must cover the changed file.
+- Treat every persisted JSON edit as schema-driven. `node source/tools/validate-source-graph.mjs`
+  or a focused repository helper must cover the changed file.
 - Do not raw-copy OpenAI, Anthropic, or other first-party material. Rename,
   rewrite, and preserve source paths as provenance.
 
@@ -60,10 +63,11 @@ place until the cleanup ledger proves the replacement and rollback path.
    Run the validation set, inspect counts, and update summary docs when the
    inventory changes.
 
-8. Defer cleanup.
-   Only prepare `garden/manifests/cleanup-ledger.json` entries after the canonical
-   replacement is proven and a rollback path exists. Do not perform the cleanup
-   unless the user explicitly asks for it.
+8. Clean up dead source deliberately.
+   If the current scope includes cleanup and the canonical replacement is proven,
+   remove stale authored source and validate the source graph. Use
+   `garden/manifests/cleanup-ledger.json` for risky runtime, symlink, or
+   cross-root replacement handoffs that need an approval and rollback boundary.
 
 ## Reference Routing
 
@@ -82,4 +86,4 @@ place until the cleanup ledger proves the replacement and rollback path.
 - Generated inventory and consolidation reports are current.
 - Manifest validation proves schema coverage, local references, and first-party
   collision checks.
-- No scattered original source was deleted or replaced.
+- Dead source is not retained merely as historical evidence.

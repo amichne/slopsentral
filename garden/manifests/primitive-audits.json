@@ -161,6 +161,183 @@
         "Kast availability varies by repository, so runs should record when they fall back to file-backed or text evidence instead of semantic tooling."
       ],
       "nextAction": "Run source/evals/plugin-benchmarks/kotlin-engineering.json against the selected Kotlin daily-driver repository, feed benchmark-usage.jsonl into plugin-eval analyze --observed-usage, and record field observations for any routing misses."
+    },
+    {
+      "type": "PRIMITIVE_AUDIT",
+      "id": "agent-platform-authoring-plugin-production-readiness",
+      "target": {
+        "kind": "PLUGIN",
+        "name": "agent-platform-authoring",
+        "paths": [
+          "source/plugins/agent-platform-authoring/plugin.json",
+          "source/skills/plugin-composition-authoring",
+          "source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py",
+          "source/skills/primitive-quality-audit",
+          "source/skills/primitive-quality-audit/scripts/primitive_audit_record.py",
+          "source/skills/primitive-routing-evaluation",
+          "source/skills/source-graph-consolidation",
+          "source/skills/hook-primitive-authoring",
+          "source/evals/routing/marketplace-workflows.json",
+          "source/evals/routing/daily-driver-workflows.json",
+          "source/evals/routing/fixtures/golden-routing-observations.json",
+          "source/evals/plugin-benchmarks/agent-platform-authoring.json",
+          "source/tools/validate-source-graph.mjs",
+          "source/tools/run-routing-evals.mjs"
+        ]
+      },
+      "baseline": "Agent Platform Authoring already owned source-graph governance, composition, quality, and routing primitives, but several primitive references still taught stale validation commands and the plugin lacked focused composition, audit, benchmark, and production-readiness proof.",
+      "decision": "PROMOTE_READY",
+      "confidence": "HIGH",
+      "reviewedAt": "2026-06-22",
+      "reviewedBy": "codex",
+      "capabilityBoundary": {
+        "status": "PASS",
+        "evidence": [
+          "source/plugins/agent-platform-authoring/plugin.json scopes the plugin to source graph authoring, referential composition, primitive audits, routing proof, repository maps, schema guidance, shell safety, and docs surfaces.",
+          "source/skills/plugin-composition-authoring now validates referential plugin manifests with a focused helper instead of relying on stale manifest-script references.",
+          "source/skills/source-graph-consolidation now preserves provenance while instructing removal of proven-dead source when cleanup is in scope, matching the repository rule against keeping dead code for archaeology.",
+          "source/skills/hook-primitive-authoring now routes hook metadata and adapter validation through the live source graph gate instead of stale schema directories.",
+          "source/skills/primitive-routing-evaluation now names the full-corpus replay gate required before claiming routing readiness."
+        ]
+      },
+      "schemaCoverage": {
+        "status": "PASS",
+        "evidence": [
+          "source/tools/validate-source-graph.mjs validates plugin references, standalone skill exposure, profile duplicate ownership, hook dependencies, routing cases, plugin benchmarks, audit records, and runtime-link records.",
+          "source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py checks plugin manifest/catalog alignment, LOCAL_SOURCE ./ references, missing primitive paths, duplicate names, and accidental primitive payload directories.",
+          "source/skills/primitive-quality-audit/scripts/primitive_audit_record.py checks durable audit entries against live target paths, required PASS statuses for PROMOTE_READY, validation commands, evidence blocks, residual risks, and private absolute path leakage.",
+          "source/skills/hook-primitive-authoring now documents source/tools/validate-source-graph.mjs as the hook metadata, adapter command, dependency, and sidecar schema coverage path.",
+          "source/evals/plugin-benchmarks/agent-platform-authoring.json defines Codex benchmark scenarios tied to existing routing cases for source-owned marketplace uplift, referential composition proof, production-readiness audit, and routing corpus replay."
+        ]
+      },
+      "provenance": {
+        "status": "PASS",
+        "firstPartyCollisionCheck": "CHECKED_NO_COLLISION",
+        "evidence": [
+          "garden/manifests/promotions.json records agent-platform-authoring as a promoted referential composition and records its component source primitives.",
+          "The plugin manifest composes canonical source primitives by reference and does not copy primitive payloads into source/plugins/agent-platform-authoring.",
+          "The changed primitive guidance removes stale validation references instead of preserving dead command paths as historical evidence."
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "commands": [
+          "node source/tools/validate-source-graph.mjs",
+          "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py --plugin agent-platform-authoring",
+          "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check --audit-id agent-platform-authoring-plugin-production-readiness",
+          "python3 -m py_compile source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py source/skills/primitive-quality-audit/scripts/primitive_audit_record.py",
+          "node source/tools/run-routing-evals.mjs --require-all-observed",
+          "intelligence validate --repo . --portable",
+          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
+          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "git diff --check"
+        ]
+      },
+      "runtimeSafety": {
+        "status": "PASS",
+        "evidence": [
+          "Agent Platform Authoring is exposed through source marketplace composition and this audit does not require direct runtime writes.",
+          "The new helper scripts read checked-in source and print JSON evidence; they do not install hooks, mutate provider caches, or write generated provider outputs.",
+          "Provider output remains a materialized proof target rather than an authored change surface.",
+          "No runtime activation or symlink replacement is recommended by this audit."
+        ]
+      },
+      "residualRisks": [
+        "source/evals/plugin-benchmarks/agent-platform-authoring.json still needs observed benchmark usage before token-budget warnings can be accepted or prioritized for trimming.",
+        "Live marketplace-authoring sessions should continue to add field observations for source-vs-generated drift and loaded-but-bypassed behavior.",
+        "The focused helpers intentionally complement source/tools/validate-source-graph.mjs and should not become a competing source of truth.",
+        "Future cleanup of dead source should remain scoped and validated rather than bundled with unrelated promotion work."
+      ],
+      "nextAction": "Run source/evals/plugin-benchmarks/agent-platform-authoring.json against a representative source-graph change, feed benchmark-usage.jsonl into plugin-eval analyze --observed-usage, and add field observations for any routing misses."
+    },
+    {
+      "type": "PRIMITIVE_AUDIT",
+      "id": "git-ci-operations-plugin-production-readiness",
+      "target": {
+        "kind": "PLUGIN",
+        "name": "git-ci-operations",
+        "paths": [
+          "source/plugins/git-ci-operations/plugin.json",
+          "source/skills/define-goal",
+          "source/skills/tdd",
+          "source/skills/git-change-flow",
+          "source/skills/github-ci-operations",
+          "source/skills/github-ci-operations/scripts/ci_check_evidence.py",
+          "source/skills/pull-request-lifecycle",
+          "source/skills/shell-script-safety",
+          "source/skills/shell-script-safety/scripts/check_shell_safety.py",
+          "source/evals/routing/daily-driver-workflows.json",
+          "source/evals/routing/fixtures/golden-routing-observations.json",
+          "source/evals/plugin-benchmarks/git-ci-operations.json",
+          ".github/workflows/validate-source.yml",
+          ".github/workflows/materialize-marketplace.yml"
+        ]
+      },
+      "baseline": "Git/CI Operations already composed goal, TDD, Git, PR, GitHub Actions, release, and shell-safety primitives, but the plugin lacked reusable CI evidence helpers, explicit composable workflow routing cases, a benchmark corpus, and a durable production-readiness audit.",
+      "decision": "PROMOTE_READY",
+      "confidence": "HIGH",
+      "reviewedAt": "2026-06-22",
+      "reviewedBy": "codex",
+      "capabilityBoundary": {
+        "status": "PASS",
+        "evidence": [
+          "source/plugins/git-ci-operations/plugin.json scopes the plugin to reusable delivery workflows, structured CI evidence, composable GitHub Actions, PR lifecycle, releases, TDD, Git hygiene, and shell-safe automation.",
+          "source/skills/github-ci-operations keeps CI ownership on live GitHub check/run evidence, workflow design, releases, and provider-specific CI triage.",
+          "source/skills/pull-request-lifecycle composes Git hygiene and CI watching without absorbing GitHub Actions internals.",
+          "source/skills/shell-script-safety remains provider-neutral and supplies reusable script hardening for CI, hooks, release scripts, installers, and local tooling."
+        ]
+      },
+      "schemaCoverage": {
+        "status": "PASS",
+        "evidence": [
+          "source/tools/validate-source-graph.mjs validates plugin references, standalone skill exposure, routing cases, plugin benchmarks, audit records, profiles, hooks, and runtime-link records.",
+          "source/skills/github-ci-operations/scripts/ci_check_evidence.py validates structured gh pr checks and gh run view JSON before green, failing, pending, or unknown CI claims.",
+          "source/skills/shell-script-safety/scripts/check_shell_safety.py gives CI and hook shell scripts a reusable local safety gate for shebangs, strict mode, temp cleanup, eval, curl-pipe-shell, and unsafe rm variable usage.",
+          "source/evals/routing/daily-driver-workflows.json records CI-specific expectations for current check evidence, composable workflow authoring, and reusable shell-script safety.",
+          "source/evals/plugin-benchmarks/git-ci-operations.json defines Codex benchmark scenarios for CI triage, structured green claims, composable workflow authoring, reusable shell script safety, and PR green-loop delivery."
+        ]
+      },
+      "provenance": {
+        "status": "PASS",
+        "firstPartyCollisionCheck": "CHECKED_NO_COLLISION",
+        "evidence": [
+          "garden/manifests/promotions.json records git-ci-operations as a promoted referential composition and records the composed CI, Git, PR, TDD, goal, and shell-safety primitives.",
+          "The plugin manifest references canonical source primitives by path instead of copying payloads into source/plugins/git-ci-operations.",
+          "The new helper scripts are local source additions that wrap repository-neutral evidence checks rather than copied first-party provider material."
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "commands": [
+          "node source/tools/validate-source-graph.mjs",
+          "python3 -m py_compile source/skills/github-ci-operations/scripts/ci_check_evidence.py source/skills/shell-script-safety/scripts/check_shell_safety.py",
+          "printf '%s\\n' '[{\"name\":\"Validate\",\"state\":\"SUCCESS\",\"bucket\":\"pass\",\"link\":\"https://example.invalid/run\"}]' | python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input -",
+          "printf '%s\\n' '[{\"name\":\"Validate\",\"state\":\"FAILURE\",\"bucket\":\"fail\",\"link\":\"https://example.invalid/run\"}]' | python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input -; test $? -eq 1",
+          "python3 source/skills/shell-script-safety/scripts/check_shell_safety.py source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
+          "bash -n source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
+          "node source/tools/run-routing-evals.mjs --require-all-observed",
+          "intelligence validate --repo . --portable",
+          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
+          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "git diff --check"
+        ]
+      },
+      "runtimeSafety": {
+        "status": "PASS",
+        "evidence": [
+          "Git/CI Operations is exposed through source marketplace composition and this audit does not require direct runtime writes.",
+          "The CI evidence helper reads caller-supplied gh JSON and prints classification JSON; it does not mutate repositories, rerun workflows, or require token writes.",
+          "The shell safety helper reads local shell scripts and reports findings; it does not execute the scripts or perform filesystem mutation.",
+          "Provider output remains a materialized proof target rather than an authored change surface."
+        ]
+      },
+      "residualRisks": [
+        "source/evals/plugin-benchmarks/git-ci-operations.json still needs observed benchmark usage from a live repository with real PR checks.",
+        "The CI evidence helper intentionally classifies saved gh JSON and should stay paired with current-head gh commands in live sessions.",
+        "The shell safety helper is a lightweight guardrail, not a replacement for shellcheck when shellcheck is available.",
+        "Live release or deployment workflows still require separate approval before tags, releases, protected environments, or secrets are changed."
+      ],
+      "nextAction": "Run source/evals/plugin-benchmarks/git-ci-operations.json against a representative repository with GitHub Actions checks, feed benchmark-usage.jsonl into plugin-eval analyze --observed-usage, and record field observations for any CI routing misses."
     }
   ]
 }

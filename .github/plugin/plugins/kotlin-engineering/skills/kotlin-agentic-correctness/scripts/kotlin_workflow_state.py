@@ -48,6 +48,19 @@ def main(argv: list[str] | None = None) -> int:
     diagnostics.add_argument("--id", type=int, default=1, help="JSON-RPC id.")
     diagnostics.set_defaults(func=write_diagnostics_request)
 
+    intent = subparsers.add_parser("intent", help="Write a Kotlin turn intent JSON file.")
+    intent.add_argument("--repo", default=".", help="Repository root.")
+    intent.add_argument("--state-dir", default=DEFAULT_STATE_DIR, help="State directory.")
+    intent.add_argument("--output", help="Intent file to write. Defaults to latest session intent.json.")
+    intent.add_argument("--invariant", required=True, help="Invariant or behavior boundary for the turn.")
+    intent.add_argument("--package-owner", required=True, help="Expected package, module, or file owner.")
+    intent.add_argument("--boundary-input", action="append", default=[], help="Untrusted input boundary. May repeat.")
+    intent.add_argument("--domain-type", action="append", default=[], help="Trusted domain type or value. May repeat.")
+    intent.add_argument("--expected-failure", action="append", default=[], help="Typed expected failure. May repeat.")
+    intent.add_argument("--proof-target", action="append", default=[], help="Kast, Gradle, test, or CI proof target. May repeat.")
+    intent.add_argument("--note", default="", help="Optional short note.")
+    intent.set_defaults(func=write_intent)
+
     record = subparsers.add_parser("record-command", help="Append command evidence as JSONL.")
     record.add_argument("--repo", default=".", help="Repository root.")
     record.add_argument("--evidence-file", required=True, help="JSONL evidence file.")
@@ -116,6 +129,26 @@ def write_diagnostics_request(args: argparse.Namespace) -> int:
     return 0
 
 
+def write_intent(args: argparse.Namespace) -> int:
+    repo_root = Path(args.repo).resolve()
+    output = resolve_path(repo_root, args.output) if args.output else latest_session_file(repo_root, args.state_dir, "intent.json")
+    payload = {
+        "version": STATE_VERSION,
+        "repoRoot": str(repo_root),
+        "recordedAt": utc_now_iso(),
+        "invariant": args.invariant,
+        "boundaryInputs": args.boundary_input,
+        "domainTypes": args.domain_type,
+        "expectedFailures": args.expected_failure,
+        "packageOwner": args.package_owner,
+        "proofTargets": args.proof_target,
+        "note": args.note,
+    }
+    atomic_write_json(output, payload)
+    print(json.dumps({"intentFile": str(output)}, indent=2, sort_keys=True))
+    return 0
+
+
 def record_command(args: argparse.Namespace) -> int:
     repo_root = Path(args.repo).resolve()
     command_args = list(args.command_args)
@@ -176,6 +209,20 @@ def optional_resolved(repo_root: Path, value: str | None) -> str | None:
     if not value:
         return None
     return str(resolve_path(repo_root, value))
+
+
+def latest_session_file(repo_root: Path, state_dir: str, filename: str) -> Path:
+    latest_file = resolve_path(repo_root, state_dir) / "latest.json"
+    if not latest_file.exists():
+        raise SystemExit(f"latest session does not exist: {latest_file}; run init first or pass --output")
+    try:
+        latest = json.loads(latest_file.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise SystemExit(f"latest session is invalid JSON: {latest_file}: {error}") from error
+    session_dir = latest.get("sessionDir")
+    if not isinstance(session_dir, str) or not session_dir:
+        raise SystemExit(f"latest session is missing sessionDir: {latest_file}")
+    return Path(session_dir) / filename
 
 
 def resolve_path(repo_root: Path, value: str) -> Path:

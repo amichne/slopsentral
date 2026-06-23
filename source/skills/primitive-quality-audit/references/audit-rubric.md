@@ -29,7 +29,8 @@ blocked by another.
 
 - Persisted structured data has an owning schema, generator, typed parser, or
   validation command.
-- New JSON files are covered by `node scripts/validate-manifests.mjs`.
+- New JSON files are covered by `node source/tools/validate-source-graph.mjs`,
+  a focused helper, or another repository-owned validator for that data shape.
 - Schema shape changes land before or with the data they govern.
 - Examples and fixtures are validated when they are meant to define behavior.
 
@@ -53,6 +54,8 @@ blocked by another.
 
 - Runtime exposure is represented in `garden/manifests/runtime-links.json` before any
   write to runtime targets.
-- Cleanup intent is represented in `garden/manifests/cleanup-ledger.json` before any
-  source deletion or symlink replacement.
+- Cleanup intent is represented in `garden/manifests/cleanup-ledger.json` before
+  risky runtime, symlink, or cross-root replacement work.
+- Proven-dead authored source should be removed when cleanup is in scope; do
+  not keep stale files merely as archaeological evidence.
 - The rollback path is concrete enough for another agent to follow.

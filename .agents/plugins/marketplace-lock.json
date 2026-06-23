@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-21T22:16:21-04:00",
+  "generatedAt": "2026-06-22T16:29:44-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -167,14 +167,14 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:fe055b9c2fa91b37452054a26414983a613f52629daf81e01c6f33c8c07c4744",
+          "sha256": "sha256:0e2b60d3c21da15ddc493cfd257b6f9a00ee456bd4efa81e8a1ba02d570bd891",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:cd541aa4ac2e11c78df923fd039dbd295ec78c47fcae459342e3270c2a767d8d",
+          "sha256": "sha256:db3951fbde33b660d88a61e3815d347f94474ce4642758762abdded4559427c8",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -195,7 +195,7 @@
         },
         {
           "name": "negative-capability-proof",
-          "sha256": "sha256:83148608c99baf1e16b2f9e7793c9740b8eea2c39bfef1e90099db9d6bd77a81",
+          "sha256": "sha256:6a11a061df5d5f5d7d545544902f1eabde28f43c98e23ada63cf6b80b013f167",
           "sourcePath": "source/skills/negative-capability-proof",
           "targetPath": "skills/negative-capability-proof",
           "type": "SKILL"
@@ -237,21 +237,21 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:0e76df72d3874a19a1e07f577c7b6c87e9834bf4e1cc119c7ec6cb3b1f2e3cec",
+          "sha256": "sha256:97d85225ff7db13df36ef57a82d8ebb32804b7f6c9f26d03af4ef1c426956c77",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:8442d2e53942a76bbf5c59c0988e679ed397d27edd059f6f603c83fea50ca155",
+          "sha256": "sha256:07716a9883cda7e942ee15462f01a72847b59c96d43d7e829067d95367f117f6",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
         },
         {
           "name": "shell-script-safety",
-          "sha256": "sha256:d59aa6e0a5e74eb494e8310feb4949993f2f96d5df64946936eaf4788a3c739b",
+          "sha256": "sha256:64b368c4295a9a239fe8358bd2fc9843be2a13f7276a412e2ed0d7b443627514",
           "sourcePath": "source/skills/shell-script-safety",
           "targetPath": "skills/shell-script-safety",
           "type": "SKILL"
@@ -293,7 +293,7 @@
         },
         {
           "name": "hook-primitive-authoring",
-          "sha256": "sha256:1a236237d97ed53e4d1bc9f332dcca4a4f09fd34357695f5cfcea34266005037",
+          "sha256": "sha256:f7f4e679b9fa2a22c5cc14ba3efd2d3e8afe40ae6a87149e450933fdcacdcd1f",
           "sourcePath": "source/skills/hook-primitive-authoring",
           "targetPath": "skills/hook-primitive-authoring",
           "type": "SKILL"
@@ -314,21 +314,21 @@
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:01271eb35748a07c9f3f6aa5c990980555f2a089e71608dd9da64444c401d2fb",
+          "sha256": "sha256:54471b1cced151ea5dbe4b7153d667331d39118ec07724cbeb80404cd230d891",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
         },
         {
           "name": "primitive-quality-audit",
-          "sha256": "sha256:ae1153217a3469582df02af71936cc0801ca70b0fe35ae513e56d7a2c5a4d4fc",
+          "sha256": "sha256:42fefa33096f2e4fc924aa6b04ec49699dd7101e05e702a8bf84fdba14245a4e",
           "sourcePath": "source/skills/primitive-quality-audit",
           "targetPath": "skills/primitive-quality-audit",
           "type": "SKILL"
         },
         {
           "name": "primitive-routing-evaluation",
-          "sha256": "sha256:e30a0939f4d8449573232ddac2adf4924a1bdc0eb973e185ec5caf18825dcd48",
+          "sha256": "sha256:a7b3ce329152af24cd6b5f7a5550e3f87c898bf86cdb555d660491e8dcea04e1",
           "sourcePath": "source/skills/primitive-routing-evaluation",
           "targetPath": "skills/primitive-routing-evaluation",
           "type": "SKILL"
@@ -356,7 +356,7 @@
         },
         {
           "name": "shell-script-safety",
-          "sha256": "sha256:d59aa6e0a5e74eb494e8310feb4949993f2f96d5df64946936eaf4788a3c739b",
+          "sha256": "sha256:64b368c4295a9a239fe8358bd2fc9843be2a13f7276a412e2ed0d7b443627514",
           "sourcePath": "source/skills/shell-script-safety",
           "targetPath": "skills/shell-script-safety",
           "type": "SKILL"
@@ -377,7 +377,7 @@
         },
         {
           "name": "source-graph-consolidation",
-          "sha256": "sha256:420e4187637df78e17e88e9a02c4458852b731554a01f6406b7738fd0265c07f",
+          "sha256": "sha256:ec932cfe6eb069e25792cdc4a3e1292b17104e4ca243ebbef270c6c63526882c",
           "sourcePath": "source/skills/source-graph-consolidation",
           "targetPath": "skills/source-graph-consolidation",
           "type": "SKILL"
@@ -444,6 +444,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "cc93f4bea749f7b61297391c4a78f1974edc2144",
+  "sourceSha": "4da5cd7770b9c492ac396f921b32dcb681361d25",
   "type": "HYDRATED_MARKETPLACE"
 }

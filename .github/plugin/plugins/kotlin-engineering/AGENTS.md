@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Kotlin engineering workflow for typed design, Kast semantics, focused review, filesystem evidence, Gradle proof, and Kotlin-specific hooks.
+Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, and Kotlin package-layout hooks.
 
 ## Operating Rules
 
