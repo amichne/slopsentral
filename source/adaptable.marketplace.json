@@ -519,15 +519,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/cli",
-      "name": "circleci-cli"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/cli-creator",
       "name": "cli-creator"
     },

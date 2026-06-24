@@ -24,13 +24,6 @@
     },
     {
       "type": "SKILL",
-      "name": "circleci-cli",
-      "canonicalPath": "source/skills/cli",
-      "sourcePath": "/Users/amichne/code/intelligence/source/skills/cli",
-      "handling": "promoted-canonical"
-    },
-    {
-      "type": "SKILL",
       "name": "cli-creator",
       "canonicalPath": "source/skills/cli-creator",
       "sourcePath": "/Users/amichne/code/intelligence/source/skills/cli-creator",

@@ -3,13 +3,38 @@ set -euo pipefail
 
 COMMAND="${1:-}"
 if [[ -z "${COMMAND}" ]]; then
-    echo "usage: agents-md-turn-refresh.sh <start|record|stop|status>" >&2
+    echo "usage: agents-md-turn-refresh.sh <start|record|stop|status> [--repo PATH]" >&2
     exit 2
 fi
+shift
+
+REPO_ARG="${AGENTS_MD_TURN_REFRESH_REPO:-}"
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --repo)
+            [[ $# -ge 2 ]] || {
+                echo "agents-md-turn-refresh.sh: --repo requires a path" >&2
+                exit 2
+            }
+            REPO_ARG="$2"
+            shift 2
+            ;;
+        -h|--help)
+            echo "usage: agents-md-turn-refresh.sh <start|record|stop|status> [--repo PATH]" >&2
+            exit 0
+            ;;
+        *)
+            echo "agents-md-turn-refresh.sh: unknown argument: $1" >&2
+            exit 2
+            ;;
+    esac
+done
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-if [[ -n "${AGENTS_MD_TURN_REFRESH_REPO:-}" ]]; then
-    REPO_ROOT="${AGENTS_MD_TURN_REFRESH_REPO}"
+if [[ -n "${REPO_ARG}" ]]; then
+    REPO_ROOT="$(cd -- "${REPO_ARG}" && pwd)"
+elif REPO_ROOT="$(git -C "${PWD}" rev-parse --show-toplevel 2>/dev/null)"; then
+    :
 else
     REPO_ROOT="$(git -C "${SCRIPT_DIR}" rev-parse --show-toplevel)"
 fi
@@ -369,7 +394,8 @@ def stop() -> int:
     print("", file=sys.stderr)
     print(
         "Review the nearest parent instructions, add only local deltas, and rerun "
-        "`bash hooks/agents-md-turn-refresh.sh stop`.",
+        "`bash source/hooks/agents-md-turn-refresh.sh stop --repo .` for repo-local checks "
+        "or the configured hook command with `--repo <repo>`.",
         file=sys.stderr,
     )
 
