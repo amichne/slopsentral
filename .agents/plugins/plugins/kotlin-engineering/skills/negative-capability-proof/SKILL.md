@@ -10,6 +10,11 @@ fewer representable illegal states, operations, transitions, or combinations.
 The output must prove that an architectural hole existed before the change and
 that the reachable state space is smaller afterward.
 
+Use the `kotlin-code-correctness` instruction for the general Kotlin acceptance
+standard. Copilot packages expose it as `instructions/kotlin-code-correctness.md`.
+This skill owns the stricter before/after proof that a specific misuse was
+representable and is no longer reachable through the Kotlin API.
+
 ## Operating Contract
 
 - Operate only inside the caller-provided module, package, feature area, service

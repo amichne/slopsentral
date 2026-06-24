@@ -26,6 +26,9 @@ the final answer can cite evidence files instead of terminal scrollback.
 - Never claim the build is green until the relevant Gradle command exits
   successfully.
 - Preserve schema-driven rules for generated or persisted build summaries.
+- Keep domain modeling, API shape, package cohesion, and expected-failure design
+  in the `kotlin-code-correctness` instruction and `kotlin-standards`; this
+  skill owns build evidence, report parsing, and Gradle iteration.
 
 ## Workflow
 

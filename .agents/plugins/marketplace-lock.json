@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-24T01:00:06-04:00",
+  "generatedAt": "2026-06-24T14:12:57-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -111,7 +111,7 @@
       "references": [
         {
           "name": "kotlin-boundary-contract-reviewer",
-          "sha256": "sha256:fa2a10dff2f0308259127ad3abb1ad64bc9eb3d9af3a257b9f9cf3738e9ea472",
+          "sha256": "sha256:f059a141e0f5ad8d32cf0c5ce9de12bd8fdf8b468a49f82c7c28423687b268fc",
           "sourcePath": "source/agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
           "targetPath": "agents/kotlin-boundary-contract-reviewer.agent.md",
           "type": "AGENT"
@@ -125,14 +125,14 @@
         },
         {
           "name": "kotlin-review-captain",
-          "sha256": "sha256:b64b31256c67463b0b3f358fdc9036123ba5d331a2d4cbd21c921ab07bb5ea5b",
+          "sha256": "sha256:122bdf8f1f296b53bbda793982475adf26286dd43c42306dafd3ccda302df89d",
           "sourcePath": "source/agents/kotlin-review/kotlin-review-captain.agent.md",
           "targetPath": "agents/kotlin-review-captain.agent.md",
           "type": "AGENT"
         },
         {
           "name": "kotlin-type-safety-reviewer",
-          "sha256": "sha256:bdc2e2fcfd83bd49766e2714f4a42afe10746e3f66a2ab2c20c7ac508e27785c",
+          "sha256": "sha256:0b7ef93d37c9d71b042d126da4ce83549dfdf5f3acca391afd6caef26a66f8d7",
           "sourcePath": "source/agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
           "targetPath": "agents/kotlin-type-safety-reviewer.agent.md",
           "type": "AGENT"
@@ -152,6 +152,13 @@
           "type": "HOOK"
         },
         {
+          "name": "kotlin-code-correctness",
+          "sha256": "sha256:6384593dbc8e40116e86dfa7b9bbd80b528de2d697c7a9c5084bfa5f02d7ef51",
+          "sourcePath": "source/concepts/kotlin-code-correctness/core.md",
+          "targetPath": "instructions/kotlin-code-correctness.md",
+          "type": "INSTRUCTION"
+        },
+        {
           "name": "schema-driven-design",
           "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
@@ -167,35 +174,35 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:0e2b60d3c21da15ddc493cfd257b6f9a00ee456bd4efa81e8a1ba02d570bd891",
+          "sha256": "sha256:0700b9e96b87cbe2b70ddea47eb26464e25c6b58852e0dd4a79ee1af77de2040",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:db3951fbde33b660d88a61e3815d347f94474ce4642758762abdded4559427c8",
+          "sha256": "sha256:2f4cc1f64e6a257d18f5dbbbd40e2c65580145c4eca5733372e3a261f6d51378",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:ae2606e222576b8f67b46f89eb9a4811e3e4d597dacb01641c098335f7be7599",
+          "sha256": "sha256:5c772781cac5c3cde8fb89ec393a824ef6cee309a6e3b9b44a4381f18bef5ebd",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
           "type": "SKILL"
         },
         {
           "name": "kotlin-standards",
-          "sha256": "sha256:934538021afc46240b3622c5c46dfc18371b093c3f351daaede933a42e3ad5be",
+          "sha256": "sha256:ad38ba3247b69f209a395869ff796d5c8ce57f666bc9de041631848f11e5d5b9",
           "sourcePath": "source/skills/kotlin-standards",
           "targetPath": "skills/kotlin-standards",
           "type": "SKILL"
         },
         {
           "name": "negative-capability-proof",
-          "sha256": "sha256:6a11a061df5d5f5d7d545544902f1eabde28f43c98e23ada63cf6b80b013f167",
+          "sha256": "sha256:d91e18ee2cda97bf363149cb2924ae213ee6faf92ba6272b7e03749e832195f6",
           "sourcePath": "source/skills/negative-capability-proof",
           "targetPath": "skills/negative-capability-proof",
           "type": "SKILL"
@@ -444,6 +451,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "a9ba7831e0be55f5df41fb10b364679416fc19f4",
+  "sourceSha": "081a1705899c71f7b11bd840fb92665a5e1425bc",
   "type": "HYDRATED_MARKETPLACE"
 }

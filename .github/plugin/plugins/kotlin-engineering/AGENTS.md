@@ -23,6 +23,7 @@ Kotlin best-practices package for type-driven design, parse-dont-validate APIs, 
 
 ## Instruction Primitives
 
+- `kotlin-code-correctness`: `instructions/kotlin-code-correctness.md` (source: `source/concepts/kotlin-code-correctness/core.md`)
 - `schema-driven-design`: `instructions/schema-driven-design.md` (source: `source/concepts/schema-driven-design/core.md`)
 - `type-safety`: `instructions/type-safety.md` (source: `source/concepts/type-safety/core.md`)
 

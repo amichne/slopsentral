@@ -9,6 +9,11 @@ Use this skill as the orchestration layer for Kotlin review. It routes a Kotlin
 change through focused review passes, applies the local type and schema
 instructions, and deduplicates the result into one actionable finding list.
 
+Use the `kotlin-code-correctness` instruction as the review acceptance
+standard. Copilot packages expose it as `instructions/kotlin-code-correctness.md`.
+This skill owns review routing and finding synthesis, not the evergreen Kotlin
+policy itself.
+
 ## Building Blocks
 
 Use these bundled primitives when they are available:
@@ -20,6 +25,9 @@ Use these bundled primitives when they are available:
   serialization, persistence, HTTP, messaging, SDK, and interop boundaries.
 - `kotlin-package-cohesion-reviewer`: audit package topology, prefix-heavy
   directories, multi-member files, and horizontal layer buckets.
+- `kotlin-code-correctness`: apply the stable instruction for Kotlin domain
+  shape, boundary parsing, package ownership, expected failures, state safety,
+  and proof.
 - `type-safety` and `schema-driven-design`: use as normative instructions for
   invalid-state prevention and boundary assertions.
 - `kotlin-standards`: load for detailed Kotlin layout, API, idiom, and testing
@@ -37,25 +45,28 @@ agent files.
    `git diff` or the user-provided paths, and inspect only the smallest
    surrounding context needed to understand public behavior.
 
-2. Route review passes.
+2. Load the `kotlin-code-correctness` instruction when the diff needs a stable
+   Kotlin standard beyond a narrow agent profile.
+
+3. Route review passes.
    Use the captain for broad review or when multiple axes apply. Use focused
    reviewers directly for narrow requests: type safety, boundary contracts, or
    package cohesion.
 
-3. Run a duplication and generalization pass.
+4. Run a duplication and generalization pass.
    Look for repeated parser/validation logic, DTO-domain mapping, lifecycle
    rules, parallel metadata catalogs, repeated leading filename prefixes,
    duplicated tests, and multiple constructors or factories enforcing the same
    invariant. Prefer one named owner only when the shared concept, lifecycle,
    dependency direction, and verification surface are clear.
 
-4. Deduplicate findings.
+5. Deduplicate findings.
    If one package move, parser extraction, sealed type, value class, or boundary
    assertion fixes several symptoms, report it as one finding with the combined
    rationale. Do not split type, boundary, cohesion, and duplication findings
    when the same change is the meaningful fix.
 
-5. Verify review evidence.
+6. Verify review evidence.
    Use file paths, line numbers, type signatures, package counts, call sites,
    tests, compiler output, or Gradle/Kast evidence. For pure review, do not run
    broad validation unless the user asks or the risk justifies it. If fixes are

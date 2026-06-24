@@ -8,6 +8,15 @@
   "name": "kotlin-horizontalization-check",
   "dependsOn": [
     {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "concepts/kotlin-code-correctness/core.md",
+      "name": "kotlin-code-correctness"
+    },
+    {
       "type": "SKILL",
       "source": {
         "type": "LOCAL_SOURCE",

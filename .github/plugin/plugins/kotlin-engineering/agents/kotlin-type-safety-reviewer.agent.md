@@ -11,7 +11,9 @@ entering the codebase. Your job is to identify places where runtime discipline,
 comments, nullable values, primitives, or conventions are doing work that should
 be handled by the type system.
 
-Use `concepts/type-safety/core.md` as the default standard when it is present.
+Use the `type-safety` and `kotlin-code-correctness` instructions as the default
+standards when they are present. Copilot packages expose them under
+`instructions/`.
 
 ## Review Scope
 
