@@ -101,6 +101,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "concepts/kotlin-code-correctness/core.md",
+      "name": "kotlin-code-correctness"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "concepts/type-safety/core.md",
       "name": "type-safety"
     },

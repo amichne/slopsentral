@@ -1,26 +1,37 @@
 ---
 name: "kotlin-standards"
-description: "Use when writing, reviewing, or refactoring Kotlin code that benefits from type-driven design, parse-don't-validate boundaries, scoped package/file layout, Kotlin-native expression style, immutable state, explicit errors, coroutine safety, API design, or correctness-focused tests. Trigger for Kotlin implementation work, domain modeling, API review, primitive obsession, null-heavy logic, boolean flags, validation-heavy code, or package cohesion concerns."
+description: "Apply Kotlin code-correctness standards while writing, reviewing, or refactoring Kotlin: type-driven domain modeling, parse-don't-validate boundaries, semantic package/file layout, explicit expected failures, Kotlin idiom, immutable state, API design, and correctness-focused tests. Use for Kotlin implementation tasks, API review, primitive/null/boolean traps, validation-heavy code, or package cohesion concerns."
 ---
 
 # Kotlin Standards
 
-Write Kotlin whose shape communicates the domain. Make illegal states hard to
-construct, keep core rules pure, and prove behavior with focused tests.
+Use this skill as the Kotlin task workflow and reference router. Stable
+repo-level policy belongs in instruction concepts; deterministic enforcement
+belongs in hooks.
 
-Use these repo-level concepts when the task crosses their scope:
+Use these instruction concepts when the task crosses their scope:
 
-- `concepts/type-safety/core.md`
-- `concepts/schema-driven-design/core.md`
+- `kotlin-code-correctness` (`instructions/kotlin-code-correctness.md` in
+  Copilot packages)
+- `type-safety` (`instructions/type-safety.md` in Copilot packages)
+- `schema-driven-design` (`instructions/schema-driven-design.md` in Copilot
+  packages)
 
 ## Operating Rules
 
-- Prefer types over comments, conventions, nullable flags, and repeated checks.
-- Parse untrusted input at boundaries, then pass trusted domain models inward.
-- Keep side effects at the edge; keep the important rules pure and state-free.
+- Frame the boundary input, trusted domain output, invariant owner, and expected
+  failure shape before editing.
+- Prefer Kotlin types over comments, conventions, nullable flags, primitive
+  tags, and repeated checks.
+- Parse untrusted input once at boundaries, then pass trusted domain models
+  inward.
+- Keep side effects at the edge; keep important rules pure, immutable, or
+  intentionally confined.
 - Preserve local public behavior unless the task explicitly asks for a break.
 - Follow the nearest established repository pattern before adding abstraction.
 - Test observable correctness, not implementation shape.
+- Treat `kotlin-horizontalization-check` and `gradle-check-green` hook output as
+  evidence. Fix failures or name why the local change is outside their scope.
 
 ## Layout Rules
 
@@ -31,8 +42,10 @@ Use these repo-level concepts when the task crosses their scope:
 - Split only when the new unit has a name, owner, lifecycle, dependency, or test
   surface.
 
-For detailed layout heuristics, read
-`references/layout-package-code-style.md`.
+Use the `kotlin-code-correctness` instruction for the stable package-ownership
+standard. Use `references/layout-package-code-style.md` for detailed layout
+heuristics and `references/horizontalization-heuristic.md` when a package is
+showing repeated prefixes or layer buckets.
 
 ## Type And Boundary Rules
 
@@ -63,13 +76,16 @@ For detailed layout heuristics, read
    public behavior.
 2. Inspect the immediate package, tests, and existing abstractions for local
    naming, error, layout, and verification patterns.
-3. Choose the narrowest semantic unit that owns the change.
-4. Add one tracer-bullet test for the next observable behavior, then implement
+3. Load the `kotlin-code-correctness` instruction when the turn needs
+   repo-level Kotlin instruction, then load only the narrow reference below that
+   matches the local problem.
+4. Choose the narrowest semantic unit that owns the change.
+5. Add one tracer-bullet test for the next observable behavior, then implement
    the smallest vertical slice that passes.
-5. Refactor only while green: improve names, package boundaries, file ownership,
+6. Refactor only while green: improve names, package boundaries, file ownership,
    type modeling, and expression style.
-6. Run the narrowest useful verification command before broadening scope.
-7. Re-score the change and fix any `Fail` before finishing.
+7. Run the narrowest useful verification command before broadening scope.
+8. Re-score the change and fix any `Fail` before finishing.
 
 ## Finish Scorecard
 
@@ -101,6 +117,19 @@ Load only the smallest reference that matches the task:
 
 Prefer a narrow leaf reference over a router file. Load multiple references
 only when the task crosses multiple subtopics.
+
+## Ownership Boundary
+
+- `kotlin-code-correctness` owns evergreen Kotlin acceptance policy.
+- `kotlin-agentic-correctness` owns file-backed implementation workflow,
+  semantic evidence, and end-of-turn scorecards.
+- `kotlin-gradle-validation` owns Gradle command execution and structured build
+  evidence.
+- `kotlin-review` owns review orchestration and focused reviewer routing.
+- `negative-capability-proof` owns before/after proof that an invalid Kotlin
+  state or operation is no longer representable.
+- Hooks own mechanical turn-end checks. Do not copy hook thresholds into this
+  skill; route to the hook output or package-cohesion reference instead.
 
 ## Completion Gate
 

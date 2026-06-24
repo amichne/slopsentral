@@ -10,8 +10,16 @@ depends on domain shape, semantic code understanding, and executable evidence.
 It composes the Kotlin standards, typed design principles, Gradle validation,
 Kotlin review, and Kast semantic tooling.
 
+Use the `kotlin-code-correctness` instruction as the stable Kotlin standard.
+Copilot packages expose it as `instructions/kotlin-code-correctness.md`. This
+skill owns the agent workflow: intent capture, filesystem-backed evidence,
+semantic orientation, verification rings, and final scorecard.
+
 ## Operating Contract
 
+- Apply the Kotlin code-correctness instruction before choosing implementation
+  shape; use `kotlin-standards` for detailed layout, API, idiom, and testing
+  references.
 - Make illegal states unrepresentable with value classes, sealed hierarchies,
   enums, private constructors, focused factories, and typed expected failures.
 - Parse untrusted data at the edge. Core Kotlin code should accept trusted
@@ -30,6 +38,8 @@ Kotlin review, and Kast semantic tooling.
   stateful JSON parsing, request construction, scoring, and evidence records.
 - For mutations, prefer Kast's plan, review, apply flow or normal repository
   patch tools followed by Kast diagnostics and the narrowest Gradle proof.
+- Keep generic branch, pull request, release, and CI ownership in delivery
+  skills or workflow profiles; record only the Kotlin proof here.
 
 ## Workflow
 
@@ -118,6 +128,8 @@ Mark each dimension `Pass`, `Concern`, or `Fail` before finishing:
 
 ## Reference Map
 
+- Kotlin instruction: `kotlin-code-correctness`
+  (`instructions/kotlin-code-correctness.md` in Copilot packages)
 - Filesystem evidence layout: `references/filesystem-evidence-contract.md`
 - Kast file-first fallback: `references/kast-file-first.md`
 - Helper scripts:

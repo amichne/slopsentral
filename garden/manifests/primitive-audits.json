@@ -164,6 +164,86 @@
     },
     {
       "type": "PRIMITIVE_AUDIT",
+      "id": "kotlin-engineering-instruction-boundary-synthesis",
+      "target": {
+        "kind": "PLUGIN",
+        "name": "kotlin-engineering",
+        "paths": [
+          "source/plugins/kotlin-engineering/plugin.json",
+          "source/skills/kotlin-agentic-correctness",
+          "source/skills/kotlin-gradle-validation",
+          "source/skills/kotlin-review",
+          "source/skills/kotlin-standards",
+          "source/skills/negative-capability-proof",
+          "source/concepts/kotlin-code-correctness/core.md",
+          "source/hooks/kotlin-horizontalization-check.hook.json",
+          "source/hooks/gradle-check-green.hook.json",
+          "source/adaptable.marketplace.json",
+          "garden/manifests/promotions.json"
+        ]
+      },
+      "baseline": "The prior Kotlin Engineering audit marked the plugin production-ready, but the stable Kotlin acceptance policy still lived primarily inside skill prose while hook dependencies did not name the instruction they enforced.",
+      "decision": "PROMOTE_READY",
+      "confidence": "HIGH",
+      "reviewedAt": "2026-06-24",
+      "reviewedBy": "codex",
+      "capabilityBoundary": {
+        "status": "PASS",
+        "evidence": [
+          "source/concepts/kotlin-code-correctness/core.md now owns stable Kotlin policy for domain modeling, boundary parsing, package ownership, expected failures, state safety, and proof.",
+          "source/skills/kotlin-standards/SKILL.md is now the Kotlin task workflow and reference router instead of the sole home for evergreen policy.",
+          "Sibling Kotlin skills keep separate jobs: implementation evidence, Gradle evidence, review orchestration, and negative-capability proof."
+        ]
+      },
+      "schemaCoverage": {
+        "status": "PASS",
+        "evidence": [
+          "source/plugins/kotlin-engineering/plugin.json composes the new instruction by reference.",
+          "source/adaptable.marketplace.json exposes the instruction as a standalone marketplace primitive.",
+          "source/hooks/kotlin-horizontalization-check.hook.json and source/hooks/gradle-check-green.hook.json declare the instruction dependency rather than copying policy text.",
+          "Copilot materialization exposes composed instruction primitives under instructions/*.md, so Kotlin skills and review agents now use logical instruction names plus Copilot package paths instead of source-only concepts/... paths.",
+          "source/tools/validate-source-graph.mjs validates instruction references, hook dependencies, plugin references, marketplace entries, and audit target paths."
+        ]
+      },
+      "provenance": {
+        "status": "PASS",
+        "firstPartyCollisionCheck": "CHECKED_NO_COLLISION",
+        "evidence": [
+          "garden/manifests/promotions.json records kotlin-code-correctness as a local synthesis supporting primitive.",
+          "The instruction is locally authored from the existing Kotlin Engineering source primitives and does not raw-copy first-party system skill material.",
+          "The name kotlin-code-correctness is scoped to this marketplace and does not collide with existing first-party skill names in the source graph."
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "commands": [
+          "node source/tools/validate-source-graph.mjs",
+          "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check --audit-id kotlin-engineering-instruction-boundary-synthesis",
+          "python3 -m py_compile source/hooks/kotlin-horizontalization-check.py",
+          "python3 -m unittest source/hooks/tests/test_kotlin_horizontalization_check.py",
+          "intelligence validate --repo . --portable",
+          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
+          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "git diff --check"
+        ]
+      },
+      "runtimeSafety": {
+        "status": "PASS",
+        "evidence": [
+          "This change updates authored source and provider-neutral composition only; it does not write runtime targets or installed plugin caches.",
+          "The runtime link plan remains approval-gated through marketplace import.",
+          "Hook behavior remains implemented by existing hook scripts; this audit changes dependency metadata, not provider execution commands."
+        ]
+      },
+      "residualRisks": [
+        "Generated provider output must be materialized and validated before publication.",
+        "Installed runtime caches will not reflect this source change until the marketplace package is regenerated and imported.",
+        "Live Kotlin sessions should still feed routing observations back into the Kotlin Engineering eval corpus when the instruction is loaded but bypassed."
+      ],
+      "nextAction": "Materialize provider outputs and validate hydrated marketplace packages before publishing or reinstalling kotlin-engineering."
+    },
+    {
+      "type": "PRIMITIVE_AUDIT",
       "id": "agent-platform-authoring-plugin-production-readiness",
       "target": {
         "kind": "PLUGIN",

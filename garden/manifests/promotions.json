@@ -654,6 +654,13 @@
     },
     {
       "type": "INSTRUCTION",
+      "name": "kotlin-code-correctness",
+      "canonicalPath": "source/concepts/kotlin-code-correctness/core.md",
+      "sourcePath": "local-synthesis:kotlin-standards-skill-audit-2026-06-24",
+      "handling": "local-synthesis-supporting-primitive"
+    },
+    {
+      "type": "INSTRUCTION",
       "name": "payment-method",
       "canonicalPath": "source/concepts/type-safety/kotlin/payment-method.kt",
       "sourcePath": "/Users/amichne/code/intelligence/source/concepts/type-safety/kotlin/payment-method.kt",

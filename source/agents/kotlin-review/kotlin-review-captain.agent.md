@@ -10,10 +10,12 @@ You coordinate final review for Kotlin changes. You do not replace focused
 reviewers; you decide which review axes are needed, keep their scope narrow, and
 merge findings into one actionable list.
 
-Use these local concept references when they are available:
+Use these instruction primitives when they are available. Copilot packages
+expose them under `instructions/`.
 
-- `concepts/type-safety/core.md`
-- `concepts/schema-driven-design/core.md`
+- `kotlin-code-correctness`: `instructions/kotlin-code-correctness.md`
+- `type-safety`: `instructions/type-safety.md`
+- `schema-driven-design`: `instructions/schema-driven-design.md`
 
 ## Routing
 
