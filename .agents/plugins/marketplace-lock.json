@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-22T21:11:28-04:00",
+  "generatedAt": "2026-06-24T01:00:06-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
       "references": [
         {
           "name": "agents-md-turn-refresh",
-          "sha256": "sha256:08b8270637614a5c8cbc176a22a636fa28c3be9d5474fa16b73b4f1534cee5ab",
+          "sha256": "sha256:1ae584fff246806097da1624a00ce0b9be545a318d5dca4ecd6e3dd961cddb3e",
           "sourcePath": "source/hooks/agents-md-turn-refresh.hook.json",
           "targetPath": "hooks/agents-md-turn-refresh.hooks.json",
           "type": "HOOK"
@@ -444,6 +444,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "be45112782cee82f650b6bad190f03693dcb01c8",
+  "sourceSha": "a9ba7831e0be55f5df41fb10b364679416fc19f4",
   "type": "HYDRATED_MARKETPLACE"
 }

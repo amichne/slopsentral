@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash hooks/agents-md-turn-refresh.sh start",
+            "command": "bash hooks/agents-md-turn-refresh.sh start --repo .",
             "timeout": 10,
             "statusMessage": "Starting AGENTS.md turn tracking"
           }
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash hooks/agents-md-turn-refresh.sh record",
+            "command": "bash hooks/agents-md-turn-refresh.sh record --repo .",
             "timeout": 10,
             "statusMessage": "Recording AGENTS.md turn edits"
           }
@@ -31,7 +31,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash hooks/agents-md-turn-refresh.sh stop",
+            "command": "bash hooks/agents-md-turn-refresh.sh stop --repo .",
             "timeout": 30,
             "statusMessage": "Checking affected AGENTS.md files"
           }
