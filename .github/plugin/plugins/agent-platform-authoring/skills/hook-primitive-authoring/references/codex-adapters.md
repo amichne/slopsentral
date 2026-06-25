@@ -4,15 +4,14 @@ Use this reference when editing `source/hooks/codex/*.hooks.json`.
 
 ## Shape
 
-Codex adapter files should describe provider events and call a hook
-implementation from the materialized plugin payload. The authored adapter lives
-under `source/hooks/codex/`, but command paths use runtime payload paths such as
+Codex adapter files should contain the published hooks config object with one
+top-level key: `hooks`. Do not add `$schema`, `description`, or repository-local
+metadata to these runtime adapter files. The authored adapter lives under
+`source/hooks/codex/`, but command paths use runtime payload paths such as
 `hooks/example.py`:
 
 ```json
 {
-  "$schema": "https://json.schemastore.org/codex-hooks.json",
-  "description": "Short behavior description.",
   "hooks": {
     "Stop": [
       {
@@ -35,6 +34,9 @@ under `source/hooks/codex/`, but command paths use runtime payload paths such as
 - Keep command strings short and rooted in canonical hook scripts.
 - Set realistic timeouts.
 - Use `statusMessage` to describe what is being checked.
+- Keep adapter JSON strict: the top-level object must only have `hooks`, matcher
+  groups may only have `matcher` and `hooks`, and command handlers may only have
+  `type`, `command`, `commandWindows`, `timeout`, and `statusMessage`.
 - Do not inline complex shell pipelines when a script would be clearer and more
   testable.
 - If the provider event payload matters, the implementation should tolerate

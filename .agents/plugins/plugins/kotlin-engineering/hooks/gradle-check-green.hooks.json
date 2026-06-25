@@ -1,6 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/codex-hooks.json",
-  "description": "Run a Gradle green check at turn end when Kotlin or Gradle-owned files changed.",
   "hooks": {
     "Stop": [
       {

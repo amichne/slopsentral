@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-06-24T14:12:57-04:00",
+  "generatedAt": "2026-06-25T00:35:35-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
       "references": [
         {
           "name": "agents-md-turn-refresh",
-          "sha256": "sha256:1ae584fff246806097da1624a00ce0b9be545a318d5dca4ecd6e3dd961cddb3e",
+          "sha256": "sha256:ba4b041cafc1800f5abb3bc705c1106c688ce65a266a6c4933f4edc7d1228964",
           "sourcePath": "source/hooks/agents-md-turn-refresh.hook.json",
           "targetPath": "hooks/agents-md-turn-refresh.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "required-skill-read",
-          "sha256": "sha256:19091b15a9c0808d815885c0dc5682e26aa8bf8b28ac9201063e11e60128867d",
+          "sha256": "sha256:f73e859fc6c39f90b5c000aa1293fdad8d8d06570ed04a54775a8f25fabb736c",
           "sourcePath": "source/hooks/required-skill-read.hook.json",
           "targetPath": "hooks/required-skill-read.hooks.json",
           "type": "HOOK"
@@ -139,14 +139,14 @@
         },
         {
           "name": "gradle-check-green",
-          "sha256": "sha256:ea899f5220836c6b9f3a9c4b9791f855e57712f2a5e59dadda9bacdc13253ae6",
+          "sha256": "sha256:7050f2c81439c5fd09c3d22b9669422a74faee432ca1270b75cbd93f551739b0",
           "sourcePath": "source/hooks/gradle-check-green.hook.json",
           "targetPath": "hooks/gradle-check-green.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "kotlin-horizontalization-check",
-          "sha256": "sha256:287b758f0af60bc380fd7ab44eb9f10c9a8a13f592bdac0cc887d79fc9beac49",
+          "sha256": "sha256:32fd7ef92af4185602e3616b8b1bcfcce99bc556ed549d0346a7001a267ebaa3",
           "sourcePath": "source/hooks/kotlin-horizontalization-check.hook.json",
           "targetPath": "hooks/kotlin-horizontalization-check.hooks.json",
           "type": "HOOK"
@@ -300,7 +300,7 @@
         },
         {
           "name": "hook-primitive-authoring",
-          "sha256": "sha256:f7f4e679b9fa2a22c5cc14ba3efd2d3e8afe40ae6a87149e450933fdcacdcd1f",
+          "sha256": "sha256:0fadd0ae8b2545e184a9fe7efec00a9bfb6721151f0bfa01463a0fe81594d185",
           "sourcePath": "source/skills/hook-primitive-authoring",
           "targetPath": "skills/hook-primitive-authoring",
           "type": "SKILL"
@@ -398,7 +398,7 @@
       "references": [
         {
           "name": "code-knowledge-drift",
-          "sha256": "sha256:886d65965f45d688c0c8182106a60d58b51460daeff546f849f7d9f124fddbe2",
+          "sha256": "sha256:5b848bd740796243736a91d1641c6eba68538f4d8ab137d85fa4dfb96b09a466",
           "sourcePath": "source/hooks/code-knowledge-drift.hook.json",
           "targetPath": "hooks/code-knowledge-drift.hooks.json",
           "type": "HOOK"
@@ -451,6 +451,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "081a1705899c71f7b11bd840fb92665a5e1425bc",
+  "sourceSha": "bef1b6fac3991c9ab918fe783afc371ccb7101fd",
   "type": "HYDRATED_MARKETPLACE"
 }
