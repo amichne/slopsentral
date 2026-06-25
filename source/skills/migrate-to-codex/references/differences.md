@@ -79,18 +79,18 @@ Docs last checked: 2026-04-20. If today's date is later, re-open the official Co
 
 | Source | Codex | Migration behavior | Caveat |
 | --- | --- | --- | --- |
-| `hooks` in `~/.claude/settings.json`, `.claude/settings.json`, or `.claude/settings.local.json` | `.codex/hooks.json` + `[features].codex_hooks = true` | Partial conversion | Review behavior before relying on migrated hooks; Claude and Codex hook runtimes are not 1:1. |
+| `hooks` in `~/.claude/settings.json`, `.claude/settings.json`, or `.claude/settings.local.json` | `.codex/hooks.json` + `[features].hooks = true` | Partial conversion | Review behavior before relying on migrated hooks; Claude and Codex hook runtimes are not 1:1. |
 | `Notification` | `notify` | Manual rewrite only | `notify` is a turn-complete notification command, not a general lifecycle hook or approval-prompt hook. |
-| `PreToolUse` | `PreToolUse` in `.codex/hooks.json` | Partial conversion | Codex currently runs PreToolUse for shell commands only and blocks only `permissionDecision: "deny"`, legacy `decision: "block"`, or exit code `2`. |
-| `PostToolUse` | `PostToolUse` in `.codex/hooks.json` | Partial conversion | Codex currently runs PostToolUse for shell commands only; `decision: "block"` becomes model feedback, and `continue: false` stops execution. Formatting or fixups that Claude tied to `Edit`/`Write` should move to a `Stop` hook, because only Bash is matched for `PostToolUse`. |
+| `PreToolUse` | `PreToolUse` in `.codex/hooks.json` | Partial conversion | Codex matches Bash, `apply_patch`, and MCP tool hooks; blocking uses `permissionDecision: "deny"`, legacy `decision: "block"`, or exit code `2`. |
+| `PostToolUse` | `PostToolUse` in `.codex/hooks.json` | Partial conversion | Codex matches Bash, `apply_patch`, and MCP tool hooks. `decision: "block"` becomes model feedback, and `continue: false` stops normal processing of the original tool result. |
 | `UserPromptSubmit` | `UserPromptSubmit` in `.codex/hooks.json` | Partial conversion | Codex can inject context or block a prompt, but it ignores `matcher` for this event and does not support source `if` filters. |
 | `SessionStart` | `SessionStart` in `.codex/hooks.json` | Partial conversion | Codex matches `startup` and `resume`; Claude may also expose other session flows. |
 | `Stop` | `Stop` in `.codex/hooks.json` | Partial conversion | Codex ignores `matcher` for Stop, can request a continuation prompt, and does not expose every source subagent/teammate stop lifecycle. |
 | `PermissionRequest` / `SubagentStart` / `SubagentStop` / `TaskCreated` / `TaskCompleted` / `StopFailure` / `PreCompact` / `PostCompact` / `SessionEnd` | No direct equivalent | Unsupported | Keep as manual follow-up items; Codex does not expose matching lifecycle coverage today. |
 | `type: "command"` | `type: "command"` | Partial conversion | `command`, `timeout` / `timeoutSec`, and `statusMessage` map. Empty commands are skipped by Codex. |
 | `type: "prompt"` / `type: "agent"` / `type: "http"` / `async: true` | No direct equivalent | Unsupported | Codex parses `prompt` / `agent` but skips them, and async hooks are skipped. HTTP hooks need a wrapper command. |
-| Hook `matcher` + `if` filters | Regex `matcher` only | Partial conversion | Codex keeps regex `matcher` for `PreToolUse`, `PostToolUse`, and `SessionStart` only. Source `if` filters do not map. |
-| Hooks in skills, agents, and plugins | No direct equivalent | Unsupported | Codex discovers hooks from config layers, not from skill or subagent manifests. |
+| Hook `matcher` + `if` filters | Regex `matcher` only | Partial conversion | Codex keeps regex `matcher` for tool, compaction, session, and subagent events. `UserPromptSubmit` and `Stop` ignore matcher, and source `if` filters do not map. |
+| Hooks in skills and agents | No direct equivalent | Unsupported | Codex discovers hooks from config layers and enabled plugins, not from skill or subagent manifests. |
 
 ## Planning and validation
 

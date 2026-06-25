@@ -29,6 +29,23 @@ const routingCaseTypes = new Set([
   "SETUP_FRICTION",
 ]);
 
+const codexHookEvents = new Set([
+  "SessionStart",
+  "PreToolUse",
+  "PermissionRequest",
+  "PostToolUse",
+  "PreCompact",
+  "PostCompact",
+  "UserPromptSubmit",
+  "SubagentStart",
+  "SubagentStop",
+  "Stop",
+]);
+
+const codexHooksConfigKeys = new Set(["hooks"]);
+const codexHookGroupKeys = new Set(["matcher", "hooks"]);
+const codexCommandHookKeys = new Set(["type", "command", "commandWindows", "timeout", "statusMessage"]);
+
 const findings = [];
 
 function fail(message) {
@@ -188,6 +205,7 @@ function validateHookAdapter(hookName, adapterPath) {
   const relativePath = `source/${adapterPath}`;
   const adapter = readJson(relativePath);
   if (!adapter) return;
+  validateCodexHookAdapterShape(hookName, relativePath, adapter);
   const commands = [];
   collectHookCommands(adapter, commands);
   if (commands.length === 0) {
@@ -217,6 +235,78 @@ function validateHookAdapter(hookName, adapterPath) {
     }
     if (runner === "python3" && !scriptName.endsWith(".py")) {
       fail(`${relativePath}: python3 command should target a .py script: ${scriptName}`);
+    }
+  }
+}
+
+function validateAllowedKeys(owner, value, allowedKeys) {
+  for (const key of Object.keys(value)) {
+    if (!allowedKeys.has(key)) {
+      fail(`${owner}: unsupported key ${key}`);
+    }
+  }
+}
+
+function validateCodexHookAdapterShape(hookName, relativePath, adapter) {
+  if (!adapter || typeof adapter !== "object" || Array.isArray(adapter)) {
+    fail(`${relativePath}: Codex hook config ${hookName} must be an object`);
+    return;
+  }
+  validateAllowedKeys(relativePath, adapter, codexHooksConfigKeys);
+  if (!adapter.hooks || typeof adapter.hooks !== "object" || Array.isArray(adapter.hooks)) {
+    fail(`${relativePath}: hooks must be an object`);
+    return;
+  }
+
+  for (const [eventName, matcherGroups] of Object.entries(adapter.hooks)) {
+    const eventOwner = `${relativePath}: hooks.${eventName}`;
+    if (!codexHookEvents.has(eventName)) {
+      fail(`${eventOwner}: unsupported Codex hook event`);
+    }
+    if (!Array.isArray(matcherGroups)) {
+      fail(`${eventOwner}: event value must be an array`);
+      continue;
+    }
+    for (const [groupIndex, matcherGroup] of matcherGroups.entries()) {
+      const groupOwner = `${eventOwner}[${groupIndex}]`;
+      if (!matcherGroup || typeof matcherGroup !== "object" || Array.isArray(matcherGroup)) {
+        fail(`${groupOwner}: matcher group must be an object`);
+        continue;
+      }
+      validateAllowedKeys(groupOwner, matcherGroup, codexHookGroupKeys);
+      if (matcherGroup.matcher !== undefined && typeof matcherGroup.matcher !== "string") {
+        fail(`${groupOwner}: matcher must be a string when present`);
+      }
+      if (!Array.isArray(matcherGroup.hooks) || matcherGroup.hooks.length === 0) {
+        fail(`${groupOwner}: hooks must be a non-empty array`);
+        continue;
+      }
+      for (const [handlerIndex, handler] of matcherGroup.hooks.entries()) {
+        const handlerOwner = `${groupOwner}.hooks[${handlerIndex}]`;
+        if (!handler || typeof handler !== "object" || Array.isArray(handler)) {
+          fail(`${handlerOwner}: hook handler must be an object`);
+          continue;
+        }
+        validateAllowedKeys(handlerOwner, handler, codexCommandHookKeys);
+        if (handler.type !== "command") {
+          fail(`${handlerOwner}: type must be command`);
+        }
+        if (typeof handler.command !== "string" || !handler.command.trim()) {
+          fail(`${handlerOwner}: command must be a non-empty string`);
+        }
+        if (handler.commandWindows !== undefined && typeof handler.commandWindows !== "string") {
+          fail(`${handlerOwner}: commandWindows must be a string when present`);
+        }
+        if (
+          handler.timeout !== undefined &&
+          (!Number.isInteger(handler.timeout) || handler.timeout <= 0)
+        ) {
+          fail(`${handlerOwner}: timeout must be a positive integer when present`);
+        }
+        if (handler.statusMessage !== undefined && typeof handler.statusMessage !== "string") {
+          fail(`${handlerOwner}: statusMessage must be a string when present`);
+        }
+      }
     }
   }
 }
@@ -399,6 +489,10 @@ for (const profilePath of listFiles("source/profiles", (file) => file.endsWith("
 
 for (const requirementsPath of listFiles("source/hooks", (file) => file.endsWith(".requirements.json"))) {
   validateHookRequirements(relativeToRepo(requirementsPath));
+}
+if (fs.existsSync(path.join(repoRoot, ".codex/hooks.json"))) {
+  const codexHooks = readJson(".codex/hooks.json");
+  if (codexHooks) validateCodexHookAdapterShape("repo-local", ".codex/hooks.json", codexHooks);
 }
 
 validatePrimitiveAuditManifest("garden/manifests/primitive-audits.json");

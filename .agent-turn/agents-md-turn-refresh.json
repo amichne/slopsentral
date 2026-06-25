@@ -1,0 +1,47 @@
+{
+  "baselineAgentsMtimes": {
+    ".agents/plugins/plugins/agent-platform-authoring/AGENTS.md": 1782177418229958886,
+    ".agents/plugins/plugins/api-contracts/AGENTS.md": 1782177418238613432,
+    ".agents/plugins/plugins/code-knowledge-base/AGENTS.md": 1782177418243051309,
+    ".agents/plugins/plugins/engineering-baseline/AGENTS.md": 1782177418245500519,
+    ".agents/plugins/plugins/git-ci-operations/AGENTS.md": 1782177418247039436,
+    ".agents/plugins/plugins/kotlin-engineering/AGENTS.md": 1782324815272464731,
+    ".github/plugin/plugins/agent-platform-authoring/AGENTS.md": 1782177418255790274,
+    ".github/plugin/plugins/api-contracts/AGENTS.md": 1782177418261325360,
+    ".github/plugin/plugins/code-knowledge-base/AGENTS.md": 1782177418264546487,
+    ".github/plugin/plugins/engineering-baseline/AGENTS.md": 1782177418266208154,
+    ".github/plugin/plugins/git-ci-operations/AGENTS.md": 1782177418267232822,
+    ".github/plugin/plugins/kotlin-engineering/AGENTS.md": 1782324815275884523,
+    "AGENTS.md": 1782005765194117109,
+    "build/intelligence/marketplace/.agents/plugins/plugins/agent-platform-authoring/AGENTS.md": 1782324695033660920,
+    "build/intelligence/marketplace/.agents/plugins/plugins/api-contracts/AGENTS.md": 1782324694984952052,
+    "build/intelligence/marketplace/.agents/plugins/plugins/code-knowledge-base/AGENTS.md": 1782324695040537504,
+    "build/intelligence/marketplace/.agents/plugins/plugins/engineering-baseline/AGENTS.md": 1782324694973617522,
+    "build/intelligence/marketplace/.agents/plugins/plugins/git-ci-operations/AGENTS.md": 1782324695011971308,
+    "build/intelligence/marketplace/.agents/plugins/plugins/kotlin-engineering/AGENTS.md": 1782324695001326437,
+    "build/intelligence/marketplace/.github/plugin/plugins/agent-platform-authoring/AGENTS.md": 1782324695172193201,
+    "build/intelligence/marketplace/.github/plugin/plugins/api-contracts/AGENTS.md": 1782324695126548253,
+    "build/intelligence/marketplace/.github/plugin/plugins/code-knowledge-base/AGENTS.md": 1782324695178037547,
+    "build/intelligence/marketplace/.github/plugin/plugins/engineering-baseline/AGENTS.md": 1782324695116230878,
+    "build/intelligence/marketplace/.github/plugin/plugins/git-ci-operations/AGENTS.md": 1782324695151128206,
+    "build/intelligence/marketplace/.github/plugin/plugins/kotlin-engineering/AGENTS.md": 1782324695140994620,
+    "source/AGENTS.md": 1782267464628312238,
+    "source/agents/AGENTS.md": 1780925498000000000,
+    "source/concepts/AGENTS.md": 1780925498000000000,
+    "source/hooks/AGENTS.md": 1780925498000000000,
+    "source/plugins/AGENTS.md": 1782267464628611986,
+    "source/skills/AGENTS.md": 1782267464629054359,
+    "source/skills/react-best-practices/AGENTS.md": 1780925498000000000
+  },
+  "baselineChangedFiles": [
+    ".codex/hooks.json"
+  ],
+  "baselinePathMtimes": {
+    ".codex/hooks.json": 1782361356672637000
+  },
+  "recordedPaths": [],
+  "repoRoot": "/Users/amichne/code/slopsentral",
+  "startedAt": "2026-06-25T04:23:44.216788+00:00",
+  "startedAtEpochNs": 1782361424201968000,
+  "version": 1
+}

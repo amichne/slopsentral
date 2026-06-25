@@ -1,6 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/codex-hooks.json",
-  "description": "Run the Kotlin horizontalization layout gate at turn end for changed Kotlin files.",
   "hooks": {
     "Stop": [
       {

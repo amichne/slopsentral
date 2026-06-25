@@ -183,10 +183,10 @@ class ClaudeHooks:
     def report_detail(self) -> str:
         runtime_caveats = (
             "Rewritten for Codex hooks; review behavior before relying on it. "
-            "Codex hooks require `[features].codex_hooks = true`, only execute "
+            "Codex hooks use `[features].hooks = true`, only execute "
             "`command` handlers, skip `async` / `prompt` / `agent` handlers, ignore "
-            "`matcher` for `UserPromptSubmit` and `Stop`, and `PreToolUse` / "
-            "`PostToolUse` currently run for shell commands only."
+            "`matcher` for `UserPromptSubmit` and `Stop`, and use Codex tool "
+            "names for `PreToolUse` / `PostToolUse` matchers."
         )
         if not self.unsupported_fields:
             return runtime_caveats
