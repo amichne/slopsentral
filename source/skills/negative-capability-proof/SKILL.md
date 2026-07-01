@@ -85,7 +85,7 @@ The red proof must identify:
 Create a proof record before or with the red proof:
 
 ```bash
-python3 scripts/negative_capability_proof.py init \
+python3 scripts/negative_capability_proof init \
   --repo . \
   --output .agent-turn/negative-capability-proof/proof.json \
   --scope ":module package.path" \
@@ -99,7 +99,7 @@ Run the narrowest test command that executes the red proof and record the
 expected failing or counterexample-producing result.
 
 ```bash
-python3 scripts/negative_capability_proof.py record-phase \
+python3 scripts/negative_capability_proof record-phase \
   --repo . \
   --proof-file .agent-turn/negative-capability-proof/proof.json \
   --phase red \
@@ -150,7 +150,7 @@ about the missing construction path, missing operation, or smaller state space.
 Record the green proof after the refactor:
 
 ```bash
-python3 scripts/negative_capability_proof.py record-phase \
+python3 scripts/negative_capability_proof record-phase \
   --repo . \
   --proof-file .agent-turn/negative-capability-proof/proof.json \
   --phase green \
@@ -158,7 +158,7 @@ python3 scripts/negative_capability_proof.py record-phase \
   --command "./gradlew :module:test --tests ClientCapabilityProofTest" \
   --exit-code 0
 
-python3 scripts/negative_capability_proof.py check \
+python3 scripts/negative_capability_proof check \
   --repo . \
   --proof-file .agent-turn/negative-capability-proof/proof.json \
   --require-green-pass

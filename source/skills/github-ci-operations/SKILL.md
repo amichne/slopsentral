@@ -1,6 +1,6 @@
 ---
 name: "github-ci-operations"
-description: "Triage and fix GitHub Actions failures, maintain GitHub workflow files, inspect PR checks with gh, design CI jobs, and handle release-oriented GitHub automation. Use for GitHub CI, Actions YAML, failing PR checks, workflow dispatch, caches, artifacts, secrets, permissions, and release pipelines."
+description: "Use when GitHub Actions, PR checks, workflow YAML, dispatches, caches, artifacts, secrets, permissions, release pipelines, or CI logs need repair."
 ---
 
 # GitHub CI Operations
@@ -44,7 +44,7 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 
    ```sh
    gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow > /tmp/pr-checks.json
-   python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input /tmp/pr-checks.json
+   python3 source/skills/github-ci-operations/scripts/ci_check_evidence pr-checks --input /tmp/pr-checks.json
    ```
 
 3. Classify the failure.
@@ -61,7 +61,7 @@ when the live run, YAML, scripts, or package metadata can be inspected.
    Run the local equivalent of the failing command. For workflow YAML changes,
    run `actionlint` when present, parse YAML with available tooling when not,
    and then recheck `gh pr checks` or the relevant run. When a remote run is
-   pending, use `scripts/ci_wait_for_actions.py` with a bounded timeout instead
+   pending, use `scripts/ci_wait_for_actions` with a bounded timeout instead
    of repeatedly polling by hand.
 
 6. Hand off.
@@ -79,9 +79,9 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 
 ## Scripts
 
-- `scripts/ci_wait_for_actions.py --run-id <id>` waits for one GitHub Actions
+- `scripts/ci_wait_for_actions --run-id <id>` waits for one GitHub Actions
   run with backoff and transition-only output.
-- `scripts/ci_wait_for_actions.py --pr <number-or-url>` waits for PR checks,
+- `scripts/ci_wait_for_actions --pr <number-or-url>` waits for PR checks,
   classifies terminal failures, and captures failed run logs once.
 - Use `--evidence <path>` when the wait result should be persisted as JSON for
   handoff or later inspection.

@@ -47,6 +47,6 @@ Use this reference when creating or editing `.github/workflows/*.yml`.
 - If no workflow linter exists, at least parse YAML with local tooling and check
   indentation, event filters, permissions, expressions, and referenced scripts.
 - Run the commands invoked by the changed jobs locally when practical.
-- Run `python3 source/skills/shell-script-safety/scripts/check_shell_safety.py`
+- Run `python3 source/skills/shell-script-safety/scripts/check_shell_safety`
   on touched Bash CI scripts and `bash -n` on the same scripts.
 - For docs or generated-output jobs, run the generator before local tests.

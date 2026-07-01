@@ -177,7 +177,7 @@
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
           "source/skills/github-ci-operations/SKILL.md",
-          "source/skills/github-ci-operations/scripts/ci_check_evidence.py",
+          "source/skills/github-ci-operations/scripts/ci_check_evidence",
           "source/skills/pull-request-lifecycle/SKILL.md"
         ]
       },
@@ -207,7 +207,7 @@
       "productiveOutcome": "CI status decisions become auditable and reusable across PR lifecycle, CI triage, and release workflows.",
       "verificationEvidence": [
         "The run includes gh pr checks JSON or gh run view JSON for the current head.",
-        "The run includes ci_check_evidence.py output classifying green, failing, pending, or unknown state."
+        "The run includes ci_check_evidence output classifying green, failing, pending, or unknown state."
       ],
       "notes": "This makes CI status a structured evidence contract rather than a conversational impression."
     },
@@ -261,7 +261,7 @@
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
           "source/skills/shell-script-safety/SKILL.md",
-          "source/skills/shell-script-safety/scripts/check_shell_safety.py",
+          "source/skills/shell-script-safety/scripts/check_shell_safety",
           "source/skills/github-ci-operations/references/actions-workflows.md"
         ]
       },
@@ -291,7 +291,7 @@
       "productiveOutcome": "CI shell logic becomes reusable automation that agents can test locally before relying on remote workflows.",
       "verificationEvidence": [
         "The run includes bash -n for touched shell scripts.",
-        "The run includes check_shell_safety.py output for touched shell scripts."
+        "The run includes check_shell_safety output for touched shell scripts."
       ],
       "notes": "This composes GitHub CI operations with shell safety without moving generic shell rules into GitHub-only guidance."
     },

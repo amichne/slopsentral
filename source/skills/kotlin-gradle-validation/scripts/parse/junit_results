@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Parse JUnit XML test results into structured JSON.
-Usage: python3 junit_results.py <project_root> [--module :module-name]
+Usage: python3 junit_results <project_root> [--module :module-name]
 """
 import json, os, sys
 import xml.etree.ElementTree as ET
@@ -55,7 +55,7 @@ def parse_junit_xml(xml_path, module):
 
 def main():
     if len(sys.argv) < 2:
-        json.dump({"ok":False,"error":"Usage: junit_results.py <project_root> [--module :name]"}, sys.stdout); sys.exit(1)
+        json.dump({"ok":False,"error":"Usage: junit_results <project_root> [--module :name]"}, sys.stdout); sys.exit(1)
     project_root = os.path.abspath(sys.argv[1])
     mf = None
     if "--module" in sys.argv:

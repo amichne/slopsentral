@@ -135,11 +135,10 @@
         },
         "version": "0.1.0"
       },
-      "description": "Agent platform source-graph authoring package for referential plugin composition, primitive quality audits, routing eval proof, repository maps, and docs surfaces.",
+      "description": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
       "tags": [
         "agents",
         "authoring",
-        "docs",
         "governance",
         "hooks",
         "marketplace",
@@ -147,8 +146,6 @@
         "proof",
         "repository",
         "routing",
-        "schemas",
-        "shell",
         "skills",
         "workflow"
       ]

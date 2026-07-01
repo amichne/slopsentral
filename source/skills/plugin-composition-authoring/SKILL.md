@@ -1,6 +1,6 @@
 ---
 name: "plugin-composition-authoring"
-description: "Create, revise, or validate referential plugin manifests that compose existing skills, agents, hooks, and concepts without owning those primitives. Use when adding a plugin family, updating marketplace entries, checking plugin references, or converting payload-style plugin bundles into direct primitive references."
+description: "Use when creating or validating referential plugin manifests, marketplace entries, primitive references, or payload-to-reference plugin conversions."
 ---
 
 # Plugin Composition Authoring
@@ -47,7 +47,7 @@ the primitive remains usable without the plugin.
 
    ```sh
    node source/tools/validate-source-graph.mjs
-   python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py --plugin <name>
+   python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>
    ```
 
 ## Reference Routing

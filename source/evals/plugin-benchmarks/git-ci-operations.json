@@ -77,7 +77,7 @@
       "userInput": "Use Git/CI Operations to tell me whether this PR is green. Save gh pr checks JSON, run the CI evidence helper, and report green, failing, pending, and unknown checks separately.",
       "successChecklist": [
         "The run records gh pr checks or gh run view JSON for the current head.",
-        "The run uses ci_check_evidence.py to classify the status.",
+        "The run uses ci_check_evidence to classify the status.",
         "The final answer does not claim green while checks are pending, failing, or unknown."
       ]
     },
@@ -116,7 +116,7 @@
       "successChecklist": [
         "The implementation avoids duplicating long inline shell in workflow YAML.",
         "The script has strict mode, input validation, and safety boundaries for mutation.",
-        "The run includes bash -n and check_shell_safety.py output for the touched script."
+        "The run includes bash -n and check_shell_safety output for the touched script."
       ]
     },
     {

@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import importlib.util
+from importlib.machinery import SourceFileLoader
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 
-MODULE_PATH = Path(__file__).resolve().parents[1] / "kotlin-horizontalization-check.py"
-SPEC = importlib.util.spec_from_file_location("kotlin_horizontalization_check", MODULE_PATH)
+MODULE_PATH = Path(__file__).resolve().parents[1] / "kotlin-horizontalization-check"
+LOADER = SourceFileLoader("kotlin_horizontalization_check", str(MODULE_PATH))
+SPEC = importlib.util.spec_from_loader(LOADER.name, LOADER)
 assert SPEC is not None
 assert SPEC.loader is not None
 kotlin_horizontalization_check = importlib.util.module_from_spec(SPEC)

@@ -78,7 +78,7 @@
       "successChecklist": [
         "The plugin manifest references canonical source primitives with LOCAL_SOURCE ./ references.",
         "The plugin directory does not receive copied primitive payloads.",
-        "The run uses check_plugin_composition.py and source/tools/validate-source-graph.mjs as evidence."
+        "The run uses check_plugin_composition and source/tools/validate-source-graph.mjs as evidence."
       ]
     },
     {
@@ -97,7 +97,7 @@
       "userInput": "Use Agent Platform Authoring to decide whether a plugin family is ready to share. Record capability boundary, schema coverage, provenance, validation, runtime safety, residual risks, and a next action in the audit manifest.",
       "successChecklist": [
         "The audit names the target, baseline, decision, evidence, validation, residual risks, and next action.",
-        "The audit entry passes primitive_audit_record.py and source graph validation.",
+        "The audit entry passes primitive_audit_record and source graph validation.",
         "The result does not recommend runtime activation or cleanup without the appropriate manifest boundary."
       ]
     },

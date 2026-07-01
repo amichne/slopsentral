@@ -3,7 +3,12 @@
   "schemaVersion": 1,
   "name": "agent-platform-authoring",
   "version": "0.1.0",
-  "description": "Agent platform source-graph authoring package for referential plugin composition, primitive quality audits, routing eval proof, repository maps, and docs surfaces.",
+  "description": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
   "skills": [
     {
       "type": "SKILL",
@@ -74,24 +79,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/shell-script-safety",
-      "name": "shell-script-safety"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/manage-json-schemas",
-      "name": "manage-json-schemas"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/repo-instruction-topology",
       "name": "repo-instruction-topology"
     },
@@ -101,35 +88,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/repository-signature-indexing",
-      "name": "repository-signature-indexing"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/local-repository-navigation",
       "name": "local-repository-navigation"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/reference-doc-workflow",
-      "name": "reference-doc-workflow"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/site-docs-authoring",
-      "name": "site-docs-authoring"
     }
   ],
   "agents": [],
@@ -156,11 +116,11 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Use for maintaining the canonical source graph, referential plugin composition, provider marketplace projections, and routing or quality proof for promoted primitives.",
-    "notFor": "Product-code delivery, Kotlin implementation loops, or runtime activation plans until consolidation and linking primitives are hardened.",
+    "dailyDriver": "Use for maintaining the canonical source graph, referential plugin composition, provider marketplace projections, primitive promotion, and routing or quality proof.",
+    "notFor": "Product-code delivery, Kotlin implementation loops, general Git/CI delivery, standalone schema/API contract work, docs authoring, source-backed knowledge indexing, or shell automation outside hook primitive work.",
     "owner": "intelligence-source-graph-platform",
     "principle": "primitives-remain-independent",
     "role": "agent-platform-authoring",
-    "scope": "Author, audit, route-test, consolidate, and validate independent skills, agents, hooks, plugin manifests, repository instructions, signature indexes, navigation maps, and docs-site guidance with source-backed evidence."
+    "scope": "Author, audit, route-test, consolidate, and validate independent skills, agents, hooks, plugin manifests, repository instructions, and local navigation maps with source-backed evidence."
   }
 }

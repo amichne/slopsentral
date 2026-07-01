@@ -5,140 +5,60 @@ description: Use when Kotlin work needs typed design discipline, invariant-orien
 
 # Kotlin Agentic Correctness
 
-Use this skill as the workflow wrapper for Kotlin changes where correctness
-depends on domain shape, semantic code understanding, and executable evidence.
-It composes the Kotlin standards, typed design principles, Gradle validation,
-Kotlin review, and Kast semantic tooling.
-
-Use the `kotlin-code-correctness` instruction as the stable Kotlin standard.
-Copilot packages expose it as `instructions/kotlin-code-correctness.md`. This
-skill owns the agent workflow: intent capture, filesystem-backed evidence,
-semantic orientation, verification rings, and final scorecard.
+Use this skill as the workflow wrapper for Kotlin implementation or review work
+where correctness depends on domain shape, semantic code understanding, and
+executable evidence. Stable Kotlin policy lives in `kotlin-code-correctness`;
+this skill owns the turn workflow and proof discipline.
 
 ## Operating Contract
 
-- Apply the Kotlin code-correctness instruction before choosing implementation
-  shape; use `kotlin-standards` for detailed layout, API, idiom, and testing
-  references.
-- Make illegal states unrepresentable with value classes, sealed hierarchies,
-  enums, private constructors, focused factories, and typed expected failures.
-- Parse untrusted data at the edge. Core Kotlin code should accept trusted
-  domain types, not raw strings, maps, nullable control flags, or DTOs.
-- Treat JSON, CLI args, hook input, Gradle reports, Kast requests, Kast
-  responses, and persisted workflow state as boundary data with a parser,
-  schema, constructor, or validator.
-- Use files for agent/tool exchange whenever payloads outlive one command or
-  are bigger than a tiny literal. Keep requests, responses, logs, scorecards,
-  and command evidence under `.agent-turn/kotlin-agentic-correctness/`.
+- Apply `kotlin-code-correctness` before choosing implementation shape.
+- Model important concepts as value classes, sealed hierarchies, enums, private
+  constructors, focused factories, and typed expected failures.
+- Parse untrusted data once at the edge; core Kotlin should receive trusted
+  domain types, not raw strings, nullable flags, maps, or DTOs.
+- Treat JSON, CLI args, hook input, Gradle reports, Kast payloads, and persisted
+  workflow state as boundary data with a parser, schema, constructor, or
+  validator.
 - Prefer the packaged `kast` skill or native Kast tools for Kotlin identity,
-  references, hierarchy, diagnostics, semantic insertion points, renames, and
-  edit validation. Use text search only after Kast cannot answer the semantic
-  question, and label that as absence verification.
-- Keep shell scripts thin. Use Bash for command boundaries and Python for
-  stateful JSON parsing, request construction, scoring, and evidence records.
-- For mutations, prefer Kast's plan, review, apply flow or normal repository
-  patch tools followed by Kast diagnostics and the narrowest Gradle proof.
-- Keep generic branch, pull request, release, and CI ownership in delivery
-  skills or workflow profiles; record only the Kotlin proof here.
+  references, hierarchy, diagnostics, insertion points, renames, and edit
+  validation.
+- Keep generic Git, PR, release, and CI ownership in delivery skills.
 
 ## Workflow
 
-1. Create a turn-local filesystem workspace:
-
-   ```bash
-   python3 scripts/kotlin_workflow_state.py init --repo .
-   ```
-
-   Record intent, invariants, affected files, Kast request/response files,
-   Gradle logs, and review scorecards there instead of relying on terminal
-   scrollback.
-
-2. Frame the trusted shape before editing:
-
-   - boundary inputs and their parser or schema;
-   - domain values and invariants that should become types;
-   - expected failures and their return shape;
-   - package/file owner for the change;
-   - proof target: focused test, Kast diagnostics, Gradle task, CI check, or PR
-     status.
-
-   Record that frame before editing so the turn can be audited:
-
-   ```bash
-   python3 scripts/kotlin_workflow_state.py intent \
-     --repo . \
-     --invariant "raw customer status cannot enter core state" \
-     --boundary-input "CLI status argument" \
-     --domain-type "CustomerStatus" \
-     --expected-failure "InvalidCustomerStatus" \
-     --package-owner "src/main/kotlin/.../customer" \
-     --proof-target ":customer:test --tests CustomerStatusTest"
-   ```
-
-3. Orient semantically with Kast before touching Kotlin symbols. Prefer the
-   installed `kast` skill when available. For CLI fallback, write a JSON-RPC
-   request file and call:
-
-   ```bash
-   bash scripts/kast_rpc_file.sh \
-     --workspace-root . \
-     --request-file .agent-turn/kotlin-agentic-correctness/latest-request.json \
-     --response-file .agent-turn/kotlin-agentic-correctness/latest-response.json
-   ```
-
+1. Frame the trusted shape: boundary inputs, domain values, invariants,
+   expected failures, package owner, and proof target.
+2. For non-trivial work, create file-backed evidence with
+   `python3 scripts/kotlin_workflow_state init --repo .`, then record intent
+   with `python3 scripts/kotlin_workflow_state intent ...`.
+3. Orient semantically with Kast before touching Kotlin symbols. For CLI
+   fallback, use `bash scripts/kast_rpc_file.sh` with request and response
+   files under `.agent-turn/kotlin-agentic-correctness/`.
 4. Use TDD for behavior changes. Add the smallest public-behavior test that
-   proves the next invariant, parser failure, state transition, or API contract.
-
-5. Implement the narrowest Kotlin slice. Keep side effects at the boundary,
-   state immutable or intentionally confined, and package layout semantic
-   rather than horizontally grouped.
-
-6. Verify in widening rings:
-
-   - Kast diagnostics for changed Kotlin files;
-   - targeted Gradle compile or test task;
-   - owning module check;
-   - broader `check` or CI only when the touched surface requires it.
-
-7. Review with the bundled Kotlin review agents when changes affect APIs,
-   boundaries, package shape, nullable state, primitive identifiers, or expected
-   failures. Deduplicate findings into one prioritized list.
-
-8. Finish with the exact commands run, file-backed evidence paths, scorecard
-   result, and any remaining `Concern`. Do not declare completion with a
-   `Fail` scorecard dimension.
+   proves the next invariant, parser failure, transition, or API contract.
+5. Implement the narrowest Kotlin slice. Keep side effects at boundaries,
+   state immutable or intentionally confined, and package layout semantic.
+6. Verify in widening rings: Kast diagnostics, targeted Gradle compile/test,
+   owning module check, then broader `check` or CI only when the surface
+   requires it.
+7. Use Kotlin review agents when APIs, boundaries, package shape, nullable
+   state, primitive identifiers, or expected failures are affected.
+8. Finish with commands run, evidence paths, scorecard result, and any remaining
+   `Concern`. Do not claim completion with a `Fail` scorecard dimension.
 
 ## Scorecard
 
-Mark each dimension `Pass`, `Concern`, or `Fail` before finishing:
-
-- Domain fidelity: important concepts are represented by types, not comments or
-  caller discipline.
-- Boundary parsing: untrusted data is parsed once with explicit failures.
-- Layout cohesion: packages and files map to semantic units.
-- Error design: expected failures are typed, stable, and testable.
-- State safety: core state is immutable or mutation is intentionally confined.
-- Test value: tests prove behavior and boundary failures through public
-  surfaces.
-- Kotlin idiom: code reads as Kotlin and keeps public APIs hard to misuse.
-- Filesystem evidence: non-trivial tool exchange uses request, response, log,
-  or scorecard files.
-- Kast semantics: semantic Kotlin identity, references, diagnostics, or edits
-  use Kast where available.
+Mark each dimension `Pass`, `Concern`, or `Fail`: domain fidelity, boundary
+parsing, layout cohesion, error design, state safety, test value, Kotlin idiom,
+filesystem evidence, and Kast semantics.
 
 ## Reference Map
 
-- Kotlin instruction: `kotlin-code-correctness`
-  (`instructions/kotlin-code-correctness.md` in Copilot packages)
-- Filesystem evidence layout: `references/filesystem-evidence-contract.md`
+- Stable Kotlin policy: `kotlin-code-correctness`
+- Filesystem evidence: `references/filesystem-evidence-contract.md`
 - Kast file-first fallback: `references/kast-file-first.md`
-- Helper scripts:
-  - `scripts/kotlin_workflow_state.py`
-  - `scripts/kast_rpc_file.sh`
-
-Use the bundled `negative-capability-proof`, `kotlin-standards`, and
-`kotlin-gradle-validation` skills for their narrower procedures when the turn
-enters their scope. When the repository also installs `git-ci-operations`, use
-that plugin's `tdd`, `git-change-flow`, `github-ci-operations`,
-`pull-request-lifecycle`, and `shell-script-safety` skills for generic delivery
-work instead of treating those concerns as Kotlin-specific ownership.
+- Scripts: `scripts/kotlin_workflow_state`, `scripts/kast_rpc_file.sh`
+- Narrow skills: `kotlin-standards`, `kotlin-gradle-validation`,
+  `kotlin-review`, and `negative-capability-proof`
+- Generic delivery: use `git-ci-operations` skills when installed.

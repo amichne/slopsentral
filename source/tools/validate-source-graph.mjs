@@ -13,7 +13,7 @@ const repoRoot =
 const sourceRoot = path.join(repoRoot, "source");
 
 const allowedSharedSkills = new Map([
-  ["manage-json-schemas", ["agent-platform-authoring", "api-contracts"]],
+  ["manage-json-schemas", ["api-contracts"]],
   ["reference-doc-workflow", ["agent-platform-authoring", "code-knowledge-base"]],
   ["repository-signature-indexing", ["agent-platform-authoring", "code-knowledge-base"]],
   ["shell-script-safety", ["agent-platform-authoring", "git-ci-operations"]],
@@ -233,8 +233,15 @@ function validateHookAdapter(hookName, adapterPath) {
         fail(`${relativePath}: bash script source/hooks/${scriptName} must be executable`);
       }
     }
-    if (runner === "python3" && !scriptName.endsWith(".py")) {
-      fail(`${relativePath}: python3 command should target a .py script: ${scriptName}`);
+    if (runner === "python3") {
+      const mode = fs.statSync(scriptPath).mode;
+      const firstLine = fs.readFileSync(scriptPath, "utf8").split(/\r?\n/, 1)[0] ?? "";
+      if (scriptName.endsWith(".py")) {
+        continue;
+      }
+      if ((mode & 0o111) === 0 || !firstLine.includes("python")) {
+        fail(`${relativePath}: python3 command should target a .py script or executable Python script: ${scriptName}`);
+      }
     }
   }
 }

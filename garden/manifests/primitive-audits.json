@@ -218,7 +218,7 @@
         "status": "PASS",
         "commands": [
           "node source/tools/validate-source-graph.mjs",
-          "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check --audit-id kotlin-engineering-instruction-boundary-synthesis",
+          "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id kotlin-engineering-instruction-boundary-synthesis",
           "python3 -m py_compile source/hooks/kotlin-horizontalization-check.py",
           "python3 -m unittest source/hooks/tests/test_kotlin_horizontalization_check.py",
           "intelligence validate --repo . --portable",
@@ -251,9 +251,9 @@
         "paths": [
           "source/plugins/agent-platform-authoring/plugin.json",
           "source/skills/plugin-composition-authoring",
-          "source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py",
+          "source/skills/plugin-composition-authoring/scripts/check_plugin_composition",
           "source/skills/primitive-quality-audit",
-          "source/skills/primitive-quality-audit/scripts/primitive_audit_record.py",
+          "source/skills/primitive-quality-audit/scripts/primitive_audit_record",
           "source/skills/primitive-routing-evaluation",
           "source/skills/source-graph-consolidation",
           "source/skills/hook-primitive-authoring",
@@ -284,8 +284,8 @@
         "status": "PASS",
         "evidence": [
           "source/tools/validate-source-graph.mjs validates plugin references, standalone skill exposure, profile duplicate ownership, hook dependencies, routing cases, plugin benchmarks, audit records, and runtime-link records.",
-          "source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py checks plugin manifest/catalog alignment, LOCAL_SOURCE ./ references, missing primitive paths, duplicate names, and accidental primitive payload directories.",
-          "source/skills/primitive-quality-audit/scripts/primitive_audit_record.py checks durable audit entries against live target paths, required PASS statuses for PROMOTE_READY, validation commands, evidence blocks, residual risks, and private absolute path leakage.",
+          "source/skills/plugin-composition-authoring/scripts/check_plugin_composition checks plugin manifest/catalog alignment, LOCAL_SOURCE ./ references, missing primitive paths, duplicate names, and accidental primitive payload directories.",
+          "source/skills/primitive-quality-audit/scripts/primitive_audit_record checks durable audit entries against live target paths, required PASS statuses for PROMOTE_READY, validation commands, evidence blocks, residual risks, and private absolute path leakage.",
           "source/skills/hook-primitive-authoring now documents source/tools/validate-source-graph.mjs as the hook metadata, adapter command, dependency, and sidecar schema coverage path.",
           "source/evals/plugin-benchmarks/agent-platform-authoring.json defines Codex benchmark scenarios tied to existing routing cases for source-owned marketplace uplift, referential composition proof, production-readiness audit, and routing corpus replay."
         ]
@@ -303,9 +303,9 @@
         "status": "PASS",
         "commands": [
           "node source/tools/validate-source-graph.mjs",
-          "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py --plugin agent-platform-authoring",
-          "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check --audit-id agent-platform-authoring-plugin-production-readiness",
-          "python3 -m py_compile source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py source/skills/primitive-quality-audit/scripts/primitive_audit_record.py",
+          "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin agent-platform-authoring",
+          "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id agent-platform-authoring-plugin-production-readiness",
+          "python3 -m py_compile source/skills/plugin-composition-authoring/scripts/check_plugin_composition source/skills/primitive-quality-audit/scripts/primitive_audit_record",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
           "intelligence validate --repo . --portable",
           "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
@@ -342,10 +342,10 @@
           "source/skills/tdd",
           "source/skills/git-change-flow",
           "source/skills/github-ci-operations",
-          "source/skills/github-ci-operations/scripts/ci_check_evidence.py",
+          "source/skills/github-ci-operations/scripts/ci_check_evidence",
           "source/skills/pull-request-lifecycle",
           "source/skills/shell-script-safety",
-          "source/skills/shell-script-safety/scripts/check_shell_safety.py",
+          "source/skills/shell-script-safety/scripts/check_shell_safety",
           "source/evals/routing/daily-driver-workflows.json",
           "source/evals/routing/fixtures/golden-routing-observations.json",
           "source/evals/plugin-benchmarks/git-ci-operations.json",
@@ -371,8 +371,8 @@
         "status": "PASS",
         "evidence": [
           "source/tools/validate-source-graph.mjs validates plugin references, standalone skill exposure, routing cases, plugin benchmarks, audit records, profiles, hooks, and runtime-link records.",
-          "source/skills/github-ci-operations/scripts/ci_check_evidence.py validates structured gh pr checks and gh run view JSON before green, failing, pending, or unknown CI claims.",
-          "source/skills/shell-script-safety/scripts/check_shell_safety.py gives CI and hook shell scripts a reusable local safety gate for shebangs, strict mode, temp cleanup, eval, curl-pipe-shell, and unsafe rm variable usage.",
+          "source/skills/github-ci-operations/scripts/ci_check_evidence validates structured gh pr checks and gh run view JSON before green, failing, pending, or unknown CI claims.",
+          "source/skills/shell-script-safety/scripts/check_shell_safety gives CI and hook shell scripts a reusable local safety gate for shebangs, strict mode, temp cleanup, eval, curl-pipe-shell, and unsafe rm variable usage.",
           "source/evals/routing/daily-driver-workflows.json records CI-specific expectations for current check evidence, composable workflow authoring, and reusable shell-script safety.",
           "source/evals/plugin-benchmarks/git-ci-operations.json defines Codex benchmark scenarios for CI triage, structured green claims, composable workflow authoring, reusable shell script safety, and PR green-loop delivery."
         ]
@@ -390,10 +390,10 @@
         "status": "PASS",
         "commands": [
           "node source/tools/validate-source-graph.mjs",
-          "python3 -m py_compile source/skills/github-ci-operations/scripts/ci_check_evidence.py source/skills/shell-script-safety/scripts/check_shell_safety.py",
-          "printf '%s\\n' '[{\"name\":\"Validate\",\"state\":\"SUCCESS\",\"bucket\":\"pass\",\"link\":\"https://example.invalid/run\"}]' | python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input -",
-          "printf '%s\\n' '[{\"name\":\"Validate\",\"state\":\"FAILURE\",\"bucket\":\"fail\",\"link\":\"https://example.invalid/run\"}]' | python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input -; test $? -eq 1",
-          "python3 source/skills/shell-script-safety/scripts/check_shell_safety.py source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
+          "python3 -m py_compile source/skills/github-ci-operations/scripts/ci_check_evidence source/skills/shell-script-safety/scripts/check_shell_safety",
+          "printf '%s\\n' '[{\"name\":\"Validate\",\"state\":\"SUCCESS\",\"bucket\":\"pass\",\"link\":\"https://example.invalid/run\"}]' | python3 source/skills/github-ci-operations/scripts/ci_check_evidence pr-checks --input -",
+          "printf '%s\\n' '[{\"name\":\"Validate\",\"state\":\"FAILURE\",\"bucket\":\"fail\",\"link\":\"https://example.invalid/run\"}]' | python3 source/skills/github-ci-operations/scripts/ci_check_evidence pr-checks --input -; test $? -eq 1",
+          "python3 source/skills/shell-script-safety/scripts/check_shell_safety source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
           "bash -n source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
           "intelligence validate --repo . --portable",

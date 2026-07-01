@@ -1,6 +1,6 @@
 ---
 name: "define-goal"
-description: "Help the user define a concrete, measurable goal before starting work, especially when they ask to use the goal tool, create a goal, set an objective, clarify success criteria, or turn a fuzzy intention into a quantitative outcome. Use this skill for goal creation and goal refinement only; it does not manage durable snapshots, decision logs, or long-running execution artifacts."
+description: "Use when the user asks to create, refine, or measure a concrete goal before work begins, especially with the goal tool."
 ---
 
 # Define Goal

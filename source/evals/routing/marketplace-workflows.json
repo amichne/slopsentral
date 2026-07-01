@@ -53,7 +53,7 @@
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
           "source/skills/plugin-composition-authoring/SKILL.md",
-          "source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py",
+          "source/skills/plugin-composition-authoring/scripts/check_plugin_composition",
           "source/tools/validate-source-graph.mjs"
         ]
       },
@@ -83,7 +83,7 @@
       "notes": "This keeps plugin composition as a thin installable surface instead of a second primitive source tree.",
       "productiveOutcome": "Referential plugin work remains reviewable and mechanically checked at the composition boundary.",
       "verificationEvidence": [
-        "The run uses check_plugin_composition.py for the edited plugin.",
+        "The run uses check_plugin_composition for the edited plugin.",
         "The run uses node source/tools/validate-source-graph.mjs after source edits."
       ]
     },

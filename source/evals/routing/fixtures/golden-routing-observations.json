@@ -119,7 +119,7 @@
       ],
       "satisfiedVerificationEvidence": [
         "The run includes gh pr checks JSON or gh run view JSON for the current head.",
-        "The run includes ci_check_evidence.py output classifying green, failing, pending, or unknown state."
+        "The run includes ci_check_evidence output classifying green, failing, pending, or unknown state."
       ],
       "avoidedForbiddenActions": [
         "Claim green from stale memory or a previous run.",
@@ -165,7 +165,7 @@
       ],
       "satisfiedVerificationEvidence": [
         "The run includes bash -n for touched shell scripts.",
-        "The run includes check_shell_safety.py output for touched shell scripts."
+        "The run includes check_shell_safety output for touched shell scripts."
       ],
       "avoidedForbiddenActions": [
         "Duplicate long inline shell across workflow files.",
@@ -350,7 +350,7 @@
         "Run the focused composition helper and the source graph gate."
       ],
       "satisfiedVerificationEvidence": [
-        "The run uses check_plugin_composition.py for the edited plugin.",
+        "The run uses check_plugin_composition for the edited plugin.",
         "The run uses node source/tools/validate-source-graph.mjs after source edits."
       ],
       "avoidedForbiddenActions": [
