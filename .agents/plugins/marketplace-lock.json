@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T00:35:35-04:00",
+  "generatedAt": "2026-06-30T23:07:35-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -76,7 +76,7 @@
         },
         {
           "name": "manage-json-schemas",
-          "sha256": "sha256:db1123ea990d00085638c7f3299a40a94f362fb48543df227a879a847bf69770",
+          "sha256": "sha256:d28c9e6191d4fd2b847992f32fc844870b21313caaaf87df84a339486d1c431f",
           "sourcePath": "source/skills/manage-json-schemas",
           "targetPath": "skills/manage-json-schemas",
           "type": "SKILL"
@@ -146,7 +146,7 @@
         },
         {
           "name": "kotlin-horizontalization-check",
-          "sha256": "sha256:32fd7ef92af4185602e3616b8b1bcfcce99bc556ed549d0346a7001a267ebaa3",
+          "sha256": "sha256:4915bc5cefe9e8ed9ca0d892d00192bb3e598fae11367af972c7d24ff4419f6f",
           "sourcePath": "source/hooks/kotlin-horizontalization-check.hook.json",
           "targetPath": "hooks/kotlin-horizontalization-check.hooks.json",
           "type": "HOOK"
@@ -174,35 +174,35 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:0700b9e96b87cbe2b70ddea47eb26464e25c6b58852e0dd4a79ee1af77de2040",
+          "sha256": "sha256:9a58d02259f6d347a8ea9e8ed1b92438b16651a03ee9c5b6ee291ebba72ff5fc",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:2f4cc1f64e6a257d18f5dbbbd40e2c65580145c4eca5733372e3a261f6d51378",
+          "sha256": "sha256:e24487a703d87682231e4a618dea7b731c7fc60ba51fd2b5ff41ca4b5b845e3e",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:5c772781cac5c3cde8fb89ec393a824ef6cee309a6e3b9b44a4381f18bef5ebd",
+          "sha256": "sha256:a93f16d9273e3e783fdacfa9d825f84c823ca9e2c31d069ed488987dcae3efc3",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
           "type": "SKILL"
         },
         {
           "name": "kotlin-standards",
-          "sha256": "sha256:ad38ba3247b69f209a395869ff796d5c8ce57f666bc9de041631848f11e5d5b9",
+          "sha256": "sha256:8dba5d4f47e71ebc6e254399db9f03f38597db33f8258dab7f48b874d20cd351",
           "sourcePath": "source/skills/kotlin-standards",
           "targetPath": "skills/kotlin-standards",
           "type": "SKILL"
         },
         {
           "name": "negative-capability-proof",
-          "sha256": "sha256:d91e18ee2cda97bf363149cb2924ae213ee6faf92ba6272b7e03749e832195f6",
+          "sha256": "sha256:aa2e6106758aafdcfd7c4830df759c810998c942c121bccfe79360da6f6f1414",
           "sourcePath": "source/skills/negative-capability-proof",
           "targetPath": "skills/negative-capability-proof",
           "type": "SKILL"
@@ -230,42 +230,42 @@
         },
         {
           "name": "define-goal",
-          "sha256": "sha256:ebe782dba012c41482ce19f34cba0de3f5d7e7cd89f21806d3034d8333b8a0c4",
+          "sha256": "sha256:79bcc8c927e84197693271c4fdbc6bb7664eb1ddf3674d9334e3017262d9d3f2",
           "sourcePath": "source/skills/define-goal",
           "targetPath": "skills/define-goal",
           "type": "SKILL"
         },
         {
           "name": "git-change-flow",
-          "sha256": "sha256:4fa7b20a61c7cb8ab36f1d99dddbe3818e8d1c6bc35dd9487358cedc43ac2c9c",
+          "sha256": "sha256:52f7f5284eb99427409cd02dd0fb1686f6f798106a2514262deafa06053461c5",
           "sourcePath": "source/skills/git-change-flow",
           "targetPath": "skills/git-change-flow",
           "type": "SKILL"
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:00c7dec96fa04f48bc3d0869e10f36c2bd39fb917fe60a3125136f4b373b7524",
+          "sha256": "sha256:72b0c8de312307b5b714e3de801e5dec787d69768e9f93ab7a5299406c68af55",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:4e440ed1444fa2b1a05d94fac22fe7c6a3163eb50d34b9a190b2aca15f59c24e",
+          "sha256": "sha256:e7c6b26f4a224ca0d3d3b7ada95c5c9aac526e746afb7b04419a349426491e5d",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
         },
         {
           "name": "shell-script-safety",
-          "sha256": "sha256:64b368c4295a9a239fe8358bd2fc9843be2a13f7276a412e2ed0d7b443627514",
+          "sha256": "sha256:a824aec1e91aa4910d73981e54bb8e59df8b2ac913bc90670936cc7de5545dbd",
           "sourcePath": "source/skills/shell-script-safety",
           "targetPath": "skills/shell-script-safety",
           "type": "SKILL"
         },
         {
           "name": "tdd",
-          "sha256": "sha256:ae85ef87b82e3ac2f4abaf97511eb0e6c011381fd5165ab75c5a2546fff89f17",
+          "sha256": "sha256:7f2bdfe006f70832175cfb85179fab78e48b6a32fedb5542749caddd4a9ab73b",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
@@ -293,98 +293,63 @@
         },
         {
           "name": "agent-profile-authoring",
-          "sha256": "sha256:683090ef0936a7dae1ee959d17ae7be3a865039a7db2e6d597603bd5334eeca4",
+          "sha256": "sha256:f3be4b0b7fb8d01eadb5384216a2e4bfb2fb1a62501a973a8e5326f0289cb741",
           "sourcePath": "source/skills/agent-profile-authoring",
           "targetPath": "skills/agent-profile-authoring",
           "type": "SKILL"
         },
         {
           "name": "hook-primitive-authoring",
-          "sha256": "sha256:0fadd0ae8b2545e184a9fe7efec00a9bfb6721151f0bfa01463a0fe81594d185",
+          "sha256": "sha256:04bcb6757f1fd7341a6a8930aa7d4c3ac91aad48921ba230c41fa6174f25c64f",
           "sourcePath": "source/skills/hook-primitive-authoring",
           "targetPath": "skills/hook-primitive-authoring",
           "type": "SKILL"
         },
         {
           "name": "local-repository-navigation",
-          "sha256": "sha256:9dcfe28d3104fd90226287be1a2820b0d703fb8755744042cb5fd0832f9cf334",
+          "sha256": "sha256:fbe34fe8f6fd98c6c99a1865a013bcd73d3246dec82e520b0e86138767500d95",
           "sourcePath": "source/skills/local-repository-navigation",
           "targetPath": "skills/local-repository-navigation",
           "type": "SKILL"
         },
         {
-          "name": "manage-json-schemas",
-          "sha256": "sha256:db1123ea990d00085638c7f3299a40a94f362fb48543df227a879a847bf69770",
-          "sourcePath": "source/skills/manage-json-schemas",
-          "targetPath": "skills/manage-json-schemas",
-          "type": "SKILL"
-        },
-        {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:54471b1cced151ea5dbe4b7153d667331d39118ec07724cbeb80404cd230d891",
+          "sha256": "sha256:73827be9c4a6083ba7ddb57c1d37a2954108b8e5243b008e25be5b1998357b16",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
         },
         {
           "name": "primitive-quality-audit",
-          "sha256": "sha256:42fefa33096f2e4fc924aa6b04ec49699dd7101e05e702a8bf84fdba14245a4e",
+          "sha256": "sha256:a46de9facc80c1a596833c9471c005ac7abd9d49ab045af53c25bab0f158637e",
           "sourcePath": "source/skills/primitive-quality-audit",
           "targetPath": "skills/primitive-quality-audit",
           "type": "SKILL"
         },
         {
           "name": "primitive-routing-evaluation",
-          "sha256": "sha256:a7b3ce329152af24cd6b5f7a5550e3f87c898bf86cdb555d660491e8dcea04e1",
+          "sha256": "sha256:fafbf88226a6b23914307e77f428373f490d962a80bc78ca0d6de8ec8e1fde94",
           "sourcePath": "source/skills/primitive-routing-evaluation",
           "targetPath": "skills/primitive-routing-evaluation",
           "type": "SKILL"
         },
         {
-          "name": "reference-doc-workflow",
-          "sha256": "sha256:ceb1ae27634f8036acdb46ae7e3fabeab6ace315c6bda6f1a4587d7d0edba20d",
-          "sourcePath": "source/skills/reference-doc-workflow",
-          "targetPath": "skills/reference-doc-workflow",
-          "type": "SKILL"
-        },
-        {
           "name": "repo-instruction-topology",
-          "sha256": "sha256:d68b0e358b1e1d8122b829de4d28ad537420fb3bfa14a746c0e63a0c25da998a",
+          "sha256": "sha256:460501640fe5ceeea13ea7654f4ec09f0a3a63ed8cf0f4c1cd30472d75015a09",
           "sourcePath": "source/skills/repo-instruction-topology",
           "targetPath": "skills/repo-instruction-topology",
           "type": "SKILL"
         },
         {
-          "name": "repository-signature-indexing",
-          "sha256": "sha256:926b7f851d89de3ec082c3f826ee9cca8b3ff5de9b48d545489d09e318fd2b1f",
-          "sourcePath": "source/skills/repository-signature-indexing",
-          "targetPath": "skills/repository-signature-indexing",
-          "type": "SKILL"
-        },
-        {
-          "name": "shell-script-safety",
-          "sha256": "sha256:64b368c4295a9a239fe8358bd2fc9843be2a13f7276a412e2ed0d7b443627514",
-          "sourcePath": "source/skills/shell-script-safety",
-          "targetPath": "skills/shell-script-safety",
-          "type": "SKILL"
-        },
-        {
-          "name": "site-docs-authoring",
-          "sha256": "sha256:02256bdc784cadb464ed5a0bd6dc6d6e0c3f39595d6d1a9da48cd6aadc7f8ab1",
-          "sourcePath": "source/skills/site-docs-authoring",
-          "targetPath": "skills/site-docs-authoring",
-          "type": "SKILL"
-        },
-        {
           "name": "skill-primitive-authoring",
-          "sha256": "sha256:8d79a09d2ddef88bd99ab57e883f97ba2bfae7a068921b9ff547bbde1e7485a3",
+          "sha256": "sha256:21df9199af11f449d66b5d7326d567eec3c8af2cda1729c8e507041b7336dd82",
           "sourcePath": "source/skills/skill-primitive-authoring",
           "targetPath": "skills/skill-primitive-authoring",
           "type": "SKILL"
         },
         {
           "name": "source-graph-consolidation",
-          "sha256": "sha256:ec932cfe6eb069e25792cdc4a3e1292b17104e4ca243ebbef270c6c63526882c",
+          "sha256": "sha256:0b74fd7d10073442ee5af30e57efabe3faef80e5d6be105f7dd957189e3125d6",
           "sourcePath": "source/skills/source-graph-consolidation",
           "targetPath": "skills/source-graph-consolidation",
           "type": "SKILL"
@@ -451,6 +416,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "bef1b6fac3991c9ab918fe783afc371ccb7101fd",
+  "sourceSha": "05408fc4728fcfb394985b7fb23fbe4948b439fc",
   "type": "HYDRATED_MARKETPLACE"
 }

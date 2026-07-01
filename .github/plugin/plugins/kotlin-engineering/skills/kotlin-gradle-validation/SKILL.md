@@ -59,11 +59,11 @@ the final answer can cite evidence files instead of terminal scrollback.
 4. Parse artifacts.
    Inspect:
 
-   - `python3 scripts/parse/junit_results.py .` for
+   - `python3 scripts/parse/junit_results .` for
      `build/test-results/**/TEST-*.xml` failures;
-   - `python3 scripts/parse/jacoco_report.py .` for
+   - `python3 scripts/parse/jacoco_report .` for
      `build/reports/jacoco/**/jacoco*.xml` coverage;
-   - `python3 scripts/parse/kotlin_build_report.py .` for Kotlin build reports
+   - `python3 scripts/parse/kotlin_build_report .` for Kotlin build reports
      when incremental compilation matters;
    - Gradle problem reports when configuration or deprecation issues appear.
 
@@ -111,8 +111,8 @@ Report:
 
 - `scripts/run_gradle_task.sh`: run one Gradle task with optional extra Gradle
   arguments, capture raw output to a log, and emit structured JSON evidence.
-- `scripts/parse/junit_results.py`: summarize JUnit XML suites and failures.
-- `scripts/parse/jacoco_report.py`: summarize JaCoCo XML coverage and lowest
+- `scripts/parse/junit_results`: summarize JUnit XML suites and failures.
+- `scripts/parse/jacoco_report`: summarize JaCoCo XML coverage and lowest
   covered classes.
-- `scripts/parse/kotlin_build_report.py`: summarize Kotlin build reports and
+- `scripts/parse/kotlin_build_report`: summarize Kotlin build reports and
   non-incremental compilation causes.

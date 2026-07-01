@@ -56,7 +56,7 @@ preserve data, and remain maintainable when run by agents, hooks, CI, or humans.
    explicit paths:
 
    ```sh
-   python3 source/skills/shell-script-safety/scripts/check_shell_safety.py <script.sh>
+   python3 source/skills/shell-script-safety/scripts/check_shell_safety <script.sh>
    bash -n <script.sh>
    ```
 

@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Agent platform source-graph authoring package for referential plugin composition, primitive quality audits, routing eval proof, repository maps, and docs surfaces.",
+  "description": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,14 +17,13 @@
     ],
     "developerName": "Amichne",
     "displayName": "Agent Platform Authoring",
-    "longDescription": "Agent platform source-graph authoring package for referential plugin composition, primitive quality audits, routing eval proof, repository maps, and docs surfaces.",
-    "shortDescription": "Agent platform source-graph authoring package for referential plugin..."
+    "longDescription": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
+    "shortDescription": "Agent platform authoring package for source-owned skills, agents, hoo..."
   },
   "keywords": [
     "agent-platform-authoring",
     "agents",
     "authoring",
-    "docs",
     "governance",
     "hooks",
     "marketplace",
@@ -32,8 +31,6 @@
     "proof",
     "repository",
     "routing",
-    "schemas",
-    "shell",
     "skills",
     "workflow"
   ],

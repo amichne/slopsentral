@@ -1,6 +1,6 @@
 ---
 name: "primitive-quality-audit"
-description: "Audit skills, agents, hooks, concepts, plugin manifests, and runtime-link plans before promotion, activation, or cleanup. Use when deciding whether a primitive is good enough to become canonical, whether older sources can be turned off, whether first-party material was safely renamed and rewritten, or whether a referential plugin is composed from independent primitives."
+description: "Use when auditing skills, agents, hooks, concepts, plugin manifests, runtime links, promotion readiness, provenance, or cleanup safety."
 ---
 
 # Primitive Quality Audit
@@ -66,7 +66,7 @@ promotion, runtime activation, and later cleanup from evidence.
 
    ```sh
    node source/tools/validate-source-graph.mjs
-   python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check --audit-id <id>
+   python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id <id>
    ```
 
 ## Reference Routing

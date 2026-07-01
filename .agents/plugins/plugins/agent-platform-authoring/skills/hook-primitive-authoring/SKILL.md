@@ -1,6 +1,6 @@
 ---
 name: "hook-primitive-authoring"
-description: "Create, revise, validate, or consolidate hook primitives using provider-neutral metadata, runtime adapter projections, executable implementations, and repo-local schema validation. Use when adding hooks, wiring hooks into plugins, authoring Codex hook adapters, or checking hook dependencies against skills, agents, concepts, and scripts."
+description: "Use when authoring hook primitives, provider adapters, executable hook scripts, plugin wiring, dependency checks, or repo-local hook validation."
 ---
 
 # Hook Primitive Authoring

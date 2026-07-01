@@ -1,6 +1,6 @@
 ---
 name: "local-repository-navigation"
-description: "Create or refresh git-excluded local repository navigation summaries, such as AGENTS.local.md, OUTDATED.local.md, directory purpose maps, and staleness-driven summary refresh workflows. Use when bootstrapping AI-readable repo maps, designing local navigation generators, or maintaining lightweight generated summaries without turning them into durable documentation."
+description: "Use when explicitly asked to create or refresh local repo maps such as AGENTS.local.md, OUTDATED.local.md, or generated navigation summaries."
 ---
 
 # Local Repository Navigation

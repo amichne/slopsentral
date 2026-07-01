@@ -11,13 +11,13 @@ gh auth status
 gh pr view --json number,url,headRefName,headRefOid,baseRefName
 gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow
 gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow > /tmp/pr-checks.json
-python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py pr-checks --input /tmp/pr-checks.json
+python3 source/skills/github-ci-operations/scripts/ci_check_evidence pr-checks --input /tmp/pr-checks.json
 gh run view <run-id> --json name,workflowName,status,conclusion,url,event,headBranch,headSha
 gh run view <run-id> --json name,workflowName,status,conclusion,url,event,headBranch,headSha > /tmp/run.json
-python3 source/skills/github-ci-operations/scripts/ci_check_evidence.py run --input /tmp/run.json
+python3 source/skills/github-ci-operations/scripts/ci_check_evidence run --input /tmp/run.json
 gh run view <run-id> --log
-python "<path-to-skill>/scripts/ci_wait_for_actions.py" --pr <pr> --timeout 1800 --evidence /tmp/actions-wait.json
-python "<path-to-skill>/scripts/ci_wait_for_actions.py" --run-id <run-id> --timeout 1800 --evidence /tmp/actions-wait.json
+python "<path-to-skill>/scripts/ci_wait_for_actions" --pr <pr> --timeout 1800 --evidence /tmp/actions-wait.json
+python "<path-to-skill>/scripts/ci_wait_for_actions" --run-id <run-id> --timeout 1800 --evidence /tmp/actions-wait.json
 ```
 
 If a `gh` JSON field is rejected, rerun with the fields reported by the local
@@ -25,7 +25,7 @@ CLI. The installed `gh` version can lag behind examples.
 
 ## Quiet Waiting
 
-Use `scripts/ci_wait_for_actions.py` when an Actions run or PR check suite is
+Use `scripts/ci_wait_for_actions` when an Actions run or PR check suite is
 still pending. It polls with backoff, prints only state transitions, exits
 non-zero on terminal failure, and fetches failed logs only after the run or
 check suite has reached a terminal state.

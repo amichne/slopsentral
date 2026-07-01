@@ -17,7 +17,7 @@ routing cases, benchmarks, audit records, and runtime-link records.
 
 ```sh
 node source/tools/validate-source-graph.mjs
-python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check --audit-id <id>
+python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id <id>
 ```
 
 Use these after changing JSON schemas, manifests, plugin manifests, marketplace
@@ -27,7 +27,7 @@ catalogs, audit records, hook metadata, or hook adapters.
 
 ```sh
 bash -n source/hooks/*.sh
-python3 -m py_compile source/hooks/*.py source/skills/plugin-composition-authoring/scripts/check_plugin_composition.py source/skills/primitive-quality-audit/scripts/primitive_audit_record.py
+python3 -m py_compile source/hooks/*.py source/skills/plugin-composition-authoring/scripts/check_plugin_composition source/skills/primitive-quality-audit/scripts/primitive_audit_record
 node source/skills/manage-json-schemas/scripts/schema-contracts.js policy-tree --root source/skills/manage-json-schemas/references/schemas
 node source/tools/run-routing-evals.mjs --require-all-observed
 git diff --check

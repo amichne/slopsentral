@@ -34,6 +34,6 @@ Use this reference when writing hook scripts.
 Run the hook script directly with a minimal representative command. Examples:
 
 ```sh
-python3 hooks/kotlin-horizontalization-check.py --repo . --format json
+python3 hooks/kotlin-horizontalization-check --repo . --format json
 bash hooks/agents-md-turn-refresh.sh status
 ```

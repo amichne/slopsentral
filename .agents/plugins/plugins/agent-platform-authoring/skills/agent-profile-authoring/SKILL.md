@@ -1,6 +1,6 @@
 ---
 name: "agent-profile-authoring"
-description: "Design, revise, or consolidate agent profiles that are independent of plugins. Use when creating specialist agents, writing agent markdown/frontmatter, defining trigger conditions and examples, shaping system prompts, limiting tools, or validating that an agent profile is clear enough to delegate work safely."
+description: "Use when creating or revising standalone agent profiles, including frontmatter, triggers, prompts, tool limits, examples, and delegation checks."
 ---
 
 # Agent Profile Authoring

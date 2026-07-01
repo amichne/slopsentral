@@ -31,7 +31,7 @@ primitive roots.
 
 ```sh
 node source/tools/validate-source-graph.mjs
-python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record.py check
+python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check
 ```
 
 After running these, inspect the changed source roots, `garden/manifests/promotions.json`,

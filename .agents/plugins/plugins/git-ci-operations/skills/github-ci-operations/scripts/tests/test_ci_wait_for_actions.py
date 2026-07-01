@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import importlib.util
+from importlib.machinery import SourceFileLoader
 import json
 import sys
 import unittest
 from pathlib import Path
 from typing import Any, Sequence
 
-SCRIPT = Path(__file__).resolve().parents[1] / "ci_wait_for_actions.py"
-SPEC = importlib.util.spec_from_file_location("ci_wait_for_actions", SCRIPT)
+SCRIPT = Path(__file__).resolve().parents[1] / "ci_wait_for_actions"
+LOADER = SourceFileLoader("ci_wait_for_actions", str(SCRIPT))
+SPEC = importlib.util.spec_from_loader(LOADER.name, LOADER)
 assert SPEC is not None
 MODULE = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = MODULE

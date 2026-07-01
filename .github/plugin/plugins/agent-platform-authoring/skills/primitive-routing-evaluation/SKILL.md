@@ -1,6 +1,6 @@
 ---
 name: "primitive-routing-evaluation"
-description: "Diagnose and improve when skills, agents, hooks, or plugin workflows load too rarely, load in the wrong situations, or get bypassed by generic tool use. Use when building routing eval cases from session exports, logs, user corrections, or missed triggers, and when deciding how to tighten primitive descriptions without overfitting."
+description: "Use when routing evals, missed triggers, wrong primitive loads, bypassed skills, session evidence, or trigger-description tuning need diagnosis."
 ---
 
 # Primitive Routing Evaluation

@@ -1,6 +1,6 @@
 ---
 name: "pull-request-lifecycle"
-description: "Manage a change from local branch through pull request and green checks. Use when the user asks to create a feature branch, commit and push work, open or raise a pull request, convert a draft PR to ready for review, monitor checks, babysit CI until green, or repair a PR after failed checks."
+description: "Use when work needs a branch, commit, push, PR, draft/ready transition, check babysitting, CI repair, merge handoff, or PR evidence."
 ---
 
 # Pull Request Lifecycle
@@ -31,7 +31,7 @@ Related primitives in this repository:
   validation evidence, and no known deterministic failures.
 - Babysit checks by reading live check state, logs, and annotations. For
   pending GitHub Actions runs, use the quiet waiter from
-  `skills/github-ci-operations/scripts/ci_wait_for_actions.py` so status is
+  `skills/github-ci-operations/scripts/ci_wait_for_actions` so status is
   reported only when the remote state changes. Fix the owning source instead of
   rerunning deterministic failures.
 - Never claim a PR is green until `gh pr checks` or the repository's check
@@ -69,7 +69,7 @@ Related primitives in this repository:
 6. Watch checks.
    Use `gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt`
    for a snapshot. When checks are pending, wait with
-   `python "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions.py" --pr <pr>`,
+   `python "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions" --pr <pr>`,
    not a chatty watch loop. For failing GitHub Actions runs, inspect
    `gh run view` with logs. Separate product/test failures, generated drift,
    dependency setup, permissions, secrets, cache, and flaky behavior.

@@ -1,6 +1,6 @@
 ---
 name: "source-graph-consolidation"
-description: "Inventory, review, promote, synthesize, validate, and clean up scattered AI tooling primitives while preserving provenance. Use when consolidating skills, agents, hooks, concepts, instructions, or plugin manifests into a single source graph, updating promotion manifests, interpreting duplicate queues, or removing proven-dead source."
+description: "Use when consolidating scattered skills, agents, hooks, concepts, instructions, plugin manifests, promotion records, duplicate queues, or provenance."
 ---
 
 # Source Graph Consolidation

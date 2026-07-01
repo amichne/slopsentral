@@ -1,6 +1,6 @@
 ---
 name: kotlin-review
-description: Review Kotlin code and Kotlin edits with the Kotlin review agent suite. Use when Codex needs to audit Kotlin diffs, PRs, or changed files for type safety, parse-don't-validate boundaries, package cohesion, horizontalization, duplicated logic, primitive/null/boolean traps, expected failure design, or correctness-focused review findings.
+description: Use when reviewing Kotlin diffs, PRs, or changed files for type safety, parse-dont-validate boundaries, package cohesion, duplication, primitive traps, or expected failures.
 ---
 
 # Kotlin Review
