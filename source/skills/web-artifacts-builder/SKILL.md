@@ -1,16 +1,22 @@
 ---
 name: "web-artifacts-builder"
-description: "Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts."
+description: "Build self-contained Claude-compatible HTML artifact bundles from React/Vite projects. Use when the requested deliverable must be bundled into one shareable HTML file, especially for stateful or multi-component artifacts. Use frontend-design for general web UI/product design; use this skill for scaffold, shadcn component setup, bundling, and artifact handoff mechanics."
 ---
 
 # Web Artifacts Builder
 
-To build powerful frontend claude.ai artifacts, follow these steps:
+Use this skill when the output contract is a self-contained HTML artifact that
+can be shared back into a Claude conversation. Do not use it as the general
+frontend design authority; pair it with `frontend-design` when the user needs
+visual direction, product layout, or polished UI implementation guidance.
+
+To build frontend claude.ai artifacts, follow these steps:
 1. Initialize the frontend repo using `scripts/init-artifact.sh`
-2. Develop your artifact by editing the generated code
-3. Bundle all code into a single HTML file using `scripts/bundle-artifact.sh`
-4. Display artifact to user
-5. (Optional) Test the artifact
+2. Add only the shadcn/ui components the artifact actually needs
+3. Develop your artifact by editing the generated code
+4. Verify the app builds
+5. Bundle all code into a single HTML file using `scripts/bundle-artifact.sh`
+6. Test or inspect the bundled artifact before handoff
 
 **Stack**: React 18 + TypeScript + Vite + Parcel (bundling) + Tailwind CSS + shadcn/ui
 
@@ -29,19 +35,38 @@ cd <project-name>
 ```
 
 This creates a fully configured project with:
-- ✅ React + TypeScript (via Vite)
-- ✅ Tailwind CSS 3.4.1 with shadcn/ui theming system
-- ✅ Path aliases (`@/`) configured
-- ✅ 40+ shadcn/ui components pre-installed
-- ✅ All Radix UI dependencies included
-- ✅ Parcel configured for bundling (via .parcelrc)
-- ✅ Node 18+ compatibility (auto-detects and pins Vite version)
+- React + TypeScript (via Vite)
+- Tailwind CSS 3.4.1 with shadcn/ui theming primitives
+- Path aliases (`@/`) configured
+- `components.json` and `src/lib/utils.ts` configured for shadcn/ui
+- Parcel configured for bundling (via `.parcelrc`)
+- Node 18+ compatibility (auto-detects and pins Vite version)
 
-### Step 2: Develop Your Artifact
+### Step 2: Add shadcn/ui Components
 
-To build the artifact, edit the generated files. See **Common Development Tasks** below for guidance.
+Add components on demand with the current shadcn CLI instead of relying on a
+vendored component archive:
 
-### Step 3: Bundle to Single HTML File
+```bash
+pnpm dlx shadcn@latest add button card dialog --yes
+```
+
+Use `pnpm dlx shadcn@latest add --help` when selecting less common components
+or checking current CLI options.
+
+### Step 3: Develop Your Artifact
+
+To build the artifact, edit the generated files.
+
+### Step 4: Verify the App
+
+Run the project build before bundling:
+
+```bash
+pnpm build
+```
+
+### Step 5: Bundle to Single HTML File
 
 To bundle the React app into a single HTML artifact:
 ```bash
@@ -58,15 +83,10 @@ This creates `bundle.html` - a self-contained artifact with all JavaScript, CSS,
 - Builds with Parcel (no source maps)
 - Inlines all assets into single HTML using html-inline
 
-### Step 4: Share Artifact with User
+### Step 6: Inspect and Share Artifact
 
-Finally, share the bundled HTML file in conversation with the user so they can view it as an artifact.
-
-### Step 5: Testing/Visualizing the Artifact (Optional)
-
-Note: This is a completely optional step. Only perform if necessary or requested.
-
-To test/visualize the artifact, use available tools (including other Skills or built-in tools like Playwright or Puppeteer). In general, avoid testing the artifact upfront as it adds latency between the request and when the finished artifact can be seen. Test later, after presenting the artifact, if requested or if issues arise.
+Inspect `bundle.html` locally before handoff. Use available browser automation
+when interaction, layout, or rendering correctness matters.
 
 ## Reference
 
