@@ -86,7 +86,17 @@
       "name": "schema-driven-design"
     }
   ],
-  "hooks": [],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/github-actions-await.hook.json",
+      "name": "github-actions-await"
+    }
+  ],
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Install in repositories where agents may branch, push, watch checks, merge, release, or repair CI with structured evidence and reusable automation.",
