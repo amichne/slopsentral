@@ -31,6 +31,10 @@ class ObserverError(Exception):
     pass
 
 
+class TransientObserverError(ObserverError):
+    pass
+
+
 class TargetKind(str, enum.Enum):
     RUN = "RUN"
     PR = "PR"
@@ -134,6 +138,7 @@ class WaitResult:
     finished_at: str
     timeout: TimeoutRecommendation
     failure_logs: list[dict[str, Any]]
+    error: str | None = None
 
 
 def run_gh_axi(args: Sequence[str], cwd: Path) -> AxiResult:
@@ -197,10 +202,25 @@ class StateStore:
         self._write_json(self.last_observation_path, wait_result_to_json(result))
 
     def append_duration(self, sample: DurationSample) -> None:
+        existing_samples = self.load_history()
+        identity = (sample.repository, sample.run_id, sample.attempt)
+        if any(
+            (existing.repository, existing.run_id, existing.attempt) == identity
+            for existing in existing_samples
+        ):
+            return
         self.history_path.parent.mkdir(parents=True, exist_ok=True)
-        payload = {"schemaVersion": STATE_VERSION, **dataclasses.asdict(sample)}
-        with self.history_path.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(payload, sort_keys=True, separators=(",", ":")) + "\n")
+        temporary = self.history_path.with_name(self.history_path.name + ".tmp")
+        lines = [
+            json.dumps(
+                {"schemaVersion": STATE_VERSION, **dataclasses.asdict(value)},
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            for value in [*existing_samples, sample]
+        ]
+        temporary.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        temporary.replace(self.history_path)
 
     def load_history(self) -> list[DurationSample]:
         if not self.history_path.exists():
@@ -264,12 +284,57 @@ def fetch_snapshot(
         require_success(result, "gh-axi run view")
         return parse_run_view(result.stdout, target.value)
 
-    command = [*GH_AXI_PREFIX, "pr", "checks"]
-    if target.value != "current":
-        command.append(target.value)
+    number = pr_number(target.value)
+    if target.required:
+        repository = resolve_repository_slug(repo_root, runner)
+        command = required_checks_command(repository, number)
+        result = runner(command, repo_root)
+        require_success(result, "gh-axi required PR checks API")
+        return parse_required_pr_checks(result.stdout, number)
+
+    command = [*GH_AXI_PREFIX, "pr", "checks", number]
     result = runner(command, repo_root)
     require_success(result, "gh-axi pr checks")
-    return parse_pr_checks(result.stdout, target.value, required=target.required)
+    return parse_pr_checks(result.stdout, number)
+
+
+def pr_number(value: str) -> str:
+    if value.isdigit() and int(value) > 0:
+        return value
+    match = re.fullmatch(r"https://github\.com/[^/]+/[^/]+/pull/(\d+)/?", value)
+    if match and int(match.group(1)) > 0:
+        return match.group(1)
+    raise ObserverError("PR target must be a positive PR number or GitHub PR URL")
+
+
+def resolve_repository_slug(repo_root: Path, runner: AxiRunner = run_gh_axi) -> str:
+    result = runner(["git", "remote", "get-url", "origin"], repo_root)
+    require_success(result, "git remote get-url origin")
+    remote = result.stdout.strip().removesuffix(".git")
+    patterns = (
+        r"^git@[^:]+:(?P<slug>[^/]+/[^/]+)$",
+        r"^ssh://git@[^/]+/(?P<slug>[^/]+/[^/]+)$",
+        r"^https?://[^/]+/(?P<slug>[^/]+/[^/]+)$",
+    )
+    for pattern in patterns:
+        match = re.fullmatch(pattern, remote)
+        if match:
+            return match.group("slug")
+    raise ObserverError("unable to resolve GitHub repository from origin remote")
+
+
+def required_checks_command(repository: str, pr: str) -> list[str]:
+    owner, name = repository.split("/", maxsplit=1)
+    query = (
+        "query { repository(owner:"
+        f"{json.dumps(owner)}, name:{json.dumps(name)}) {{ "
+        f"pullRequest(number:{pr}) {{ commits(last:1) {{ nodes {{ commit {{ "
+        "statusCheckRollup { contexts(first:100) { nodes { __typename "
+        f"... on CheckRun {{ name conclusion isRequired(pullRequestNumber:{pr}) }} "
+        f"... on StatusContext {{ context state isRequired(pullRequestNumber:{pr}) }} "
+        "} } } } } } } } }"
+    )
+    return [*GH_AXI_PREFIX, "api", "POST", "graphql", "--field", f"query={query}"]
 
 
 def await_event(
@@ -285,9 +350,38 @@ def await_event(
     expires_epoch = parse_utc(request.expires_at).timestamp()
     current_interval = interval_seconds
     polls = 0
+    consecutive_errors = 0
     latest = request.baseline
     while True:
-        latest = fetch(request.target)
+        try:
+            latest = fetch(request.target)
+            consecutive_errors = 0
+        except TransientObserverError as exc:
+            consecutive_errors += 1
+            if consecutive_errors >= 3:
+                raise ObserverError(
+                    f"observation failed after {consecutive_errors} attempts: {exc}"
+                ) from exc
+            remaining = expires_epoch - now_epoch()
+            if remaining <= 0:
+                return WaitResult(
+                    target=request.target,
+                    predicate=request.predicate,
+                    outcome=Outcome.TIMEOUT,
+                    previous=request.baseline,
+                    current=latest,
+                    polls=polls,
+                    started_at=iso_from_epoch(started_epoch),
+                    finished_at=iso_from_epoch(now_epoch()),
+                    timeout=request.timeout,
+                    failure_logs=[],
+                )
+            sleeper(min(current_interval, remaining))
+            current_interval = min(
+                max_interval_seconds,
+                max(current_interval + 1, current_interval * 2),
+            )
+            continue
         polls += 1
         if event_satisfied(request, latest):
             return WaitResult(
@@ -330,7 +424,32 @@ def require_success(result: AxiResult, command: str) -> None:
     if result.returncode == 0:
         return
     message = (result.stderr or result.stdout).strip()
-    raise ObserverError(message or f"{command} failed with exit code {result.returncode}")
+    detail = message or f"{command} failed with exit code {result.returncode}"
+    if is_transient_failure(detail):
+        raise TransientObserverError(detail)
+    raise ObserverError(detail)
+
+
+def is_transient_failure(message: str) -> bool:
+    lowered = message.lower()
+    return any(
+        marker in lowered
+        for marker in (
+            "temporary",
+            "temporarily",
+            "timed out",
+            "timeout",
+            "connection reset",
+            "connection refused",
+            "network error",
+            "bad gateway",
+            "service unavailable",
+            "gateway timeout",
+            "status 502",
+            "status 503",
+            "status 504",
+        )
+    )
 
 
 def parse_run_view(raw: str, run_id: str) -> Snapshot:
@@ -400,6 +519,56 @@ def parse_pr_checks(raw: str, pr: str, *, required: bool = False) -> Snapshot:
         status=status,
         conclusion=conclusion,
         summary=f"PR {pr} {scope}: {summary_value}",
+        details={"counts": counts, "checks": checks},
+    )
+
+
+def parse_required_pr_checks(raw: str, pr: str) -> Snapshot:
+    if re.search(r"^\s*pullRequest:\s*null\s*$", raw, flags=re.MULTILINE):
+        raise ObserverError(f"PR {pr} was not found by the gh-axi GraphQL API")
+    if not re.search(r"^data:\s*$", raw, flags=re.MULTILINE):
+        raise ObserverError("gh-axi required PR checks output is missing GraphQL data")
+    rows = parse_table(raw, "nodes")
+    checks: list[dict[str, str]] = []
+    for row in rows:
+        if normalized(row.get("isRequired")).lower() != "true":
+            continue
+        name = normalized(row.get("name")) or normalized(row.get("context"))
+        conclusion = normalized(row.get("conclusion")) or normalized(row.get("state"))
+        if not name or not conclusion:
+            raise ObserverError("gh-axi required PR checks output has an incomplete check")
+        checks.append({"name": name, "conclusion": conclusion.lower()})
+
+    counts = {"passed": 0, "failed": 0, "pending": 0, "total": len(checks)}
+    for check in checks:
+        conclusion = check["conclusion"]
+        if conclusion in FAILURE_CONCLUSIONS or conclusion in {"error", "fail"}:
+            counts["failed"] += 1
+        elif conclusion in {"expected", "pending", "queued", "in_progress"}:
+            counts["pending"] += 1
+        else:
+            counts["passed"] += 1
+    if counts["failed"]:
+        outcome = Outcome.FAILURE
+        status = "completed"
+        conclusion = "failure"
+    elif counts["pending"]:
+        outcome = Outcome.PENDING
+        status = "pending"
+        conclusion = ""
+    else:
+        outcome = Outcome.SUCCESS
+        status = "completed"
+        conclusion = "success"
+    summary = ", ".join(
+        f"{counts[key]} {key}" for key in ("passed", "failed", "pending", "total")
+    )
+    return Snapshot(
+        target=Target(TargetKind.PR, pr, required=True),
+        outcome=outcome,
+        status=status,
+        conclusion=conclusion,
+        summary=f"PR {pr} required checks: {summary}",
         details={"counts": counts, "checks": checks},
     )
 
@@ -484,17 +653,20 @@ def top_level_scalar(raw: str, key: str) -> str:
 
 def parse_table(raw: str, name: str) -> list[dict[str, str]]:
     lines = raw.splitlines()
-    header_pattern = re.compile(rf"^{re.escape(name)}\[\d+\]\{{([^}}]+)\}}:$")
+    header_pattern = re.compile(
+        rf"^(?P<indent>\s*){re.escape(name)}\[\d+\]\{{(?P<fields>[^}}]+)\}}:$"
+    )
     for index, line in enumerate(lines):
         match = header_pattern.fullmatch(line)
         if not match:
             continue
-        fields = [field.strip() for field in match.group(1).split(",")]
+        fields = [field.strip() for field in match.group("fields").split(",")]
+        row_prefix = match.group("indent") + "  "
         rows: list[dict[str, str]] = []
         for row_line in lines[index + 1 :]:
-            if not row_line.startswith("  "):
+            if not row_line.startswith(row_prefix):
                 break
-            values = next(csv.reader([row_line[2:]], skipinitialspace=True))
+            values = next(csv.reader([row_line[len(row_prefix) :]], skipinitialspace=True))
             if len(values) != len(fields):
                 raise ObserverError(f"gh-axi {name} row has unexpected field count")
             rows.append({field: decode_scalar(value) for field, value in zip(fields, values)})
@@ -723,7 +895,7 @@ def snapshot_from_json(payload: dict[str, Any]) -> Snapshot:
 
 
 def wait_result_to_json(result: WaitResult) -> dict[str, Any]:
-    return {
+    payload = {
         "schemaVersion": STATE_VERSION,
         "target": target_to_json(result.target),
         "predicate": result.predicate.value,
@@ -736,6 +908,9 @@ def wait_result_to_json(result: WaitResult) -> dict[str, Any]:
         "timeout": dataclasses.asdict(result.timeout),
         "failureLogs": result.failure_logs,
     }
+    if result.error:
+        payload["error"] = result.error
+    return payload
 
 
 def duration_sample_from_json(payload: dict[str, Any]) -> DurationSample:

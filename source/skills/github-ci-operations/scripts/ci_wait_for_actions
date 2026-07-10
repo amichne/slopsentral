@@ -4,12 +4,10 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import json
-import re
 import subprocess
 import sys
 import time
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Sequence
 
@@ -40,9 +38,7 @@ def build_parser() -> argparse.ArgumentParser:
     target.add_argument("--run-id", help="GitHub Actions run database ID.")
     target.add_argument(
         "--pr",
-        nargs="?",
-        const="current",
-        help="PR number, URL, or current branch PR when no value is supplied.",
+        help="Positive PR number or GitHub PR URL.",
     )
     arm.add_argument(
         "--until",
@@ -183,9 +179,24 @@ def await_observation(
             )
         store.write_last_observation(result)
         record_duration_if_available(result, repo_root, store, runner)
-    except observer.ObserverError:
+    except observer.ObserverError as exc:
+        now = observer.iso_from_epoch(now_epoch())
+        result = observer.WaitResult(
+            target=request.target,
+            predicate=request.predicate,
+            outcome=observer.Outcome.ERROR,
+            previous=request.baseline,
+            current=request.baseline,
+            polls=0,
+            started_at=request.armed_at,
+            finished_at=now,
+            timeout=request.timeout,
+            failure_logs=[],
+            error=str(exc),
+        )
+        store.write_last_observation(result)
         store.clear_active()
-        raise
+        return CommandResult(2, observer.wait_result_to_json(result))
     store.clear_active()
     return CommandResult(exit_code_for(result.outcome), observer.wait_result_to_json(result))
 
@@ -257,7 +268,7 @@ def target_from_args(args: argparse.Namespace) -> observer.Target:
         return observer.Target(observer.TargetKind.RUN, str(args.run_id))
     return observer.Target(
         observer.TargetKind.PR,
-        str(args.pr or "current"),
+        observer.pr_number(str(args.pr)),
         bool(args.required),
     )
 
@@ -294,7 +305,7 @@ def record_duration_if_available(
     if result.current.outcome == observer.Outcome.PENDING:
         return
     try:
-        repository = repository_slug(repo_root)
+        repository = observer.resolve_repository_slug(repo_root, runner)
         api = runner(
             [
                 *observer.GH_AXI_PREFIX,
@@ -308,28 +319,6 @@ def record_duration_if_available(
         observer.record_terminal_duration(store, details, repository=repository)
     except observer.ObserverError:
         return
-
-
-def repository_slug(repo_root: Path) -> str:
-    process = subprocess.run(
-        ["git", "remote", "get-url", "origin"],
-        cwd=repo_root,
-        text=True,
-        capture_output=True,
-    )
-    if process.returncode != 0:
-        raise observer.ObserverError("unable to resolve GitHub repository from origin remote")
-    remote = process.stdout.strip().removesuffix(".git")
-    patterns = (
-        r"^git@[^:]+:(?P<slug>[^/]+/[^/]+)$",
-        r"^ssh://git@[^/]+/(?P<slug>[^/]+/[^/]+)$",
-        r"^https?://[^/]+/(?P<slug>[^/]+/[^/]+)$",
-    )
-    for pattern in patterns:
-        match = re.fullmatch(pattern, remote)
-        if match:
-            return match.group("slug")
-    raise observer.ObserverError(f"unsupported origin remote URL: {remote}")
 
 
 def find_repo_root(start: Path) -> Path:

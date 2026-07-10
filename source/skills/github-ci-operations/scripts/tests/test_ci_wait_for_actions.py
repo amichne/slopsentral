@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import importlib.util
+import re
 import sys
 import tempfile
 import unittest
@@ -25,6 +26,23 @@ cli = importlib.util.module_from_spec(CLI_SPEC)
 sys.modules[CLI_SPEC.name] = cli
 assert CLI_SPEC.loader is not None
 CLI_SPEC.loader.exec_module(cli)
+
+
+SOURCE_ROOT = SCRIPTS.parents[2]
+AXI_ONLY_SURFACES = (
+    SOURCE_ROOT / "skills/github-ci-operations/SKILL.md",
+    SOURCE_ROOT / "skills/github-ci-operations/references/ci-failure-triage.md",
+    SOURCE_ROOT / "skills/github-ci-operations/references/release-flow.md",
+    SOURCE_ROOT / "skills/pull-request-lifecycle/SKILL.md",
+    SOURCE_ROOT / "skills/define-goal/SKILL.md",
+    SOURCE_ROOT / "evals/plugin-benchmarks/git-ci-operations.json",
+    SOURCE_ROOT / "evals/routing/daily-driver-workflows.json",
+    SOURCE_ROOT / "evals/routing/fixtures/golden-routing-observations.json",
+)
+RAW_GH_COMMAND = re.compile(
+    r"(?<!gh-axi)(?<![A-Za-z0-9_-])gh\s+"
+    r"(?:api|auth|issue|pr|release|repo|run|secret|variable|workflow)\b"
+)
 
 
 RUN_IN_PROGRESS_TOON = """\
@@ -72,6 +90,21 @@ checks[2]{name,conclusion}:
   test,fail
 """
 
+REQUIRED_PR_TOON = """\
+data:
+  repository:
+    pullRequest:
+      commits:
+        nodes[1]:
+          - commit:
+              statusCheckRollup:
+                contexts:
+                  nodes[3]{__typename,name,conclusion,isRequired,context,state}:
+                    CheckRun,lint,SUCCESS,true,,
+                    CheckRun,test,IN_PROGRESS,true,,
+                    StatusContext,,,false,optional,SUCCESS
+"""
+
 RUN_API_TOON = """\
 id: 123
 name: Validate Source
@@ -112,6 +145,17 @@ class ManualClock:
 
 
 class CiActionsObservationTests(unittest.TestCase):
+    def test_authored_workflows_use_axi_and_not_removed_evidence_helper(self) -> None:
+        violations: list[str] = []
+        for path in AXI_ONLY_SURFACES:
+            text = path.read_text(encoding="utf-8")
+            if "ci_check_evidence" in text:
+                violations.append(f"{path.relative_to(SOURCE_ROOT)}: removed helper")
+            if RAW_GH_COMMAND.search(text):
+                violations.append(f"{path.relative_to(SOURCE_ROOT)}: raw gh command")
+
+        self.assertEqual(violations, [])
+
     def test_run_observation_uses_only_gh_axi_and_parses_jobs(self) -> None:
         runner = RecordingRunner([observer.AxiResult(0, RUN_IN_PROGRESS_TOON, "")])
 
@@ -142,6 +186,41 @@ class CiActionsObservationTests(unittest.TestCase):
         self.assertEqual(pending.details["counts"]["pending"], 1)
         self.assertEqual(failed.outcome, observer.Outcome.FAILURE)
         self.assertEqual(failed.details["checks"][1]["name"], "test")
+
+    def test_required_pr_observation_uses_axi_graphql_and_filters_optional_checks(self) -> None:
+        runner = RecordingRunner(
+            [
+                observer.AxiResult(0, "git@github.com:amichne/slopsentral.git\n", ""),
+                observer.AxiResult(0, REQUIRED_PR_TOON, ""),
+            ]
+        )
+
+        snapshot = observer.fetch_snapshot(
+            observer.Target(observer.TargetKind.PR, "42", required=True),
+            Path("."),
+            runner,
+        )
+
+        self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
+        self.assertEqual([check["name"] for check in snapshot.details["checks"]], ["lint", "test"])
+        self.assertEqual(runner.calls[0], ("git", "remote", "get-url", "origin"))
+        self.assertEqual(runner.calls[1][:5], ("npx", "-y", "gh-axi", "api", "POST"))
+        self.assertIn("isRequired", runner.calls[1][-1])
+
+    def test_pr_target_normalizes_number_and_github_url(self) -> None:
+        self.assertEqual(observer.pr_number("42"), "42")
+        self.assertEqual(
+            observer.pr_number("https://github.com/amichne/slopsentral/pull/42"),
+            "42",
+        )
+        with self.assertRaisesRegex(observer.ObserverError, "PR number"):
+            observer.pr_number("current")
+
+    def test_required_pr_observation_fails_closed_for_missing_pr(self) -> None:
+        missing = "data:\n  repository:\n    pullRequest: null\n"
+
+        with self.assertRaisesRegex(observer.ObserverError, "not found"):
+            observer.parse_required_pr_checks(missing, "999")
 
     def test_run_api_parser_returns_exact_duration_fields(self) -> None:
         details = observer.parse_run_api(RUN_API_TOON)
@@ -255,8 +334,12 @@ class CiActionsStateTests(unittest.TestCase):
         self.assertFalse(self.store.active_path.exists())
 
     def test_profile_export_is_sorted_and_deterministic(self) -> None:
-        self.store.append_duration(duration_sample(200, "success", workflow="Zeta"))
-        self.store.append_duration(duration_sample(100, "success", workflow="Alpha"))
+        self.store.append_duration(
+            duration_sample(200, "success", workflow="Zeta", run_id="123")
+        )
+        self.store.append_duration(
+            duration_sample(100, "success", workflow="Alpha", run_id="124")
+        )
         output = self.repo_root / ".axi" / "github-actions-duration-profile.json"
 
         first = self.store.export_profile(output)
@@ -265,6 +348,74 @@ class CiActionsStateTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual([group["workflow"] for group in first["groups"]], ["Alpha", "Zeta"])
         self.assertEqual(json.loads(output.read_text(encoding="utf-8")), first)
+
+    def test_duration_history_deduplicates_a_run_attempt(self) -> None:
+        sample = duration_sample(200, "success")
+
+        self.store.append_duration(sample)
+        self.store.append_duration(sample)
+
+        self.assertEqual(self.store.load_history(), [sample])
+
+    def test_await_retries_two_transient_observation_errors(self) -> None:
+        attempts = 0
+        epoch = datetime(2026, 7, 10, 12, tzinfo=timezone.utc).timestamp()
+
+        def fetch(_: observer.Target) -> observer.Snapshot:
+            nonlocal attempts
+            attempts += 1
+            if attempts < 3:
+                raise observer.TransientObserverError("temporary API failure")
+            return observer.parse_run_view(RUN_SUCCESS_TOON, "123")
+
+        result = observer.await_event(
+            self.request,
+            fetch=fetch,
+            now_epoch=lambda: epoch,
+            sleeper=lambda _: None,
+        )
+
+        self.assertEqual(result.outcome, observer.Outcome.SUCCESS)
+        self.assertEqual(attempts, 3)
+
+    def test_await_fails_after_three_consecutive_observation_errors(self) -> None:
+        attempts = 0
+        epoch = datetime(2026, 7, 10, 12, tzinfo=timezone.utc).timestamp()
+
+        def fetch(_: observer.Target) -> observer.Snapshot:
+            nonlocal attempts
+            attempts += 1
+            raise observer.TransientObserverError("temporary API failure")
+
+        with self.assertRaisesRegex(observer.ObserverError, "after 3 attempts"):
+            observer.await_event(
+                self.request,
+                fetch=fetch,
+                now_epoch=lambda: epoch,
+                sleeper=lambda _: None,
+            )
+
+        self.assertEqual(attempts, 3)
+
+    def test_await_does_not_retry_validation_errors(self) -> None:
+        attempts = 0
+
+        def fetch(_: observer.Target) -> observer.Snapshot:
+            nonlocal attempts
+            attempts += 1
+            raise observer.ObserverError("malformed AXI output")
+
+        with self.assertRaisesRegex(observer.ObserverError, "malformed AXI output"):
+            observer.await_event(
+                self.request,
+                fetch=fetch,
+                now_epoch=lambda: datetime(
+                    2026, 7, 10, 12, tzinfo=timezone.utc
+                ).timestamp(),
+                sleeper=lambda _: None,
+            )
+
+        self.assertEqual(attempts, 1)
 
 
 class CiActionsCliTests(unittest.TestCase):
@@ -358,6 +509,29 @@ class CiActionsCliTests(unittest.TestCase):
         self.assertFalse(self.store.active_path.exists())
         self.assertTrue(self.store.last_observation_path.exists())
 
+    def test_await_records_error_evidence_after_retry_exhaustion(self) -> None:
+        baseline = observer.parse_run_view(RUN_IN_PROGRESS_TOON, "123")
+        self.store.arm(active_request(baseline, expires_at="2026-07-10T12:05:00Z"))
+        runner = RecordingRunner(
+            [observer.AxiResult(1, "", "temporary API failure") for _ in range(3)]
+        )
+
+        result = cli.execute(
+            ["--repo", str(self.repo_root), "await", "--json"],
+            runner=runner,
+            store=self.store,
+            now_epoch=self.clock.time,
+            sleeper=self.clock.sleep,
+        )
+
+        self.assertEqual(result.exit_code, 2)
+        self.assertEqual(result.payload["outcome"], "error")
+        self.assertIn("after 3 attempts", result.payload["error"])
+        self.assertFalse(self.store.active_path.exists())
+        evidence = json.loads(self.store.last_observation_path.read_text(encoding="utf-8"))
+        self.assertEqual(evidence["outcome"], "error")
+        self.assertEqual(evidence["error"], result.payload["error"])
+
     def test_status_reports_idle_without_remote_calls(self) -> None:
         result = cli.execute(
             ["--repo", str(self.repo_root), "status", "--json"],
@@ -374,12 +548,13 @@ def duration_sample(
     conclusion: str,
     *,
     workflow: str = "Validate Source",
+    run_id: str = "123",
 ) -> observer.DurationSample:
     return observer.DurationSample(
         repository="amichne/slopsentral",
         workflow=workflow,
         event="pull_request",
-        run_id="123",
+        run_id=run_id,
         attempt=1,
         conclusion=conclusion,
         run_started_at="2026-07-08T23:29:53Z",

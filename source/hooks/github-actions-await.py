@@ -13,7 +13,7 @@ from typing import Any, Callable, Sequence
 
 
 RAW_GITHUB_COMMAND = re.compile(
-    r"(?:^|[;&|]\s*)gh\s+"
+    r"(?<![A-Za-z0-9_-])gh\s+"
     r"(?:api|auth|issue|pr|release|repo|run|secret|variable|workflow)\b"
 )
 
@@ -44,13 +44,13 @@ def guard_output(payload: dict[str, Any]) -> dict[str, Any] | None:
 def stop_output(
     repo_root: Path,
     run_cli: CliRunner | None = None,
-) -> dict[str, Any]:
+) -> dict[str, Any] | None:
     cli = run_cli or observer_cli_runner(repo_root)
     status = cli(["--repo", str(repo_root), "status", "--json"])
     if status.exit_code != 0:
         return continuation("observer-status-error", status.payload)
     if status.payload.get("state") == "idle":
-        return {"continue": True}
+        return None
     event = cli(["--repo", str(repo_root), "await", "--json"])
     return continuation("observation-event", event.payload)
 

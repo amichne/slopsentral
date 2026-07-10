@@ -2,7 +2,7 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "^(Bash|mcp__.*github.*)$",
+        "matcher": "^(Bash|exec_command|mcp__.*github.*)$",
         "hooks": [
           {
             "type": "command",

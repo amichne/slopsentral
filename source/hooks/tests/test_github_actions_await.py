@@ -53,6 +53,23 @@ class GithubActionsAwaitHookTests(unittest.TestCase):
         self.assertEqual(output["hookSpecificOutput"]["permissionDecision"], "deny")
         self.assertIn("gh-axi", output["hookSpecificOutput"]["permissionDecisionReason"])
 
+    def test_guard_denies_raw_gh_inside_shell_wrappers(self) -> None:
+        commands = (
+            "result=$(gh pr checks 42)",
+            "env GH_TOKEN=secret gh run view 123",
+            "/opt/homebrew/bin/gh workflow run validate.yml",
+        )
+
+        for command in commands:
+            with self.subTest(command=command):
+                output = hook.guard_output(
+                    {"tool_name": "Bash", "tool_input": {"command": command}}
+                )
+                self.assertEqual(
+                    output["hookSpecificOutput"]["permissionDecision"],
+                    "deny",
+                )
+
     def test_guard_denies_github_mcp(self) -> None:
         output = hook.guard_output(
             {
@@ -86,7 +103,7 @@ class GithubActionsAwaitHookTests(unittest.TestCase):
 
         output = hook.stop_output(Path("/repo"), fake)
 
-        self.assertEqual(output, {"continue": True})
+        self.assertIsNone(output)
         self.assertEqual(fake.calls, [("--repo", "/repo", "status", "--json")])
 
     def test_stop_continues_model_once_for_observation_event(self) -> None:
