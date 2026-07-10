@@ -34,3 +34,7 @@ Git and CI best-practices package for reusable delivery workflows: goals, TDD, G
 - `pull-request-lifecycle`: `skills/pull-request-lifecycle` (source: `source/skills/pull-request-lifecycle`)
 - `shell-script-safety`: `skills/shell-script-safety` (source: `source/skills/shell-script-safety`)
 - `tdd`: `skills/tdd` (source: `source/skills/tdd`)
+
+## Hook Primitives
+
+- `github-actions-await`: `hooks/github-actions-await.hooks.json` (source: `source/hooks/github-actions-await.hook.json`)

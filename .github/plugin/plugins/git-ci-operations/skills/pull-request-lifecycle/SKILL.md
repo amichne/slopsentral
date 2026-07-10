@@ -8,7 +8,7 @@ description: "Use when work needs a branch, commit, push, PR, draft/ready transi
 Use this skill to carry code work across the version-control boundary without
 losing evidence. It composes local Git hygiene, GitHub PR operations, and CI
 triage; it must remain useful even when a host-specific GitHub connector is not
-available.
+available. Use `npx -y gh-axi` as the sole remote GitHub surface.
 
 Related primitives in this repository:
 
@@ -30,13 +30,13 @@ Related primitives in this repository:
 - Do not mark a PR ready for review until the branch has a focused diff,
   validation evidence, and no known deterministic failures.
 - Babysit checks by reading live check state, logs, and annotations. For
-  pending GitHub Actions runs, use the quiet waiter from
-  `skills/github-ci-operations/scripts/ci_wait_for_actions` so status is
-  reported only when the remote state changes. Fix the owning source instead of
-  rerunning deterministic failures.
-- Never claim a PR is green until `gh pr checks` or the repository's check
-  surface reports passing, skipped, or neutral terminal states for required
-  checks. Prefer the CI evidence helper when `gh --json` output is available.
+  pending GitHub Actions runs, arm the observer from
+  `skills/github-ci-operations/scripts/ci_wait_for_actions`, then yield so the
+  hook resumes the model only when its event predicate or bound is reached. Fix
+  the owning source instead of rerunning deterministic failures.
+- Never claim a PR is green until `npx -y gh-axi pr checks <pr-number>` and the
+  typed required-check observation report passing, skipped, or neutral terminal
+  states for the current head.
 
 ## Workflow
 
@@ -61,18 +61,20 @@ Related primitives in this repository:
    publication is requested.
 
 5. Open or update the PR.
-   Use `gh pr view --json number,url,headRefName,headRefOid,baseRefName,isDraft`
-   to detect an existing PR. If none exists, open one with purpose, changed
-   surface, validation evidence, and residual risk. Prefer draft until local
-   evidence is complete.
+   Use `npx -y gh-axi pr list --head <branch> --state open --limit 2` and
+   `npx -y gh-axi pr view <pr-number>` to detect and inspect an existing PR. If
+   none exists, open one through AXI with purpose, changed surface, validation
+   evidence, and residual risk. Prefer draft until local evidence is complete.
 
 6. Watch checks.
-   Use `gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt`
-   for a snapshot. When checks are pending, wait with
-   `python "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions" --pr <pr>`,
-   not a chatty watch loop. For failing GitHub Actions runs, inspect
-   `gh run view` with logs. Separate product/test failures, generated drift,
-   dependency setup, permissions, secrets, cache, and flaky behavior.
+   Use `npx -y gh-axi pr checks <pr-number>` for a snapshot. When checks are
+   pending, run `python3
+   "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions" --repo .
+   arm --pr <pr-number> --required --until status-change --timeout auto --json`,
+   then end the turn. For failing Actions runs, use
+   `npx -y gh-axi run view <run-id> --log-failed`. Separate product/test
+   failures, generated drift, dependency setup, permissions, secrets, cache,
+   and flaky behavior.
 
 7. Repair or hand off.
    For deterministic failures, patch the owning source, rerun the local
@@ -84,12 +86,12 @@ Related primitives in this repository:
 
 When asked to babysit until green:
 
-1. Wait with a transition-only backoff watcher, and emit updates only when the
-   remote check or run state changes.
+1. Arm a transition-only observation and let the hook await internally. Emit
+   one update only when the remote check or run state changes.
 2. Treat `failure`, `cancelled`, `timed_out`, and required `action_required` as
    stop conditions that need diagnosis.
 3. Treat `pending`, `queued`, and `in_progress` as wait states only while the
-   run is still moving.
+   run is still moving. Re-arm after processing a pending transition.
 4. Stop and report if the same blocking condition recurs after three repair
    attempts or if a required secret, permission, or environment approval is not
    available locally.

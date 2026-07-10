@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T00:06:12-04:00",
+  "generatedAt": "2026-07-10T14:59:11-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -215,6 +215,13 @@
       "name": "git-ci-operations",
       "references": [
         {
+          "name": "github-actions-await",
+          "sha256": "sha256:a75ecbb76ae7de7924e3f0505bf3d3efd99c47e1f3c5fc411d3111a0d8d1b679",
+          "sourcePath": "source/hooks/github-actions-await.hook.json",
+          "targetPath": "hooks/github-actions-await.hooks.json",
+          "type": "HOOK"
+        },
+        {
           "name": "schema-driven-design",
           "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
@@ -230,7 +237,7 @@
         },
         {
           "name": "define-goal",
-          "sha256": "sha256:79bcc8c927e84197693271c4fdbc6bb7664eb1ddf3674d9334e3017262d9d3f2",
+          "sha256": "sha256:bab03fb8483af90e3f3276352c144eb73c23f28dc889490d894f35b67d7a43b3",
           "sourcePath": "source/skills/define-goal",
           "targetPath": "skills/define-goal",
           "type": "SKILL"
@@ -244,14 +251,14 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:72b0c8de312307b5b714e3de801e5dec787d69768e9f93ab7a5299406c68af55",
+          "sha256": "sha256:117d874805234611856be9281fc371e5fb55ff59a2def37936fca9f7a959d77e",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:e7c6b26f4a224ca0d3d3b7ada95c5c9aac526e746afb7b04419a349426491e5d",
+          "sha256": "sha256:0b01cc78841f67e86cc458f83a210006949ddc517216cf3c8865bda00a4dddca",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
@@ -416,6 +423,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "05408fc4728fcfb394985b7fb23fbe4948b439fc",
+  "sourceSha": "e3704b5c2ff3a3005c3d18889c3c1bd809fc3151",
   "type": "HYDRATED_MARKETPLACE"
 }

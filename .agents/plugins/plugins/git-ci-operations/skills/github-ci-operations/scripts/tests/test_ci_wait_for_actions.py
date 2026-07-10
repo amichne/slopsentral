@@ -1,191 +1,591 @@
 from __future__ import annotations
 
-import importlib.util
-from importlib.machinery import SourceFileLoader
 import json
+import importlib.util
+import re
 import sys
+import tempfile
 import unittest
+from datetime import datetime, timezone
+from importlib.machinery import SourceFileLoader
 from pathlib import Path
-from typing import Any, Sequence
-
-SCRIPT = Path(__file__).resolve().parents[1] / "ci_wait_for_actions"
-LOADER = SourceFileLoader("ci_wait_for_actions", str(SCRIPT))
-SPEC = importlib.util.spec_from_loader(LOADER.name, LOADER)
-assert SPEC is not None
-MODULE = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = MODULE
-assert SPEC.loader is not None
-SPEC.loader.exec_module(MODULE)
+from typing import Sequence
 
 
-class FakeRunner:
-    def __init__(self, responses: dict[tuple[str, ...], list[Any]]):
-        self.responses = {key: list(value) for key, value in responses.items()}
+SCRIPTS = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SCRIPTS))
+
+import ci_actions_observer as observer  # noqa: E402
+
+
+CLI_SCRIPT = SCRIPTS / "ci_wait_for_actions"
+CLI_LOADER = SourceFileLoader("ci_wait_for_actions", str(CLI_SCRIPT))
+CLI_SPEC = importlib.util.spec_from_loader(CLI_LOADER.name, CLI_LOADER)
+assert CLI_SPEC is not None
+cli = importlib.util.module_from_spec(CLI_SPEC)
+sys.modules[CLI_SPEC.name] = cli
+assert CLI_SPEC.loader is not None
+CLI_SPEC.loader.exec_module(cli)
+
+
+SOURCE_ROOT = SCRIPTS.parents[2]
+AXI_ONLY_SURFACES = (
+    SOURCE_ROOT / "skills/github-ci-operations/SKILL.md",
+    SOURCE_ROOT / "skills/github-ci-operations/references/ci-failure-triage.md",
+    SOURCE_ROOT / "skills/github-ci-operations/references/release-flow.md",
+    SOURCE_ROOT / "skills/pull-request-lifecycle/SKILL.md",
+    SOURCE_ROOT / "skills/define-goal/SKILL.md",
+    SOURCE_ROOT / "evals/plugin-benchmarks/git-ci-operations.json",
+    SOURCE_ROOT / "evals/routing/daily-driver-workflows.json",
+    SOURCE_ROOT / "evals/routing/fixtures/golden-routing-observations.json",
+)
+RAW_GH_COMMAND = re.compile(
+    r"(?<!gh-axi)(?<![A-Za-z0-9_-])gh\s+"
+    r"(?:api|auth|issue|pr|release|repo|run|secret|variable|workflow)\b"
+)
+
+
+RUN_IN_PROGRESS_TOON = """\
+run:
+  id: 123
+  title: Validate change
+  status: in_progress
+  conclusion: null
+  workflow: Validate Source
+  branch: feature/example
+  created: 1m ago
+jobs[2]{id,name,status,conclusion}:
+  10,test,in_progress,null
+  11,lint,completed,success
+help[1]:
+  Run `gh-axi run view 123 --log-failed` to inspect failures
+"""
+
+RUN_SUCCESS_TOON = """\
+run:
+  id: 123
+  title: Validate change
+  status: completed
+  conclusion: success
+  workflow: Validate Source
+  branch: feature/example
+  created: 2m ago
+jobs[1]{id,name,status,conclusion}:
+  10,test,completed,success
+"""
+
+PR_PENDING_TOON = """\
+summary: "1 passed, 0 failed, 1 pending, 2 total"
+checks[2]{name,conclusion}:
+  lint,pass
+  test,pending
+help[1]:
+  Run `gh-axi pr view 42` to see PR details
+"""
+
+PR_FAILED_TOON = """\
+summary: "1 passed, 1 failed, 2 total"
+checks[2]{name,conclusion}:
+  lint,pass
+  test,fail
+"""
+
+REQUIRED_PR_TOON = """\
+data:
+  repository:
+    pullRequest:
+      commits:
+        nodes[1]:
+          - commit:
+              statusCheckRollup:
+                contexts:
+                  nodes[3]{__typename,name,conclusion,isRequired,context,state}:
+                    CheckRun,lint,SUCCESS,true,,
+                    CheckRun,test,IN_PROGRESS,true,,
+                    StatusContext,,,false,optional,SUCCESS
+"""
+
+RUN_API_TOON = """\
+id: 123
+name: Validate Source
+head_branch: feature/example
+status: completed
+conclusion: success
+event: pull_request
+created_at: "2026-07-08T23:29:53Z"
+updated_at: "2026-07-08T23:30:06Z"
+run_attempt: 2
+run_started_at: "2026-07-08T23:29:53Z"
+repository:
+  full_name: amichne/slopsentral
+"""
+
+
+class RecordingRunner:
+    def __init__(self, responses: list[observer.AxiResult]):
+        self.responses = list(responses)
         self.calls: list[tuple[str, ...]] = []
 
-    def __call__(self, args: Sequence[str], cwd: Path) -> Any:
-        key = tuple(args)
-        self.calls.append(key)
-        values = self.responses.get(key)
-        if not values:
-            raise AssertionError(f"unexpected gh call: {key}")
-        value = values.pop(0)
-        if isinstance(value, MODULE.GhResult):
-            return value
-        return MODULE.GhResult(0, json.dumps(value), "")
+    def __call__(self, args: Sequence[str], cwd: Path) -> observer.AxiResult:
+        self.calls.append(tuple(args))
+        if not self.responses:
+            raise AssertionError(f"unexpected gh-axi call: {tuple(args)}")
+        return self.responses.pop(0)
 
 
 class ManualClock:
-    def __init__(self) -> None:
-        self.value = 0.0
+    def __init__(self, epoch_seconds: float) -> None:
+        self.value = epoch_seconds
 
-    def monotonic(self) -> float:
+    def time(self) -> float:
         return self.value
 
     def sleep(self, seconds: float) -> None:
         self.value += seconds
 
 
-class CiWaitForActionsTests(unittest.TestCase):
-    def test_run_observation_classifies_pending_success_and_failure(self) -> None:
-        command = (
-            "run",
-            "view",
-            "123",
-            "--json",
-            ",".join(MODULE.DEFAULT_FIELDS),
-        )
-        runner = FakeRunner(
-            {
-                command: [
-                    {
-                        "workflowName": "Validate",
-                        "status": "in_progress",
-                        "conclusion": None,
-                        "jobs": [{"name": "test", "status": "in_progress"}],
-                    },
-                    {
-                        "workflowName": "Validate",
-                        "status": "completed",
-                        "conclusion": "success",
-                        "jobs": [
-                            {
-                                "name": "test",
-                                "status": "completed",
-                                "conclusion": "success",
-                            }
-                        ],
-                    },
-                    {
-                        "workflowName": "Validate",
-                        "status": "completed",
-                        "conclusion": "failure",
-                        "jobs": [
-                            {
-                                "name": "test",
-                                "status": "completed",
-                                "conclusion": "failure",
-                            }
-                        ],
-                    },
-                ]
-            }
+class CiActionsObservationTests(unittest.TestCase):
+    def test_authored_workflows_use_axi_and_not_removed_evidence_helper(self) -> None:
+        violations: list[str] = []
+        for path in AXI_ONLY_SURFACES:
+            text = path.read_text(encoding="utf-8")
+            if "ci_check_evidence" in text:
+                violations.append(f"{path.relative_to(SOURCE_ROOT)}: removed helper")
+            if RAW_GH_COMMAND.search(text):
+                violations.append(f"{path.relative_to(SOURCE_ROOT)}: raw gh command")
+
+        self.assertEqual(violations, [])
+
+    def test_run_observation_uses_only_gh_axi_and_parses_jobs(self) -> None:
+        runner = RecordingRunner([observer.AxiResult(0, RUN_IN_PROGRESS_TOON, "")])
+
+        snapshot = observer.fetch_snapshot(
+            observer.Target(observer.TargetKind.RUN, "123"),
+            Path("."),
+            runner,
         )
 
-        pending = MODULE.fetch_run_observation("123", Path("."), runner)
-        success = MODULE.fetch_run_observation("123", Path("."), runner)
-        failure = MODULE.fetch_run_observation("123", Path("."), runner)
+        self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
+        self.assertEqual(snapshot.status, "in_progress")
+        self.assertEqual(snapshot.details["jobs"][0]["name"], "test")
+        self.assertEqual(runner.calls[0][:3], ("npx", "-y", "gh-axi"))
+        self.assertNotIn("help", snapshot.details)
 
-        self.assertEqual(pending.outcome, "pending")
-        self.assertEqual(success.outcome, "success")
-        self.assertEqual(failure.outcome, "failure")
-        self.assertEqual(failure.failing_run_ids, ("123",))
+    def test_run_observation_classifies_terminal_success(self) -> None:
+        snapshot = observer.parse_run_view(RUN_SUCCESS_TOON, "123")
 
-    def test_pr_observation_extracts_unique_failing_action_run_ids(self) -> None:
-        command = (
-            "pr",
-            "checks",
-            "42",
-            "--json",
-            ",".join(MODULE.CHECK_FIELDS),
-        )
-        runner = FakeRunner(
-            {
-                command: [
-                    [
-                        {
-                            "name": "unit",
-                            "bucket": "pass",
-                            "state": "SUCCESS",
-                            "link": "https://github.com/acme/repo/actions/runs/1/job/10",
-                        },
-                        {
-                            "name": "integration",
-                            "bucket": "fail",
-                            "state": "FAILURE",
-                            "link": "https://github.com/acme/repo/actions/runs/2/job/20",
-                        },
-                        {
-                            "name": "lint",
-                            "bucket": "fail",
-                            "state": "FAILURE",
-                            "link": "https://github.com/acme/repo/actions/runs/2/job/21",
-                        },
-                    ]
-                ]
-            }
+        self.assertEqual(snapshot.outcome, observer.Outcome.SUCCESS)
+        self.assertEqual(snapshot.conclusion, "success")
+        self.assertIn("Validate Source", snapshot.summary)
+
+    def test_pr_observation_classifies_pending_and_failure(self) -> None:
+        pending = observer.parse_pr_checks(PR_PENDING_TOON, "42")
+        failed = observer.parse_pr_checks(PR_FAILED_TOON, "42")
+
+        self.assertEqual(pending.outcome, observer.Outcome.PENDING)
+        self.assertEqual(pending.details["counts"]["pending"], 1)
+        self.assertEqual(failed.outcome, observer.Outcome.FAILURE)
+        self.assertEqual(failed.details["checks"][1]["name"], "test")
+
+    def test_required_pr_observation_uses_axi_graphql_and_filters_optional_checks(self) -> None:
+        runner = RecordingRunner(
+            [
+                observer.AxiResult(0, "git@github.com:amichne/slopsentral.git\n", ""),
+                observer.AxiResult(0, REQUIRED_PR_TOON, ""),
+            ]
         )
 
-        observation = MODULE.fetch_pr_observation("42", False, Path("."), runner)
-
-        self.assertEqual(observation.outcome, "failure")
-        self.assertEqual(observation.failing_run_ids, ("2",))
-
-    def test_wait_records_only_changed_transitions(self) -> None:
-        observations = [
-            MODULE.Observation("pending", "queued", "run queued", {}),
-            MODULE.Observation("pending", "queued", "run queued", {}),
-            MODULE.Observation("pending", "running", "run running", {}),
-            MODULE.Observation("success", "passed", "run passed", {}),
-        ]
-        clock = ManualClock()
-        emitted: list[Any] = []
-
-        def fetch() -> Any:
-            return observations.pop(0)
-
-        result = MODULE.wait_until_terminal(
-            target={"type": "RUN", "runId": "123"},
-            fetch_observation=fetch,
-            repo_root=Path("."),
-            runner=FakeRunner({}),
-            interval_seconds=5,
-            max_interval_seconds=20,
-            timeout_seconds=60,
-            failure_log_lines=0,
-            emit_transition=emitted.append,
-            monotonic=clock.monotonic,
-            sleeper=clock.sleep,
-            now=lambda: "2026-06-22T00:00:00Z",
+        snapshot = observer.fetch_snapshot(
+            observer.Target(observer.TargetKind.PR, "42", required=True),
+            Path("."),
+            runner,
         )
 
-        self.assertEqual(result.outcome, "success")
-        self.assertEqual(result.polls, 4)
-        self.assertEqual([transition.summary for transition in result.transitions], [
-            "run queued",
-            "run running",
-            "run passed",
-        ])
-        self.assertEqual(len(emitted), 3)
-        self.assertGreaterEqual(clock.value, 10)
+        self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
+        self.assertEqual([check["name"] for check in snapshot.details["checks"]], ["lint", "test"])
+        self.assertEqual(runner.calls[0], ("git", "remote", "get-url", "origin"))
+        self.assertEqual(runner.calls[1][:5], ("npx", "-y", "gh-axi", "api", "POST"))
+        self.assertIn("isRequired", runner.calls[1][-1])
 
-    def test_extract_run_id_accepts_run_and_job_urls(self) -> None:
+    def test_pr_target_normalizes_number_and_github_url(self) -> None:
+        self.assertEqual(observer.pr_number("42"), "42")
         self.assertEqual(
-            MODULE.extract_run_id("https://github.com/acme/repo/actions/runs/123/job/456"),
+            observer.pr_number("https://github.com/amichne/slopsentral/pull/42"),
+            "42",
+        )
+        with self.assertRaisesRegex(observer.ObserverError, "PR number"):
+            observer.pr_number("current")
+
+    def test_required_pr_observation_fails_closed_for_missing_pr(self) -> None:
+        missing = "data:\n  repository:\n    pullRequest: null\n"
+
+        with self.assertRaisesRegex(observer.ObserverError, "not found"):
+            observer.parse_required_pr_checks(missing, "999")
+
+    def test_run_api_parser_returns_exact_duration_fields(self) -> None:
+        details = observer.parse_run_api(RUN_API_TOON)
+
+        self.assertEqual(details["workflow"], "Validate Source")
+        self.assertEqual(details["attempt"], 2)
+        self.assertEqual(details["runStartedAt"], "2026-07-08T23:29:53Z")
+        self.assertEqual(details["updatedAt"], "2026-07-08T23:30:06Z")
+
+    def test_state_key_ignores_relative_created_text_and_help_hints(self) -> None:
+        first = observer.parse_run_view(RUN_IN_PROGRESS_TOON, "123")
+        second = observer.parse_run_view(
+            RUN_IN_PROGRESS_TOON.replace("created: 1m ago", "created: 2m ago")
+            .replace("inspect failures", "read more"),
             "123",
         )
-        self.assertEqual(MODULE.extract_run_id("https://github.com/acme/repo/runs/789"), "789")
-        self.assertIsNone(MODULE.extract_run_id("https://example.com"))
+
+        self.assertEqual(first.state_key, second.state_key)
+
+    def test_missing_required_run_fields_fail_closed(self) -> None:
+        with self.assertRaisesRegex(observer.ObserverError, "status"):
+            observer.parse_run_view("run:\n  id: 123\n", "123")
+
+
+class CiActionsStateTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.repo_root = Path(self.temporary.name)
+        self.state_dir = self.repo_root / "git-state" / "axi" / "github-actions"
+        self.store = observer.StateStore(self.repo_root, state_dir=self.state_dir)
+        self.baseline = observer.parse_run_view(RUN_IN_PROGRESS_TOON, "123")
+        self.request = observer.ActiveRequest(
+            target=self.baseline.target,
+            predicate=observer.WaitPredicate.STATUS_CHANGE,
+            baseline=self.baseline,
+            timeout=observer.TimeoutRecommendation(
+                seconds=900,
+                source="default",
+                sample_count=0,
+                p50_seconds=None,
+                p95_seconds=None,
+                maximum_seconds=None,
+            ),
+            armed_at="2026-07-10T12:00:00Z",
+            expires_at="2026-07-10T12:15:00Z",
+        )
+
+    def test_state_store_refuses_to_replace_active_request(self) -> None:
+        self.store.arm(self.request)
+
+        with self.assertRaisesRegex(observer.ObserverError, "already active"):
+            self.store.arm(self.request)
+
+        loaded = self.store.load_active()
+        self.assertEqual(loaded, self.request)
+        self.assertTrue(self.store.active_path.is_file())
+
+    def test_state_directory_uses_git_rev_parse_path(self) -> None:
+        calls: list[tuple[str, ...]] = []
+
+        def fake_git(args: Sequence[str], cwd: Path) -> observer.AxiResult:
+            calls.append(tuple(args))
+            return observer.AxiResult(0, ".git/worktrees/topic/axi/github-actions\n", "")
+
+        resolved = observer.resolve_state_dir(self.repo_root, fake_git)
+
+        self.assertEqual(
+            resolved,
+            (self.repo_root / ".git/worktrees/topic/axi/github-actions").resolve(),
+        )
+        self.assertEqual(calls, [("git", "rev-parse", "--git-path", "axi/github-actions")])
+
+    def test_auto_timeout_uses_p95_profile_with_bounds(self) -> None:
+        recommendation = observer.recommend_timeout(
+            [100, 120, 130, 140, 200], source="team-profile"
+        )
+
+        self.assertEqual(recommendation.sample_count, 5)
+        self.assertEqual(recommendation.source, "team-profile")
+        self.assertEqual(recommendation.p50_seconds, 130)
+        self.assertEqual(recommendation.p95_seconds, 200)
+        self.assertEqual(recommendation.seconds, 360)
+
+    def test_auto_timeout_uses_sparse_history_and_default(self) -> None:
+        sparse = observer.recommend_timeout([100, 200], source="local-history")
+        empty = observer.recommend_timeout([], source="default")
+
+        self.assertEqual(sparse.seconds, 460)
+        self.assertEqual(empty.seconds, 1800)
+
+    def test_cancelled_samples_do_not_influence_timeout(self) -> None:
+        samples = [
+            duration_sample(200, "success"),
+            duration_sample(3000, "cancelled"),
+            duration_sample(120, "failure"),
+            duration_sample(2500, "startup_failure"),
+        ]
+
+        self.assertEqual(observer.eligible_durations(samples), [200, 120])
+
+    def test_corrupt_active_state_is_quarantined(self) -> None:
+        self.store.active_path.parent.mkdir(parents=True, exist_ok=True)
+        self.store.active_path.write_text("{not-json", encoding="utf-8")
+
+        with self.assertRaisesRegex(observer.ObserverError, "corrupt"):
+            self.store.load_active()
+
+        quarantined = list(self.store.active_path.parent.glob("active.corrupt-*.json"))
+        self.assertEqual(len(quarantined), 1)
+        self.assertFalse(self.store.active_path.exists())
+
+    def test_profile_export_is_sorted_and_deterministic(self) -> None:
+        self.store.append_duration(
+            duration_sample(200, "success", workflow="Zeta", run_id="123")
+        )
+        self.store.append_duration(
+            duration_sample(100, "success", workflow="Alpha", run_id="124")
+        )
+        output = self.repo_root / ".axi" / "github-actions-duration-profile.json"
+
+        first = self.store.export_profile(output)
+        second = self.store.export_profile(output)
+
+        self.assertEqual(first, second)
+        self.assertEqual([group["workflow"] for group in first["groups"]], ["Alpha", "Zeta"])
+        self.assertEqual(json.loads(output.read_text(encoding="utf-8")), first)
+
+    def test_duration_history_deduplicates_a_run_attempt(self) -> None:
+        sample = duration_sample(200, "success")
+
+        self.store.append_duration(sample)
+        self.store.append_duration(sample)
+
+        self.assertEqual(self.store.load_history(), [sample])
+
+    def test_await_retries_two_transient_observation_errors(self) -> None:
+        attempts = 0
+        epoch = datetime(2026, 7, 10, 12, tzinfo=timezone.utc).timestamp()
+
+        def fetch(_: observer.Target) -> observer.Snapshot:
+            nonlocal attempts
+            attempts += 1
+            if attempts < 3:
+                raise observer.TransientObserverError("temporary API failure")
+            return observer.parse_run_view(RUN_SUCCESS_TOON, "123")
+
+        result = observer.await_event(
+            self.request,
+            fetch=fetch,
+            now_epoch=lambda: epoch,
+            sleeper=lambda _: None,
+        )
+
+        self.assertEqual(result.outcome, observer.Outcome.SUCCESS)
+        self.assertEqual(attempts, 3)
+
+    def test_await_fails_after_three_consecutive_observation_errors(self) -> None:
+        attempts = 0
+        epoch = datetime(2026, 7, 10, 12, tzinfo=timezone.utc).timestamp()
+
+        def fetch(_: observer.Target) -> observer.Snapshot:
+            nonlocal attempts
+            attempts += 1
+            raise observer.TransientObserverError("temporary API failure")
+
+        with self.assertRaisesRegex(observer.ObserverError, "after 3 attempts"):
+            observer.await_event(
+                self.request,
+                fetch=fetch,
+                now_epoch=lambda: epoch,
+                sleeper=lambda _: None,
+            )
+
+        self.assertEqual(attempts, 3)
+
+    def test_await_does_not_retry_validation_errors(self) -> None:
+        attempts = 0
+
+        def fetch(_: observer.Target) -> observer.Snapshot:
+            nonlocal attempts
+            attempts += 1
+            raise observer.ObserverError("malformed AXI output")
+
+        with self.assertRaisesRegex(observer.ObserverError, "malformed AXI output"):
+            observer.await_event(
+                self.request,
+                fetch=fetch,
+                now_epoch=lambda: datetime(
+                    2026, 7, 10, 12, tzinfo=timezone.utc
+                ).timestamp(),
+                sleeper=lambda _: None,
+            )
+
+        self.assertEqual(attempts, 1)
+
+
+class CiActionsCliTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.repo_root = Path(self.temporary.name)
+        self.state_dir = self.repo_root / "git-state" / "axi" / "github-actions"
+        self.store = observer.StateStore(self.repo_root, state_dir=self.state_dir)
+        self.start_epoch = datetime(2026, 7, 10, 12, tzinfo=timezone.utc).timestamp()
+        self.clock = ManualClock(self.start_epoch)
+
+    def test_arm_records_baseline_and_resolved_timeout(self) -> None:
+        runner = RecordingRunner([observer.AxiResult(0, RUN_IN_PROGRESS_TOON, "")])
+
+        result = cli.execute(
+            [
+                "--repo",
+                str(self.repo_root),
+                "arm",
+                "--run-id",
+                "123",
+                "--until",
+                "status-change",
+                "--timeout",
+                "auto",
+                "--json",
+            ],
+            runner=runner,
+            store=self.store,
+            now_epoch=self.clock.time,
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(result.payload["request"]["predicate"], "status-change")
+        self.assertEqual(result.payload["timeout"]["source"], "default")
+        self.assertEqual(self.store.load_active().target.value, "123")
+
+    def test_await_emits_only_the_changed_state(self) -> None:
+        request = active_request(
+            observer.parse_run_view(RUN_IN_PROGRESS_TOON, "123"),
+            expires_at="2026-07-10T12:01:00Z",
+        )
+        self.store.arm(request)
+        runner = RecordingRunner(
+            [
+                observer.AxiResult(0, RUN_IN_PROGRESS_TOON, ""),
+                observer.AxiResult(
+                    0,
+                    RUN_IN_PROGRESS_TOON.replace("in_progress,null", "completed,success"),
+                    "",
+                ),
+            ]
+        )
+
+        result = cli.execute(
+            ["--repo", str(self.repo_root), "await", "--json"],
+            runner=runner,
+            store=self.store,
+            now_epoch=self.clock.time,
+            sleeper=self.clock.sleep,
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(result.payload["outcome"], "pending")
+        self.assertEqual(result.payload["polls"], 2)
+        self.assertNotEqual(
+            result.payload["previous"]["stateKey"],
+            result.payload["current"]["stateKey"],
+        )
+        self.assertFalse(self.store.active_path.exists())
+
+    def test_timeout_preserves_latest_state_and_returns_124(self) -> None:
+        baseline = observer.parse_run_view(RUN_IN_PROGRESS_TOON, "123")
+        self.store.arm(active_request(baseline, expires_at="2026-07-10T12:00:10Z"))
+        runner = RecordingRunner(
+            [observer.AxiResult(0, RUN_IN_PROGRESS_TOON, "") for _ in range(2)]
+        )
+
+        result = cli.execute(
+            ["--repo", str(self.repo_root), "await", "--json"],
+            runner=runner,
+            store=self.store,
+            now_epoch=self.clock.time,
+            sleeper=self.clock.sleep,
+        )
+
+        self.assertEqual(result.exit_code, 124)
+        self.assertEqual(result.payload["outcome"], "timeout")
+        self.assertEqual(result.payload["current"]["stateKey"], baseline.state_key)
+        self.assertFalse(self.store.active_path.exists())
+        self.assertTrue(self.store.last_observation_path.exists())
+
+    def test_await_records_error_evidence_after_retry_exhaustion(self) -> None:
+        baseline = observer.parse_run_view(RUN_IN_PROGRESS_TOON, "123")
+        self.store.arm(active_request(baseline, expires_at="2026-07-10T12:05:00Z"))
+        runner = RecordingRunner(
+            [observer.AxiResult(1, "", "temporary API failure") for _ in range(3)]
+        )
+
+        result = cli.execute(
+            ["--repo", str(self.repo_root), "await", "--json"],
+            runner=runner,
+            store=self.store,
+            now_epoch=self.clock.time,
+            sleeper=self.clock.sleep,
+        )
+
+        self.assertEqual(result.exit_code, 2)
+        self.assertEqual(result.payload["outcome"], "error")
+        self.assertIn("after 3 attempts", result.payload["error"])
+        self.assertFalse(self.store.active_path.exists())
+        evidence = json.loads(self.store.last_observation_path.read_text(encoding="utf-8"))
+        self.assertEqual(evidence["outcome"], "error")
+        self.assertEqual(evidence["error"], result.payload["error"])
+
+    def test_status_reports_idle_without_remote_calls(self) -> None:
+        result = cli.execute(
+            ["--repo", str(self.repo_root), "status", "--json"],
+            runner=RecordingRunner([]),
+            store=self.store,
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(result.payload, {"state": "idle"})
+
+
+def duration_sample(
+    duration_seconds: int,
+    conclusion: str,
+    *,
+    workflow: str = "Validate Source",
+    run_id: str = "123",
+) -> observer.DurationSample:
+    return observer.DurationSample(
+        repository="amichne/slopsentral",
+        workflow=workflow,
+        event="pull_request",
+        run_id=run_id,
+        attempt=1,
+        conclusion=conclusion,
+        run_started_at="2026-07-08T23:29:53Z",
+        updated_at="2026-07-08T23:30:06Z",
+        duration_seconds=duration_seconds,
+        observed_at=datetime(2026, 7, 10, 12, tzinfo=timezone.utc)
+        .isoformat()
+        .replace("+00:00", "Z"),
+    )
+
+
+def active_request(
+    baseline: observer.Snapshot,
+    *,
+    expires_at: str,
+) -> observer.ActiveRequest:
+    return observer.ActiveRequest(
+        target=baseline.target,
+        predicate=observer.WaitPredicate.STATUS_CHANGE,
+        baseline=baseline,
+        timeout=observer.TimeoutRecommendation(
+            seconds=300,
+            source="explicit",
+            sample_count=0,
+            p50_seconds=None,
+            p95_seconds=None,
+            maximum_seconds=None,
+        ),
+        armed_at="2026-07-10T12:00:00Z",
+        expires_at=expires_at,
+    )
 
 
 if __name__ == "__main__":
