@@ -30,7 +30,7 @@ Use these bundled primitives when they are available:
   and proof.
 - `type-safety` and `schema-driven-design`: use as normative instructions for
   invalid-state prevention and boundary assertions.
-- `kotlin-standards`: load for detailed Kotlin layout, API, idiom, and testing
+- `kotlin-design-practices`: load for detailed Kotlin layout, API, idiom, and testing
   references when the review needs more than the focused agent profiles.
 
 If multi-agent tools are available and the review is non-trivial, invoke only

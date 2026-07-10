@@ -37,9 +37,9 @@ Kotlin best-practices package for type-driven design, parse-dont-validate APIs, 
 ## Skill Primitives
 
 - `kotlin-agentic-correctness`: `skills/kotlin-agentic-correctness` (source: `source/skills/kotlin-agentic-correctness`)
+- `kotlin-design-practices`: `skills/kotlin-design-practices` (source: `source/skills/kotlin-design-practices`)
 - `kotlin-gradle-validation`: `skills/kotlin-gradle-validation` (source: `source/skills/kotlin-gradle-validation`)
 - `kotlin-review`: `skills/kotlin-review` (source: `source/skills/kotlin-review`)
-- `kotlin-standards`: `skills/kotlin-standards` (source: `source/skills/kotlin-standards`)
 - `negative-capability-proof`: `skills/negative-capability-proof` (source: `source/skills/negative-capability-proof`)
 
 ## Hook Primitives

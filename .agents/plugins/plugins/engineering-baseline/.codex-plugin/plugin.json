@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Repository baseline for type-safe work: onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+  "description": "Repository baseline for type-safe work: onboarding, typed Pkl configuration, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,8 +17,8 @@
     ],
     "developerName": "Amichne",
     "displayName": "Engineering Baseline",
-    "longDescription": "Repository baseline for type-safe work: onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
-    "shortDescription": "Repository baseline for type-safe work: onboarding, shared instructio..."
+    "longDescription": "Repository baseline for type-safe work: onboarding, typed Pkl configuration, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+    "shortDescription": "Repository baseline for type-safe work: onboarding, typed Pkl configu..."
   },
   "keywords": [
     "core",
@@ -29,6 +29,7 @@
     "hooks",
     "instructions",
     "onboarding",
+    "pkl",
     "schemas",
     "skills"
   ],

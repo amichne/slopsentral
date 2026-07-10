@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T15:37:14-04:00",
+  "generatedAt": "2026-07-10T16:08:47-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -31,6 +31,13 @@
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
+        },
+        {
+          "name": "pkl-engineering",
+          "sha256": "sha256:d2b16b2a055ad12e03fa2bab11f9149b3fd2ed03461c4896179ff36ab8a143ee",
+          "sourcePath": "source/skills/pkl-engineering",
+          "targetPath": "skills/pkl-engineering",
+          "type": "SKILL"
         },
         {
           "name": "repository-onboarding",
@@ -181,30 +188,30 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:9a58d02259f6d347a8ea9e8ed1b92438b16651a03ee9c5b6ee291ebba72ff5fc",
+          "sha256": "sha256:6822db32988611aa51704d708684ce3b65f02729b24fab4893b0eb2b13ff525a",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
         },
         {
+          "name": "kotlin-design-practices",
+          "sha256": "sha256:04727a34a1a5cdd9f74e3bd4cf297ccab3462a74fa0cd605184807acd84e52be",
+          "sourcePath": "source/skills/kotlin-design-practices",
+          "targetPath": "skills/kotlin-design-practices",
+          "type": "SKILL"
+        },
+        {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:e24487a703d87682231e4a618dea7b731c7fc60ba51fd2b5ff41ca4b5b845e3e",
+          "sha256": "sha256:d3c008a6b28a9bb7da3f0bc87a1e186c4ed392600c2f763377ac40efe9b5132c",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:a93f16d9273e3e783fdacfa9d825f84c823ca9e2c31d069ed488987dcae3efc3",
+          "sha256": "sha256:3aa7708f7a142ccc389973b8680f5315ae86751ae7dcbb154378223be8530f1f",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
-          "type": "SKILL"
-        },
-        {
-          "name": "kotlin-standards",
-          "sha256": "sha256:8dba5d4f47e71ebc6e254399db9f03f38597db33f8258dab7f48b874d20cd351",
-          "sourcePath": "source/skills/kotlin-standards",
-          "targetPath": "skills/kotlin-standards",
           "type": "SKILL"
         },
         {
@@ -430,6 +437,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "1124b950e41f321fb3f34a4f17e298244fecba50",
+  "sourceSha": "a08159f5f62afe1b4d0a5d42583ab59066c7ce84",
   "type": "HYDRATED_MARKETPLACE"
 }

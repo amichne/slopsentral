@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Repository baseline for type-safe work: onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.
+Repository baseline for type-safe work: onboarding, typed Pkl configuration, shared instructions, and turn-level hooks that keep agents using the right local guidance.
 
 ## Operating Rules
 
@@ -28,6 +28,7 @@ Repository baseline for type-safe work: onboarding, shared instructions, and tur
 
 ## Skill Primitives
 
+- `pkl-engineering`: `skills/pkl-engineering` (source: `source/skills/pkl-engineering`)
 - `repository-onboarding`: `skills/repository-onboarding` (source: `source/skills/repository-onboarding`)
 
 ## Hook Primitives

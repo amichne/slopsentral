@@ -14,7 +14,7 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Repository baseline for type-safe work: onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+      "description": "Repository baseline for type-safe work: onboarding, typed Pkl configuration, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
       "hooks": "./hooks",
       "keywords": [
         "core",
@@ -25,6 +25,7 @@
         "hooks",
         "instructions",
         "onboarding",
+        "pkl",
         "schemas",
         "skills"
       ],
@@ -41,6 +42,7 @@
         "hooks",
         "instructions",
         "onboarding",
+        "pkl",
         "schemas",
         "skills"
       ],
