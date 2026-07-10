@@ -43,15 +43,6 @@ if [ -z "$1" ]; then
 fi
 
 PROJECT_NAME="$1"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-COMPONENTS_TARBALL="$SCRIPT_DIR/shadcn-components.tar.gz"
-
-# Check if components tarball exists
-if [ ! -f "$COMPONENTS_TARBALL" ]; then
-  echo "❌ Error: shadcn-components.tar.gz not found in script directory"
-  echo "   Expected location: $COMPONENTS_TARBALL"
-  exit 1
-fi
 
 echo "🚀 Creating new React + Vite project: $PROJECT_NAME"
 
@@ -223,13 +214,15 @@ cat > src/index.css << 'EOF'
 }
 EOF
 
+cat > src/App.css << 'EOF'
+EOF
+
 # Add path aliases to tsconfig.json
 echo "🔧 Adding path aliases to tsconfig.json..."
 node -e "
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('tsconfig.json', 'utf8'));
 config.compilerOptions = config.compilerOptions || {};
-config.compilerOptions.baseUrl = '.';
 config.compilerOptions.paths = { '@/*': ['./src/*'] };
 fs.writeFileSync('tsconfig.json', JSON.stringify(config, null, 2));
 "
@@ -245,10 +238,20 @@ const lines = content.split('\n').filter(line => !line.trim().startsWith('//'));
 const jsonContent = lines.join('\n');
 const config = JSON.parse(jsonContent.replace(/\/\*[\s\S]*?\*\//g, '').replace(/,(\s*[}\]])/g, '\$1'));
 config.compilerOptions = config.compilerOptions || {};
-config.compilerOptions.baseUrl = '.';
 config.compilerOptions.paths = { '@/*': ['./src/*'] };
 fs.writeFileSync(path, JSON.stringify(config, null, 2));
 "
+
+echo "🔧 Creating shadcn utility helpers..."
+mkdir -p src/lib src/components/ui
+cat > src/lib/utils.ts << 'EOF'
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+EOF
 
 # Update vite.config.ts
 echo "⚙️  Updating Vite configuration..."
@@ -266,15 +269,6 @@ export default defineConfig({
   },
 });
 EOF
-
-# Install all shadcn/ui dependencies
-echo "📦 Installing shadcn/ui dependencies..."
-pnpm install @radix-ui/react-accordion @radix-ui/react-aspect-ratio @radix-ui/react-avatar @radix-ui/react-checkbox @radix-ui/react-collapsible @radix-ui/react-context-menu @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-hover-card @radix-ui/react-label @radix-ui/react-menubar @radix-ui/react-navigation-menu @radix-ui/react-popover @radix-ui/react-progress @radix-ui/react-radio-group @radix-ui/react-scroll-area @radix-ui/react-select @radix-ui/react-separator @radix-ui/react-slider @radix-ui/react-slot @radix-ui/react-switch @radix-ui/react-tabs @radix-ui/react-toast @radix-ui/react-toggle @radix-ui/react-toggle-group @radix-ui/react-tooltip
-pnpm install sonner cmdk vaul embla-carousel-react react-day-picker react-resizable-panels date-fns react-hook-form @hookform/resolvers zod
-
-# Extract shadcn components from tarball
-echo "📦 Extracting shadcn/ui components..."
-tar -xzf "$COMPONENTS_TARBALL" -C src/
 
 # Create components.json for reference
 echo "📝 Creating components.json config..."
@@ -303,14 +297,8 @@ EOF
 
 echo "✅ Setup complete! You can now use Tailwind CSS and shadcn/ui in your project."
 echo ""
-echo "📦 Included components (40+ total):"
-echo "  - accordion, alert, aspect-ratio, avatar, badge, breadcrumb"
-echo "  - button, calendar, card, carousel, checkbox, collapsible"
-echo "  - command, context-menu, dialog, drawer, dropdown-menu"
-echo "  - form, hover-card, input, label, menubar, navigation-menu"
-echo "  - popover, progress, radio-group, resizable, scroll-area"
-echo "  - select, separator, sheet, skeleton, slider, sonner"
-echo "  - switch, table, tabs, textarea, toast, toggle, toggle-group, tooltip"
+echo "📦 Add shadcn/ui components as needed, for example:"
+echo "  pnpm dlx shadcn@latest add button card dialog --yes"
 echo ""
 echo "To start developing:"
 echo "  cd $PROJECT_NAME"
