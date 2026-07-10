@@ -94,7 +94,8 @@ Good:
 
 > Resolve the open review comments on PR 123 that request code changes, update
 > only the affected auth files and tests, and verify with the targeted auth test
-> command plus `gh pr view 123` showing no unresolved change-request threads.
+> command plus `npx -y gh-axi pr view 123 --reviews` showing no unresolved
+> change-request threads.
 
 Weak:
 

@@ -57,7 +57,7 @@
       },
       "userInput": "Use Git/CI Operations to triage a failing GitHub Actions check. Identify the current failing job and run URL, fix the owning source or workflow, run the closest local proof, push if required, and re-read the remote check state.",
       "successChecklist": [
-        "The run cites current gh check or run evidence for the head SHA.",
+        "The run cites current npx -y gh-axi check or run evidence for the head SHA.",
         "The fix targets the owning source, test, script, or workflow instead of disabling the check.",
         "The final evidence includes local validation and updated remote check state or exact pending checks."
       ]
@@ -65,8 +65,8 @@
     {
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "ci-status-structured-green-claim",
-      "title": "Structured green claim",
-      "purpose": "Measure whether PR readiness claims use structured check evidence and refuse to collapse pending or unknown states into green.",
+      "title": "Event-driven structured green claim",
+      "purpose": "Measure whether PR readiness claims use AXI-only structured evidence, await meaningful events without model-driven polling, and refuse to collapse pending or unknown states into green.",
       "routingCaseIds": [
         "ci-status-claims-use-structured-check-evidence"
       ],
@@ -74,10 +74,11 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Git/CI Operations to tell me whether this PR is green. Save gh pr checks JSON, run the CI evidence helper, and report green, failing, pending, and unknown checks separately.",
+      "userInput": "Use Git/CI Operations to tell me whether PR 42 is green. Use AXI as the sole GitHub surface. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you.",
       "successChecklist": [
-        "The run records gh pr checks or gh run view JSON for the current head.",
-        "The run uses ci_check_evidence to classify the status.",
+        "Every remote GitHub interaction uses npx -y gh-axi, and the typed observer classifies the current head.",
+        "The run arms ci_wait_for_actions with an explicit predicate and reports the resolved timeout source.",
+        "The model does not issue unchanged status checks while the hook awaits; a still-pending event is processed once and re-armed.",
         "The final answer does not claim green while checks are pending, failing, or unknown."
       ]
     },
@@ -123,7 +124,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "pr-green-loop-composes-git-and-ci",
       "title": "PR green loop composes Git and CI",
-      "purpose": "Measure whether branch, commit, push, PR, and CI watching remain one composed delivery workflow without losing scoped staging or check evidence.",
+      "purpose": "Measure whether branch, commit, push, PR, and event-driven CI observation remain one composed delivery workflow without losing scoped staging or check evidence.",
       "routingCaseIds": [
         "push-request-means-branch-commit-push-pr"
       ],
@@ -131,11 +132,11 @@
         "type": "SKILL",
         "name": "pull-request-lifecycle"
       },
-      "userInput": "Use Git/CI Operations to make a focused change, stage only scoped files, commit, push, open or update the PR, and watch CI until it is green or an exact failing/pending signal remains.",
+      "userInput": "Use Git/CI Operations to make a focused change, stage only scoped files, commit, push, open or update the PR through AXI, and arm bounded CI events until it is green or an exact failing, pending, or timeout signal remains.",
       "successChecklist": [
         "The run preserves unrelated work and stages only the requested change set.",
         "The PR handoff includes branch, base, head SHA, validation commands, and residual risks.",
-        "Remote check claims are backed by structured check state after the latest push."
+        "Remote check claims are backed by AXI-only typed state after the latest push, without eager model-driven polling."
       ]
     }
   ]

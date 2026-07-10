@@ -113,20 +113,21 @@
         "name": "github-ci-operations"
       },
       "satisfiedAllowedActions": [
-        "Read current PR checks with gh JSON fields.",
-        "Validate the saved check JSON with the CI evidence helper.",
-        "Report failing and pending checks separately from green terminal checks."
+        "Read current PR or run state only through npx -y gh-axi and the typed observer.",
+        "Arm one explicit status-change or terminal predicate with an invocation-time timeout informed by stored durations.",
+        "Yield while the hook awaits, then report failing and pending checks separately from green terminal checks."
       ],
       "satisfiedVerificationEvidence": [
-        "The run includes gh pr checks JSON or gh run view JSON for the current head.",
-        "The run includes ci_check_evidence output classifying green, failing, pending, or unknown state."
+        "The run uses npx -y gh-axi exclusively for remote GitHub state and records the typed current-head classification.",
+        "The run arms ci_wait_for_actions with a predicate and timeout source, then processes only a transition, terminal result, timeout, or error."
       ],
       "avoidedForbiddenActions": [
         "Claim green from stale memory or a previous run.",
         "Treat pending checks as passing.",
-        "Ignore unknown check state because the display output looks positive."
+        "Ignore unknown check state because the display output looks positive.",
+        "Poll unchanged remote state from repeated model turns or use a non-AXI GitHub client."
       ],
-      "notes": "A passing run proves this route by delivering: CI status decisions become auditable and reusable across PR lifecycle, CI triage, and release workflows."
+      "notes": "A passing run proves this route by delivering: CI status decisions become auditable across PR lifecycle, CI triage, and release workflows without spending model turns on unchanged state."
     },
     {
       "type": "ROUTING_OBSERVATION",

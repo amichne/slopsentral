@@ -104,3 +104,6 @@ fabric.properties
 out
 gen
 **/build/
+
+# Local Git worktrees
+.worktrees/

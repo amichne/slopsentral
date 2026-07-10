@@ -7,32 +7,30 @@ Use this reference when a PR check or workflow run is failing.
 Run these from the repository root.
 
 ```sh
-gh auth status
-gh pr view --json number,url,headRefName,headRefOid,baseRefName
-gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow
-gh pr checks <pr> --json name,state,bucket,link,startedAt,completedAt,workflow > /tmp/pr-checks.json
-python3 source/skills/github-ci-operations/scripts/ci_check_evidence pr-checks --input /tmp/pr-checks.json
-gh run view <run-id> --json name,workflowName,status,conclusion,url,event,headBranch,headSha
-gh run view <run-id> --json name,workflowName,status,conclusion,url,event,headBranch,headSha > /tmp/run.json
-python3 source/skills/github-ci-operations/scripts/ci_check_evidence run --input /tmp/run.json
-gh run view <run-id> --log
-python "<path-to-skill>/scripts/ci_wait_for_actions" --pr <pr> --timeout 1800 --evidence /tmp/actions-wait.json
-python "<path-to-skill>/scripts/ci_wait_for_actions" --run-id <run-id> --timeout 1800 --evidence /tmp/actions-wait.json
+npx -y gh-axi api /user
+npx -y gh-axi pr view <pr-number>
+npx -y gh-axi pr checks <pr-number>
+npx -y gh-axi run view <run-id>
+npx -y gh-axi run view <run-id> --log-failed
+python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
+  --pr <pr-number> --required --until status-change --timeout auto --json
+python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
+  --run-id <run-id> --until terminal --timeout auto --json
 ```
 
-If a `gh` JSON field is rejected, rerun with the fields reported by the local
-CLI. The installed `gh` version can lag behind examples.
+Treat AXI's structured TOON response as the live evidence contract. If a
+required field is absent, fail closed and update the typed parser or AXI
+dependency instead of scraping human display text.
 
 ## Quiet Waiting
 
 Use `scripts/ci_wait_for_actions` when an Actions run or PR check suite is
-still pending. It polls with backoff, prints only state transitions, exits
-non-zero on terminal failure, and fetches failed logs only after the run or
-check suite has reached a terminal state.
+still pending. Arm one target, end the turn, and let the Codex hook hold the
+bounded wait. The model receives only a meaningful transition, terminal state,
+timeout, or error. For a non-Codex caller, invoke `await --json` once.
 
-Use `gh run watch` or `gh pr checks --watch` only as a fallback for an
-interactive human-facing terminal. If used, increase the interval and prefer
-compact output.
+Never implement listening as repeated model-driven status calls. When a
+`status-change` event remains pending, process it and arm a fresh baseline.
 
 ## Triage Order
 
@@ -43,8 +41,8 @@ compact output.
 4. Reproduce locally with the closest command.
 5. Fix the owning source.
 6. Re-run the local check.
-7. Re-read PR checks or the run state with structured JSON and the evidence
-   helper before claiming the branch is green.
+7. Re-read PR checks or the run state through AXI and the typed observer before
+   claiming the branch is green.
 
 When step 7 requires waiting, do not emit status updates between unchanged
 states. Report queued, in-progress, terminal pass, terminal failure, and any
@@ -64,11 +62,12 @@ timeout as separate events backed by the wait evidence.
   tied to lockfiles.
 - Flake: rerun once for evidence, then look for timing, ordering, network, or
   isolation failures before changing assertions.
-- Unknown status shape: update the helper or command fields rather than
+- Unknown status shape: update the typed parser or AXI contract rather than
   downgrading to display-output parsing.
 
 ## Reruns
 
 - Rerun failed jobs only after deciding whether the failure might be flaky.
-- Prefer `gh run rerun <run-id> --failed` for a suspected transient failure.
+- Prefer `npx -y gh-axi run rerun <run-id> --failed` for a suspected transient
+  failure.
 - Do not use reruns as the only fix for deterministic failures.

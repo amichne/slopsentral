@@ -177,7 +177,10 @@
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
           "source/skills/github-ci-operations/SKILL.md",
-          "source/skills/github-ci-operations/scripts/ci_check_evidence",
+          "source/skills/github-ci-operations/references/event-driven-observation.md",
+          "source/skills/github-ci-operations/scripts/ci_actions_observer.py",
+          "source/skills/github-ci-operations/scripts/ci_wait_for_actions",
+          "source/hooks/github-actions-await.hook.json",
           "source/skills/pull-request-lifecycle/SKILL.md"
         ]
       },
@@ -187,27 +190,28 @@
         "name": "github-ci-operations"
       },
       "observedRoute": {
-        "summary": "A green-check claim can be made from a remembered status, a UI impression, or partial check output.",
-        "risk": "The user merges with pending, failing, skipped-required, or uninspected checks.",
+        "summary": "A green-check claim can be made from remembered state while the model repeatedly asks whether unchanged checks have moved.",
+        "risk": "The user gets token-heavy status chatter and may merge with pending, failing, skipped-required, or uninspected checks.",
         "loadedPrimitives": [
           "pull-request-lifecycle"
         ]
       },
       "allowedActions": [
-        "Read current PR checks with gh JSON fields.",
-        "Validate the saved check JSON with the CI evidence helper.",
-        "Report failing and pending checks separately from green terminal checks."
+        "Read current PR or run state only through npx -y gh-axi and the typed observer.",
+        "Arm one explicit status-change or terminal predicate with an invocation-time timeout informed by stored durations.",
+        "Yield while the hook awaits, then report failing and pending checks separately from green terminal checks."
       ],
       "forbiddenActions": [
         "Claim green from stale memory or a previous run.",
         "Treat pending checks as passing.",
-        "Ignore unknown check state because the display output looks positive."
+        "Ignore unknown check state because the display output looks positive.",
+        "Poll unchanged remote state from repeated model turns or use a non-AXI GitHub client."
       ],
-      "recoveryExpectation": "A good status pass should leave structured evidence for the current head SHA and refuse a green claim until all required checks are terminal green, skipped, or neutral.",
-      "productiveOutcome": "CI status decisions become auditable and reusable across PR lifecycle, CI triage, and release workflows.",
+      "recoveryExpectation": "A good status pass leaves typed evidence for the current head SHA, wakes only for the requested event or bound, and refuses a green claim until all required checks are terminal green, skipped, or neutral.",
+      "productiveOutcome": "CI status decisions become auditable across PR lifecycle, CI triage, and release workflows without spending model turns on unchanged state.",
       "verificationEvidence": [
-        "The run includes gh pr checks JSON or gh run view JSON for the current head.",
-        "The run includes ci_check_evidence output classifying green, failing, pending, or unknown state."
+        "The run uses npx -y gh-axi exclusively for remote GitHub state and records the typed current-head classification.",
+        "The run arms ci_wait_for_actions with a predicate and timeout source, then processes only a transition, terminal result, timeout, or error."
       ],
       "notes": "This makes CI status a structured evidence contract rather than a conversational impression."
     },
