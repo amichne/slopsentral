@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, and Kotlin package-layout hooks.
+Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, Gradle wrapper integrity, and Kotlin package-layout hooks. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.
 
 ## Operating Rules
 
@@ -45,4 +45,5 @@ Kotlin best-practices package for type-driven design, parse-dont-validate APIs, 
 ## Hook Primitives
 
 - `gradle-check-green`: `hooks/gradle-check-green.hooks.json` (source: `source/hooks/gradle-check-green.hook.json`)
+- `gradle-wrapper-integrity`: `hooks/gradle-wrapper-integrity.hooks.json` (source: `source/hooks/gradle-wrapper-integrity.hook.json`)
 - `kotlin-horizontalization-check`: `hooks/kotlin-horizontalization-check.hooks.json` (source: `source/hooks/kotlin-horizontalization-check.hook.json`)

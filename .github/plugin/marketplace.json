@@ -89,7 +89,7 @@
         "name": "Amichne"
       },
       "category": "Coding",
-      "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, and Kotlin package-layout hooks.",
+      "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, Gradle wrapper integrity, and Kotlin package-layout hooks. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
       "hooks": "./hooks",
       "keywords": [
         "agents",
