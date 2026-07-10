@@ -16,11 +16,11 @@ release workflows.
 ## Useful Commands
 
 ```sh
-gh release list --limit 10
-gh release view <tag> --json tagName,name,isDraft,isPrerelease,url,targetCommitish
-gh release create <tag> --draft --generate-notes --target <branch-or-sha>
-gh release upload <tag> <artifact-path>
-gh release edit <tag> --draft=false
+npx -y gh-axi release list --limit 10
+npx -y gh-axi release view <tag> --full
+npx -y gh-axi release create <tag> --draft --generate-notes --target <branch-or-sha>
+npx -y gh-axi release upload <tag> <artifact-path>
+npx -y gh-axi release edit <tag> --draft=false
 ```
 
 ## Planning Checklist
