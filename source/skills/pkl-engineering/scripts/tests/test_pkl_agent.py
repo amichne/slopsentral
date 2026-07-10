@@ -118,6 +118,11 @@ class PklAgentTests(unittest.TestCase):
         self.assertIn("valid flags", result.stdout)
         self.assertEqual(self.calls(), [])
 
+    def test_parser_requires_exact_option_names(self) -> None:
+        parser = self.module.build_parser()
+
+        self.assertFalse(parser.allow_abbrev)
+
     def test_unsupported_pkl_version_is_structured_error(self) -> None:
         result = self.run_agent("doctor", env={"FAKE_PKL_VERSION": "0.31.1"})
 
