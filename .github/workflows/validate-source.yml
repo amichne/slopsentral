@@ -55,6 +55,56 @@ jobs:
             policy \
             --schema source/schemas/evals/routing-field-observations.schema.json
 
+      - name: Set up Java for Pkl CLI
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Validate Pkl engineering facade
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          python3 -m unittest discover \
+            -s source/skills/pkl-engineering/scripts/tests \
+            -p 'test_*.py' \
+            -v
+
+          pkl_dir="${RUNNER_TEMP}/pkl-0.32.0"
+          mkdir -p "${pkl_dir}"
+          gh release download 0.32.0 \
+            --repo apple/pkl \
+            --pattern jpkl \
+            --dir "${pkl_dir}"
+          chmod +x "${pkl_dir}/jpkl"
+
+          facade="source/skills/pkl-engineering/scripts/pkl_agent"
+          fixture="${RUNNER_TEMP}/pkl-agent-fixture"
+          mkdir -p "${fixture}"
+          cp -R source/skills/pkl-engineering/scripts/tests/fixtures/project/. "${fixture}/"
+          common=(--workspace "${fixture}" --pkl-bin "${pkl_dir}/jpkl")
+
+          home_toon="${RUNNER_TEMP}/pkl-agent-home.toon"
+          "${facade}" "${common[@]}" > "${home_toon}"
+          "${facade}" "${common[@]}" format check --all
+          "${facade}" "${common[@]}" imports config.pkl
+          "${facade}" "${common[@]}" module validate config.pkl
+          "${facade}" "${common[@]}" module inspect config.pkl --expression service.port
+          "${facade}" "${common[@]}" module render config.pkl \
+            --format json \
+            --out build/config.json
+          "${facade}" "${common[@]}" test run
+          "${facade}" "${common[@]}" project resolve
+          "${facade}" "${common[@]}" package verify
+          python3 -m json.tool "${fixture}/build/config.json" > /dev/null
+
+          npx --yes @toon-format/cli@2.3.0 \
+            "${home_toon}" \
+            --output "${RUNNER_TEMP}/pkl-agent-home.json"
+          python3 -m json.tool "${RUNNER_TEMP}/pkl-agent-home.json" > /dev/null
+
       - name: Validate marketplace materialization
         run: |
           set -euo pipefail

@@ -1,0 +1,824 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import errno
+import hashlib
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import xml.etree.ElementTree as ET
+from dataclasses import dataclass, replace
+from enum import IntEnum
+from pathlib import Path
+from typing import Any, Callable, Mapping, Sequence
+
+
+DESCRIPTION = "Develop and validate typed Pkl configuration"
+SUPPORTED_VERSION = ">=0.32.0,<0.33.0"
+VERSION_PATTERN = re.compile(r"(?:Pkl\s+)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)")
+NUMBER_PATTERN = re.compile(r"-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$")
+SAFE_MODULES = "pkl:,file:,modulepath:,repl:,package:,projectpackage:"
+SAFE_RESOURCES = "prop:,package:,projectpackage:"
+PREVIEW_CHARS = 1200
+
+
+class ExitCode(IntEnum):
+    OK = 0
+    ERROR = 1
+    USAGE = 2
+
+
+class UsageError(Exception):
+    def __init__(self, message: str, command: tuple[str, ...] = ()) -> None:
+        super().__init__(message)
+        self.command = command
+
+
+class AxiParser(argparse.ArgumentParser):
+    def error(self, message: str) -> None:
+        raise UsageError(message)
+
+
+@dataclass(frozen=True)
+class Context:
+    workspace: Path
+    pkl_bin: str
+    timeout_seconds: int
+    policy: str
+    allow_env: tuple[str, ...]
+    properties: tuple[str, ...]
+    allow_modules: tuple[str, ...]
+    allow_resources: tuple[str, ...]
+    full: bool
+
+
+@dataclass(frozen=True)
+class ProcessResult:
+    exit_code: int
+    stdout: str
+    stderr: str
+
+
+Runner = Callable[[Sequence[str], Path, int], ProcessResult]
+
+
+HELP: Mapping[tuple[str, ...], Mapping[str, Any]] = {
+    (): {
+        "description": DESCRIPTION,
+        "usage": "pkl_agent [globals] <command>",
+        "flags": "--workspace, --pkl-bin, --timeout, --policy, --allow-env, --property, --allow-module, --allow-resource, --full, --help",
+        "commands": "doctor; format check|apply; module validate|inspect|render; imports; test run|update; project status|resolve; package fetch|verify|build",
+        "examples": ["pkl_agent", "pkl_agent module validate config.pkl", "pkl_agent test run"],
+    },
+    ("doctor",): {
+        "description": "Inspect Pkl readiness and workspace state.",
+        "usage": "pkl_agent [globals] doctor",
+        "flags": "--full, --help",
+        "examples": ["pkl_agent doctor", "pkl_agent --pkl-bin /path/to/pkl doctor"],
+    },
+    ("format", "check"): {
+        "description": "Check Pkl formatting without changing files.",
+        "usage": "pkl_agent [globals] format check (--all | <path>...)",
+        "flags": "--all, --help",
+        "examples": ["pkl_agent format check --all", "pkl_agent format check config.pkl PklProject"],
+    },
+    ("format", "apply"): {
+        "description": "Apply the Pkl formatter in place.",
+        "usage": "pkl_agent [globals] format apply (--all | <path>...)",
+        "flags": "--all, --help",
+        "examples": ["pkl_agent format apply --all", "pkl_agent format apply config.pkl"],
+    },
+    ("module", "validate"): {
+        "description": "Evaluate modules to enforce required values, types, and constraints.",
+        "usage": "pkl_agent [globals] module validate <module>...",
+        "flags": "--help",
+        "examples": ["pkl_agent module validate config.pkl", "pkl_agent module validate env/dev.pkl env/prod.pkl"],
+    },
+    ("module", "inspect"): {
+        "description": "Evaluate one module or expression and return a bounded preview.",
+        "usage": "pkl_agent [globals] module inspect <module> [--expression <expr>]",
+        "flags": "--expression, --full, --help",
+        "examples": ["pkl_agent module inspect config.pkl", "pkl_agent module inspect config.pkl --expression service.port"],
+    },
+    ("module", "render"): {
+        "description": "Render modules to an explicit file or output pattern.",
+        "usage": "pkl_agent [globals] module render <module>... --format <format> --out <path>",
+        "flags": "--format, --out, --help",
+        "examples": ["pkl_agent module render config.pkl --format json --out build/config.json", "pkl_agent module render env/dev.pkl env/prod.pkl --format yaml --out 'build/%{moduleName}.yaml'"],
+    },
+    ("imports",): {
+        "description": "Analyze the static import graph.",
+        "usage": "pkl_agent [globals] imports <module>... [--fields resolved]",
+        "flags": "--fields, --full, --help",
+        "examples": ["pkl_agent imports config.pkl", "pkl_agent imports src/*.pkl --fields resolved"],
+    },
+    ("test", "run"): {
+        "description": "Run Pkl tests in a temporary workspace copy.",
+        "usage": "pkl_agent [globals] test run [<test-module>...]",
+        "flags": "--full, --help",
+        "examples": ["pkl_agent test run", "pkl_agent test run tests/config.test.pkl"],
+    },
+    ("test", "update"): {
+        "description": "Update Pkl example snapshots in place.",
+        "usage": "pkl_agent [globals] test update [<test-module>...]",
+        "flags": "--full, --help",
+        "examples": ["pkl_agent test update", "pkl_agent test update tests/config.test.pkl"],
+    },
+    ("project", "status"): {
+        "description": "Inspect PklProject and dependency-lock state.",
+        "usage": "pkl_agent [globals] project status",
+        "flags": "--help",
+        "examples": ["pkl_agent project status"],
+    },
+    ("project", "resolve"): {
+        "description": "Resolve project dependencies and update PklProject.deps.json.",
+        "usage": "pkl_agent [globals] project resolve [<project-dir>...]",
+        "flags": "--help",
+        "examples": ["pkl_agent project resolve", "pkl_agent project resolve packages/core packages/app"],
+    },
+    ("package", "fetch"): {
+        "description": "Fetch package URIs into the Pkl cache.",
+        "usage": "pkl_agent [globals] package fetch <package-uri>...",
+        "flags": "--help",
+        "examples": ["pkl_agent package fetch 'package://example.com/acme@1.2.3'"],
+    },
+    ("package", "verify"): {
+        "description": "Package projects in a sandbox and discard artifacts after verification.",
+        "usage": "pkl_agent [globals] package verify [<project-dir>...]",
+        "flags": "--help",
+        "examples": ["pkl_agent package verify", "pkl_agent package verify packages/core"],
+    },
+    ("package", "build"): {
+        "description": "Package projects from a sandbox into an explicit output path.",
+        "usage": "pkl_agent [globals] package build --out <path-pattern> [<project-dir>...]",
+        "flags": "--out, --help",
+        "examples": ["pkl_agent package build --out 'build/%{name}@%{version}/'"],
+    },
+}
+
+
+def encode_toon(value: Any) -> str:
+    if not isinstance(value, dict):
+        raise TypeError("TOON root must be an object")
+    return "\n".join(_encode_object(value, 0))
+
+
+def _encode_object(value: Mapping[str, Any], depth: int) -> list[str]:
+    lines: list[str] = []
+    prefix = "  " * depth
+    for key, item in value.items():
+        encoded_key = _encode_key(str(key))
+        if isinstance(item, dict):
+            lines.append(f"{prefix}{encoded_key}:")
+            lines.extend(_encode_object(item, depth + 1))
+        elif isinstance(item, list):
+            lines.extend(_encode_list(encoded_key, item, depth))
+        else:
+            lines.append(f"{prefix}{encoded_key}: {_encode_scalar(item)}")
+    return lines
+
+
+def _encode_list(key: str, values: list[Any], depth: int) -> list[str]:
+    prefix = "  " * depth
+    if not values:
+        return [f"{prefix}{key}[0]:"]
+    if all(_is_scalar(item) for item in values):
+        joined = ",".join(_encode_scalar(item) for item in values)
+        return [f"{prefix}{key}[{len(values)}]: {joined}"]
+    if _is_tabular(values):
+        fields = list(values[0].keys())
+        header = ",".join(_encode_key(str(field)) for field in fields)
+        lines = [f"{prefix}{key}[{len(values)}]{{{header}}}:"]
+        for row in values:
+            lines.append(f"{prefix}  " + ",".join(_encode_scalar(row[field]) for field in fields))
+        return lines
+    lines = [f"{prefix}{key}[{len(values)}]:"]
+    for item in values:
+        if _is_scalar(item):
+            lines.append(f"{prefix}  - {_encode_scalar(item)}")
+        elif isinstance(item, dict):
+            entries = list(item.items())
+            if not entries:
+                lines.append(f"{prefix}  - {{}}")
+                continue
+            first_key, first_value = entries[0]
+            if _is_scalar(first_value):
+                lines.append(f"{prefix}  - {_encode_key(str(first_key))}: {_encode_scalar(first_value)}")
+                lines.extend(_encode_object(dict(entries[1:]), depth + 2))
+            else:
+                lines.append(f"{prefix}  - {_encode_key(str(first_key))}:")
+                if isinstance(first_value, dict):
+                    lines.extend(_encode_object(first_value, depth + 2))
+                lines.extend(_encode_object(dict(entries[1:]), depth + 2))
+        else:
+            lines.append(f"{prefix}  - {_encode_scalar(str(item))}")
+    return lines
+
+
+def _is_tabular(values: list[Any]) -> bool:
+    if not values or not all(isinstance(item, dict) for item in values):
+        return False
+    fields = list(values[0].keys())
+    return bool(fields) and all(list(item.keys()) == fields and all(_is_scalar(v) for v in item.values()) for item in values)
+
+
+def _is_scalar(value: Any) -> bool:
+    return value is None or isinstance(value, (str, bool, int, float))
+
+
+def _encode_key(value: str) -> str:
+    if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_.-]*", value):
+        return value
+    return _quote(value)
+
+
+def _encode_scalar(value: Any) -> str:
+    if value is None:
+        return "null"
+    if value is True:
+        return "true"
+    if value is False:
+        return "false"
+    if isinstance(value, (int, float)):
+        return str(value).lower()
+    text = str(value)
+    if _string_needs_quotes(text):
+        return _quote(text)
+    return text
+
+
+def _string_needs_quotes(value: str) -> bool:
+    if not value or value != value.strip() or value in {"true", "false", "null"}:
+        return True
+    if NUMBER_PATTERN.fullmatch(value):
+        return True
+    if value.startswith("-") or any(character in value for character in ',:[]{}"\\\n\r\t'):
+        return True
+    return any(ord(character) < 0x20 for character in value)
+
+
+def _quote(value: str) -> str:
+    escaped = (
+        value.replace("\\", "\\\\")
+        .replace('"', '\\"')
+        .replace("\n", "\\n")
+        .replace("\r", "\\r")
+        .replace("\t", "\\t")
+    )
+    return f'"{escaped}"'
+
+
+def emit(payload: Mapping[str, Any]) -> None:
+    sys.stdout.write(encode_toon(dict(payload)))
+
+
+def default_runner(args: Sequence[str], cwd: Path, timeout_seconds: int) -> ProcessResult:
+    def invoke(command: Sequence[str]) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            list(command),
+            cwd=cwd,
+            text=True,
+            capture_output=True,
+            timeout=timeout_seconds + 5,
+            check=False,
+        )
+
+    try:
+        completed = invoke(args)
+    except FileNotFoundError:
+        return ProcessResult(127, "", "configured executable was not found")
+    except OSError as error:
+        if error.errno != errno.ENOEXEC or not shutil.which("sh"):
+            return ProcessResult(126, "", str(error))
+        try:
+            completed = invoke([shutil.which("sh") or "sh", *args])
+        except subprocess.TimeoutExpired:
+            return ProcessResult(124, "", f"operation exceeded {timeout_seconds} seconds")
+    except subprocess.TimeoutExpired:
+        return ProcessResult(124, "", f"operation exceeded {timeout_seconds} seconds")
+    return ProcessResult(completed.returncode, completed.stdout, completed.stderr)
+
+
+def build_parser() -> AxiParser:
+    parser = AxiParser(add_help=False)
+    parser.add_argument("--workspace", default=".")
+    parser.add_argument("--pkl-bin", default=os.environ.get("PKL_BIN", ""))
+    parser.add_argument("--timeout", type=int, default=60)
+    parser.add_argument("--policy", choices=("agent-safe", "project"), default="agent-safe")
+    parser.add_argument("--allow-env", action="append", default=[])
+    parser.add_argument("--property", action="append", default=[])
+    parser.add_argument("--allow-module", action="append", default=[])
+    parser.add_argument("--allow-resource", action="append", default=[])
+    parser.add_argument("--full", action="store_true")
+
+    nouns = parser.add_subparsers(dest="noun")
+    doctor = nouns.add_parser("doctor", add_help=False)
+    add_local_full(doctor)
+
+    format_parser = nouns.add_parser("format", add_help=False)
+    format_actions = format_parser.add_subparsers(dest="action", required=True)
+    for name in ("check", "apply"):
+        action = format_actions.add_parser(name, add_help=False)
+        action.add_argument("paths", nargs="*")
+        action.add_argument("--all", action="store_true")
+        add_local_full(action)
+
+    module_parser = nouns.add_parser("module", add_help=False)
+    module_actions = module_parser.add_subparsers(dest="action", required=True)
+    validate = module_actions.add_parser("validate", add_help=False)
+    validate.add_argument("modules", nargs="+")
+    add_local_full(validate)
+    inspect = module_actions.add_parser("inspect", add_help=False)
+    inspect.add_argument("module")
+    inspect.add_argument("--expression")
+    add_local_full(inspect)
+    render = module_actions.add_parser("render", add_help=False)
+    render.add_argument("modules", nargs="+")
+    render.add_argument("--format", required=True, choices=("json", "jsonnet", "pcf", "plist", "properties", "textproto", "xml", "yaml", "pkl-binary"))
+    render.add_argument("--out", required=True)
+    add_local_full(render)
+
+    imports = nouns.add_parser("imports", add_help=False)
+    imports.add_argument("modules", nargs="+")
+    imports.add_argument("--fields", action="append", choices=("resolved",), default=[])
+    add_local_full(imports)
+
+    test_parser = nouns.add_parser("test", add_help=False)
+    test_actions = test_parser.add_subparsers(dest="action", required=True)
+    for name in ("run", "update"):
+        action = test_actions.add_parser(name, add_help=False)
+        action.add_argument("modules", nargs="*")
+        add_local_full(action)
+
+    project_parser = nouns.add_parser("project", add_help=False)
+    project_actions = project_parser.add_subparsers(dest="action", required=True)
+    project_status = project_actions.add_parser("status", add_help=False)
+    add_local_full(project_status)
+    resolve = project_actions.add_parser("resolve", add_help=False)
+    resolve.add_argument("projects", nargs="*")
+    add_local_full(resolve)
+
+    package_parser = nouns.add_parser("package", add_help=False)
+    package_actions = package_parser.add_subparsers(dest="action", required=True)
+    fetch = package_actions.add_parser("fetch", add_help=False)
+    fetch.add_argument("uris", nargs="+")
+    add_local_full(fetch)
+    verify = package_actions.add_parser("verify", add_help=False)
+    verify.add_argument("projects", nargs="*")
+    add_local_full(verify)
+    build = package_actions.add_parser("build", add_help=False)
+    build.add_argument("projects", nargs="*")
+    build.add_argument("--out", required=True)
+    add_local_full(build)
+    return parser
+
+
+def add_local_full(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--full", action="store_true", default=argparse.SUPPRESS)
+
+
+def command_path(argv: Sequence[str]) -> tuple[str, ...]:
+    known_nouns = {"doctor", "format", "module", "imports", "test", "project", "package"}
+    words = [value for value in argv if not value.startswith("-")]
+    for index, word in enumerate(words):
+        if word not in known_nouns:
+            continue
+        if word in {"format", "module", "test", "project", "package"} and index + 1 < len(words):
+            candidate = (word, words[index + 1])
+            if candidate in HELP:
+                return candidate
+        return (word,)
+    return ()
+
+
+def help_payload(path: tuple[str, ...]) -> Mapping[str, Any]:
+    details = dict(HELP.get(path, HELP[()]))
+    return {"command": " ".join(path) or "pkl_agent", **details}
+
+
+def usage_payload(message: str, path: tuple[str, ...]) -> Mapping[str, Any]:
+    if message.startswith("unrecognized arguments:"):
+        unknown = message.split(":", 1)[1].strip().split()[0]
+        error = f"unknown flag {unknown}" if unknown.startswith("-") else f"unknown argument {unknown}"
+    else:
+        error = message.replace("the following arguments are required:", "required:")
+    details = HELP.get(path, HELP[()])
+    return {
+        "error": error,
+        "usage": details["usage"],
+        "help": [f"valid flags: {details['flags']}", f"Run `{details['usage']} --help` for examples"],
+    }
+
+
+def resolve_context(args: argparse.Namespace) -> Context:
+    workspace = Path(args.workspace).expanduser().resolve()
+    if not workspace.is_dir():
+        raise UsageError(f"workspace is not a directory: {workspace}")
+    if args.timeout <= 0:
+        raise UsageError("--timeout must be positive")
+    pkl_bin = args.pkl_bin or shutil.which("pkl") or ""
+    if pkl_bin and ("/" in pkl_bin or "\\" in pkl_bin):
+        pkl_bin = str(Path(pkl_bin).expanduser().resolve())
+    return Context(
+        workspace=workspace,
+        pkl_bin=pkl_bin,
+        timeout_seconds=args.timeout,
+        policy=args.policy,
+        allow_env=tuple(args.allow_env),
+        properties=tuple(args.property),
+        allow_modules=tuple(args.allow_module),
+        allow_resources=tuple(args.allow_resource),
+        full=args.full,
+    )
+
+
+def version_status(context: Context, runner: Runner) -> tuple[str, str]:
+    if not context.pkl_bin:
+        return "missing", ""
+    result = runner([context.pkl_bin, "--version"], context.workspace, context.timeout_seconds)
+    if result.exit_code != 0:
+        return "missing", ""
+    match = VERSION_PATTERN.search(result.stdout)
+    if match is None:
+        return "unsupported", result.stdout.strip()
+    version = ".".join(match.group(name) for name in ("major", "minor", "patch"))
+    supported = int(match.group("major")) == 0 and int(match.group("minor")) == 32
+    return ("ready" if supported else "unsupported"), version
+
+
+def ensure_ready(context: Context, runner: Runner) -> tuple[bool, Mapping[str, Any]]:
+    status, version = version_status(context, runner)
+    if status == "ready":
+        return True, {"status": status, "pklVersion": version, "supported": SUPPORTED_VERSION}
+    help_items = ["Install Pkl 0.32.x or pass `--pkl-bin <path>`"]
+    return False, {"status": status, "pklVersion": version or None, "supported": SUPPORTED_VERSION, "help": help_items}
+
+
+def evaluator_args(context: Context, *, omit_project_settings: bool = True) -> list[str]:
+    args = ["--color", "never", "--timeout", str(context.timeout_seconds)]
+    if context.policy == "agent-safe":
+        resources = [SAFE_RESOURCES, *(f"env:{name}" for name in context.allow_env), *context.allow_resources]
+        modules = [SAFE_MODULES, *context.allow_modules]
+        for name in context.allow_env:
+            if name not in os.environ:
+                raise UsageError(f"allowed environment variable is not set: {name}")
+        args.extend(
+            [
+                "--root-dir",
+                str(context.workspace),
+                "--allowed-modules",
+                ",".join(modules),
+                "--allowed-resources",
+                ",".join(resources),
+            ]
+        )
+        if omit_project_settings:
+            args.append("--omit-project-settings")
+    for prop in context.properties:
+        if "=" not in prop:
+            raise UsageError("--property must use NAME=VALUE")
+        args.extend(["--property", prop])
+    return args
+
+
+def preview(text: str, full: bool) -> Mapping[str, Any]:
+    stripped = text.strip()
+    if full or len(stripped) <= PREVIEW_CHARS:
+        return {"diagnostic": stripped, "diagnosticChars": len(stripped), "truncated": False}
+    return {
+        "diagnostic": stripped[:PREVIEW_CHARS] + "...",
+        "diagnosticChars": len(stripped),
+        "truncated": True,
+        "help": ["Re-run with `--full` for the complete diagnostic"],
+    }
+
+
+def operation_failure(command: str, result: ProcessResult, full: bool, **extra: Any) -> Mapping[str, Any]:
+    details = result.stderr or result.stdout or "operation failed without diagnostics"
+    return {"command": command, "status": "failed", "upstreamExit": result.exit_code, **extra, **preview(details, full)}
+
+
+def workspace_counts(workspace: Path) -> tuple[int, int]:
+    modules = [path for path in workspace.rglob("*.pkl") if ".git" not in path.parts]
+    tests = [path for path in modules if path.name.endswith((".test.pkl", "_test.pkl"))]
+    return len(modules), len(tests)
+
+
+def home(context: Context, runner: Runner) -> tuple[ExitCode, Mapping[str, Any]]:
+    ready, readiness = ensure_ready(context, runner)
+    modules, tests = workspace_counts(context.workspace)
+    script = collapse_home(Path(__file__).resolve())
+    payload = {
+        "bin": script,
+        "description": DESCRIPTION,
+        "workspace": collapse_home(context.workspace),
+        **readiness,
+        "project": (context.workspace / "PklProject").exists(),
+        "lock": (context.workspace / "PklProject.deps.json").exists(),
+        "modules": modules,
+        "tests": tests,
+        "policy": context.policy,
+        "help": [
+            f"Run `{script} module validate <module>` to enforce configuration constraints",
+            f"Run `{script} test run` to execute project tests in a sandbox",
+            f"Run `{script} --help` for the complete command map",
+        ],
+    }
+    return (ExitCode.OK if ready else ExitCode.ERROR), payload
+
+
+def run_format(args: argparse.Namespace, context: Context, runner: Runner) -> tuple[ExitCode, Mapping[str, Any]]:
+    paths = [str(context.workspace)] if args.all else list(args.paths)
+    if not paths:
+        raise UsageError("provide paths or --all", ("format", args.action))
+    command = [context.pkl_bin, "format", "--grammar-version", "2"]
+    command.append("--diff-name-only" if args.action == "check" else "--write")
+    command.extend(paths)
+    result = runner(command, context.workspace, context.timeout_seconds)
+    if result.exit_code == 0:
+        changed_paths = [line for line in result.stdout.splitlines() if line.strip()]
+        changed = args.action == "apply" and bool(changed_paths)
+        status = "updated" if changed else ("noop" if args.action == "apply" else "ok")
+        return ExitCode.OK, {"command": f"format {args.action}", "status": status, "paths": len(paths), "changed": changed}
+    if result.exit_code == 11 and args.action == "check":
+        violations = [line for line in result.stdout.splitlines() if line.strip()]
+        return ExitCode.ERROR, operation_failure("format check", result, context.full, violations=len(violations))
+    return ExitCode.ERROR, operation_failure(f"format {args.action}", result, context.full)
+
+
+def run_module(args: argparse.Namespace, context: Context, runner: Runner) -> tuple[ExitCode, Mapping[str, Any]]:
+    if args.action == "validate":
+        failures: list[dict[str, Any]] = []
+        for module in args.modules:
+            result = runner([context.pkl_bin, "eval", *evaluator_args(context), "--format", "json", module], context.workspace, context.timeout_seconds)
+            if result.exit_code != 0:
+                failures.append({"module": module, "exit": result.exit_code, "diagnostic": (result.stderr or result.stdout).strip()[:PREVIEW_CHARS]})
+        if failures:
+            return ExitCode.ERROR, {"command": "module validate", "status": "failed", "checked": len(args.modules), "failures": failures}
+        return ExitCode.OK, {"command": "module validate", "status": "ok", "checked": len(args.modules)}
+    if args.action == "inspect":
+        command = [context.pkl_bin, "eval", *evaluator_args(context), "--format", "json"]
+        if args.expression:
+            command.extend(["--expression", args.expression])
+        command.append(args.module)
+        result = runner(command, context.workspace, context.timeout_seconds)
+        if result.exit_code != 0:
+            return ExitCode.ERROR, operation_failure("module inspect", result, context.full, module=args.module)
+        return ExitCode.OK, {"command": "module inspect", "status": "ok", "module": args.module, "expression": args.expression, **preview(result.stdout, context.full)}
+    output = resolve_output(context.workspace, args.out)
+    result = runner(
+        [context.pkl_bin, "eval", *evaluator_args(context), "--format", args.format, "--output-path", str(output), *args.modules],
+        context.workspace,
+        context.timeout_seconds,
+    )
+    if result.exit_code != 0:
+        return ExitCode.ERROR, operation_failure("module render", result, context.full, output=str(output))
+    return ExitCode.OK, {"command": "module render", "status": "ok", "modules": len(args.modules), "format": args.format, "output": collapse_home(output)}
+
+
+def run_imports(args: argparse.Namespace, context: Context, runner: Runner) -> tuple[ExitCode, Mapping[str, Any]]:
+    result = runner([context.pkl_bin, "analyze", "imports", *evaluator_args(context), "--format", "json", *args.modules], context.workspace, context.timeout_seconds)
+    if result.exit_code != 0:
+        return ExitCode.ERROR, operation_failure("imports", result, context.full)
+    try:
+        data = json.loads(result.stdout)
+        imports = data.get("imports", {})
+        resolved = data.get("resolvedImports", {})
+    except (json.JSONDecodeError, AttributeError):
+        return ExitCode.ERROR, {"command": "imports", "status": "failed", "error": "import analyzer returned invalid JSON"}
+    rows = [{"module": module, "imports": len(values)} for module, values in imports.items()]
+    payload: dict[str, Any] = {"command": "imports", "status": "ok", "modules": len(imports), "edges": sum(row["imports"] for row in rows), "items": rows}
+    if "resolved" in args.fields:
+        payload["resolved"] = len(resolved)
+    if context.full:
+        payload.update(preview(result.stdout, True))
+    return ExitCode.OK, payload
+
+
+def run_tests(args: argparse.Namespace, context: Context, runner: Runner) -> tuple[ExitCode, Mapping[str, Any]]:
+    if args.action == "run":
+        with tempfile.TemporaryDirectory(prefix="pkl-agent-test-") as temp:
+            sandbox = Path(temp) / "workspace"
+            shutil.copytree(context.workspace, sandbox, symlinks=True, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+            sandbox_context = replace(context, workspace=sandbox)
+            return execute_tests(args, sandbox_context, runner, sandboxed=True)
+    return execute_tests(args, context, runner, sandboxed=False)
+
+
+def execute_tests(args: argparse.Namespace, context: Context, runner: Runner, *, sandboxed: bool) -> tuple[ExitCode, Mapping[str, Any]]:
+    with tempfile.TemporaryDirectory(prefix="pkl-agent-junit-") as temp:
+        reports = Path(temp)
+        command = [context.pkl_bin, "test", *evaluator_args(context), "--test-reporter", "minimal", "--junit-reports", str(reports), "--junit-aggregate-reports"]
+        if args.action == "update":
+            command.append("--overwrite")
+        command.extend(args.modules)
+        result = runner(command, context.workspace, context.timeout_seconds)
+        counts = parse_junit(reports)
+    payload: dict[str, Any] = {
+        "command": f"test {args.action}",
+        "status": "ok" if result.exit_code == 0 else "failed",
+        "sandboxed": sandboxed,
+        **counts,
+    }
+    if result.exit_code == 10:
+        payload["expectedFilesGenerated"] = True
+    if result.exit_code != 0:
+        payload.update({"upstreamExit": result.exit_code, **preview(result.stderr or result.stdout, context.full)})
+        return ExitCode.ERROR, payload
+    return ExitCode.OK, payload
+
+
+def parse_junit(root: Path) -> Mapping[str, Any]:
+    totals = {"tests": 0, "failures": 0, "errors": 0, "skipped": 0}
+    for report in root.rglob("*.xml") if root.exists() else []:
+        try:
+            element = ET.parse(report).getroot()
+        except ET.ParseError:
+            continue
+        for key in totals:
+            totals[key] += int(element.attrib.get(key, "0"))
+    return totals
+
+
+def run_project(args: argparse.Namespace, context: Context, runner: Runner) -> tuple[ExitCode, Mapping[str, Any]]:
+    project = context.workspace / "PklProject"
+    lock = context.workspace / "PklProject.deps.json"
+    if args.action == "status":
+        return ExitCode.OK, {
+            "command": "project status",
+            "status": "ok" if project.exists() else "absent",
+            "project": project.exists(),
+            "lock": lock.exists(),
+            "lockSha256": digest(lock),
+        }
+    before = digest(lock)
+    result = runner(
+        [context.pkl_bin, "project", "resolve", *evaluator_args(context, omit_project_settings=False), *args.projects],
+        context.workspace,
+        context.timeout_seconds,
+    )
+    if result.exit_code != 0:
+        return ExitCode.ERROR, operation_failure("project resolve", result, context.full)
+    after = digest(lock)
+    changed = before != after
+    return ExitCode.OK, {"command": "project resolve", "status": "updated" if changed else "noop", "changed": changed, "lock": collapse_home(lock)}
+
+
+def run_package(args: argparse.Namespace, context: Context, runner: Runner) -> tuple[ExitCode, Mapping[str, Any]]:
+    if args.action == "fetch":
+        fetched = 0
+        for uri in args.uris:
+            result = runner([context.pkl_bin, "download-package", *evaluator_args(context), uri], context.workspace, context.timeout_seconds)
+            if result.exit_code != 0:
+                return ExitCode.ERROR, operation_failure("package fetch", result, context.full, fetched=fetched)
+            fetched += 1
+        return ExitCode.OK, {"command": "package fetch", "status": "ok", "packages": fetched}
+    with tempfile.TemporaryDirectory(prefix="pkl-agent-package-") as temp:
+        sandbox = Path(temp) / "workspace"
+        shutil.copytree(context.workspace, sandbox, symlinks=True, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+        sandbox_context = replace(context, workspace=sandbox)
+        sandbox_projects = remap_sandbox_projects(context.workspace, args.projects)
+        package_resources, metadata_failure = discover_package_resources(sandbox_context, sandbox_projects, runner)
+        if metadata_failure is not None:
+            return ExitCode.ERROR, operation_failure(
+                f"package {args.action}",
+                metadata_failure,
+                context.full,
+                phase="project-metadata",
+            )
+        sandbox_context = replace(
+            sandbox_context,
+            allow_resources=(*sandbox_context.allow_resources, *package_resources),
+        )
+        if args.action == "verify":
+            output = Path(temp) / "artifacts"
+        else:
+            output = resolve_output(context.workspace, args.out)
+        result = runner(
+            [context.pkl_bin, "project", "package", *evaluator_args(sandbox_context, omit_project_settings=False), "--output-path", str(output), *sandbox_projects],
+            sandbox,
+            context.timeout_seconds,
+        )
+        if result.exit_code != 0:
+            return ExitCode.ERROR, operation_failure(f"package {args.action}", result, context.full, output=str(output))
+        artifacts = sum(1 for path in output.rglob("*") if path.is_file()) if output.exists() else 0
+        return ExitCode.OK, {
+            "command": f"package {args.action}",
+            "status": "ok",
+            "sandboxed": True,
+            "artifacts": artifacts,
+            "output": None if args.action == "verify" else collapse_home(output),
+        }
+
+
+def discover_package_resources(
+    context: Context,
+    projects: Sequence[str],
+    runner: Runner,
+) -> tuple[tuple[str, ...], ProcessResult | None]:
+    project_modules = [str(Path(project) / "PklProject") for project in projects] or ["PklProject"]
+    resources: list[str] = []
+    for module in project_modules:
+        result = runner(
+            [context.pkl_bin, "eval", *evaluator_args(context), "--format", "json", module],
+            context.workspace,
+            context.timeout_seconds,
+        )
+        if result.exit_code != 0:
+            return (), result
+        try:
+            package = json.loads(result.stdout).get("package")
+        except (json.JSONDecodeError, AttributeError):
+            return (), ProcessResult(1, "", f"project metadata is not valid JSON: {module}")
+        if not isinstance(package, dict):
+            return (), ProcessResult(1, "", f"project does not define package metadata: {module}")
+        package_uri = package.get("uri")
+        zip_url = package.get("packageZipUrl")
+        if isinstance(package_uri, str) and package_uri.startswith("package://"):
+            resources.append("https://" + package_uri.removeprefix("package://"))
+        if isinstance(zip_url, str) and zip_url.startswith("https://"):
+            resources.append(zip_url)
+    return tuple(dict.fromkeys(resources)), None
+
+
+def remap_sandbox_projects(workspace: Path, projects: Sequence[str]) -> list[str]:
+    remapped: list[str] = []
+    for value in projects:
+        candidate = Path(value).expanduser()
+        resolved = candidate.resolve() if candidate.is_absolute() else (workspace / candidate).resolve()
+        try:
+            relative = resolved.relative_to(workspace.resolve())
+        except ValueError as error:
+            raise UsageError(f"package project is outside --workspace: {value}") from error
+        remapped.append("." if relative == Path(".") else str(relative))
+    return remapped
+
+
+def digest(path: Path) -> str | None:
+    if not path.is_file():
+        return None
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def resolve_output(workspace: Path, value: str) -> Path:
+    path = Path(value).expanduser()
+    return path.resolve() if path.is_absolute() else (workspace / path).resolve()
+
+
+def collapse_home(path: Path | str) -> str:
+    value = str(path)
+    home = str(Path.home())
+    return "~" + value[len(home):] if value == home or value.startswith(home + os.sep) else value
+
+
+def dispatch(args: argparse.Namespace, context: Context, runner: Runner) -> tuple[ExitCode, Mapping[str, Any]]:
+    ready, readiness = ensure_ready(context, runner)
+    if not ready:
+        return ExitCode.ERROR, readiness
+    if args.noun is None:
+        return home(context, runner)
+    if args.noun == "doctor":
+        return home(context, runner)
+    if args.noun == "format":
+        return run_format(args, context, runner)
+    if args.noun == "module":
+        return run_module(args, context, runner)
+    if args.noun == "imports":
+        return run_imports(args, context, runner)
+    if args.noun == "test":
+        return run_tests(args, context, runner)
+    if args.noun == "project":
+        return run_project(args, context, runner)
+    if args.noun == "package":
+        return run_package(args, context, runner)
+    raise UsageError(f"unknown command: {args.noun}")
+
+
+def main(argv: Sequence[str] | None = None, runner: Runner = default_runner) -> int:
+    values = list(sys.argv[1:] if argv is None else argv)
+    path = command_path(values)
+    if "--help" in values or "-h" in values:
+        emit(help_payload(path))
+        return ExitCode.OK
+    parser = build_parser()
+    try:
+        args = parser.parse_args(values)
+        context = resolve_context(args)
+        code, payload = dispatch(args, context, runner)
+    except UsageError as error:
+        emit(usage_payload(str(error), error.command or path))
+        return ExitCode.USAGE
+    except Exception as error:
+        emit({"status": "failed", "error": str(error), "help": ["Run `pkl_agent doctor` to inspect the current environment"]})
+        return ExitCode.ERROR
+    emit(payload)
+    return code
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
