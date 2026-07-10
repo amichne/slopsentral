@@ -18,8 +18,10 @@ one-concept-per-file markdown docs with YAML frontmatter, navigable `index.md`
 files, and a cross-linked knowledge graph.
 
 This skill depends on the **okf** skill for the format itself. Read
-`../okf/reference/SPEC.md` (the bundled OKF v0.1 spec) before refactoring — it is
-the source of truth. Use `../okf/scripts/validate_okf.py` to check the result.
+`../okf/SKILL.md` and the bundled reference docs under
+`../okf/resources/self-bundle/reference/` before refactoring; together they are
+the local source of truth for the OKF workflow and format rules. Use
+`python ../okf/scripts/validate.py <out> --strict` to check the result.
 
 ## Inputs and outputs
 
@@ -74,9 +76,9 @@ Confirm both paths before writing. If `<out>` is omitted, default to
 9. **Seed `log.md`.** At the root, record an `## <YYYY-MM-DD>` entry noting the
    `* **Initialization**: Refactored from <source>.` Use the real current date.
 
-10. **Validate.** Run `validate_okf.py <out>`. Fix every error. Broken
-    cross-links are warnings (the spec tolerates them) — resolve the ones you can,
-    report the rest.
+10. **Validate.** Run `python ../okf/scripts/validate.py <out> --strict`. Fix
+    every error. Broken cross-links are warnings (the spec tolerates them) —
+    resolve the ones you can, report the rest.
 
 ## Fidelity rules
 
@@ -98,11 +100,13 @@ the source left dangling. Then show the bundle tree.
 ## Checklist
 
 - [ ] Confirmed `<src>` (read-only) and `<out>` (new) paths.
-- [ ] Read ../okf/reference/SPEC.md before refactoring.
+- [ ] Read ../okf/SKILL.md and ../okf/resources/self-bundle/reference/ before
+      refactoring.
 - [ ] One concept per file; multi-topic notes split; stable kebab-case slugs.
 - [ ] Every concept has a non-empty `type`, plus `title` + `description`.
 - [ ] Relationships wired as absolute bundle-relative links; no true orphans.
 - [ ] Root index.md has `okf_version: "0.1"`; per-directory indexes generated.
 - [ ] log.md seeded with the initialization entry (real date).
-- [ ] validate_okf.py run; errors fixed; remaining broken links reported.
+- [ ] python ../okf/scripts/validate.py <out> --strict run; errors fixed;
+      remaining broken links reported.
 - [ ] No facts invented; source-specific metadata preserved as custom keys.
