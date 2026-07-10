@@ -8,10 +8,11 @@ import json
 import math
 import re
 import subprocess
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Protocol, Sequence
+from typing import Any, Callable, Protocol, Sequence
 
 
 GH_AXI_PREFIX = ("npx", "-y", "gh-axi")
@@ -269,6 +270,60 @@ def fetch_snapshot(
     result = runner(command, repo_root)
     require_success(result, "gh-axi pr checks")
     return parse_pr_checks(result.stdout, target.value, required=target.required)
+
+
+def await_event(
+    request: ActiveRequest,
+    *,
+    fetch: Callable[[Target], Snapshot],
+    now_epoch: Callable[[], float] = time.time,
+    sleeper: Callable[[float], None] = time.sleep,
+    interval_seconds: int = 10,
+    max_interval_seconds: int = 60,
+) -> WaitResult:
+    started_epoch = now_epoch()
+    expires_epoch = parse_utc(request.expires_at).timestamp()
+    current_interval = interval_seconds
+    polls = 0
+    latest = request.baseline
+    while True:
+        latest = fetch(request.target)
+        polls += 1
+        if event_satisfied(request, latest):
+            return WaitResult(
+                target=request.target,
+                predicate=request.predicate,
+                outcome=latest.outcome,
+                previous=request.baseline,
+                current=latest,
+                polls=polls,
+                started_at=iso_from_epoch(started_epoch),
+                finished_at=iso_from_epoch(now_epoch()),
+                timeout=request.timeout,
+                failure_logs=[],
+            )
+        remaining = expires_epoch - now_epoch()
+        if remaining <= 0:
+            return WaitResult(
+                target=request.target,
+                predicate=request.predicate,
+                outcome=Outcome.TIMEOUT,
+                previous=request.baseline,
+                current=latest,
+                polls=polls,
+                started_at=iso_from_epoch(started_epoch),
+                finished_at=iso_from_epoch(now_epoch()),
+                timeout=request.timeout,
+                failure_logs=[],
+            )
+        sleeper(min(current_interval, remaining))
+        current_interval = min(max_interval_seconds, max(current_interval + 1, current_interval * 2))
+
+
+def event_satisfied(request: ActiveRequest, latest: Snapshot) -> bool:
+    if request.predicate == WaitPredicate.STATUS_CHANGE:
+        return latest.state_key != request.baseline.state_key
+    return latest.outcome != Outcome.PENDING
 
 
 def require_success(result: AxiResult, command: str) -> None:
@@ -723,3 +778,7 @@ def parse_utc(value: str) -> datetime:
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def iso_from_epoch(value: float) -> str:
+    return datetime.fromtimestamp(value, tz=timezone.utc).isoformat().replace("+00:00", "Z")

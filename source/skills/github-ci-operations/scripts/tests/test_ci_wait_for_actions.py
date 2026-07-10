@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import json
+import importlib.util
 import sys
 import tempfile
 import unittest
 from datetime import datetime, timezone
+from importlib.machinery import SourceFileLoader
 from pathlib import Path
 from typing import Sequence
 
@@ -13,6 +15,16 @@ SCRIPTS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SCRIPTS))
 
 import ci_actions_observer as observer  # noqa: E402
+
+
+CLI_SCRIPT = SCRIPTS / "ci_wait_for_actions"
+CLI_LOADER = SourceFileLoader("ci_wait_for_actions", str(CLI_SCRIPT))
+CLI_SPEC = importlib.util.spec_from_loader(CLI_LOADER.name, CLI_LOADER)
+assert CLI_SPEC is not None
+cli = importlib.util.module_from_spec(CLI_SPEC)
+sys.modules[CLI_SPEC.name] = cli
+assert CLI_SPEC.loader is not None
+CLI_SPEC.loader.exec_module(cli)
 
 
 RUN_IN_PROGRESS_TOON = """\
@@ -86,6 +98,17 @@ class RecordingRunner:
         if not self.responses:
             raise AssertionError(f"unexpected gh-axi call: {tuple(args)}")
         return self.responses.pop(0)
+
+
+class ManualClock:
+    def __init__(self, epoch_seconds: float) -> None:
+        self.value = epoch_seconds
+
+    def time(self) -> float:
+        return self.value
+
+    def sleep(self, seconds: float) -> None:
+        self.value += seconds
 
 
 class CiActionsObservationTests(unittest.TestCase):
@@ -244,6 +267,108 @@ class CiActionsStateTests(unittest.TestCase):
         self.assertEqual(json.loads(output.read_text(encoding="utf-8")), first)
 
 
+class CiActionsCliTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.repo_root = Path(self.temporary.name)
+        self.state_dir = self.repo_root / "git-state" / "axi" / "github-actions"
+        self.store = observer.StateStore(self.repo_root, state_dir=self.state_dir)
+        self.start_epoch = datetime(2026, 7, 10, 12, tzinfo=timezone.utc).timestamp()
+        self.clock = ManualClock(self.start_epoch)
+
+    def test_arm_records_baseline_and_resolved_timeout(self) -> None:
+        runner = RecordingRunner([observer.AxiResult(0, RUN_IN_PROGRESS_TOON, "")])
+
+        result = cli.execute(
+            [
+                "--repo",
+                str(self.repo_root),
+                "arm",
+                "--run-id",
+                "123",
+                "--until",
+                "status-change",
+                "--timeout",
+                "auto",
+                "--json",
+            ],
+            runner=runner,
+            store=self.store,
+            now_epoch=self.clock.time,
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(result.payload["request"]["predicate"], "status-change")
+        self.assertEqual(result.payload["timeout"]["source"], "default")
+        self.assertEqual(self.store.load_active().target.value, "123")
+
+    def test_await_emits_only_the_changed_state(self) -> None:
+        request = active_request(
+            observer.parse_run_view(RUN_IN_PROGRESS_TOON, "123"),
+            expires_at="2026-07-10T12:01:00Z",
+        )
+        self.store.arm(request)
+        runner = RecordingRunner(
+            [
+                observer.AxiResult(0, RUN_IN_PROGRESS_TOON, ""),
+                observer.AxiResult(
+                    0,
+                    RUN_IN_PROGRESS_TOON.replace("in_progress,null", "completed,success"),
+                    "",
+                ),
+            ]
+        )
+
+        result = cli.execute(
+            ["--repo", str(self.repo_root), "await", "--json"],
+            runner=runner,
+            store=self.store,
+            now_epoch=self.clock.time,
+            sleeper=self.clock.sleep,
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(result.payload["outcome"], "pending")
+        self.assertEqual(result.payload["polls"], 2)
+        self.assertNotEqual(
+            result.payload["previous"]["stateKey"],
+            result.payload["current"]["stateKey"],
+        )
+        self.assertFalse(self.store.active_path.exists())
+
+    def test_timeout_preserves_latest_state_and_returns_124(self) -> None:
+        baseline = observer.parse_run_view(RUN_IN_PROGRESS_TOON, "123")
+        self.store.arm(active_request(baseline, expires_at="2026-07-10T12:00:10Z"))
+        runner = RecordingRunner(
+            [observer.AxiResult(0, RUN_IN_PROGRESS_TOON, "") for _ in range(2)]
+        )
+
+        result = cli.execute(
+            ["--repo", str(self.repo_root), "await", "--json"],
+            runner=runner,
+            store=self.store,
+            now_epoch=self.clock.time,
+            sleeper=self.clock.sleep,
+        )
+
+        self.assertEqual(result.exit_code, 124)
+        self.assertEqual(result.payload["outcome"], "timeout")
+        self.assertEqual(result.payload["current"]["stateKey"], baseline.state_key)
+        self.assertFalse(self.store.active_path.exists())
+        self.assertTrue(self.store.last_observation_path.exists())
+
+    def test_status_reports_idle_without_remote_calls(self) -> None:
+        result = cli.execute(
+            ["--repo", str(self.repo_root), "status", "--json"],
+            runner=RecordingRunner([]),
+            store=self.store,
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(result.payload, {"state": "idle"})
+
+
 def duration_sample(
     duration_seconds: int,
     conclusion: str,
@@ -263,6 +388,28 @@ def duration_sample(
         observed_at=datetime(2026, 7, 10, 12, tzinfo=timezone.utc)
         .isoformat()
         .replace("+00:00", "Z"),
+    )
+
+
+def active_request(
+    baseline: observer.Snapshot,
+    *,
+    expires_at: str,
+) -> observer.ActiveRequest:
+    return observer.ActiveRequest(
+        target=baseline.target,
+        predicate=observer.WaitPredicate.STATUS_CHANGE,
+        baseline=baseline,
+        timeout=observer.TimeoutRecommendation(
+            seconds=300,
+            source="explicit",
+            sample_count=0,
+            p50_seconds=None,
+            p95_seconds=None,
+            maximum_seconds=None,
+        ),
+        armed_at="2026-07-10T12:00:00Z",
+        expires_at=expires_at,
     )
 
 
