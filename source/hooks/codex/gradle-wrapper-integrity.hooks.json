@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash hooks/gradle-wrapper-integrity.sh --repo .",
+            "timeout": 30,
+            "statusMessage": "Checking Gradle wrapper integrity"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -73,7 +73,7 @@
         },
         "version": "0.1.0"
       },
-      "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, and Kotlin package-layout hooks. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+      "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, Gradle wrapper integrity, and Kotlin package-layout hooks. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
       "tags": [
         "agents",
         "best-practices",
@@ -785,6 +785,15 @@
       },
       "path": "hooks/gradle-check-green.hook.json",
       "name": "gradle-check-green"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/gradle-wrapper-integrity.hook.json",
+      "name": "gradle-wrapper-integrity"
     },
     {
       "type": "HOOK",
