@@ -1,191 +1,143 @@
 from __future__ import annotations
 
-import importlib.util
-from importlib.machinery import SourceFileLoader
-import json
 import sys
 import unittest
 from pathlib import Path
-from typing import Any, Sequence
-
-SCRIPT = Path(__file__).resolve().parents[1] / "ci_wait_for_actions"
-LOADER = SourceFileLoader("ci_wait_for_actions", str(SCRIPT))
-SPEC = importlib.util.spec_from_loader(LOADER.name, LOADER)
-assert SPEC is not None
-MODULE = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = MODULE
-assert SPEC.loader is not None
-SPEC.loader.exec_module(MODULE)
+from typing import Sequence
 
 
-class FakeRunner:
-    def __init__(self, responses: dict[tuple[str, ...], list[Any]]):
-        self.responses = {key: list(value) for key, value in responses.items()}
+SCRIPTS = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SCRIPTS))
+
+import ci_actions_observer as observer  # noqa: E402
+
+
+RUN_IN_PROGRESS_TOON = """\
+run:
+  id: 123
+  title: Validate change
+  status: in_progress
+  conclusion: null
+  workflow: Validate Source
+  branch: feature/example
+  created: 1m ago
+jobs[2]{id,name,status,conclusion}:
+  10,test,in_progress,null
+  11,lint,completed,success
+help[1]:
+  Run `gh-axi run view 123 --log-failed` to inspect failures
+"""
+
+RUN_SUCCESS_TOON = """\
+run:
+  id: 123
+  title: Validate change
+  status: completed
+  conclusion: success
+  workflow: Validate Source
+  branch: feature/example
+  created: 2m ago
+jobs[1]{id,name,status,conclusion}:
+  10,test,completed,success
+"""
+
+PR_PENDING_TOON = """\
+summary: "1 passed, 0 failed, 1 pending, 2 total"
+checks[2]{name,conclusion}:
+  lint,pass
+  test,pending
+help[1]:
+  Run `gh-axi pr view 42` to see PR details
+"""
+
+PR_FAILED_TOON = """\
+summary: "1 passed, 1 failed, 2 total"
+checks[2]{name,conclusion}:
+  lint,pass
+  test,fail
+"""
+
+RUN_API_TOON = """\
+id: 123
+name: Validate Source
+head_branch: feature/example
+status: completed
+conclusion: success
+event: pull_request
+created_at: "2026-07-08T23:29:53Z"
+updated_at: "2026-07-08T23:30:06Z"
+run_attempt: 2
+run_started_at: "2026-07-08T23:29:53Z"
+repository:
+  full_name: amichne/slopsentral
+"""
+
+
+class RecordingRunner:
+    def __init__(self, responses: list[observer.AxiResult]):
+        self.responses = list(responses)
         self.calls: list[tuple[str, ...]] = []
 
-    def __call__(self, args: Sequence[str], cwd: Path) -> Any:
-        key = tuple(args)
-        self.calls.append(key)
-        values = self.responses.get(key)
-        if not values:
-            raise AssertionError(f"unexpected gh call: {key}")
-        value = values.pop(0)
-        if isinstance(value, MODULE.GhResult):
-            return value
-        return MODULE.GhResult(0, json.dumps(value), "")
+    def __call__(self, args: Sequence[str], cwd: Path) -> observer.AxiResult:
+        self.calls.append(tuple(args))
+        if not self.responses:
+            raise AssertionError(f"unexpected gh-axi call: {tuple(args)}")
+        return self.responses.pop(0)
 
 
-class ManualClock:
-    def __init__(self) -> None:
-        self.value = 0.0
+class CiActionsObservationTests(unittest.TestCase):
+    def test_run_observation_uses_only_gh_axi_and_parses_jobs(self) -> None:
+        runner = RecordingRunner([observer.AxiResult(0, RUN_IN_PROGRESS_TOON, "")])
 
-    def monotonic(self) -> float:
-        return self.value
-
-    def sleep(self, seconds: float) -> None:
-        self.value += seconds
-
-
-class CiWaitForActionsTests(unittest.TestCase):
-    def test_run_observation_classifies_pending_success_and_failure(self) -> None:
-        command = (
-            "run",
-            "view",
-            "123",
-            "--json",
-            ",".join(MODULE.DEFAULT_FIELDS),
-        )
-        runner = FakeRunner(
-            {
-                command: [
-                    {
-                        "workflowName": "Validate",
-                        "status": "in_progress",
-                        "conclusion": None,
-                        "jobs": [{"name": "test", "status": "in_progress"}],
-                    },
-                    {
-                        "workflowName": "Validate",
-                        "status": "completed",
-                        "conclusion": "success",
-                        "jobs": [
-                            {
-                                "name": "test",
-                                "status": "completed",
-                                "conclusion": "success",
-                            }
-                        ],
-                    },
-                    {
-                        "workflowName": "Validate",
-                        "status": "completed",
-                        "conclusion": "failure",
-                        "jobs": [
-                            {
-                                "name": "test",
-                                "status": "completed",
-                                "conclusion": "failure",
-                            }
-                        ],
-                    },
-                ]
-            }
+        snapshot = observer.fetch_snapshot(
+            observer.Target(observer.TargetKind.RUN, "123"),
+            Path("."),
+            runner,
         )
 
-        pending = MODULE.fetch_run_observation("123", Path("."), runner)
-        success = MODULE.fetch_run_observation("123", Path("."), runner)
-        failure = MODULE.fetch_run_observation("123", Path("."), runner)
+        self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
+        self.assertEqual(snapshot.status, "in_progress")
+        self.assertEqual(snapshot.details["jobs"][0]["name"], "test")
+        self.assertEqual(runner.calls[0][:3], ("npx", "-y", "gh-axi"))
+        self.assertNotIn("help", snapshot.details)
 
-        self.assertEqual(pending.outcome, "pending")
-        self.assertEqual(success.outcome, "success")
-        self.assertEqual(failure.outcome, "failure")
-        self.assertEqual(failure.failing_run_ids, ("123",))
+    def test_run_observation_classifies_terminal_success(self) -> None:
+        snapshot = observer.parse_run_view(RUN_SUCCESS_TOON, "123")
 
-    def test_pr_observation_extracts_unique_failing_action_run_ids(self) -> None:
-        command = (
-            "pr",
-            "checks",
-            "42",
-            "--json",
-            ",".join(MODULE.CHECK_FIELDS),
-        )
-        runner = FakeRunner(
-            {
-                command: [
-                    [
-                        {
-                            "name": "unit",
-                            "bucket": "pass",
-                            "state": "SUCCESS",
-                            "link": "https://github.com/acme/repo/actions/runs/1/job/10",
-                        },
-                        {
-                            "name": "integration",
-                            "bucket": "fail",
-                            "state": "FAILURE",
-                            "link": "https://github.com/acme/repo/actions/runs/2/job/20",
-                        },
-                        {
-                            "name": "lint",
-                            "bucket": "fail",
-                            "state": "FAILURE",
-                            "link": "https://github.com/acme/repo/actions/runs/2/job/21",
-                        },
-                    ]
-                ]
-            }
-        )
+        self.assertEqual(snapshot.outcome, observer.Outcome.SUCCESS)
+        self.assertEqual(snapshot.conclusion, "success")
+        self.assertIn("Validate Source", snapshot.summary)
 
-        observation = MODULE.fetch_pr_observation("42", False, Path("."), runner)
+    def test_pr_observation_classifies_pending_and_failure(self) -> None:
+        pending = observer.parse_pr_checks(PR_PENDING_TOON, "42")
+        failed = observer.parse_pr_checks(PR_FAILED_TOON, "42")
 
-        self.assertEqual(observation.outcome, "failure")
-        self.assertEqual(observation.failing_run_ids, ("2",))
+        self.assertEqual(pending.outcome, observer.Outcome.PENDING)
+        self.assertEqual(pending.details["counts"]["pending"], 1)
+        self.assertEqual(failed.outcome, observer.Outcome.FAILURE)
+        self.assertEqual(failed.details["checks"][1]["name"], "test")
 
-    def test_wait_records_only_changed_transitions(self) -> None:
-        observations = [
-            MODULE.Observation("pending", "queued", "run queued", {}),
-            MODULE.Observation("pending", "queued", "run queued", {}),
-            MODULE.Observation("pending", "running", "run running", {}),
-            MODULE.Observation("success", "passed", "run passed", {}),
-        ]
-        clock = ManualClock()
-        emitted: list[Any] = []
+    def test_run_api_parser_returns_exact_duration_fields(self) -> None:
+        details = observer.parse_run_api(RUN_API_TOON)
 
-        def fetch() -> Any:
-            return observations.pop(0)
+        self.assertEqual(details["workflow"], "Validate Source")
+        self.assertEqual(details["attempt"], 2)
+        self.assertEqual(details["runStartedAt"], "2026-07-08T23:29:53Z")
+        self.assertEqual(details["updatedAt"], "2026-07-08T23:30:06Z")
 
-        result = MODULE.wait_until_terminal(
-            target={"type": "RUN", "runId": "123"},
-            fetch_observation=fetch,
-            repo_root=Path("."),
-            runner=FakeRunner({}),
-            interval_seconds=5,
-            max_interval_seconds=20,
-            timeout_seconds=60,
-            failure_log_lines=0,
-            emit_transition=emitted.append,
-            monotonic=clock.monotonic,
-            sleeper=clock.sleep,
-            now=lambda: "2026-06-22T00:00:00Z",
-        )
-
-        self.assertEqual(result.outcome, "success")
-        self.assertEqual(result.polls, 4)
-        self.assertEqual([transition.summary for transition in result.transitions], [
-            "run queued",
-            "run running",
-            "run passed",
-        ])
-        self.assertEqual(len(emitted), 3)
-        self.assertGreaterEqual(clock.value, 10)
-
-    def test_extract_run_id_accepts_run_and_job_urls(self) -> None:
-        self.assertEqual(
-            MODULE.extract_run_id("https://github.com/acme/repo/actions/runs/123/job/456"),
+    def test_state_key_ignores_relative_created_text_and_help_hints(self) -> None:
+        first = observer.parse_run_view(RUN_IN_PROGRESS_TOON, "123")
+        second = observer.parse_run_view(
+            RUN_IN_PROGRESS_TOON.replace("created: 1m ago", "created: 2m ago")
+            .replace("inspect failures", "read more"),
             "123",
         )
-        self.assertEqual(MODULE.extract_run_id("https://github.com/acme/repo/runs/789"), "789")
-        self.assertIsNone(MODULE.extract_run_id("https://example.com"))
+
+        self.assertEqual(first.state_key, second.state_key)
+
+    def test_missing_required_run_fields_fail_closed(self) -> None:
+        with self.assertRaisesRegex(observer.ObserverError, "status"):
+            observer.parse_run_view("run:\n  id: 123\n", "123")
 
 
 if __name__ == "__main__":
