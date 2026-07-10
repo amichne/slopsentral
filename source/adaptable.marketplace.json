@@ -525,6 +525,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/pkl-engineering",
+      "name": "pkl-engineering"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/doc-coauthoring",
       "name": "doc-coauthoring"
     },
