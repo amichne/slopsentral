@@ -20,9 +20,8 @@ when the live run, YAML, scripts, or package metadata can be inspected.
   target, event predicate, and bounded timeout. Let the Codex `Stop` hook await
   internally; the model should process only a transition, terminal result,
   timeout, or error.
-- Prefer `--timeout auto`, which uses the repository's shared duration profile,
-  then clone-local run history, before falling back to 30 minutes. Read the
-  resolved timeout in the arm result and override it deliberately when needed.
+- Prefer `--timeout auto`; inspect its duration-informed choice and override it
+  deliberately when needed.
 - Treat non-GitHub providers as external checks unless the repo has local
   tooling for them. Report their details URL rather than scraping unrelated
   systems.
@@ -42,20 +41,11 @@ when the live run, YAML, scripts, or package metadata can be inspected.
    publication.
 
 2. Inspect live state.
-   Use `npx -y gh-axi api /user` to verify authenticated identity, then
-   `npx -y gh-axi pr view`,
-   `npx -y gh-axi pr checks`, `npx -y gh-axi run view`,
-   `npx -y gh-axi run list`, and workflow YAML under `.github/workflows/` as
-   appropriate.
+   Use `npx -y gh-axi api /user` to verify identity, then the AXI `pr` and `run`
+   commands plus workflow YAML under `.github/workflows/`.
    Capture the failing job name, command, error snippet, run URL, head SHA, and
-   local file that owns the failing behavior. AXI's structured TOON response is
-   the evidence source; the observer parses it into a typed snapshot:
-
-   ```sh
-   npx -y gh-axi pr checks <pr-number>
-   python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
-     arm --pr <pr-number> --required --until status-change --timeout auto --json
-   ```
+   owning local file. Treat AXI's structured TOON response and the observer's
+   typed snapshot as evidence.
 
 3. Classify the failure.
    Separate product/test failures from CI-environment failures, dependency
@@ -68,12 +58,9 @@ when the live run, YAML, scripts, or package metadata can be inspected.
    unless they are the cause.
 
 5. Validate.
-   Run the local equivalent of the failing command. For workflow YAML changes,
-   run `actionlint` when present, parse YAML with available tooling when not,
-   and then re-read the relevant state through AXI. When the remote state is
-   pending, arm `scripts/ci_wait_for_actions`, end the turn, and let the hook
-   hold the wait. On continuation, process the event once; if work remains,
-   arm a new baseline instead of manually rechecking an unchanged state.
+   Run the local equivalent and `actionlint` for workflow changes when present.
+   Re-read through AXI. For pending state, arm the observer and yield; process
+   one continuation and re-arm only if work remains.
 
 6. Hand off.
    Summarize the failed signal, root cause, files changed, checks run, and any
@@ -90,23 +77,6 @@ when the live run, YAML, scripts, or package metadata can be inspected.
   editing `.github/workflows/*.yml`.
 - Load [release-flow.md](references/release-flow.md) for GitHub releases, tags,
   generated notes, artifacts, or release automation.
-
-## Observer Commands
-
-- `scripts/ci_wait_for_actions --repo . arm --run-id <id> --until
-  status-change --timeout auto --json` records a baseline and arms one event.
-- `scripts/ci_wait_for_actions --repo . arm --pr <number> --required --until
-  terminal --timeout <30-3300> --json` watches required PR checks to terminal.
-- `scripts/ci_wait_for_actions --repo . await --json` performs one bounded
-  internal wait when the Codex hook is unavailable. Do not invoke it repeatedly.
-- `scripts/ci_wait_for_actions --repo . status --json` inspects local armed
-  state without a remote call.
-- `scripts/ci_wait_for_actions --repo . profile show --json` explains the
-  duration knowledge used by automatic timeout selection. `profile export`
-  refreshes `.axi/github-actions-duration-profile.json` only when explicitly
-  asked to share that knowledge with the repository.
-- Exit codes are stable: `0` for a non-failing event, `1` for terminal failure,
-  `2` for usage, dependency, or state error, and `124` for timeout.
 
 ## Completion Criteria
 
