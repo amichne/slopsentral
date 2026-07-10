@@ -34,8 +34,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/kotlin-standards",
-      "name": "kotlin-standards"
+      "path": "skills/kotlin-design-practices",
+      "name": "kotlin-design-practices"
     },
     {
       "type": "SKILL",

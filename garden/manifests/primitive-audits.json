@@ -84,7 +84,7 @@
           "source/skills/kotlin-agentic-correctness",
           "source/skills/kotlin-gradle-validation",
           "source/skills/kotlin-review",
-          "source/skills/kotlin-standards",
+          "source/skills/kotlin-design-practices",
           "source/skills/negative-capability-proof",
           "source/agents/kotlin-review",
           "source/hooks/kotlin-horizontalization-check.hook.json",
@@ -173,7 +173,7 @@
           "source/skills/kotlin-agentic-correctness",
           "source/skills/kotlin-gradle-validation",
           "source/skills/kotlin-review",
-          "source/skills/kotlin-standards",
+          "source/skills/kotlin-design-practices",
           "source/skills/negative-capability-proof",
           "source/concepts/kotlin-code-correctness/core.md",
           "source/hooks/kotlin-horizontalization-check.hook.json",
@@ -191,7 +191,7 @@
         "status": "PASS",
         "evidence": [
           "source/concepts/kotlin-code-correctness/core.md now owns stable Kotlin policy for domain modeling, boundary parsing, package ownership, expected failures, state safety, and proof.",
-          "source/skills/kotlin-standards/SKILL.md is now the Kotlin task workflow and reference router instead of the sole home for evergreen policy.",
+          "source/skills/kotlin-design-practices/SKILL.md is now the Kotlin task workflow and reference router instead of the sole home for evergreen policy.",
           "Sibling Kotlin skills keep separate jobs: implementation evidence, Gradle evidence, review orchestration, and negative-capability proof."
         ]
       },

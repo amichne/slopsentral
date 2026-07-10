@@ -23,7 +23,7 @@
         },
         "version": "0.1.0"
       },
-      "description": "Repository baseline for type-safe work: onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+      "description": "Repository baseline for type-safe work: onboarding, typed Pkl configuration, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
       "tags": [
         "core",
         "daily-driver",
@@ -32,6 +32,7 @@
         "hooks",
         "instructions",
         "onboarding",
+        "pkl",
         "schemas",
         "skills"
       ]
@@ -343,8 +344,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/kotlin-standards",
-      "name": "kotlin-standards"
+      "path": "skills/kotlin-design-practices",
+      "name": "kotlin-design-practices"
     },
     {
       "type": "SKILL",
@@ -388,8 +389,8 @@
             "type": "LOCAL_SOURCE",
             "path": "./"
           },
-          "path": "skills/kotlin-standards",
-          "name": "kotlin-standards"
+          "path": "skills/kotlin-design-practices",
+          "name": "kotlin-design-practices"
         },
         {
           "type": "SKILL",

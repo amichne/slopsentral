@@ -129,8 +129,8 @@
     },
     {
       "type": "SKILL",
-      "name": "kotlin-standards",
-      "canonicalPath": "source/skills/kotlin-standards",
+      "name": "kotlin-design-practices",
+      "canonicalPath": "source/skills/kotlin-design-practices",
       "sourcePath": "/Users/amichne/code/intelligence/source/skills/kotlin-standards",
       "handling": "promoted-canonical"
     },

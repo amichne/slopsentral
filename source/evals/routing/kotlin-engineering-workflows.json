@@ -13,7 +13,7 @@
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
           "source/skills/kotlin-agentic-correctness/SKILL.md",
-          "source/skills/kotlin-standards/SKILL.md",
+          "source/skills/kotlin-design-practices/SKILL.md",
           "source/skills/kotlin-agentic-correctness/references/kast-file-first.md"
         ]
       },
@@ -27,7 +27,7 @@
         "risk": "The change may compile only by accident, miss call sites, or preserve invalid states behind new helper names.",
         "loadedPrimitives": [
           "kotlin-agentic-correctness",
-          "kotlin-standards"
+          "kotlin-design-practices"
         ]
       },
       "allowedActions": [
@@ -98,7 +98,7 @@
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
           "source/skills/negative-capability-proof/SKILL.md",
-          "source/skills/kotlin-standards/references/type-safety-patterns.md"
+          "source/skills/kotlin-design-practices/references/type-safety-patterns.md"
         ]
       },
       "prompt": "Prove that an invalid Kotlin operation used to be representable, then refactor the API so the same misuse no longer compiles.",
@@ -111,7 +111,7 @@
         "risk": "The implementation may still allow the bad operation through another constructor, nullable flag, or primitive escape hatch.",
         "loadedPrimitives": [
           "kotlin-agentic-correctness",
-          "kotlin-standards"
+          "kotlin-design-practices"
         ]
       },
       "allowedActions": [

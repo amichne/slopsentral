@@ -16,6 +16,19 @@ plugins, hooks, agents, concepts, and workflow profiles.
 - Do not re-own first-party or system skills here. Reference upstream
   distributions or author local rewrites with non-colliding names.
 
+## Standalone Skills
+
+Install one marketplace-listed skill into `${CODEX_HOME:-$HOME/.codex}/skills`
+without installing a plugin:
+
+```bash
+source/tools/install-skill pkl-engineering
+```
+
+The command copies a real skill directory and is an idempotent no-op when the
+installed copy is current. It refuses to overwrite a different existing copy;
+use `--force` only when replacement is intentional.
+
 ## Validation
 
 ```bash

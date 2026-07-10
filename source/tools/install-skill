@@ -1,0 +1,160 @@
+#!/bin/sh
+
+set -u
+
+usage='source/tools/install-skill <skill> [--codex-home <path>] [--force]'
+
+print_help() {
+  printf '%s\n' \
+    'description: Install one standalone skill from this marketplace into Codex' \
+    "usage: $usage" \
+    'options[2]{name,description}:' \
+    '  --codex-home,Override CODEX_HOME for this installation' \
+    '  --force,Replace a different existing installation'
+}
+
+usage_error() {
+  printf 'error: %s\nhelp: %s\n' "$1" "$usage"
+  exit 2
+}
+
+operation_error() {
+  printf 'error: %s\n' "$1"
+  if [ "$#" -gt 1 ]; then
+    printf 'help: %s\n' "$2"
+  fi
+  exit 1
+}
+
+quoted() {
+  node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$1"
+}
+
+if [ "$#" -eq 0 ]; then
+  usage_error 'skill name is required'
+fi
+
+if [ "$1" = '--help' ]; then
+  print_help
+  exit 0
+fi
+
+skill=$1
+shift
+
+case "$skill" in
+  ''|*[!a-z0-9-]*) usage_error "invalid skill name $skill" ;;
+esac
+
+force=false
+if [ -n "${CODEX_HOME:-}" ]; then
+  codex_home=$CODEX_HOME
+elif [ -n "${HOME:-}" ]; then
+  codex_home=$HOME/.codex
+else
+  operation_error 'CODEX_HOME and HOME are both unset' "Run $usage with --codex-home <path>."
+fi
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --codex-home)
+      if [ "$#" -lt 2 ] || [ -z "$2" ]; then
+        usage_error '--codex-home requires a path'
+      fi
+      codex_home=$2
+      shift 2
+      ;;
+    --force)
+      force=true
+      shift
+      ;;
+    --help)
+      print_help
+      exit 0
+      ;;
+    *) usage_error "unknown option $1" ;;
+  esac
+done
+
+if ! command -v node >/dev/null 2>&1; then
+  operation_error 'node is required to read the marketplace contract'
+fi
+
+repo_root=$(CDPATH='' cd -- "$(dirname -- "$0")/../.." && pwd -P) ||
+  operation_error 'could not resolve the marketplace repository root'
+marketplace=$repo_root/source/adaptable.marketplace.json
+
+skill_path=$(node -e '
+  const fs = require("node:fs");
+  const [marketplacePath, skillName] = process.argv.slice(1);
+  const marketplace = JSON.parse(fs.readFileSync(marketplacePath, "utf8"));
+  const entry = marketplace.skills.find((candidate) => candidate.name === skillName);
+  if (entry === undefined) process.exit(2);
+  process.stdout.write(entry.path);
+' "$marketplace" "$skill" 2>/dev/null)
+marketplace_status=$?
+
+if [ "$marketplace_status" -eq 2 ]; then
+  usage_error "skill is not listed in the marketplace: $skill"
+fi
+if [ "$marketplace_status" -ne 0 ]; then
+  operation_error 'could not read the marketplace contract'
+fi
+
+source_skill=$repo_root/source/$skill_path
+if [ ! -f "$source_skill/SKILL.md" ]; then
+  operation_error "marketplace skill source is incomplete: $skill_path"
+fi
+
+skills_root=$codex_home/skills
+destination=$skills_root/$skill
+if ! mkdir -p "$skills_root" 2>/dev/null; then
+  operation_error "could not create skills directory: $skills_root"
+fi
+
+staging=$(mktemp -d "$skills_root/.install-skill.XXXXXX" 2>/dev/null) ||
+  operation_error "could not create staging directory under $skills_root"
+backup=
+cleanup() {
+  rm -rf -- "$staging"
+  if [ -n "$backup" ] && { [ -e "$backup" ] || [ -L "$backup" ]; }; then
+    rm -rf -- "$backup"
+  fi
+}
+trap cleanup EXIT HUP INT TERM
+
+staged_skill=$staging/$skill
+if ! cp -R "$source_skill" "$staged_skill" 2>/dev/null; then
+  operation_error "could not stage skill: $skill"
+fi
+
+status=installed
+if [ -e "$destination" ] || [ -L "$destination" ]; then
+  if [ ! -L "$destination" ] && diff -qr "$staged_skill" "$destination" >/dev/null 2>&1; then
+    status=unchanged
+  elif [ "$force" = false ]; then
+    operation_error \
+      "destination already contains a different skill: $destination" \
+      "Run $usage --force to replace it."
+  else
+    status=replaced
+    backup=$skills_root/.${skill}.install-skill-backup.$$
+    if ! mv "$destination" "$backup" 2>/dev/null; then
+      operation_error "could not stage the existing installation for replacement: $destination"
+    fi
+    if ! mv "$staged_skill" "$destination" 2>/dev/null; then
+      mv "$backup" "$destination" 2>/dev/null || true
+      backup=
+      operation_error "could not replace installed skill: $destination"
+    fi
+  fi
+else
+  if ! mv "$staged_skill" "$destination" 2>/dev/null; then
+    operation_error "could not install skill: $destination"
+  fi
+fi
+
+printf 'skill: %s\ndestination: %s\nstatus: %s\n' \
+  "$(quoted "$skill")" \
+  "$(quoted "$destination")" \
+  "$status"

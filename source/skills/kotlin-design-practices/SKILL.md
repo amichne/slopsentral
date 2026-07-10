@@ -1,11 +1,11 @@
 ---
-name: "kotlin-standards"
+name: "kotlin-design-practices"
 description: "Use when Kotlin work needs type-driven modeling, parse-dont-validate boundaries, semantic package layout, explicit failures, API review, or package cohesion checks."
 ---
 
-# Kotlin Standards
+# Kotlin Design Practices
 
-Use this skill as the Kotlin standards router. Stable policy belongs in
+Use this skill as the Kotlin design-practices router. Stable policy belongs in
 instruction concepts; detailed examples and heuristics live in references.
 
 ## Operating Rules

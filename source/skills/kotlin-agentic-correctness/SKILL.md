@@ -59,6 +59,6 @@ filesystem evidence, and Kast semantics.
 - Filesystem evidence: `references/filesystem-evidence-contract.md`
 - Kast file-first fallback: `references/kast-file-first.md`
 - Scripts: `scripts/kotlin_workflow_state`, `scripts/kast_rpc_file.sh`
-- Narrow skills: `kotlin-standards`, `kotlin-gradle-validation`,
+- Narrow skills: `kotlin-design-practices`, `kotlin-gradle-validation`,
   `kotlin-review`, and `negative-capability-proof`
 - Generic delivery: use `git-ci-operations` skills when installed.
