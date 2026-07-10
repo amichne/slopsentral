@@ -38,6 +38,11 @@
       "type": "WORKFLOW_HOOK",
       "name": "gradle-check-green",
       "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "gradle-wrapper-integrity",
+      "adapter": "codex"
     }
   ],
   "validation": {

@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "name": "kotlin-engineering",
   "version": "0.1.0",
-  "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, and Kotlin package-layout hooks.",
+  "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, Gradle wrapper integrity, and Kotlin package-layout hooks. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -141,6 +141,15 @@
       },
       "path": "hooks/gradle-check-green.hook.json",
       "name": "gradle-check-green"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/gradle-wrapper-integrity.hook.json",
+      "name": "gradle-wrapper-integrity"
     }
   ],
   "metadata": {
@@ -155,6 +164,6 @@
     "packageBoundary": "Kotlin semantics and proof only; generic branch, PR, CI, and release work stays in git-ci-operations.",
     "principle": "encode-kotlin-invariants-in-types-and-prove-them-with-focused-evidence",
     "role": "kotlin-best-practices",
-    "scope": "Kotlin implementation and review best practices: domain modeling, parse-dont-validate boundaries, package cohesion, Kast or file-backed semantic navigation, negative capability proof, Gradle validation, and Kotlin-specific hook checks."
+    "scope": "Kotlin implementation and review best practices: domain modeling, parse-dont-validate boundaries, package cohesion, Kast or file-backed semantic navigation, negative capability proof, Gradle validation, Gradle wrapper integrity, and Kotlin-specific hook checks."
   }
 }
