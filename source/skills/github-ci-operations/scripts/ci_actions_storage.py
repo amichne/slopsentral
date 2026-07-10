@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from ci_actions_duration import build_duration_profile, utc_now
+from ci_actions_duration import utc_now
 from ci_actions_json import (
     active_request_from_json,
     active_request_to_json,
@@ -13,6 +13,7 @@ from ci_actions_json import (
     wait_result_to_json,
 )
 from ci_actions_process import require_success, run_gh_axi
+from ci_actions_profile import build_duration_profile
 from ci_actions_types import (
     STATE_VERSION,
     ActiveRequest,

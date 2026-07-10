@@ -1,7 +1,6 @@
 """Stable public facade for the split AXI GitHub Actions observer."""
 
 from ci_actions_duration import (
-    build_duration_profile,
     duration_sample_from_run_api,
     eligible_durations,
     iso_from_epoch,
@@ -11,6 +10,7 @@ from ci_actions_duration import (
     record_terminal_duration,
     utc_now,
 )
+from ci_actions_profile import build_duration_profile
 from ci_actions_json import (
     active_request_from_json,
     active_request_to_json,
