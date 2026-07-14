@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 1,
   "name": "kotlin-repo-default",
-  "description": "Default Kotlin repository workflow that composes baseline instruction hygiene, Kotlin-specific engineering checks, generic Git/CI delivery, and Codex hook adapters without duplicate primitive ownership.",
+  "description": "Default Kotlin repository workflow that composes baseline executable-check TDD and instruction hygiene, Kotlin-specific engineering checks, generic Git/CI delivery, and Codex hook adapters without duplicate primitive ownership.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -49,7 +49,8 @@
     "type": "WORKFLOW_VALIDATION",
     "commands": [
       "node source/tools/validate-source-graph.mjs",
-      "intelligence validate --portable"
+      "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+      "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
     ]
   }
 }

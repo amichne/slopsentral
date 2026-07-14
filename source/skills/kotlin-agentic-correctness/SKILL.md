@@ -35,8 +35,10 @@ this skill owns the turn workflow and proof discipline.
 3. Orient semantically with Kast before touching Kotlin symbols. For CLI
    fallback, use `bash scripts/kast_rpc_file.sh` with request and response
    files under `.agent-turn/kotlin-agentic-correctness/`.
-4. Use TDD for behavior changes. Add the smallest public-behavior test that
-   proves the next invariant, parser failure, transition, or API contract.
+4. Use TDD for behavior changes. When the generic `tdd` skill is available,
+   treat the targeted Gradle or repository command as its stable executable
+   check specification. Add the smallest public-behavior test that proves the
+   next invariant, parser failure, transition, or API contract.
 5. Implement the narrowest Kotlin slice. Keep side effects at boundaries,
    state immutable or intentionally confined, and package layout semantic.
 6. Verify in widening rings: Kast diagnostics, targeted Gradle compile/test,
@@ -61,4 +63,5 @@ filesystem evidence, and Kast semantics.
 - Scripts: `scripts/kotlin_workflow_state`, `scripts/kast_rpc_file.sh`
 - Narrow skills: `kotlin-design-practices`, `kotlin-gradle-validation`,
   `kotlin-review`, and `negative-capability-proof`
+- Generic executable-check TDD: `tdd` when installed.
 - Generic delivery: use `git-ci-operations` skills when installed.

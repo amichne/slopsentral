@@ -3,14 +3,13 @@
 Use this reference when editing `source/adaptable.marketplace.json`.
 
 The catalog shape is governed by the source graph contract checked by
-`source/tools/validate-source-graph.mjs`. Use provider materialization only as
-proof after source validation passes:
+`source/tools/validate-source-graph.mjs`. Use harness projection only as proof
+after source validation passes:
 
 ```sh
 node source/tools/validate-source-graph.mjs
-intelligence validate --repo . --portable
-intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace
-intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace
+intelligence project --source . --harness codex --out /tmp/slopsentral-codex
+intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 ```
 
 ## Catalog Duties

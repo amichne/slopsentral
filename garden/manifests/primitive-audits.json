@@ -53,9 +53,8 @@
           "node source/tools/validate-source-graph.mjs",
           "node source/tools/run-routing-evals.mjs",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
-          "intelligence validate --repo . --portable",
-          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
-          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+          "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot",
           "git diff --check"
         ]
       },
@@ -137,9 +136,8 @@
           "node source/skills/manage-json-schemas/scripts/schema-contracts.js policy --schema source/schemas/runtime/runtime-links.schema.json",
           "node source/skills/manage-json-schemas/scripts/schema-contracts.js policy --schema source/schemas/evals/routing-field-observations.schema.json",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
-          "intelligence validate --repo . --portable",
-          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
-          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+          "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot",
           "git diff --check"
         ]
       },
@@ -149,7 +147,7 @@
           "Kotlin Engineering is exposed through source marketplace composition and does not require direct writes to runtime targets in this audit.",
           "garden/manifests/runtime-links.json records an approval-gated Codex marketplace import plan for kotlin-engineering@slopsentral.",
           "garden/manifests/runtime-links.json records read-only provider-visible evidence that kotlin-engineering@slopsentral is installed and enabled in the local Codex plugin list.",
-          "The Kotlin hooks are represented as source hook manifests with explicit dependencies; runtime activation remains separate from provider materialization.",
+          "The Kotlin hooks are represented as source hook manifests with explicit dependencies; runtime activation remains separate from harness projection.",
           "No cleanup or symlink replacement is recommended by this audit."
         ]
       },
@@ -201,7 +199,7 @@
           "source/plugins/kotlin-engineering/plugin.json composes the new instruction by reference.",
           "source/adaptable.marketplace.json exposes the instruction as a standalone marketplace primitive.",
           "source/hooks/kotlin-horizontalization-check.hook.json and source/hooks/gradle-check-green.hook.json declare the instruction dependency rather than copying policy text.",
-          "Copilot materialization exposes composed instruction primitives under instructions/*.md, so Kotlin skills and review agents now use logical instruction names plus Copilot package paths instead of source-only concepts/... paths.",
+          "Copilot projection exposes composed instruction primitives under instructions/*.md, so Kotlin skills and review agents now use logical instruction names plus Copilot package paths instead of source-only concepts/... paths.",
           "source/tools/validate-source-graph.mjs validates instruction references, hook dependencies, plugin references, marketplace entries, and audit target paths."
         ]
       },
@@ -221,9 +219,8 @@
           "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id kotlin-engineering-instruction-boundary-synthesis",
           "python3 -m py_compile source/hooks/kotlin-horizontalization-check.py",
           "python3 -m unittest source/hooks/tests/test_kotlin_horizontalization_check.py",
-          "intelligence validate --repo . --portable",
-          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
-          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+          "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot",
           "git diff --check"
         ]
       },
@@ -236,11 +233,11 @@
         ]
       },
       "residualRisks": [
-        "Generated provider output must be materialized and validated before publication.",
+        "Generated provider output must be projected and validated before publication.",
         "Installed runtime caches will not reflect this source change until the marketplace package is regenerated and imported.",
         "Live Kotlin sessions should still feed routing observations back into the Kotlin Engineering eval corpus when the instruction is loaded but bypassed."
       ],
-      "nextAction": "Materialize provider outputs and validate hydrated marketplace packages before publishing or reinstalling kotlin-engineering."
+      "nextAction": "Project and validate both harness payloads before publishing or reinstalling kotlin-engineering."
     },
     {
       "type": "PRIMITIVE_AUDIT",
@@ -307,9 +304,8 @@
           "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id agent-platform-authoring-plugin-production-readiness",
           "python3 -m py_compile source/skills/plugin-composition-authoring/scripts/check_plugin_composition source/skills/primitive-quality-audit/scripts/primitive_audit_record",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
-          "intelligence validate --repo . --portable",
-          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
-          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+          "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot",
           "git diff --check"
         ]
       },
@@ -318,7 +314,7 @@
         "evidence": [
           "Agent Platform Authoring is exposed through source marketplace composition and this audit does not require direct runtime writes.",
           "The new helper scripts read checked-in source and print JSON evidence; they do not install hooks, mutate provider caches, or write generated provider outputs.",
-          "Provider output remains a materialized proof target rather than an authored change surface.",
+          "Provider output remains a projected proof target rather than an authored change surface.",
           "No runtime activation or symlink replacement is recommended by this audit."
         ]
       },
@@ -339,7 +335,6 @@
         "paths": [
           "source/plugins/git-ci-operations/plugin.json",
           "source/skills/define-goal",
-          "source/skills/tdd",
           "source/skills/git-change-flow",
           "source/skills/github-ci-operations",
           "source/skills/github-ci-operations/scripts/ci_actions_observer.py",
@@ -356,15 +351,16 @@
           ".github/workflows/materialize-marketplace.yml"
         ]
       },
-      "baseline": "Git/CI Operations already composed goal, TDD, Git, PR, GitHub Actions, release, and shell-safety primitives, but the plugin lacked reusable CI evidence helpers, explicit composable workflow routing cases, a benchmark corpus, and a durable production-readiness audit.",
+      "baseline": "Git/CI Operations already composed goal, Git, PR, GitHub Actions, release, and shell-safety primitives, but the plugin lacked reusable CI evidence helpers, explicit composable workflow routing cases, a benchmark corpus, and a durable production-readiness audit.",
       "decision": "PROMOTE_READY",
       "confidence": "HIGH",
-      "reviewedAt": "2026-06-22",
+      "reviewedAt": "2026-07-14",
       "reviewedBy": "codex",
       "capabilityBoundary": {
         "status": "PASS",
         "evidence": [
-          "source/plugins/git-ci-operations/plugin.json scopes the plugin to reusable delivery workflows, structured CI evidence, composable GitHub Actions, PR lifecycle, releases, TDD, Git hygiene, and shell-safe automation.",
+          "source/plugins/git-ci-operations/plugin.json scopes the plugin to reusable delivery workflows, structured CI evidence, composable GitHub Actions, PR lifecycle, releases, Git hygiene, and shell-safe automation.",
+          "The plugin explicitly excludes generic implementation TDD, which engineering-baseline now composes as an independent repository capability.",
           "source/skills/github-ci-operations keeps CI ownership on live GitHub check/run evidence, workflow design, releases, and provider-specific CI triage.",
           "source/skills/pull-request-lifecycle composes Git hygiene and CI watching without absorbing GitHub Actions internals.",
           "source/skills/shell-script-safety remains provider-neutral and supplies reusable script hardening for CI, hooks, release scripts, installers, and local tooling."
@@ -386,7 +382,7 @@
         "status": "PASS",
         "firstPartyCollisionCheck": "CHECKED_NO_COLLISION",
         "evidence": [
-          "garden/manifests/promotions.json records git-ci-operations as a promoted referential composition and records the composed CI, Git, PR, TDD, goal, and shell-safety primitives.",
+          "garden/manifests/promotions.json records git-ci-operations as a promoted referential composition and records TDD as a separately promoted canonical primitive.",
           "The plugin manifest references canonical source primitives by path instead of copying payloads into source/plugins/git-ci-operations.",
           "The AXI observer, CLI, and hook are local source additions that implement repository-neutral CI observation rather than copied first-party provider material."
         ]
@@ -401,9 +397,8 @@
           "python3 source/skills/shell-script-safety/scripts/check_shell_safety source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
           "bash -n source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
-          "intelligence validate --repo . --portable",
-          "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
-          "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace",
+          "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+          "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot",
           "git diff --check"
         ]
       },
@@ -414,7 +409,7 @@
           "The CI observer uses npx -y gh-axi exclusively for GitHub reads, stores runtime state beneath git rev-parse --git-path axi/github-actions, and never reruns workflows or mutates GitHub state.",
           "The Codex Stop hook synchronously awaits only an explicitly armed observation, returns a single continuation on a meaningful transition or timeout, and clears the active request before the model resumes.",
           "The shell safety helper reads local shell scripts and reports findings; it does not execute the scripts or perform filesystem mutation.",
-          "Provider output remains a materialized proof target rather than an authored change surface."
+          "Provider output remains a projected proof target rather than an authored change surface."
         ]
       },
       "residualRisks": [
