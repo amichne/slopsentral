@@ -14,6 +14,9 @@ concurrency:
   group: validate-source-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  INTELLIGENCE_VERSION: v0.2.7
+
 jobs:
   validate:
     name: Validate marketplace source
@@ -23,18 +26,18 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
       - name: Install intelligence
+        uses: ./.github/actions/setup-intelligence
+        with:
+          version: ${{ env.INTELLIGENCE_VERSION }}
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-
-          install_dir="${RUNNER_TEMP}/intelligence"
-          source/tools/install-intelligence-release \
-            v0.2.3 \
-            linux-x64 \
-            "${install_dir}"
-          echo "${install_dir}" >> "${GITHUB_PATH}"
 
       - name: Validate source graph and evals
         run: |
@@ -48,12 +51,6 @@ jobs:
           node source/skills/manage-json-schemas/scripts/schema-contracts.js \
             policy \
             --schema source/schemas/evals/routing-field-observations.schema.json
-
-      - name: Set up Java for Pkl CLI
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "21"
 
       - name: Validate Pkl engineering facade
         env:
@@ -104,12 +101,14 @@ jobs:
           set -euo pipefail
 
           out="${RUNNER_TEMP}/slopsentral-marketplace"
-          intelligence validate --repo "${GITHUB_WORKSPACE}" --portable
-          intelligence marketplace materialize \
-            --repo "${GITHUB_WORKSPACE}" \
-            --provider all \
-            --out "${out}"
-          intelligence validate \
-            --repo "${GITHUB_WORKSPACE}" \
-            --portable \
-            --hydrated "${out}"
+          intelligence project \
+            --source "${GITHUB_WORKSPACE}" \
+            --harness codex \
+            --out "${out}/codex"
+          intelligence project \
+            --source "${GITHUB_WORKSPACE}" \
+            --harness github-copilot \
+            --out "${out}/github-copilot"
+
+          test -d "${out}/codex/.agents/plugins"
+          test -d "${out}/github-copilot/.github/plugin"

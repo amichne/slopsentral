@@ -16,6 +16,15 @@ Use this reference when creating or editing `.github/workflows/*.yml`.
 
 - Give each workflow a narrow purpose: CI, release, docs, deploy, or scheduled
   maintenance.
+- Draw the expanded task graph before editing YAML. Treat every matrix cell and
+  reusable-workflow invocation as a separate execution node, and make each
+  `needs` edge name a proof or artifact the consumer actually requires.
+- Fan out after the cheapest deterministic preflight. Keep toolchain installs,
+  compilation, packaging, and network-heavy work out of a shared fan-out gate
+  unless every downstream job consumes that work.
+- Join only at the consumer that requires all joined outputs. A required job may
+  remain independently required without becoming an unrelated consumer
+  dependency.
 - Prefer reusable workflow boundaries (`workflow_call`) or versioned repo
   scripts when multiple workflows need the same setup, validation, or
   publication logic.
@@ -24,6 +33,9 @@ Use this reference when creating or editing `.github/workflows/*.yml`.
 - Use `concurrency` for branch or deployment workflows where duplicate runs are
   wasteful or risky.
 - Use matrix jobs for supported versions or platforms; avoid copy-pasted jobs.
+- Split a matrix behind reusable workflow calls when a consumer needs one
+  matrix cell rather than the whole matrix. Depending on one matrix job is a
+  join over every expanded cell, including unrelated slow platforms.
 - Use package-manager setup actions with built-in caching when available.
 - Upload artifacts only when a later job, release, or human debugging path uses
   them.
@@ -47,6 +59,10 @@ Use this reference when creating or editing `.github/workflows/*.yml`.
 - If no workflow linter exists, at least parse YAML with local tooling and check
   indentation, event filters, permissions, expressions, and referenced scripts.
 - Run the commands invoked by the changed jobs locally when practical.
+- For graph or latency changes, use the deterministic model described in
+  [workflow-graph-optimization.md](workflow-graph-optimization.md). Gate on
+  median-modeled critical path and proof-output equivalence; keep observed mean
+  and runner wall time as report evidence.
 - Run `python3 source/skills/shell-script-safety/scripts/check_shell_safety`
   on touched Bash CI scripts and `bash -n` on the same scripts.
 - For docs or generated-output jobs, run the generator before local tests.
