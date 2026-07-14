@@ -23,11 +23,29 @@ without installing a plugin:
 
 ```bash
 source/tools/install-skill pkl-engineering
+source/tools/install-skill pkl-tooling-setup
+source/tools/install-skill pkl-specification
+source/tools/install-skill pkl-pattern-catalogs
 ```
 
 The command copies a real skill directory and is an idempotent no-op when the
 installed copy is current. It refuses to overwrite a different existing copy;
 use `--force` only when replacement is intentional.
+
+## Pkl Engineering Plugin
+
+Install the complete Pkl workflow from the configured `slopsentral`
+marketplace:
+
+```bash
+codex plugin add pkl-engineering@slopsentral
+```
+
+The plugin composes independently installable skills for engineering,
+toolchain/LSP setup, specification and official-source navigation, and pattern
+catalogs. It also provides Pkl format, explicit-entrypoint evaluation, and
+sandboxed test hooks. Repositories using the evaluation hook declare directly
+evaluable modules one per line in `.intelligence/pkl-entrypoints`.
 
 ## Validation
 

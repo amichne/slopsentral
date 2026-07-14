@@ -23,7 +23,7 @@
         },
         "version": "0.1.0"
       },
-      "description": "Repository baseline for type-safe work: onboarding, typed Pkl configuration, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+      "description": "Repository baseline for type-safe work: marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
       "tags": [
         "core",
         "daily-driver",
@@ -32,9 +32,37 @@
         "hooks",
         "instructions",
         "onboarding",
-        "pkl",
         "schemas",
         "skills"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "pkl-engineering",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "pkl-engineering",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/pkl-engineering"
+        },
+        "version": "0.1.0"
+      },
+      "description": "Pkl engineering package for typed specification, first-party source navigation, toolchain and LSP setup, practical and advanced patterns, safe evaluation, rendering, tests, packages, and repository proof hooks.",
+      "tags": [
+        "configuration",
+        "hooks",
+        "lsp",
+        "patterns",
+        "pkl",
+        "rendering",
+        "resources",
+        "schemas",
+        "skills",
+        "testing",
+        "tooling",
+        "type-safety",
+        "validation"
       ]
     },
     {
@@ -535,6 +563,33 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/pkl-tooling-setup",
+      "name": "pkl-tooling-setup"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-specification",
+      "name": "pkl-specification"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-pattern-catalogs",
+      "name": "pkl-pattern-catalogs"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/doc-coauthoring",
       "name": "doc-coauthoring"
     },
@@ -813,6 +868,33 @@
       },
       "path": "hooks/code-knowledge-drift.hook.json",
       "name": "code-knowledge-drift"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/pkl-format-check.hook.json",
+      "name": "pkl-format-check"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/pkl-evaluate-check.hook.json",
+      "name": "pkl-evaluate-check"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/pkl-test-check.hook.json",
+      "name": "pkl-test-check"
     }
   ],
   "metadata": {

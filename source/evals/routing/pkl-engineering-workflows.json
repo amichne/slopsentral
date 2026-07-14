@@ -1,0 +1,231 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 2,
+  "name": "pkl-engineering-workflow-routing",
+  "description": "Concrete routing cases for the dedicated Pkl Engineering plugin's implementation, setup, specification, pattern-catalog, and repository-proof boundaries.",
+  "cases": [
+    {
+      "id": "pkl-implementation-proves-evaluated-contract",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-14",
+        "evidenceRefs": [
+          "source/skills/pkl-engineering/SKILL.md",
+          "source/skills/pkl-engineering/scripts/pkl_agent"
+        ]
+      },
+      "prompt": "Change this Pkl configuration contract, render the consumer JSON, and prove its constraints and tests still pass.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-engineering"
+      },
+      "observedRoute": {
+        "summary": "Pkl edits can be treated as text transformation and rendered without evaluating the real entry module or its tests.",
+        "risk": "The output may look correct while required properties, constraints, snapshots, or evaluator capabilities are wrong.",
+        "loadedPrimitives": [
+          "pkl-engineering"
+        ]
+      },
+      "allowedActions": [
+        "Inspect the workspace and Pkl version through the bundled facade.",
+        "Evaluate the real consumer module under an explicit policy.",
+        "Run focused Pkl tests in the non-mutating sandbox.",
+        "Render the requested JSON from the evaluated typed model."
+      ],
+      "forbiddenActions": [
+        "Treat successful formatting as proof of the configuration contract.",
+        "Hand-edit generated JSON as a second source of truth.",
+        "Enable environment, HTTPS, reader, or command capabilities implicitly."
+      ],
+      "recoveryExpectation": "A good run records exact evaluation, test, and render commands plus the declared evaluator policy.",
+      "notes": "This separates day-to-day Pkl implementation from setup and research work.",
+      "productiveOutcome": "Pkl changes are enforced through evaluated types and tests before consumer artifacts are rendered.",
+      "verificationEvidence": [
+        "The real entry module evaluates successfully or reports a precise failure.",
+        "Focused Pkl tests pass without unreviewed snapshot writes.",
+        "Rendered JSON is derived from the typed Pkl entry module."
+      ]
+    },
+    {
+      "id": "pkl-setup-routes-to-versioned-official-integration",
+      "type": "SETUP_FRICTION",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-14",
+        "evidenceRefs": [
+          "source/skills/pkl-tooling-setup/SKILL.md",
+          "source/skills/pkl-tooling-setup/references/installation-and-lsp.md",
+          "source/skills/pkl-tooling-setup/scripts/pkl_tooling"
+        ]
+      },
+      "prompt": "Set up Pkl and the LSP for this repository in VS Code, then explain the available JSON/YAML rendering and build tooling.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-tooling-setup"
+      },
+      "observedRoute": {
+        "summary": "Setup guidance can guess package names, Java requirements, editor settings, or renderer support without checking the installed state.",
+        "risk": "The editor and CLI drift onto incompatible versions and repository validation works differently from IDE diagnostics.",
+        "loadedPrimitives": [
+          "pkl-tooling-setup"
+        ]
+      },
+      "allowedActions": [
+        "Run the non-mutating tooling doctor.",
+        "Use the official VS Code extension and current versioned installation documentation.",
+        "Point the editor at the same Pkl CLI used by repository proof.",
+        "Describe renderers and transformations as derived outputs from an evaluated model."
+      ],
+      "forbiddenActions": [
+        "Run package-manager or extension installation without explicit user intent.",
+        "Treat standalone pkl-lsp as the preferred end-user surface when an official editor plugin exists.",
+        "Hard-code a Java or LSP version without checking current official documentation."
+      ],
+      "recoveryExpectation": "A good run leaves observable CLI/editor version evidence and an explicit project-sync verification step.",
+      "notes": "This case covers installation, LSP, rendering, and tooling discovery.",
+      "productiveOutcome": "The editor, CLI, and repository proof loop use compatible, inspectable Pkl tooling.",
+      "verificationEvidence": [
+        "The tooling doctor reports resolved Pkl, Java, LSP, editor, and project state.",
+        "Installation guidance links to first-party documentation and uses an explicit plan.",
+        "The final setup includes a CLI evaluation or test outside the editor."
+      ]
+    },
+    {
+      "id": "pkl-specification-records-resource-capabilities-and-provenance",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-14",
+        "evidenceRefs": [
+          "source/skills/pkl-specification/SKILL.md",
+          "source/skills/pkl-specification/references/specification-and-resources.md",
+          "source/skills/pkl-specification/references/official-source-map.md"
+        ]
+      },
+      "prompt": "Specify a Pkl model that reads external YAML resources, emits JSON, and tell me which official repositories define the relevant APIs and examples.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-specification"
+      },
+      "observedRoute": {
+        "summary": "A specification request can collapse into implementation snippets without naming entry modules, resource schemes, consumers, or source authority.",
+        "risk": "Dynamic inputs and external capabilities leak into downstream code and repository examples are mistaken for normative API contracts.",
+        "loadedPrimitives": [
+          "pkl-specification"
+        ]
+      },
+      "allowedActions": [
+        "Inventory consumers, entry modules, templates, resources, outputs, and proof.",
+        "Convert parsed YAML from Dynamic to a typed boundary.",
+        "Route semantics to versioned docs and implementation questions to exact first-party commits.",
+        "Use the locked source index tool when repository content is needed."
+      ],
+      "forbiddenActions": [
+        "Treat YAML or JSON as a second authored configuration authority.",
+        "Allow broad environment, filesystem, HTTPS, or reader access without naming it.",
+        "Copy upstream documentation into the local skill as canonical policy."
+      ],
+      "recoveryExpectation": "A good result is a typed boundary specification with least-privilege resource capabilities and traceable first-party provenance.",
+      "notes": "This separates specification and source understanding from direct Pkl implementation.",
+      "productiveOutcome": "The Pkl resource contract is typed, capability-bounded, and backed by exact first-party sources.",
+      "verificationEvidence": [
+        "The specification distinguishes modules from resources and names URI schemes.",
+        "Dynamic YAML data is converted before downstream use.",
+        "Non-obvious claims cite versioned docs or an exact repository commit."
+      ]
+    },
+    {
+      "id": "pkl-pattern-selection-loads-only-the-relevant-catalog",
+      "type": "TRIGGER_MISS",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-14",
+        "evidenceRefs": [
+          "source/skills/pkl-pattern-catalogs/SKILL.md",
+          "source/skills/pkl-pattern-catalogs/references/best-practices.md",
+          "source/skills/pkl-pattern-catalogs/references/advanced-patterns.md"
+        ]
+      },
+      "prompt": "Which Pkl pattern should I use for a package API with extension points, multiple output files, and a custom renderer?",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-pattern-catalogs"
+      },
+      "observedRoute": {
+        "summary": "Pattern advice can load a monolithic language guide or answer from memory without distinguishing everyday and capability-expanding designs.",
+        "risk": "Advanced extension and output capabilities are applied casually, with no version check or focused proof.",
+        "loadedPrimitives": [
+          "pkl-pattern-catalogs"
+        ]
+      },
+      "allowedActions": [
+        "Load only the advanced-pattern catalog for this request.",
+        "Name the invariant or consumer problem for each selected pattern.",
+        "Confirm syntax against version-matched official sources.",
+        "Prove package API tests and rendered file behavior."
+      ],
+      "forbiddenActions": [
+        "Load both catalogs when only advanced patterns are relevant.",
+        "Apply open extension points or custom converters without a stated need.",
+        "Present a proposal from pkl-evolution as already-shipped behavior."
+      ],
+      "recoveryExpectation": "A good answer routes to exact advanced patterns, documents their capabilities, and names evaluation/package proof.",
+      "notes": "This is the progressive-disclosure case for the lean catalog skill.",
+      "productiveOutcome": "Agents select version-supported Pkl patterns without paying for unrelated catalog context.",
+      "verificationEvidence": [
+        "Only the advanced catalog is needed for the request.",
+        "Each selected pattern maps to a stated consumer or invariant.",
+        "The plan includes package API tests and rendered-output proof."
+      ]
+    },
+    {
+      "id": "pkl-stop-hooks-use-explicit-entrypoints-and-sandboxed-tests",
+      "type": "ADAPTER_DRIFT",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-14",
+        "evidenceRefs": [
+          "source/hooks/pkl-check.py",
+          "source/hooks/pkl-format-check.hook.json",
+          "source/hooks/pkl-evaluate-check.hook.json",
+          "source/hooks/pkl-test-check.hook.json"
+        ]
+      },
+      "prompt": "Finish a Pkl change and let the repository hooks prove formatting, configuration evaluation, and assertions.",
+      "expectedPrimitive": {
+        "type": "HOOK",
+        "name": "pkl-evaluate-check"
+      },
+      "observedRoute": {
+        "summary": "A Stop hook can guess that every changed Pkl module is directly evaluable or run tests in place where snapshots may be written.",
+        "risk": "Valid abstract/template modules fail spuriously, or hook execution mutates expected/actual test files.",
+        "loadedPrimitives": [
+          "pkl-format-check",
+          "pkl-evaluate-check",
+          "pkl-test-check"
+        ]
+      },
+      "allowedActions": [
+        "Format-check only changed Pkl-owned files.",
+        "Evaluate only modules declared in .intelligence/pkl-entrypoints.",
+        "Delegate testing to the pkl-engineering sandboxed test facade.",
+        "Skip with an actionable reason when no explicit evaluation roots exist."
+      ],
+      "forbiddenActions": [
+        "Guess that abstract modules and templates can be evaluated directly.",
+        "Run snapshot-capable Pkl tests directly in the source workspace.",
+        "Report success when the delegated Pkl facade fails."
+      ],
+      "recoveryExpectation": "A good hook run is deterministic, non-mutating, and explicit about skipped or evaluated roots.",
+      "notes": "This tests the hook adapter and implementation ownership boundary.",
+      "productiveOutcome": "Pkl Stop hooks provide reliable formatting, evaluation, and assertion evidence without guessing or source mutations.",
+      "verificationEvidence": [
+        "Changed-file filtering excludes non-Pkl paths.",
+        "Evaluation uses the repository entrypoint declaration.",
+        "Tests run through the sandboxed facade."
+      ]
+    }
+  ]
+}

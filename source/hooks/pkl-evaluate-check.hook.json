@@ -1,0 +1,29 @@
+{
+  "type": "HOOK",
+  "source": {
+    "type": "LOCAL_SOURCE",
+    "path": "./"
+  },
+  "path": "hooks/codex/pkl-evaluate-check.hooks.json",
+  "name": "pkl-evaluate-check",
+  "dependsOn": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-engineering",
+      "name": "pkl-engineering"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-tooling-setup",
+      "name": "pkl-tooling-setup"
+    }
+  ]
+}

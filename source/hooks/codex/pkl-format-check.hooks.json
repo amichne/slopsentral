@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/pkl-check.py --repo . --check format",
+            "timeout": 300,
+            "statusMessage": "Checking Pkl formatting"
+          }
+        ]
+      }
+    ]
+  }
+}

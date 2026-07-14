@@ -1,0 +1,20 @@
+{
+  "type": "HOOK",
+  "source": {
+    "type": "LOCAL_SOURCE",
+    "path": "./"
+  },
+  "path": "hooks/codex/pkl-test-check.hooks.json",
+  "name": "pkl-test-check",
+  "dependsOn": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-engineering",
+      "name": "pkl-engineering"
+    }
+  ]
+}
