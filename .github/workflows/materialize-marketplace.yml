@@ -35,17 +35,11 @@ jobs:
         run: |
           set -euo pipefail
 
-          release_dir="${RUNNER_TEMP}/intelligence-release"
           install_dir="${RUNNER_TEMP}/intelligence"
-          mkdir -p "${release_dir}" "${install_dir}"
-
-          gh release download \
-            --repo amichne/intelligence \
-            --pattern "intelligence-*-linux-x64.tar.gz" \
-            --dir "${release_dir}"
-
-          tar -xzf "${release_dir}"/intelligence-*-linux-x64.tar.gz -C "${install_dir}"
-          chmod +x "${install_dir}/intelligence"
+          source/tools/install-intelligence-release \
+            v0.2.3 \
+            linux-x64 \
+            "${install_dir}"
           echo "${install_dir}" >> "${GITHUB_PATH}"
 
       - name: Validate source marketplace

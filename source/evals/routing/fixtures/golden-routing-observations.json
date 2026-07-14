@@ -544,6 +544,131 @@
         "Treat syntactic validity as quality readiness."
       ],
       "notes": "A passing run proves this route by delivering: Team-shared marketplace listings contain usable primitives, while unfinished migration placeholders stay out of daily-driver routing."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-implementation-proves-evaluated-contract",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-engineering"
+      },
+      "satisfiedAllowedActions": [
+        "Inspect the workspace and Pkl version through the bundled facade.",
+        "Evaluate the real consumer module under an explicit policy.",
+        "Run focused Pkl tests in the non-mutating sandbox.",
+        "Render the requested JSON from the evaluated typed model."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The real entry module evaluates successfully or reports a precise failure.",
+        "Focused Pkl tests pass without unreviewed snapshot writes.",
+        "Rendered JSON is derived from the typed Pkl entry module."
+      ],
+      "avoidedForbiddenActions": [
+        "Treat successful formatting as proof of the configuration contract.",
+        "Hand-edit generated JSON as a second source of truth.",
+        "Enable environment, HTTPS, reader, or command capabilities implicitly."
+      ],
+      "notes": "A passing replay routes to pkl-engineering and preserves the Pkl workflow capability and proof boundaries."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-setup-routes-to-versioned-official-integration",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-tooling-setup"
+      },
+      "satisfiedAllowedActions": [
+        "Run the non-mutating tooling doctor.",
+        "Use the official VS Code extension and current versioned installation documentation.",
+        "Point the editor at the same Pkl CLI used by repository proof.",
+        "Describe renderers and transformations as derived outputs from an evaluated model."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The tooling doctor reports resolved Pkl, Java, LSP, editor, and project state.",
+        "Installation guidance links to first-party documentation and uses an explicit plan.",
+        "The final setup includes a CLI evaluation or test outside the editor."
+      ],
+      "avoidedForbiddenActions": [
+        "Run package-manager or extension installation without explicit user intent.",
+        "Treat standalone pkl-lsp as the preferred end-user surface when an official editor plugin exists.",
+        "Hard-code a Java or LSP version without checking current official documentation."
+      ],
+      "notes": "A passing replay routes to pkl-tooling-setup and preserves the Pkl workflow capability and proof boundaries."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-specification-records-resource-capabilities-and-provenance",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-specification"
+      },
+      "satisfiedAllowedActions": [
+        "Inventory consumers, entry modules, templates, resources, outputs, and proof.",
+        "Convert parsed YAML from Dynamic to a typed boundary.",
+        "Route semantics to versioned docs and implementation questions to exact first-party commits.",
+        "Use the locked source index tool when repository content is needed."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The specification distinguishes modules from resources and names URI schemes.",
+        "Dynamic YAML data is converted before downstream use.",
+        "Non-obvious claims cite versioned docs or an exact repository commit."
+      ],
+      "avoidedForbiddenActions": [
+        "Treat YAML or JSON as a second authored configuration authority.",
+        "Allow broad environment, filesystem, HTTPS, or reader access without naming it.",
+        "Copy upstream documentation into the local skill as canonical policy."
+      ],
+      "notes": "A passing replay routes to pkl-specification and preserves the Pkl workflow capability and proof boundaries."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-pattern-selection-loads-only-the-relevant-catalog",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-pattern-catalogs"
+      },
+      "satisfiedAllowedActions": [
+        "Load only the advanced-pattern catalog for this request.",
+        "Name the invariant or consumer problem for each selected pattern.",
+        "Confirm syntax against version-matched official sources.",
+        "Prove package API tests and rendered file behavior."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Only the advanced catalog is needed for the request.",
+        "Each selected pattern maps to a stated consumer or invariant.",
+        "The plan includes package API tests and rendered-output proof."
+      ],
+      "avoidedForbiddenActions": [
+        "Load both catalogs when only advanced patterns are relevant.",
+        "Apply open extension points or custom converters without a stated need.",
+        "Present a proposal from pkl-evolution as already-shipped behavior."
+      ],
+      "notes": "A passing replay routes to pkl-pattern-catalogs and preserves the Pkl workflow capability and proof boundaries."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-stop-hooks-use-explicit-entrypoints-and-sandboxed-tests",
+      "routedPrimitive": {
+        "type": "HOOK",
+        "name": "pkl-evaluate-check"
+      },
+      "satisfiedAllowedActions": [
+        "Format-check only changed Pkl-owned files.",
+        "Evaluate only modules declared in .intelligence/pkl-entrypoints.",
+        "Delegate testing to the pkl-engineering sandboxed test facade.",
+        "Skip with an actionable reason when no explicit evaluation roots exist."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Changed-file filtering excludes non-Pkl paths.",
+        "Evaluation uses the repository entrypoint declaration.",
+        "Tests run through the sandboxed facade."
+      ],
+      "avoidedForbiddenActions": [
+        "Guess that abstract modules and templates can be evaluated directly.",
+        "Run snapshot-capable Pkl tests directly in the source workspace.",
+        "Report success when the delegated Pkl facade fails."
+      ],
+      "notes": "A passing replay routes to pkl-evaluate-check and preserves the Pkl workflow capability and proof boundaries."
     }
   ]
 }
