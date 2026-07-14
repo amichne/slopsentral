@@ -13,9 +13,6 @@ concurrency:
   group: materialize-marketplace-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  INTELLIGENCE_VERSION: v0.2.7
-
 jobs:
   materialize:
     name: Materialize provider outputs
@@ -32,48 +29,44 @@ jobs:
         if: github.ref_name == 'main'
         run: git pull --ff-only origin "${GITHUB_REF_NAME}"
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "21"
-
-      - name: Install intelligence
-        uses: ./.github/actions/setup-intelligence
-        with:
-          version: ${{ env.INTELLIGENCE_VERSION }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-
       - name: Validate source marketplace
         run: |
           set -euo pipefail
           node source/tools/validate-source-graph.mjs
 
+      - name: Project Codex marketplace
+        id: codex_projection
+        uses: amichne/intelligence@v0.2.8
+        with:
+          source: .
+          harness: codex
+          version: v0.2.8
+
+      - name: Project GitHub Copilot marketplace
+        id: github_copilot_projection
+        uses: amichne/intelligence@v0.2.8
+        with:
+          source: .
+          harness: github-copilot
+          version: v0.2.8
+
       - name: Materialize provider outputs
+        env:
+          CODEX_PROJECTION: ${{ steps.codex_projection.outputs.projection-path }}
+          GITHUB_COPILOT_PROJECTION: ${{ steps.github_copilot_projection.outputs.projection-path }}
         run: |
           set -euo pipefail
 
-          out="${RUNNER_TEMP}/slopsentral-marketplace"
-          intelligence project \
-            --source "${GITHUB_WORKSPACE}" \
-            --harness codex \
-            --out "${out}/codex"
-          intelligence project \
-            --source "${GITHUB_WORKSPACE}" \
-            --harness github-copilot \
-            --out "${out}/github-copilot"
-
-          test -d "${out}/codex/.agents/plugins"
-          test -d "${out}/github-copilot/.github/plugin"
+          test -d "${CODEX_PROJECTION}/.agents/plugins"
+          test -d "${GITHUB_COPILOT_PROJECTION}/.github/plugin"
 
           rm -rf .agents/plugins .github/plugin
           mkdir -p .agents .github
-          cp -R "${out}/codex/.agents/plugins" .agents/plugins
-          cp -R "${out}/github-copilot/.github/plugin" .github/plugin
+          cp -R "${CODEX_PROJECTION}/.agents/plugins" .agents/plugins
+          cp -R "${GITHUB_COPILOT_PROJECTION}/.github/plugin" .github/plugin
 
-          diff -qr "${out}/codex/.agents/plugins" .agents/plugins
-          diff -qr "${out}/github-copilot/.github/plugin" .github/plugin
+          diff -qr "${CODEX_PROJECTION}/.agents/plugins" .agents/plugins
+          diff -qr "${GITHUB_COPILOT_PROJECTION}/.github/plugin" .github/plugin
 
       - name: Commit generated outputs
         run: |
