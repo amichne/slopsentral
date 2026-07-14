@@ -13,6 +13,9 @@ concurrency:
   group: materialize-marketplace-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  INTELLIGENCE_VERSION: v0.2.7
+
 jobs:
   materialize:
     name: Materialize provider outputs
@@ -29,55 +32,48 @@ jobs:
         if: github.ref_name == 'main'
         run: git pull --ff-only origin "${GITHUB_REF_NAME}"
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
       - name: Install intelligence
+        uses: ./.github/actions/setup-intelligence
+        with:
+          version: ${{ env.INTELLIGENCE_VERSION }}
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-
-          release_dir="${RUNNER_TEMP}/intelligence-release"
-          install_dir="${RUNNER_TEMP}/intelligence"
-          mkdir -p "${release_dir}" "${install_dir}"
-
-          gh release download \
-            --repo amichne/intelligence \
-            --pattern "intelligence-*-linux-x64.tar.gz" \
-            --dir "${release_dir}"
-
-          tar -xzf "${release_dir}"/intelligence-*-linux-x64.tar.gz -C "${install_dir}"
-          chmod +x "${install_dir}/intelligence"
-          echo "${install_dir}" >> "${GITHUB_PATH}"
 
       - name: Validate source marketplace
         run: |
           set -euo pipefail
           node source/tools/validate-source-graph.mjs
-          intelligence validate --repo "${GITHUB_WORKSPACE}" --portable
 
       - name: Materialize provider outputs
         run: |
           set -euo pipefail
 
           out="${RUNNER_TEMP}/slopsentral-marketplace"
-          intelligence marketplace materialize \
-            --repo "${GITHUB_WORKSPACE}" \
-            --provider all \
-            --out "${out}"
+          intelligence project \
+            --source "${GITHUB_WORKSPACE}" \
+            --harness codex \
+            --out "${out}/codex"
+          intelligence project \
+            --source "${GITHUB_WORKSPACE}" \
+            --harness github-copilot \
+            --out "${out}/github-copilot"
 
-          intelligence validate \
-            --repo "${GITHUB_WORKSPACE}" \
-            --portable \
-            --hydrated "${out}"
+          test -d "${out}/codex/.agents/plugins"
+          test -d "${out}/github-copilot/.github/plugin"
 
           rm -rf .agents/plugins .github/plugin
           mkdir -p .agents .github
-          cp -R "${out}/.agents/plugins" .agents/plugins
-          cp -R "${out}/.github/plugin" .github/plugin
+          cp -R "${out}/codex/.agents/plugins" .agents/plugins
+          cp -R "${out}/github-copilot/.github/plugin" .github/plugin
 
-          intelligence validate \
-            --repo "${GITHUB_WORKSPACE}" \
-            --portable \
-            --hydrated "${GITHUB_WORKSPACE}"
+          diff -qr "${out}/codex/.agents/plugins" .agents/plugins
+          diff -qr "${out}/github-copilot/.github/plugin" .github/plugin
 
       - name: Commit generated outputs
         run: |

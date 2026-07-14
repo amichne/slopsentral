@@ -103,6 +103,26 @@
     },
     {
       "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "workflow-graph-optimization-preserves-proof",
+      "title": "Workflow graph optimization preserves proof",
+      "purpose": "Measure whether CI optimization removes false dependencies and repeated setup while preserving proof outputs and using deterministic median-timed graph evidence.",
+      "routingCaseIds": [
+        "ci-workflow-authoring-favors-composable-reusable-jobs"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "userInput": "Use Git/CI Operations to optimize this workflow's dependency graph. Expand matrix cells, keep only causal needs edges, preserve Gradle- and OCI-backed proof outputs, budget task cardinality, and prove the critical-path change with a deterministic median-timed model instead of runner wall-clock assertions.",
+      "successChecklist": [
+        "The run models each matrix cell or reusable invocation as an execution node and removes dependencies on unrelated required jobs.",
+        "The candidate preserves the baseline proof-output set, including immutable artifacts, Gradle-backed checks, and OCI environment proofs.",
+        "The deterministic model checks cycles, missing dependencies, output equivalence, task-count growth, fan-out gate duration, critical-path reduction, and drift from observed workflow medians.",
+        "Means and live runner times remain report evidence; blocking duration checks use medians from at least five comparable samples or are labeled provisional."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
       "id": "ci-shell-script-reusable-safe",
       "title": "Reusable shell script safety",
       "purpose": "Measure whether repeated CI shell logic becomes a safe reusable script with deterministic local validation.",
