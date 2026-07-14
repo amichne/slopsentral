@@ -53,14 +53,8 @@ evaluable modules one per line in `.intelligence/pkl-entrypoints`.
 node source/tools/validate-source-graph.mjs
 node source/tools/run-routing-evals.mjs
 node source/tools/run-routing-evals.mjs --require-all-observed
-intelligence validate --repo /Users/amichne/code/slopsentral --portable
-intelligence marketplace browse --provider source --format json /Users/amichne/code/slopsentral
-intelligence marketplace materialize --repo /Users/amichne/code/slopsentral --provider codex --out /tmp/slopsentral-codex
-intelligence validate --repo /Users/amichne/code/slopsentral --portable --hydrated /tmp/slopsentral-codex
-intelligence marketplace materialize --repo /Users/amichne/code/slopsentral --provider github --out /tmp/slopsentral-github
-intelligence validate --repo /Users/amichne/code/slopsentral --portable --hydrated /tmp/slopsentral-github
-intelligence marketplace publish --repo /Users/amichne/code/slopsentral
-intelligence validate --repo /Users/amichne/code/slopsentral --portable --hydrated /Users/amichne/code/slopsentral
+intelligence project --source . --harness codex --out /tmp/slopsentral-codex
+intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check
 ```
 

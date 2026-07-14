@@ -26,5 +26,5 @@ This file applies to reusable agent profiles under `source/agents/`.
 
 ## Verify
 
-- Run `.local/intelligence/bin/intelligence validate` after adding promoted
+- Run both `intelligence project` harness projections after adding promoted
   agents to a plugin or marketplace manifest.

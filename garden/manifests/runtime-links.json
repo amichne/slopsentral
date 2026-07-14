@@ -24,9 +24,8 @@
       "validationCommands": [
         "node source/tools/validate-source-graph.mjs",
         "node source/tools/run-routing-evals.mjs --require-all-observed",
-        "intelligence validate --repo . --portable",
-        "intelligence marketplace materialize --repo . --provider all --out /tmp/slopsentral-marketplace",
-        "intelligence validate --repo . --portable --hydrated /tmp/slopsentral-marketplace"
+        "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+        "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
       ],
       "verification": {
         "type": "RUNTIME_LINK_VERIFICATION",

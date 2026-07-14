@@ -88,6 +88,48 @@
       "notes": "This captures the strongest repo-specific ownership rule for every workflow addition in this marketplace."
     },
     {
+      "id": "shell-check-tdd-uses-stable-red-green-proof",
+      "type": "TRIGGER_MISS",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-14",
+        "evidenceRefs": [
+          "source/skills/tdd/SKILL.md",
+          "source/skills/tdd/references/executable-check-contract.md",
+          "source/plugins/engineering-baseline/plugin.json"
+        ]
+      },
+      "prompt": "Add a repository policy that rejects duplicate manifest names. There is no project test framework, so test-drive the change with the narrowest shell-invokable check. Do not commit or open a pull request.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "observedRoute": {
+        "summary": "A test-first request without a conventional test runner can skip TDD or route to Git and CI merely because the proof is a shell command.",
+        "risk": "The implementation changes before a meaningful failure is observed, or an infrastructure failure is mislabeled as RED and provides false regression evidence.",
+        "loadedPrimitives": [
+          "git-ci-operations"
+        ]
+      },
+      "allowedActions": [
+        "Declare one check specification with working directory, exact command, controlled inputs, expected RED failure, and GREEN criterion.",
+        "Observe the focused check fail for the intended missing behavior, then pass the same check specification after the narrow implementation.",
+        "Use the standalone tdd primitive from engineering-baseline without loading Git or CI delivery workflows that were not requested."
+      ],
+      "forbiddenActions": [
+        "Count command-not-found, dependency setup, malformed check syntax, timeout, permission, or unrelated failures as RED.",
+        "Change the implementation before observing an intended focused failure.",
+        "Load git-ci-operations only because the TDD oracle is invoked from a shell."
+      ],
+      "recoveryExpectation": "If the check cannot run or fails for infrastructure reasons, repair or isolate the harness first, then rerun the stable check specification before editing the implementation.",
+      "productiveOutcome": "Any repository behavior with a shell-invokable oracle can use honest red-green-refactor evidence without acquiring Git or CI ownership.",
+      "verificationEvidence": [
+        "RED and GREEN cite the same working directory, command, controlled inputs, and meaningful environment.",
+        "The RED signal names the missing behavior and the GREEN result exits zero after the narrow implementation."
+      ],
+      "notes": "This protects generic executable-check TDD as a baseline engineering capability rather than a test-framework or Git workflow feature."
+    },
+    {
       "id": "push-request-means-branch-commit-push-pr",
       "type": "TRIGGER_MISS",
       "source": {

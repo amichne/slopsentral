@@ -7,6 +7,7 @@
   "requiredCaseIds": [
     "active-goal-continuation-keeps-original-scope",
     "source-graph-edits-use-canonical-source-and-gates",
+    "shell-check-tdd-uses-stable-red-green-proof",
     "push-request-means-branch-commit-push-pr",
     "ci-failure-triage-uses-remote-check-evidence",
     "plugin-install-recovery-proves-installed-state",
@@ -58,6 +59,29 @@
         "Add marketplace content without schema or validator coverage for structured data."
       ],
       "notes": "A passing source-graph run edits canonical source and uses provider materialization only as proof."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "shell-check-tdd-uses-stable-red-green-proof",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "satisfiedAllowedActions": [
+        "Declare one check specification with working directory, exact command, controlled inputs, expected RED failure, and GREEN criterion.",
+        "Observe the focused check fail for the intended missing behavior, then pass the same check specification after the narrow implementation.",
+        "Use the standalone tdd primitive from engineering-baseline without loading Git or CI delivery workflows that were not requested."
+      ],
+      "satisfiedVerificationEvidence": [
+        "RED and GREEN cite the same working directory, command, controlled inputs, and meaningful environment.",
+        "The RED signal names the missing behavior and the GREEN result exits zero after the narrow implementation."
+      ],
+      "avoidedForbiddenActions": [
+        "Count command-not-found, dependency setup, malformed check syntax, timeout, permission, or unrelated failures as RED.",
+        "Change the implementation before observing an intended focused failure.",
+        "Load git-ci-operations only because the TDD oracle is invoked from a shell."
+      ],
+      "notes": "A passing run uses the generic tdd primitive for stable shell-check proof and leaves Git/CI unloaded when delivery is not requested."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -305,20 +329,22 @@
         "name": "kotlin-repo-default"
       },
       "satisfiedAllowedActions": [
+        "Use engineering-baseline for the generic executable-check red-green-refactor loop.",
         "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
         "Use git-ci-operations for staging, commit, push, PR, CI, and release follow-through.",
-        "Use the profile to compose both without duplicate skills, agents, or hooks."
+        "Use the profile to compose all three without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
+        "The focused Gradle or repository check records a valid RED and GREEN with one stable check specification.",
         "Kotlin proof includes semantic or Gradle evidence.",
         "Delivery proof includes scoped staging, commit, push, PR, CI, or release evidence as requested."
       ],
       "avoidedForbiddenActions": [
-        "Move generic Git, PR, CI, or release instructions into Kotlin Engineering.",
+        "Move generic TDD, Git, PR, CI, or release instructions into Kotlin Engineering.",
         "Handle a Kotlin code change with only delivery primitives and no semantic Kotlin evidence.",
         "Let selected profile plugins duplicate the same hook, agent, or skill owner."
       ],
-      "notes": "A passing run proves this route by delivering: End-to-end Kotlin delivery remains attributable: semantic implementation evidence from Kotlin Engineering and publication evidence from Git/CI Operations."
+      "notes": "A passing run proves this route by delivering: Engineering Baseline owns red-green workflow, Kotlin Engineering owns semantic proof, and Git/CI Operations owns publication."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -398,19 +424,21 @@
       },
       "satisfiedAllowedActions": [
         "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
+        "Use engineering-baseline for generic executable-check TDD, repository onboarding, and instruction hygiene.",
         "Use git-ci-operations as the companion for branch, commit, PR, CI, release, and shell-safe automation.",
-        "Use the kotlin-repo-default profile to compose both plugins without duplicate skills, agents, or hooks."
+        "Use the kotlin-repo-default profile to compose all three plugins without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
+        "engineering-baseline owns generic executable-check TDD and repository guardrails.",
         "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
         "git-ci-operations owns branch, PR, CI, release, and shell automation primitives."
       ],
       "avoidedForbiddenActions": [
-        "Put generic Git, CI, PR, or shell automation skills inside kotlin-engineering.",
+        "Put generic TDD, Git, CI, PR, or shell automation skills inside kotlin-engineering.",
         "Route Kotlin type-safety review through generic Git/CI primitives.",
         "Let two selected plugins provide the same hook or agent in a profile."
       ],
-      "notes": "A passing run proves this route by delivering: Kotlin semantic work and Git/CI delivery compose cleanly without duplicate owners or bloated plugin prompts."
+      "notes": "A passing run proves this route by delivering: Baseline TDD, Kotlin semantic work, and Git/CI delivery compose cleanly without duplicate owners or bloated plugin prompts."
     },
     {
       "type": "ROUTING_OBSERVATION",

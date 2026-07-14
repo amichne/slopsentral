@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "name": "engineering-baseline",
   "version": "0.1.0",
-  "description": "Repository baseline for type-safe work: marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+  "description": "Repository baseline for type-safe, test-driven work: executable-check TDD, marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -18,6 +18,15 @@
       },
       "path": "skills/repository-onboarding",
       "name": "repository-onboarding"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/tdd",
+      "name": "tdd"
     }
   ],
   "agents": [],
@@ -63,11 +72,11 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install in repositories that should consume curated agent tooling and enforce baseline instruction hygiene.",
-    "notFor": "Language-specific implementation loops, Pkl engineering, CI release babysitting, or API contract authoring.",
+    "dailyDriver": "Install in repositories that should consume curated agent tooling, use shell-invokable red-green proof, and enforce baseline instruction hygiene.",
+    "notFor": "Language-specific semantic tooling, Pkl engineering, Git or CI delivery and release babysitting, or API contract authoring.",
     "owner": "engineering-standards-platform",
     "principle": "make-illegal-states-unrepresentable",
     "role": "engineering-baseline",
-    "scope": "Default repository guardrails, type-safety and schema-driven instructions, marketplace onboarding, and turn-level skill-read enforcement."
+    "scope": "Default repository guardrails, executable-check TDD, type-safety and schema-driven instructions, marketplace onboarding, and turn-level skill-read enforcement."
   }
 }

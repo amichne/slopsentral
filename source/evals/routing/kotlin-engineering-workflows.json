@@ -141,6 +141,7 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
+          "source/plugins/engineering-baseline/plugin.json",
           "source/plugins/kotlin-engineering/plugin.json",
           "source/plugins/git-ci-operations/plugin.json",
           "source/profiles/kotlin-repo-default.json"
@@ -152,27 +153,30 @@
         "name": "kotlin-repo-default"
       },
       "observedRoute": {
-        "summary": "Kotlin best-practice implementation and generic delivery can collapse into one package, causing duplicate skills or missing Git/CI handoff discipline.",
-        "risk": "The run either ignores Kotlin semantic evidence or bloats Kotlin Engineering with branch, PR, and CI ownership it should not own.",
+        "summary": "Baseline TDD, Kotlin best-practice implementation, and generic delivery can collapse into one package, causing duplicate skills or missing proof handoffs.",
+        "risk": "The run can ignore stable red-green proof or Kotlin semantics, or bloat Kotlin Engineering with baseline, branch, PR, and CI ownership it should not own.",
         "loadedPrimitives": [
+          "engineering-baseline",
           "kotlin-engineering",
           "git-ci-operations"
         ]
       },
       "allowedActions": [
+        "Use engineering-baseline for the generic executable-check red-green-refactor loop.",
         "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
         "Use git-ci-operations for staging, commit, push, PR, CI, and release follow-through.",
-        "Use the profile to compose both without duplicate skills, agents, or hooks."
+        "Use the profile to compose all three without duplicate skills, agents, or hooks."
       ],
       "forbiddenActions": [
-        "Move generic Git, PR, CI, or release instructions into Kotlin Engineering.",
+        "Move generic TDD, Git, PR, CI, or release instructions into Kotlin Engineering.",
         "Handle a Kotlin code change with only delivery primitives and no semantic Kotlin evidence.",
         "Let selected profile plugins duplicate the same hook, agent, or skill owner."
       ],
-      "recoveryExpectation": "A good run should be attributable: Kotlin Engineering owns the code semantics; git-ci-operations owns publication and CI.",
+      "recoveryExpectation": "A good run should be attributable: engineering-baseline owns generic TDD, Kotlin Engineering owns code semantics, and git-ci-operations owns publication and CI.",
       "notes": "This is the high-value companion-plugin benchmark for end-to-end Kotlin repository work.",
-      "productiveOutcome": "End-to-end Kotlin delivery remains attributable: semantic implementation evidence from Kotlin Engineering and publication evidence from Git/CI Operations.",
+      "productiveOutcome": "End-to-end Kotlin delivery remains attributable: red-green workflow from Engineering Baseline, semantic evidence from Kotlin Engineering, and publication evidence from Git/CI Operations.",
       "verificationEvidence": [
+        "The focused Gradle or repository check records a valid RED and GREEN with one stable check specification.",
         "Kotlin proof includes semantic or Gradle evidence.",
         "Delivery proof includes scoped staging, commit, push, PR, CI, or release evidence as requested."
       ]

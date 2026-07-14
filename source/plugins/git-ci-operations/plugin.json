@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "name": "git-ci-operations",
   "version": "0.1.0",
-  "description": "Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+  "description": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -18,15 +18,6 @@
       },
       "path": "skills/define-goal",
       "name": "define-goal"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/tdd",
-      "name": "tdd"
     },
     {
       "type": "SKILL",
@@ -100,10 +91,10 @@
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Install in repositories where agents may branch, push, watch checks, merge, release, or repair CI with structured evidence and reusable automation.",
-    "notFor": "Language-specific semantic review, canonical source-graph primitive authoring, or provider-specific workflow changes that cannot be locally or remotely verified.",
+    "notFor": "Language-specific semantic review, generic implementation TDD, canonical source-graph primitive authoring, or provider-specific workflow changes that cannot be locally or remotely verified.",
     "owner": "git-ci-operations",
     "principle": "claims-require-executable-evidence",
     "role": "git-ci-operations",
-    "scope": "Goal framing, TDD, local Git hygiene, PR lifecycle, GitHub Actions triage, reusable workflow design, release workflow repair, structured check evidence, and shell-safe automation."
+    "scope": "Goal framing, local Git hygiene, PR lifecycle, GitHub Actions triage, reusable workflow design, release workflow repair, structured check evidence, and shell-safe automation."
   }
 }

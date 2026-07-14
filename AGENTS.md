@@ -14,7 +14,7 @@ by hand when the authored source can be fixed instead.
   `source/profiles`, `source/evals`, `source/schemas`, and `source/tools` are
   canonical authored roots.
 - `.agents/plugins` and `.github/plugin` are generated output from
-  `intelligence marketplace publish --repo /Users/amichne/code/slopsentral`.
+  `intelligence project --source . --harness codex|github-copilot`.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
 
 ## First-Party Material
@@ -29,8 +29,7 @@ composition edits, run:
 
 ```bash
 node source/tools/validate-source-graph.mjs
-intelligence validate --repo /Users/amichne/code/slopsentral --portable
-intelligence marketplace materialize --repo /Users/amichne/code/slopsentral --provider all --out /tmp/slopsentral-marketplace
-intelligence validate --repo /Users/amichne/code/slopsentral --portable --hydrated /tmp/slopsentral-marketplace
+intelligence project --source . --harness codex --out /tmp/slopsentral-codex
+intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check
 ```
