@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T10:39:04-04:00",
+  "generatedAt": "2026-07-14T10:44:07-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -37,6 +37,13 @@
           "sha256": "sha256:afeefff0c341de380100423b56c4c0c158679b82a9704621a990b05dad72a9fc",
           "sourcePath": "source/skills/repository-onboarding",
           "targetPath": "skills/repository-onboarding",
+          "type": "SKILL"
+        },
+        {
+          "name": "tdd",
+          "sha256": "sha256:34150e1c6bbcfd938d4e445bb593f582eae8e92e3d20fd55b9f2f0f371e55e87",
+          "sourcePath": "source/skills/tdd",
+          "targetPath": "skills/tdd",
           "type": "SKILL"
         }
       ],
@@ -251,7 +258,7 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:6822db32988611aa51704d708684ce3b65f02729b24fab4893b0eb2b13ff525a",
+          "sha256": "sha256:9604da8e728f7d71f8d231a8f3a01da9fb4899a8847eaaab61ce62ffc0f9aa07",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
@@ -346,13 +353,6 @@
           "sourcePath": "source/skills/shell-script-safety",
           "targetPath": "skills/shell-script-safety",
           "type": "SKILL"
-        },
-        {
-          "name": "tdd",
-          "sha256": "sha256:7f2bdfe006f70832175cfb85179fab78e48b6a32fedb5542749caddd4a9ab73b",
-          "sourcePath": "source/skills/tdd",
-          "targetPath": "skills/tdd",
-          "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/git-ci-operations/plugin.json",
@@ -398,7 +398,7 @@
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:73827be9c4a6083ba7ddb57c1d37a2954108b8e5243b008e25be5b1998357b16",
+          "sha256": "sha256:bb2a4ad1d33253278e2519d0fa9a7bf099529f9f890e3f346842056e69a9c5c3",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
@@ -500,6 +500,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "8aed338ccd09ad625f613fcd645694818dc75c28",
+  "sourceSha": "2eb016cc2821bf4cd4e153a2f1ce1c18d7cf25d9",
   "type": "HYDRATED_MARKETPLACE"
 }

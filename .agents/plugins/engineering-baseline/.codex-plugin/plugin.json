@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Repository baseline for type-safe work: marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+  "description": "Repository baseline for type-safe, test-driven work: executable-check TDD, marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Engineering Baseline",
-    "longDescription": "Repository baseline for type-safe work: marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+    "longDescription": "Repository baseline for type-safe, test-driven work: executable-check TDD, marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Repository baseline for type-safe work: marketplace onboarding, share...",
+    "shortDescription": "Repository baseline for type-safe, test-driven work: executable-check...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -32,8 +32,11 @@
     "hooks",
     "instructions",
     "onboarding",
+    "proof",
     "schemas",
-    "skills"
+    "skills",
+    "tdd",
+    "testing"
   ],
   "license": "UNLICENSED",
   "name": "engineering-baseline",

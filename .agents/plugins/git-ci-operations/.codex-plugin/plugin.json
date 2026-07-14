@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+  "description": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,7 +17,7 @@
     ],
     "developerName": "Amichne",
     "displayName": "Git CI Operations",
-    "longDescription": "Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+    "longDescription": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
     "shortDescription": "Git and CI best-practices package for reusable delivery workflows: go...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
@@ -37,8 +37,6 @@
     "pull-requests",
     "release",
     "skills",
-    "tdd",
-    "testing",
     "workflow"
   ],
   "license": "UNLICENSED",

@@ -14,7 +14,7 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Repository baseline for type-safe work: marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+      "description": "Repository baseline for type-safe, test-driven work: executable-check TDD, marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
       "hooks": "./hooks",
       "keywords": [
         "core",
@@ -25,8 +25,11 @@
         "hooks",
         "instructions",
         "onboarding",
+        "proof",
         "schemas",
-        "skills"
+        "skills",
+        "tdd",
+        "testing"
       ],
       "license": "UNLICENSED",
       "name": "engineering-baseline",
@@ -41,8 +44,11 @@
         "hooks",
         "instructions",
         "onboarding",
+        "proof",
         "schemas",
-        "skills"
+        "skills",
+        "tdd",
+        "testing"
       ],
       "version": "0.1.0"
     },
@@ -183,7 +189,7 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Git and CI best-practices package for reusable delivery workflows: goals, TDD, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+      "description": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
       "hooks": "./hooks",
       "keywords": [
         "automation",
@@ -199,8 +205,6 @@
         "pull-requests",
         "release",
         "skills",
-        "tdd",
-        "testing",
         "workflow"
       ],
       "license": "UNLICENSED",
@@ -221,8 +225,6 @@
         "pull-requests",
         "release",
         "skills",
-        "tdd",
-        "testing",
         "workflow"
       ],
       "version": "0.1.0"

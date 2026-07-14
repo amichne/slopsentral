@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Repository baseline for type-safe work: marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.
+Repository baseline for type-safe, test-driven work: executable-check TDD, marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.
 
 ## Operating Rules
 
@@ -29,6 +29,7 @@ Repository baseline for type-safe work: marketplace onboarding, shared instructi
 ## Skill Primitives
 
 - `repository-onboarding`: `skills/repository-onboarding` (source: `source/skills/repository-onboarding`)
+- `tdd`: `skills/tdd` (source: `source/skills/tdd`)
 
 ## Hook Primitives
 
