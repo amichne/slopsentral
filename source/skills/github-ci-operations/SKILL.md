@@ -28,6 +28,9 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 - Fix root causes in code, tests, scripts, workflow YAML, or docs. Do not paper
   over failures by disabling checks unless the user explicitly asks and the risk
   is stated.
+- Treat workflow optimization as a dependency-graph and proof-equivalence
+  change. Budget expanded task cardinality and modeled critical-path duration;
+  do not infer performance from YAML line count or one runner observation.
 - Ask before changing secrets, environment protection, deployment targets,
   release tags, or destructive workflow state.
 - Re-run the smallest relevant local check first, then use GitHub checks to
@@ -59,6 +62,8 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 
 5. Validate.
    Run the local equivalent and `actionlint` for workflow changes when present.
+   For dependency, matrix, cache, or startup-latency changes, run the deterministic
+   workflow graph model and preserve the baseline proof-output set.
    Re-read through AXI. For pending state, arm the observer and yield; process
    one continuation and re-arm only if work remains.
 
@@ -75,6 +80,9 @@ when the live run, YAML, scripts, or package metadata can be inspected.
   evidence, or sharing duration knowledge.
 - Load [actions-workflows.md](references/actions-workflows.md) when creating or
   editing `.github/workflows/*.yml`.
+- Load [workflow-graph-optimization.md](references/workflow-graph-optimization.md)
+  when changing `needs`, matrices, fan-out gates, Gradle/cache grouping, OCI
+  image validation, or workflow/task cardinality.
 - Load [release-flow.md](references/release-flow.md) for GitHub releases, tags,
   generated notes, artifacts, or release automation.
 

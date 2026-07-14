@@ -23,6 +23,13 @@ the final answer can cite evidence files instead of terminal scrollback.
 - Read JUnit XML, JaCoCo XML, Kotlin build reports, and Gradle problem reports
   before interpreting console text.
 - Run targeted module or test tasks before rerunning full suites.
+- In CI, keep tasks that share the same JDK, Gradle user home, cache inputs,
+  daemon lifetime, permissions, and platform in one warm-state unit when their
+  outputs and failure policy align. Split only at a real artifact, platform,
+  permission, publication, or failure-domain boundary.
+- Route `needs`, matrix, OCI-consumer, and duration-budget changes through
+  `github-ci-operations`; local Gradle wall time is evidence, not a deterministic
+  workflow-performance gate.
 - Never claim the build is green until the relevant Gradle command exits
   successfully.
 - Preserve schema-driven rules for generated or persisted build summaries.

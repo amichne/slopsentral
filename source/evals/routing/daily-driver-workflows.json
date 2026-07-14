@@ -242,18 +242,23 @@
       "allowedActions": [
         "Reuse existing action versions, permissions style, concurrency, and setup conventions.",
         "Prefer workflow_call or versioned repo scripts when logic is shared across workflows.",
-        "Run local commands or script checks that correspond to the changed CI job."
+        "Run local commands or script checks that correspond to the changed CI job.",
+        "Expand matrix cells and reusable invocations before ordering causal needs edges.",
+        "Preserve proof outputs and use a deterministic median-timed graph model for dependency, task-cardinality, cache, OCI, or startup-latency changes."
       ],
       "forbiddenActions": [
         "Copy large inline shell blocks across workflow jobs.",
         "Add broad write permissions to every job when only one job needs them.",
-        "Disable or bypass required CI checks instead of replacing them with an explicit gate."
+        "Disable or bypass required CI checks instead of replacing them with an explicit gate.",
+        "Make a consumer wait for an unrelated platform or full matrix when it needs one producer artifact.",
+        "Turn one hosted-runner wall time or a report-only mean into a deterministic performance gate."
       ],
-      "recoveryExpectation": "A good CI authoring pass should keep workflow YAML thin, permissions explicit, shared behavior in reusable scripts or workflow_call boundaries, and local proof commands tied to job behavior.",
-      "productiveOutcome": "CI changes become composable delivery infrastructure rather than one-off workflow patches.",
+      "recoveryExpectation": "A good CI authoring pass should keep workflow YAML thin, permissions explicit, shared behavior in reusable scripts or workflow_call boundaries, local proof commands tied to job behavior, and graph changes checked for equivalent outputs and median-modeled forward progress.",
+      "productiveOutcome": "CI changes become composable delivery infrastructure with causal dependencies, bounded execution cardinality, and deterministic performance evidence rather than one-off workflow patches.",
       "verificationEvidence": [
         "Workflow changes preserve or improve explicit permissions, concurrency, and reusable setup boundaries.",
-        "Touched CI scripts or commands have local validation evidence."
+        "Touched CI scripts or commands have local validation evidence.",
+        "Graph optimizations preserve the proof-output inventory and pass explicit critical-path, fan-out-gate, task-count, and observed-median-drift budgets."
       ],
       "notes": "This protects CI best practices from collapsing into provider-specific YAML edits."
     },
