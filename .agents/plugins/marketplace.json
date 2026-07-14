@@ -18,6 +18,18 @@
     },
     {
       "category": "Engineering",
+      "name": "pkl-engineering",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/pkl-engineering",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
       "name": "api-contracts",
       "policy": {
         "authentication": "ON_INSTALL",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T10:35:53-04:00",
+  "generatedAt": "2026-07-14T10:39:04-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -33,13 +33,6 @@
           "type": "INSTRUCTION"
         },
         {
-          "name": "pkl-engineering",
-          "sha256": "sha256:d2b16b2a055ad12e03fa2bab11f9149b3fd2ed03461c4896179ff36ab8a143ee",
-          "sourcePath": "source/skills/pkl-engineering",
-          "targetPath": "skills/pkl-engineering",
-          "type": "SKILL"
-        },
-        {
           "name": "repository-onboarding",
           "sha256": "sha256:afeefff0c341de380100423b56c4c0c158679b82a9704621a990b05dad72a9fc",
           "sourcePath": "source/skills/repository-onboarding",
@@ -48,6 +41,76 @@
         }
       ],
       "sourceManifest": "source/plugins/engineering-baseline/plugin.json",
+      "version": "0.1.0"
+    },
+    {
+      "name": "pkl-engineering",
+      "references": [
+        {
+          "name": "pkl-evaluate-check",
+          "sha256": "sha256:db7bceb67b209214e0a4f1ecebb8560c0938833b59f971d61df33aa526eb42c7",
+          "sourcePath": "source/hooks/pkl-evaluate-check.hook.json",
+          "targetPath": "hooks/pkl-evaluate-check.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "pkl-format-check",
+          "sha256": "sha256:76c05d75a3932e7ef79073c38b0ff9c79a13be73b04937ca9a7a9373141440eb",
+          "sourcePath": "source/hooks/pkl-format-check.hook.json",
+          "targetPath": "hooks/pkl-format-check.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "pkl-test-check",
+          "sha256": "sha256:220711da803215a56600c075bed16fe83a9e69325f5a899184ea6f2483c65b72",
+          "sourcePath": "source/hooks/pkl-test-check.hook.json",
+          "targetPath": "hooks/pkl-test-check.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "schema-driven-design",
+          "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
+          "sourcePath": "source/concepts/schema-driven-design/core.md",
+          "targetPath": "instructions/schema-driven-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "type-safety",
+          "sha256": "sha256:8355ec7411fc3213262f45647f6222a217706358a50db3494c5dc51185835cf5",
+          "sourcePath": "source/concepts/type-safety/core.md",
+          "targetPath": "instructions/type-safety.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "pkl-engineering",
+          "sha256": "sha256:d2b16b2a055ad12e03fa2bab11f9149b3fd2ed03461c4896179ff36ab8a143ee",
+          "sourcePath": "source/skills/pkl-engineering",
+          "targetPath": "skills/pkl-engineering",
+          "type": "SKILL"
+        },
+        {
+          "name": "pkl-pattern-catalogs",
+          "sha256": "sha256:3231b903143f790b8a192a70ddd1b4a77d37d02af0cdcbd74850d3a45c0768a0",
+          "sourcePath": "source/skills/pkl-pattern-catalogs",
+          "targetPath": "skills/pkl-pattern-catalogs",
+          "type": "SKILL"
+        },
+        {
+          "name": "pkl-specification",
+          "sha256": "sha256:e7e47a7899d8709e89466ce14122bcd1e139414563bf174cd5aa36cedc84632a",
+          "sourcePath": "source/skills/pkl-specification",
+          "targetPath": "skills/pkl-specification",
+          "type": "SKILL"
+        },
+        {
+          "name": "pkl-tooling-setup",
+          "sha256": "sha256:1e68781196855272d4ecaec03d7a4128c8af1e64c4d4d589603835957f8109ad",
+          "sourcePath": "source/skills/pkl-tooling-setup",
+          "targetPath": "skills/pkl-tooling-setup",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/pkl-engineering/plugin.json",
       "version": "0.1.0"
     },
     {
@@ -437,6 +500,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "60450d053907f974e5b16b1ab2c0e3c3c7ca9680",
+  "sourceSha": "8aed338ccd09ad625f613fcd645694818dc75c28",
   "type": "HYDRATED_MARKETPLACE"
 }

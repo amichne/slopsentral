@@ -14,7 +14,7 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Repository baseline for type-safe work: onboarding, typed Pkl configuration, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+      "description": "Repository baseline for type-safe work: marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
       "hooks": "./hooks",
       "keywords": [
         "core",
@@ -25,7 +25,6 @@
         "hooks",
         "instructions",
         "onboarding",
-        "pkl",
         "schemas",
         "skills"
       ],
@@ -42,9 +41,53 @@
         "hooks",
         "instructions",
         "onboarding",
-        "pkl",
         "schemas",
         "skills"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Engineering",
+      "description": "Pkl engineering package for typed specification, first-party source navigation, toolchain and LSP setup, practical and advanced patterns, safe evaluation, rendering, tests, packages, and repository proof hooks.",
+      "hooks": "./hooks",
+      "keywords": [
+        "configuration",
+        "hooks",
+        "lsp",
+        "patterns",
+        "pkl",
+        "pkl-engineering",
+        "rendering",
+        "resources",
+        "schemas",
+        "skills",
+        "testing",
+        "tooling",
+        "type-safety",
+        "validation"
+      ],
+      "license": "UNLICENSED",
+      "name": "pkl-engineering",
+      "skills": "./skills",
+      "source": "pkl-engineering",
+      "strict": true,
+      "tags": [
+        "configuration",
+        "hooks",
+        "lsp",
+        "patterns",
+        "pkl",
+        "rendering",
+        "resources",
+        "schemas",
+        "skills",
+        "testing",
+        "tooling",
+        "type-safety",
+        "validation"
       ],
       "version": "0.1.0"
     },
