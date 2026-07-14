@@ -14,9 +14,6 @@ concurrency:
   group: validate-source-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  INTELLIGENCE_VERSION: v0.2.7
-
 jobs:
   validate:
     name: Validate marketplace source
@@ -31,13 +28,6 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
-
-      - name: Install intelligence
-        uses: ./.github/actions/setup-intelligence
-        with:
-          version: ${{ env.INTELLIGENCE_VERSION }}
-        env:
-          GH_TOKEN: ${{ github.token }}
 
       - name: Validate source graph and evals
         run: |
@@ -96,19 +86,28 @@ jobs:
             --output "${RUNNER_TEMP}/pkl-agent-home.json"
           python3 -m json.tool "${RUNNER_TEMP}/pkl-agent-home.json" > /dev/null
 
-      - name: Validate marketplace materialization
+      - name: Project Codex marketplace
+        id: codex_projection
+        uses: amichne/intelligence@v0.2.8
+        with:
+          source: .
+          harness: codex
+          version: v0.2.8
+
+      - name: Project GitHub Copilot marketplace
+        id: github_copilot_projection
+        uses: amichne/intelligence@v0.2.8
+        with:
+          source: .
+          harness: github-copilot
+          version: v0.2.8
+
+      - name: Validate marketplace projections
+        env:
+          CODEX_PROJECTION: ${{ steps.codex_projection.outputs.projection-path }}
+          GITHUB_COPILOT_PROJECTION: ${{ steps.github_copilot_projection.outputs.projection-path }}
         run: |
           set -euo pipefail
 
-          out="${RUNNER_TEMP}/slopsentral-marketplace"
-          intelligence project \
-            --source "${GITHUB_WORKSPACE}" \
-            --harness codex \
-            --out "${out}/codex"
-          intelligence project \
-            --source "${GITHUB_WORKSPACE}" \
-            --harness github-copilot \
-            --out "${out}/github-copilot"
-
-          test -d "${out}/codex/.agents/plugins"
-          test -d "${out}/github-copilot/.github/plugin"
+          test -d "${CODEX_PROJECTION}/.agents/plugins"
+          test -d "${GITHUB_COPILOT_PROJECTION}/.github/plugin"
