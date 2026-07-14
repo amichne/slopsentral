@@ -1,0 +1,9 @@
+{
+  "name": "agents-md-turn-refresh",
+  "path": "hooks/agents-md-turn-refresh.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

@@ -1,0 +1,43 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Repository baseline for type-safe work: onboarding, typed Pkl configuration, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Engineering Baseline for this task.",
+      "Review this repo with Engineering Baseline.",
+      "Show the Engineering Baseline workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Engineering Baseline",
+    "longDescription": "Repository baseline for type-safe work: onboarding, typed Pkl configuration, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Repository baseline for type-safe work: onboarding, typed Pkl configu...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "core",
+    "daily-driver",
+    "design",
+    "engineering-baseline",
+    "governance",
+    "hooks",
+    "instructions",
+    "onboarding",
+    "pkl",
+    "schemas",
+    "skills"
+  ],
+  "license": "UNLICENSED",
+  "name": "engineering-baseline",
+  "skills": "./skills/",
+  "version": "0.1.0"
+}

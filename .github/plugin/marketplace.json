@@ -2,7 +2,7 @@
   "$schema": "github-marketplace.schema.json",
   "metadata": {
     "description": "Curated marketplace for reusable AI tooling primitives, composed agent workflows, and local engineering operating procedures.",
-    "pluginRoot": ".github/plugin/plugins"
+    "pluginRoot": ".github/plugin"
   },
   "name": "slopsentral",
   "owner": {

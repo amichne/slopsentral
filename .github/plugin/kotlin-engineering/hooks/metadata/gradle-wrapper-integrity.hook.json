@@ -1,0 +1,38 @@
+{
+  "dependsOn": [
+    {
+      "name": "kotlin-code-correctness",
+      "path": "instructions/kotlin-code-correctness.md",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "INSTRUCTION"
+    },
+    {
+      "name": "kotlin-gradle-validation",
+      "path": "skills/kotlin-gradle-validation",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "SKILL"
+    },
+    {
+      "name": "shell-script-safety",
+      "path": "skills/shell-script-safety",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "SKILL"
+    }
+  ],
+  "name": "gradle-wrapper-integrity",
+  "path": "hooks/gradle-wrapper-integrity.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

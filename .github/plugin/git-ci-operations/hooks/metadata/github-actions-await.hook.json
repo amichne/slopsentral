@@ -1,0 +1,20 @@
+{
+  "dependsOn": [
+    {
+      "name": "github-ci-operations",
+      "path": "skills/github-ci-operations",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "SKILL"
+    }
+  ],
+  "name": "github-actions-await",
+  "path": "hooks/github-actions-await.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

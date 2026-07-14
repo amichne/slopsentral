@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T16:08:47-04:00",
+  "generatedAt": "2026-07-14T10:35:53-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -202,7 +202,7 @@
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:d3c008a6b28a9bb7da3f0bc87a1e186c4ed392600c2f763377ac40efe9b5132c",
+          "sha256": "sha256:223f5b2ffc4db9dce6fefae684b448186782d521d484fb3d22858faa14088960",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -265,7 +265,7 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:117d874805234611856be9281fc371e5fb55ff59a2def37936fca9f7a959d77e",
+          "sha256": "sha256:7eb5d08f983fbcc3dd81aa97bcdc3e45967d842b53d5a1e1c2c63553a88118f2",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
@@ -437,6 +437,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "a08159f5f62afe1b4d0a5d42583ab59066c7ce84",
+  "sourceSha": "60450d053907f974e5b16b1ab2c0e3c3c7ca9680",
   "type": "HYDRATED_MARKETPLACE"
 }
