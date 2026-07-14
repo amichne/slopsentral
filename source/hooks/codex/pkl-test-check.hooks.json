@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/pkl-check.py --repo . --check test",
+            "timeout": 900,
+            "statusMessage": "Running Pkl assertions and examples"
+          }
+        ]
+      }
+    ]
+  }
+}

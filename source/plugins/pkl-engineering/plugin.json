@@ -1,0 +1,109 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "pkl-engineering",
+  "version": "0.1.0",
+  "description": "Pkl engineering package for typed specification, first-party source navigation, toolchain and LSP setup, practical and advanced patterns, safe evaluation, rendering, tests, packages, and repository proof hooks.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-engineering",
+      "name": "pkl-engineering"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-tooling-setup",
+      "name": "pkl-tooling-setup"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-specification",
+      "name": "pkl-specification"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-pattern-catalogs",
+      "name": "pkl-pattern-catalogs"
+    }
+  ],
+  "agents": [],
+  "instructions": [
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "concepts/type-safety/core.md",
+      "name": "type-safety"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "concepts/schema-driven-design/core.md",
+      "name": "schema-driven-design"
+    }
+  ],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/pkl-format-check.hook.json",
+      "name": "pkl-format-check"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/pkl-evaluate-check.hook.json",
+      "name": "pkl-evaluate-check"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/pkl-test-check.hook.json",
+      "name": "pkl-test-check"
+    }
+  ],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Install in repositories that author, evaluate, package, render, or embed Pkl configuration and want first-party source routing plus automated proof.",
+    "notFor": "Repositories without Pkl, generic schema work that does not evaluate Pkl, or editor-only syntax highlighting without configuration ownership.",
+    "owner": "pkl-engineering",
+    "principle": "typed-configuration-is-an-evaluated-contract",
+    "role": "pkl-engineering",
+    "scope": "Pkl CLI and LSP setup, typed specification and resource boundaries, official source navigation, pattern selection, safe evaluation, rendering, tests, projects, packages, bindings, and Pkl-specific validation hooks."
+  }
+}
