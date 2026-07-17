@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Repository baseline for type-safe, test-driven work: executable-check TDD, marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+  "description": "Repository baseline for language-agnostic semantic design and test-driven work: constrained domain values, closed variants and failures, typestate, executable-check TDD, marketplace onboarding, and instruction hygiene.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Engineering Baseline",
-    "longDescription": "Repository baseline for type-safe, test-driven work: executable-check TDD, marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+    "longDescription": "Repository baseline for language-agnostic semantic design and test-driven work: constrained domain values, closed variants and failures, typestate, executable-check TDD, marketplace onboarding, and instruction hygiene.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Repository baseline for type-safe, test-driven work: executable-check...",
+    "shortDescription": "Repository baseline for language-agnostic semantic design and test-dr...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -28,15 +28,18 @@
     "daily-driver",
     "design",
     "engineering-baseline",
+    "failures",
     "governance",
     "hooks",
     "instructions",
     "onboarding",
     "proof",
     "schemas",
+    "semantic-design",
     "skills",
     "tdd",
-    "testing"
+    "testing",
+    "typestate"
   ],
   "license": "UNLICENSED",
   "name": "engineering-baseline",

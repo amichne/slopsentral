@@ -8,6 +8,11 @@ description: "Use when Kotlin work needs type-driven modeling, parse-dont-valida
 Use this skill as the Kotlin design-practices router. Stable policy belongs in
 instruction concepts; detailed examples and heuristics live in references.
 
+Apply `concepts/type-safety/core.md` as the shared semantic-design authority
+when it is available. This skill owns Kotlin-specific realization through value
+classes, enums, sealed hierarchies, constrained visibility, capability-specific
+interfaces, and typed outcomes; it does not redefine the cross-language rules.
+
 ## Operating Rules
 
 - Frame boundary input, trusted domain output, invariant owner, and expected

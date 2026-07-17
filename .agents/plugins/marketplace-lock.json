@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T12:06:48-04:00",
+  "generatedAt": "2026-07-17T15:03:17-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -20,23 +20,30 @@
         },
         {
           "name": "schema-driven-design",
-          "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
           "targetPath": "instructions/schema-driven-design.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "type-safety",
-          "sha256": "sha256:8355ec7411fc3213262f45647f6222a217706358a50db3494c5dc51185835cf5",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "repository-onboarding",
-          "sha256": "sha256:afeefff0c341de380100423b56c4c0c158679b82a9704621a990b05dad72a9fc",
+          "sha256": "sha256:4e014c7a24658e9703149ee1f0a293b526123c5403a7616d1542d7dadd4dccf4",
           "sourcePath": "source/skills/repository-onboarding",
           "targetPath": "skills/repository-onboarding",
+          "type": "SKILL"
+        },
+        {
+          "name": "semantic-ratchet",
+          "sha256": "sha256:26084549c0de6da75e3faa28a931b4d4eec2b4771ec75ef4bd6765a77459974f",
+          "sourcePath": "source/skills/semantic-ratchet",
+          "targetPath": "skills/semantic-ratchet",
           "type": "SKILL"
         },
         {
@@ -76,21 +83,21 @@
         },
         {
           "name": "schema-driven-design",
-          "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
           "targetPath": "instructions/schema-driven-design.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "type-safety",
-          "sha256": "sha256:8355ec7411fc3213262f45647f6222a217706358a50db3494c5dc51185835cf5",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "pkl-engineering",
-          "sha256": "sha256:d2b16b2a055ad12e03fa2bab11f9149b3fd2ed03461c4896179ff36ab8a143ee",
+          "sha256": "sha256:56887f97ba6e5e66bc6f09618b574c8ceb33f59b963548a2c257072960a73e4d",
           "sourcePath": "source/skills/pkl-engineering",
           "targetPath": "skills/pkl-engineering",
           "type": "SKILL"
@@ -139,14 +146,14 @@
         },
         {
           "name": "schema-driven-design",
-          "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
           "targetPath": "instructions/schema-driven-design.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "type-safety",
-          "sha256": "sha256:8355ec7411fc3213262f45647f6222a217706358a50db3494c5dc51185835cf5",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
@@ -174,7 +181,7 @@
         },
         {
           "name": "openapi-schema-modeling",
-          "sha256": "sha256:185354c9bae16ff0402106af4592d867b3178cce2991e1d31ccc554d12196b24",
+          "sha256": "sha256:10ebe13da126eb7b274e9f1042ca665b25c5eae44c3ee25b7a6f28b8b8ab8417",
           "sourcePath": "source/skills/openapi-schema-modeling",
           "targetPath": "skills/openapi-schema-modeling",
           "type": "SKILL"
@@ -244,14 +251,14 @@
         },
         {
           "name": "schema-driven-design",
-          "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
           "targetPath": "instructions/schema-driven-design.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "type-safety",
-          "sha256": "sha256:8355ec7411fc3213262f45647f6222a217706358a50db3494c5dc51185835cf5",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
@@ -265,7 +272,7 @@
         },
         {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:04727a34a1a5cdd9f74e3bd4cf297ccab3462a74fa0cd605184807acd84e52be",
+          "sha256": "sha256:01bd651ed2469685f007e6b93b0aad1237aafcc63f0845c48d124c86b2bee2f7",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
@@ -307,14 +314,14 @@
         },
         {
           "name": "schema-driven-design",
-          "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
           "targetPath": "instructions/schema-driven-design.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "type-safety",
-          "sha256": "sha256:8355ec7411fc3213262f45647f6222a217706358a50db3494c5dc51185835cf5",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
@@ -363,14 +370,14 @@
       "references": [
         {
           "name": "schema-driven-design",
-          "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
           "targetPath": "instructions/schema-driven-design.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "type-safety",
-          "sha256": "sha256:8355ec7411fc3213262f45647f6222a217706358a50db3494c5dc51185835cf5",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
@@ -454,14 +461,14 @@
         },
         {
           "name": "schema-driven-design",
-          "sha256": "sha256:5e371b55534d129c3ebab63cb9830def941a79bb3c9d0cc8d5a8ce3b804b3116",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
           "targetPath": "instructions/schema-driven-design.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "type-safety",
-          "sha256": "sha256:8355ec7411fc3213262f45647f6222a217706358a50db3494c5dc51185835cf5",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
@@ -500,6 +507,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "3d8711196916d46ab60c5603e95c48e5c5b215ee",
+  "sourceSha": "953fc86b39fbc4252977995bc8d00bcc50808dd5",
   "type": "HYDRATED_MARKETPLACE"
 }

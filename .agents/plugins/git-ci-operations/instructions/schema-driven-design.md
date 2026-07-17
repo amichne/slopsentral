@@ -7,6 +7,11 @@ messages, persisted records, tool inputs, API payloads, manifests, hook
 metadata, plugin catalogs, and any intermediate representation that crosses a
 module, process, storage, or human-authored file boundary.
 
+This is the boundary realization of `type-safety`. That concept owns the shared
+rule that representations preserve domain meaning and exclude invalid states.
+This standard owns how schemas, parsers, generated models, and validators carry
+that rule across serialization and trust boundaries.
+
 For any content stored as structured data, a schema-driven workflow is
 mandatory. There are no exceptions for "small" JSON, TOML, YAML, generated
 manifests, plugin metadata, hook adapters, fixtures, or local ledgers. If the
@@ -87,7 +92,7 @@ correctly, the boundary assertion is incomplete.
 
 ---
 
-## Principle 3: Make illegal states unrepresentable in data
+## Principle 3: Preserve the semantic state space in data
 
 Use schema structure to eliminate invalid states before runtime logic sees them.
 For finite families, model each legal variant as a closed object and compose the
@@ -123,7 +128,7 @@ artifact.
 
 ---
 
-## Principle 5: Parse into typed structure, never validated blobs
+## Principle 5: Parse into proof-carrying structure, never validated blobs
 
 Validation must produce a stronger representation. After a boundary assertion,
 the program should hold domain values, sealed variants, branded primitives,

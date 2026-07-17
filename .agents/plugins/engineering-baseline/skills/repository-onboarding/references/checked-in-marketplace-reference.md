@@ -44,7 +44,7 @@ plugin payloads and runtime caches are not source-of-truth files.
 
 | Plugin | Marketplace | Purpose | Status |
 |---|---|---|---|
-| engineering-baseline | amichne-intelligence | Baseline type-safety, schema-driven design, onboarding, and hooks | installed |
+| engineering-baseline | amichne-intelligence | Semantic ratchets, type and schema design, TDD, onboarding, and hooks | installed |
 
 ## Exclusions
 

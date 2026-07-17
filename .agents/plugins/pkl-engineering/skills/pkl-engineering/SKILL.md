@@ -9,6 +9,11 @@ Treat Pkl as an evaluated configuration contract. Put invariants in Pkl types,
 constraints, and amendment boundaries; then prove them by evaluating the real
 entry modules and running their tests.
 
+Apply `concepts/type-safety/core.md` as the shared semantic-design authority
+when it is available. This skill owns Pkl-specific realization through closed
+classes, literal unions, constrained aliases, typed amendments, evaluation, and
+explicit evaluator capabilities; it does not redefine the cross-language rules.
+
 ## Start From Live State
 
 Resolve this skill directory, then use its façade rather than rebuilding Pkl

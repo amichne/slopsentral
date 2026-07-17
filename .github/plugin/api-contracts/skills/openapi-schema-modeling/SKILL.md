@@ -9,10 +9,14 @@ Use this skill when the hard part of an OpenAPI task is modeling the schema
 state space: subtypes, discriminators, constraints, nullability, examples,
 extension points, or reusable component ownership.
 
-Use these local concept references when they are available:
+Apply these local concept references when they are available:
 
 - `concepts/schema-driven-design/core.md`
 - `concepts/type-safety/core.md`
+
+`type-safety` owns the shared semantic state-space rules.
+`schema-driven-design` owns their boundary realization. This skill owns only the
+OpenAPI constructs that express and validate those rules.
 
 ## Operating Contract
 
