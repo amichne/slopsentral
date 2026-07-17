@@ -8,10 +8,9 @@ metadata, plugin catalogs, and any intermediate representation that crosses a
 module, process, storage, or human-authored file boundary.
 
 This is the boundary realization of `type-safety`. That concept owns the shared
-rules for bounded universes, fully discriminated hierarchies, illegal-state
-prevention, typestate, closed failures, capabilities, and exhaustive handling.
-This standard owns how schemas, parsers, generated models, and validators
-preserve those rules across serialization and trust boundaries.
+rule that representations preserve domain meaning and exclude invalid states.
+This standard owns how schemas, parsers, generated models, and validators carry
+that rule across serialization and trust boundaries.
 
 For any content stored as structured data, a schema-driven workflow is
 mandatory. There are no exceptions for "small" JSON, TOML, YAML, generated

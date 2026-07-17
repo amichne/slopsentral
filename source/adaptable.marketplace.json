@@ -229,6 +229,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/semantic-ratchet",
+      "name": "semantic-ratchet"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/define-goal",
       "name": "define-goal"
     },

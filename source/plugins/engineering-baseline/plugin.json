@@ -25,6 +25,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/semantic-ratchet",
+      "name": "semantic-ratchet"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/tdd",
       "name": "tdd"
     }
