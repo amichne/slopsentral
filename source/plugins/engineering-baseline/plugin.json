@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "name": "engineering-baseline",
   "version": "0.1.0",
-  "description": "Repository baseline for type-safe, test-driven work: executable-check TDD, marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+  "description": "Repository baseline for language-agnostic semantic design and test-driven work: constrained domain values, closed variants and failures, typestate, executable-check TDD, marketplace onboarding, and instruction hygiene.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -72,11 +72,11 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install in repositories that should consume curated agent tooling, use shell-invokable red-green proof, and enforce baseline instruction hygiene.",
+    "dailyDriver": "Install in repositories that should apply language-agnostic semantic design, consume curated agent tooling, use shell-invokable red-green proof, and enforce baseline instruction hygiene.",
     "notFor": "Language-specific semantic tooling, Pkl engineering, Git or CI delivery and release babysitting, or API contract authoring.",
     "owner": "engineering-standards-platform",
     "principle": "make-illegal-states-unrepresentable",
     "role": "engineering-baseline",
-    "scope": "Default repository guardrails, executable-check TDD, type-safety and schema-driven instructions, marketplace onboarding, and turn-level skill-read enforcement."
+    "scope": "Default repository guardrails, language-agnostic semantic design, bounded variants, closed failures, typestate, schema-driven boundaries, executable-check TDD, marketplace onboarding, and turn-level skill-read enforcement."
   }
 }

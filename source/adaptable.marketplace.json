@@ -23,20 +23,23 @@
         },
         "version": "0.1.0"
       },
-      "description": "Repository baseline for type-safe, test-driven work: executable-check TDD, marketplace onboarding, shared instructions, and turn-level hooks that keep agents using the right local guidance.",
+      "description": "Repository baseline for language-agnostic semantic design and test-driven work: constrained domain values, closed variants and failures, typestate, executable-check TDD, marketplace onboarding, and instruction hygiene.",
       "tags": [
         "core",
         "daily-driver",
         "design",
+        "failures",
         "governance",
         "hooks",
         "instructions",
         "onboarding",
         "proof",
         "schemas",
+        "semantic-design",
         "skills",
         "tdd",
-        "testing"
+        "testing",
+        "typestate"
       ]
     },
     {
