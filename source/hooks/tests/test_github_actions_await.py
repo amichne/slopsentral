@@ -55,8 +55,20 @@ class GithubActionsAwaitHookTests(unittest.TestCase):
         self.assertEqual(session_start["matcher"], "startup|resume")
         self.assertEqual(
             session_start["hooks"][0]["command"],
-            "npx -y gh-axi",
+            "python3 hooks/github-actions-await.py start --repo .",
         )
+
+    def test_start_forwards_gh_axi_ambient_context(self) -> None:
+        calls: list[tuple[tuple[str, ...], Path]] = []
+
+        def fake(args: Sequence[str], cwd: Path) -> tuple[int, str, str]:
+            calls.append((tuple(args), cwd))
+            return (0, "repo: amichne/slopsentral\n", "")
+
+        output = hook.start_output(Path("/repo"), fake)
+
+        self.assertEqual(output, "repo: amichne/slopsentral")
+        self.assertEqual(calls, [(('npx', '-y', 'gh-axi'), Path('/repo'))])
 
     def test_guard_redirects_raw_gh_at_shell_call_boundary(self) -> None:
         output = hook.guard_output(
