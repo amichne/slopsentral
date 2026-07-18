@@ -442,9 +442,13 @@ for (const [agentName, owners] of agentOwners) {
   }
 }
 
-for (const [hookName, owners] of hookOwners) {
-  if (owners.length > 1) {
-    fail(`hook ${hookName} is shared by plugins [${sorted(owners).join(", ")}]; hooks should have one plugin owner`);
+for (const hookPath of listFiles("source/hooks", (file) => file.endsWith(".hook.json"))) {
+  const relativePath = relativeToRepo(hookPath);
+  const hook = readJson(relativePath);
+  if (!hook?.name) continue;
+  const owners = hookOwners.get(hook.name) ?? [];
+  if (owners.length !== 1) {
+    fail(`${relativePath}: hook ${hook.name} must have exactly one plugin owner, found [${sorted(owners).join(", ")}]`);
   }
 }
 

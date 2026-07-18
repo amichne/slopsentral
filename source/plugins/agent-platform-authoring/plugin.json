@@ -113,7 +113,17 @@
       "name": "schema-driven-design"
     }
   ],
-  "hooks": [],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/source-graph-valid.hook.json",
+      "name": "source-graph-valid"
+    }
+  ],
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Use for maintaining the canonical source graph, referential plugin composition, provider marketplace projections, primitive promotion, and routing or quality proof.",

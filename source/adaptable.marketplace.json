@@ -843,6 +843,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "hooks/source-graph-valid.hook.json",
+      "name": "source-graph-valid"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "hooks/github-actions-await.hook.json",
       "name": "github-actions-await"
     },
