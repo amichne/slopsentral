@@ -25,6 +25,7 @@ Use these repo-level concepts when they are available and relevant:
   inputs and environment, expected RED failure, and GREEN success criterion.
 - Run the same check specification for RED and GREEN. Only the intentional
   implementation change should explain the transition.
+- Commit and push each validated RED and passing GREEN checkpoint before continuing; if no publishable Git remote exists, record that limitation.
 - RED is valid only when the check ran and failed because the target behavior or
   invariant is absent.
 - Infrastructure failures are not RED: command-not-found, dependency setup,
@@ -70,6 +71,7 @@ Prefer a repository-native workflow record when one exists. Otherwise preserve:
 - phase: `RED`, `GREEN`, `REFACTOR`, `VERIFY`, or `DONE`;
 - RED evidence: exit code and the expected failure signal;
 - GREEN evidence: exit code and the success signal from the same check;
+- RED and GREEN checkpoint commit SHAs and push state;
 - changed scope, broader verification, next behavior, and blockers.
 
 Load [handoff.md](references/handoff.md) for long-running work, interruptions,
@@ -80,6 +82,8 @@ multi-agent handoffs, or work with several red-green cycles.
 - The focused check was observed failing for the intended reason before the
   implementation change.
 - The same check specification passes after the narrow implementation.
+- Every validated RED and passing GREEN checkpoint was committed and pushed, or
+  the missing publishable Git remote is reported.
 - Refactoring, if any, happened while the focused check remained green.
 - Relevant broader checks pass, or their exact residual failures are reported.
 - The handoff names exact commands and results rather than claiming confidence.
