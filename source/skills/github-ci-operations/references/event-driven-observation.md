@@ -86,6 +86,9 @@ The active request is cleared before the model resumes. A malformed active file
 is quarantined instead of trusted. Terminal run failure logs are fetched once
 through `npx -y gh-axi run view <run-id> --log-failed` after classification.
 
-The hook denies the legacy GitHub CLI and GitHub MCP tools as a defense-in-depth
-boundary. All remote GitHub reads and mutations in this plugin must use
-`npx -y gh-axi`; local `git` remains the authority for repository metadata.
+The hook loads AXI's repository context at session start and injects a
+non-exported shell function into each shell call so ordinary `gh` invocations
+resolve to `npx -y gh-axi`. Explicit CLI paths, `env ... gh` bypasses, and
+GitHub MCP tools are denied. This is a defense-in-depth boundary, so authored
+commands must still use `npx -y gh-axi`; local `git` remains the authority for
+repository metadata.
