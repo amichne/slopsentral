@@ -64,4 +64,5 @@ filesystem evidence, and Kast semantics.
 - Narrow skills: `kotlin-design-practices`, `kotlin-gradle-validation`,
   `kotlin-review`, and `negative-capability-proof`
 - Generic executable-check TDD: `tdd` when installed.
-- Generic delivery: use `git-ci-operations` skills when installed.
+- Generic delivery: use `git-ci-operations` for local Git and
+  `effective-delivery` for PR, CI, and release work when installed.

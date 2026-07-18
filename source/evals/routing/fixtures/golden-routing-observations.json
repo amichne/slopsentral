@@ -331,8 +331,9 @@
       "satisfiedAllowedActions": [
         "Use engineering-baseline for the generic executable-check red-green-refactor loop.",
         "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
-        "Use git-ci-operations for staging, commit, push, PR, CI, and release follow-through.",
-        "Use the profile to compose all three without duplicate skills, agents, or hooks."
+        "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
+        "Use effective-delivery for pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use the profile to compose all four without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
         "The focused Gradle or repository check records a valid RED and GREEN with one stable check specification.",
@@ -344,7 +345,7 @@
         "Handle a Kotlin code change with only delivery primitives and no semantic Kotlin evidence.",
         "Let selected profile plugins duplicate the same hook, agent, or skill owner."
       ],
-      "notes": "A passing run proves this route by delivering: Engineering Baseline owns red-green workflow, Kotlin Engineering owns semantic proof, and Git/CI Operations owns publication."
+      "notes": "A passing run proves this route by delivering: Engineering Baseline owns red-green workflow, Kotlin Engineering owns semantic proof, Git Operations owns local repository mechanics, and Effective Delivery owns publication."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -425,20 +426,22 @@
       "satisfiedAllowedActions": [
         "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
         "Use engineering-baseline for generic executable-check TDD, repository onboarding, and instruction hygiene.",
-        "Use git-ci-operations as the companion for branch, commit, PR, CI, release, and shell-safe automation.",
-        "Use the kotlin-repo-default profile to compose all three plugins without duplicate skills, agents, or hooks."
+        "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
+        "Use effective-delivery for pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use the kotlin-repo-default profile to compose all four plugins without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
         "engineering-baseline owns generic executable-check TDD and repository guardrails.",
         "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
-        "git-ci-operations owns branch, PR, CI, release, and shell automation primitives."
+        "git-ci-operations owns host-neutral Git and shell automation primitives.",
+        "effective-delivery owns PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
       ],
       "avoidedForbiddenActions": [
         "Put generic TDD, Git, CI, PR, or shell automation skills inside kotlin-engineering.",
         "Route Kotlin type-safety review through generic Git/CI primitives.",
         "Let two selected plugins provide the same hook or agent in a profile."
       ],
-      "notes": "A passing run proves this route by delivering: Baseline TDD, Kotlin semantic work, and Git/CI delivery compose cleanly without duplicate owners or bloated plugin prompts."
+      "notes": "A passing run proves this route by delivering: Baseline TDD, Kotlin semantic work, local Git mechanics, and Effective Delivery compose cleanly without duplicate owners or bloated plugin prompts."
     },
     {
       "type": "ROUTING_OBSERVATION",

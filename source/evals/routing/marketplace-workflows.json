@@ -139,6 +139,7 @@
           "source/plugins/engineering-baseline/plugin.json",
           "source/plugins/kotlin-engineering/plugin.json",
           "source/plugins/git-ci-operations/plugin.json",
+          "source/plugins/effective-delivery/plugin.json",
           "source/profiles/kotlin-repo-default.json"
         ]
       },
@@ -153,14 +154,16 @@
         "loadedPrimitives": [
           "engineering-baseline",
           "git-ci-operations",
-          "kotlin-engineering"
+          "kotlin-engineering",
+          "effective-delivery"
         ]
       },
       "allowedActions": [
         "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
         "Use engineering-baseline for generic executable-check TDD, repository onboarding, and instruction hygiene.",
-        "Use git-ci-operations as the companion for branch, commit, PR, CI, release, and shell-safe automation.",
-        "Use the kotlin-repo-default profile to compose all three plugins without duplicate skills, agents, or hooks."
+        "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
+        "Use effective-delivery for pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use the kotlin-repo-default profile to compose all four plugins without duplicate skills, agents, or hooks."
       ],
       "forbiddenActions": [
         "Put generic TDD, Git, CI, PR, or shell automation skills inside kotlin-engineering.",
@@ -169,11 +172,12 @@
       ],
       "recoveryExpectation": "Composition should keep baseline TDD, Kotlin semantic work, and generic delivery work in separate plugins while the profile validates that no duplicate owners are selected.",
       "notes": "This is the main overlap case fixed by exposing Kotlin, baseline TDD, and delivery as separate referential packages composed at the profile boundary.",
-      "productiveOutcome": "Baseline TDD, Kotlin semantic work, and Git/CI delivery compose cleanly without duplicate owners or bloated plugin prompts.",
+      "productiveOutcome": "Baseline TDD, Kotlin semantic work, local Git mechanics, and effective delivery compose cleanly without duplicate owners or bloated plugin prompts.",
       "verificationEvidence": [
         "engineering-baseline owns generic executable-check TDD and repository guardrails.",
         "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
-        "git-ci-operations owns branch, PR, CI, release, and shell automation primitives."
+        "git-ci-operations owns host-neutral Git and shell automation primitives.",
+        "effective-delivery owns PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
       ]
     },
     {
