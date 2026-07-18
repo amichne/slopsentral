@@ -14,7 +14,7 @@ SKILL_SCRIPTS = SCRIPT_DIR.parent / "skills/github-ci-operations/scripts"
 if str(SKILL_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SKILL_SCRIPTS))
 
-from github_actions_guard import guard_output
+from github_actions_guard import gh_axi_command, guard_output
 from github_actions_stop import CliResult, CliRunner, stop_output
 
 
@@ -41,7 +41,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 def start_output(repo_root: Path, run_cli: AmbientRunner | None = None) -> str:
     run = run_cli or ambient_runner
-    exit_code, stdout, stderr = run(("npx", "-y", "gh-axi"), repo_root)
+    exit_code, stdout, stderr = run(gh_axi_command(), repo_root)
     if exit_code == 0:
         return stdout.strip()
     detail = (stderr or stdout).strip()

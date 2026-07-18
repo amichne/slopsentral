@@ -88,7 +88,7 @@ through `npx -y gh-axi run view <run-id> --log-failed` after classification.
 
 The hook loads AXI's repository context at session start and injects a
 non-exported shell function into each shell call so ordinary `gh` invocations
-resolve to `npx -y gh-axi`. Explicit CLI paths, `env ... gh` bypasses, and
-GitHub MCP tools are denied. This is a defense-in-depth boundary, so authored
-commands must still use `npx -y gh-axi`; local `git` remains the authority for
-repository metadata.
+resolve to an installed `gh-axi`, falling back to `npx -y gh-axi` when needed.
+Explicit CLI paths, `env ... gh` bypasses, and GitHub MCP tools are denied. This
+is a defense-in-depth boundary, so authored commands must still use the AXI
+surface; local `git` remains the authority for repository metadata.

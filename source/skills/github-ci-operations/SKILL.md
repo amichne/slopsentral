@@ -15,8 +15,9 @@ when the live run, YAML, scripts, or package metadata can be inspected.
   substitute the legacy GitHub CLI, a GitHub MCP tool, or direct HTTP calls.
 - When the Effective Delivery hook is active, SessionStart loads AXI's ambient
   repository context and each shell call receives a non-exported `gh` function
-  that redirects ordinary `gh` invocations to `npx -y gh-axi`. Keep authored
-  commands explicit; absolute paths and `env ... gh` bypass forms are denied.
+  that redirects ordinary `gh` invocations to an installed `gh-axi`, with
+  `npx -y gh-axi` as the bootstrap fallback. Keep authored commands explicit;
+  absolute paths and `env ... gh` bypass forms are denied.
 - Verify the repository and AXI authentication context before remote work.
 - Use live PR checks, workflow runs, logs, annotations, and job summaries as
   evidence when debugging failures.

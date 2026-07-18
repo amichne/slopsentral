@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import re
+import shlex
+import shutil
 from typing import Any
 
 
@@ -12,8 +14,12 @@ BYPASS_GITHUB_COMMAND = re.compile(
     r"/(?:[A-Za-z0-9._-]+/)*gh"
     r")(?=\s|$)"
 )
-GH_REDIRECT = 'gh() { npx -y gh-axi "$@"; }'
 SHELL_TOOLS = frozenset(("bash", "exec_command"))
+
+
+def gh_axi_command() -> tuple[str, ...]:
+    installed = shutil.which("gh-axi")
+    return (installed,) if installed else ("npx", "-y", "gh-axi")
 
 
 def guard_output(payload: dict[str, Any]) -> dict[str, Any] | None:
@@ -33,7 +39,8 @@ def redirect(payload: dict[str, Any], command: str) -> dict[str, Any]:
     updated_input = hook_input(payload)
     updated_input.pop("cmd", None)
     updated_input.pop("bash", None)
-    updated_input["command"] = f"{GH_REDIRECT}\n{command}"
+    launcher = shlex.join(gh_axi_command())
+    updated_input["command"] = f'gh() {{ {launcher} "$@"; }}\n{command}'
     return {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",
