@@ -10,6 +10,7 @@ import unittest
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 from typing import Sequence
+from unittest import mock
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "github-actions-await.py"
@@ -58,7 +59,7 @@ class GithubActionsAwaitHookTests(unittest.TestCase):
             "python3 hooks/github-actions-await.py start --repo .",
         )
 
-    def test_start_forwards_gh_axi_ambient_context(self) -> None:
+    def test_start_falls_back_to_npx_for_gh_axi_ambient_context(self) -> None:
         calls: list[tuple[tuple[str, ...], Path]] = []
 
         def fake(args: Sequence[str], cwd: Path) -> tuple[int, str, str]:
@@ -69,6 +70,23 @@ class GithubActionsAwaitHookTests(unittest.TestCase):
 
         self.assertEqual(output, "repo: amichne/slopsentral")
         self.assertEqual(calls, [(('npx', '-y', 'gh-axi'), Path('/repo'))])
+
+    def test_start_prefers_an_installed_gh_axi(self) -> None:
+        calls: list[tuple[tuple[str, ...], Path]] = []
+
+        def fake(args: Sequence[str], cwd: Path) -> tuple[int, str, str]:
+            calls.append((tuple(args), cwd))
+            return (0, "repo: amichne/slopsentral\n", "")
+
+        with tempfile.TemporaryDirectory() as directory:
+            installed = Path(directory) / "gh-axi"
+            installed.write_text("#!/bin/sh\n")
+            installed.chmod(0o755)
+            with mock.patch.dict(os.environ, {"PATH": directory}):
+                output = hook.start_output(Path("/repo"), fake)
+
+        self.assertEqual(output, "repo: amichne/slopsentral")
+        self.assertEqual(calls, [((str(installed),), Path("/repo"))])
 
     def test_guard_redirects_raw_gh_at_shell_call_boundary(self) -> None:
         output = hook.guard_output(
@@ -101,6 +119,29 @@ class GithubActionsAwaitHookTests(unittest.TestCase):
             )
 
         self.assertEqual(result.stdout, "npx:-y gh-axi run watch 123\n")
+
+    def test_guard_prefers_an_installed_gh_axi(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            installed = Path(directory) / "gh-axi"
+            installed.write_text('#!/bin/sh\nprintf "installed:%s\\n" "$*"\n')
+            installed.chmod(0o755)
+            with mock.patch.dict(os.environ, {"PATH": directory}):
+                output = hook.guard_output(
+                    {
+                        "tool_name": "Bash",
+                        "tool_input": {"command": "gh pr checks 20"},
+                    }
+                )
+            rewritten = output["hookSpecificOutput"]["updatedInput"]["command"]
+            self.assertIn(str(installed), rewritten)
+            result = subprocess.run(
+                ["zsh", "-c", rewritten],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(result.stdout, "installed:pr checks 20\n")
 
     def test_guard_redirects_raw_gh_inside_command_substitution(self) -> None:
         output = hook.guard_output(
