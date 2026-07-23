@@ -137,23 +137,46 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/git-ci-operations"
         },
-        "version": "0.1.0"
+        "version": "0.2.0"
       },
-      "description": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+      "description": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
       "tags": [
         "automation",
         "best-practices",
-        "ci",
-        "composable",
-        "evidence",
         "git",
-        "github",
         "operations",
         "planning",
+        "shell",
+        "skills",
+        "version-control"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "effective-delivery",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "effective-delivery",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/effective-delivery"
+        },
+        "version": "0.1.0"
+      },
+      "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and quiet event-driven observation.",
+      "tags": [
+        "actions",
+        "automation",
+        "ci",
+        "duration",
+        "evidence",
+        "github",
+        "hooks",
+        "optimization",
         "pull-requests",
         "release",
         "skills",
-        "workflow"
+        "workflow-graph"
       ]
     },
     {

@@ -105,7 +105,7 @@
         "evidence": [
           "source/plugins/kotlin-engineering/plugin.json scopes the plugin to typed Kotlin workflow, Kast-backed navigation, focused review, Gradle proof, and Kotlin-specific hooks.",
           "The plugin metadata explicitly excludes non-Kotlin repositories, generic Git/CI delivery, API-only contract governance, and platform marketplace authoring work.",
-          "source/profiles/kotlin-repo-default.json composes kotlin-engineering with engineering-baseline and git-ci-operations instead of moving generic delivery ownership into the Kotlin plugin."
+          "source/profiles/kotlin-repo-default.json composes kotlin-engineering with engineering-baseline, git-ci-operations, and effective-delivery instead of moving generic delivery ownership into the Kotlin plugin."
         ]
       },
       "schemaCoverage": {
@@ -328,42 +328,37 @@
     },
     {
       "type": "PRIMITIVE_AUDIT",
-      "id": "git-ci-operations-plugin-production-readiness",
+      "id": "effective-delivery-plugin-production-readiness",
       "target": {
         "kind": "PLUGIN",
-        "name": "git-ci-operations",
+        "name": "effective-delivery",
         "paths": [
-          "source/plugins/git-ci-operations/plugin.json",
-          "source/skills/define-goal",
-          "source/skills/git-change-flow",
+          "source/plugins/effective-delivery/plugin.json",
           "source/skills/github-ci-operations",
           "source/skills/github-ci-operations/scripts/ci_actions_observer.py",
           "source/skills/github-ci-operations/scripts/ci_wait_for_actions",
           "source/hooks/github-actions-await.hook.json",
           "source/hooks/github-actions-await.py",
           "source/skills/pull-request-lifecycle",
-          "source/skills/shell-script-safety",
-          "source/skills/shell-script-safety/scripts/check_shell_safety",
           "source/evals/routing/daily-driver-workflows.json",
           "source/evals/routing/fixtures/golden-routing-observations.json",
-          "source/evals/plugin-benchmarks/git-ci-operations.json",
+          "source/evals/plugin-benchmarks/effective-delivery.json",
           ".github/workflows/validate-source.yml",
           ".github/workflows/materialize-marketplace.yml"
         ]
       },
-      "baseline": "Git/CI Operations already composed goal, Git, PR, GitHub Actions, release, and shell-safety primitives, but the plugin lacked reusable CI evidence helpers, explicit composable workflow routing cases, a benchmark corpus, and a durable production-readiness audit.",
+      "baseline": "Effective Delivery composes the existing PR, GitHub Actions, workflow-graph, release, and quiet-observation primitives after splitting them from host-neutral Git and shell mechanics.",
       "decision": "PROMOTE_READY",
       "confidence": "HIGH",
-      "reviewedAt": "2026-07-14",
+      "reviewedAt": "2026-07-18",
       "reviewedBy": "codex",
       "capabilityBoundary": {
         "status": "PASS",
         "evidence": [
-          "source/plugins/git-ci-operations/plugin.json scopes the plugin to reusable delivery workflows, structured CI evidence, composable GitHub Actions, PR lifecycle, releases, Git hygiene, and shell-safe automation.",
-          "The plugin explicitly excludes generic implementation TDD, which engineering-baseline now composes as an independent repository capability.",
+          "source/plugins/effective-delivery/plugin.json scopes the plugin to PR follow-through, structured CI evidence, GitHub Actions workflow graphs, releases, and duration-aware observation.",
+          "The plugin explicitly excludes local-only Git mechanics and generic implementation TDD, which remain independent repository capabilities.",
           "source/skills/github-ci-operations keeps CI ownership on live GitHub check/run evidence, workflow design, releases, and provider-specific CI triage.",
-          "source/skills/pull-request-lifecycle composes Git hygiene and CI watching without absorbing GitHub Actions internals.",
-          "source/skills/shell-script-safety remains provider-neutral and supplies reusable script hardening for CI, hooks, release scripts, installers, and local tooling."
+          "source/skills/pull-request-lifecycle composes Git hygiene and CI watching without absorbing GitHub Actions internals."
         ]
       },
       "schemaCoverage": {
@@ -373,17 +368,16 @@
           "source/skills/github-ci-operations/scripts/ci_actions_observer.py parses AXI TOON responses into typed observations, persists active requests and duration samples under Git metadata, and emits stable pending, success, failure, timeout, or error outcomes.",
           "source/skills/github-ci-operations/scripts/ci_wait_for_actions provides arm, await, status, and profile commands over the typed observer while keeping npx -y gh-axi as the only GitHub interaction surface.",
           "source/hooks/github-actions-await.py blocks direct gh and GitHub MCP access, then converts armed Stop events into one compact continuation only after a meaningful CI transition or bounded timeout.",
-          "source/skills/shell-script-safety/scripts/check_shell_safety gives CI and hook shell scripts a reusable local safety gate for shebangs, strict mode, temp cleanup, eval, curl-pipe-shell, and unsafe rm variable usage.",
-          "source/evals/routing/daily-driver-workflows.json records CI-specific expectations for current check evidence, composable workflow authoring, and reusable shell-script safety.",
-          "source/evals/plugin-benchmarks/git-ci-operations.json defines Codex benchmark scenarios for CI triage, structured green claims, composable workflow authoring, reusable shell script safety, and PR green-loop delivery."
+          "source/evals/routing/daily-driver-workflows.json records CI-specific expectations for current check evidence, composable workflow authoring, and quiet observation.",
+          "source/evals/plugin-benchmarks/effective-delivery.json defines Codex benchmark scenarios for CI triage, structured green claims, workflow-graph optimization, and PR green-loop delivery."
         ]
       },
       "provenance": {
         "status": "PASS",
         "firstPartyCollisionCheck": "CHECKED_NO_COLLISION",
         "evidence": [
-          "garden/manifests/promotions.json records git-ci-operations as a promoted referential composition and records TDD as a separately promoted canonical primitive.",
-          "The plugin manifest references canonical source primitives by path instead of copying payloads into source/plugins/git-ci-operations.",
+          "garden/manifests/promotions.json records github-ci-operations and pull-request-lifecycle as promoted canonical primitives.",
+          "The plugin manifest references canonical source primitives by path instead of copying payloads into source/plugins/effective-delivery.",
           "The AXI observer, CLI, and hook are local source additions that implement repository-neutral CI observation rather than copied first-party provider material."
         ]
       },
@@ -391,11 +385,9 @@
         "status": "PASS",
         "commands": [
           "node source/tools/validate-source-graph.mjs",
-          "python3 -m py_compile source/skills/github-ci-operations/scripts/ci_actions_observer.py source/skills/github-ci-operations/scripts/ci_wait_for_actions source/hooks/github-actions-await.py source/skills/shell-script-safety/scripts/check_shell_safety",
+          "python3 -m py_compile source/skills/github-ci-operations/scripts/ci_actions_observer.py source/skills/github-ci-operations/scripts/ci_wait_for_actions source/hooks/github-actions-await.py",
           "python3 -m unittest discover -s source/skills/github-ci-operations/scripts/tests -p 'test_*.py'",
           "python3 -m unittest discover -s source/hooks/tests -p 'test_*.py'",
-          "python3 source/skills/shell-script-safety/scripts/check_shell_safety source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
-          "bash -n source/hooks/agents-md-turn-refresh.sh source/hooks/gradle-check-green.sh",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
           "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
           "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot",
@@ -405,18 +397,16 @@
       "runtimeSafety": {
         "status": "PASS",
         "evidence": [
-          "Git/CI Operations is exposed through source marketplace composition and this audit does not require direct runtime writes.",
+          "Effective Delivery is exposed through source marketplace composition and this audit does not require direct runtime writes.",
           "The CI observer uses npx -y gh-axi exclusively for GitHub reads, stores runtime state beneath git rev-parse --git-path axi/github-actions, and never reruns workflows or mutates GitHub state.",
           "The Codex Stop hook synchronously awaits only an explicitly armed observation, returns a single continuation on a meaningful transition or timeout, and clears the active request before the model resumes.",
-          "The shell safety helper reads local shell scripts and reports findings; it does not execute the scripts or perform filesystem mutation.",
           "Provider output remains a projected proof target rather than an authored change surface."
         ]
       },
       "residualRisks": [
-        "source/evals/plugin-benchmarks/git-ci-operations.json still needs observed benchmark usage from a live repository with real PR checks.",
+        "source/evals/plugin-benchmarks/effective-delivery.json still needs observed benchmark usage from a live repository with real PR checks.",
         "Observed benchmark timing still needs enough real repository samples for the sparse timeout fallback to converge on repository-specific p95 durations.",
         "The hook guard is a defense-in-depth policy boundary; repository scripts outside the hook can still invoke other GitHub clients unless their own checks prohibit them.",
-        "The shell safety helper is a lightweight guardrail, not a replacement for shellcheck when shellcheck is available.",
         "Live release or deployment workflows still require separate approval before tags, releases, protected environments, or secrets are changed."
       ],
       "nextAction": "Run the event-driven benchmark scenarios against representative repositories, collect terminal duration samples through ci_wait_for_actions, feed benchmark-usage.jsonl into plugin-eval analyze --observed-usage, and record field observations for any CI routing misses."
