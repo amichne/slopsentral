@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-23T14:44:42-04:00",
+  "generatedAt": "2026-07-23T14:49:27-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -511,9 +511,23 @@
       ],
       "sourceManifest": "source/plugins/code-knowledge-base/plugin.json",
       "version": "0.1.0"
+    },
+    {
+      "name": "terminal-ui-design",
+      "references": [
+        {
+          "name": "terminal-ui-design",
+          "sha256": "sha256:f2160302c633420b557d9f6d5872267d35f4171d58c4a4fd6263d0f0a5474156",
+          "sourcePath": "source/skills/terminal-ui-design",
+          "targetPath": "skills/terminal-ui-design",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/terminal-ui-design/plugin.json",
+      "version": "0.1.0"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "74d21c1948e5a225b550ea59149d44b7257a2c50",
+  "sourceSha": "93a71ed1c6cfbb1ea89ce5ab988b67fd31b12720",
   "type": "HYDRATED_MARKETPLACE"
 }

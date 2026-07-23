@@ -87,6 +87,18 @@
         "path": "./.agents/plugins/code-knowledge-base",
         "source": "local"
       }
+    },
+    {
+      "category": "Productivity",
+      "name": "terminal-ui-design",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/terminal-ui-design",
+        "source": "local"
+      }
     }
   ]
 }

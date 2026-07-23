@@ -320,6 +320,36 @@
         "validation"
       ],
       "version": "0.1.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Design workflow for distinctive, accessible, and resilient human-facing terminal interfaces.",
+      "keywords": [
+        "accessibility",
+        "cli",
+        "design",
+        "terminal",
+        "terminal-ui-design",
+        "tui",
+        "user-interface"
+      ],
+      "license": "UNLICENSED",
+      "name": "terminal-ui-design",
+      "skills": "./skills",
+      "source": "terminal-ui-design",
+      "strict": true,
+      "tags": [
+        "accessibility",
+        "cli",
+        "design",
+        "terminal",
+        "tui",
+        "user-interface"
+      ],
+      "version": "0.1.0"
     }
   ]
 }
