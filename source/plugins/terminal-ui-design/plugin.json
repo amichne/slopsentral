@@ -1,0 +1,33 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "terminal-ui-design",
+  "version": "0.1.0",
+  "description": "Design workflow for distinctive, accessible, and resilient human-facing terminal interfaces.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/terminal-ui-design",
+      "name": "terminal-ui-design"
+    }
+  ],
+  "agents": [],
+  "instructions": [],
+  "hooks": [],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Install when agents design or refine interactive TUIs, terminal dashboards, wizards, prompts, progress displays, or styled CLI output.",
+    "notFor": "Agent-facing command contracts, non-terminal graphical interfaces, or general visual design without a terminal surface.",
+    "role": "terminal-ui-design",
+    "scope": "Human-facing terminal interaction design, visual hierarchy, degraded output modes, accessibility, responsive layouts, and terminal-state safety."
+  }
+}
