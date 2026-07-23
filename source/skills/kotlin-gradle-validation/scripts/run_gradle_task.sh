@@ -147,12 +147,15 @@ tasks_from_cache = len(re.findall(r"FROM-CACHE$", text, flags=re.MULTILINE))
 build_successful = "BUILD SUCCESSFUL" in text and exit_code == 0
 failure_summary = None
 if exit_code != 0:
+    diagnostics = re.findall(r"(?m)^e: .+$", text)
     failure = re.search(r"(?ms)^FAILURE:.*?(?:^BUILD FAILED.*?$|\\Z)", text)
+    parts = diagnostics[:3]
     if failure:
-        failure_summary = " ".join(failure.group(0).split())[:800]
+        parts.append(" ".join(failure.group(0).split()))
     else:
         non_empty_lines = [line.strip() for line in text.splitlines() if line.strip()]
-        failure_summary = " ".join(non_empty_lines[-12:])[:800]
+        parts.extend(non_empty_lines[-12:])
+    failure_summary = " ".join(parts)[:800]
 
 payload = {
     "ok": exit_code == 0,

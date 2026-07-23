@@ -1,0 +1,4 @@
+interface:
+  display_name: "Terminal UI Design"
+  short_description: "Design polished, resilient terminal interfaces"
+  default_prompt: "Use $terminal-ui-design to design and implement a distinctive terminal interface."

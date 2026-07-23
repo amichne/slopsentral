@@ -621,6 +621,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/terminal-ui-design",
+      "name": "terminal-ui-design"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/gh-fix-ci",
       "name": "gh-fix-ci"
     },
