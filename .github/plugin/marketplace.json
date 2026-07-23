@@ -241,6 +241,7 @@
       },
       "category": "Engineering",
       "description": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
+      "hooks": "./hooks",
       "keywords": [
         "agent-platform-authoring",
         "agents",

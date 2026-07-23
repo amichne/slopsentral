@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T15:03:17-04:00",
+  "generatedAt": "2026-07-23T14:44:42-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -279,7 +279,7 @@
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:223f5b2ffc4db9dce6fefae684b448186782d521d484fb3d22858faa14088960",
+          "sha256": "sha256:53e653f17954c6900d81398ea994911671a736c3d1cca1e6476cce655415bd83",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -368,6 +368,13 @@
     {
       "name": "agent-platform-authoring",
       "references": [
+        {
+          "name": "source-graph-valid",
+          "sha256": "sha256:751734e623315b7aa7f97586222177eec4ee1044a8c1c426b996837741e494cd",
+          "sourcePath": "source/hooks/source-graph-valid.hook.json",
+          "targetPath": "hooks/source-graph-valid.hooks.json",
+          "type": "HOOK"
+        },
         {
           "name": "schema-driven-design",
           "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
@@ -507,6 +514,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "953fc86b39fbc4252977995bc8d00bcc50808dd5",
+  "sourceSha": "74d21c1948e5a225b550ea59149d44b7257a2c50",
   "type": "HYDRATED_MARKETPLACE"
 }

@@ -37,3 +37,7 @@ Agent platform authoring package for source-owned skills, agents, hooks, plugin 
 - `repo-instruction-topology`: `skills/repo-instruction-topology` (source: `source/skills/repo-instruction-topology`)
 - `skill-primitive-authoring`: `skills/skill-primitive-authoring` (source: `source/skills/skill-primitive-authoring`)
 - `source-graph-consolidation`: `skills/source-graph-consolidation` (source: `source/skills/source-graph-consolidation`)
+
+## Hook Primitives
+
+- `source-graph-valid`: `hooks/source-graph-valid.hooks.json` (source: `source/hooks/source-graph-valid.hook.json`)
