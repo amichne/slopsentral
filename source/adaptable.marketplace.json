@@ -211,6 +211,28 @@
         "source-backed",
         "validation"
       ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "terminal-ui-design",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "terminal-ui-design",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/terminal-ui-design"
+        },
+        "version": "0.1.0"
+      },
+      "description": "Design workflow for distinctive, accessible, and resilient human-facing terminal interfaces.",
+      "tags": [
+        "accessibility",
+        "cli",
+        "design",
+        "terminal",
+        "tui",
+        "user-interface"
+      ]
     }
   ],
   "skills": [
