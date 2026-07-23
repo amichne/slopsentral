@@ -621,6 +621,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/terminal-ui-design",
+      "name": "terminal-ui-design"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/gh-fix-ci",
       "name": "gh-fix-ci"
     },
@@ -836,6 +845,15 @@
       },
       "path": "hooks/required-skill-read.hook.json",
       "name": "required-skill-read"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/source-graph-valid.hook.json",
+      "name": "source-graph-valid"
     },
     {
       "type": "HOOK",

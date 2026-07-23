@@ -7,6 +7,10 @@ import test from "node:test";
 
 const repoRoot = path.resolve(import.meta.dirname, "../../..");
 const hook = path.join(repoRoot, "source/hooks/gradle-check-green.sh");
+const runner = path.join(
+  repoRoot,
+  "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.sh",
+);
 
 function createGradleRepo() {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), "slopsentral-gradle-hook-"));
@@ -117,4 +121,31 @@ test("gradle check skips configured command when no Gradle-owned files changed",
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /no Kotlin or Gradle-owned changes detected/);
   assert.equal(fs.existsSync(path.join(directory, "gradle-args.txt")), false);
+});
+
+test("Gradle runner surfaces compilation errors before JUnit reports exist", (context) => {
+  const directory = createGradleRepo();
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  fs.writeFileSync(
+    path.join(directory, "gradlew"),
+    [
+      "#!/usr/bin/env bash",
+      "echo \"e: file:///ExampleTest.kt:8:9 Unresolved reference 'expectedBehavior'\"",
+      "echo 'FAILURE: Build failed with an exception.'",
+      "echo \"* What went wrong:\"",
+      "echo \"Execution failed for task ':app:compileTestKotlin'.\"",
+      "echo 'BUILD FAILED in 1s'",
+      "exit 1",
+      "",
+    ].join("\n"),
+    { mode: 0o755 },
+  );
+
+  const result = spawnSync(runner, ["--repo", directory, "--task", ":app:test"], {
+    cwd: repoRoot,
+    encoding: "utf8",
+  });
+
+  assert.equal(result.status, 1);
+  assert.match(JSON.parse(result.stdout).failureSummary, /Unresolved reference 'expectedBehavior'/);
 });

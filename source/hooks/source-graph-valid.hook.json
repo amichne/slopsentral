@@ -1,0 +1,29 @@
+{
+  "type": "HOOK",
+  "source": {
+    "type": "LOCAL_SOURCE",
+    "path": "./"
+  },
+  "path": "hooks/codex/source-graph-valid.hooks.json",
+  "name": "source-graph-valid",
+  "dependsOn": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/hook-primitive-authoring",
+      "name": "hook-primitive-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/plugin-composition-authoring",
+      "name": "plugin-composition-authoring"
+    }
+  ]
+}
