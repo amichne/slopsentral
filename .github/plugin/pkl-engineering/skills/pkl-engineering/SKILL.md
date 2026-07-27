@@ -26,7 +26,8 @@ commands from prose:
 
 The no-argument view reports the executable, Pkl version, project and lock
 presence, module/test counts, active evaluator policy, and useful next commands.
-Stop on `missing` or `unsupported`; this façade supports Pkl `>=0.32.0,<0.33.0`.
+Stop on `missing` or `unsupported`; this façade supports Pkl `>=0.31.1,<0.34.0`.
+Use version-matched references for release-specific behavior.
 
 ## Work the Contract
 

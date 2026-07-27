@@ -19,7 +19,9 @@ from typing import Any, Callable, Mapping, Sequence
 
 
 DESCRIPTION = "Develop and validate typed Pkl configuration"
-SUPPORTED_VERSION = ">=0.32.0,<0.33.0"
+MIN_SUPPORTED_VERSION = (0, 31, 1)
+MAX_SUPPORTED_VERSION = (0, 34, 0)
+SUPPORTED_VERSION = f">={'.'.join(map(str, MIN_SUPPORTED_VERSION))},<{'.'.join(map(str, MAX_SUPPORTED_VERSION))}"
 VERSION_PATTERN = re.compile(r"(?:Pkl\s+)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)")
 NUMBER_PATTERN = re.compile(r"-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$")
 SAFE_MODULES = "pkl:,file:,modulepath:,repl:,package:,projectpackage:"
@@ -450,8 +452,9 @@ def version_status(context: Context, runner: Runner) -> tuple[str, str]:
     match = VERSION_PATTERN.search(result.stdout)
     if match is None:
         return "unsupported", result.stdout.strip()
-    version = ".".join(match.group(name) for name in ("major", "minor", "patch"))
-    supported = int(match.group("major")) == 0 and int(match.group("minor")) == 32
+    version_parts = tuple(int(match.group(name)) for name in ("major", "minor", "patch"))
+    version = ".".join(map(str, version_parts))
+    supported = MIN_SUPPORTED_VERSION <= version_parts < MAX_SUPPORTED_VERSION
     return ("ready" if supported else "unsupported"), version
 
 
@@ -459,7 +462,7 @@ def ensure_ready(context: Context, runner: Runner) -> tuple[bool, Mapping[str, A
     status, version = version_status(context, runner)
     if status == "ready":
         return True, {"status": status, "pklVersion": version, "supported": SUPPORTED_VERSION}
-    help_items = ["Install Pkl 0.32.x or pass `--pkl-bin <path>`"]
+    help_items = [f"Install Pkl {SUPPORTED_VERSION} or pass `--pkl-bin <path>`"]
     return False, {"status": status, "pklVersion": version or None, "supported": SUPPORTED_VERSION, "help": help_items}
 
 

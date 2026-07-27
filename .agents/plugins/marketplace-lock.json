@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-27T10:03:00-04:00",
+  "generatedAt": "2026-07-27T10:21:47-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -97,7 +97,7 @@
         },
         {
           "name": "pkl-engineering",
-          "sha256": "sha256:56887f97ba6e5e66bc6f09618b574c8ceb33f59b963548a2c257072960a73e4d",
+          "sha256": "sha256:51cc4a3eb3021174d22b6d37110ceb1f7e9588f9df98c577eb38ffc174d059ad",
           "sourcePath": "source/skills/pkl-engineering",
           "targetPath": "skills/pkl-engineering",
           "type": "SKILL"
@@ -542,6 +542,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "3c7315bdc7441aafc41bf876b1361ad97fd7042f",
+  "sourceSha": "bb0f262a75e63bcd43fbb40a30e6faf6a1dfdc1e",
   "type": "HYDRATED_MARKETPLACE"
 }
