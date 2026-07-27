@@ -123,12 +123,23 @@ class PklAgentTests(unittest.TestCase):
 
         self.assertFalse(parser.allow_abbrev)
 
-    def test_unsupported_pkl_version_is_structured_error(self) -> None:
-        result = self.run_agent("doctor", env={"FAKE_PKL_VERSION": "0.31.1"})
+    def test_adjacent_minor_pkl_versions_are_supported(self) -> None:
+        for version in ("0.31.1", "0.33.0"):
+            with self.subTest(version=version):
+                result = self.run_agent("doctor", env={"FAKE_PKL_VERSION": version})
 
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("status: unsupported", result.stdout)
-        self.assertIn('supported: ">=0.32.0,<0.33.0"', result.stdout)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertIn("status: ready", result.stdout)
+                self.assertIn('supported: ">=0.31.1,<0.34.0"', result.stdout)
+
+    def test_versions_outside_adjacent_minors_are_structured_errors(self) -> None:
+        for version in ("0.30.2", "0.31.0", "0.34.0"):
+            with self.subTest(version=version):
+                result = self.run_agent("doctor", env={"FAKE_PKL_VERSION": version})
+
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("status: unsupported", result.stdout)
+                self.assertIn('supported: ">=0.31.1,<0.34.0"', result.stdout)
 
     def test_format_violation_maps_exit_11_to_operation_failure(self) -> None:
         result = self.run_agent("format", "check", "--all", env={"FAKE_FORMAT_EXIT": "11"})
