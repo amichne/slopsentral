@@ -99,6 +99,18 @@
         "path": "./.agents/plugins/terminal-ui-design",
         "source": "local"
       }
+    },
+    {
+      "category": "Productivity",
+      "name": "writing",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/writing",
+        "source": "local"
+      }
     }
   ]
 }

@@ -1,7 +1,6 @@
 ---
 name: kotlin-review-captain
 description: Use this agent at the end of a Kotlin coding turn to coordinate focused review. It routes changed Kotlin work to type-safety, boundary-contract, and package-cohesion review, then returns one prioritized finding list.
-model: sonnet
 ---
 
 # Kotlin Review Captain

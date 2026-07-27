@@ -4,10 +4,10 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "python3 hooks/pkl-check.py --repo . --check format",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check format",
+            "statusMessage": "Checking Pkl formatting",
             "timeout": 300,
-            "statusMessage": "Checking Pkl formatting"
+            "type": "command"
           }
         ]
       }

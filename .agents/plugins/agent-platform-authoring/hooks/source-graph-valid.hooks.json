@@ -4,10 +4,10 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "bash hooks/source-graph-valid.sh --repo .",
+            "command": "bash \"$PLUGIN_ROOT/hooks/source-graph-valid.sh\" --repo .",
+            "statusMessage": "Validating the authored source graph",
             "timeout": 60,
-            "statusMessage": "Validating the authored source graph"
+            "type": "command"
           }
         ]
       }

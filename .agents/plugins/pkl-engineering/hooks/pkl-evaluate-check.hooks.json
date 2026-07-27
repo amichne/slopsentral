@@ -4,10 +4,10 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "python3 hooks/pkl-check.py --repo . --check evaluate",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check evaluate",
+            "statusMessage": "Evaluating declared Pkl entrypoints",
             "timeout": 600,
-            "statusMessage": "Evaluating declared Pkl entrypoints"
+            "type": "command"
           }
         ]
       }

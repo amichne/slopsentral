@@ -1,0 +1,35 @@
+{
+  "agents": "./agents",
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Engineering",
+  "description": "API contract workflow for JSON Schema and OpenAPI boundaries: schema modeling, operation authoring, typed errors, examples, and review.",
+  "keywords": [
+    "agents",
+    "api",
+    "api-contracts",
+    "boundary",
+    "contracts",
+    "governance",
+    "openapi",
+    "schemas",
+    "skills",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "api-contracts",
+  "skills": "./skills",
+  "tags": [
+    "agents",
+    "api",
+    "boundary",
+    "contracts",
+    "governance",
+    "openapi",
+    "schemas",
+    "skills",
+    "validation"
+  ],
+  "version": "0.1.0"
+}

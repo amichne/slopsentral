@@ -1,7 +1,6 @@
 ---
 name: kotlin-boundary-contract-reviewer
 description: Use this review agent after Kotlin changes to public APIs, adapters, CLI commands, serialization, persistence, HTTP, messaging, or interop boundaries. It enforces parse-don't-validate and explicit boundary failures.
-model: sonnet
 ---
 
 # Kotlin Boundary Contract Reviewer

@@ -3,6 +3,10 @@
     "name": "Amichne"
   },
   "description": "Repository baseline for language-agnostic semantic design and test-driven work: constrained domain values, closed variants and failures, typestate, executable-check TDD, marketplace onboarding, and instruction hygiene.",
+  "hooks": [
+    "./hooks/agents-md-turn-refresh.hooks.json",
+    "./hooks/required-skill-read.hooks.json"
+  ],
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [

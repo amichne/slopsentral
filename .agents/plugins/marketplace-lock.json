@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-07-23T14:49:27-04:00",
+  "generatedAt": "2026-07-27T10:03:00-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
       "references": [
         {
           "name": "agents-md-turn-refresh",
-          "sha256": "sha256:ba4b041cafc1800f5abb3bc705c1106c688ce65a266a6c4933f4edc7d1228964",
+          "sha256": "sha256:d8e2799bd79ac8939f5ba7cd0e4381dd194169532d1cdef56b674677a0397cd1",
           "sourcePath": "source/hooks/agents-md-turn-refresh.hook.json",
           "targetPath": "hooks/agents-md-turn-refresh.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "required-skill-read",
-          "sha256": "sha256:f73e859fc6c39f90b5c000aa1293fdad8d8d06570ed04a54775a8f25fabb736c",
+          "sha256": "sha256:b4efa31dfe23ef3bf94f850d599e2537f83a5737bcd825188fd9f740b1f2157b",
           "sourcePath": "source/hooks/required-skill-read.hook.json",
           "targetPath": "hooks/required-skill-read.hooks.json",
           "type": "HOOK"
@@ -62,21 +62,21 @@
       "references": [
         {
           "name": "pkl-evaluate-check",
-          "sha256": "sha256:db7bceb67b209214e0a4f1ecebb8560c0938833b59f971d61df33aa526eb42c7",
+          "sha256": "sha256:0783f1d5724f6604b28460ca45693e8f78113cddd8da39d5fd31a3ec2e2c1db5",
           "sourcePath": "source/hooks/pkl-evaluate-check.hook.json",
           "targetPath": "hooks/pkl-evaluate-check.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "pkl-format-check",
-          "sha256": "sha256:76c05d75a3932e7ef79073c38b0ff9c79a13be73b04937ca9a7a9373141440eb",
+          "sha256": "sha256:b444f9ee1a17505904cdc0244b90ef845d820389b4d57ce5d0286afbe0a5b558",
           "sourcePath": "source/hooks/pkl-format-check.hook.json",
           "targetPath": "hooks/pkl-format-check.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "pkl-test-check",
-          "sha256": "sha256:220711da803215a56600c075bed16fe83a9e69325f5a899184ea6f2483c65b72",
+          "sha256": "sha256:cd9568f9723e552a9c04c51f15fbcd2d7db888c1387cc8ed698eac3133a68570",
           "sourcePath": "source/hooks/pkl-test-check.hook.json",
           "targetPath": "hooks/pkl-test-check.hooks.json",
           "type": "HOOK"
@@ -223,21 +223,21 @@
         },
         {
           "name": "gradle-check-green",
-          "sha256": "sha256:7050f2c81439c5fd09c3d22b9669422a74faee432ca1270b75cbd93f551739b0",
+          "sha256": "sha256:147ea9c8c80776868fe4a933036f7edecd1d4718fc6a02869801af6a0bab4679",
           "sourcePath": "source/hooks/gradle-check-green.hook.json",
           "targetPath": "hooks/gradle-check-green.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "gradle-wrapper-integrity",
-          "sha256": "sha256:e503135c0f97dc9f15e566f2eed3add6cb0e0d18a19b3006cf6c4165ea3b1574",
+          "sha256": "sha256:68cdca0583585d3b95f0611ff93766e31cb7d2735514d721875aee0ad1624589",
           "sourcePath": "source/hooks/gradle-wrapper-integrity.hook.json",
           "targetPath": "hooks/gradle-wrapper-integrity.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "kotlin-horizontalization-check",
-          "sha256": "sha256:4915bc5cefe9e8ed9ca0d892d00192bb3e598fae11367af972c7d24ff4419f6f",
+          "sha256": "sha256:a60eb031f55026ed63aca894245a5b4ce23da3797ff920aea30f13989e4f95bd",
           "sourcePath": "source/hooks/kotlin-horizontalization-check.hook.json",
           "targetPath": "hooks/kotlin-horizontalization-check.hooks.json",
           "type": "HOOK"
@@ -307,7 +307,7 @@
       "references": [
         {
           "name": "github-actions-await",
-          "sha256": "sha256:a75ecbb76ae7de7924e3f0505bf3d3efd99c47e1f3c5fc411d3111a0d8d1b679",
+          "sha256": "sha256:118d2af3fa2993d3404352215f655ab307b8b8c16147995671b20ef671be0cdb",
           "sourcePath": "source/hooks/github-actions-await.hook.json",
           "targetPath": "hooks/github-actions-await.hooks.json",
           "type": "HOOK"
@@ -370,7 +370,7 @@
       "references": [
         {
           "name": "source-graph-valid",
-          "sha256": "sha256:751734e623315b7aa7f97586222177eec4ee1044a8c1c426b996837741e494cd",
+          "sha256": "sha256:9c5eaaee5958be6675371f9fb10c01b62a311ff6effda33eae5ac888811402ab",
           "sourcePath": "source/hooks/source-graph-valid.hook.json",
           "targetPath": "hooks/source-graph-valid.hooks.json",
           "type": "HOOK"
@@ -461,7 +461,7 @@
       "references": [
         {
           "name": "code-knowledge-drift",
-          "sha256": "sha256:5b848bd740796243736a91d1641c6eba68538f4d8ab137d85fa4dfb96b09a466",
+          "sha256": "sha256:b3aad623bf2d05d44643246c50c320e1d70080ec77b725f827bb6a7902931146",
           "sourcePath": "source/hooks/code-knowledge-drift.hook.json",
           "targetPath": "hooks/code-knowledge-drift.hooks.json",
           "type": "HOOK"
@@ -525,9 +525,23 @@
       ],
       "sourceManifest": "source/plugins/terminal-ui-design/plugin.json",
       "version": "0.1.0"
+    },
+    {
+      "name": "writing",
+      "references": [
+        {
+          "name": "controlled-technical-writing",
+          "sha256": "sha256:d4cbce41f99f494745d22193b0312df119904101d447ebe4c4881b094c2dcb4e",
+          "sourcePath": "source/skills/controlled-technical-writing",
+          "targetPath": "skills/controlled-technical-writing",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/writing/plugin.json",
+      "version": "0.1.0"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "93a71ed1c6cfbb1ea89ce5ab988b67fd31b12720",
+  "sourceSha": "3c7315bdc7441aafc41bf876b1361ad97fd7042f",
   "type": "HYDRATED_MARKETPLACE"
 }

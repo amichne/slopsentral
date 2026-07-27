@@ -1,25 +1,13 @@
 {
   "hooks": {
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash hooks/agents-md-turn-refresh.sh start --repo .",
-            "timeout": 10,
-            "statusMessage": "Starting AGENTS.md turn tracking"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "bash hooks/agents-md-turn-refresh.sh record --repo .",
+            "command": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" record --repo .",
+            "statusMessage": "Recording AGENTS.md turn edits",
             "timeout": 10,
-            "statusMessage": "Recording AGENTS.md turn edits"
+            "type": "command"
           }
         ]
       }
@@ -28,10 +16,22 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "bash hooks/agents-md-turn-refresh.sh stop --repo .",
+            "command": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" stop --repo .",
+            "statusMessage": "Checking affected AGENTS.md files",
             "timeout": 30,
-            "statusMessage": "Checking affected AGENTS.md files"
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" start --repo .",
+            "statusMessage": "Starting AGENTS.md turn tracking",
+            "timeout": 10,
+            "type": "command"
           }
         ]
       }

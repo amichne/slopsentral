@@ -1,26 +1,26 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "python3 \"$PLUGIN_ROOT/hooks/required-skill-read.py\" check --repo .",
+            "statusMessage": "Checking required skill reads",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "python3 hooks/required-skill-read.py init --repo .",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/required-skill-read.py\" init --repo .",
+            "statusMessage": "Starting required-skill read tracking",
             "timeout": 10,
-            "statusMessage": "Starting required-skill read tracking"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 hooks/required-skill-read.py check --repo .",
-            "timeout": 10,
-            "statusMessage": "Checking required skill reads"
+            "type": "command"
           }
         ]
       }

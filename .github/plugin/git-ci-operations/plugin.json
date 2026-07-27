@@ -1,0 +1,43 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Engineering",
+  "description": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+  "hooks": "./hooks.json",
+  "keywords": [
+    "automation",
+    "best-practices",
+    "ci",
+    "composable",
+    "evidence",
+    "git",
+    "git-ci-operations",
+    "github",
+    "operations",
+    "planning",
+    "pull-requests",
+    "release",
+    "skills",
+    "workflow"
+  ],
+  "license": "UNLICENSED",
+  "name": "git-ci-operations",
+  "skills": "./skills",
+  "tags": [
+    "automation",
+    "best-practices",
+    "ci",
+    "composable",
+    "evidence",
+    "git",
+    "github",
+    "operations",
+    "planning",
+    "pull-requests",
+    "release",
+    "skills",
+    "workflow"
+  ],
+  "version": "0.1.0"
+}

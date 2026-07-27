@@ -4,10 +4,10 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "python3 hooks/pkl-check.py --repo . --check test",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check test",
+            "statusMessage": "Running Pkl assertions and examples",
             "timeout": 900,
-            "statusMessage": "Running Pkl assertions and examples"
+            "type": "command"
           }
         ]
       }

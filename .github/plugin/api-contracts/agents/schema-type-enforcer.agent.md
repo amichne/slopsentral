@@ -1,7 +1,6 @@
 ---
 name: schema-type-enforcer
 description: Use this review agent after changes to schemas, API contracts, serialized payloads, configuration formats, persistence records, generated models, or code that transforms boundary data into internal types.
-model: sonnet
 ---
 
 # Schema Type Enforcer

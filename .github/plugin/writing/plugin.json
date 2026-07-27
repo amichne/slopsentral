@@ -1,0 +1,30 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Productivity",
+  "description": "Controlled technical writing for direct prose, stable terminology, and canonical repository glossary semantics.",
+  "keywords": [
+    "controlled-language",
+    "docs",
+    "glossary",
+    "prose",
+    "semantics",
+    "technical-writing",
+    "terminology",
+    "writing"
+  ],
+  "license": "UNLICENSED",
+  "name": "writing",
+  "skills": "./skills",
+  "tags": [
+    "controlled-language",
+    "docs",
+    "glossary",
+    "prose",
+    "semantics",
+    "technical-writing",
+    "terminology"
+  ],
+  "version": "0.1.0"
+}

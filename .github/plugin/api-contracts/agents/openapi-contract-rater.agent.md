@@ -1,7 +1,6 @@
 ---
 name: openapi-contract-rater
 description: Use this review agent to rate OpenAPI specifications, generated OpenAPI artifacts, API contract pull requests, or API docs against type-driven and schema-driven boundary criteria.
-model: sonnet
 ---
 
 # OpenAPI Contract Rater

@@ -3,6 +3,9 @@
     "name": "Amichne"
   },
   "description": "Provider-neutral workflow for OKF knowledge bundles: Kotlin/Gradle concepts, signature-backed routing, code_sources impact checks, and advisory drift hooks.",
+  "hooks": [
+    "./hooks/code-knowledge-drift.hooks.json"
+  ],
   "interface": {
     "brandColor": "#2563EB",
     "capabilities": [

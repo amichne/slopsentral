@@ -3,6 +3,11 @@
     "name": "Amichne"
   },
   "description": "Pkl engineering package for typed specification, first-party source navigation, toolchain and LSP setup, practical and advanced patterns, safe evaluation, rendering, tests, packages, and repository proof hooks.",
+  "hooks": [
+    "./hooks/pkl-evaluate-check.hooks.json",
+    "./hooks/pkl-format-check.hooks.json",
+    "./hooks/pkl-test-check.hooks.json"
+  ],
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [

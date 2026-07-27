@@ -4,10 +4,10 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "python3 hooks/code-knowledge-drift.py --repo . --docs docs --advisory",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/code-knowledge-drift.py\" --repo . --docs docs --advisory",
+            "statusMessage": "Checking OKF knowledge drift",
             "timeout": 60,
-            "statusMessage": "Checking OKF knowledge drift"
+            "type": "command"
           }
         ]
       }

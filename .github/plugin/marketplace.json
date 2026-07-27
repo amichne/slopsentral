@@ -1,5 +1,4 @@
 {
-  "$schema": "github-marketplace.schema.json",
   "metadata": {
     "description": "Curated marketplace for reusable AI tooling primitives, composed agent workflows, and local engineering operating procedures.",
     "pluginRoot": ".github/plugin"
@@ -15,7 +14,6 @@
       },
       "category": "Engineering",
       "description": "Repository baseline for language-agnostic semantic design and test-driven work: constrained domain values, closed variants and failures, typestate, executable-check TDD, marketplace onboarding, and instruction hygiene.",
-      "hooks": "./hooks",
       "keywords": [
         "core",
         "daily-driver",
@@ -36,7 +34,6 @@
       ],
       "license": "UNLICENSED",
       "name": "engineering-baseline",
-      "skills": "./skills",
       "source": "engineering-baseline",
       "strict": true,
       "tags": [
@@ -64,7 +61,6 @@
       },
       "category": "Engineering",
       "description": "Pkl engineering package for typed specification, first-party source navigation, toolchain and LSP setup, practical and advanced patterns, safe evaluation, rendering, tests, packages, and repository proof hooks.",
-      "hooks": "./hooks",
       "keywords": [
         "configuration",
         "hooks",
@@ -83,7 +79,6 @@
       ],
       "license": "UNLICENSED",
       "name": "pkl-engineering",
-      "skills": "./skills",
       "source": "pkl-engineering",
       "strict": true,
       "tags": [
@@ -104,7 +99,6 @@
       "version": "0.1.0"
     },
     {
-      "agents": "./agents",
       "author": {
         "name": "Amichne"
       },
@@ -124,7 +118,6 @@
       ],
       "license": "UNLICENSED",
       "name": "api-contracts",
-      "skills": "./skills",
       "source": "api-contracts",
       "strict": true,
       "tags": [
@@ -141,13 +134,11 @@
       "version": "0.1.0"
     },
     {
-      "agents": "./agents",
       "author": {
         "name": "Amichne"
       },
       "category": "Coding",
       "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, Gradle wrapper integrity, and Kotlin package-layout hooks. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
-      "hooks": "./hooks",
       "keywords": [
         "agents",
         "best-practices",
@@ -168,7 +159,6 @@
       ],
       "license": "UNLICENSED",
       "name": "kotlin-engineering",
-      "skills": "./skills",
       "source": "kotlin-engineering",
       "strict": true,
       "tags": [
@@ -196,7 +186,6 @@
       },
       "category": "Engineering",
       "description": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
-      "hooks": "./hooks",
       "keywords": [
         "automation",
         "best-practices",
@@ -215,7 +204,6 @@
       ],
       "license": "UNLICENSED",
       "name": "git-ci-operations",
-      "skills": "./skills",
       "source": "git-ci-operations",
       "strict": true,
       "tags": [
@@ -241,7 +229,6 @@
       },
       "category": "Engineering",
       "description": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
-      "hooks": "./hooks",
       "keywords": [
         "agent-platform-authoring",
         "agents",
@@ -258,7 +245,6 @@
       ],
       "license": "UNLICENSED",
       "name": "agent-platform-authoring",
-      "skills": "./skills",
       "source": "agent-platform-authoring",
       "strict": true,
       "tags": [
@@ -282,7 +268,6 @@
       },
       "category": "Coding",
       "description": "Provider-neutral workflow for OKF knowledge bundles: Kotlin/Gradle concepts, signature-backed routing, code_sources impact checks, and advisory drift hooks.",
-      "hooks": "./hooks",
       "keywords": [
         "code-knowledge-base",
         "docs",
@@ -301,7 +286,6 @@
       ],
       "license": "UNLICENSED",
       "name": "code-knowledge-base",
-      "skills": "./skills",
       "source": "code-knowledge-base",
       "strict": true,
       "tags": [
@@ -338,7 +322,6 @@
       ],
       "license": "UNLICENSED",
       "name": "terminal-ui-design",
-      "skills": "./skills",
       "source": "terminal-ui-design",
       "strict": true,
       "tags": [
@@ -348,6 +331,37 @@
         "terminal",
         "tui",
         "user-interface"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Controlled technical writing for direct prose, stable terminology, and canonical repository glossary semantics.",
+      "keywords": [
+        "controlled-language",
+        "docs",
+        "glossary",
+        "prose",
+        "semantics",
+        "technical-writing",
+        "terminology",
+        "writing"
+      ],
+      "license": "UNLICENSED",
+      "name": "writing",
+      "source": "writing",
+      "strict": true,
+      "tags": [
+        "controlled-language",
+        "docs",
+        "glossary",
+        "prose",
+        "semantics",
+        "technical-writing",
+        "terminology"
       ],
       "version": "0.1.0"
     }

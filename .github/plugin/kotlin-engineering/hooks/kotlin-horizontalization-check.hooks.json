@@ -4,10 +4,10 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "python3 hooks/kotlin-horizontalization-check --repo .",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/kotlin-horizontalization-check\" --repo .",
+            "statusMessage": "Checking Kotlin package layout",
             "timeout": 30,
-            "statusMessage": "Checking Kotlin package layout"
+            "type": "command"
           }
         ]
       }

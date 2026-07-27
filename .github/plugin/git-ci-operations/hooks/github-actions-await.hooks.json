@@ -2,25 +2,25 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "^(Bash|exec_command|mcp__.*github.*)$",
         "hooks": [
           {
-            "type": "command",
-            "command": "python3 hooks/github-actions-await.py guard --repo .",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/github-actions-await.py\" guard --repo .",
+            "statusMessage": "Enforcing the AXI GitHub boundary",
             "timeout": 10,
-            "statusMessage": "Enforcing the AXI GitHub boundary"
+            "type": "command"
           }
-        ]
+        ],
+        "matcher": "^(Bash|exec_command|mcp__.*github.*)$"
       }
     ],
     "Stop": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "python3 hooks/github-actions-await.py stop --repo .",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/github-actions-await.py\" stop --repo .",
+            "statusMessage": "Awaiting a meaningful GitHub Actions event",
             "timeout": 3600,
-            "statusMessage": "Awaiting a meaningful GitHub Actions event"
+            "type": "command"
           }
         ]
       }
