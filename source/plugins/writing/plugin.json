@@ -1,0 +1,33 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "writing",
+  "version": "0.1.0",
+  "description": "Controlled technical writing for direct prose, stable terminology, and canonical repository glossary semantics.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/controlled-technical-writing",
+      "name": "controlled-technical-writing"
+    }
+  ],
+  "agents": [],
+  "instructions": [],
+  "hooks": [],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Install when agents write or revise technical prose that needs plain language, stable terminology, or a repository glossary.",
+    "notFor": "Creative or marketing copy, code changes, identifier naming, or source-backed knowledge bundle generation.",
+    "role": "controlled-technical-writing",
+    "scope": "Technical documentation, READMEs, pull-request text, error messages, release notes, comments, and canonical marked glossary terms."
+  }
+}

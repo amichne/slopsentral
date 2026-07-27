@@ -17,12 +17,12 @@ for (const [name, workflow] of [
   ["validate", validateWorkflow],
   ["materialize", materializeWorkflow],
 ]) {
-  test(`${name} workflow directly projects through the pinned Intelligence action`, () => {
+  test(`${name} workflow uses a loadable action wrapper with the latest release`, () => {
     assert.equal(
       workflow.match(/uses: amichne\/intelligence@v0\.2\.8/g)?.length,
       2,
     );
-    assert.equal(workflow.match(/version: v0\.2\.8/g)?.length, 2);
+    assert.equal(workflow.match(/version: v0\.2\.9/g)?.length, 2);
     assert.equal(workflow.match(/source: \./g)?.length, 2);
     assert.doesNotMatch(workflow, /setup-intelligence/);
     assert.doesNotMatch(workflow, /INTELLIGENCE_VERSION/);
