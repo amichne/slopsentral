@@ -233,6 +233,29 @@
         "tui",
         "user-interface"
       ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "writing",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "writing",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/writing"
+        },
+        "version": "0.1.0"
+      },
+      "description": "Controlled technical writing for direct prose, stable terminology, and canonical repository glossary semantics.",
+      "tags": [
+        "controlled-language",
+        "docs",
+        "glossary",
+        "prose",
+        "semantics",
+        "technical-writing",
+        "terminology"
+      ]
     }
   ],
   "skills": [
@@ -762,6 +785,15 @@
       },
       "path": "skills/workflow",
       "name": "workflow"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/controlled-technical-writing",
+      "name": "controlled-technical-writing"
     }
   ],
   "agents": [
