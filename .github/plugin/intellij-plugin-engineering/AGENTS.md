@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-IntelliJ Platform plugin engineering workflow for repository-first implementation, Kotlin and Gradle proof, programmatic Starter/Driver UI tests, Plugin Verifier, Kast exact-root IDEA delivery, Git hygiene, pull requests, and CI.
+IntelliJ Platform plugin delivery guidance for descriptors, lifecycle, threading, PSI and indexes, Starter/Driver UI tests, Plugin Verifier, packaging, and dynamic unload.
 
 ## Operating Rules
 
@@ -23,16 +23,9 @@ IntelliJ Platform plugin engineering workflow for repository-first implementatio
 
 ## Instruction Primitives
 
-- `kotlin-code-correctness`: `instructions/kotlin-code-correctness.md` (source: `source/concepts/kotlin-code-correctness/core.md`)
 - `schema-driven-design`: `instructions/schema-driven-design.md` (source: `source/concepts/schema-driven-design/core.md`)
 - `type-safety`: `instructions/type-safety.md` (source: `source/concepts/type-safety/core.md`)
 
 ## Skill Primitives
 
-- `git-change-flow`: `skills/git-change-flow` (source: `source/skills/git-change-flow`)
-- `github-ci-operations`: `skills/github-ci-operations` (source: `source/skills/github-ci-operations`)
 - `intellij-plugin-delivery`: `skills/intellij-plugin-delivery` (source: `source/skills/intellij-plugin-delivery`)
-- `kotlin-agentic-correctness`: `skills/kotlin-agentic-correctness` (source: `source/skills/kotlin-agentic-correctness`)
-- `kotlin-gradle-validation`: `skills/kotlin-gradle-validation` (source: `source/skills/kotlin-gradle-validation`)
-- `pull-request-lifecycle`: `skills/pull-request-lifecycle` (source: `source/skills/pull-request-lifecycle`)
-- `tdd`: `skills/tdd` (source: `source/skills/tdd`)

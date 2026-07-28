@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "IntelliJ Platform plugin engineering workflow for repository-first implementation, Kotlin and Gradle proof, programmatic Starter/Driver UI tests, Plugin Verifier, Kast exact-root IDEA delivery, Git hygiene, pull requests, and CI.",
+  "description": "IntelliJ Platform plugin delivery guidance for descriptors, lifecycle, threading, PSI and indexes, Starter/Driver UI tests, Plugin Verifier, packaging, and dynamic unload.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Intellij Plugin Engineering",
-    "longDescription": "IntelliJ Platform plugin engineering workflow for repository-first implementation, Kotlin and Gradle proof, programmatic Starter/Driver UI tests, Plugin Verifier, Kast exact-root IDEA delivery, Git hygiene, pull requests, and CI.",
+    "longDescription": "IntelliJ Platform plugin delivery guidance for descriptors, lifecycle, threading, PSI and indexes, Starter/Driver UI tests, Plugin Verifier, packaging, and dynamic unload.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "IntelliJ Platform plugin engineering workflow for repository-first im...",
+    "shortDescription": "IntelliJ Platform plugin delivery guidance for descriptors, lifecycle...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -42,5 +42,5 @@
   "license": "UNLICENSED",
   "name": "intellij-plugin-engineering",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

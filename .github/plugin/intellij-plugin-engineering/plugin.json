@@ -3,7 +3,7 @@
     "name": "Amichne"
   },
   "category": "Engineering",
-  "description": "IntelliJ Platform plugin engineering workflow for repository-first implementation, Kotlin and Gradle proof, programmatic Starter/Driver UI tests, Plugin Verifier, Kast exact-root IDEA delivery, Git hygiene, pull requests, and CI.",
+  "description": "IntelliJ Platform plugin delivery guidance for descriptors, lifecycle, threading, PSI and indexes, Starter/Driver UI tests, Plugin Verifier, packaging, and dynamic unload.",
   "keywords": [
     "ci",
     "delivery",
@@ -38,5 +38,5 @@
     "ui-testing",
     "verification"
   ],
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

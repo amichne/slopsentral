@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-28T00:43:25-04:00",
+  "generatedAt": "2026-07-28T10:42:01-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -544,13 +544,6 @@
       "name": "intellij-plugin-engineering",
       "references": [
         {
-          "name": "kotlin-code-correctness",
-          "sha256": "sha256:6384593dbc8e40116e86dfa7b9bbd80b528de2d697c7a9c5084bfa5f02d7ef51",
-          "sourcePath": "source/concepts/kotlin-code-correctness/core.md",
-          "targetPath": "instructions/kotlin-code-correctness.md",
-          "type": "INSTRUCTION"
-        },
-        {
           "name": "schema-driven-design",
           "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
@@ -565,60 +558,18 @@
           "type": "INSTRUCTION"
         },
         {
-          "name": "git-change-flow",
-          "sha256": "sha256:52f7f5284eb99427409cd02dd0fb1686f6f798106a2514262deafa06053461c5",
-          "sourcePath": "source/skills/git-change-flow",
-          "targetPath": "skills/git-change-flow",
-          "type": "SKILL"
-        },
-        {
-          "name": "github-ci-operations",
-          "sha256": "sha256:7eb5d08f983fbcc3dd81aa97bcdc3e45967d842b53d5a1e1c2c63553a88118f2",
-          "sourcePath": "source/skills/github-ci-operations",
-          "targetPath": "skills/github-ci-operations",
-          "type": "SKILL"
-        },
-        {
           "name": "intellij-plugin-delivery",
           "sha256": "sha256:5c01cda31738eea430a178952941b65133727c2ef04ab42272232a71b225c639",
           "sourcePath": "source/skills/intellij-plugin-delivery",
           "targetPath": "skills/intellij-plugin-delivery",
           "type": "SKILL"
-        },
-        {
-          "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:9604da8e728f7d71f8d231a8f3a01da9fb4899a8847eaaab61ce62ffc0f9aa07",
-          "sourcePath": "source/skills/kotlin-agentic-correctness",
-          "targetPath": "skills/kotlin-agentic-correctness",
-          "type": "SKILL"
-        },
-        {
-          "name": "kotlin-gradle-validation",
-          "sha256": "sha256:53e653f17954c6900d81398ea994911671a736c3d1cca1e6476cce655415bd83",
-          "sourcePath": "source/skills/kotlin-gradle-validation",
-          "targetPath": "skills/kotlin-gradle-validation",
-          "type": "SKILL"
-        },
-        {
-          "name": "pull-request-lifecycle",
-          "sha256": "sha256:0b01cc78841f67e86cc458f83a210006949ddc517216cf3c8865bda00a4dddca",
-          "sourcePath": "source/skills/pull-request-lifecycle",
-          "targetPath": "skills/pull-request-lifecycle",
-          "type": "SKILL"
-        },
-        {
-          "name": "tdd",
-          "sha256": "sha256:34150e1c6bbcfd938d4e445bb593f582eae8e92e3d20fd55b9f2f0f371e55e87",
-          "sourcePath": "source/skills/tdd",
-          "targetPath": "skills/tdd",
-          "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/intellij-plugin-engineering/plugin.json",
-      "version": "0.1.0"
+      "version": "0.1.1"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "0818501e047d661396543888e0d6bb27d5031715",
+  "sourceSha": "5432ff0cd0150149af051657216b648540afc378",
   "type": "HYDRATED_MARKETPLACE"
 }
