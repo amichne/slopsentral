@@ -256,6 +256,35 @@
         "technical-writing",
         "terminology"
       ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "intellij-plugin-engineering",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "intellij-plugin-engineering",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/intellij-plugin-engineering"
+        },
+        "version": "0.1.0"
+      },
+      "description": "IntelliJ Platform plugin engineering workflow for repository-first implementation, Kotlin and Gradle proof, programmatic Starter/Driver UI tests, Plugin Verifier, Kast exact-root IDEA delivery, Git hygiene, pull requests, and CI.",
+      "tags": [
+        "ci",
+        "delivery",
+        "gradle",
+        "intellij",
+        "jetbrains",
+        "kast",
+        "kotlin",
+        "plugin-development",
+        "psi",
+        "skills",
+        "testing",
+        "ui-testing",
+        "verification"
+      ]
     }
   ],
   "skills": [
@@ -794,6 +823,15 @@
       },
       "path": "skills/controlled-technical-writing",
       "name": "controlled-technical-writing"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/intellij-plugin-delivery",
+      "name": "intellij-plugin-delivery"
     }
   ],
   "agents": [
