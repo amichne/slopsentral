@@ -111,6 +111,18 @@
         "path": "./.agents/plugins/writing",
         "source": "local"
       }
+    },
+    {
+      "category": "Engineering",
+      "name": "intellij-plugin-engineering",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/intellij-plugin-engineering",
+        "source": "local"
+      }
     }
   ]
 }

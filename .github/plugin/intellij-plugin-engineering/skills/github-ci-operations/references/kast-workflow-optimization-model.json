@@ -1,0 +1,431 @@
+{
+  "$schema": "./workflow-graph-model.schema.json",
+  "schemaVersion": 1,
+  "provenance": {
+    "description": "Kast PR 359 validation-startup optimization; candidate samples are provisional until five comparable successful runs exist.",
+    "observedAt": "2026-07-14",
+    "source": "https://github.com/amichne/kast/pull/359",
+    "baselineRunIds": [
+      29305301248,
+      29304317104,
+      29303062657,
+      29295472950,
+      29294709962,
+      29275592486,
+      29274078340,
+      29266874940
+    ],
+    "candidateRunIds": [
+      29334264675,
+      29335676893
+    ]
+  },
+  "baseline": {
+    "tasks": [
+      {
+        "id": "workflow-contracts",
+        "needs": [],
+        "outputs": [
+          "static-contracts",
+          "terminal-command-contract",
+          "copilot-package-contract",
+          "ubuntu-bundle-smoke"
+        ],
+        "durationSamplesSeconds": [
+          82,
+          109,
+          110,
+          111,
+          111,
+          114,
+          124,
+          125
+        ],
+        "executionClass": "static"
+      },
+      {
+        "id": "maven-publication",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "maven-publication"
+        ],
+        "durationSamplesSeconds": [
+          38,
+          54,
+          61,
+          70,
+          158,
+          174,
+          207,
+          413
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "rust-cli",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "rust-cli"
+        ],
+        "durationSamplesSeconds": [
+          267,
+          291,
+          297,
+          299,
+          308,
+          320,
+          322,
+          332
+        ],
+        "executionClass": "toolchain"
+      },
+      {
+        "id": "build-linux",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "jvm-linux",
+          "headless-linux"
+        ],
+        "durationSamplesSeconds": [
+          467,
+          517,
+          564,
+          576,
+          614,
+          673,
+          714,
+          772
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "build-macos",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "jvm-macos",
+          "headless-macos"
+        ],
+        "durationSamplesSeconds": [
+          532,
+          584,
+          648,
+          699,
+          827,
+          863,
+          897,
+          986
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "analysis-server-transport",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "server-transport"
+        ],
+        "durationSamplesSeconds": [
+          54,
+          55,
+          65,
+          87,
+          160,
+          175,
+          179,
+          181
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "idea-plugin",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "idea-plugin"
+        ],
+        "durationSamplesSeconds": [
+          594,
+          624,
+          655,
+          663,
+          668,
+          753,
+          801,
+          803
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "install-ubuntu-22",
+        "needs": [
+          "build-linux",
+          "build-macos",
+          "rust-cli"
+        ],
+        "outputs": [
+          "ubuntu-22-install"
+        ],
+        "durationSamplesSeconds": [
+          116,
+          118,
+          128,
+          128,
+          132,
+          140,
+          194,
+          450
+        ],
+        "executionClass": "oci"
+      },
+      {
+        "id": "install-ubuntu-24",
+        "needs": [
+          "build-linux",
+          "build-macos",
+          "rust-cli"
+        ],
+        "outputs": [
+          "ubuntu-24-install"
+        ],
+        "durationSamplesSeconds": [
+          115,
+          118,
+          119,
+          123,
+          135,
+          135,
+          142,
+          149
+        ],
+        "executionClass": "oci"
+      },
+      {
+        "id": "kast-action-runtime",
+        "needs": [
+          "build-linux",
+          "build-macos",
+          "rust-cli"
+        ],
+        "outputs": [
+          "kast-action-runtime"
+        ],
+        "durationSamplesSeconds": [
+          120,
+          171,
+          202,
+          202,
+          213,
+          244,
+          248,
+          276
+        ],
+        "executionClass": "artifact-consumer"
+      }
+    ],
+    "fanoutGateTaskIds": [
+      "workflow-contracts"
+    ],
+    "observedWorkflowDurationSamplesSeconds": [
+      885,
+      908,
+      1002,
+      1149,
+      1252,
+      1254,
+      1295,
+      1331
+    ]
+  },
+  "candidate": {
+    "tasks": [
+      {
+        "id": "workflow-contracts",
+        "needs": [],
+        "outputs": [
+          "static-contracts"
+        ],
+        "durationSamplesSeconds": [
+          7,
+          8
+        ],
+        "executionClass": "static"
+      },
+      {
+        "id": "runtime-contracts",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "terminal-command-contract",
+          "copilot-package-contract",
+          "ubuntu-bundle-smoke"
+        ],
+        "durationSamplesSeconds": [
+          119,
+          120
+        ],
+        "executionClass": "toolchain"
+      },
+      {
+        "id": "maven-publication",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "maven-publication"
+        ],
+        "durationSamplesSeconds": [
+          80,
+          166
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "rust-cli",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "rust-cli"
+        ],
+        "durationSamplesSeconds": [
+          269,
+          296
+        ],
+        "executionClass": "toolchain"
+      },
+      {
+        "id": "build-linux",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "jvm-linux",
+          "headless-linux"
+        ],
+        "durationSamplesSeconds": [
+          552,
+          731
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "build-macos",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "jvm-macos",
+          "headless-macos"
+        ],
+        "durationSamplesSeconds": [
+          657,
+          691
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "analysis-server-transport",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "server-transport"
+        ],
+        "durationSamplesSeconds": [
+          83,
+          372
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "idea-plugin",
+        "needs": [
+          "workflow-contracts"
+        ],
+        "outputs": [
+          "idea-plugin"
+        ],
+        "durationSamplesSeconds": [
+          569,
+          715
+        ],
+        "executionClass": "gradle-cache"
+      },
+      {
+        "id": "install-ubuntu-22",
+        "needs": [
+          "build-linux",
+          "rust-cli"
+        ],
+        "outputs": [
+          "ubuntu-22-install"
+        ],
+        "durationSamplesSeconds": [
+          120,
+          127
+        ],
+        "executionClass": "oci"
+      },
+      {
+        "id": "install-ubuntu-24",
+        "needs": [
+          "build-linux",
+          "rust-cli"
+        ],
+        "outputs": [
+          "ubuntu-24-install"
+        ],
+        "durationSamplesSeconds": [
+          147,
+          150
+        ],
+        "executionClass": "oci"
+      },
+      {
+        "id": "kast-action-runtime",
+        "needs": [
+          "build-linux",
+          "rust-cli"
+        ],
+        "outputs": [
+          "kast-action-runtime"
+        ],
+        "durationSamplesSeconds": [
+          154,
+          250
+        ],
+        "executionClass": "artifact-consumer"
+      }
+    ],
+    "fanoutGateTaskIds": [
+      "workflow-contracts"
+    ],
+    "observedWorkflowDurationSamplesSeconds": [
+      791,
+      1017
+    ]
+  },
+  "expectations": {
+    "outputEquivalence": "exact",
+    "timingEvidenceMode": "provisional",
+    "minimumCriticalPathReductionSeconds": 200,
+    "maximumCandidateCriticalPathSeconds": 900,
+    "minimumFanoutGateReductionSeconds": 90,
+    "maximumCandidateFanoutGateSeconds": 10,
+    "maximumCandidateTaskCountIncrease": 1,
+    "maximumMedianModelDriftRatio": 0.15,
+    "minimumTaskSamples": 5,
+    "minimumWorkflowSamples": 5
+  }
+}

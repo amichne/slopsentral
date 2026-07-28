@@ -1,0 +1,46 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "IntelliJ Platform plugin engineering workflow for repository-first implementation, Kotlin and Gradle proof, programmatic Starter/Driver UI tests, Plugin Verifier, Kast exact-root IDEA delivery, Git hygiene, pull requests, and CI.",
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Intellij Plugin Engineering for this task.",
+      "Review this repo with Intellij Plugin Engineering.",
+      "Show the Intellij Plugin Engineering workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Intellij Plugin Engineering",
+    "longDescription": "IntelliJ Platform plugin engineering workflow for repository-first implementation, Kotlin and Gradle proof, programmatic Starter/Driver UI tests, Plugin Verifier, Kast exact-root IDEA delivery, Git hygiene, pull requests, and CI.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "IntelliJ Platform plugin engineering workflow for repository-first im...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "ci",
+    "delivery",
+    "gradle",
+    "intellij",
+    "intellij-plugin-engineering",
+    "jetbrains",
+    "kast",
+    "kotlin",
+    "plugin-development",
+    "psi",
+    "skills",
+    "testing",
+    "ui-testing",
+    "verification"
+  ],
+  "license": "UNLICENSED",
+  "name": "intellij-plugin-engineering",
+  "skills": "./skills/",
+  "version": "0.1.0"
+}
