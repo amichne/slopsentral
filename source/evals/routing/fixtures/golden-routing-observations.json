@@ -12,6 +12,7 @@
     "ci-failure-triage-uses-remote-check-evidence",
     "plugin-install-recovery-proves-installed-state",
     "production-sharing-requires-quality-audit-evidence",
+    "intellij-full-delivery-uses-default-profile",
     "intellij-existing-plugin-maintenance-discovers-repo-contract",
     "intellij-mixed-language-psi-targets-filter-before-access",
     "kast-intellij-readiness-preserves-typed-blocker",
@@ -707,6 +708,32 @@
         "Report success when the delegated Pkl facade fails."
       ],
       "notes": "A passing replay routes to pkl-evaluate-check and preserves the Pkl workflow capability and proof boundaries."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "intellij-full-delivery-uses-default-profile",
+      "routedPrimitive": {
+        "type": "PROFILE",
+        "name": "intellij-plugin-default"
+      },
+      "satisfiedAllowedActions": [
+        "Use engineering-baseline for the stable red-green-refactor check.",
+        "Use Kotlin Engineering for Kotlin semantics and Gradle proof.",
+        "Use IntelliJ Plugin Engineering for plugin lifecycle, compatibility, and ZIP verification.",
+        "Use Git and CI Operations for scoped staging, commit, push, PR, and CI follow-through.",
+        "Use the profile to compose all four plugins without duplicate skills, agents, or hooks."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The focused repository check records a valid RED and GREEN with one stable check specification.",
+        "Kotlin and IntelliJ proof includes Gradle checks and the compatible plugin ZIP.",
+        "Delivery proof includes scoped staging, commit, push, PR, and current CI evidence."
+      ],
+      "avoidedForbiddenActions": [
+        "Handle the full workflow with only intellij-plugin-delivery.",
+        "Move generic TDD, Kotlin semantics, Git, PR, or CI ownership into IntelliJ Plugin Engineering.",
+        "Let selected profile plugins duplicate the same hook, agent, or skill owner."
+      ],
+      "notes": "A passing replay routes end-to-end IntelliJ plugin delivery through the four-plugin default profile while preserving primitive ownership."
     },
     {
       "type": "ROUTING_OBSERVATION",

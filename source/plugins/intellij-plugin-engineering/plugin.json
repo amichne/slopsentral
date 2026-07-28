@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "intellij-plugin-engineering",
-  "version": "0.1.0",
-  "description": "IntelliJ Platform plugin engineering workflow for repository-first implementation, Kotlin and Gradle proof, programmatic Starter/Driver UI tests, Plugin Verifier, Kast exact-root IDEA delivery, Git hygiene, pull requests, and CI.",
+  "version": "0.1.1",
+  "description": "IntelliJ Platform plugin delivery guidance for descriptors, lifecycle, threading, PSI and indexes, Starter/Driver UI tests, Plugin Verifier, packaging, and dynamic unload.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -18,73 +18,10 @@
       },
       "path": "skills/intellij-plugin-delivery",
       "name": "intellij-plugin-delivery"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/kotlin-agentic-correctness",
-      "name": "kotlin-agentic-correctness"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/kotlin-gradle-validation",
-      "name": "kotlin-gradle-validation"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/tdd",
-      "name": "tdd"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/git-change-flow",
-      "name": "git-change-flow"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/github-ci-operations",
-      "name": "github-ci-operations"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/pull-request-lifecycle",
-      "name": "pull-request-lifecycle"
     }
   ],
   "agents": [],
   "instructions": [
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/kotlin-code-correctness/core.md",
-      "name": "kotlin-code-correctness"
-    },
     {
       "type": "INSTRUCTION",
       "source": {
@@ -107,13 +44,13 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install in Kotlin and Gradle repositories that build or maintain IntelliJ Platform plugins and need implementation through focused model or UI proof, packaging, PRs, and CI; the Kast playbook activates only in Kast.",
-    "informationExchange": "repository-contracts-semantic-evidence-gradle-reports-and-delivery-state",
+    "dailyDriver": "Install through intellij-plugin-default when a repository needs the full Kotlin, Gradle, Git, CI, and IntelliJ development flow.",
+    "informationExchange": "intellij-platform-contracts-ui-proof-verifier-results-and-package-state",
     "notFor": "End-user IDE configuration, greenfield scaffolding, generic Kotlin repositories without IntelliJ plugin code, copied SDK documentation, or bypassing repository-owned release and runtime authority.",
     "owner": "intellij-plugin-engineering",
-    "packageBoundary": "IntelliJ-specific decisions are owned by intellij-plugin-delivery; existing Kotlin, Gradle, TDD, Git, PR, and CI primitives retain their independent contracts.",
+    "packageBoundary": "This plugin owns only IntelliJ-specific delivery decisions. Kotlin, Gradle, TDD, Git, PR, and CI capabilities are composed by intellij-plugin-default.",
     "principle": "discover-the-live-platform-contract-fix-the-owning-boundary-and-prove-each-delivery-stage",
     "role": "intellij-plugin-engineering",
-    "scope": "Repository-first IntelliJ Platform plugin development and delivery: descriptors, dependencies, lifecycle, threading, PSI/indexing, Gradle Plugin 2.x, Starter/Driver UI automation, verification, packaging, Kast exact-root IDEA readiness, Git, PRs, and CI."
+    "scope": "IntelliJ Platform plugin delivery: descriptors, dependencies, lifecycle, threading, PSI/indexing, Gradle Plugin 2.x, Starter/Driver UI automation, verification, packaging, and dynamic unload."
   }
 }

@@ -429,6 +429,7 @@
         "name": "intellij-plugin-engineering",
         "paths": [
           "source/plugins/intellij-plugin-engineering/plugin.json",
+          "source/profiles/intellij-plugin-default.json",
           "source/skills/intellij-plugin-delivery",
           "source/adaptable.marketplace.json",
           "source/tools/validate-source-graph.mjs",
@@ -446,15 +447,16 @@
         "status": "PASS",
         "evidence": [
           "source/skills/intellij-plugin-delivery owns IntelliJ Platform contracts, repository-led build proof, and a conditional Kast delivery playbook without adding scaffolding.",
-          "source/plugins/intellij-plugin-engineering/plugin.json composes the new skill with canonical Kotlin, Gradle, TDD, Git, CI, PR, type-safety, Kotlin-correctness, and schema-design primitives.",
-          "The plugin declares no hooks or agents, preserving existing singular runtime ownership.",
+          "source/plugins/intellij-plugin-engineering/plugin.json owns only IntelliJ-specific delivery guidance plus the marketplace-wide type-safety and schema-design baselines.",
+          "source/profiles/intellij-plugin-default.json composes engineering-baseline, kotlin-engineering, git-ci-operations, and intellij-plugin-engineering without duplicate skill or hook ownership.",
+          "The IntelliJ plugin declares no hooks or agents; the workflow profile selects each existing hook from its singular owner.",
           "The Kast playbook keeps signing, feed generation, publication, and channel policy outside backend-idea."
         ]
       },
       "schemaCoverage": {
         "status": "PASS",
         "evidence": [
-          "source/tools/validate-source-graph.mjs validates the marketplace entry, standalone skill, referential plugin composition, exact shared-skill owners, routing cases, benchmark, and audit.",
+          "source/tools/validate-source-graph.mjs validates the marketplace entry, standalone skill, slim referential plugin, workflow profile, exact skill and hook ownership, routing cases, benchmark, and audit.",
           "source/evals/routing/intellij-plugin-engineering-workflows.json covers existing-plugin maintenance, mixed-language PSI filtering, exact-root readiness blockers, Kast distribution ownership, and programmatic Starter and Driver UI tests.",
           "source/evals/routing/fixtures/golden-routing-observations.json covers every new case through the full-corpus replay gate.",
           "source/evals/plugin-benchmarks/intellij-plugin-engineering.json targets an isolated Kast worktree and links each scenario to its routing case."
@@ -479,7 +481,7 @@
           "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id intellij-plugin-engineering-plugin-production-readiness",
           "node source/tools/validate-source-graph.mjs",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
-          "node --test source/tools/tests/default-workflow-profile.test.mjs source/tools/tests/plugin-hook-ownership.test.mjs",
+          "node --test source/tools/tests/intellij-workflow-profile.test.mjs source/tools/tests/plugin-hook-ownership.test.mjs",
           "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
           "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot",
           "git diff --check"
