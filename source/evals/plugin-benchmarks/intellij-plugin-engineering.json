@@ -1,0 +1,140 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "intellij-plugin-engineering",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": "../kast",
+    "setupMode": "git-worktree",
+    "preserve": "on-failure"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run this benchmark only in an isolated Kast worktree; do not mutate the user's dirty primary checkout.",
+    "Use Kast and backend-idea repository instructions plus the worktree's checked-in Gradle and platform versions as the live contract.",
+    "Feed benchmark-usage.jsonl into plugin-eval analyze with --observed-usage before treating static budget warnings as production blockers."
+  ],
+  "setupQuestions": [
+    "Which clean Kast revision should seed the isolated benchmark worktree?",
+    "Which focused backend-idea test or Gradle task proves each scenario?",
+    "Is local IDEA installation validation explicitly in scope for this run?",
+    "What token and retry budget is acceptable for a successful IntelliJ plugin delivery run?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "existing-plugin-maintenance",
+      "title": "Existing plugin maintenance",
+      "purpose": "Measure whether the plugin discovers and preserves Kast's existing IntelliJ build contract instead of scaffolding or upgrading incidentally.",
+      "routingCaseIds": [
+        "intellij-existing-plugin-maintenance-discovers-repo-contract"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Make the requested backend-idea maintenance change through its current architecture, run focused proof, and build the plugin ZIP without unrelated upgrades.",
+      "successChecklist": [
+        "The run records repository instructions and checked-in Gradle, JDK, platform, plugin.xml, and test surfaces.",
+        "No new scaffold or incidental version migration replaces the existing project.",
+        "Focused checks and buildPlugin succeed."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "mixed-language-psi-boundary",
+      "title": "Mixed-language PSI boundary",
+      "purpose": "Measure whether the plugin fixes the shared Kotlin target boundary and proves later references survive foreign PSI targets.",
+      "routingCaseIds": [
+        "intellij-mixed-language-psi-targets-filter-before-access"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Fix reference indexing so Java or Scala PSI targets do not abort later Kotlin rows, and prove it with the focused backend test.",
+      "successChecklist": [
+        "The shared scanner filters to KtNamedDeclaration before Kotlin-specific path or range access.",
+        "Unsupported target languages are skipped without ending the batch.",
+        "The focused regression proves a later Kotlin reference is indexed."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "exact-root-readiness",
+      "title": "Exact-root readiness",
+      "purpose": "Measure whether the plugin preserves typed Kast IDEA readiness blockers and avoids unsupported fallback claims.",
+      "routingCaseIds": [
+        "kast-intellij-readiness-preserves-typed-blocker"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Check exact-root IDEA readiness and validate what is supported without hiding or bypassing any typed blocker.",
+      "successChecklist": [
+        "The run records exact-root context or readiness evidence.",
+        "No unsupported macOS headless fallback or global-install repair is used.",
+        "The handoff distinguishes built, installed, active, and blocked states."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "distribution-ownership",
+      "title": "Distribution ownership",
+      "purpose": "Measure whether the plugin keeps backend-idea's unsigned ZIP boundary separate from repository release ownership.",
+      "routingCaseIds": [
+        "kast-intellij-distribution-respects-module-ownership"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Build the backend-idea artifact and report which later delivery stages belong to repository-level workflows.",
+      "successChecklist": [
+        "buildPlugin produces and identifies the unsigned backend-idea ZIP.",
+        "Signing, update-feed generation, publication, and channel policy remain outside backend-idea.",
+        "Build, requested installation validation, and publication are reported as separate proof stages."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "programmatic-ui-automation",
+      "title": "Programmatic UI automation",
+      "purpose": "Measure whether the plugin gives agents a semantic, isolated Starter and Driver UI-test path instead of coordinate-based desktop automation.",
+      "routingCaseIds": [
+        "intellij-ui-testing-uses-starter-driver-contract"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Add one agent-runnable UI integration test for a real backend-idea user flow, execute it non-interactively, and retain useful failure artifacts.",
+      "successChecklist": [
+        "A repository-owned JUnit 5 Starter and Driver task installs the exact built plugin into an isolated IDE sandbox.",
+        "The test uses stable actions or scoped semantic component selectors and asserts the visible result.",
+        "The run reports IDE build, plugin artifact, exit and exception state, and artifact paths without touching the daily IDE."
+      ]
+    }
+  ]
+}

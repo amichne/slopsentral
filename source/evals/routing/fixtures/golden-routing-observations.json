@@ -11,7 +11,12 @@
     "push-request-means-branch-commit-push-pr",
     "ci-failure-triage-uses-remote-check-evidence",
     "plugin-install-recovery-proves-installed-state",
-    "production-sharing-requires-quality-audit-evidence"
+    "production-sharing-requires-quality-audit-evidence",
+    "intellij-existing-plugin-maintenance-discovers-repo-contract",
+    "intellij-mixed-language-psi-targets-filter-before-access",
+    "kast-intellij-readiness-preserves-typed-blocker",
+    "kast-intellij-distribution-respects-module-ownership",
+    "intellij-ui-testing-uses-starter-driver-contract"
   ],
   "observations": [
     {
@@ -702,6 +707,124 @@
         "Report success when the delegated Pkl facade fails."
       ],
       "notes": "A passing replay routes to pkl-evaluate-check and preserves the Pkl workflow capability and proof boundaries."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "intellij-existing-plugin-maintenance-discovers-repo-contract",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "satisfiedAllowedActions": [
+        "Read repository instructions, status, build files, plugin.xml, and focused tests before editing.",
+        "Keep repository-pinned Gradle, JDK, Kotlin, and IntelliJ Platform versions unless the requested change requires a compatible adjustment.",
+        "Implement through the existing plugin architecture and run the narrowest relevant checks before building the ZIP."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run records the discovered build, platform, descriptor, and test surfaces.",
+        "Focused checks and buildPlugin succeed without unrelated version migration."
+      ],
+      "avoidedForbiddenActions": [
+        "Scaffold or overwrite an existing plugin project.",
+        "Upgrade build or platform versions merely because newer versions exist.",
+        "Treat an upstream template as evidence for the repository's actual contract."
+      ],
+      "notes": "A passing replay maintains the checked-in plugin contract and avoids scaffolding or incidental upgrades."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "intellij-mixed-language-psi-targets-filter-before-access",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "satisfiedAllowedActions": [
+        "Filter resolved targets to KtNamedDeclaration at the shared scanner boundary before Kotlin-specific path, range, or textRange access.",
+        "Skip unsupported PSI target languages without terminating the remaining batch.",
+        "Add a focused regression that proves valid Kotlin references after a foreign PSI target are still indexed."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The implementation filters target type before Kotlin-specific path and range access.",
+        "A focused backend test proves indexing continues after a Java or Scala target."
+      ],
+      "avoidedForbiddenActions": [
+        "Add duplicate language guards in individual callers.",
+        "Assume every resolved PsiElement is a Kotlin declaration.",
+        "Catch and discard the whole indexing batch after one foreign target."
+      ],
+      "notes": "A passing replay repairs the shared PSI boundary once and proves foreign targets do not truncate the batch."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "kast-intellij-readiness-preserves-typed-blocker",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "satisfiedAllowedActions": [
+        "Read Kast and backend-idea repository instructions and run context and readiness for the exact repository root.",
+        "Preserve the typed readiness blocker and use supported repository or direct Gradle validation that does not claim live IDEA semantic proof.",
+        "Distinguish built, installed, and active plugin states in the evidence."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run records exact-root context or readiness output.",
+        "The handoff names any unresolved IDEA blocker and does not overstate build, installation, or activation."
+      ],
+      "avoidedForbiddenActions": [
+        "Replace an IDEA backend blocker with an unsupported macOS headless fallback.",
+        "Repair global installations or consume stale fragments without repository authorization.",
+        "Claim the plugin is active because buildPlugin produced a ZIP."
+      ],
+      "notes": "A passing replay preserves exact-root authority and reports the unresolved lifecycle stage without unsupported fallback."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "kast-intellij-distribution-respects-module-ownership",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "satisfiedAllowedActions": [
+        "Build and verify the unsigned plugin ZIP through backend-idea's existing Gradle contract.",
+        "Leave signing, update-feed generation, release publication, and channel policy to repository-level delivery workflows.",
+        "Report build, requested installation validation, and publication as separate proof stages."
+      ],
+      "satisfiedVerificationEvidence": [
+        "buildPlugin succeeds for backend-idea and identifies the produced ZIP.",
+        "The handoff separates unsigned build proof from installation, signing, feed, and publication evidence."
+      ],
+      "avoidedForbiddenActions": [
+        "Move signing credentials or release publication into backend-idea.",
+        "Treat a local development installation as release publication.",
+        "Claim a distributable release without repository-level signing and publication evidence when those stages are requested."
+      ],
+      "notes": "A passing replay keeps backend-idea on unsigned build ownership and leaves release stages to repository workflows."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "intellij-ui-testing-uses-starter-driver-contract",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "satisfiedAllowedActions": [
+        "Use the repository-pinned IntelliJ Platform Gradle Plugin to expose a JUnit 5 Starter and Driver testIdeUi task in an isolated sandbox.",
+        "Install the exact built plugin artifact, wait for named IDE readiness, and guarantee IDE shutdown.",
+        "Drive actions and hierarchically scoped components by stable action ID, accessible name, visible text, or component type.",
+        "Assert the user-visible outcome and retain IDE logs, screenshots, artifacts, and exception or freeze evidence on failure."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run records the exact Gradle task, focused test, target IDE build, and tested plugin artifact.",
+        "The UI test uses semantic component or action selectors and asserts the final visible state.",
+        "The result records IDE exit, exception or freeze status, and failure artifact paths."
+      ],
+      "avoidedForbiddenActions": [
+        "Use screen coordinates or screenshot matching as the primary UI oracle.",
+        "Run automation against the user's daily IDE profile or dirty primary checkout.",
+        "Replace readiness conditions with fixed sleeps or hide failures with blind retries.",
+        "Introduce legacy Remote Robot as the default when the repository has no existing Remote Robot contract."
+      ],
+      "notes": "A passing replay uses the integrated Starter and Driver path with semantic selectors, isolated lifecycle, and retained artifacts."
     }
   ]
 }

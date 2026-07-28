@@ -420,6 +420,87 @@
         "Live release or deployment workflows still require separate approval before tags, releases, protected environments, or secrets are changed."
       ],
       "nextAction": "Run the event-driven benchmark scenarios against representative repositories, collect terminal duration samples through ci_wait_for_actions, feed benchmark-usage.jsonl into plugin-eval analyze --observed-usage, and record field observations for any CI routing misses."
+    },
+    {
+      "type": "PRIMITIVE_AUDIT",
+      "id": "intellij-plugin-engineering-plugin-production-readiness",
+      "target": {
+        "kind": "PLUGIN",
+        "name": "intellij-plugin-engineering",
+        "paths": [
+          "source/plugins/intellij-plugin-engineering/plugin.json",
+          "source/skills/intellij-plugin-delivery",
+          "source/adaptable.marketplace.json",
+          "source/tools/validate-source-graph.mjs",
+          "source/evals/routing/intellij-plugin-engineering-workflows.json",
+          "source/evals/routing/fixtures/golden-routing-observations.json",
+          "source/evals/plugin-benchmarks/intellij-plugin-engineering.json"
+        ]
+      },
+      "baseline": "The repository had reusable Kotlin, Gradle, TDD, Git, CI, and PR primitives but no compact IntelliJ Platform delivery workflow or Kast-specific IDEA backend routing boundary.",
+      "decision": "PROMOTE_READY",
+      "confidence": "HIGH",
+      "reviewedAt": "2026-07-28",
+      "reviewedBy": "codex",
+      "capabilityBoundary": {
+        "status": "PASS",
+        "evidence": [
+          "source/skills/intellij-plugin-delivery owns IntelliJ Platform contracts, repository-led build proof, and a conditional Kast delivery playbook without adding scaffolding.",
+          "source/plugins/intellij-plugin-engineering/plugin.json composes the new skill with canonical Kotlin, Gradle, TDD, Git, CI, PR, type-safety, Kotlin-correctness, and schema-design primitives.",
+          "The plugin declares no hooks or agents, preserving existing singular runtime ownership.",
+          "The Kast playbook keeps signing, feed generation, publication, and channel policy outside backend-idea."
+        ]
+      },
+      "schemaCoverage": {
+        "status": "PASS",
+        "evidence": [
+          "source/tools/validate-source-graph.mjs validates the marketplace entry, standalone skill, referential plugin composition, exact shared-skill owners, routing cases, benchmark, and audit.",
+          "source/evals/routing/intellij-plugin-engineering-workflows.json covers existing-plugin maintenance, mixed-language PSI filtering, exact-root readiness blockers, Kast distribution ownership, and programmatic Starter and Driver UI tests.",
+          "source/evals/routing/fixtures/golden-routing-observations.json covers every new case through the full-corpus replay gate.",
+          "source/evals/plugin-benchmarks/intellij-plugin-engineering.json targets an isolated Kast worktree and links each scenario to its routing case."
+        ]
+      },
+      "provenance": {
+        "status": "PASS",
+        "firstPartyCollisionCheck": "CHECKED_NO_COLLISION",
+        "evidence": [
+          "The local public names intellij-plugin-engineering and intellij-plugin-delivery do not collide with the audited upstream skill names.",
+          "source/skills/intellij-plugin-delivery/references/sources.md records four MIT-licensed upstream repositories, exact audited commits, retained ideas, rejected claims, and authoritative JetBrains links.",
+          "Primary synthesis was audited at https://github.com/gadfly3173/intellij-platform-sdk-skills/commit/9f504a29bc9c88dce59e94b72ebb4bce36d9b5b3.",
+          "Diagnostic concepts were audited at https://github.com/buyoung/skills/commit/dc29214c7317d0e96c80835ed6330fd61c2bd0b0.",
+          "Rejected stale or unsafe guidance was audited at https://github.com/duckyman-ai/agent-skills/commit/3f4e102ad2c0172f1dc95784058a8413d4803f6e and https://github.com/titonio/opencode-jb/commit/69bebeabe2dcf55d4681380697909bdc41df7847.",
+          "The skill is a source-owned rewrite and copies no upstream payload, scripts, templates, or scaffolding."
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "commands": [
+          "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin intellij-plugin-engineering",
+          "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id intellij-plugin-engineering-plugin-production-readiness",
+          "node source/tools/validate-source-graph.mjs",
+          "node source/tools/run-routing-evals.mjs --require-all-observed",
+          "node --test source/tools/tests/default-workflow-profile.test.mjs source/tools/tests/plugin-hook-ownership.test.mjs",
+          "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+          "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot",
+          "git diff --check"
+        ]
+      },
+      "runtimeSafety": {
+        "status": "PASS",
+        "evidence": [
+          "This change authors only source-owned Slopsentral content and validation evidence.",
+          "Provider projections are disposable proof targets; generated provider output and installed caches are not edited.",
+          "The benchmark declares a git-worktree workspace and explicitly protects the dirty primary Kast checkout.",
+          "No hook activation, agent installation, signing, publication, or Kast mutation is performed by this audit."
+        ]
+      },
+      "residualRisks": [
+        "JetBrains Platform, Gradle plugin, JDK, and Kotlin compatibility guidance can drift and must be rechecked against repository build files and current official documentation.",
+        "JetBrains marks Driver and its UI components experimental, so target-build API changes and selector drift require focused maintenance.",
+        "source/evals/plugin-benchmarks/intellij-plugin-engineering.json still needs observed use in an isolated Kast worktree before token and retry budgets can be tuned.",
+        "Kast exact-root commands and backend-idea task names should be rediscovered from the target revision during each live delivery."
+      ],
+      "nextAction": "Run the benchmark against a clean isolated Kast worktree, collect benchmark-usage.jsonl, and record field observations for any trigger misses or unsupported fallbacks."
     }
   ]
 }

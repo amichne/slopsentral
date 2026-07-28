@@ -1,0 +1,222 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 2,
+  "name": "intellij-plugin-engineering-workflow-routing",
+  "description": "Focused routing cases for maintaining and delivering IntelliJ Platform plugins, including Kast's IDEA backend.",
+  "cases": [
+    {
+      "id": "intellij-existing-plugin-maintenance-discovers-repo-contract",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-28",
+        "evidenceRefs": [
+          "source/skills/intellij-plugin-delivery/SKILL.md",
+          "source/skills/intellij-plugin-delivery/references/build-and-verification.md"
+        ]
+      },
+      "prompt": "Add a feature to this existing IntelliJ plugin and prove the compatible plugin ZIP without replacing its build or scaffolding a new project.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "observedRoute": {
+        "summary": "Generic plugin builders can scaffold over an established repository instead of discovering its checked-in Gradle, JDK, platform, descriptor, and test contracts.",
+        "risk": "Unrequested upgrades or replacement templates can break compatibility and erase repository-owned conventions.",
+        "loadedPrimitives": [
+          "intellij-plugin-delivery"
+        ]
+      },
+      "allowedActions": [
+        "Read repository instructions, status, build files, plugin.xml, and focused tests before editing.",
+        "Keep repository-pinned Gradle, JDK, Kotlin, and IntelliJ Platform versions unless the requested change requires a compatible adjustment.",
+        "Implement through the existing plugin architecture and run the narrowest relevant checks before building the ZIP."
+      ],
+      "forbiddenActions": [
+        "Scaffold or overwrite an existing plugin project.",
+        "Upgrade build or platform versions merely because newer versions exist.",
+        "Treat an upstream template as evidence for the repository's actual contract."
+      ],
+      "recoveryExpectation": "A good run should preserve the existing project shape, make the narrow feature change, and prove the repository-owned build contract.",
+      "notes": "This distinguishes maintenance delivery from interactive plugin scaffolding.",
+      "productiveOutcome": "Existing IntelliJ plugins are changed through their checked-in architecture and version constraints.",
+      "verificationEvidence": [
+        "The run records the discovered build, platform, descriptor, and test surfaces.",
+        "Focused checks and buildPlugin succeed without unrelated version migration."
+      ]
+    },
+    {
+      "id": "intellij-mixed-language-psi-targets-filter-before-access",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-28",
+        "evidenceRefs": [
+          "source/skills/intellij-plugin-delivery/references/platform-contracts.md",
+          "source/skills/intellij-plugin-delivery/references/kast-delivery.md"
+        ]
+      },
+      "prompt": "Fix an IntelliJ reference-indexing batch that aborts when a Kotlin reference resolves to a Java or Scala PSI declaration.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "observedRoute": {
+        "summary": "The IntelliJ skill can be loaded while the implementation still performs Kotlin-specific path or range access before filtering resolved PSI targets.",
+        "risk": "One non-Kotlin target can terminate the batch and hide valid later Kotlin references.",
+        "loadedPrimitives": [
+          "intellij-plugin-delivery",
+          "kotlin-agentic-correctness"
+        ]
+      },
+      "allowedActions": [
+        "Filter resolved targets to KtNamedDeclaration at the shared scanner boundary before Kotlin-specific path, range, or textRange access.",
+        "Skip unsupported PSI target languages without terminating the remaining batch.",
+        "Add a focused regression that proves valid Kotlin references after a foreign PSI target are still indexed."
+      ],
+      "forbiddenActions": [
+        "Add duplicate language guards in individual callers.",
+        "Assume every resolved PsiElement is a Kotlin declaration.",
+        "Catch and discard the whole indexing batch after one foreign target."
+      ],
+      "recoveryExpectation": "A good run should fix the shared boundary once and leave focused evidence that mixed-language targets no longer truncate indexing.",
+      "notes": "This captures the high-value Kotlin PSI boundary failure from Kast's IDEA reference index.",
+      "productiveOutcome": "Mixed-language PSI resolution preserves later valid Kotlin reference rows.",
+      "verificationEvidence": [
+        "The implementation filters target type before Kotlin-specific path and range access.",
+        "A focused backend test proves indexing continues after a Java or Scala target."
+      ]
+    },
+    {
+      "id": "kast-intellij-readiness-preserves-typed-blocker",
+      "type": "SETUP_FRICTION",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-28",
+        "evidenceRefs": [
+          "source/skills/intellij-plugin-delivery/references/kast-delivery.md"
+        ]
+      },
+      "prompt": "Validate Kast's IDEA plugin from macOS when exact-root readiness reports an IDEA backend blocker.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "observedRoute": {
+        "summary": "A generic Kotlin workflow can bypass the exact-root IDEA readiness result and attempt an unsupported headless fallback.",
+        "risk": "Stale semantic state may be mistaken for current proof, or a built artifact may be mistaken for an installed and active plugin.",
+        "loadedPrimitives": [
+          "intellij-plugin-delivery",
+          "kotlin-agentic-correctness"
+        ]
+      },
+      "allowedActions": [
+        "Read Kast and backend-idea repository instructions and run context and readiness for the exact repository root.",
+        "Preserve the typed readiness blocker and use supported repository or direct Gradle validation that does not claim live IDEA semantic proof.",
+        "Distinguish built, installed, and active plugin states in the evidence."
+      ],
+      "forbiddenActions": [
+        "Replace an IDEA backend blocker with an unsupported macOS headless fallback.",
+        "Repair global installations or consume stale fragments without repository authorization.",
+        "Claim the plugin is active because buildPlugin produced a ZIP."
+      ],
+      "recoveryExpectation": "A good run should retain the typed blocker, continue only with supported proof, and state which lifecycle stage remains unverified.",
+      "notes": "Exact-root readiness is an authority boundary, not a suggestion to bypass.",
+      "productiveOutcome": "Kast delivery preserves trustworthy semantic state and precise plugin lifecycle evidence.",
+      "verificationEvidence": [
+        "The run records exact-root context or readiness output.",
+        "The handoff names any unresolved IDEA blocker and does not overstate build, installation, or activation."
+      ]
+    },
+    {
+      "id": "kast-intellij-distribution-respects-module-ownership",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-28",
+        "evidenceRefs": [
+          "source/skills/intellij-plugin-delivery/references/build-and-verification.md",
+          "source/skills/intellij-plugin-delivery/references/kast-delivery.md"
+        ]
+      },
+      "prompt": "Prepare Kast's backend-idea plugin artifact and explain what is and is not owned by that module.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "observedRoute": {
+        "summary": "Plugin delivery can collapse build, local installation, signing, feed generation, and publication into one module workflow.",
+        "risk": "The backend may gain release responsibilities owned by repository-level workflows, or unsigned local artifacts may be described as published.",
+        "loadedPrimitives": [
+          "intellij-plugin-delivery",
+          "github-ci-operations",
+          "pull-request-lifecycle"
+        ]
+      },
+      "allowedActions": [
+        "Build and verify the unsigned plugin ZIP through backend-idea's existing Gradle contract.",
+        "Leave signing, update-feed generation, release publication, and channel policy to repository-level delivery workflows.",
+        "Report build, requested installation validation, and publication as separate proof stages."
+      ],
+      "forbiddenActions": [
+        "Move signing credentials or release publication into backend-idea.",
+        "Treat a local development installation as release publication.",
+        "Claim a distributable release without repository-level signing and publication evidence when those stages are requested."
+      ],
+      "recoveryExpectation": "A good run should produce the module-owned unsigned ZIP and hand off later delivery stages to their existing repository owners.",
+      "notes": "This prevents the reusable skill from expanding Kast's backend module boundary.",
+      "productiveOutcome": "Kast's IDEA module stays focused on building and testing while release workflows retain distribution ownership.",
+      "verificationEvidence": [
+        "buildPlugin succeeds for backend-idea and identifies the produced ZIP.",
+        "The handoff separates unsigned build proof from installation, signing, feed, and publication evidence."
+      ]
+    },
+    {
+      "id": "intellij-ui-testing-uses-starter-driver-contract",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-28",
+        "evidenceRefs": [
+          "source/skills/intellij-plugin-delivery/references/ui-automation.md",
+          "https://plugins.jetbrains.com/docs/intellij/integration-tests-ui.html"
+        ]
+      },
+      "prompt": "Add an agent-runnable UI test for an IntelliJ plugin tool-window flow and retain enough evidence to diagnose failures.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
+      "observedRoute": {
+        "summary": "Agents can fall back to screen coordinates, screenshots, sleeps, or the user's daily IDE instead of a repository-owned integration-test contract.",
+        "risk": "The test becomes flaky, non-reproducible, unsafe for local state, and unable to distinguish UI regressions from IDE startup failures.",
+        "loadedPrimitives": [
+          "intellij-plugin-delivery",
+          "kotlin-gradle-validation",
+          "tdd"
+        ]
+      },
+      "allowedActions": [
+        "Use the repository-pinned IntelliJ Platform Gradle Plugin to expose a JUnit 5 Starter and Driver testIdeUi task in an isolated sandbox.",
+        "Install the exact built plugin artifact, wait for named IDE readiness, and guarantee IDE shutdown.",
+        "Drive actions and hierarchically scoped components by stable action ID, accessible name, visible text, or component type.",
+        "Assert the user-visible outcome and retain IDE logs, screenshots, artifacts, and exception or freeze evidence on failure."
+      ],
+      "forbiddenActions": [
+        "Use screen coordinates or screenshot matching as the primary UI oracle.",
+        "Run automation against the user's daily IDE profile or dirty primary checkout.",
+        "Replace readiness conditions with fixed sleeps or hide failures with blind retries.",
+        "Introduce legacy Remote Robot as the default when the repository has no existing Remote Robot contract."
+      ],
+      "recoveryExpectation": "A good run should leave one non-interactive Gradle test command, semantic assertions, an isolated IDE lifecycle, and inspectable failure artifacts.",
+      "notes": "JetBrains currently documents Starter plus Driver as the integrated UI-testing path, while marking Driver UI APIs experimental.",
+      "productiveOutcome": "Agents can implement and execute repeatable IntelliJ UI stories without coordinate-based desktop automation.",
+      "verificationEvidence": [
+        "The run records the exact Gradle task, focused test, target IDE build, and tested plugin artifact.",
+        "The UI test uses semantic component or action selectors and asserts the final visible state.",
+        "The result records IDE exit, exception or freeze status, and failure artifact paths."
+      ]
+    }
+  ]
+}

@@ -13,11 +13,17 @@ const repoRoot =
 const sourceRoot = path.join(repoRoot, "source");
 
 const allowedSharedSkills = new Map([
+  ["git-change-flow", ["git-ci-operations", "intellij-plugin-engineering"]],
+  ["github-ci-operations", ["git-ci-operations", "intellij-plugin-engineering"]],
+  ["kotlin-agentic-correctness", ["intellij-plugin-engineering", "kotlin-engineering"]],
+  ["kotlin-gradle-validation", ["intellij-plugin-engineering", "kotlin-engineering"]],
   ["manage-json-schemas", ["api-contracts"]],
+  ["pull-request-lifecycle", ["git-ci-operations", "intellij-plugin-engineering"]],
   ["reference-doc-workflow", ["agent-platform-authoring", "code-knowledge-base"]],
   ["repository-signature-indexing", ["agent-platform-authoring", "code-knowledge-base"]],
   ["shell-script-safety", ["agent-platform-authoring", "git-ci-operations"]],
   ["site-docs-authoring", ["agent-platform-authoring", "code-knowledge-base"]],
+  ["tdd", ["engineering-baseline", "intellij-plugin-engineering"]],
 ]);
 
 const routingCaseTypes = new Set([
