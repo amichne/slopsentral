@@ -675,6 +675,13 @@
     },
     {
       "type": "PROFILE",
+      "name": "intellij-plugin-default",
+      "canonicalPath": "source/profiles/intellij-plugin-default.json",
+      "sourcePath": "local-synthesis:intellij-plugin-default-2026-07-28",
+      "handling": "local-synthesis-supporting-primitive"
+    },
+    {
+      "type": "PROFILE",
       "name": "kotlin-repo-default",
       "canonicalPath": "source/profiles/kotlin-repo-default.json",
       "sourcePath": "/Users/amichne/code/intelligence/source/profiles/kotlin-repo-default.json",

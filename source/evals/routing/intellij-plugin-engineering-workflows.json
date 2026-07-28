@@ -6,6 +6,56 @@
   "description": "Focused routing cases for maintaining and delivering IntelliJ Platform plugins, including Kast's IDEA backend.",
   "cases": [
     {
+      "id": "intellij-full-delivery-uses-default-profile",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-07-28",
+        "evidenceRefs": [
+          "source/profiles/intellij-plugin-default.json",
+          "source/plugins/engineering-baseline/plugin.json",
+          "source/plugins/kotlin-engineering/plugin.json",
+          "source/plugins/git-ci-operations/plugin.json",
+          "source/plugins/intellij-plugin-engineering/plugin.json"
+        ]
+      },
+      "prompt": "Implement a Kotlin feature in this existing IntelliJ plugin with red-green proof, build and verify the plugin ZIP, commit and push the scoped change, open a PR, and monitor CI.",
+      "expectedPrimitive": {
+        "type": "PROFILE",
+        "name": "intellij-plugin-default"
+      },
+      "observedRoute": {
+        "summary": "A full IntelliJ delivery request can load only the unique plugin skill and miss baseline TDD, Kotlin semantics, or Git and CI follow-through.",
+        "risk": "The implementation may lack stable red-green proof, semantic Kotlin evidence, plugin lifecycle verification, or the requested remote delivery evidence.",
+        "loadedPrimitives": [
+          "engineering-baseline",
+          "kotlin-engineering",
+          "git-ci-operations",
+          "intellij-plugin-engineering"
+        ]
+      },
+      "allowedActions": [
+        "Use engineering-baseline for the stable red-green-refactor check.",
+        "Use Kotlin Engineering for Kotlin semantics and Gradle proof.",
+        "Use IntelliJ Plugin Engineering for plugin lifecycle, compatibility, and ZIP verification.",
+        "Use Git and CI Operations for scoped staging, commit, push, PR, and CI follow-through.",
+        "Use the profile to compose all four plugins without duplicate skills, agents, or hooks."
+      ],
+      "forbiddenActions": [
+        "Handle the full workflow with only intellij-plugin-delivery.",
+        "Move generic TDD, Kotlin semantics, Git, PR, or CI ownership into IntelliJ Plugin Engineering.",
+        "Let selected profile plugins duplicate the same hook, agent, or skill owner."
+      ],
+      "recoveryExpectation": "A good run should preserve the four ownership boundaries while completing the requested IntelliJ implementation and delivery chain.",
+      "notes": "This is the end-to-end routing benchmark for the default IntelliJ plugin development profile.",
+      "productiveOutcome": "Full IntelliJ plugin work composes baseline proof, Kotlin semantics, plugin delivery, and Git and CI operations without duplicated ownership.",
+      "verificationEvidence": [
+        "The focused repository check records a valid RED and GREEN with one stable check specification.",
+        "Kotlin and IntelliJ proof includes Gradle checks and the compatible plugin ZIP.",
+        "Delivery proof includes scoped staging, commit, push, PR, and current CI evidence."
+      ]
+    },
+    {
       "id": "intellij-existing-plugin-maintenance-discovers-repo-contract",
       "type": "WRONG_PRIMITIVE",
       "source": {

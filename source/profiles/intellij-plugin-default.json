@@ -1,0 +1,62 @@
+{
+  "type": "WORKFLOW_PROFILE",
+  "schemaVersion": 1,
+  "name": "intellij-plugin-default",
+  "description": "IntelliJ Platform plugin development workflow composed from baseline engineering, Kotlin and Gradle correctness, Git and CI delivery, and the unique IntelliJ delivery skill.",
+  "marketplaces": [
+    {
+      "type": "WORKFLOW_MARKETPLACE",
+      "name": "slopsentral",
+      "provider": "codex",
+      "source": "https://github.com/amichne/slopsentral",
+      "entrypoint": ".agents/plugins/marketplace.json",
+      "scope": "plugins in this workflow profile"
+    }
+  ],
+  "plugins": [
+    "engineering-baseline",
+    "kotlin-engineering",
+    "git-ci-operations",
+    "intellij-plugin-engineering"
+  ],
+  "hooks": [
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "agents-md-turn-refresh",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "required-skill-read",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "kotlin-horizontalization-check",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "gradle-check-green",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "gradle-wrapper-integrity",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "github-actions-await",
+      "adapter": "codex"
+    }
+  ],
+  "validation": {
+    "type": "WORKFLOW_VALIDATION",
+    "commands": [
+      "node source/tools/validate-source-graph.mjs",
+      "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+      "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+    ]
+  }
+}
