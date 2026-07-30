@@ -6,7 +6,8 @@ For an existing Kast workspace registration:
 
 ```bash
 WORKSPACE_ROOT="$(pwd -P)"
-SQLITE_READER="source/skills/sqlite-readonly-navigation/scripts/sqlite_readonly"
+SQLITE_SKILL_DIR="/absolute/path/to/the/loaded/sqlite-readonly-navigation"
+SQLITE_READER="$SQLITE_SKILL_DIR/scripts/sqlite_readonly"
 KAST_DATABASE="$(
   "$SQLITE_READER" \
     --kast-workspace "$WORKSPACE_ROOT" \
@@ -14,6 +15,9 @@ KAST_DATABASE="$(
 )"
 test -f "$KAST_DATABASE"
 ```
+
+Resolve `SQLITE_SKILL_DIR` relative to this loaded `SKILL.md`, not the target
+workspace.
 
 Resolution follows the active public binary to its release receipt, scans only
 existing `roots.data/workspaces/**/workspace.json` files, canonicalizes and
@@ -75,7 +79,14 @@ SQL
 
 For cache freshness experiments, read `PRAGMA main.data_version`, execute the
 external workload, then read it again through the same still-open connection.
-Do not compare values collected from separate SQLite processes.
+Commit any read transaction before the external workload so the observation
+does not pin a snapshot or delay WAL recycling. Do not compare values collected
+from separate SQLite processes.
+
+The helper prevents main-database writes with `-readonly` and rejects dangerous
+functions and `ATTACH` through safe mode. `query_only` is additional
+connection-local protection, not an immutable SQL authorization layer. A live
+WAL reader may still coordinate through an existing `-shm` sidecar.
 
 ## Query plans
 

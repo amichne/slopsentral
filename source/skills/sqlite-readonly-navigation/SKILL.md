@@ -15,7 +15,7 @@ assuming table or column names.
    from the active release receipt and existing exact-root workspace metadata.
 2. Use `scripts/sqlite_readonly`. It requires an existing file and invokes the
    SQLite 3.40.1 or newer with safe mode, read-only open flags, a busy timeout,
-   `query_only=ON`, and `trusted_schema=OFF`.
+   no-follow protection, `query_only=ON`, and `trusted_schema=OFF`.
 3. Inspect `sqlite_schema` and table/index pragmas before writing a query.
 4. Hold one read transaction for a coherent multi-query snapshot.
 5. Use `EXPLAIN QUERY PLAN` before characterizing a slow query.
@@ -25,7 +25,8 @@ assuming table or column names.
 ## Commands
 
 ```bash
-SQLITE_READER="source/skills/sqlite-readonly-navigation/scripts/sqlite_readonly"
+SQLITE_SKILL_DIR="/absolute/path/to/the/loaded/sqlite-readonly-navigation"
+SQLITE_READER="$SQLITE_SKILL_DIR/scripts/sqlite_readonly"
 
 "$SQLITE_READER" --kast-workspace "$WORKSPACE_ROOT" --print-path
 "$SQLITE_READER" --database /absolute/path/to/database.db
@@ -33,6 +34,9 @@ SQLITE_READER="source/skills/sqlite-readonly-navigation/scripts/sqlite_readonly"
   --json \
   --query 'SELECT type, name FROM sqlite_schema ORDER BY type, name;'
 ```
+
+Resolve `SQLITE_SKILL_DIR` from this loaded `SKILL.md`; do not assume the target
+workspace contains Slopsentral's `source/` tree.
 
 An offline relative path must be anchored explicitly:
 
@@ -46,6 +50,11 @@ An offline relative path must be anchored explicitly:
 
 - Never use `immutable=1` for a live WAL database; it can ignore current WAL
   state.
+- `-readonly` is the durable main-database barrier. `query_only=ON` is
+  defense-in-depth and must not be disabled. Safe mode rejects dangerous
+  functions and `ATTACH`; this is not an authorizer-based SQL sandbox.
+- A read-only WAL client can still coordinate through an existing `-shm`
+  sidecar. Do not claim the observation is filesystem-side-effect-free.
 - Never run `VACUUM`, `REINDEX`, `ANALYZE`, `PRAGMA optimize`, checkpoints,
   `.dump`, `.backup`, `.save`, or writes through this skill.
 - Never reproduce Kast workspace hashes or call a resolving command while
@@ -63,7 +72,9 @@ snapshots, query plans, generation checks, and Kast-owned alternatives.
 ## Completion Criteria
 
 - The database path is explicit and already exists.
-- The connection is read-only at both open and SQLite query layers.
+- The final database target is canonicalized and opened with `-nofollow` and
+  `-readonly`; `query_only` remains enabled as defense-in-depth.
 - Queries are based on discovered schema and use a coherent snapshot when
   multiple statements support one claim.
-- No database, WAL, journal, or application metadata is created or modified.
+- No data or schema write is attempted, and no application-owned resolver is
+  invoked. Any live WAL/SHM coordination is reported as an observation limit.

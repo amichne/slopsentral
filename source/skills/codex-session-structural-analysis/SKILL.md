@@ -27,8 +27,9 @@ sensitive material; keep derived artifacts local and project only needed fields.
 ## Commands
 
 ```bash
-SESSION_TOOL="source/skills/codex-session-structural-analysis/scripts/codex_session_tree"
-PROFILE_FILTER="source/skills/codex-session-structural-analysis/scripts/tool_call_profile.jq"
+SESSION_SKILL_DIR="/absolute/path/to/the/loaded/codex-session-structural-analysis"
+SESSION_TOOL="$SESSION_SKILL_DIR/scripts/codex_session_tree"
+PROFILE_FILTER="$SESSION_SKILL_DIR/scripts/tool_call_profile.jq"
 SESSION_ARTIFACT_DIR="$(
   mktemp -d "${TMPDIR:-/tmp}/codex-session-analysis.XXXXXX"
 )"
@@ -39,6 +40,9 @@ SESSION_ARTIFACT_DIR="$(
 jq -s --arg pattern 'kast .*graph|kast .*symbol' \
   -f "$PROFILE_FILTER" "$SESSION_ARTIFACT_DIR/calls.jsonl"
 ```
+
+Resolve `SESSION_SKILL_DIR` from this loaded `SKILL.md`; do not assume the
+target workspace contains Slopsentral's `source/` tree.
 
 The tool also supports `events`, which wraps every raw record with its session
 ID, parent, depth, and source file.
