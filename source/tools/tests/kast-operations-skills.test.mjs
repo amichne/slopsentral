@@ -206,6 +206,14 @@ test("SQLite navigation resolves Kast workspace state and rejects writes", () =>
     { encoding: "utf8" },
   );
   assert.notEqual(writeAttempt.status, 0);
+  assert.notEqual(
+    spawnSync(
+      sqliteScript,
+      ["--database", database, "--print-path", "--query", "SELECT 1;"],
+      { encoding: "utf8" },
+    ).status,
+    0,
+  );
   assert.equal(
     execFileSync("sqlite3", [database, "SELECT count(*) FROM sample;"], { encoding: "utf8" }).trim(),
     "1",
