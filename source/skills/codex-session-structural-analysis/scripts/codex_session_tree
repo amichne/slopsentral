@@ -56,6 +56,8 @@ TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/codex-session-tree.XXXXXX")"
 trap 'rm -rf "$TEMP_DIR"' EXIT
 SEEN_FILE="$TEMP_DIR/seen"
 : > "$SEEN_FILE"
+SESSION_FILES_FILE="$TEMP_DIR/session-files"
+rg --files "$SESSIONS_DIR" -g '*.jsonl' > "$SESSION_FILES_FILE" || true
 
 canonical_file() {
   local input_file="$1"
@@ -68,6 +70,12 @@ session_id() {
   local session_file="$1"
   local discovered
   local base_name
+
+  base_name="$(basename "$session_file")"
+  if [[ "$base_name" =~ ([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}) ]]; then
+    printf '%s\n' "${BASH_REMATCH[1]}"
+    return
+  fi
 
   discovered="$(
     jq -sr '
@@ -84,12 +92,7 @@ session_id() {
     return
   fi
 
-  base_name="$(basename "$session_file")"
-  if [[ "$base_name" =~ ([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}) ]]; then
-    printf '%s\n' "${BASH_REMATCH[1]}"
-  else
-    printf '%s\n' "$base_name"
-  fi
+  printf '%s\n' "$base_name"
 }
 
 find_child() {
@@ -97,8 +100,7 @@ find_child() {
   local matches_file="$TEMP_DIR/matches"
   local match_count
 
-  rg --files "$SESSIONS_DIR" -g '*.jsonl' |
-    rg -F "$child_id" > "$matches_file" || true
+  rg -F "$child_id" "$SESSION_FILES_FILE" > "$matches_file" || true
   match_count="$(wc -l < "$matches_file" | tr -d ' ')"
   case "$match_count" in
     1) sed -n '1p' "$matches_file" ;;
