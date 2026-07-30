@@ -1,0 +1,60 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "kast-operations",
+  "version": "0.1.0",
+  "description": "Operational diagnosis, performance measurement, session-ledger analysis, and read-only SQLite navigation for Kast and adjacent agent workflows.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kast-installation-diagnosis",
+      "name": "kast-installation-diagnosis"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kast-performance-assessment",
+      "name": "kast-performance-assessment"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/codex-session-structural-analysis",
+      "name": "codex-session-structural-analysis"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/sqlite-readonly-navigation",
+      "name": "sqlite-readonly-navigation"
+    }
+  ],
+  "agents": [],
+  "instructions": [],
+  "hooks": [],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Install for local Kast operator work, measured performance investigations, Codex session-ledger analysis, or defensively read-only SQLite inspection.",
+    "notFor": "Routine Kotlin or Gradle semantic queries, repository call graphs, GitHub Actions performance, database writes or repair, or replacing product-owned public commands.",
+    "role": "kast-operations",
+    "scope": "Live-install diagnosis and supported repair, representative performance measurement, descendant Codex session projection, and read-only SQLite navigation."
+  }
+}
