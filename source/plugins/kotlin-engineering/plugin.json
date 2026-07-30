@@ -154,14 +154,14 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install in Kotlin/Gradle repositories where agents write or review Kotlin; compose through kotlin-repo-default with engineering-baseline and git-ci-operations for repository delivery.",
+    "dailyDriver": "Install in Kotlin/Gradle repositories where agents write or review Kotlin; compose through kotlin-repo-default with engineering-baseline, git-ci-operations, and effective-delivery for repository delivery.",
     "companionProfile": "kotlin-repo-default",
-    "deliveryCompanion": "git-ci-operations",
+    "deliveryCompanion": "effective-delivery",
     "informationExchange": "filesystem-and-semantic-evidence",
     "kast": "prefer-packaged-kast-skill-or-file-backed-rpc",
     "notFor": "Non-Kotlin repositories, generic Git/CI delivery, release management, API-only contract governance, or platform marketplace authoring work.",
     "owner": "kotlin-engineering",
-    "packageBoundary": "Kotlin semantics and proof only; generic branch, PR, CI, and release work stays in git-ci-operations.",
+    "packageBoundary": "Kotlin semantics and proof only; local Git work stays in git-ci-operations, while PR, CI, and release work stays in effective-delivery.",
     "principle": "encode-kotlin-invariants-in-types-and-prove-them-with-focused-evidence",
     "role": "kotlin-best-practices",
     "scope": "Kotlin implementation and review best practices: domain modeling, parse-dont-validate boundaries, package cohesion, Kast or file-backed semantic navigation, negative capability proof, Gradle validation, Gradle wrapper integrity, and Kotlin-specific hook checks."

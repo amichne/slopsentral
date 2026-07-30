@@ -1,14 +1,20 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import os
+import subprocess
 import sys
+import tempfile
 import unittest
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 from typing import Sequence
+from unittest import mock
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "github-actions-await.py"
+ADAPTER = SCRIPT.parent / "codex/github-actions-await.hooks.json"
 LOADER = SourceFileLoader("github_actions_await", str(SCRIPT))
 SPEC = importlib.util.spec_from_loader(LOADER.name, LOADER)
 assert SPEC is not None
@@ -42,20 +48,121 @@ class FakeCli:
 
 
 class GithubActionsAwaitHookTests(unittest.TestCase):
-    def test_guard_denies_raw_gh_observation(self) -> None:
+    def test_session_start_loads_gh_axi_ambient_context(self) -> None:
+        adapter = json.loads(ADAPTER.read_text())
+
+        session_start = adapter["hooks"]["SessionStart"][0]
+
+        self.assertEqual(session_start["matcher"], "startup|resume")
+        self.assertEqual(
+            session_start["hooks"][0]["command"],
+            "python3 hooks/github-actions-await.py start --repo .",
+        )
+
+    def test_start_falls_back_to_npx_for_gh_axi_ambient_context(self) -> None:
+        calls: list[tuple[tuple[str, ...], Path]] = []
+
+        def fake(args: Sequence[str], cwd: Path) -> tuple[int, str, str]:
+            calls.append((tuple(args), cwd))
+            return (0, "repo: amichne/slopsentral\n", "")
+
+        output = hook.start_output(Path("/repo"), fake)
+
+        self.assertEqual(output, "repo: amichne/slopsentral")
+        self.assertEqual(calls, [(('npx', '-y', 'gh-axi'), Path('/repo'))])
+
+    def test_start_prefers_an_installed_gh_axi(self) -> None:
+        calls: list[tuple[tuple[str, ...], Path]] = []
+
+        def fake(args: Sequence[str], cwd: Path) -> tuple[int, str, str]:
+            calls.append((tuple(args), cwd))
+            return (0, "repo: amichne/slopsentral\n", "")
+
+        with tempfile.TemporaryDirectory() as directory:
+            installed = Path(directory) / "gh-axi"
+            installed.write_text("#!/bin/sh\n")
+            installed.chmod(0o755)
+            with mock.patch.dict(os.environ, {"PATH": directory}):
+                output = hook.start_output(Path("/repo"), fake)
+
+        self.assertEqual(output, "repo: amichne/slopsentral")
+        self.assertEqual(calls, [((str(installed),), Path("/repo"))])
+
+    def test_guard_redirects_raw_gh_at_shell_call_boundary(self) -> None:
         output = hook.guard_output(
             {
                 "tool_name": "Bash",
-                "tool_input": {"command": "gh run watch 123"},
+                "tool_input": {
+                    "command": "gh run watch 123",
+                    "timeout": 30,
+                },
             }
         )
 
-        self.assertEqual(output["hookSpecificOutput"]["permissionDecision"], "deny")
-        self.assertIn("gh-axi", output["hookSpecificOutput"]["permissionDecisionReason"])
+        specific = output["hookSpecificOutput"]
+        self.assertEqual(specific["permissionDecision"], "allow")
+        self.assertEqual(specific["updatedInput"]["timeout"], 30)
+        rewritten = specific["updatedInput"]["command"]
+        self.assertTrue(rewritten.endswith("\ngh run watch 123"))
 
-    def test_guard_denies_raw_gh_inside_shell_wrappers(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fake_npx = Path(directory) / "npx"
+            fake_npx.write_text('#!/bin/sh\nprintf "npx:%s\\n" "$*"\n')
+            fake_npx.chmod(0o755)
+            env = dict(os.environ, PATH=f"{directory}:{os.environ['PATH']}")
+            result = subprocess.run(
+                ["zsh", "-c", rewritten],
+                check=True,
+                capture_output=True,
+                text=True,
+                env=env,
+            )
+
+        self.assertEqual(result.stdout, "npx:-y gh-axi run watch 123\n")
+
+    def test_guard_prefers_an_installed_gh_axi(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            installed = Path(directory) / "gh-axi"
+            installed.write_text('#!/bin/sh\nprintf "installed:%s\\n" "$*"\n')
+            installed.chmod(0o755)
+            with mock.patch.dict(os.environ, {"PATH": directory}):
+                output = hook.guard_output(
+                    {
+                        "tool_name": "Bash",
+                        "tool_input": {"command": "gh pr checks 20"},
+                    }
+                )
+            rewritten = output["hookSpecificOutput"]["updatedInput"]["command"]
+            self.assertIn(str(installed), rewritten)
+            result = subprocess.run(
+                ["zsh", "-c", rewritten],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(result.stdout, "installed:pr checks 20\n")
+
+    def test_guard_redirects_raw_gh_inside_command_substitution(self) -> None:
+        output = hook.guard_output(
+            {
+                "tool_name": "Bash",
+                "tool_input": {"command": "result=$(gh pr checks 42)"},
+            }
+        )
+
+        self.assertEqual(
+            output["hookSpecificOutput"]["permissionDecision"],
+            "allow",
+        )
+        self.assertTrue(
+            output["hookSpecificOutput"]["updatedInput"]["command"].endswith(
+                "\nresult=$(gh pr checks 42)"
+            )
+        )
+
+    def test_guard_denies_shell_forms_that_bypass_the_redirect(self) -> None:
         commands = (
-            "result=$(gh pr checks 42)",
             "env GH_TOKEN=secret gh run view 123",
             "/opt/homebrew/bin/gh workflow run validate.yml",
         )
@@ -81,22 +188,20 @@ class GithubActionsAwaitHookTests(unittest.TestCase):
         self.assertEqual(output["hookSpecificOutput"]["permissionDecision"], "deny")
 
     def test_guard_allows_gh_axi_and_unrelated_shell(self) -> None:
-        self.assertIsNone(
-            hook.guard_output(
-                {
-                    "tool_name": "Bash",
-                    "tool_input": {"command": "npx -y gh-axi run view 123"},
-                }
-            )
-        )
-        self.assertIsNone(
-            hook.guard_output(
-                {
-                    "tool_name": "Bash",
-                    "tool_input": {"command": "git status --short"},
-                }
-            )
-        )
+        for command in ("npx -y gh-axi run view 123", "git status --short"):
+            with self.subTest(command=command):
+                output = hook.guard_output(
+                    {"tool_name": "Bash", "tool_input": {"command": command}}
+                )
+                self.assertEqual(
+                    output["hookSpecificOutput"]["permissionDecision"],
+                    "allow",
+                )
+                self.assertTrue(
+                    output["hookSpecificOutput"]["updatedInput"]["command"].endswith(
+                        f"\n{command}"
+                    )
+                )
 
     def test_stop_allows_idle_turn_to_finish(self) -> None:
         fake = FakeCli([hook.CliResult(0, {"state": "idle"})])

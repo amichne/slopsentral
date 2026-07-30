@@ -1,0 +1,73 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "effective-delivery",
+  "version": "0.1.0",
+  "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and quiet event-driven observation.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/github-ci-operations",
+      "name": "github-ci-operations"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pull-request-lifecycle",
+      "name": "pull-request-lifecycle"
+    }
+  ],
+  "agents": [],
+  "instructions": [
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "concepts/type-safety/core.md",
+      "name": "type-safety"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "concepts/schema-driven-design/core.md",
+      "name": "schema-driven-design"
+    }
+  ],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/github-actions-await.hook.json",
+      "name": "github-actions-await"
+    }
+  ],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Install alongside git-ci-operations when agents must publish pull requests, optimize or repair GitHub Actions, and wait for remote delivery evidence without model-driven polling.",
+    "notFor": "Local-only Git changes, generic implementation TDD, language-specific semantic review, or non-GitHub delivery systems without a structured observer.",
+    "owner": "effective-delivery",
+    "principle": "agents-wake-on-evidence",
+    "role": "effective-delivery",
+    "scope": "Pull-request lifecycle, GitHub Actions triage and optimization, workflow-graph proof, releases, structured CI evidence, duration prediction, and quiet event-driven waiting."
+  }
+}

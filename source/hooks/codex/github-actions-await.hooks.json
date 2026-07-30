@@ -1,5 +1,18 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/github-actions-await.py start --repo .",
+            "timeout": 10,
+            "statusMessage": "Loading AXI GitHub context"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "^(Bash|exec_command|mcp__.*github.*)$",
@@ -8,7 +21,7 @@
             "type": "command",
             "command": "python3 hooks/github-actions-await.py guard --repo .",
             "timeout": 10,
-            "statusMessage": "Enforcing the AXI GitHub boundary"
+            "statusMessage": "Redirecting GitHub shell calls through AXI"
           }
         ]
       }

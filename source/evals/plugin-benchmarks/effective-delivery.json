@@ -5,7 +5,7 @@
   "schemaVersion": 2,
   "version": 2,
   "targetKind": "plugin",
-  "targetName": "git-ci-operations",
+  "targetName": "effective-delivery",
   "runner": {
     "type": "codex-cli",
     "model": "gpt-5.4",
@@ -37,7 +37,7 @@
     "Feed observed benchmark usage into plugin-eval analysis before turning static budget warnings into blockers."
   ],
   "setupQuestions": [
-    "Which repository and branch should represent the daily-driver CI workflow?",
+    "Which repository and branch should represent the daily-driver delivery workflow?",
     "Which PR or workflow run can be used safely for live CI evidence?",
     "Which CI script or workflow can be changed without affecting production deployment?",
     "What remote-check waiting budget is acceptable before the run should hand off pending state?"
@@ -55,7 +55,7 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Git/CI Operations to triage a failing GitHub Actions check. Identify the current failing job and run URL, fix the owning source or workflow, run the closest local proof, push if required, and re-read the remote check state.",
+      "userInput": "Use Effective Delivery to triage a failing GitHub Actions check. Identify the current failing job and run URL, fix the owning source or workflow, run the closest local proof, push if required, and re-read the remote check state.",
       "successChecklist": [
         "The run cites current npx -y gh-axi check or run evidence for the head SHA.",
         "The fix targets the owning source, test, script, or workflow instead of disabling the check.",
@@ -74,7 +74,7 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Git/CI Operations to tell me whether PR 42 is green. Use AXI as the sole GitHub surface. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you.",
+      "userInput": "Use Effective Delivery to tell me whether PR 42 is green. Use AXI as the sole GitHub surface. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you.",
       "successChecklist": [
         "Every remote GitHub interaction uses npx -y gh-axi, and the typed observer classifies the current head.",
         "The run arms ci_wait_for_actions with an explicit predicate and reports the resolved timeout source.",
@@ -94,7 +94,7 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Git/CI Operations to revise a GitHub Actions workflow so repeated setup or validation logic becomes reusable and the jobs keep explicit permissions, concurrency, and local validation commands.",
+      "userInput": "Use Effective Delivery to revise a GitHub Actions workflow so repeated setup or validation logic becomes reusable and the jobs keep explicit permissions, concurrency, and local validation commands.",
       "successChecklist": [
         "Shared logic is moved to workflow_call or a versioned repo script when reuse is needed.",
         "Workflow permissions and concurrency are explicit and narrow.",
@@ -113,31 +113,12 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Git/CI Operations to optimize this workflow's dependency graph. Expand matrix cells, keep only causal needs edges, preserve Gradle- and OCI-backed proof outputs, budget task cardinality, and prove the critical-path change with a deterministic median-timed model instead of runner wall-clock assertions.",
+      "userInput": "Use Effective Delivery to optimize this workflow's dependency graph. Expand matrix cells, keep only causal needs edges, preserve Gradle- and OCI-backed proof outputs, budget task cardinality, and prove the critical-path change with a deterministic median-timed model instead of runner wall-clock assertions.",
       "successChecklist": [
         "The run models each matrix cell or reusable invocation as an execution node and removes dependencies on unrelated required jobs.",
         "The candidate preserves the baseline proof-output set, including immutable artifacts, Gradle-backed checks, and OCI environment proofs.",
         "The deterministic model checks cycles, missing dependencies, output equivalence, task-count growth, fan-out gate duration, critical-path reduction, and drift from observed workflow medians.",
         "Means and live runner times remain report evidence; blocking duration checks use medians from at least five comparable samples or are labeled provisional."
-      ]
-    },
-    {
-      "type": "PLUGIN_EVAL_SCENARIO",
-      "id": "ci-shell-script-reusable-safe",
-      "title": "Reusable shell script safety",
-      "purpose": "Measure whether repeated CI shell logic becomes a safe reusable script with deterministic local validation.",
-      "routingCaseIds": [
-        "ci-shell-automation-uses-safe-reusable-scripts"
-      ],
-      "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "shell-script-safety"
-      },
-      "userInput": "Use Git/CI Operations to move repeated CI shell logic into a reusable script. Add strict mode, explicit inputs, safe cleanup, and prove it with bash -n plus the shell safety helper.",
-      "successChecklist": [
-        "The implementation avoids duplicating long inline shell in workflow YAML.",
-        "The script has strict mode, input validation, and safety boundaries for mutation.",
-        "The run includes bash -n and check_shell_safety output for the touched script."
       ]
     },
     {
@@ -152,7 +133,7 @@
         "type": "SKILL",
         "name": "pull-request-lifecycle"
       },
-      "userInput": "Use Git/CI Operations to make a focused change, stage only scoped files, commit, push, open or update the PR through AXI, and arm bounded CI events until it is green or an exact failing, pending, or timeout signal remains.",
+      "userInput": "Use Effective Delivery with Git Operations to make a focused change, stage only scoped files, commit, push, open or update the PR through AXI, and arm bounded CI events until it is green or an exact failing, pending, or timeout signal remains.",
       "successChecklist": [
         "The run preserves unrelated work and stages only the requested change set.",
         "The PR handoff includes branch, base, head SHA, validation commands, and residual risks.",

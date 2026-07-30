@@ -144,6 +144,7 @@
           "source/plugins/engineering-baseline/plugin.json",
           "source/plugins/kotlin-engineering/plugin.json",
           "source/plugins/git-ci-operations/plugin.json",
+          "source/plugins/effective-delivery/plugin.json",
           "source/profiles/kotlin-repo-default.json"
         ]
       },
@@ -158,23 +159,25 @@
         "loadedPrimitives": [
           "engineering-baseline",
           "kotlin-engineering",
-          "git-ci-operations"
+          "git-ci-operations",
+          "effective-delivery"
         ]
       },
       "allowedActions": [
         "Use engineering-baseline for the generic executable-check red-green-refactor loop.",
         "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
-        "Use git-ci-operations for staging, commit, push, PR, CI, and release follow-through.",
-        "Use the profile to compose all three without duplicate skills, agents, or hooks."
+        "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
+        "Use effective-delivery for pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use the profile to compose all four without duplicate skills, agents, or hooks."
       ],
       "forbiddenActions": [
         "Move generic TDD, Git, PR, CI, or release instructions into Kotlin Engineering.",
         "Handle a Kotlin code change with only delivery primitives and no semantic Kotlin evidence.",
         "Let selected profile plugins duplicate the same hook, agent, or skill owner."
       ],
-      "recoveryExpectation": "A good run should be attributable: engineering-baseline owns generic TDD, Kotlin Engineering owns code semantics, and git-ci-operations owns publication and CI.",
+      "recoveryExpectation": "A good run should be attributable: engineering-baseline owns generic TDD, Kotlin Engineering owns code semantics, git-ci-operations owns local Git mechanics, and effective-delivery owns publication and CI.",
       "notes": "This is the high-value companion-plugin benchmark for end-to-end Kotlin repository work.",
-      "productiveOutcome": "End-to-end Kotlin delivery remains attributable: red-green workflow from Engineering Baseline, semantic evidence from Kotlin Engineering, and publication evidence from Git/CI Operations.",
+      "productiveOutcome": "End-to-end Kotlin delivery remains attributable: red-green workflow from Engineering Baseline, semantic evidence from Kotlin Engineering, local Git evidence from Git Operations, and publication evidence from Effective Delivery.",
       "verificationEvidence": [
         "The focused Gradle or repository check records a valid RED and GREEN with one stable check specification.",
         "Kotlin proof includes semantic or Gradle evidence.",
