@@ -131,6 +131,30 @@ test("session analysis walks descendants, joins tool outputs, and profiles match
       maxSeconds: 2.5,
     },
   ]);
+
+  const missingId = "00000000-0000-0000-0000-000000000003";
+  const missingRoot = path.join(fixture, "missing-root.jsonl");
+  writeJsonLines(missingRoot, [
+    {
+      type: "event_msg",
+      payload: { type: "sub_agent_activity", agent_thread_id: missingId },
+    },
+  ]);
+  assert.notEqual(
+    spawnSync(
+      sessionScript,
+      ["files", "--root", missingRoot, "--sessions-dir", fixture],
+      { encoding: "utf8" },
+    ).status,
+    0,
+  );
+  const partial = spawnSync(
+    sessionScript,
+    ["files", "--root", missingRoot, "--sessions-dir", fixture, "--allow-missing"],
+    { encoding: "utf8" },
+  );
+  assert.equal(partial.status, 0);
+  assert.match(partial.stderr, new RegExp(`missing child ${missingId}`));
 });
 
 test("SQLite navigation resolves Kast workspace state and rejects writes", () => {
