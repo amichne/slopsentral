@@ -11,7 +11,7 @@ die() {
   exit 2
 }
 
-canonical_executable() {
+canonical_file() {
   local executable_path="$1"
   local executable_dir
   local link_target
@@ -104,7 +104,7 @@ if [[ -n "$KAST_WORKSPACE" ]]; then
 
   PUBLIC_BIN="${KAST_PUBLIC_BIN:-$(command -v kast || true)}"
   [[ -n "$PUBLIC_BIN" ]] || die "Kast public binary is unavailable"
-  PUBLIC_BIN="$(canonical_executable "$PUBLIC_BIN")" ||
+  PUBLIC_BIN="$(canonical_file "$PUBLIC_BIN")" ||
     die "cannot resolve Kast public binary: $PUBLIC_BIN"
   RELEASE_ROOT="$(cd "$(dirname "$PUBLIC_BIN")/.." && pwd -P)"
   RECEIPT="$RELEASE_ROOT/receipt.json"
@@ -155,8 +155,8 @@ else
 fi
 
 [[ -f "$DATABASE" ]] || die "database does not exist: $DATABASE"
-DATABASE_DIR="$(cd "$(dirname "$DATABASE")" && pwd -P)"
-DATABASE="$DATABASE_DIR/$(basename "$DATABASE")"
+DATABASE="$(canonical_file "$DATABASE")" ||
+  die "cannot resolve database: $DATABASE"
 
 if $PRINT_PATH; then
   printf '%s\n' "$DATABASE"
@@ -180,9 +180,14 @@ if ((
 )); then
   die "sqlite3 3.40.1 or newer is required for safe mode"
 fi
+SQLITE_HELP="$("$SQLITE_BIN" --help 2>&1 || true)"
+if [[ "$SQLITE_HELP" != *"-safe"* || "$SQLITE_HELP" != *"-nofollow"* ]]; then
+  die "sqlite3 must support -safe and -nofollow"
+fi
 
 SQLITE_ARGS=(
   -safe
+  -nofollow
   -readonly
   -bail
   -cmd ".timeout $TIMEOUT_MS"
