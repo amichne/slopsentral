@@ -3,7 +3,7 @@ set -euo pipefail
 
 usage() {
   printf '%s\n' \
-    "Usage: codex_session_tree {files|calls|events} --root FILE --sessions-dir DIR"
+    "Usage: codex_session_tree {files|calls|events} --root FILE --sessions-dir DIR [--allow-missing]"
 }
 
 die() {
@@ -20,6 +20,7 @@ esac
 
 ROOT_SESSION=""
 SESSIONS_DIR=""
+ALLOW_MISSING=false
 while (($#)); do
   case "$1" in
     --root)
@@ -31,6 +32,10 @@ while (($#)); do
       (($# >= 2)) || die "--sessions-dir requires a directory"
       SESSIONS_DIR="$2"
       shift 2
+      ;;
+    --allow-missing)
+      ALLOW_MISSING=true
+      shift
       ;;
     -h|--help)
       usage
@@ -97,8 +102,15 @@ find_child() {
   match_count="$(wc -l < "$matches_file" | tr -d ' ')"
   case "$match_count" in
     1) sed -n '1p' "$matches_file" ;;
-    0) die "no session file found for child $child_id" ;;
-    *) die "multiple session files found for child $child_id" ;;
+    0)
+      printf 'codex_session_tree: missing child %s\n' "$child_id" >&2
+      return 1
+      ;;
+    *)
+      printf 'codex_session_tree: ambiguous child %s (%s files)\n' \
+        "$child_id" "$match_count" >&2
+      return 1
+      ;;
   esac
 }
 
@@ -207,7 +219,10 @@ walk_session() {
 
   while IFS= read -r child_id; do
     [[ -n "$child_id" ]] || continue
-    child_file="$(find_child "$child_id")"
+    if ! child_file="$(find_child "$child_id")"; then
+      $ALLOW_MISSING && continue
+      exit 2
+    fi
     walk_session "$child_file" "$((depth + 1))" "$current_id"
   done < <(
     jq -r '

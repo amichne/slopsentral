@@ -27,7 +27,9 @@ jq -r '
 
 Use `codex_session_tree files` for recursive discovery. It searches filenames
 under the explicit sessions directory, requires exactly one match per child,
-and de-duplicates cycles.
+and de-duplicates cycles. Historical archives can be incomplete; add
+`--allow-missing` only when a partial result is acceptable, and retain its
+stderr because it names every omitted child.
 
 ## Join calls to outputs in one ledger
 

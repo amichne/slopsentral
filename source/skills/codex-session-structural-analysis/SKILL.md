@@ -15,7 +15,9 @@ sensitive material; keep derived artifacts local and project only needed fields.
    every historical ledger when a bounded date or task directory is available.
 2. Probe record shapes and event-type counts before writing a selector.
 3. Use `scripts/codex_session_tree` to walk `sub_agent_activity` descendants,
-   fail on missing or ambiguous child files, and join calls to outputs.
+   fail on missing or ambiguous child files, and join calls to outputs. For
+   incomplete historical archives, add `--allow-missing` and retain stderr as
+   the partial-evidence ledger.
 4. Filter the emitted JSONL by structured fields. Use
    `scripts/tool_call_profile.jq` only when textual command-family matching is
    the intended boundary.
