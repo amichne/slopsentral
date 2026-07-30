@@ -206,12 +206,36 @@ test("SQLite navigation resolves receipt-owned Kast state and rejects unsafe acc
   );
   assert.deepEqual(rows, [{ value: "kept" }]);
 
+  const databaseLink = path.join(fixture, "source-index-link.db");
+  fs.symlinkSync(database, databaseLink);
+  assert.equal(
+    execFileSync(sqliteScript, ["--database", databaseLink, "--print-path"], {
+      encoding: "utf8",
+    }).trim(),
+    fs.realpathSync(database),
+  );
+
   const writeAttempt = spawnSync(
     sqliteScript,
-    ["--database", database, "--query", "DELETE FROM sample;"],
+    ["--database", database, "--query", "PRAGMA query_only=OFF; DELETE FROM sample;"],
     { encoding: "utf8" },
   );
   assert.notEqual(writeAttempt.status, 0);
+  const attached = path.join(fixture, "attached.db");
+  assert.notEqual(
+    spawnSync(
+      sqliteScript,
+      [
+        "--database",
+        database,
+        "--query",
+        `PRAGMA query_only=OFF; ATTACH '${attached}' AS attached; CREATE TABLE attached.created(value);`,
+      ],
+      { encoding: "utf8" },
+    ).status,
+    0,
+  );
+  assert.equal(fs.existsSync(attached), false);
   assert.notEqual(
     spawnSync(
       sqliteScript,
