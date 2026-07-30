@@ -285,6 +285,29 @@
         "ui-testing",
         "verification"
       ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "kast-operations",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "kast-operations",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/kast-operations"
+        },
+        "version": "0.1.0"
+      },
+      "description": "Operational diagnosis, performance measurement, session-ledger analysis, and read-only SQLite navigation for Kast and adjacent agent workflows.",
+      "tags": [
+        "diagnostics",
+        "jq",
+        "kast",
+        "observability",
+        "performance",
+        "skills",
+        "sqlite"
+      ]
     }
   ],
   "skills": [
@@ -832,6 +855,42 @@
       },
       "path": "skills/intellij-plugin-delivery",
       "name": "intellij-plugin-delivery"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kast-installation-diagnosis",
+      "name": "kast-installation-diagnosis"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kast-performance-assessment",
+      "name": "kast-performance-assessment"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/codex-session-structural-analysis",
+      "name": "codex-session-structural-analysis"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/sqlite-readonly-navigation",
+      "name": "sqlite-readonly-navigation"
     }
   ],
   "agents": [

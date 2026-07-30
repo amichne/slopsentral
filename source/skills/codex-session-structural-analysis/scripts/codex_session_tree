@@ -1,0 +1,224 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  printf '%s\n' \
+    "Usage: codex_session_tree {files|calls|events} --root FILE --sessions-dir DIR"
+}
+
+die() {
+  printf 'codex_session_tree: %s\n' "$*" >&2
+  exit 2
+}
+
+MODE="${1:-}"
+case "$MODE" in
+  files|calls|events) shift ;;
+  -h|--help) usage; exit 0 ;;
+  *) usage >&2; exit 2 ;;
+esac
+
+ROOT_SESSION=""
+SESSIONS_DIR=""
+while (($#)); do
+  case "$1" in
+    --root)
+      (($# >= 2)) || die "--root requires a file"
+      ROOT_SESSION="$2"
+      shift 2
+      ;;
+    --sessions-dir)
+      (($# >= 2)) || die "--sessions-dir requires a directory"
+      SESSIONS_DIR="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      die "unknown argument: $1"
+      ;;
+  esac
+done
+
+command -v jq >/dev/null 2>&1 || die "jq is required"
+command -v rg >/dev/null 2>&1 || die "rg is required"
+[[ -f "$ROOT_SESSION" ]] || die "root session does not exist: $ROOT_SESSION"
+[[ -d "$SESSIONS_DIR" ]] || die "sessions directory does not exist: $SESSIONS_DIR"
+
+TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/codex-session-tree.XXXXXX")"
+trap 'rm -rf "$TEMP_DIR"' EXIT
+SEEN_FILE="$TEMP_DIR/seen"
+: > "$SEEN_FILE"
+
+canonical_file() {
+  local input_file="$1"
+  local input_dir
+  input_dir="$(cd "$(dirname "$input_file")" && pwd -P)"
+  printf '%s/%s\n' "$input_dir" "$(basename "$input_file")"
+}
+
+session_id() {
+  local session_file="$1"
+  local discovered
+  local base_name
+
+  discovered="$(
+    jq -sr '
+      [
+        .[]
+        | select(.type == "session_meta")
+        | .payload.id // .payload.session_id // empty
+      ]
+      | first // empty
+    ' "$session_file"
+  )"
+  if [[ -n "$discovered" ]]; then
+    printf '%s\n' "$discovered"
+    return
+  fi
+
+  base_name="$(basename "$session_file")"
+  if [[ "$base_name" =~ ([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}) ]]; then
+    printf '%s\n' "${BASH_REMATCH[1]}"
+  else
+    printf '%s\n' "$base_name"
+  fi
+}
+
+find_child() {
+  local child_id="$1"
+  local matches_file="$TEMP_DIR/matches"
+  local match_count
+
+  rg --files "$SESSIONS_DIR" -g '*.jsonl' |
+    rg -F "$child_id" > "$matches_file" || true
+  match_count="$(wc -l < "$matches_file" | tr -d ' ')"
+  case "$match_count" in
+    1) sed -n '1p' "$matches_file" ;;
+    0) die "no session file found for child $child_id" ;;
+    *) die "multiple session files found for child $child_id" ;;
+  esac
+}
+
+emit_calls() {
+  local session_file="$1"
+  local current_id="$2"
+  local parent_id="$3"
+  local depth="$4"
+
+  jq -cs \
+    --arg sessionFile "$session_file" \
+    --arg sessionId "$current_id" \
+    --arg parentSessionId "$parent_id" \
+    --argjson depth "$depth" '
+      . as $records
+      | (
+          reduce (
+            $records[]
+            | select(
+                .type == "response_item" and
+                (
+                  .payload.type == "custom_tool_call_output" or
+                  .payload.type == "function_call_output"
+                )
+              )
+          ) as $item (
+            {};
+            .[$item.payload.call_id] = $item.payload.output
+          )
+        ) as $outputs
+      | $records[]
+      | select(
+          .type == "response_item" and
+          (
+            .payload.type == "custom_tool_call" or
+            .payload.type == "function_call"
+          ) and
+          .payload.call_id != null
+        )
+      | {
+          timestamp,
+          sessionId: $sessionId,
+          parentSessionId: (
+            if $parentSessionId == "" then null else $parentSessionId end
+          ),
+          depth: $depth,
+          sessionFile: $sessionFile,
+          callId: .payload.call_id,
+          name: (.payload.name // ""),
+          input: (.payload.input // .payload.arguments // null),
+          output: ($outputs[.payload.call_id] // null)
+        }
+    ' "$session_file"
+}
+
+walk_session() {
+  local input_file="$1"
+  local depth="$2"
+  local parent_id="$3"
+  local session_file
+  local current_id
+  local child_id
+  local child_file
+
+  session_file="$(canonical_file "$input_file")"
+  if grep -Fqx "$session_file" "$SEEN_FILE"; then
+    return
+  fi
+  printf '%s\n' "$session_file" >> "$SEEN_FILE"
+  current_id="$(session_id "$session_file")"
+
+  case "$MODE" in
+    files)
+      jq -cn \
+        --arg sessionId "$current_id" \
+        --arg parentSessionId "$parent_id" \
+        --arg sessionFile "$session_file" \
+        --argjson depth "$depth" '{
+          sessionId: $sessionId,
+          parentSessionId: (
+            if $parentSessionId == "" then null else $parentSessionId end
+          ),
+          depth: $depth,
+          sessionFile: $sessionFile
+        }'
+      ;;
+    calls)
+      emit_calls "$session_file" "$current_id" "$parent_id" "$depth"
+      ;;
+    events)
+      jq -c \
+        --arg sessionId "$current_id" \
+        --arg parentSessionId "$parent_id" \
+        --arg sessionFile "$session_file" \
+        --argjson depth "$depth" '{
+          sessionId: $sessionId,
+          parentSessionId: (
+            if $parentSessionId == "" then null else $parentSessionId end
+          ),
+          depth: $depth,
+          sessionFile: $sessionFile,
+          record: .
+        }' "$session_file"
+      ;;
+  esac
+
+  while IFS= read -r child_id; do
+    [[ -n "$child_id" ]] || continue
+    child_file="$(find_child "$child_id")"
+    walk_session "$child_file" "$((depth + 1))" "$current_id"
+  done < <(
+    jq -r '
+      select(
+        .type == "event_msg" and
+        .payload.type == "sub_agent_activity"
+      )
+      | .payload.agent_thread_id // .payload.agentThreadId // empty
+    ' "$session_file" |
+      sort -u
+  )
+}
+
+walk_session "$ROOT_SESSION" 0 ""

@@ -165,7 +165,7 @@ test("SQLite navigation resolves Kast workspace state and rejects writes", () =>
       encoding: "utf8",
     },
   ).trim();
-  assert.equal(resolved, database);
+  assert.equal(resolved, fs.realpathSync(database));
 
   const rows = JSON.parse(
     execFileSync(

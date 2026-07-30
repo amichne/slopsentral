@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  printf '%s\n' \
+    "Usage: sqlite_readonly (--database PATH [--workspace DIR] | --kast-workspace DIR) [--json] [--query SQL] [--print-path] [--timeout-ms N]"
+}
+
+die() {
+  printf 'sqlite_readonly: %s\n' "$*" >&2
+  exit 2
+}
+
+DATABASE=""
+WORKSPACE=""
+KAST_WORKSPACE=""
+QUERY=""
+JSON_OUTPUT=false
+PRINT_PATH=false
+TIMEOUT_MS=5000
+
+while (($#)); do
+  case "$1" in
+    --database)
+      (($# >= 2)) || die "--database requires a path"
+      DATABASE="$2"
+      shift 2
+      ;;
+    --workspace)
+      (($# >= 2)) || die "--workspace requires a directory"
+      WORKSPACE="$2"
+      shift 2
+      ;;
+    --kast-workspace)
+      (($# >= 2)) || die "--kast-workspace requires a directory"
+      KAST_WORKSPACE="$2"
+      shift 2
+      ;;
+    --query)
+      (($# >= 2)) || die "--query requires SQL"
+      QUERY="$2"
+      shift 2
+      ;;
+    --timeout-ms)
+      (($# >= 2)) || die "--timeout-ms requires an integer"
+      TIMEOUT_MS="$2"
+      shift 2
+      ;;
+    --json)
+      JSON_OUTPUT=true
+      shift
+      ;;
+    --print-path)
+      PRINT_PATH=true
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      die "unknown argument: $1"
+      ;;
+  esac
+done
+
+command -v jq >/dev/null 2>&1 || die "jq is required"
+command -v sqlite3 >/dev/null 2>&1 || die "sqlite3 is required"
+[[ "$TIMEOUT_MS" =~ ^[0-9]+$ ]] && ((TIMEOUT_MS > 0)) ||
+  die "--timeout-ms must be a positive integer"
+
+if [[ -n "$KAST_WORKSPACE" ]]; then
+  [[ -z "$DATABASE" && -z "$WORKSPACE" ]] ||
+    die "--kast-workspace cannot be combined with --database or --workspace"
+  [[ -d "$KAST_WORKSPACE" ]] ||
+    die "Kast workspace does not exist: $KAST_WORKSPACE"
+  KAST_WORKSPACE="$(cd "$KAST_WORKSPACE" && pwd -P)"
+
+  if [[ -n "${KAST_CONTROL_BIN:-}" ]]; then
+    CONTROL_BIN="$KAST_CONTROL_BIN"
+  elif command -v _kastctl >/dev/null 2>&1; then
+    CONTROL_BIN="$(command -v _kastctl)"
+  else
+    PUBLIC_BIN="$(command -v kast || true)"
+    [[ -n "$PUBLIC_BIN" ]] || die "Kast control binary is unavailable"
+    RELEASE_ROOT="$(cd "$(dirname "$PUBLIC_BIN")/.." && pwd -P)"
+    CONTROL_BIN="$RELEASE_ROOT/libexec/kastctl"
+  fi
+  [[ -x "$CONTROL_BIN" ]] ||
+    die "Kast control binary is not executable: $CONTROL_BIN"
+
+  if ! READY_JSON="$(
+    "$CONTROL_BIN" --output json ready \
+      --workspace-root "$KAST_WORKSPACE" \
+      --for kotlin
+  )"; then
+    die "Kast exact-root readiness is required; pass --database for offline inspection"
+  fi
+  WORKSPACE_METADATA="$(
+    printf '%s\n' "$READY_JSON" |
+      jq -er '
+        select(.agentEnvironment.ok == true)
+        | .agentEnvironment.backend
+        | select(.state == "managed")
+        | .sourcePath
+      '
+  )" || die "Kast readiness did not return managed workspace metadata"
+  [[ -f "$WORKSPACE_METADATA" ]] ||
+    die "Kast workspace metadata does not exist: $WORKSPACE_METADATA"
+
+  METADATA_ROOT="$(jq -er '.workspaceRoot' "$WORKSPACE_METADATA")" ||
+    die "Kast workspace metadata has no workspaceRoot"
+  [[ -d "$METADATA_ROOT" ]] ||
+    die "Kast metadata workspace does not exist: $METADATA_ROOT"
+  METADATA_ROOT="$(cd "$METADATA_ROOT" && pwd -P)"
+  [[ "$METADATA_ROOT" == "$KAST_WORKSPACE" ]] ||
+    die "Kast metadata belongs to a different workspace: $METADATA_ROOT"
+  DATABASE="$(dirname "$WORKSPACE_METADATA")/cache/source-index.db"
+else
+  [[ -n "$DATABASE" ]] || die "--database or --kast-workspace is required"
+  if [[ "$DATABASE" != /* ]]; then
+    [[ -n "$WORKSPACE" ]] ||
+      die "relative --database requires --workspace"
+    [[ -d "$WORKSPACE" ]] || die "workspace does not exist: $WORKSPACE"
+    WORKSPACE="$(cd "$WORKSPACE" && pwd -P)"
+    DATABASE="$WORKSPACE/$DATABASE"
+  elif [[ -n "$WORKSPACE" ]]; then
+    die "--workspace is only valid with a relative --database"
+  fi
+fi
+
+[[ -f "$DATABASE" ]] || die "database does not exist: $DATABASE"
+DATABASE_DIR="$(cd "$(dirname "$DATABASE")" && pwd -P)"
+DATABASE="$DATABASE_DIR/$(basename "$DATABASE")"
+
+if $PRINT_PATH; then
+  printf '%s\n' "$DATABASE"
+  [[ -n "$QUERY" ]] || exit 0
+fi
+
+SQLITE_ARGS=(
+  -safe
+  -readonly
+  -bail
+  -cmd ".timeout $TIMEOUT_MS"
+  -cmd "PRAGMA query_only=ON;"
+  -cmd "PRAGMA trusted_schema=OFF;"
+)
+$JSON_OUTPUT && SQLITE_ARGS+=(-json)
+
+if [[ -n "$QUERY" ]]; then
+  exec sqlite3 "${SQLITE_ARGS[@]}" "$DATABASE" "$QUERY"
+else
+  exec sqlite3 "${SQLITE_ARGS[@]}" "$DATABASE"
+fi
