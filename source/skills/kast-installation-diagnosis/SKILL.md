@@ -15,12 +15,13 @@ smallest supported mutation that owns the observed failure.
 
 1. Canonicalize the exact workspace root and preserve the complete failing
    command, exit status, stdout, and stderr.
-2. Record `command -v kast`, `kast --version`, `kast --help`, and the result of
-   running `kast` from that root. The public binary is the agent interface.
+2. Record `command -v kast`, `kast --version`, `kast --help`, the active
+   release receipt, and existing workspace metadata. The public binary is the
+   agent interface.
 3. For installation or runtime diagnosis, discover the matching local control
    binary and verify its version and help before using it.
-4. Inspect install paths, effective configuration, exact-root status, and
-   task readiness. Keep typed failures intact.
+4. If workspace reconciliation is authorized, inspect effective configuration,
+   exact-root status, and task readiness. Keep typed failures intact.
 5. Classify the first broken boundary: executable selection, release authority,
    workspace metadata, backend lifecycle, indexing, or semantic capability.
 6. If repair is requested, use only a command exposed by the live public or
@@ -33,6 +34,9 @@ smallest supported mutation that owns the observed failure.
 
 - Never hand-edit release pointers, receipts, workspace metadata, sockets, or
   index databases.
+- Root-bound public and control commands may reconcile or migrate legacy
+  workspace state. Treat them as mutations; passive diagnosis stops at existing
+  receipt and metadata inspection.
 - Never start a second IDE merely because the selected IDEA backend is stale.
 - Do not substitute Graphify for missing Kotlin or Gradle evidence.
 - Use the version-bound Kast query or change skill after readiness succeeds.
@@ -47,8 +51,8 @@ instrumentation handoff.
 
 ## Completion Criteria
 
-- Evidence identifies the exact root, binary, version, release authority, and
-  selected backend.
+- Evidence identifies the exact root, binary, version, and release authority,
+  plus the selected backend when workspace reconciliation was in scope.
 - The first failing boundary and owning repair are explicit.
 - Any mutation has before/after evidence and uses a supported owner.
 - The original operation succeeds, or the remaining typed blocker is reported

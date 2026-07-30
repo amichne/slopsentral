@@ -7,21 +7,53 @@ pin the workspace:
 
 ```bash
 WORKSPACE_ROOT="$(pwd -P)"
-KAST_PUBLIC_BIN="$(command -v kast)"
+KAST_PUBLIC_PATH="$(command -v kast)"
+
+resolve_executable() {
+  local executable_path="$1"
+  local executable_dir
+  local link_target
+  local symlink_hops=0
+
+  while test -L "$executable_path"; do
+    symlink_hops=$((symlink_hops + 1))
+    test "$symlink_hops" -le 40 || return 1
+    executable_dir="$(cd "$(dirname "$executable_path")" && pwd -P)"
+    link_target="$(readlink "$executable_path")"
+    case "$link_target" in
+      /*) executable_path="$link_target" ;;
+      *) executable_path="$executable_dir/$link_target" ;;
+    esac
+  done
+  executable_dir="$(cd "$(dirname "$executable_path")" && pwd -P)"
+  printf '%s/%s\n' "$executable_dir" "$(basename "$executable_path")"
+}
+
+test -n "$KAST_PUBLIC_PATH"
+KAST_PUBLIC_BIN="$(resolve_executable "$KAST_PUBLIC_PATH")"
 KAST_RELEASE_ROOT="$(cd "$(dirname "$KAST_PUBLIC_BIN")/.." && pwd -P)"
-KAST_CONTROL_BIN="${KAST_CONTROL_BIN:-$KAST_RELEASE_ROOT/libexec/kastctl}"
+KAST_RECEIPT="$KAST_RELEASE_ROOT/receipt.json"
+test -f "$KAST_RECEIPT"
+KAST_CONTROL_BIN="${KAST_CONTROL_BIN:-$(
+  jq -er '.entrypoints.activeBinary' "$KAST_RECEIPT"
+)}"
+KAST_CONTROL_BIN="$(resolve_executable "$KAST_CONTROL_BIN")"
 KAST_MEASUREMENT_DIR="$(
   mktemp -d "${TMPDIR:-/tmp}/kast-measurement.XXXXXX"
 )"
 
-"$KAST_PUBLIC_BIN" --version
-"$KAST_CONTROL_BIN" --version
+KAST_PUBLIC_VERSION="$("$KAST_PUBLIC_BIN" --version | awk '{print $NF}')"
+KAST_CONTROL_VERSION="$("$KAST_CONTROL_BIN" --version | awk '{print $NF}')"
+test "$KAST_PUBLIC_VERSION" = "$KAST_CONTROL_VERSION"
 "$KAST_CONTROL_BIN" --output json status \
   --workspace-root "$WORKSPACE_ROOT" \
   > "$KAST_MEASUREMENT_DIR/status-before.json"
-jq -e --arg root "$WORKSPACE_ROOT" '
+jq -e \
+  --arg root "$WORKSPACE_ROOT" \
+  --arg version "$KAST_PUBLIC_VERSION" '
   .selected.ready == true and
-  .selected.descriptor.workspaceRoot == $root
+  .selected.descriptor.workspaceRoot == $root and
+  .selected.descriptor.backendVersion == $version
 ' "$KAST_MEASUREMENT_DIR/status-before.json"
 ```
 
@@ -43,18 +75,31 @@ Never use `pgrep`, the newest IDE, or a global process name to select a backend.
 Use one exact command and input for every sample. On macOS:
 
 ```bash
+(cd "$WORKSPACE_ROOT" && "$KAST_PUBLIC_BIN" graph summary) \
+  > "$KAST_MEASUREMENT_DIR/graph-preflight.out"
+
 for SAMPLE_INDEX in 1 2 3; do
-  /usr/bin/time -lp \
-    "$KAST_PUBLIC_BIN" graph summary \
-    >"$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.out" \
-    2>"$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.time"
+  if ! (
+    cd "$WORKSPACE_ROOT"
+    /usr/bin/time -lp \
+      "$KAST_PUBLIC_BIN" graph summary \
+      >"$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.out" \
+      2>"$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.time"
+  ); then
+    printf 'sample %s failed\n' "$SAMPLE_INDEX" >&2
+    exit 1
+  fi
+  test -s "$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.out"
 done
 ```
 
-On GNU/Linux use `/usr/bin/time -v` instead of `-lp`. Record whether each run is
-cold or warm. Public `kast graph summary` and the live operator graph summary
-may also expose load time, compute time, database bytes, RSS, and bounded query
-samples; inspect live help and retain their complete output.
+The preflight must satisfy the workload's semantic invariant, such as nonzero
+coverage for a nonempty Kotlin workspace; its timing is not a sample. Abort on
+any nonzero sample rather than measuring a fast typed failure. On GNU/Linux use
+`/usr/bin/time -v` instead of `-lp`. Record whether each run is cold or warm.
+Public `kast graph summary` and the live operator graph summary may also expose
+load time, compute time, database bytes, RSS, and bounded query samples; inspect
+live help and retain their complete output.
 
 ## Kast telemetry
 
@@ -101,11 +146,34 @@ KAST_BACKEND_KIND="$(
   --workspace-root "$WORKSPACE_ROOT" \
   --backend "$KAST_BACKEND_KIND" \
   --accept-indexing
+
+"$KAST_CONTROL_BIN" --output json status \
+  --workspace-root "$WORKSPACE_ROOT" \
+  --backend "$KAST_BACKEND_KIND" \
+  > "$KAST_MEASUREMENT_DIR/status-after-restart.json"
+jq -e \
+  --arg root "$WORKSPACE_ROOT" \
+  --arg backend "$KAST_BACKEND_KIND" \
+  --slurpfile before "$KAST_MEASUREMENT_DIR/status-before.json" '
+    ($before[0].selected.descriptor.backendVersion) as $version
+    | ($version | type == "string") and
+    .selected.ready == true and
+    .selected.descriptor.workspaceRoot == $root and
+    .selected.descriptor.backendName == $backend and
+    .selected.descriptor.backendVersion == $version
+  ' "$KAST_MEASUREMENT_DIR/status-after-restart.json"
+KAST_BACKEND_PID="$(
+  jq -er '.selected.descriptor.pid' \
+    "$KAST_MEASUREMENT_DIR/status-after-restart.json"
+)"
+kill -0 "$KAST_BACKEND_PID"
+jcmd "$KAST_BACKEND_PID" VM.command_line
 ```
 
-Resolve the selected workspace metadata again after restart. The default JSONL
-artifact is the sibling `telemetry/idea-spans.jsonl`. Capture its starting byte
-offset, execute the named workload, then retain only newly appended bytes.
+Re-resolve the selected workspace metadata, PID, backend, version, and JVM
+command line after every restart; a headless restart changes PID. The default
+JSONL artifact is the sibling `telemetry/idea-spans.jsonl`. Capture its starting
+byte offset, execute the named workload, then retain only newly appended bytes.
 Verify that the file grew; enabled configuration alone is not proof.
 
 Telemetry export appends synchronously, so measure its overhead separately and

@@ -6,48 +6,87 @@ Run from the target workspace:
 
 ```bash
 WORKSPACE_ROOT="$(pwd -P)"
-KAST_PUBLIC_BIN="$(command -v kast)"
+KAST_PUBLIC_PATH="$(command -v kast)"
 
-test -n "$KAST_PUBLIC_BIN"
-"$KAST_PUBLIC_BIN" --version
+resolve_executable() {
+  local executable_path="$1"
+  local executable_dir
+  local link_target
+  local symlink_hops=0
+
+  while test -L "$executable_path"; do
+    symlink_hops=$((symlink_hops + 1))
+    test "$symlink_hops" -le 40 || return 1
+    executable_dir="$(cd "$(dirname "$executable_path")" && pwd -P)"
+    link_target="$(readlink "$executable_path")"
+    case "$link_target" in
+      /*) executable_path="$link_target" ;;
+      *) executable_path="$executable_dir/$link_target" ;;
+    esac
+  done
+  executable_dir="$(cd "$(dirname "$executable_path")" && pwd -P)"
+  printf '%s/%s\n' "$executable_dir" "$(basename "$executable_path")"
+}
+
+test -n "$KAST_PUBLIC_PATH"
+KAST_PUBLIC_BIN="$(resolve_executable "$KAST_PUBLIC_PATH")"
+KAST_RELEASE_ROOT="$(cd "$(dirname "$KAST_PUBLIC_BIN")/.." && pwd -P)"
+KAST_RECEIPT="$KAST_RELEASE_ROOT/receipt.json"
+test -f "$KAST_RECEIPT"
+KAST_CONTROL_BIN="${KAST_CONTROL_BIN:-$(
+  jq -er '.entrypoints.activeBinary' "$KAST_RECEIPT"
+)}"
+KAST_CONTROL_BIN="$(resolve_executable "$KAST_CONTROL_BIN")"
+
+test -x "$KAST_PUBLIC_BIN"
+test -x "$KAST_CONTROL_BIN"
+KAST_PUBLIC_VERSION="$("$KAST_PUBLIC_BIN" --version | awk '{print $NF}')"
+KAST_CONTROL_VERSION="$("$KAST_CONTROL_BIN" --version | awk '{print $NF}')"
+test "$KAST_PUBLIC_VERSION" = "$KAST_CONTROL_VERSION"
 "$KAST_PUBLIC_BIN" --help
-(cd "$WORKSPACE_ROOT" && "$KAST_PUBLIC_BIN")
+"$KAST_CONTROL_BIN" --help
 ```
 
 The current public surface is intentionally compact. Do not infer private
 commands from an older installed skill.
 
-For operator-only inspection, prefer `_kastctl` when it is installed. Otherwise
-derive the control binary from the active release and verify it before use:
+Inspect the active receipt and existing install paths without resolving a
+workspace:
 
 ```bash
-if command -v _kastctl >/dev/null 2>&1; then
-  KAST_CONTROL_BIN="$(command -v _kastctl)"
-else
-  KAST_RELEASE_ROOT="$(cd "$(dirname "$KAST_PUBLIC_BIN")/.." && pwd -P)"
-  KAST_CONTROL_BIN="$KAST_RELEASE_ROOT/libexec/kastctl"
+jq '{
+  tool,
+  version,
+  profile,
+  roots,
+  entrypoints,
+  components,
+  schemaVersion
+}' "$KAST_RECEIPT"
+"$KAST_CONTROL_BIN" --output json developer inspect paths
+KAST_DATA_ROOT="$(jq -er '.roots.data' "$KAST_RECEIPT")"
+if test -d "$KAST_DATA_ROOT/workspaces"; then
+  rg --files "$KAST_DATA_ROOT/workspaces" -g 'workspace.json'
 fi
-
-test -x "$KAST_CONTROL_BIN"
-"$KAST_CONTROL_BIN" --version
-"$KAST_CONTROL_BIN" --help
 ```
 
-The two versions must describe the same active release. If the derived path is
-absent, stop and use the installer's current receipt or setup instructions; do
-not guess another private path.
+If the receipt or version comparison fails, stop and use the installer's
+current setup instructions; do not guess another private path or prefer an
+unverified legacy `_kastctl`.
 
-## Read-only evidence chain
+## Workspace reconciliation evidence chain
 
-Inspect each command's help first because the control surface is not public:
+The root-bound resolver may atomically migrate legacy workspace state. Run this
+chain only when the task authorizes supported workspace reconciliation or
+repair. First retain the passive receipt and metadata evidence above, then
+inspect each command's live help:
 
 ```bash
-"$KAST_CONTROL_BIN" developer inspect paths --help
 "$KAST_CONTROL_BIN" config list --help
 "$KAST_CONTROL_BIN" status --help
 "$KAST_CONTROL_BIN" ready --help
 
-"$KAST_CONTROL_BIN" --output json developer inspect paths
+(cd "$WORKSPACE_ROOT" && "$KAST_PUBLIC_BIN")
 "$KAST_CONTROL_BIN" --output json config list \
   --workspace-root "$WORKSPACE_ROOT"
 "$KAST_CONTROL_BIN" --output json status \

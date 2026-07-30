@@ -2,7 +2,7 @@
 
 ## Resolve and open
 
-For a ready Kast workspace:
+For an existing Kast workspace registration:
 
 ```bash
 WORKSPACE_ROOT="$(pwd -P)"
@@ -15,10 +15,11 @@ KAST_DATABASE="$(
 test -f "$KAST_DATABASE"
 ```
 
-Resolution requires managed exact-root readiness, verifies the workspace root
-inside `workspace.json`, and uses the sibling `cache/source-index.db`. It does
-not reconstruct a workspace hash or fall back to a configuration resolver that
-may migrate legacy state.
+Resolution follows the active public binary to its release receipt, scans only
+existing `roots.data/workspaces/**/workspace.json` files, canonicalizes and
+matches the exact root, and requires exactly one sibling
+`cache/source-index.db`. It does not run readiness, reconstruct a workspace
+hash, or invoke a configuration resolver that may migrate legacy state.
 
 When the runtime is unavailable, pass an explicit existing path. Resolve a
 relative path only with `--workspace`.
@@ -93,9 +94,10 @@ Before raw SQL, inspect the live help for:
 
 ```bash
 kast graph summary
-"$KAST_CONTROL_BIN" developer inspect metrics --help
-"$KAST_CONTROL_BIN" agent graph --help
 ```
 
-Kast-owned graph and metrics commands validate schema and may apply repository
-overlay semantics that a raw base-database query does not.
+When live operator help exposes graph or metrics commands, use
+`kast-installation-diagnosis` to establish and verify the release-matched
+control binary before invoking them. Kast-owned graph and metrics commands
+validate schema and may apply repository overlay semantics that a raw
+base-database query does not.

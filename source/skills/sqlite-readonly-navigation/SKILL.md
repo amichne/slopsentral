@@ -1,6 +1,6 @@
 ---
 name: "sqlite-readonly-navigation"
-description: "Open and navigate an existing SQLite database through a defensively read-only connection. Use for schema, table, index, foreign-key, generation, query-plan, and snapshot inspection, including resolving Kast's exact workspace source index from live readiness metadata; not for migrations, repair, VACUUM, checkpoints, backups, or any write."
+description: "Open and navigate an existing SQLite database through a defensively read-only connection. Use for schema, table, index, foreign-key, generation, query-plan, and snapshot inspection, including resolving Kast's exact workspace source index from existing receipt-owned metadata; not for migrations, repair, VACUUM, checkpoints, backups, or any write."
 ---
 
 # SQLite Read-Only Navigation
@@ -12,9 +12,9 @@ assuming table or column names.
 ## Workflow
 
 1. Identify an existing database explicitly, or resolve Kast's source index
-   from exact-root managed readiness metadata.
+   from the active release receipt and existing exact-root workspace metadata.
 2. Use `scripts/sqlite_readonly`. It requires an existing file and invokes the
-   SQLite CLI with safe mode, read-only open flags, a busy timeout,
+   SQLite 3.40.1 or newer with safe mode, read-only open flags, a busy timeout,
    `query_only=ON`, and `trusted_schema=OFF`.
 3. Inspect `sqlite_schema` and table/index pragmas before writing a query.
 4. Hold one read transaction for a coherent multi-query snapshot.
@@ -48,8 +48,9 @@ An offline relative path must be anchored explicitly:
   state.
 - Never run `VACUUM`, `REINDEX`, `ANALYZE`, `PRAGMA optimize`, checkpoints,
   `.dump`, `.backup`, `.save`, or writes through this skill.
-- Never reproduce Kast workspace hashes. If exact-root managed metadata is not
-  available, require an explicit existing database path.
+- Never reproduce Kast workspace hashes or call a resolving command while
+  locating the database. Scan only existing receipt-owned metadata; otherwise
+  require an explicit existing database path.
 - Kast repository overlays are combined by Kast's graph layer. Raw SQLite reads
   of the base database do not automatically apply overlay semantics.
 - Use Kast for Kotlin and Gradle semantic claims.
