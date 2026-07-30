@@ -140,12 +140,16 @@ test("SQLite navigation resolves Kast workspace state and rejects writes", () =>
   const database = path.join(workspaceState, "cache", "source-index.db");
   fs.mkdirSync(workspace, { recursive: true });
   fs.mkdirSync(path.dirname(database), { recursive: true });
+  fs.writeFileSync(
+    path.join(workspaceState, "workspace.json"),
+    JSON.stringify({ workspaceRoot: workspace }),
+  );
   execFileSync("sqlite3", [database, "CREATE TABLE sample(value TEXT); INSERT INTO sample VALUES ('kept');"]);
 
   const control = path.join(fixture, "kastctl");
   fs.writeFileSync(
     control,
-    `#!/usr/bin/env bash\nprintf '{"configPath":"%s/config.toml"}\\n' "${workspaceState}"\n`,
+    `#!/usr/bin/env bash\nprintf '{"agentEnvironment":{"backend":{"state":"managed","sourcePath":"%s/workspace.json"},"ok":true}}\\n' "${workspaceState}"\n`,
   );
   fs.chmodSync(control, 0o755);
 
