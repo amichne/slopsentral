@@ -157,25 +157,31 @@ test("session analysis walks descendants, joins tool outputs, and profiles match
   assert.match(partial.stderr, new RegExp(`missing child ${missingId}`));
 });
 
-test("SQLite navigation resolves Kast workspace state and rejects writes", () => {
+test("SQLite navigation resolves receipt-owned Kast state and rejects unsafe access", () => {
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), "sqlite-readonly-"));
   const workspace = path.join(fixture, "workspace");
-  const workspaceState = path.join(fixture, "workspace-state");
+  const dataRoot = path.join(fixture, "kast-data");
+  const workspaceState = path.join(dataRoot, "workspaces", "workspace-state");
   const database = path.join(workspaceState, "cache", "source-index.db");
+  const release = path.join(fixture, "kast-install", "releases", "current-release");
+  const releaseBinary = path.join(release, "bin", "kast");
+  const publicBinary = path.join(fixture, "bin", "kast");
   fs.mkdirSync(workspace, { recursive: true });
   fs.mkdirSync(path.dirname(database), { recursive: true });
+  fs.mkdirSync(path.dirname(releaseBinary), { recursive: true });
+  fs.mkdirSync(path.dirname(publicBinary), { recursive: true });
   fs.writeFileSync(
     path.join(workspaceState, "workspace.json"),
     JSON.stringify({ workspaceRoot: workspace }),
   );
   execFileSync("sqlite3", [database, "CREATE TABLE sample(value TEXT); INSERT INTO sample VALUES ('kept');"]);
-
-  const control = path.join(fixture, "kastctl");
+  fs.writeFileSync(releaseBinary, "#!/usr/bin/env bash\nexit 99\n");
+  fs.chmodSync(releaseBinary, 0o755);
+  fs.symlinkSync(releaseBinary, publicBinary);
   fs.writeFileSync(
-    control,
-    `#!/usr/bin/env bash\nprintf '{"agentEnvironment":{"backend":{"state":"managed","sourcePath":"%s/workspace.json"},"ok":true}}\\n' "${workspaceState}"\n`,
+    path.join(release, "receipt.json"),
+    JSON.stringify({ tool: "kast", roots: { data: dataRoot } }),
   );
-  fs.chmodSync(control, 0o755);
 
   const sqliteScript = path.join(
     repoRoot,
@@ -185,7 +191,7 @@ test("SQLite navigation resolves Kast workspace state and rejects writes", () =>
     sqliteScript,
     ["--kast-workspace", workspace, "--print-path"],
     {
-      env: { ...process.env, KAST_CONTROL_BIN: control },
+      env: { ...process.env, KAST_PUBLIC_BIN: publicBinary },
       encoding: "utf8",
     },
   ).trim();
@@ -212,6 +218,16 @@ test("SQLite navigation resolves Kast workspace state and rejects writes", () =>
       ["--database", database, "--print-path", "--query", "SELECT 1;"],
       { encoding: "utf8" },
     ).status,
+    0,
+  );
+  const oldSqlite = path.join(fixture, "sqlite3-old");
+  fs.writeFileSync(oldSqlite, "#!/usr/bin/env bash\nprintf '3.40.0 2022-11-16\\n'\n");
+  fs.chmodSync(oldSqlite, 0o755);
+  assert.notEqual(
+    spawnSync(sqliteScript, ["--database", database, "--query", "SELECT 1;"], {
+      env: { ...process.env, SQLITE_BIN: oldSqlite },
+      encoding: "utf8",
+    }).status,
     0,
   );
   assert.equal(
