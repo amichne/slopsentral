@@ -64,12 +64,12 @@ while (($#)); do
   esac
 done
 
-command -v jq >/dev/null 2>&1 || die "jq is required"
 command -v sqlite3 >/dev/null 2>&1 || die "sqlite3 is required"
 [[ "$TIMEOUT_MS" =~ ^[0-9]+$ ]] && ((TIMEOUT_MS > 0)) ||
   die "--timeout-ms must be a positive integer"
 
 if [[ -n "$KAST_WORKSPACE" ]]; then
+  command -v jq >/dev/null 2>&1 || die "jq is required for --kast-workspace"
   [[ -z "$DATABASE" && -z "$WORKSPACE" ]] ||
     die "--kast-workspace cannot be combined with --database or --workspace"
   [[ -d "$KAST_WORKSPACE" ]] ||

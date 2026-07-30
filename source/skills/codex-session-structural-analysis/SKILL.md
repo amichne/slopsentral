@@ -29,12 +29,15 @@ sensitive material; keep derived artifacts local and project only needed fields.
 ```bash
 SESSION_TOOL="source/skills/codex-session-structural-analysis/scripts/codex_session_tree"
 PROFILE_FILTER="source/skills/codex-session-structural-analysis/scripts/tool_call_profile.jq"
+SESSION_ARTIFACT_DIR="$(
+  mktemp -d "${TMPDIR:-/tmp}/codex-session-analysis.XXXXXX"
+)"
 
 "$SESSION_TOOL" files --root "$ROOT_SESSION" --sessions-dir "$SESSIONS_DIR"
 "$SESSION_TOOL" calls --root "$ROOT_SESSION" --sessions-dir "$SESSIONS_DIR" \
-  > /tmp/codex-calls.jsonl
+  > "$SESSION_ARTIFACT_DIR/calls.jsonl"
 jq -s --arg pattern 'kast .*graph|kast .*symbol' \
-  -f "$PROFILE_FILTER" /tmp/codex-calls.jsonl
+  -f "$PROFILE_FILTER" "$SESSION_ARTIFACT_DIR/calls.jsonl"
 ```
 
 The tool also supports `events`, which wraps every raw record with its session

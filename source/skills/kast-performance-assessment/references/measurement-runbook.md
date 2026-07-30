@@ -10,22 +10,27 @@ WORKSPACE_ROOT="$(pwd -P)"
 KAST_PUBLIC_BIN="$(command -v kast)"
 KAST_RELEASE_ROOT="$(cd "$(dirname "$KAST_PUBLIC_BIN")/.." && pwd -P)"
 KAST_CONTROL_BIN="${KAST_CONTROL_BIN:-$KAST_RELEASE_ROOT/libexec/kastctl}"
+KAST_MEASUREMENT_DIR="$(
+  mktemp -d "${TMPDIR:-/tmp}/kast-measurement.XXXXXX"
+)"
 
 "$KAST_PUBLIC_BIN" --version
 "$KAST_CONTROL_BIN" --version
 "$KAST_CONTROL_BIN" --output json status \
-  --workspace-root "$WORKSPACE_ROOT" > /tmp/kast-status-before.json
+  --workspace-root "$WORKSPACE_ROOT" \
+  > "$KAST_MEASUREMENT_DIR/status-before.json"
 jq -e --arg root "$WORKSPACE_ROOT" '
   .selected.ready == true and
   .selected.descriptor.workspaceRoot == $root
-' /tmp/kast-status-before.json
+' "$KAST_MEASUREMENT_DIR/status-before.json"
 ```
 
 If the selected descriptor has a PID, retain it and verify the process:
 
 ```bash
 KAST_BACKEND_PID="$(
-  jq -er '.selected.descriptor.pid' /tmp/kast-status-before.json
+  jq -er '.selected.descriptor.pid' \
+    "$KAST_MEASUREMENT_DIR/status-before.json"
 )"
 kill -0 "$KAST_BACKEND_PID"
 jcmd "$KAST_BACKEND_PID" VM.command_line
@@ -41,8 +46,8 @@ Use one exact command and input for every sample. On macOS:
 for SAMPLE_INDEX in 1 2 3; do
   /usr/bin/time -lp \
     "$KAST_PUBLIC_BIN" graph summary \
-    >"/tmp/kast-graph-$SAMPLE_INDEX.json" \
-    2>"/tmp/kast-graph-$SAMPLE_INDEX.time"
+    >"$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.json" \
+    2>"$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.time"
 done
 ```
 
@@ -58,9 +63,9 @@ First save the effective config and its `configPath`:
 ```bash
 "$KAST_CONTROL_BIN" --output json config list \
   --workspace-root "$WORKSPACE_ROOT" \
-  > /tmp/kast-config-before.json
+  > "$KAST_MEASUREMENT_DIR/config-before.json"
 jq '{configPath, telemetry: .effective.telemetry}' \
-  /tmp/kast-config-before.json
+  "$KAST_MEASUREMENT_DIR/config-before.json"
 ```
 
 Inspect the TOML at `configPath` read-only to distinguish explicit workspace
@@ -89,7 +94,8 @@ before enabling it. Only `basic` and `verbose` are meaningful detail values.
   --workspace-root "$WORKSPACE_ROOT"
 
 KAST_BACKEND_KIND="$(
-  jq -er '.selected.descriptor.backendName' /tmp/kast-status-before.json
+  jq -er '.selected.descriptor.backendName' \
+    "$KAST_MEASUREMENT_DIR/status-before.json"
 )"
 "$KAST_CONTROL_BIN" --output json developer runtime restart \
   --workspace-root "$WORKSPACE_ROOT" \
@@ -179,6 +185,7 @@ jfr view --width 220 gc-pauses "$JFR_FILE"
 For each of `telemetry.enabled`, `telemetry.scopes`, and `telemetry.detail`,
 restore the explicit value captured from the workspace TOML, or run
 `config unset` when the field was inherited. Restart the same exact backend,
-then compare `config list` with `/tmp/kast-config-before.json`.
+then compare `config list` with
+`$KAST_MEASUREMENT_DIR/config-before.json`.
 
 Do not restore by copying an old TOML over the live configuration.
