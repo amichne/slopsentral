@@ -78,14 +78,11 @@ session_id() {
   fi
 
   discovered="$(
-    jq -sr '
-      [
-        .[]
-        | select(.type == "session_meta")
-        | .payload.id // .payload.session_id // empty
-      ]
-      | first // empty
-    ' "$session_file"
+    jq -r '
+      select(.type == "session_meta")
+      | .payload.id // .payload.session_id // empty
+    ' "$session_file" |
+      sed -n '1p'
   )"
   if [[ -n "$discovered" ]]; then
     printf '%s\n' "$discovered"

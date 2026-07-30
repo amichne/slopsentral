@@ -46,7 +46,7 @@ Use one exact command and input for every sample. On macOS:
 for SAMPLE_INDEX in 1 2 3; do
   /usr/bin/time -lp \
     "$KAST_PUBLIC_BIN" graph summary \
-    >"$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.json" \
+    >"$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.out" \
     2>"$KAST_MEASUREMENT_DIR/graph-$SAMPLE_INDEX.time"
 done
 ```

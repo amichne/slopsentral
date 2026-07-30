@@ -65,8 +65,12 @@ while (($#)); do
 done
 
 command -v sqlite3 >/dev/null 2>&1 || die "sqlite3 is required"
-[[ "$TIMEOUT_MS" =~ ^[0-9]+$ ]] && ((TIMEOUT_MS > 0)) ||
+if ! [[ "$TIMEOUT_MS" =~ ^[0-9]+$ ]] || ((TIMEOUT_MS <= 0)); then
   die "--timeout-ms must be a positive integer"
+fi
+if $PRINT_PATH && [[ -n "$QUERY" || "$JSON_OUTPUT" == true ]]; then
+  die "--print-path cannot be combined with --query or --json"
+fi
 
 if [[ -n "$KAST_WORKSPACE" ]]; then
   command -v jq >/dev/null 2>&1 || die "jq is required for --kast-workspace"
@@ -135,7 +139,7 @@ DATABASE="$DATABASE_DIR/$(basename "$DATABASE")"
 
 if $PRINT_PATH; then
   printf '%s\n' "$DATABASE"
-  [[ -n "$QUERY" ]] || exit 0
+  exit 0
 fi
 
 SQLITE_ARGS=(
