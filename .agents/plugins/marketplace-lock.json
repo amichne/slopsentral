@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-28T10:42:01-04:00",
+  "generatedAt": "2026-07-30T20:49:49-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -265,7 +265,7 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:9604da8e728f7d71f8d231a8f3a01da9fb4899a8847eaaab61ce62ffc0f9aa07",
+          "sha256": "sha256:05ed5edfa487f5ae76c5a84c77b737f69111e00808e035a3a801e5426fe90253",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
@@ -306,13 +306,6 @@
       "name": "git-ci-operations",
       "references": [
         {
-          "name": "github-actions-await",
-          "sha256": "sha256:118d2af3fa2993d3404352215f655ab307b8b8c16147995671b20ef671be0cdb",
-          "sourcePath": "source/hooks/github-actions-await.hook.json",
-          "targetPath": "hooks/github-actions-await.hooks.json",
-          "type": "HOOK"
-        },
-        {
           "name": "schema-driven-design",
           "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
@@ -341,8 +334,43 @@
           "type": "SKILL"
         },
         {
+          "name": "shell-script-safety",
+          "sha256": "sha256:a824aec1e91aa4910d73981e54bb8e59df8b2ac913bc90670936cc7de5545dbd",
+          "sourcePath": "source/skills/shell-script-safety",
+          "targetPath": "skills/shell-script-safety",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/git-ci-operations/plugin.json",
+      "version": "0.2.0"
+    },
+    {
+      "name": "effective-delivery",
+      "references": [
+        {
+          "name": "github-actions-await",
+          "sha256": "sha256:0dce66a2bc6644b7157d074e2210192ef9d74d43d0e33d740d6e9573cf135e06",
+          "sourcePath": "source/hooks/github-actions-await.hook.json",
+          "targetPath": "hooks/github-actions-await.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "schema-driven-design",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
+          "sourcePath": "source/concepts/schema-driven-design/core.md",
+          "targetPath": "instructions/schema-driven-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "type-safety",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
+          "sourcePath": "source/concepts/type-safety/core.md",
+          "targetPath": "instructions/type-safety.md",
+          "type": "INSTRUCTION"
+        },
+        {
           "name": "github-ci-operations",
-          "sha256": "sha256:7eb5d08f983fbcc3dd81aa97bcdc3e45967d842b53d5a1e1c2c63553a88118f2",
+          "sha256": "sha256:7e7f47ecc5d693bdb6b234764aae3b3ed6ef33d98fd37c9372153fefea2d47b5",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
@@ -353,16 +381,9 @@
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
-        },
-        {
-          "name": "shell-script-safety",
-          "sha256": "sha256:a824aec1e91aa4910d73981e54bb8e59df8b2ac913bc90670936cc7de5545dbd",
-          "sourcePath": "source/skills/shell-script-safety",
-          "targetPath": "skills/shell-script-safety",
-          "type": "SKILL"
         }
       ],
-      "sourceManifest": "source/plugins/git-ci-operations/plugin.json",
+      "sourceManifest": "source/plugins/effective-delivery/plugin.json",
       "version": "0.1.0"
     },
     {
@@ -567,9 +588,44 @@
       ],
       "sourceManifest": "source/plugins/intellij-plugin-engineering/plugin.json",
       "version": "0.1.1"
+    },
+    {
+      "name": "kast-operations",
+      "references": [
+        {
+          "name": "codex-session-structural-analysis",
+          "sha256": "sha256:7d7be1b544644363b78eaa8da6510f1809636186e6c721aae68e1ef7c7caa3b9",
+          "sourcePath": "source/skills/codex-session-structural-analysis",
+          "targetPath": "skills/codex-session-structural-analysis",
+          "type": "SKILL"
+        },
+        {
+          "name": "kast-installation-diagnosis",
+          "sha256": "sha256:2d5ad77af3244acff59348caa0afe3cb3c7c99b9d931a99ba4f1b71c19cc0e93",
+          "sourcePath": "source/skills/kast-installation-diagnosis",
+          "targetPath": "skills/kast-installation-diagnosis",
+          "type": "SKILL"
+        },
+        {
+          "name": "kast-performance-assessment",
+          "sha256": "sha256:869f0e1e928b693d5219e863f53389803271a23ad9284d7e1c2eec2ca7a8a870",
+          "sourcePath": "source/skills/kast-performance-assessment",
+          "targetPath": "skills/kast-performance-assessment",
+          "type": "SKILL"
+        },
+        {
+          "name": "sqlite-readonly-navigation",
+          "sha256": "sha256:a781f3eb91c0ddf9fca0a81d93fdb4645db57d1de5083f2a1d7afa3754125709",
+          "sourcePath": "source/skills/sqlite-readonly-navigation",
+          "targetPath": "skills/sqlite-readonly-navigation",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/kast-operations/plugin.json",
+      "version": "0.1.0"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "5432ff0cd0150149af051657216b648540afc378",
+  "sourceSha": "1432a838b510d3283b00aae4a27571f5410a1847",
   "type": "HYDRATED_MARKETPLACE"
 }

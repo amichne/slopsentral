@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/github-actions-await.py\" guard --repo .",
+        "matcher": "^(Bash|exec_command|mcp__.*github.*)$",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
+    "SessionStart": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/github-actions-await.py\" start --repo .",
+        "matcher": "startup|resume",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
+    "Stop": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/github-actions-await.py\" stop --repo .",
+        "timeoutSec": 3600,
+        "type": "command"
+      }
+    ]
+  },
+  "version": 1
+}

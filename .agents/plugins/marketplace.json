@@ -66,6 +66,18 @@
     },
     {
       "category": "Engineering",
+      "name": "effective-delivery",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/effective-delivery",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
       "name": "agent-platform-authoring",
       "policy": {
         "authentication": "ON_INSTALL",
@@ -121,6 +133,18 @@
       },
       "source": {
         "path": "./.agents/plugins/intellij-plugin-engineering",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "kast-operations",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/kast-operations",
         "source": "local"
       }
     }

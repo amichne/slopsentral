@@ -1,8 +1,8 @@
-# Git CI Operations Plugin Instructions
+# Effective Delivery Plugin Instructions
 
 ## Scope
 
-This generated adapter applies to the `git-ci-operations` plugin payload. Do not edit it directly; update the provider-neutral primitives or plugin manifest, then regenerate the marketplace output.
+This generated adapter applies to the `effective-delivery` plugin payload. Do not edit it directly; update the provider-neutral primitives or plugin manifest, then regenerate the marketplace output.
 
 ## Runtime Boundary
 
@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.
+Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and quiet event-driven observation.
 
 ## Operating Rules
 
@@ -28,6 +28,9 @@ Host-neutral Git operations for goal framing, safe local changes, and shell auto
 
 ## Skill Primitives
 
-- `define-goal`: `skills/define-goal` (source: `source/skills/define-goal`)
-- `git-change-flow`: `skills/git-change-flow` (source: `source/skills/git-change-flow`)
-- `shell-script-safety`: `skills/shell-script-safety` (source: `source/skills/shell-script-safety`)
+- `github-ci-operations`: `skills/github-ci-operations` (source: `source/skills/github-ci-operations`)
+- `pull-request-lifecycle`: `skills/pull-request-lifecycle` (source: `source/skills/pull-request-lifecycle`)
+
+## Hook Primitives
+
+- `github-actions-await`: `hooks/github-actions-await.hooks.json` (source: `source/hooks/github-actions-await.hook.json`)

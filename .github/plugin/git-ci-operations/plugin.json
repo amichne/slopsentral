@@ -3,23 +3,17 @@
     "name": "Amichne"
   },
   "category": "Engineering",
-  "description": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
-  "hooks": "./hooks.json",
+  "description": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
   "keywords": [
     "automation",
     "best-practices",
-    "ci",
-    "composable",
-    "evidence",
     "git",
     "git-ci-operations",
-    "github",
     "operations",
     "planning",
-    "pull-requests",
-    "release",
+    "shell",
     "skills",
-    "workflow"
+    "version-control"
   ],
   "license": "UNLICENSED",
   "name": "git-ci-operations",
@@ -27,17 +21,12 @@
   "tags": [
     "automation",
     "best-practices",
-    "ci",
-    "composable",
-    "evidence",
     "git",
-    "github",
     "operations",
     "planning",
-    "pull-requests",
-    "release",
+    "shell",
     "skills",
-    "workflow"
+    "version-control"
   ],
-  "version": "0.1.0"
+  "version": "0.2.0"
 }

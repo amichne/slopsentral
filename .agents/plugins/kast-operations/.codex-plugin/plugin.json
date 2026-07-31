@@ -1,0 +1,40 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Operational diagnosis, performance measurement, session-ledger analysis, and read-only SQLite navigation for Kast and adjacent agent workflows.",
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Kast Operations for this task.",
+      "Review this repo with Kast Operations.",
+      "Show the Kast Operations workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Kast Operations",
+    "longDescription": "Operational diagnosis, performance measurement, session-ledger analysis, and read-only SQLite navigation for Kast and adjacent agent workflows.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Operational diagnosis, performance measurement, session-ledger analys...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "diagnostics",
+    "jq",
+    "kast",
+    "kast-operations",
+    "observability",
+    "performance",
+    "skills",
+    "sqlite"
+  ],
+  "license": "UNLICENSED",
+  "name": "kast-operations",
+  "skills": "./skills/",
+  "version": "0.1.0"
+}

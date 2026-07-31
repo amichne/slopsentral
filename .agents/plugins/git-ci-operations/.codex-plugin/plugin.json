@@ -2,10 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
-  "hooks": [
-    "./hooks/github-actions-await.hooks.json"
-  ],
+  "description": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -20,30 +17,25 @@
     ],
     "developerName": "Amichne",
     "displayName": "Git CI Operations",
-    "longDescription": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+    "longDescription": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Git and CI best-practices package for reusable delivery workflows: go...",
+    "shortDescription": "Host-neutral Git operations for goal framing, safe local changes, and...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
   "keywords": [
     "automation",
     "best-practices",
-    "ci",
-    "composable",
-    "evidence",
     "git",
     "git-ci-operations",
-    "github",
     "operations",
     "planning",
-    "pull-requests",
-    "release",
+    "shell",
     "skills",
-    "workflow"
+    "version-control"
   ],
   "license": "UNLICENSED",
   "name": "git-ci-operations",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "0.2.0"
 }

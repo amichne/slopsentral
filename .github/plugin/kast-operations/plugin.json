@@ -1,0 +1,30 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Productivity",
+  "description": "Operational diagnosis, performance measurement, session-ledger analysis, and read-only SQLite navigation for Kast and adjacent agent workflows.",
+  "keywords": [
+    "diagnostics",
+    "jq",
+    "kast",
+    "kast-operations",
+    "observability",
+    "performance",
+    "skills",
+    "sqlite"
+  ],
+  "license": "UNLICENSED",
+  "name": "kast-operations",
+  "skills": "./skills",
+  "tags": [
+    "diagnostics",
+    "jq",
+    "kast",
+    "observability",
+    "performance",
+    "skills",
+    "sqlite"
+  ],
+  "version": "0.1.0"
+}

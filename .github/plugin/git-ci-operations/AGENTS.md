@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.
+Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.
 
 ## Operating Rules
 
@@ -30,10 +30,4 @@ Git and CI best-practices package for reusable delivery workflows: goals, Git hy
 
 - `define-goal`: `skills/define-goal` (source: `source/skills/define-goal`)
 - `git-change-flow`: `skills/git-change-flow` (source: `source/skills/git-change-flow`)
-- `github-ci-operations`: `skills/github-ci-operations` (source: `source/skills/github-ci-operations`)
-- `pull-request-lifecycle`: `skills/pull-request-lifecycle` (source: `source/skills/pull-request-lifecycle`)
 - `shell-script-safety`: `skills/shell-script-safety` (source: `source/skills/shell-script-safety`)
-
-## Hook Primitives
-
-- `github-actions-await`: `hooks/github-actions-await.hooks.json` (source: `source/hooks/github-actions-await.hook.json`)

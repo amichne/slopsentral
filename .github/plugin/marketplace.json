@@ -185,22 +185,17 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Git and CI best-practices package for reusable delivery workflows: goals, Git hygiene, PRs, structured CI evidence, composable GitHub Actions, releases, and shell-safe automation.",
+      "description": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
       "keywords": [
         "automation",
         "best-practices",
-        "ci",
-        "composable",
-        "evidence",
         "git",
         "git-ci-operations",
-        "github",
         "operations",
         "planning",
-        "pull-requests",
-        "release",
+        "shell",
         "skills",
-        "workflow"
+        "version-control"
       ],
       "license": "UNLICENSED",
       "name": "git-ci-operations",
@@ -209,17 +204,53 @@
       "tags": [
         "automation",
         "best-practices",
-        "ci",
-        "composable",
-        "evidence",
         "git",
-        "github",
         "operations",
         "planning",
+        "shell",
+        "skills",
+        "version-control"
+      ],
+      "version": "0.2.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Engineering",
+      "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and quiet event-driven observation.",
+      "keywords": [
+        "actions",
+        "automation",
+        "ci",
+        "duration",
+        "effective-delivery",
+        "evidence",
+        "github",
+        "hooks",
+        "optimization",
         "pull-requests",
         "release",
         "skills",
-        "workflow"
+        "workflow-graph"
+      ],
+      "license": "UNLICENSED",
+      "name": "effective-delivery",
+      "source": "effective-delivery",
+      "strict": true,
+      "tags": [
+        "actions",
+        "automation",
+        "ci",
+        "duration",
+        "evidence",
+        "github",
+        "hooks",
+        "optimization",
+        "pull-requests",
+        "release",
+        "skills",
+        "workflow-graph"
       ],
       "version": "0.1.0"
     },
@@ -407,6 +438,37 @@
         "verification"
       ],
       "version": "0.1.1"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Operational diagnosis, performance measurement, session-ledger analysis, and read-only SQLite navigation for Kast and adjacent agent workflows.",
+      "keywords": [
+        "diagnostics",
+        "jq",
+        "kast",
+        "kast-operations",
+        "observability",
+        "performance",
+        "skills",
+        "sqlite"
+      ],
+      "license": "UNLICENSED",
+      "name": "kast-operations",
+      "source": "kast-operations",
+      "strict": true,
+      "tags": [
+        "diagnostics",
+        "jq",
+        "kast",
+        "observability",
+        "performance",
+        "skills",
+        "sqlite"
+      ],
+      "version": "0.1.0"
     }
   ]
 }
