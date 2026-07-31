@@ -137,7 +137,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/git-ci-operations"
         },
-        "version": "0.2.0"
+        "version": "0.2.1"
       },
       "description": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
       "tags": [
@@ -161,7 +161,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/effective-delivery"
         },
-        "version": "0.2.0"
+        "version": "0.3.0"
       },
       "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and explicit event-driven observation.",
       "tags": [

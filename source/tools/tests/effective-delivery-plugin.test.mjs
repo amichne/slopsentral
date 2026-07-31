@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
+import { execFileSync } from "node:child_process";
 
 const repoRoot = path.resolve(import.meta.dirname, "../../..");
 
@@ -57,4 +58,28 @@ test("default delivery composition does not activate automatic CI hooks", () => 
   ]);
   assert.equal(profile.hooks.some((hook) => hook.name === "github-actions-await"), false);
   assert.equal(benchmark.targetName, "effective-delivery");
+});
+
+test("authored delivery surfaces do not require the removed GitHub adapter", () => {
+  const marker = ["a", "x", "i"].join("");
+  const forbidden = new RegExp(
+    `gh[_-]${marker}|\\b${marker}(?:result|runner)\\b|\\.${marker}/github-actions`,
+    "i",
+  );
+  const tracked = execFileSync(
+    "git",
+    ["ls-files", "-z", "--", "source", "garden/manifests"],
+    { cwd: repoRoot, encoding: "utf8" },
+  )
+    .split("\0")
+    .filter((file) => file && fs.existsSync(path.join(repoRoot, file)));
+
+  assert.deepEqual(
+    tracked.filter((file) =>
+      forbidden.test(
+        `${file}\n${fs.readFileSync(path.join(repoRoot, file), "utf8")}`,
+      ),
+    ),
+    [],
+  );
 });

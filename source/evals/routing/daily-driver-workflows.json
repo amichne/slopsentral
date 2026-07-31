@@ -238,7 +238,7 @@
         ]
       },
       "allowedActions": [
-        "Read current PR or run state only through npx -y gh-axi and the typed observer.",
+        "Read current PR metadata through the connected GitHub app when available, use native gh only for a connector gap, and read current CI state through the native gh-backed observer.",
         "Arm one explicit status-change or terminal predicate with an invocation-time timeout informed by stored durations.",
         "Invoke one bounded await, then report failing and pending checks separately from green terminal checks."
       ],
@@ -246,12 +246,12 @@
         "Claim green from stale memory or a previous run.",
         "Treat pending checks as passing.",
         "Ignore unknown check state because the display output looks positive.",
-        "Poll unchanged remote state from repeated model turns or use a non-AXI GitHub client."
+        "Poll unchanged remote state from repeated model turns or scrape human display output."
       ],
       "recoveryExpectation": "A good status pass leaves typed evidence for the current head SHA, wakes only for the requested event or bound, and refuses a green claim until all required checks are terminal green, skipped, or neutral.",
       "productiveOutcome": "CI status decisions become auditable across PR lifecycle, CI triage, and release workflows without spending model turns on unchanged state.",
       "verificationEvidence": [
-        "The run uses npx -y gh-axi exclusively for remote GitHub state and records the typed current-head classification.",
+        "The run uses the connected GitHub app first for supported PR metadata, native gh only for a connector gap, and records the typed current-head CI classification.",
         "The run arms ci_wait_for_actions with a predicate and timeout source, then processes only a transition, terminal result, timeout, or error."
       ],
       "notes": "This makes CI status a structured evidence contract rather than a conversational impression."

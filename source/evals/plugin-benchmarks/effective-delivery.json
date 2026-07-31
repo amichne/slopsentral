@@ -57,7 +57,7 @@
       },
       "userInput": "Use Effective Delivery to triage a failing GitHub Actions check. Identify the current failing job and run URL, fix the owning source or workflow, run the closest local proof, push if required, and re-read the remote check state.",
       "successChecklist": [
-        "The run cites current npx -y gh-axi check or run evidence for the head SHA.",
+        "The run cites current PR metadata from the GitHub app when available, uses native gh only for a connector gap and Actions evidence, and pins the evidence to the head SHA.",
         "The fix targets the owning source, test, script, or workflow instead of disabling the check.",
         "The final evidence includes local validation and updated remote check state or exact pending checks."
       ]
@@ -66,7 +66,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "ci-status-structured-green-claim",
       "title": "Event-driven structured green claim",
-      "purpose": "Measure whether PR readiness claims use AXI-only structured evidence, await meaningful events without model-driven polling, and refuse to collapse pending or unknown states into green.",
+      "purpose": "Measure whether PR readiness claims use structured current-head evidence, await meaningful events without model-driven polling, and refuse to collapse pending or unknown states into green.",
       "routingCaseIds": [
         "ci-status-claims-use-structured-check-evidence"
       ],
@@ -74,9 +74,9 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Effective Delivery to tell me whether PR 42 is green. Use AXI as the sole GitHub surface. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you.",
+      "userInput": "Use Effective Delivery to tell me whether PR 42 is green. Use the connected GitHub app first for supported PR metadata, native gh only for a connector gap, and the native gh-backed observer for CI state. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you.",
       "successChecklist": [
-        "Every remote GitHub interaction uses npx -y gh-axi, and the typed observer classifies the current head.",
+        "Supported PR metadata comes from the connected GitHub app when available; native gh fills only a connector gap, and the observer classifies the current head.",
         "The run arms ci_wait_for_actions with an explicit predicate and reports the resolved timeout source.",
         "The model invokes one bounded await instead of unchanged status checks; a still-pending event is processed once and re-armed.",
         "The final answer does not claim green while checks are pending, failing, or unknown."
@@ -133,11 +133,11 @@
         "type": "SKILL",
         "name": "pull-request-lifecycle"
       },
-      "userInput": "Use Effective Delivery with Git Operations to make a focused change, stage only scoped files, commit, push, open or update the PR through AXI, and arm bounded CI events until it is green or an exact failing, pending, or timeout signal remains.",
+      "userInput": "Use Effective Delivery with Git Operations to make a focused change, stage only scoped files, commit, push, open or update the PR through the connected GitHub app first and native gh only for a connector gap, and arm bounded CI events until it is green or an exact failing, pending, or timeout signal remains.",
       "successChecklist": [
         "The run preserves unrelated work and stages only the requested change set.",
         "The PR handoff includes branch, base, head SHA, validation commands, and residual risks.",
-        "Remote check claims are backed by AXI-only typed state after the latest push, without eager model-driven polling."
+        "Remote check claims are backed by typed current-head state after the latest push, without eager model-driven polling."
       ]
     }
   ]
