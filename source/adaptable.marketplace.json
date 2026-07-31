@@ -296,17 +296,18 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kast-operations"
         },
-        "version": "0.1.0"
+        "version": "0.1.1"
       },
-      "description": "Operational diagnosis, performance measurement, session-ledger analysis, and read-only SQLite navigation for Kast and adjacent agent workflows.",
+      "description": "Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
       "tags": [
         "diagnostics",
-        "jq",
         "kast",
+        "kotlin",
         "observability",
         "performance",
         "skills",
-        "sqlite"
+        "sqlite",
+        "structural-analysis"
       ]
     }
   ],
@@ -880,8 +881,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/codex-session-structural-analysis",
-      "name": "codex-session-structural-analysis"
+      "path": "skills/kast-kotlin-structural-analysis",
+      "name": "kast-kotlin-structural-analysis"
     },
     {
       "type": "SKILL",

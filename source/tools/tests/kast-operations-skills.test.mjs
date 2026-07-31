@@ -9,16 +9,12 @@ const repoRoot = path.resolve(import.meta.dirname, "../../..");
 const skillNames = [
   "kast-installation-diagnosis",
   "kast-performance-assessment",
-  "codex-session-structural-analysis",
+  "kast-kotlin-structural-analysis",
   "sqlite-readonly-navigation",
 ];
 
 function readJson(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(repoRoot, relativePath), "utf8"));
-}
-
-function writeJsonLines(file, records) {
-  fs.writeFileSync(file, `${records.map(JSON.stringify).join("\n")}\n`);
 }
 
 test("kast-operations exposes four standalone operator skills", () => {
@@ -42,119 +38,53 @@ test("kast-operations exposes four standalone operator skills", () => {
   }
 });
 
-test("session analysis walks descendants, joins tool outputs, and profiles matching calls", () => {
-  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), "codex-session-tree-"));
-  const rootId = "00000000-0000-0000-0000-000000000001";
-  const childId = "00000000-0000-0000-0000-000000000002";
-  const root = path.join(fixture, `rollout-root-${rootId}.jsonl`);
-  const child = path.join(fixture, `rollout-child-${childId}.jsonl`);
-
-  writeJsonLines(root, [
-    {
-      timestamp: "2026-01-01T00:00:00Z",
-      type: "event_msg",
-      payload: { type: "sub_agent_activity", agent_thread_id: childId },
-    },
-    {
-      timestamp: "2026-01-01T00:00:01Z",
-      type: "response_item",
-      payload: {
-        type: "custom_tool_call",
-        call_id: "call-root",
-        name: "exec",
-        input: "root command",
-      },
-    },
-    {
-      timestamp: "2026-01-01T00:00:02Z",
-      type: "response_item",
-      payload: {
-        type: "custom_tool_call_output",
-        call_id: "call-root",
-        output: "Wall time 1.0 seconds",
-      },
-    },
-  ]);
-  writeJsonLines(child, [
-    {
-      timestamp: "2026-01-01T00:00:03Z",
-      type: "response_item",
-      payload: {
-        type: "function_call",
-        call_id: "call-child",
-        name: "exec",
-        arguments: '{"cmd":"child command"}',
-      },
-    },
-    {
-      timestamp: "2026-01-01T00:00:04Z",
-      type: "response_item",
-      payload: {
-        type: "function_call_output",
-        call_id: "call-child",
-        output: "Wall time: 2.5 seconds",
-      },
-    },
-  ]);
-
-  const sessionScript = path.join(
+test("Kotlin structural analysis uses the Kast 0.20.2 root surface", () => {
+  const skillRoot = path.join(
     repoRoot,
-    "source/skills/codex-session-structural-analysis/scripts/codex_session_tree",
+    "source/skills/kast-kotlin-structural-analysis",
   );
-  const calls = execFileSync(
-    sessionScript,
-    ["calls", "--root", root, "--sessions-dir", fixture],
-    { encoding: "utf8" },
+  const skill = fs.readFileSync(path.join(skillRoot, "SKILL.md"), "utf8");
+  const runbook = fs.readFileSync(
+    path.join(skillRoot, "references/structural-query-runbook.md"),
+    "utf8",
   );
-  const callRecords = calls.trim().split("\n").map(JSON.parse);
-  assert.deepEqual(callRecords.map(({ callId }) => callId), ["call-root", "call-child"]);
-  assert.equal(callRecords[1].depth, 1);
-  assert.equal(callRecords[1].output, "Wall time: 2.5 seconds");
+  const contract = `${skill}\n${runbook}`;
 
-  const profileFilter = path.join(
-    repoRoot,
-    "source/skills/codex-session-structural-analysis/scripts/tool_call_profile.jq",
+  for (const command of [
+    "kast up",
+    "kast files",
+    "kast symbol find",
+    "kast symbol show",
+    "kast symbol refs",
+    "kast symbol callers",
+    "kast symbol callees",
+    "kast symbol implementations",
+    "kast symbol supertypes",
+    "kast symbol subtypes",
+    "kast graph summary",
+    "kast graph nodes",
+    "kast graph neighbors",
+    "kast graph topology",
+    "kast graph communities",
+    "kast graph impact",
+    "kast graph summary --scope symbol",
+    "kast graph topology --scope package",
+    "kast graph communities --scope module",
+    '--page "$NEXT_PAGE"',
+  ]) {
+    assert.ok(contract.includes(command), `missing command: ${command}`);
+  }
+  assert.match(skill, /Kast 0\.20\.2 or later/);
+  assert.match(contract, /selectorHandle/);
+  assert.match(contract, /stableKey/);
+  assert.match(contract, /runtime: READY/);
+  assert.match(contract, /referenceIndexReady: true/);
+  assert.match(contract, /explicit authority/);
+  assert.doesNotMatch(contract, /\bkast agent\b|--output json|JSONL|jq\b/i);
+  assert.equal(
+    fs.existsSync(path.join(repoRoot, "source/skills/codex-session-structural-analysis")),
+    false,
   );
-  const profile = JSON.parse(
-    execFileSync("jq", ["-s", "--arg", "pattern", "child", "-f", profileFilter], {
-      input: calls,
-      encoding: "utf8",
-    }),
-  );
-  assert.deepEqual(profile, [
-    {
-      name: "exec",
-      samples: 1,
-      meanSeconds: 2.5,
-      p50Seconds: 2.5,
-      p95Seconds: 2.5,
-      maxSeconds: 2.5,
-    },
-  ]);
-
-  const missingId = "00000000-0000-0000-0000-000000000003";
-  const missingRoot = path.join(fixture, "missing-root.jsonl");
-  writeJsonLines(missingRoot, [
-    {
-      type: "event_msg",
-      payload: { type: "sub_agent_activity", agent_thread_id: missingId },
-    },
-  ]);
-  assert.notEqual(
-    spawnSync(
-      sessionScript,
-      ["files", "--root", missingRoot, "--sessions-dir", fixture],
-      { encoding: "utf8" },
-    ).status,
-    0,
-  );
-  const partial = spawnSync(
-    sessionScript,
-    ["files", "--root", missingRoot, "--sessions-dir", fixture, "--allow-missing"],
-    { encoding: "utf8" },
-  );
-  assert.equal(partial.status, 0);
-  assert.match(partial.stderr, new RegExp(`missing child ${missingId}`));
 });
 
 test("SQLite navigation resolves receipt-owned Kast state and rejects unsafe access", () => {

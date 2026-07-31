@@ -16,7 +16,7 @@ revision. Treat configured instrumentation as unproven until its artifact grows.
    source revision, database generation, and existing instrumentation state.
 3. Choose the lowest-cost evidence that can answer the question:
    wall/resource time, native graph measurements, Kast telemetry, structured
-   trace, exact-process JFR, read-only SQLite plans, or Codex session ledgers.
+   trace, exact-process JFR, read-only SQLite plans, or timed Kast commands.
 4. Run at least three comparable samples. Keep cold and warm results separate;
    report the sample count and the full distribution, not only the best run.
 5. Change one factor at a time. Capture a new artifact segment rather than
@@ -33,13 +33,12 @@ revision. Treat configured instrumentation as unproven until its artifact grows.
   the current tested release; no recorder or manifest consumer is proven. Do
   not advertise them as profiling evidence.
 - For non-JVM or restricted environments, wall/resource time, native graph
-  measurements, application telemetry, query plans, and session ledgers remain
-  valid.
+  measurements, application telemetry, and query plans remain valid.
 
 ## Reference Routing
 
 Read [measurement-runbook.md](references/measurement-runbook.md) for baseline,
-telemetry, trace, JFR, database, session-ledger, and restoration commands.
+telemetry, trace, JFR, database, structural-query, and restoration commands.
 
 ## Completion Criteria
 
