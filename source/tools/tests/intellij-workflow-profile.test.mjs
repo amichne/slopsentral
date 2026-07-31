@@ -27,6 +27,7 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     "engineering-baseline",
     "kotlin-engineering",
     "git-ci-operations",
+    "effective-delivery",
     "intellij-plugin-engineering",
   ]);
   assert.deepEqual(profile.hooks.map(({ name }) => name), [
