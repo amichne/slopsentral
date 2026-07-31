@@ -80,6 +80,8 @@ test("Kotlin structural analysis uses the Kast 0.20.2 root surface", () => {
   assert.match(contract, /runtime: READY/);
   assert.match(contract, /referenceIndexReady: true/);
   assert.match(contract, /explicit authority/);
+  assert.ok(contract.includes('kast symbol show "$EXACT_SYMBOL"'));
+  assert.doesNotMatch(contract, /kast symbol show "\$SYMBOL"/);
   assert.doesNotMatch(contract, /\bkast agent\b|--output json|JSONL|jq\b/i);
   assert.equal(
     fs.existsSync(path.join(repoRoot, "source/skills/codex-session-structural-analysis")),

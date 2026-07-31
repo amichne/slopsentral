@@ -31,12 +31,14 @@ inspection without explicit authority.
 ```bash
 kast files "$SOURCE_PATTERN"
 kast symbol find "$SYMBOL_QUERY"
-SYMBOL="<selectorHandle-or-exact-symbol>"
-kast symbol show "$SYMBOL"
+EXACT_SYMBOL="<fqName-or-signature-from-find>"
+kast symbol show "$EXACT_SYMBOL"
+SYMBOL="<selectorHandle-from-show>"
 ```
 
-Use the returned `selectorHandle` when available. Do not rebuild identity from
-a short name.
+Use an exact fully qualified name or signature with `show`. Use the returned
+`selectorHandle` for relationship and impact commands. Do not pass that handle
+back to `show`.
 
 ## Project incoming and outgoing call structure
 
@@ -56,13 +58,15 @@ Resolve one returned caller before you query the next hop:
 ```bash
 kast symbol callers "$SYMBOL"
 CALLER_QUERY="<exact-returned-caller>"
-kast symbol show "$CALLER_QUERY"
+EXACT_SYMBOL="$CALLER_QUERY"
+kast symbol show "$EXACT_SYMBOL"
 CALLER="<returned-selectorHandle>"
 kast symbol callers "$CALLER"
 ```
 
 Repeat only for callers that can answer the question. Record each hop and its
-coverage. Do not turn this chain into an unbounded repository crawl.
+coverage. If the returned identity is still ambiguous, report the limit. Do not
+guess or turn this chain into an unbounded repository crawl.
 
 ## Project type structure
 

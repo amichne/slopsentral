@@ -22,10 +22,11 @@ surface in Kast 0.20.2 or later. Use Kast directly for one routine lookup.
    Run `kast up` only with explicit authority because it can start runtime and
    indexing work.
 5. Run `kast files [PATTERN]` when the source path is not known.
-6. Run `kast symbol find <QUERY>`. Select one exact result. Preserve its
-   `selectorHandle`, fully qualified name, kind, and source location.
-7. Run `kast symbol show <SYMBOL>` before relationship queries when identity is
-   not yet exact.
+6. Run `kast symbol find <QUERY>`. Select one exact fully qualified name or
+   signature. Do not select by a short name when the result is ambiguous.
+7. Run `kast symbol show <EXACT_SYMBOL>`. Preserve the returned
+   `selectorHandle`, kind, and source location. Use the handle for relationship
+   and impact commands.
 8. Choose the smallest relationship or graph command that answers the
    question. Set graph projection scope explicitly. Use the runbook for stable
    command chains.
