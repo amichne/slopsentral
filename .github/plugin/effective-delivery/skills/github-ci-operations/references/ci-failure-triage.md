@@ -4,14 +4,16 @@ Use this reference when a PR check or workflow run is failing.
 
 ## Useful Commands
 
-Run these from the repository root.
+Use the connected GitHub app first for supported repository and PR metadata.
+Run these commands from the repository root before and during Actions
+inspection.
 
 ```sh
-npx -y gh-axi api /user
-npx -y gh-axi pr view <pr-number>
-npx -y gh-axi pr checks <pr-number>
-npx -y gh-axi run view <run-id>
-npx -y gh-axi run view <run-id> --log-failed
+git remote get-url origin
+gh auth status
+gh pr checks <pr-number> --json bucket,link,name,state,workflow
+gh run view <run-id> --json conclusion,headSha,jobs,status,url,workflowName
+gh run view <run-id> --log-failed
 python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
   --pr <pr-number> --required --until status-change --timeout auto --json
 python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
@@ -19,9 +21,9 @@ python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
 python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
 ```
 
-Treat AXI's structured TOON response as the live evidence contract. If a
-required field is absent, fail closed and update the typed parser or AXI
-dependency instead of scraping human display text.
+Treat structured app results, `gh` JSON, and typed observer results as the live
+evidence contract. If a required field is absent, fail closed and update the
+typed parser instead of scraping human display text.
 
 ## Quiet Waiting
 
@@ -41,8 +43,8 @@ Never implement listening as repeated model-driven status calls. When a
 4. Reproduce locally with the closest command.
 5. Fix the owning source.
 6. Re-run the local check.
-7. Re-read PR checks or the run state through AXI and the typed observer before
-   claiming the branch is green.
+7. Re-read PR metadata through the app and CI state through the typed observer
+   before claiming the branch is green.
 
 When step 7 requires waiting, do not emit status updates between unchanged
 states. Report queued, in-progress, terminal pass, terminal failure, and any
@@ -62,12 +64,11 @@ timeout as separate events backed by the wait evidence.
   tied to lockfiles.
 - Flake: rerun once for evidence, then look for timing, ordering, network, or
   isolation failures before changing assertions.
-- Unknown status shape: update the typed parser or AXI contract rather than
-  downgrading to display-output parsing.
+- Unknown status shape: update the typed parser or native `gh` JSON contract.
+  Do not downgrade to display-output parsing.
 
 ## Reruns
 
 - Rerun failed jobs only after deciding whether the failure might be flaky.
-- Prefer `npx -y gh-axi run rerun <run-id> --failed` for a suspected transient
-  failure.
+- Prefer `gh run rerun <run-id> --failed` for a suspected transient failure.
 - Do not use reruns as the only fix for deterministic failures.

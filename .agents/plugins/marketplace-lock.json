@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T21:13:11-04:00",
+  "generatedAt": "2026-07-30T21:46:05-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -321,7 +321,7 @@
         },
         {
           "name": "define-goal",
-          "sha256": "sha256:bab03fb8483af90e3f3276352c144eb73c23f28dc889490d894f35b67d7a43b3",
+          "sha256": "sha256:347e9b3a7a5e6885510b6220f0e9ebd475d70df58da979b68564b2ca574203ae",
           "sourcePath": "source/skills/define-goal",
           "targetPath": "skills/define-goal",
           "type": "SKILL"
@@ -342,7 +342,7 @@
         }
       ],
       "sourceManifest": "source/plugins/git-ci-operations/plugin.json",
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "name": "effective-delivery",
@@ -363,21 +363,21 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:6eb57e0bd6d9672e47f8a7b1e47fc1827acc05f29e12d030014a5ab2efda7ba5",
+          "sha256": "sha256:8d6323b006ace0c1be46b69d152d1810fc3ecbe827a44c1395e9b721d5e50876",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:b0e826c70b89910ad67a6210492c2e6ab16b9d8bbf42a866b25135bec33c6f7c",
+          "sha256": "sha256:0732b16062c6bfa7bc54d3d4c2e85eae619b8470190834f9c5e0684c38cbfc29",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/effective-delivery/plugin.json",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     {
       "name": "agent-platform-authoring",
@@ -619,6 +619,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "197353b63a4f8bcb1ceae3ae2313cca3fa8f7fbc",
+  "sourceSha": "51797d7ae77f3c02506ed7533c10f2871927ae3d",
   "type": "HYDRATED_MARKETPLACE"
 }

@@ -11,9 +11,12 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 
 ## Operating Contract
 
-- Use `npx -y gh-axi` as the sole remote GitHub interaction surface. Do not
-  substitute the legacy GitHub CLI, a GitHub MCP tool, or direct HTTP calls.
-- Verify the repository and AXI authentication context before remote work.
+- Use the connected GitHub app for supported repository, PR, issue, review, and
+  PR creation operations.
+- Use authenticated native `gh` only for GitHub Actions, logs, releases, the
+  local CI observer, or a connector gap.
+- Use local `git` for local repository state.
+- Verify the target repository and authentication context before remote work.
 - Use live PR checks, workflow runs, logs, annotations, and job summaries as
   evidence when debugging failures.
 - Before waiting on GitHub Actions, arm the script-backed observer with one
@@ -43,11 +46,14 @@ when the live run, YAML, scripts, or package metadata can be inspected.
    publication.
 
 2. Inspect live state.
-   Use `npx -y gh-axi api /user` to verify identity, then the AXI `pr` and `run`
-   commands plus workflow YAML under `.github/workflows/`.
-   Capture the failing job name, command, error snippet, run URL, head SHA, and
-   owning local file. Treat AXI's structured TOON response and the observer's
-   typed snapshot as evidence.
+   Use the connected GitHub app for supported repository and PR metadata.
+   Before native `gh` use, run `gh auth status` and confirm the local target
+   with `git remote get-url origin`. Use `gh repo view --json nameWithOwner,url`
+   only when the app and local remote do not resolve the target. Inspect Actions
+   state with `gh` JSON and workflow YAML under `.github/workflows/`. Capture
+   the failing job name, command, error snippet, run URL, head SHA, and owning
+   local file. Treat structured app results, `gh` JSON, and typed observer
+   snapshots as evidence.
 
 3. Classify the failure.
    Separate product/test failures from CI-environment failures, dependency
@@ -63,8 +69,9 @@ when the live run, YAML, scripts, or package metadata can be inspected.
    Run the local equivalent and `actionlint` for workflow changes when present.
    For dependency, matrix, cache, or startup-latency changes, run the deterministic
    workflow graph model and preserve the baseline proof-output set.
-   Re-read through AXI. For pending state, arm the observer, invoke one bounded
-   `await --json`, and re-arm only if work remains.
+   Re-read PR metadata through the connected GitHub app when supported. For
+   pending CI state, arm the observer, invoke one bounded `await --json`, and
+   re-arm only if work remains.
 
 6. Hand off.
    Summarize the failed signal, root cause, files changed, checks run, and any

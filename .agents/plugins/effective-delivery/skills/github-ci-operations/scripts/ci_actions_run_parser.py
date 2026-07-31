@@ -2,24 +2,31 @@ from __future__ import annotations
 
 from typing import Any, Sequence
 
-from ci_actions_scalars import normalized, required_text
-from ci_actions_toon import parse_mapping_block, parse_table, parse_top_level_mapping
+from ci_actions_scalars import normalized, parse_json, required_text
 from ci_actions_types import FAILURE_CONCLUSIONS, ObserverError, Outcome, Snapshot, Target, TargetKind
 
 
 def parse_run_view(raw: str, run_id: str) -> Snapshot:
-    run = parse_mapping_block(raw, "run")
-    status = required_text(run, "status", "gh-axi run view")
+    run = parse_json(raw, "gh run view")
+    if not isinstance(run, dict):
+        raise ObserverError("gh run view JSON must be an object")
+    status = required_text(run, "status", "gh run view")
     conclusion = normalized(run.get("conclusion"))
-    workflow = normalized(run.get("workflow")) or f"run {run_id}"
+    workflow = normalized(run.get("workflowName")) or f"run {run_id}"
+    raw_jobs = run.get("jobs")
+    if not isinstance(raw_jobs, list):
+        raise ObserverError("gh run view output is missing jobs")
     jobs = [
         {
             "name": normalized(job.get("name")),
             "status": normalized(job.get("status")),
             "conclusion": normalized(job.get("conclusion")),
         }
-        for job in parse_table(raw, "jobs")
+        for job in raw_jobs
+        if isinstance(job, dict)
     ]
+    if len(jobs) != len(raw_jobs):
+        raise ObserverError("gh run view jobs must be objects")
     details = {"workflow": workflow, "jobs": jobs}
     outcome = classify_run(status, conclusion)
     counts = count_job_states(jobs)
@@ -39,16 +46,18 @@ def parse_run_view(raw: str, run_id: str) -> Snapshot:
 
 
 def parse_run_api(raw: str) -> dict[str, Any]:
-    values = parse_top_level_mapping(raw)
-    run_id = required_text(values, "id", "gh-axi run API")
-    workflow = required_text(values, "name", "gh-axi run API")
-    started = required_text(values, "run_started_at", "gh-axi run API")
-    updated = required_text(values, "updated_at", "gh-axi run API")
-    attempt_value = required_text(values, "run_attempt", "gh-axi run API")
+    values = parse_json(raw, "gh run API")
+    if not isinstance(values, dict):
+        raise ObserverError("gh run API JSON must be an object")
+    run_id = required_text(values, "id", "gh run API")
+    workflow = required_text(values, "name", "gh run API")
+    started = required_text(values, "run_started_at", "gh run API")
+    updated = required_text(values, "updated_at", "gh run API")
+    attempt_value = required_text(values, "run_attempt", "gh run API")
     try:
         attempt = int(attempt_value)
     except ValueError as exc:
-        raise ObserverError("gh-axi run API run_attempt must be an integer") from exc
+        raise ObserverError("gh run API run_attempt must be an integer") from exc
     return {
         "runId": run_id,
         "workflow": workflow,

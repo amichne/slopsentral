@@ -8,7 +8,9 @@ description: "Use when work needs a branch, commit, push, PR, draft/ready transi
 Use this skill to carry code work across the version-control boundary without
 losing evidence. It composes local Git hygiene, GitHub PR operations, and CI
 triage; it must remain useful even when a host-specific GitHub connector is not
-available. Use `npx -y gh-axi` as the sole remote GitHub surface.
+available. Use the connected GitHub app for supported PR operations. Use
+authenticated native `gh` only for GitHub Actions, logs, the local CI observer,
+or a connector gap. Use local `git` for local repository state.
 
 Related primitives in this repository:
 
@@ -34,9 +36,8 @@ Related primitives in this repository:
   `skills/github-ci-operations/scripts/ci_wait_for_actions`, then invoke one
   bounded `await --json`. Fix the owning source instead of rerunning
   deterministic failures.
-- Never claim a PR is green until `npx -y gh-axi pr checks <pr-number>` and the
-  typed required-check observation report passing, skipped, or neutral terminal
-  states for the current head.
+- Never claim a PR is green until the typed required-check observation reports
+  passing, skipped, or neutral terminal states for the current head.
 
 ## Workflow
 
@@ -61,20 +62,35 @@ Related primitives in this repository:
    publication is requested.
 
 5. Open or update the PR.
-   Use `npx -y gh-axi pr list --head <branch> --state open --limit 2` and
-   `npx -y gh-axi pr view <pr-number>` to detect and inspect an existing PR. If
-   none exists, open one through AXI with purpose, changed surface, validation
-   evidence, and residual risk. Prefer draft until local evidence is complete.
+   Use the connected GitHub app to detect, inspect, create, or update the PR.
+   If the connector lacks an operation, use:
+
+   ```sh
+   gh pr list --head <branch> --state open --limit 2 \
+     --json number,url,headRefName,baseRefName,state,isDraft
+   gh pr view <pr-number> \
+     --json number,url,headRefOid,baseRefName,state,isDraft,reviewDecision
+   ```
+
+   Open the PR with purpose, changed surface, validation evidence, and residual
+   risk. Prefer draft until local evidence is complete.
 
 6. Watch checks.
-   Use `npx -y gh-axi pr checks <pr-number>` for a snapshot. When checks are
-   pending, run `python3
+   Confirm the PR and head SHA through the connected GitHub app. For a native
+   Actions snapshot, use:
+
+   ```sh
+   gh pr checks <pr-number> --required \
+     --json bucket,link,name,state,workflow
+   ```
+
+   When checks are pending, run `python3
    "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions" --repo .
-   arm --pr <pr-number> --required --until status-change --timeout auto --json`,
-   then invoke the same script with `--repo . await --json`. For failing Actions runs, use
-   `npx -y gh-axi run view <run-id> --log-failed`. Separate product/test
-   failures, generated drift, dependency setup, permissions, secrets, cache,
-   and flaky behavior.
+   arm --pr <pr-number> --required --until status-change --timeout auto
+   --json`, then invoke the same script with `--repo . await --json`. For
+   failing Actions runs, use `gh run view <run-id> --log-failed`. Separate
+   product or test failures, generated drift, dependency setup, permissions,
+   secrets, cache, and flaky behavior.
 
 7. Repair or hand off.
    For deterministic failures, patch the owning source, rerun the local

@@ -20,7 +20,7 @@ python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
   state. Process that event once, then re-arm if the new state is still pending.
 - `terminal` stays asleep through intermediate changes and resumes only for
   success, failure, timeout, or error.
-- `--required` uses AXI's authenticated GraphQL API path to keep only checks
+- `--required` uses native `gh pr checks --required --json` to keep only checks
   marked required for that PR.
 
 Only one request may be active per Git repository. The arm result records the
@@ -40,7 +40,7 @@ previous and current state. Do not run status or remote snapshot commands in a
 manual loop. `status --json` is local-only and is for recovery or inspection,
 not listening.
 
-The observer retries at most two transient AXI read failures. A third
+The observer retries at most two transient GitHub read failures. A third
 consecutive error wakes the model instead of waiting indefinitely.
 
 ## Timeout Selection
@@ -48,7 +48,7 @@ consecutive error wakes the model instead of waiting indefinitely.
 Prefer `--timeout auto` and inspect the arm result before yielding. Selection
 uses, in order:
 
-1. a repository-owned `.axi/github-actions-duration-profile.json` group with at
+1. a repository-owned `.ci/github-actions-duration-profile.json` group with at
    least five matching workflow samples;
 2. clone-local matching run history under the Git metadata directory;
 3. a 1800-second default when no eligible samples exist.
@@ -70,7 +70,7 @@ When the team wants portable timing knowledge, explicitly export and review it:
 
 ```sh
 python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
-  profile export --output .axi/github-actions-duration-profile.json --json
+  profile export --output .ci/github-actions-duration-profile.json --json
 ```
 
 Do not commit the clone-local active request or raw history. Commit an exported
@@ -78,15 +78,21 @@ profile only when the repository wants that shared policy.
 
 ## Evidence and Recovery
 
-Runtime files live beneath `git rev-parse --git-path axi/github-actions`:
+Runtime files live beneath `git rev-parse --git-path ci/github-actions`:
 
 - `active.json` is the single armed request;
 - `last-observation.json` is the latest transition, terminal event, or timeout;
 - `history.jsonl` contains observed terminal run durations.
 
+Version 0.3 starts a new local state namespace. Before upgrading from 0.2,
+finish or clear an active observation and export desired duration history to
+`.ci/github-actions-duration-profile.json`. The observer does not migrate
+earlier active requests or clone-local history.
+
 The active request is cleared before the model resumes. A malformed active file
 is quarantined instead of trusted. Terminal run failure logs are fetched once
-through `npx -y gh-axi run view <run-id> --log-failed` after classification.
+through `gh run view <run-id> --log-failed` after classification.
 
-Authored remote commands must use `npx -y gh-axi`. Local `git` remains the
-authority for repository metadata.
+Use the connected GitHub app for supported repository and PR metadata. Use
+authenticated native `gh` for Actions reads and the local observer. Local
+`git` remains the authority for local repository metadata.

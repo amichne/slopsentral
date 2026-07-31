@@ -211,7 +211,7 @@
         "skills",
         "version-control"
       ],
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "author": {
@@ -250,7 +250,7 @@
         "skills",
         "workflow-graph"
       ],
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     {
       "author": {
