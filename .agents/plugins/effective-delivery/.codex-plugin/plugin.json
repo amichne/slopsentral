@@ -2,10 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and quiet event-driven observation.",
-  "hooks": [
-    "./hooks/github-actions-await.hooks.json"
-  ],
+  "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and explicit event-driven observation.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -20,7 +17,7 @@
     ],
     "developerName": "Amichne",
     "displayName": "Effective Delivery",
-    "longDescription": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and quiet event-driven observation.",
+    "longDescription": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and explicit event-driven observation.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
     "shortDescription": "Effective software delivery through PR follow-through, optimized GitH...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
@@ -34,7 +31,6 @@
     "effective-delivery",
     "evidence",
     "github",
-    "hooks",
     "optimization",
     "pull-requests",
     "release",
@@ -44,5 +40,5 @@
   "license": "UNLICENSED",
   "name": "effective-delivery",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "0.2.0"
 }

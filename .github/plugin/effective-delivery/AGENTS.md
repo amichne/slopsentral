@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and quiet event-driven observation.
+Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and explicit event-driven observation.
 
 ## Operating Rules
 
@@ -30,7 +30,3 @@ Effective software delivery through PR follow-through, optimized GitHub Actions 
 
 - `github-ci-operations`: `skills/github-ci-operations` (source: `source/skills/github-ci-operations`)
 - `pull-request-lifecycle`: `skills/pull-request-lifecycle` (source: `source/skills/pull-request-lifecycle`)
-
-## Hook Primitives
-
-- `github-actions-await`: `hooks/github-actions-await.hooks.json` (source: `source/hooks/github-actions-await.hook.json`)

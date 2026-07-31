@@ -13,18 +13,12 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 
 - Use `npx -y gh-axi` as the sole remote GitHub interaction surface. Do not
   substitute the legacy GitHub CLI, a GitHub MCP tool, or direct HTTP calls.
-- When the Effective Delivery hook is active, SessionStart loads AXI's ambient
-  repository context and each shell call receives a non-exported `gh` function
-  that redirects ordinary `gh` invocations to an installed `gh-axi`, with
-  `npx -y gh-axi` as the bootstrap fallback. Keep authored commands explicit;
-  absolute paths and `env ... gh` bypass forms are denied.
 - Verify the repository and AXI authentication context before remote work.
 - Use live PR checks, workflow runs, logs, annotations, and job summaries as
   evidence when debugging failures.
 - Before waiting on GitHub Actions, arm the script-backed observer with one
-  target, event predicate, and bounded timeout. Let the Codex `Stop` hook await
-  internally; the model should process only a transition, terminal result,
-  timeout, or error.
+  target, event predicate, and bounded timeout. Invoke `await --json` once; the
+  model should process only a transition, terminal result, timeout, or error.
 - Prefer `--timeout auto`; inspect its duration-informed choice and override it
   deliberately when needed.
 - Treat non-GitHub providers as external checks unless the repo has local
@@ -69,8 +63,8 @@ when the live run, YAML, scripts, or package metadata can be inspected.
    Run the local equivalent and `actionlint` for workflow changes when present.
    For dependency, matrix, cache, or startup-latency changes, run the deterministic
    workflow graph model and preserve the baseline proof-output set.
-   Re-read through AXI. For pending state, arm the observer and yield; process
-   one continuation and re-arm only if work remains.
+   Re-read through AXI. For pending state, arm the observer, invoke one bounded
+   `await --json`, and re-arm only if work remains.
 
 6. Hand off.
    Summarize the failed signal, root cause, files changed, checks run, and any

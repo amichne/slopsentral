@@ -16,6 +16,7 @@ python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
   --pr <pr-number> --required --until status-change --timeout auto --json
 python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
   --run-id <run-id> --until terminal --timeout auto --json
+python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
 ```
 
 Treat AXI's structured TOON response as the live evidence contract. If a
@@ -25,9 +26,8 @@ dependency instead of scraping human display text.
 ## Quiet Waiting
 
 Use `scripts/ci_wait_for_actions` when an Actions run or PR check suite is
-still pending. Arm one target, end the turn, and let the Codex hook hold the
-bounded wait. The model receives only a meaningful transition, terminal state,
-timeout, or error. For a non-Codex caller, invoke `await --json` once.
+still pending. Arm one target, then invoke `await --json` once. The model
+receives only a meaningful transition, terminal state, timeout, or error.
 
 Never implement listening as repeated model-driven status calls. When a
 `status-change` event remains pending, process it and arm a fresh baseline.

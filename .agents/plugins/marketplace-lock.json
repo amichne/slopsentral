@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T00:50:04Z",
+  "generatedAt": "2026-07-30T21:13:11-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -348,13 +348,6 @@
       "name": "effective-delivery",
       "references": [
         {
-          "name": "github-actions-await",
-          "sha256": "sha256:0dce66a2bc6644b7157d074e2210192ef9d74d43d0e33d740d6e9573cf135e06",
-          "sourcePath": "source/hooks/github-actions-await.hook.json",
-          "targetPath": "hooks/github-actions-await.hooks.json",
-          "type": "HOOK"
-        },
-        {
           "name": "schema-driven-design",
           "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
@@ -370,21 +363,21 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:7e7f47ecc5d693bdb6b234764aae3b3ed6ef33d98fd37c9372153fefea2d47b5",
+          "sha256": "sha256:6eb57e0bd6d9672e47f8a7b1e47fc1827acc05f29e12d030014a5ab2efda7ba5",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:0b01cc78841f67e86cc458f83a210006949ddc517216cf3c8865bda00a4dddca",
+          "sha256": "sha256:b0e826c70b89910ad67a6210492c2e6ab16b9d8bbf42a866b25135bec33c6f7c",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/effective-delivery/plugin.json",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "agent-platform-authoring",
@@ -626,6 +619,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "1432a838b510d3283b00aae4a27571f5410a1847",
+  "sourceSha": "197353b63a4f8bcb1ceae3ae2313cca3fa8f7fbc",
   "type": "HYDRATED_MARKETPLACE"
 }
