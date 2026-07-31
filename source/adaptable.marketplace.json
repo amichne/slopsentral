@@ -161,9 +161,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/effective-delivery"
         },
-        "version": "0.1.0"
+        "version": "0.2.0"
       },
-      "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and quiet event-driven observation.",
+      "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and explicit event-driven observation.",
       "tags": [
         "actions",
         "automation",
@@ -171,7 +171,6 @@
         "duration",
         "evidence",
         "github",
-        "hooks",
         "optimization",
         "pull-requests",
         "release",
@@ -1028,15 +1027,6 @@
       },
       "path": "hooks/source-graph-valid.hook.json",
       "name": "source-graph-valid"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/github-actions-await.hook.json",
-      "name": "github-actions-await"
     },
     {
       "type": "HOOK",

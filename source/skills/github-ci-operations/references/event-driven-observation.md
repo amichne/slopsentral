@@ -27,16 +27,18 @@ Only one request may be active per Git repository. The arm result records the
 target, baseline, predicate, expiry, resolved timeout, timeout source, and local
 state path.
 
-## Yield Instead of Listening
+## Await Once Instead of Polling
 
-After a successful arm, end the Codex turn. The plugin's `Stop` hook sees the
-active request, runs one `await`, and blocks the turn from ending until the
-predicate or bound is reached. It then returns one compact continuation with
-the previous and current state.
+After a successful arm, invoke one bounded wait:
 
-If the hook is unavailable, invoke `await --json` once. Do not run status or
-remote snapshot commands in a manual loop. `status --json` is local-only and is
-for recovery or inspection, not listening.
+```sh
+python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
+```
+
+The command blocks until the predicate or bound is reached and returns the
+previous and current state. Do not run status or remote snapshot commands in a
+manual loop. `status --json` is local-only and is for recovery or inspection,
+not listening.
 
 The observer retries at most two transient AXI read failures. A third
 consecutive error wakes the model instead of waiting indefinitely.
@@ -86,9 +88,5 @@ The active request is cleared before the model resumes. A malformed active file
 is quarantined instead of trusted. Terminal run failure logs are fetched once
 through `npx -y gh-axi run view <run-id> --log-failed` after classification.
 
-The hook loads AXI's repository context at session start and injects a
-non-exported shell function into each shell call so ordinary `gh` invocations
-resolve to an installed `gh-axi`, falling back to `npx -y gh-axi` when needed.
-Explicit CLI paths, `env ... gh` bypasses, and GitHub MCP tools are denied. This
-is a defense-in-depth boundary, so authored commands must still use the AXI
-surface; local `git` remains the authority for repository metadata.
+Authored remote commands must use `npx -y gh-axi`. Local `git` remains the
+authority for repository metadata.

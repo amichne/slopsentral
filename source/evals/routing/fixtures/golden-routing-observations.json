@@ -145,7 +145,7 @@
       "satisfiedAllowedActions": [
         "Read current PR or run state only through npx -y gh-axi and the typed observer.",
         "Arm one explicit status-change or terminal predicate with an invocation-time timeout informed by stored durations.",
-        "Yield while the hook awaits, then report failing and pending checks separately from green terminal checks."
+        "Invoke one bounded await, then report failing and pending checks separately from green terminal checks."
       ],
       "satisfiedVerificationEvidence": [
         "The run uses npx -y gh-axi exclusively for remote GitHub state and records the typed current-head classification.",
