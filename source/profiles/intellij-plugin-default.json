@@ -45,11 +45,6 @@
       "type": "WORKFLOW_HOOK",
       "name": "gradle-wrapper-integrity",
       "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "github-actions-await",
-      "adapter": "codex"
     }
   ],
   "validation": {

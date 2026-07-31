@@ -78,7 +78,7 @@
       "successChecklist": [
         "Every remote GitHub interaction uses npx -y gh-axi, and the typed observer classifies the current head.",
         "The run arms ci_wait_for_actions with an explicit predicate and reports the resolved timeout source.",
-        "The model does not issue unchanged status checks while the hook awaits; a still-pending event is processed once and re-armed.",
+        "The model invokes one bounded await instead of unchanged status checks; a still-pending event is processed once and re-armed.",
         "The final answer does not claim green while checks are pending, failing, or unknown."
       ]
     },

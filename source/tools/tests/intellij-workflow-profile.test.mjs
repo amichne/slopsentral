@@ -36,7 +36,6 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     "kotlin-horizontalization-check",
     "gradle-check-green",
     "gradle-wrapper-integrity",
-    "github-actions-await",
   ]);
 
   const skillOwners = new Map();

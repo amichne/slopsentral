@@ -31,9 +31,9 @@ Related primitives in this repository:
   validation evidence, and no known deterministic failures.
 - Babysit checks by reading live check state, logs, and annotations. For
   pending GitHub Actions runs, arm the observer from
-  `skills/github-ci-operations/scripts/ci_wait_for_actions`, then yield so the
-  hook resumes the model only when its event predicate or bound is reached. Fix
-  the owning source instead of rerunning deterministic failures.
+  `skills/github-ci-operations/scripts/ci_wait_for_actions`, then invoke one
+  bounded `await --json`. Fix the owning source instead of rerunning
+  deterministic failures.
 - Never claim a PR is green until `npx -y gh-axi pr checks <pr-number>` and the
   typed required-check observation report passing, skipped, or neutral terminal
   states for the current head.
@@ -71,7 +71,7 @@ Related primitives in this repository:
    pending, run `python3
    "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions" --repo .
    arm --pr <pr-number> --required --until status-change --timeout auto --json`,
-   then end the turn. For failing Actions runs, use
+   then invoke the same script with `--repo . await --json`. For failing Actions runs, use
    `npx -y gh-axi run view <run-id> --log-failed`. Separate product/test
    failures, generated drift, dependency setup, permissions, secrets, cache,
    and flaky behavior.
@@ -86,8 +86,8 @@ Related primitives in this repository:
 
 When asked to babysit until green:
 
-1. Arm a transition-only observation and let the hook await internally. Emit
-   one update only when the remote check or run state changes.
+1. Arm a transition-only observation and invoke one bounded `await --json`.
+   Emit one update only when the remote check or run state changes.
 2. Treat `failure`, `cancelled`, `timed_out`, and required `action_required` as
    stop conditions that need diagnosis.
 3. Treat `pending`, `queued`, and `in_progress` as wait states only while the

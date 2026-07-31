@@ -37,12 +37,7 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
   );
   assert.equal(profileHooks.get("agents-md-turn-refresh")?.adapter, "codex");
 
-  const deliveryHooks = hookNames(selectedPlugins.get("effective-delivery"));
-  assert.ok(
-    deliveryHooks.has("github-actions-await"),
-    "effective-delivery must provide duration-aware GitHub Actions observation",
-  );
-  assert.equal(profileHooks.get("github-actions-await")?.adapter, "codex");
+  assert.deepEqual([...hookNames(selectedPlugins.get("effective-delivery"))], []);
 
   const kotlinHooks = hookNames(selectedPlugins.get("kotlin-engineering"));
   for (const hookName of ["gradle-check-green", "gradle-wrapper-integrity"]) {
