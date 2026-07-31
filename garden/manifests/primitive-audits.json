@@ -348,7 +348,7 @@
       "baseline": "Effective Delivery composes the existing PR, GitHub Actions, workflow-graph, release, and quiet-observation primitives after splitting them from host-neutral Git and shell mechanics.",
       "decision": "PROMOTE_READY",
       "confidence": "HIGH",
-      "reviewedAt": "2026-07-18",
+      "reviewedAt": "2026-07-30",
       "reviewedBy": "codex",
       "capabilityBoundary": {
         "status": "PASS",
@@ -363,8 +363,8 @@
         "status": "PASS",
         "evidence": [
           "source/tools/validate-source-graph.mjs validates plugin references, standalone skill exposure, routing cases, plugin benchmarks, audit records, profiles, hooks, and runtime-link records.",
-          "source/skills/github-ci-operations/scripts/ci_actions_observer.py parses AXI TOON responses into typed observations, persists active requests and duration samples under Git metadata, and emits stable pending, success, failure, timeout, or error outcomes.",
-          "source/skills/github-ci-operations/scripts/ci_wait_for_actions provides explicit arm, await, status, and profile commands over the typed observer while keeping npx -y gh-axi as the only GitHub interaction surface.",
+          "source/skills/github-ci-operations/scripts/ci_actions_observer.py parses native gh JSON into typed observations, persists active requests and duration samples under Git metadata, and emits stable pending, success, failure, timeout, or error outcomes.",
+          "source/skills/github-ci-operations/scripts/ci_wait_for_actions provides explicit arm, await, status, and profile commands over the typed observer while keeping Actions reads on authenticated native gh.",
           "source/evals/routing/daily-driver-workflows.json records CI-specific expectations for current check evidence, composable workflow authoring, and quiet observation.",
           "source/evals/plugin-benchmarks/effective-delivery.json defines Codex benchmark scenarios for CI triage, structured green claims, workflow-graph optimization, and PR green-loop delivery."
         ]
@@ -375,7 +375,7 @@
         "evidence": [
           "garden/manifests/promotions.json records github-ci-operations and pull-request-lifecycle as promoted canonical primitives.",
           "The plugin manifest references canonical source primitives by path instead of copying payloads into source/plugins/effective-delivery.",
-          "The AXI observer and CLI are local source additions that implement repository-neutral CI observation rather than copied first-party provider material."
+          "The GitHub Actions observer and CLI are local source additions that implement repository-neutral CI observation rather than copied first-party provider material."
         ]
       },
       "validation": {
@@ -394,12 +394,13 @@
         "status": "PASS",
         "evidence": [
           "Effective Delivery is exposed through source marketplace composition and this audit does not require direct runtime writes.",
-          "The CI observer uses npx -y gh-axi exclusively for GitHub reads, stores runtime state beneath git rev-parse --git-path axi/github-actions, and never reruns workflows or mutates GitHub state.",
+          "The CI observer uses authenticated native gh for GitHub Actions reads, stores runtime state beneath git rev-parse --git-path ci/github-actions, and never reruns workflows or mutates GitHub state.",
           "The explicit await command blocks only after an observation is armed, returns one meaningful transition or timeout, and clears the active request before it exits.",
           "Provider output remains a projected proof target rather than an authored change surface."
         ]
       },
       "residualRisks": [
+        "Effective Delivery 0.3 starts a new observer state namespace; operators must finish active 0.2 waits and export desired profiles before upgrading.",
         "source/evals/plugin-benchmarks/effective-delivery.json still needs observed benchmark usage from a live repository with real PR checks.",
         "Observed benchmark timing still needs enough real repository samples for the sparse timeout fallback to converge on repository-specific p95 durations.",
         "Repository scripts can still invoke other GitHub clients unless their own checks prohibit them.",

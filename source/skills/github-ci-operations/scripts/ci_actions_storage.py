@@ -12,12 +12,12 @@ from ci_actions_json import (
     duration_sample_from_json,
     wait_result_to_json,
 )
-from ci_actions_process import require_success, run_gh_axi
+from ci_actions_process import require_success, run_command
 from ci_actions_profile import build_duration_profile
 from ci_actions_types import (
     STATE_VERSION,
     ActiveRequest,
-    AxiRunner,
+    CommandRunner,
     DurationSample,
     ObserverError,
     WaitResult,
@@ -26,10 +26,10 @@ from ci_actions_types import (
 
 def resolve_state_dir(
     repo_root: Path,
-    git_runner: AxiRunner = run_gh_axi,
+    git_runner: CommandRunner = run_command,
 ) -> Path:
     result = git_runner(
-        ["git", "rev-parse", "--git-path", "axi/github-actions"],
+        ["git", "rev-parse", "--git-path", "ci/github-actions"],
         repo_root,
     )
     require_success(result, "git rev-parse --git-path")
@@ -48,7 +48,7 @@ class StateStore:
         repo_root: Path,
         *,
         state_dir: Path | None = None,
-        git_runner: AxiRunner = run_gh_axi,
+        git_runner: CommandRunner = run_command,
     ) -> None:
         self.repo_root = repo_root.resolve()
         self.state_dir = (state_dir or resolve_state_dir(self.repo_root, git_runner)).resolve()
@@ -94,7 +94,7 @@ class StateStore:
         return self._parse_history(self.history_path.read_text(encoding="utf-8").splitlines())
 
     def export_profile(self, output: Path | None = None) -> dict[str, Any]:
-        destination = output or self.repo_root / ".axi/github-actions-duration-profile.json"
+        destination = output or self.repo_root / ".ci/github-actions-duration-profile.json"
         profile = build_duration_profile(self.load_history())
         self._write_json(destination, profile)
         return profile

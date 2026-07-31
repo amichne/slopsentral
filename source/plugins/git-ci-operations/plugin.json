@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "git-ci-operations",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

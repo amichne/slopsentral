@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Protocol, Sequence
 
 
-GH_AXI_PREFIX = ("npx", "-y", "gh-axi")
+GH_PREFIX = ("gh",)
 FAILURE_CONCLUSIONS = {
     "action_required",
     "cancelled",
@@ -47,14 +47,14 @@ class Outcome(str, enum.Enum):
 
 
 @dataclass(frozen=True)
-class AxiResult:
+class CommandResult:
     returncode: int
     stdout: str
     stderr: str
 
 
-class AxiRunner(Protocol):
-    def __call__(self, args: Sequence[str], cwd: Path) -> AxiResult:
+class CommandRunner(Protocol):
+    def __call__(self, args: Sequence[str], cwd: Path) -> CommandResult:
         ...
 
 

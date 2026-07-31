@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "effective-delivery",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and explicit event-driven observation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

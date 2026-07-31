@@ -15,12 +15,16 @@ release workflows.
 
 ## Useful Commands
 
+Use authenticated native `gh` for GitHub release operations.
+
 ```sh
-npx -y gh-axi release list --limit 10
-npx -y gh-axi release view <tag> --full
-npx -y gh-axi release create <tag> --draft --generate-notes --target <branch-or-sha>
-npx -y gh-axi release upload <tag> <artifact-path>
-npx -y gh-axi release edit <tag> --draft=false
+gh release list --limit 10 \
+  --json createdAt,isDraft,isImmutable,isLatest,isPrerelease,publishedAt,tagName
+gh release view <tag> \
+  --json assets,isDraft,isImmutable,isPrerelease,publishedAt,tagName,targetCommitish,url
+gh release create <tag> --draft --generate-notes --verify-tag
+gh release upload <tag> <artifact-path>
+gh release edit <tag> --draft=false
 ```
 
 ## Planning Checklist

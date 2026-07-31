@@ -27,7 +27,7 @@ class CommandResult:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Await meaningful GitHub Actions events through gh-axi.",
+        description="Await meaningful GitHub Actions events through GitHub CLI.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("--repo", default=".", help="Path inside the target Git repository.")
@@ -72,7 +72,7 @@ def build_parser() -> argparse.ArgumentParser:
 def execute(
     argv: Sequence[str],
     *,
-    runner: observer.AxiRunner = observer.run_gh_axi,
+    runner: observer.CommandRunner = observer.run_command,
     store: observer.StateStore | None = None,
     now_epoch: Callable[[], float] = time.time,
     sleeper: Callable[[float], None] = time.sleep,
@@ -107,7 +107,7 @@ def arm_observation(
     args: argparse.Namespace,
     repo_root: Path,
     store: observer.StateStore,
-    runner: observer.AxiRunner,
+    runner: observer.CommandRunner,
     now_epoch: Callable[[], float],
 ) -> CommandResult:
     target = target_from_args(args)
@@ -153,7 +153,7 @@ def arm_observation(
 def await_observation(
     repo_root: Path,
     store: observer.StateStore,
-    runner: observer.AxiRunner,
+    runner: observer.CommandRunner,
     now_epoch: Callable[[], float],
     sleeper: Callable[[float], None],
 ) -> CommandResult:
@@ -243,7 +243,7 @@ def resolve_timeout(
 
 
 def matching_team_profile(repo_root: Path, workflow: str) -> dict[str, Any] | None:
-    path = repo_root / ".axi/github-actions-duration-profile.json"
+    path = repo_root / ".ci/github-actions-duration-profile.json"
     if not path.exists():
         return None
     try:
@@ -276,12 +276,12 @@ def target_from_args(args: argparse.Namespace) -> observer.Target:
 def fetch_failure_logs(
     target: observer.Target,
     repo_root: Path,
-    runner: observer.AxiRunner,
+    runner: observer.CommandRunner,
     snapshot: observer.Snapshot,
 ) -> list[dict[str, Any]]:
     if target.kind != observer.TargetKind.RUN or snapshot.outcome != observer.Outcome.FAILURE:
         return []
-    command = [*observer.GH_AXI_PREFIX, "run", "view", target.value, "--log-failed"]
+    command = [*observer.GH_PREFIX, "run", "view", target.value, "--log-failed"]
     result = runner(command, repo_root)
     if result.returncode != 0:
         return [
@@ -298,7 +298,7 @@ def record_duration_if_available(
     result: observer.WaitResult,
     repo_root: Path,
     store: observer.StateStore,
-    runner: observer.AxiRunner,
+    runner: observer.CommandRunner,
 ) -> None:
     if result.target.kind != observer.TargetKind.RUN:
         return
@@ -308,13 +308,13 @@ def record_duration_if_available(
         repository = observer.resolve_repository_slug(repo_root, runner)
         api = runner(
             [
-                *observer.GH_AXI_PREFIX,
+                *observer.GH_PREFIX,
                 "api",
                 f"/repos/{repository}/actions/runs/{result.target.value}",
             ],
             repo_root,
         )
-        observer.require_success(api, "gh-axi run API")
+        observer.require_success(api, "gh run API")
         details = observer.parse_run_api(api.stdout)
         observer.record_terminal_duration(store, details, repository=repository)
     except observer.ObserverError:

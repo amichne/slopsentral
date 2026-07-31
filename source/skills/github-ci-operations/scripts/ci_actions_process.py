@@ -1,18 +1,16 @@
 from __future__ import annotations
 
-import json
 import re
 import subprocess
 from pathlib import Path
 from typing import Sequence
 
-from ci_actions_pr_required import parse_required_pr_checks
 from ci_actions_pr_summary import parse_pr_checks
 from ci_actions_run_parser import parse_run_view
 from ci_actions_types import (
-    AxiResult,
-    AxiRunner,
-    GH_AXI_PREFIX,
+    CommandResult,
+    CommandRunner,
+    GH_PREFIX,
     ObserverError,
     Snapshot,
     Target,
@@ -21,29 +19,42 @@ from ci_actions_types import (
 )
 
 
-def run_gh_axi(args: Sequence[str], cwd: Path) -> AxiResult:
+def run_command(args: Sequence[str], cwd: Path) -> CommandResult:
     process = subprocess.run(args, cwd=cwd, text=True, capture_output=True)
-    return AxiResult(process.returncode, process.stdout, process.stderr)
+    return CommandResult(process.returncode, process.stdout, process.stderr)
 
 
 def fetch_snapshot(
     target: Target,
     repo_root: Path,
-    runner: AxiRunner = run_gh_axi,
+    runner: CommandRunner = run_command,
 ) -> Snapshot:
     if target.kind == TargetKind.RUN:
-        result = runner([*GH_AXI_PREFIX, "run", "view", target.value], repo_root)
-        require_success(result, "gh-axi run view")
+        result = runner(
+            [
+                *GH_PREFIX,
+                "run",
+                "view",
+                target.value,
+                "--json",
+                "status,conclusion,jobs,workflowName",
+            ],
+            repo_root,
+        )
+        require_success(result, "gh run view")
         return parse_run_view(result.stdout, target.value)
     number = pr_number(target.value)
+    command = [*GH_PREFIX, "pr", "checks", number, "--json", "name,state,bucket"]
     if target.required:
-        repository = resolve_repository_slug(repo_root, runner)
-        result = runner(required_checks_command(repository, number), repo_root)
-        require_success(result, "gh-axi required PR checks API")
-        return parse_required_pr_checks(result.stdout, number)
-    result = runner([*GH_AXI_PREFIX, "pr", "checks", number], repo_root)
-    require_success(result, "gh-axi pr checks")
-    return parse_pr_checks(result.stdout, number)
+        command.append("--required")
+    result = runner(command, repo_root)
+    if no_checks(result, required=target.required):
+        return parse_pr_checks("[]", number, required=target.required)
+    if result.returncode != 0 and not (
+        result.returncode in {1, 8} and result.stdout.strip()
+    ):
+        require_success(result, "gh pr checks")
+    return parse_pr_checks(result.stdout, number, required=target.required)
 
 
 def pr_number(value: str) -> str:
@@ -55,7 +66,7 @@ def pr_number(value: str) -> str:
     raise ObserverError("PR target must be a positive PR number or GitHub PR URL")
 
 
-def resolve_repository_slug(repo_root: Path, runner: AxiRunner = run_gh_axi) -> str:
+def resolve_repository_slug(repo_root: Path, runner: CommandRunner = run_command) -> str:
     result = runner(["git", "remote", "get-url", "origin"], repo_root)
     require_success(result, "git remote get-url origin")
     remote = result.stdout.strip().removesuffix(".git")
@@ -71,21 +82,20 @@ def resolve_repository_slug(repo_root: Path, runner: AxiRunner = run_gh_axi) -> 
     raise ObserverError("unable to resolve GitHub repository from origin remote")
 
 
-def required_checks_command(repository: str, pr: str) -> list[str]:
-    owner, name = repository.split("/", maxsplit=1)
-    query = (
-        "query { repository(owner:"
-        f"{json.dumps(owner)}, name:{json.dumps(name)}) {{ "
-        f"pullRequest(number:{pr}) {{ commits(last:1) {{ nodes {{ commit {{ "
-        "statusCheckRollup { contexts(first:100) { nodes { __typename "
-        f"... on CheckRun {{ name conclusion isRequired(pullRequestNumber:{pr}) }} "
-        f"... on StatusContext {{ context state isRequired(pullRequestNumber:{pr}) }} "
-        "} } } } } } } } }"
+def no_checks(result: CommandResult, *, required: bool) -> bool:
+    qualifier = "required " if required else ""
+    return (
+        result.returncode == 1
+        and not result.stdout.strip()
+        and re.fullmatch(
+            rf"no {qualifier}checks reported on the '[^']+' branch",
+            result.stderr.strip(),
+        )
+        is not None
     )
-    return [*GH_AXI_PREFIX, "api", "POST", "graphql", "--field", f"query={query}"]
 
 
-def require_success(result: AxiResult, command: str) -> None:
+def require_success(result: CommandResult, command: str) -> None:
     if result.returncode == 0:
         return
     message = (result.stderr or result.stdout).strip()
