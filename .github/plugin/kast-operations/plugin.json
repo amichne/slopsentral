@@ -2,29 +2,31 @@
   "author": {
     "name": "Amichne"
   },
-  "category": "Productivity",
-  "description": "Operational diagnosis, performance measurement, session-ledger analysis, and read-only SQLite navigation for Kast and adjacent agent workflows.",
+  "category": "Coding",
+  "description": "Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
   "keywords": [
     "diagnostics",
-    "jq",
     "kast",
     "kast-operations",
+    "kotlin",
     "observability",
     "performance",
     "skills",
-    "sqlite"
+    "sqlite",
+    "structural-analysis"
   ],
   "license": "UNLICENSED",
   "name": "kast-operations",
   "skills": "./skills",
   "tags": [
     "diagnostics",
-    "jq",
     "kast",
+    "kotlin",
     "observability",
     "performance",
     "skills",
-    "sqlite"
+    "sqlite",
+    "structural-analysis"
   ],
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

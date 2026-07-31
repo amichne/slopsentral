@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T21:46:05-04:00",
+  "generatedAt": "2026-07-30T22:40:23-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -586,13 +586,6 @@
       "name": "kast-operations",
       "references": [
         {
-          "name": "codex-session-structural-analysis",
-          "sha256": "sha256:7d7be1b544644363b78eaa8da6510f1809636186e6c721aae68e1ef7c7caa3b9",
-          "sourcePath": "source/skills/codex-session-structural-analysis",
-          "targetPath": "skills/codex-session-structural-analysis",
-          "type": "SKILL"
-        },
-        {
           "name": "kast-installation-diagnosis",
           "sha256": "sha256:2d5ad77af3244acff59348caa0afe3cb3c7c99b9d931a99ba4f1b71c19cc0e93",
           "sourcePath": "source/skills/kast-installation-diagnosis",
@@ -600,8 +593,15 @@
           "type": "SKILL"
         },
         {
+          "name": "kast-kotlin-structural-analysis",
+          "sha256": "sha256:978c0c3b7df522707e74f511b095e46146266ac493398eda875f95efeb6fb187",
+          "sourcePath": "source/skills/kast-kotlin-structural-analysis",
+          "targetPath": "skills/kast-kotlin-structural-analysis",
+          "type": "SKILL"
+        },
+        {
           "name": "kast-performance-assessment",
-          "sha256": "sha256:869f0e1e928b693d5219e863f53389803271a23ad9284d7e1c2eec2ca7a8a870",
+          "sha256": "sha256:e397a3b00d4385a790bc3024d69933728d7279a6530f544d95bc5f19c438f67a",
           "sourcePath": "source/skills/kast-performance-assessment",
           "targetPath": "skills/kast-performance-assessment",
           "type": "SKILL"
@@ -615,10 +615,10 @@
         }
       ],
       "sourceManifest": "source/plugins/kast-operations/plugin.json",
-      "version": "0.1.0"
+      "version": "0.1.1"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "51797d7ae77f3c02506ed7533c10f2871927ae3d",
+  "sourceSha": "10fad25f37c74565d57e229ff82e463f198fc589",
   "type": "HYDRATED_MARKETPLACE"
 }

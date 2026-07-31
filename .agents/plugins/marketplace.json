@@ -137,7 +137,7 @@
       }
     },
     {
-      "category": "Productivity",
+      "category": "Coding",
       "name": "kast-operations",
       "policy": {
         "authentication": "ON_INSTALL",
