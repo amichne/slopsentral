@@ -245,8 +245,8 @@ jfr view --width 220 gc-pauses "$JFR_FILE"
 - Use `sqlite-readonly-navigation` for schema-aware `EXPLAIN QUERY PLAN`,
   generation-pinned snapshots, and connection-local `data_version` checks.
 - Prefer live Kast graph or metrics commands when they already own the query.
-- Use `codex-session-structural-analysis` when the suspected cost is repeated
-  agent commands, descendant fan-out, retries, compactions, or tool wall time.
+- Use `kast-kotlin-structural-analysis` when the measured workload is a symbol
+  relationship or graph query.
 
 ## Restore
 

@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "kast-operations",
-  "version": "0.1.0",
-  "description": "Operational diagnosis, performance measurement, session-ledger analysis, and read-only SQLite navigation for Kast and adjacent agent workflows.",
+  "version": "0.1.1",
+  "description": "Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -34,8 +34,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/codex-session-structural-analysis",
-      "name": "codex-session-structural-analysis"
+      "path": "skills/kast-kotlin-structural-analysis",
+      "name": "kast-kotlin-structural-analysis"
     },
     {
       "type": "SKILL",
@@ -52,9 +52,9 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for local Kast operator work, measured performance investigations, Codex session-ledger analysis, or defensively read-only SQLite inspection.",
-    "notFor": "Routine Kotlin or Gradle semantic queries, repository call graphs, GitHub Actions performance, database writes or repair, or replacing product-owned public commands.",
+    "dailyDriver": "Install for local Kast diagnosis, measured performance work, Kotlin structural analysis, or defensively read-only SQLite inspection.",
+    "notFor": "Kotlin source mutation, non-Kotlin graphs, GitHub Actions performance, database writes or repair, or replacement of product-owned public commands.",
     "role": "kast-operations",
-    "scope": "Live-install diagnosis and supported repair, representative performance measurement, descendant Codex session projection, and read-only SQLite navigation."
+    "scope": "Live-install diagnosis and supported repair, representative performance measurement, compiler-backed Kotlin structure, and read-only SQLite navigation."
   }
 }
