@@ -35,12 +35,49 @@ jobs:
 
           node source/tools/validate-source-graph.mjs
           node source/tools/run-routing-evals.mjs --require-all-observed
+          node --test source/tools/tests/*.test.mjs
+          source/skills/shell-script-safety/scripts/check_shell_safety \
+            source/tools/compile-kotlin-concepts
           node source/skills/manage-json-schemas/scripts/schema-contracts.js \
             policy \
             --schema source/schemas/runtime/runtime-links.schema.json
           node source/skills/manage-json-schemas/scripts/schema-contracts.js \
             policy \
             --schema source/schemas/evals/routing-field-observations.schema.json
+          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
+            profile \
+            --schema source/schemas/evals/routing-cases.schema.json
+
+      - name: Run Python unit checks
+        run: |
+          set -euo pipefail
+
+          python3 -m pip install --disable-pip-version-check --no-input PyYAML==6.0.3
+          for test_dir in \
+            source/hooks/tests \
+            source/skills/code-knowledge-base/scripts/tests \
+            source/skills/github-ci-operations/scripts/tests \
+            source/skills/openapi-schema-modeling/scripts/tests \
+            source/skills/pkl-specification/scripts/tests \
+            source/skills/pkl-tooling-setup/scripts/tests \
+            source/skills/controlled-technical-writing/scripts/tests
+          do
+            python3 -m unittest discover -s "$test_dir" -p 'test_*.py' -v
+          done
+
+      - name: Compile Kotlin concept examples
+        run: |
+          set -euo pipefail
+
+          compiler_zip="${RUNNER_TEMP}/kotlin-compiler-2.4.10.zip"
+          curl --fail --location --silent --show-error \
+            --output "$compiler_zip" \
+            https://github.com/JetBrains/kotlin/releases/download/v2.4.10/kotlin-compiler-2.4.10.zip
+          echo "473dd66c7a3ef4b182065b3da670466c1bf2773a9dbb0ed8b33a39fe9d4f876d  $compiler_zip" \
+            | sha256sum --check
+          unzip -q "$compiler_zip" -d "${RUNNER_TEMP}/kotlin-compiler"
+          source/tools/compile-kotlin-concepts \
+            "${RUNNER_TEMP}/kotlin-compiler/kotlinc/bin/kotlinc"
 
       - name: Validate Pkl engineering facade
         env:

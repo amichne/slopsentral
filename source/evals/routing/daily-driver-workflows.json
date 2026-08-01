@@ -22,6 +22,7 @@
         "name": "define-goal"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A continuation can collapse the long objective into a smaller local edit, then claim success without auditing the original requirements.",
         "risk": "The workflow looks busy but drifts away from the user's actual end state and leaves completion unproven.",
         "loadedPrimitives": []
@@ -62,6 +63,7 @@
         "name": "source-graph-consolidation"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Marketplace work can route to generated provider payloads or installed caches instead of the canonical source graph.",
         "risk": "The source of truth remains wrong while generated outputs or local caches receive unreviewable drift.",
         "loadedPrimitives": [
@@ -105,6 +107,7 @@
         "name": "tdd"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A test-first request without a conventional test runner can skip TDD or route to Git and CI merely because the proof is a shell command.",
         "risk": "The implementation changes before a meaningful failure is observed, or an infrastructure failure is mislabeled as RED and provides false regression evidence.",
         "loadedPrimitives": [
@@ -146,6 +149,7 @@
         "name": "pull-request-lifecycle"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A push request can be answered with only a local summary or an unscoped commit that sweeps unrelated dirt into the branch.",
         "risk": "The user still has to perform the delivery work, or the PR contains unrelated changes that are hard to review.",
         "loadedPrimitives": [
@@ -171,6 +175,51 @@
       "notes": "This turns a frequent user shorthand into a measurable full-delivery workflow."
     },
     {
+      "id": "dirty-worktree-uses-scoped-git-change-flow",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CODEX_SESSION",
+        "capturedAt": "2026-07-03",
+        "evidenceRefs": [
+          "A user asked to publish a second scoped change while unrelated backend work was already present.",
+          "The delivery inspected the dirty state, separated the requested commits, and verified the remote head."
+        ],
+        "sessionIds": [
+          "019f28fd-4e93-75e0-be7c-18ccdf0cf14f"
+        ]
+      },
+      "prompt": "The working tree contains unrelated changes. Prepare this validated repository update for commit without disturbing user work: inspect the dirty state, stage only the requested files, and prove the scoped staged diff is clean.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "git-change-flow"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "A delivery workflow can be loaded while its local Git safety contract is bypassed by broad staging or hidden worktree changes.",
+        "risk": "Unrelated user work can enter the commit, be overwritten, or become difficult to separate from the requested change.",
+        "loadedPrimitives": [
+          "pull-request-lifecycle"
+        ]
+      },
+      "allowedActions": [
+        "Start with Git status and inspect the relevant unstaged diff before staging.",
+        "Treat uncommitted changes outside the requested scope as user work and leave them untouched.",
+        "Stage only requested paths, review the cached diff, and run git diff --cached --check."
+      ],
+      "forbiddenActions": [
+        "Run git add -A when the whole dirty tree is not in scope.",
+        "Stash, revert, overwrite, amend, or rebase unrelated user work without explicit authority.",
+        "Claim scoped commit readiness without reviewing the staged diff."
+      ],
+      "recoveryExpectation": "If unrelated work enters the index, remove only those paths from the staged set without altering their working files, then review the exact cached diff again.",
+      "productiveOutcome": "The requested change becomes a focused commit candidate while unrelated user work stays intact and unstaged.",
+      "verificationEvidence": [
+        "Before-and-after Git status shows unrelated files remain intact and unstaged.",
+        "The cached diff contains only requested paths and git diff --cached --check succeeds."
+      ],
+      "notes": "This sanitized case separates local worktree safety from the broader push and pull-request lifecycle."
+    },
+    {
       "id": "ci-failure-triage-uses-remote-check-evidence",
       "type": "LOADED_BYPASSED",
       "source": {
@@ -187,6 +236,7 @@
         "name": "github-ci-operations"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Agents can inspect local workflow YAML or guess from stale console snippets without checking the live run and job evidence.",
         "risk": "The patch may fix the wrong thing, miss a repeated failure signature, or claim success before GitHub has verified it.",
         "loadedPrimitives": [
@@ -231,6 +281,7 @@
         "name": "github-ci-operations"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A green-check claim can be made from remembered state while the model repeatedly asks whether unchanged checks have moved.",
         "risk": "The user gets token-heavy status chatter and may merge with pending, failing, skipped-required, or uninspected checks.",
         "loadedPrimitives": [
@@ -274,6 +325,7 @@
         "name": "github-ci-operations"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Workflow authoring can become copy-pasted YAML or long inline shell without local proof boundaries.",
         "risk": "CI becomes hard to reuse, hard to debug locally, and risky to compose with release or generated-output jobs.",
         "loadedPrimitives": [
@@ -321,6 +373,7 @@
         "name": "shell-script-safety"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Repeated CI shell can remain inline in workflow YAML and be reviewed only by eyeballing the happy path.",
         "risk": "Quoting, unset variables, destructive operations, temp cleanup, and local reproducibility regress silently.",
         "loadedPrimitives": [
@@ -362,6 +415,7 @@
         "name": "repository-onboarding"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Install recovery can stop at source validation or mutate cache files directly without proving the consumer CLI sees the plugin.",
         "risk": "The marketplace source may be valid while the user's actual Codex environment still cannot load the shared workflow.",
         "loadedPrimitives": []
@@ -402,6 +456,7 @@
         "name": "primitive-quality-audit"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A share-readiness decision can be based on passing JSON syntax and positive wording rather than evidence of routing clarity, independence, provenance, validation, and runtime safety.",
         "risk": "The team receives primitives that load in the wrong situations, duplicate ownership, or lack reproducible validation.",
         "loadedPrimitives": [
@@ -425,6 +480,137 @@
         "Structured artifacts changed by the workflow pass the source graph and marketplace validation gates."
       ],
       "notes": "This is the explicit production-sharing gate for the broader goal."
+    },
+    {
+      "id": "kast-install-diagnosis-preserves-typed-state",
+      "type": "SETUP_FRICTION",
+      "source": {
+        "type": "CODEX_SESSION",
+        "capturedAt": "2026-07-29",
+        "evidenceRefs": [
+          "The user asked for diagnosis of a dysfunctional local Kast installation with conflicting runtime, readiness, and index state."
+        ],
+        "sessionIds": [
+          "019fb0c3-16a3-7f13-b672-c81574995464"
+        ]
+      },
+      "prompt": "Diagnose why this local Kast installation is dysfunctional and reconcile its CLI, runtime, plugin, exact-root readiness, and reference-index state.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-installation-diagnosis"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Install diagnosis can collapse distinct Git, binary, plugin, runtime, workspace, and index states into one vague healthy or broken claim.",
+        "risk": "A partial repair can leave the selected workspace unusable while later work trusts stale or mismatched evidence.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Resolve the supported public and administrative Kast commands before changing installation state.",
+        "Record Git, binary, plugin, runtime, exact-root readiness, and reference-index evidence as separate states.",
+        "Use the owning typed repair command and re-read every affected state after it completes."
+      ],
+      "forbiddenActions": [
+        "Rewrite installer-owned metadata or receipts by hand.",
+        "Treat a successful build, download, or process launch as exact-root semantic readiness.",
+        "Hide a typed blocker behind an unverified fallback or a generic success claim."
+      ],
+      "recoveryExpectation": "A good diagnosis should preserve each typed state, repair only through its owning command, and name any remaining mismatch exactly.",
+      "productiveOutcome": "Kast repair becomes a repeatable state reconciliation instead of an improvised sequence of shell changes.",
+      "verificationEvidence": [
+        "The run records the selected CLI and plugin versions plus the active backend.",
+        "The run records exact-root READY and reference-index readiness separately.",
+        "The final state comes from fresh supported-command output after repair."
+      ],
+      "notes": "This case comes from a real installation failure where version parity and semantic readiness diverged."
+    },
+    {
+      "id": "terminal-ui-work-preserves-cli-contracts",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CODEX_SESSION",
+        "capturedAt": "2026-07-11",
+        "evidenceRefs": [
+          "The user asked to refine terminal color, chrome, and focus hierarchy.",
+          "The user later removed TUI scope from a projector-only product."
+        ],
+        "sessionIds": [
+          "019eb516-d6c6-7d40-8e0d-825733336654",
+          "019f5360-a8e1-7bb0-9515-da2d76ca1332"
+        ]
+      },
+      "prompt": "Refine this human-facing terminal interface while preserving its command contracts, degraded modes, and explicit product scope.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "terminal-ui-design"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Terminal design work can become generic visual decoration or resurrect a TUI after the product has explicitly removed that surface.",
+        "risk": "The result can break machine-readable output, terminal cleanup, accessibility, or the product's accepted scope.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Inspect the existing terminal framework, command behavior, audience, and reachable interface states.",
+        "Reuse native framework behavior and preserve exit codes, stream separation, structured output, and terminal cleanup.",
+        "Exercise narrow width, disabled color, redirected output, keyboard flow, cancellation, and every changed state."
+      ],
+      "forbiddenActions": [
+        "Add a TUI when the current product scope explicitly excludes it.",
+        "Introduce raw ANSI handling or a new UI dependency when the existing stack covers the change.",
+        "Use color, glyphs, motion, screenshots, or coordinates as the only meaning or verification."
+      ],
+      "recoveryExpectation": "A good terminal change should improve the explicit human workflow without changing product scope or machine-facing behavior.",
+      "productiveOutcome": "Terminal interfaces become clearer while their CLI contracts, degraded modes, and cleanup behavior stay testable.",
+      "verificationEvidence": [
+        "The run names the existing terminal stack and the states changed.",
+        "The focused check covers narrow or no-color behavior and terminal restoration.",
+        "Redirected or structured command output remains parseable when that mode exists."
+      ],
+      "notes": "The paired sessions encode both genuine TUI demand and the boundary that prevents speculative UI work."
+    },
+    {
+      "id": "technical-prose-uses-controlled-terms",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CODEX_SESSION",
+        "capturedAt": "2026-07-29",
+        "evidenceRefs": [
+          "The user explicitly invoked the writing workflow to revise published technical documentation and verify its rendered result."
+        ],
+        "sessionIds": [
+          "019fac69-7232-7cb2-93bf-8cecafe2d01f"
+        ]
+      },
+      "prompt": "Rewrite this published technical documentation with direct language and stable repository terminology, then verify the changed prose.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "A prose revision can improve tone while changing technical meaning, introducing competing terms, or skipping the repository glossary.",
+        "risk": "Readers receive polished text that conflicts with the source contract or creates semantic shadowing.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Load the source facts, nearby writing rules, and repository glossary before revising prose.",
+        "Use one canonical name per concept and migrate only clear known synonyms.",
+        "Run the glossary checker and the smallest rendered or documentation check for the changed surface."
+      ],
+      "forbiddenActions": [
+        "Invent behavior, guarantees, or product scope not supported by source evidence.",
+        "Register an ambiguous synonym or shadow an existing glossary term.",
+        "Apply prose rules to code identifiers, command syntax, or machine-readable contracts."
+      ],
+      "recoveryExpectation": "A good revision should preserve source meaning, resolve terminology mechanically where possible, and leave uncertain meaning for clarification.",
+      "productiveOutcome": "Technical prose becomes easier to read without weakening or duplicating the repository's semantic contract.",
+      "verificationEvidence": [
+        "Every material claim remains traceable to the source documentation or code contract.",
+        "The repository glossary check passes when a glossary is present.",
+        "The changed rendered documentation is inspected when presentation affects the deliverable."
+      ],
+      "notes": "This case turns a repeated writing request into a source-backed terminology and rendering workflow."
     }
   ]
 }

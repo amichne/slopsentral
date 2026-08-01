@@ -1,5 +1,6 @@
 ### Local runtime and OS files
 .agent-turn/
+.plugin-eval/
 .DS_Store
 .AppleDouble
 .LSOverride

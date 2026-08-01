@@ -1,0 +1,60 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "writing",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": "../kast",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run only in an isolated Kast worktree and derive every technical claim from repository source.",
+    "The benchmark may change only local documentation and must not publish or modify remote state."
+  ],
+  "setupQuestions": [
+    "Which bounded published technical document and repository glossary are safe to revise locally?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "controlled-technical-prose",
+      "title": "Controlled technical prose",
+      "purpose": "Measure whether a prose revision preserves source meaning and enforces stable repository terminology with executable checks.",
+      "routingCaseIds": [
+        "technical-prose-uses-controlled-terms"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "userInput": "Use Controlled Technical Writing in this isolated Kast worktree. Rewrite one bounded published technical document with direct language and stable repository terminology, then run the glossary checker and the smallest relevant documentation check. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "Every material claim remains traceable to the source contract.",
+        "One canonical term is used per concept and the repository glossary check passes when a glossary exists.",
+        "The smallest relevant rendered or documentation check passes for the changed surface."
+      ]
+    }
+  ]
+}

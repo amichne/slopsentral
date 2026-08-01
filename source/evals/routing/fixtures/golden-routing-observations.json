@@ -9,15 +9,20 @@
     "source-graph-edits-use-canonical-source-and-gates",
     "shell-check-tdd-uses-stable-red-green-proof",
     "push-request-means-branch-commit-push-pr",
+    "dirty-worktree-uses-scoped-git-change-flow",
     "ci-failure-triage-uses-remote-check-evidence",
     "plugin-install-recovery-proves-installed-state",
     "production-sharing-requires-quality-audit-evidence",
+    "kast-install-diagnosis-preserves-typed-state",
+    "terminal-ui-work-preserves-cli-contracts",
+    "technical-prose-uses-controlled-terms",
     "intellij-full-delivery-uses-default-profile",
     "intellij-existing-plugin-maintenance-discovers-repo-contract",
     "intellij-mixed-language-psi-targets-filter-before-access",
     "kast-intellij-readiness-preserves-typed-blocker",
     "kast-intellij-distribution-respects-module-ownership",
-    "intellij-ui-testing-uses-starter-driver-contract"
+    "intellij-ui-testing-uses-starter-driver-contract",
+    "kotlin-structural-analysis-uses-kast-surface"
   ],
   "observations": [
     {
@@ -111,6 +116,29 @@
         "Open a PR without a concise rationale and residual-risk note."
       ],
       "notes": "A passing delivery run treats push/PR language as an end-to-end delivery request while preserving unrelated work."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "dirty-worktree-uses-scoped-git-change-flow",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "git-change-flow"
+      },
+      "satisfiedAllowedActions": [
+        "Start with Git status and inspect the relevant unstaged diff before staging.",
+        "Treat uncommitted changes outside the requested scope as user work and leave them untouched.",
+        "Stage only requested paths, review the cached diff, and run git diff --cached --check."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Before-and-after Git status shows unrelated files remain intact and unstaged.",
+        "The cached diff contains only requested paths and git diff --cached --check succeeds."
+      ],
+      "avoidedForbiddenActions": [
+        "Run git add -A when the whole dirty tree is not in scope.",
+        "Stash, revert, overwrite, amend, or rebase unrelated user work without explicit authority.",
+        "Claim scoped commit readiness without reviewing the staged diff."
+      ],
+      "notes": "A passing local Git run isolates requested paths in the index and preserves every unrelated working-tree change."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -265,11 +293,11 @@
       },
       "satisfiedAllowedActions": [
         "Frame the trusted domain shape before editing.",
-        "Use Kast or file-backed semantic evidence for Kotlin identity, references, or diagnostics.",
+        "Use Kast semantic evidence for Kotlin identity, references, or diagnostics.",
         "Run the narrowest Gradle compile or test task that proves the affected module."
       ],
       "satisfiedVerificationEvidence": [
-        "The run records Kast or file-backed semantic evidence for affected Kotlin symbols.",
+        "The run records Kast semantic evidence for affected Kotlin symbols.",
         "Focused Gradle proof covers the affected module or test target."
       ],
       "avoidedForbiddenActions": [
@@ -278,6 +306,29 @@
         "Claim Gradle proof without a successful focused command."
       ],
       "notes": "A passing run proves this route by delivering: Kotlin invariant changes are grounded in semantic evidence and type-level enforcement rather than search-and-replace edits."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "kotlin-structural-analysis-uses-kast-surface",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-kotlin-structural-analysis"
+      },
+      "satisfiedAllowedActions": [
+        "Confirm the exact Gradle workspace and Kast readiness before making semantic claims.",
+        "Anchor each chained query on an exact fully qualified symbol, signature, or selector handle.",
+        "Use public Kast relationship or topology commands and preserve coverage, qualification, and continuation state."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run records the exact workspace plus READY runtime and reference-index state.",
+        "The answer cites exact symbol identity, the Kast command chain, coverage, qualification, and continuation state."
+      ],
+      "avoidedForbiddenActions": [
+        "Read Codex session JSONL as evidence of Kotlin code structure.",
+        "Use generic text analysis or a non-compiler graph as the semantic authority for Kotlin or Gradle.",
+        "Claim a complete negative or impact result while output is truncated, qualified, or has a continuation."
+      ],
+      "notes": "A passing structural run uses Kast for Kotlin semantics and keeps session history or generic text analysis outside the code-evidence boundary."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -855,6 +906,78 @@
         "Introduce legacy Remote Robot as the default when the repository has no existing Remote Robot contract."
       ],
       "notes": "A passing replay uses the integrated Starter and Driver path with semantic selectors, isolated lifecycle, and retained artifacts."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "kast-install-diagnosis-preserves-typed-state",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-installation-diagnosis"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve the supported public and administrative Kast commands before changing installation state.",
+        "Record Git, binary, plugin, runtime, exact-root readiness, and reference-index evidence as separate states.",
+        "Use the owning typed repair command and re-read every affected state after it completes."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run records the selected CLI and plugin versions plus the active backend.",
+        "The run records exact-root READY and reference-index readiness separately.",
+        "The final state comes from fresh supported-command output after repair."
+      ],
+      "avoidedForbiddenActions": [
+        "Rewrite installer-owned metadata or receipts by hand.",
+        "Treat a successful build, download, or process launch as exact-root semantic readiness.",
+        "Hide a typed blocker behind an unverified fallback or a generic success claim."
+      ],
+      "notes": "A passing replay keeps each Kast installation and semantic state separate and rechecks them after the owning repair."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "terminal-ui-work-preserves-cli-contracts",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "terminal-ui-design"
+      },
+      "satisfiedAllowedActions": [
+        "Inspect the existing terminal framework, command behavior, audience, and reachable interface states.",
+        "Reuse native framework behavior and preserve exit codes, stream separation, structured output, and terminal cleanup.",
+        "Exercise narrow width, disabled color, redirected output, keyboard flow, cancellation, and every changed state."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run names the existing terminal stack and the states changed.",
+        "The focused check covers narrow or no-color behavior and terminal restoration.",
+        "Redirected or structured command output remains parseable when that mode exists."
+      ],
+      "avoidedForbiddenActions": [
+        "Add a TUI when the current product scope explicitly excludes it.",
+        "Introduce raw ANSI handling or a new UI dependency when the existing stack covers the change.",
+        "Use color, glyphs, motion, screenshots, or coordinates as the only meaning or verification."
+      ],
+      "notes": "A passing replay improves an explicitly requested terminal surface without widening product scope or breaking CLI behavior."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "technical-prose-uses-controlled-terms",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "satisfiedAllowedActions": [
+        "Load the source facts, nearby writing rules, and repository glossary before revising prose.",
+        "Use one canonical name per concept and migrate only clear known synonyms.",
+        "Run the glossary checker and the smallest rendered or documentation check for the changed surface."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Every material claim remains traceable to the source documentation or code contract.",
+        "The repository glossary check passes when a glossary is present.",
+        "The changed rendered documentation is inspected when presentation affects the deliverable."
+      ],
+      "avoidedForbiddenActions": [
+        "Invent behavior, guarantees, or product scope not supported by source evidence.",
+        "Register an ambiguous synonym or shadow an existing glossary term.",
+        "Apply prose rules to code identifiers, command syntax, or machine-readable contracts."
+      ],
+      "notes": "A passing replay preserves meaning, canonical terms, glossary checks, and rendered-document verification."
     }
   ]
 }

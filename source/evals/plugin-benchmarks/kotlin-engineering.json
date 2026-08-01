@@ -17,7 +17,7 @@
     "type": "PLUGIN_EVAL_WORKSPACE",
     "sourcePath": "../kast",
     "setupMode": "git-worktree",
-    "preserve": "on-failure"
+    "preserve": "never"
   },
   "targetProvisioning": {
     "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
@@ -26,6 +26,7 @@
   "verifiers": {
     "type": "PLUGIN_EVAL_VERIFIERS",
     "commands": [
+      "./gradlew :analysis-api:test --no-daemon",
       "git diff --check"
     ]
   },
@@ -53,9 +54,9 @@
         "type": "SKILL",
         "name": "kotlin-agentic-correctness"
       },
-      "userInput": "Use Kotlin Engineering for this Kotlin repository. Change a Kotlin API so an invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass.",
+      "userInput": "Use Kotlin Engineering for this Kotlin repository. Change a Kotlin API so an invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
-        "The run records Kast or file-backed semantic evidence for affected Kotlin symbols.",
+        "The run records Kast semantic evidence for affected Kotlin symbols.",
         "The implementation moves the invariant into Kotlin types rather than comments, nullable flags, or caller discipline.",
         "The final answer includes the focused successful Gradle command."
       ]
@@ -72,7 +73,7 @@
         "type": "SKILL",
         "name": "kotlin-gradle-validation"
       },
-      "userInput": "Use Kotlin Engineering for this Kotlin repository. A Kotlin test fails in Gradle; diagnose the failure, fix it, and rerun the smallest useful Gradle task before saying it is green.",
+      "userInput": "Use Kotlin Engineering for this Kotlin repository. A Kotlin test fails in Gradle; diagnose the failure, fix it, and rerun the smallest useful Gradle task before saying it is green. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run records kotlin-gradle-validation runner JSON or parser JSON when the bundled scripts are available.",
         "The diagnosis cites JUnit XML, Gradle problem reports, Kotlin build reports, or explicitly records that they were absent.",
@@ -92,7 +93,7 @@
         "type": "SKILL",
         "name": "negative-capability-proof"
       },
-      "userInput": "Use Kotlin Engineering for this Kotlin repository. Prove that an invalid Kotlin operation used to be representable, then refactor the API so the same misuse no longer compiles.",
+      "userInput": "Use Kotlin Engineering for this Kotlin repository. Prove that an invalid Kotlin operation used to be representable, then refactor the API so the same misuse no longer compiles. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run records a negative-capability proof JSON path or explains why the helper was unavailable.",
         "The run records a before-state misuse or representable invalid state.",
@@ -112,10 +113,10 @@
         "type": "PROFILE",
         "name": "kotlin-repo-default"
       },
-      "userInput": "Use the Kotlin repository default workflow. Make a Kotlin type-safety change, validate it with Gradle, commit it, push the branch, and monitor CI.",
+      "userInput": "Use the Kotlin repository default workflow. Prepare a Kotlin type-safety change, validate it with Gradle, and audit the local delivery handoff. Do not commit, push, open or update a pull request, monitor CI, or otherwise modify remote state.",
       "successChecklist": [
         "Kotlin proof includes semantic or Gradle evidence from Kotlin Engineering.",
-        "Delivery proof includes scoped staging, commit, push, PR, CI, or release evidence from Git/CI Operations as requested.",
+        "The local delivery audit covers scoped staging and identifies the later commit, PR, and CI evidence without performing those actions.",
         "The run does not move generic Git, PR, CI, or release instructions into Kotlin Engineering."
       ]
     }

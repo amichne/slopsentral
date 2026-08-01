@@ -75,3 +75,20 @@ test("semantic ratchet detail is selectively routed through addressable referenc
     .filter((name) => primitiveByName(plugin(name).skills, "semantic-ratchet"));
   assert.deepEqual(consumers, ["engineering-baseline"]);
 });
+
+test("Kotlin semantic routing uses the public Kast command surface", () => {
+  const correctness = read("source/skills/kotlin-agentic-correctness/SKILL.md");
+  const routing = read("source/evals/routing/kotlin-engineering-workflows.json");
+
+  assert.match(correctness, /kast-kotlin-structural-analysis/);
+  assert.doesNotMatch(correctness, /kast_rpc_file|kast-file-first/);
+  assert.doesNotMatch(routing, /kast-file-first|file-backed semantic evidence/);
+  assert.equal(
+    fs.existsSync(path.join(repoRoot, "source/skills/kotlin-agentic-correctness/scripts/kast_rpc_file.sh")),
+    false,
+  );
+  assert.equal(
+    fs.existsSync(path.join(repoRoot, "source/skills/kotlin-agentic-correctness/references/kast-file-first.md")),
+    false,
+  );
+});

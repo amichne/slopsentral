@@ -22,6 +22,7 @@
         "name": "pkl-engineering"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Pkl edits can be treated as text transformation and rendered without evaluating the real entry module or its tests.",
         "risk": "The output may look correct while required properties, constraints, snapshots, or evaluator capabilities are wrong.",
         "loadedPrimitives": [
@@ -66,6 +67,7 @@
         "name": "pkl-tooling-setup"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Setup guidance can guess package names, Java requirements, editor settings, or renderer support without checking the installed state.",
         "risk": "The editor and CLI drift onto incompatible versions and repository validation works differently from IDE diagnostics.",
         "loadedPrimitives": [
@@ -110,6 +112,7 @@
         "name": "pkl-specification"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A specification request can collapse into implementation snippets without naming entry modules, resource schemes, consumers, or source authority.",
         "risk": "Dynamic inputs and external capabilities leak into downstream code and repository examples are mistaken for normative API contracts.",
         "loadedPrimitives": [
@@ -154,6 +157,7 @@
         "name": "pkl-pattern-catalogs"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Pattern advice can load a monolithic language guide or answer from memory without distinguishing everyday and capability-expanding designs.",
         "risk": "Advanced extension and output capabilities are applied casually, with no version check or focused proof.",
         "loadedPrimitives": [
@@ -199,6 +203,7 @@
         "name": "pkl-evaluate-check"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A Stop hook can guess that every changed Pkl module is directly evaluable or run tests in place where snapshots may be written.",
         "risk": "Valid abstract/template modules fail spuriously, or hook execution mutates expected/actual test files.",
         "loadedPrimitives": [

@@ -1,0 +1,61 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "terminal-ui-design",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": "../intelligence",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "./gradlew :cli:test --no-daemon",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run only in an isolated Intelligence worktree and respect the current projector-only product boundary.",
+    "The benchmark must not add a TUI when the repository excludes one or modify remote state."
+  ],
+  "setupQuestions": [
+    "Which existing human-facing terminal state is in product scope and safe to refine locally?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "terminal-ui-contract-preservation",
+      "title": "Terminal UI contract preservation",
+      "purpose": "Measure whether a terminal-interface decision preserves product scope, machine-facing CLI contracts, degraded modes, and cleanup behavior.",
+      "routingCaseIds": [
+        "terminal-ui-work-preserves-cli-contracts"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "terminal-ui-design"
+      },
+      "userInput": "Use Terminal UI Design to audit one existing human-facing terminal flow in this isolated Intelligence worktree. Preserve its projector-only product scope, command contracts, no-color and redirected-output behavior, and terminal cleanup. If the current product excludes a TUI, record that boundary and make no UI change. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run names the current terminal stack, explicit product scope, and reachable states.",
+        "No TUI or UI dependency is added when the product boundary excludes it.",
+        "Focused proof covers machine-readable output and relevant degraded or cleanup behavior."
+      ]
+    }
+  ]
+}

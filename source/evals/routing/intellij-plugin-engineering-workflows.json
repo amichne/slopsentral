@@ -25,6 +25,7 @@
         "name": "intellij-plugin-default"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A full IntelliJ delivery request can load only the unique plugin skill and miss baseline TDD, Kotlin semantics, or Git and CI follow-through.",
         "risk": "The implementation may lack stable red-green proof, semantic Kotlin evidence, plugin lifecycle verification, or the requested remote delivery evidence.",
         "loadedPrimitives": [
@@ -72,6 +73,7 @@
         "name": "intellij-plugin-delivery"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Generic plugin builders can scaffold over an established repository instead of discovering its checked-in Gradle, JDK, platform, descriptor, and test contracts.",
         "risk": "Unrequested upgrades or replacement templates can break compatibility and erase repository-owned conventions.",
         "loadedPrimitives": [
@@ -113,6 +115,7 @@
         "name": "intellij-plugin-delivery"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "The IntelliJ skill can be loaded while the implementation still performs Kotlin-specific path or range access before filtering resolved PSI targets.",
         "risk": "One non-Kotlin target can terminate the batch and hide valid later Kotlin references.",
         "loadedPrimitives": [
@@ -154,6 +157,7 @@
         "name": "intellij-plugin-delivery"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A generic Kotlin workflow can bypass the exact-root IDEA readiness result and attempt an unsupported headless fallback.",
         "risk": "Stale semantic state may be mistaken for current proof, or a built artifact may be mistaken for an installed and active plugin.",
         "loadedPrimitives": [
@@ -196,6 +200,7 @@
         "name": "intellij-plugin-delivery"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Plugin delivery can collapse build, local installation, signing, feed generation, and publication into one module workflow.",
         "risk": "The backend may gain release responsibilities owned by repository-level workflows, or unsigned local artifacts may be described as published.",
         "loadedPrimitives": [
@@ -239,6 +244,7 @@
         "name": "intellij-plugin-delivery"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Agents can fall back to screen coordinates, screenshots, sleeps, or the user's daily IDE instead of a repository-owned integration-test contract.",
         "risk": "The test becomes flaky, non-reproducible, unsafe for local state, and unable to distinguish UI regressions from IDE startup failures.",
         "loadedPrimitives": [

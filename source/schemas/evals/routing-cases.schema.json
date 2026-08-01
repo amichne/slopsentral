@@ -17,10 +17,16 @@
       "type": "string"
     },
     "type": {
-      "const": "ROUTING_CASE_SET"
+      "type": "string",
+      "enum": [
+        "ROUTING_CASE_SET"
+      ]
     },
     "schemaVersion": {
-      "const": 2
+      "type": "integer",
+      "enum": [
+        2
+      ]
     },
     "name": {
       "type": "string",
@@ -109,6 +115,52 @@
       }
     },
     "source": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/codexSessionSource"
+        },
+        {
+          "$ref": "#/$defs/nonSessionSource"
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      }
+    },
+    "codexSessionSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "capturedAt",
+        "evidenceRefs",
+        "sessionIds"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "CODEX_SESSION"
+          ]
+        },
+        "capturedAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "evidenceRefs": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "sessionIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+          }
+        }
+      }
+    },
+    "nonSessionSource": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -163,11 +215,18 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "type",
         "summary",
         "risk",
         "loadedPrimitives"
       ],
       "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ROUTING_ROUTE_OBSERVATION"
+          ]
+        },
         "summary": {
           "type": "string",
           "minLength": 1

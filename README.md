@@ -53,6 +53,7 @@ evaluable modules one per line in `.intelligence/pkl-entrypoints`.
 node source/tools/validate-source-graph.mjs
 node source/tools/run-routing-evals.mjs
 node source/tools/run-routing-evals.mjs --require-all-observed
+source/tools/compile-kotlin-concepts
 intelligence project --source . --harness codex --out /tmp/slopsentral-codex
 intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check
@@ -64,11 +65,25 @@ any routing case lacks a replay observation.
 Record real rollout and session evidence in
 `source/evals/routing/field-observations.json`; source validation checks that
 each observation points at an existing routing case and remains sanitized.
-Use `source/evals/plugin-benchmarks/kotlin-engineering.json` to collect real
-Codex benchmark usage for Kotlin Engineering. It is a `plugin-eval benchmark`
-config linked back to the routing corpus; after a run, feed the generated
-`benchmark-usage.jsonl` into `plugin-eval analyze --observed-usage` before
-treating static token-budget warnings as production blockers.
+
+Each marketplace plugin has one benchmark definition in
+`source/evals/plugin-benchmarks/`. Source validation requires a matching file,
+a routed scenario, a disposable workspace, and non-interactive local approval.
+These files are published benchmark definitions. They are not benchmark
+results.
+
+Run live benchmarks manually. Plugin Eval 0.1.2 starts a real `codex exec` and
+does not have a dry-run mode. CI validates the definitions but does not execute
+them. Use a temporary materialized plugin target and keep usage, result, log,
+and report files in a temporary directory. Do not commit `.plugin-eval/` or raw
+benchmark files. Raw files can contain prompts, response identifiers, commands,
+and local paths. Do not permit remote writes unless the user approved a
+disposable remote target for that run. `approvalPolicy: never` does not grant
+remote-write authority.
+
+After an authorized run, pass only its generated token-usage JSONL to
+`plugin-eval analyze --observed-usage`. Chat-history demand counts are routing
+evidence, not observed token usage.
 
 ## Provenance
 

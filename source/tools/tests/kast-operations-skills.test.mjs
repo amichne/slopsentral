@@ -98,10 +98,16 @@ test("SQLite navigation resolves receipt-owned Kast state and rejects unsafe acc
   const release = path.join(fixture, "kast-install", "releases", "current-release");
   const releaseBinary = path.join(release, "bin", "kast");
   const publicBinary = path.join(fixture, "bin", "kast");
+  const resolverBin = path.join(fixture, "resolver-bin");
   fs.mkdirSync(workspace, { recursive: true });
   fs.mkdirSync(path.dirname(database), { recursive: true });
   fs.mkdirSync(path.dirname(releaseBinary), { recursive: true });
   fs.mkdirSync(path.dirname(publicBinary), { recursive: true });
+  fs.mkdirSync(resolverBin);
+  for (const command of ["bash", "basename", "dirname", "find", "jq", "readlink"]) {
+    const commandPath = execFileSync("which", [command], { encoding: "utf8" }).trim();
+    fs.symlinkSync(commandPath, path.join(resolverBin, command));
+  }
   fs.writeFileSync(
     path.join(workspaceState, "workspace.json"),
     JSON.stringify({ workspaceRoot: workspace }),
@@ -123,7 +129,7 @@ test("SQLite navigation resolves receipt-owned Kast state and rejects unsafe acc
     sqliteScript,
     ["--kast-workspace", workspace, "--print-path"],
     {
-      env: { ...process.env, KAST_PUBLIC_BIN: publicBinary },
+      env: { ...process.env, KAST_PUBLIC_BIN: publicBinary, PATH: resolverBin },
       encoding: "utf8",
     },
   ).trim();

@@ -95,7 +95,6 @@ fi
 
 if [[ -n "$KAST_WORKSPACE" ]]; then
   command -v jq >/dev/null 2>&1 || die "jq is required for --kast-workspace"
-  command -v rg >/dev/null 2>&1 || die "rg is required for --kast-workspace"
   [[ -z "$DATABASE" && -z "$WORKSPACE" ]] ||
     die "--kast-workspace cannot be combined with --database or --workspace"
   [[ -d "$KAST_WORKSPACE" ]] ||
@@ -121,7 +120,7 @@ if [[ -n "$KAST_WORKSPACE" ]]; then
   DATA_ROOT="$(cd "$DATA_ROOT" && pwd -P)"
 
   DATABASE_MATCHES=()
-  while IFS= read -r WORKSPACE_METADATA; do
+  while IFS= read -r -d '' WORKSPACE_METADATA; do
     METADATA_ROOT="$(jq -er '.workspaceRoot' "$WORKSPACE_METADATA" 2>/dev/null)" ||
       continue
     [[ -d "$METADATA_ROOT" ]] || continue
@@ -130,7 +129,7 @@ if [[ -n "$KAST_WORKSPACE" ]]; then
     DATABASE_CANDIDATE="$(dirname "$WORKSPACE_METADATA")/cache/source-index.db"
     [[ -f "$DATABASE_CANDIDATE" ]] || continue
     DATABASE_MATCHES+=("$DATABASE_CANDIDATE")
-  done < <(rg --files "$DATA_ROOT/workspaces" -g 'workspace.json')
+  done < <(find "$DATA_ROOT/workspaces" -type f -name 'workspace.json' -print0)
 
   case "${#DATABASE_MATCHES[@]}" in
     1) DATABASE="${DATABASE_MATCHES[0]}" ;;

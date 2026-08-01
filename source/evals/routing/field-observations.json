@@ -46,6 +46,50 @@
         "This does not prove the installed cache contains this branch head.",
         "This observation is local to one Codex environment."
       ]
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "dirty-worktree-scoped-staging-2026-07-03",
+      "caseId": "dirty-worktree-uses-scoped-git-change-flow",
+      "capturedAt": "2026-07-03",
+      "sourceType": "LIVE_SESSION",
+      "outcome": "PASS",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "git-change-flow"
+      },
+      "evidenceRefs": [
+        "Root session 019f28fd-4e93-75e0-be7c-18ccdf0cf14f identified unrelated backend changes before branch work.",
+        "The session staged separate scoped commits, preserved the unrelated work, and verified the pushed remote head."
+      ],
+      "productiveOutcomeObserved": "A dirty worktree was kept intact while only the requested publication and backend changes entered their intended commits.",
+      "followUpAction": "Keep status inspection, path-scoped staging, cached-diff review, and diff hygiene in every mixed-worktree delivery.",
+      "limitations": [
+        "This observation covers one repository and one mixed-worktree delivery.",
+        "It does not test conflict recovery or stash operations."
+      ]
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "kast-structural-boundary-correction-2026-07-30",
+      "caseId": "kotlin-structural-analysis-uses-kast-surface",
+      "capturedAt": "2026-07-30",
+      "sourceType": "LIVE_SESSION",
+      "outcome": "PASS",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-kotlin-structural-analysis"
+      },
+      "evidenceRefs": [
+        "Root session 019fb47a-f693-7ef1-a7cd-e8a2efcb5e5f rejected Codex-session analysis for a Kotlin structural task.",
+        "The corrected source skill targets compiler-backed Kotlin analysis through the public Kast 0.20.2 or later surface."
+      ],
+      "productiveOutcomeObserved": "The structural-analysis boundary moved from conversation history to exact Kotlin symbols and relationships exposed by Kast.",
+      "followUpAction": "Replay Kotlin structural requests against a ready exact-root Kast workspace and retain coverage and continuation evidence.",
+      "limitations": [
+        "This observation proves the routing correction and materialized skill, not every future runtime route.",
+        "It does not benchmark structural-query latency."
+      ]
     }
   ]
 }

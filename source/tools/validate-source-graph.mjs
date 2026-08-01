@@ -51,6 +51,44 @@ const codexHookEvents = new Set([
 const codexHooksConfigKeys = new Set(["hooks"]);
 const codexHookGroupKeys = new Set(["matcher", "hooks"]);
 const codexCommandHookKeys = new Set(["type", "command", "commandWindows", "timeout", "statusMessage"]);
+const pluginEvalBenchmarkKeys = new Set([
+  "$schema",
+  "type",
+  "kind",
+  "schemaVersion",
+  "version",
+  "targetKind",
+  "targetName",
+  "runner",
+  "workspace",
+  "targetProvisioning",
+  "verifiers",
+  "notes",
+  "setupQuestions",
+  "scenarios",
+]);
+const pluginEvalRunnerKeys = new Set(["type", "model", "sandbox", "approvalPolicy", "extraArgs"]);
+const pluginEvalWorkspaceKeys = new Set(["type", "sourcePath", "setupMode", "preserve"]);
+const pluginEvalTargetProvisioningKeys = new Set(["type", "mode"]);
+const pluginEvalVerifierKeys = new Set(["type", "commands"]);
+const pluginEvalLocalVerifierPrefixes = [
+  "./gradlew ",
+  "git diff --check",
+  "node source/",
+  "python3 -m unittest source/",
+  "python3 source/",
+];
+const pluginEvalScenarioKeys = new Set([
+  "type",
+  "id",
+  "title",
+  "purpose",
+  "routingCaseIds",
+  "expectedPrimitive",
+  "userInput",
+  "successChecklist",
+]);
+const pluginEvalPrimitiveKeys = new Set(["type", "name"]);
 
 const findings = [];
 
@@ -520,12 +558,18 @@ for (const casesPath of listFiles("source/evals", (file) => file.endsWith(".json
   validateRoutingCaseSet(relativeToRepo(casesPath), primitiveIndex);
 }
 const routingCases = buildRoutingCaseIndex();
+validatePluginRoutingCoverage(routingCases);
 for (const observationsPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
   validateRoutingFieldObservationSet(relativeToRepo(observationsPath), routingCases);
 }
+const pluginBenchmarkPaths = new Map();
 for (const benchmarkPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
-  validatePluginEvalBenchmark(relativeToRepo(benchmarkPath), routingCases);
+  const relativePath = relativeToRepo(benchmarkPath);
+  const targetName = validatePluginEvalBenchmark(relativePath, routingCases);
+  if (!targetName) continue;
+  pluginBenchmarkPaths.set(targetName, [...(pluginBenchmarkPaths.get(targetName) ?? []), relativePath]);
 }
+validatePluginBenchmarkCoverage(pluginBenchmarkPaths);
 
 for (const skillDir of readDirNames("source/skills")) {
   const skillFile = `source/skills/${skillDir}/SKILL.md`;
@@ -871,6 +915,26 @@ function buildRoutingCaseIndex() {
   return cases;
 }
 
+function validatePluginRoutingCoverage(routingCases) {
+  const routedPrimitives = new Set(
+    [...routingCases.values()].map(
+      (routingCase) => `${routingCase.expectedPrimitive?.type}:${routingCase.expectedPrimitive?.name}`,
+    ),
+  );
+
+  for (const [pluginName, manifest] of pluginManifests) {
+    const pluginPrimitives = [
+      { type: "PLUGIN", name: pluginName },
+      ...(manifest.skills ?? []),
+      ...(manifest.agents ?? []),
+      ...(manifest.hooks ?? []),
+    ];
+    if (!pluginPrimitives.some((primitive) => routedPrimitives.has(`${primitive.type}:${primitive.name}`))) {
+      fail(`${pluginManifestPath(pluginName)}: plugin must have at least one routing case`);
+    }
+  }
+}
+
 function validateRoutingFieldObservationSet(relativePath, routingCases) {
   const payload = readJson(relativePath);
   if (!payload) return;
@@ -928,9 +992,10 @@ function validateRoutingFieldObservationSet(relativePath, routingCases) {
 
 function validatePluginEvalBenchmark(relativePath, routingCases) {
   const payload = readJson(relativePath);
-  if (!payload) return;
-  if (payload.kind !== "plugin-eval-benchmark") return;
+  if (!payload) return null;
+  if (payload.kind !== "plugin-eval-benchmark") return null;
 
+  validateAllowedKeys(relativePath, payload, pluginEvalBenchmarkKeys);
   validateNoPrivateLocalStrings(relativePath, payload);
   validateSchemaLink(relativePath, payload.$schema);
   if (payload.type !== "PLUGIN_EVAL_BENCHMARK") fail(`${relativePath}: type must be PLUGIN_EVAL_BENCHMARK`);
@@ -941,6 +1006,9 @@ function validatePluginEvalBenchmark(relativePath, routingCases) {
   if (!pluginManifests.has(payload.targetName)) {
     fail(`${relativePath}: targetName ${payload.targetName ?? "<missing>"} must name an existing source plugin`);
   }
+  if (path.basename(relativePath) !== `${payload.targetName}.json`) {
+    fail(`${relativePath}: filename must match targetName ${payload.targetName}.json`);
+  }
   validatePluginEvalRunner(`${relativePath}: runner`, payload.runner);
   validatePluginEvalWorkspace(`${relativePath}: workspace`, payload.workspace);
   if (payload.targetProvisioning?.type !== "PLUGIN_EVAL_TARGET_PROVISIONING") {
@@ -949,10 +1017,21 @@ function validatePluginEvalBenchmark(relativePath, routingCases) {
   if (payload.targetProvisioning?.mode !== "workspace-plugin-marketplace") {
     fail(`${relativePath}: targetProvisioning.mode must be workspace-plugin-marketplace`);
   }
+  if (payload.targetProvisioning && typeof payload.targetProvisioning === "object") {
+    validateAllowedKeys(
+      `${relativePath}: targetProvisioning`,
+      payload.targetProvisioning,
+      pluginEvalTargetProvisioningKeys,
+    );
+  }
   if (payload.verifiers?.type !== "PLUGIN_EVAL_VERIFIERS") {
     fail(`${relativePath}: verifiers.type must be PLUGIN_EVAL_VERIFIERS`);
   }
+  if (payload.verifiers && typeof payload.verifiers === "object") {
+    validateAllowedKeys(`${relativePath}: verifiers`, payload.verifiers, pluginEvalVerifierKeys);
+  }
   validateNonEmptyStringArray(`${relativePath}: verifiers.commands`, payload.verifiers?.commands);
+  validatePluginEvalVerifierCommands(`${relativePath}: verifiers.commands`, payload.verifiers?.commands);
   validateNonEmptyStringArray(`${relativePath}: notes`, payload.notes);
   validateNonEmptyStringArray(`${relativePath}: setupQuestions`, payload.setupQuestions);
   if (!Array.isArray(payload.scenarios) || payload.scenarios.length === 0) {
@@ -961,8 +1040,14 @@ function validatePluginEvalBenchmark(relativePath, routingCases) {
   }
 
   const ids = new Set();
+  let targetCovered = false;
   for (const [index, scenario] of payload.scenarios.entries()) {
     const owner = `${relativePath}: scenarios[${index}]`;
+    if (!scenario || typeof scenario !== "object" || Array.isArray(scenario)) {
+      fail(`${owner}: scenario must be an object`);
+      continue;
+    }
+    validateAllowedKeys(owner, scenario, pluginEvalScenarioKeys);
     if (typeof scenario.id !== "string" || !scenario.id.match(/^[a-z0-9][a-z0-9-]+$/)) {
       fail(`${owner}: id must be kebab-case`);
     } else if (ids.has(scenario.id)) {
@@ -976,11 +1061,21 @@ function validatePluginEvalBenchmark(relativePath, routingCases) {
         fail(`${owner}: ${field} is required`);
       }
     }
+    if (
+      typeof scenario.userInput === "string" &&
+      !scenario.userInput.match(/\bDo not\b.*\b(?:remote state|remote writes)\b/u)
+    ) {
+      fail(`${owner}: userInput must forbid remote writes`);
+    }
     validateNonEmptyStringArray(`${owner}: successChecklist`, scenario.successChecklist);
     validateNonEmptyStringArray(`${owner}: routingCaseIds`, scenario.routingCaseIds);
     if (!scenario.expectedPrimitive || typeof scenario.expectedPrimitive !== "object") {
       fail(`${owner}: expectedPrimitive is required`);
       continue;
+    }
+    validateAllowedKeys(`${owner}: expectedPrimitive`, scenario.expectedPrimitive, pluginEvalPrimitiveKeys);
+    if (benchmarkPrimitiveBelongsToPlugin(payload.targetName, scenario.expectedPrimitive)) {
+      targetCovered = true;
     }
     for (const caseId of scenario.routingCaseIds ?? []) {
       const routingCase = routingCases.get(caseId);
@@ -1002,6 +1097,32 @@ function validatePluginEvalBenchmark(relativePath, routingCases) {
       }
     }
   }
+  if (!targetCovered) {
+    fail(`${relativePath}: at least one scenario must route through ${payload.targetName} or a composed primitive`);
+  }
+  return payload.targetName;
+}
+
+function benchmarkPrimitiveBelongsToPlugin(pluginName, primitive) {
+  if (primitive.type === "PLUGIN") return primitive.name === pluginName;
+  const owners =
+    primitive.type === "SKILL"
+      ? skillOwners.get(primitive.name)
+      : primitive.type === "AGENT"
+        ? agentOwners.get(primitive.name)
+        : primitive.type === "HOOK"
+          ? hookOwners.get(primitive.name)
+          : [];
+  return (owners ?? []).includes(pluginName);
+}
+
+function validatePluginBenchmarkCoverage(pluginBenchmarkPaths) {
+  for (const pluginName of sorted(pluginManifests.keys())) {
+    const paths = pluginBenchmarkPaths.get(pluginName) ?? [];
+    if (paths.length !== 1) {
+      fail(`${pluginName}: expected exactly one plugin benchmark config, found [${paths.join(", ")}]`);
+    }
+  }
 }
 
 function validatePluginEvalRunner(owner, runner) {
@@ -1009,11 +1130,17 @@ function validatePluginEvalRunner(owner, runner) {
     fail(`${owner}: runner is required`);
     return;
   }
+  validateAllowedKeys(owner, runner, pluginEvalRunnerKeys);
   if (runner.type !== "codex-cli") fail(`${owner}: type must be codex-cli`);
   for (const field of ["model", "sandbox", "approvalPolicy"]) {
     if (typeof runner[field] !== "string" || !runner[field].trim()) fail(`${owner}: ${field} is required`);
   }
   if (!Array.isArray(runner.extraArgs)) fail(`${owner}: extraArgs must be an array`);
+  if (Array.isArray(runner.extraArgs) && runner.extraArgs.length > 0) {
+    fail(`${owner}: extraArgs must be empty`);
+  }
+  if (runner.sandbox !== "workspace-write") fail(`${owner}: sandbox must be workspace-write`);
+  if (runner.approvalPolicy !== "never") fail(`${owner}: approvalPolicy must be never`);
 }
 
 function validatePluginEvalWorkspace(owner, workspace) {
@@ -1021,6 +1148,7 @@ function validatePluginEvalWorkspace(owner, workspace) {
     fail(`${owner}: workspace is required`);
     return;
   }
+  validateAllowedKeys(owner, workspace, pluginEvalWorkspaceKeys);
   for (const field of ["sourcePath", "setupMode", "preserve"]) {
     if (typeof workspace[field] !== "string" || !workspace[field].trim()) fail(`${owner}: ${field} is required`);
   }
@@ -1028,11 +1156,29 @@ function validatePluginEvalWorkspace(owner, workspace) {
   if (typeof workspace.sourcePath === "string" && workspace.sourcePath.startsWith("/")) {
     fail(`${owner}: sourcePath must not be a private absolute path`);
   }
-  if (!["copy", "git-worktree"].includes(workspace.setupMode)) {
-    fail(`${owner}: setupMode must be copy or git-worktree`);
+  if (
+    typeof workspace.sourcePath === "string" &&
+    !workspace.sourcePath.match(/^(\.|\.\.\/[A-Za-z0-9._-]+)$/)
+  ) {
+    fail(`${owner}: sourcePath must be . or one direct sibling repository`);
   }
-  if (!["always", "on-failure", "never"].includes(workspace.preserve)) {
-    fail(`${owner}: preserve must be always, on-failure, or never`);
+  if (workspace.setupMode !== "git-worktree") fail(`${owner}: setupMode must be git-worktree`);
+  if (workspace.preserve !== "never") fail(`${owner}: preserve must be never`);
+}
+
+function validatePluginEvalVerifierCommands(owner, commands) {
+  if (!Array.isArray(commands)) return;
+  for (const [index, command] of commands.entries()) {
+    if (typeof command !== "string") continue;
+    if (/[;&|><`]|\$\(/u.test(command)) {
+      fail(`${owner}[${index}]: shell composition is not allowed`);
+    }
+    if (/\b(?:deploy|publish|release|upload)\b/iu.test(command)) {
+      fail(`${owner}[${index}]: remote or release tasks are not allowed`);
+    }
+    if (!pluginEvalLocalVerifierPrefixes.some((prefix) => command.startsWith(prefix))) {
+      fail(`${owner}[${index}]: verifier must use an approved repository-local command`);
+    }
   }
 }
 
@@ -1101,7 +1247,7 @@ function validateRoutingSource(owner, source) {
     fail(`${owner}: source is required`);
     return;
   }
-  if (!["CURRENT_SOURCE", "MEMORY_INDEX", "USER_CLARIFICATION", "LOCAL_VALIDATION"].includes(source.type)) {
+  if (!["CODEX_SESSION", "CURRENT_SOURCE", "MEMORY_INDEX", "USER_CLARIFICATION", "LOCAL_VALIDATION"].includes(source.type)) {
     fail(`${owner}: source.type is invalid`);
   }
   if (typeof source.capturedAt !== "string" || !source.capturedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
@@ -1109,6 +1255,19 @@ function validateRoutingSource(owner, source) {
   }
   if (!Array.isArray(source.evidenceRefs) || source.evidenceRefs.length === 0) {
     fail(`${owner}: source.evidenceRefs must be a non-empty array`);
+  }
+  if (source.type === "CODEX_SESSION") {
+    if (!Array.isArray(source.sessionIds) || source.sessionIds.length === 0) {
+      fail(`${owner}: CODEX_SESSION source.sessionIds must be a non-empty array`);
+    } else {
+      for (const sessionId of source.sessionIds) {
+        if (typeof sessionId !== "string" || !sessionId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)) {
+          fail(`${owner}: source.sessionIds contains an invalid session id`);
+        }
+      }
+    }
+  } else if (source.sessionIds !== undefined) {
+    fail(`${owner}: source.sessionIds is only valid for CODEX_SESSION`);
   }
 }
 
@@ -1135,6 +1294,9 @@ function validateObservedRoute(owner, observedRoute) {
   if (!observedRoute || typeof observedRoute !== "object") {
     fail(`${owner}: observedRoute is required`);
     return;
+  }
+  if (observedRoute.type !== "ROUTING_ROUTE_OBSERVATION") {
+    fail(`${owner}: observedRoute.type must be ROUTING_ROUTE_OBSERVATION`);
   }
   if (typeof observedRoute.summary !== "string" || !observedRoute.summary.trim()) {
     fail(`${owner}: observedRoute.summary is required`);
