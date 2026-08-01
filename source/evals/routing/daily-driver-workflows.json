@@ -425,6 +425,134 @@
         "Structured artifacts changed by the workflow pass the source graph and marketplace validation gates."
       ],
       "notes": "This is the explicit production-sharing gate for the broader goal."
+    },
+    {
+      "id": "kast-install-diagnosis-preserves-typed-state",
+      "type": "SETUP_FRICTION",
+      "source": {
+        "type": "CODEX_SESSION",
+        "capturedAt": "2026-07-29",
+        "evidenceRefs": [
+          "The user asked for diagnosis of a dysfunctional local Kast installation with conflicting runtime, readiness, and index state."
+        ],
+        "sessionIds": [
+          "019fb0c3-16a3-7f13-b672-c81574995464"
+        ]
+      },
+      "prompt": "Diagnose why this local Kast installation is dysfunctional and reconcile its CLI, runtime, plugin, exact-root readiness, and reference-index state.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-installation-diagnosis"
+      },
+      "observedRoute": {
+        "summary": "Install diagnosis can collapse distinct Git, binary, plugin, runtime, workspace, and index states into one vague healthy or broken claim.",
+        "risk": "A partial repair can leave the selected workspace unusable while later work trusts stale or mismatched evidence.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Resolve the supported public and administrative Kast commands before changing installation state.",
+        "Record Git, binary, plugin, runtime, exact-root readiness, and reference-index evidence as separate states.",
+        "Use the owning typed repair command and re-read every affected state after it completes."
+      ],
+      "forbiddenActions": [
+        "Rewrite installer-owned metadata or receipts by hand.",
+        "Treat a successful build, download, or process launch as exact-root semantic readiness.",
+        "Hide a typed blocker behind an unverified fallback or a generic success claim."
+      ],
+      "recoveryExpectation": "A good diagnosis should preserve each typed state, repair only through its owning command, and name any remaining mismatch exactly.",
+      "productiveOutcome": "Kast repair becomes a repeatable state reconciliation instead of an improvised sequence of shell changes.",
+      "verificationEvidence": [
+        "The run records the selected CLI and plugin versions plus the active backend.",
+        "The run records exact-root READY and reference-index readiness separately.",
+        "The final state comes from fresh supported-command output after repair."
+      ],
+      "notes": "This case comes from a real installation failure where version parity and semantic readiness diverged."
+    },
+    {
+      "id": "terminal-ui-work-preserves-cli-contracts",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CODEX_SESSION",
+        "capturedAt": "2026-07-11",
+        "evidenceRefs": [
+          "The user asked to refine terminal color, chrome, and focus hierarchy.",
+          "The user later removed TUI scope from a projector-only product."
+        ],
+        "sessionIds": [
+          "019eb516-d6c6-7d40-8e0d-825733336654",
+          "019f5360-a8e1-7bb0-9515-da2d76ca1332"
+        ]
+      },
+      "prompt": "Refine this human-facing terminal interface while preserving its command contracts, degraded modes, and explicit product scope.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "terminal-ui-design"
+      },
+      "observedRoute": {
+        "summary": "Terminal design work can become generic visual decoration or resurrect a TUI after the product has explicitly removed that surface.",
+        "risk": "The result can break machine-readable output, terminal cleanup, accessibility, or the product's accepted scope.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Inspect the existing terminal framework, command behavior, audience, and reachable interface states.",
+        "Reuse native framework behavior and preserve exit codes, stream separation, structured output, and terminal cleanup.",
+        "Exercise narrow width, disabled color, redirected output, keyboard flow, cancellation, and every changed state."
+      ],
+      "forbiddenActions": [
+        "Add a TUI when the current product scope explicitly excludes it.",
+        "Introduce raw ANSI handling or a new UI dependency when the existing stack covers the change.",
+        "Use color, glyphs, motion, screenshots, or coordinates as the only meaning or verification."
+      ],
+      "recoveryExpectation": "A good terminal change should improve the explicit human workflow without changing product scope or machine-facing behavior.",
+      "productiveOutcome": "Terminal interfaces become clearer while their CLI contracts, degraded modes, and cleanup behavior stay testable.",
+      "verificationEvidence": [
+        "The run names the existing terminal stack and the states changed.",
+        "The focused check covers narrow or no-color behavior and terminal restoration.",
+        "Redirected or structured command output remains parseable when that mode exists."
+      ],
+      "notes": "The paired sessions encode both genuine TUI demand and the boundary that prevents speculative UI work."
+    },
+    {
+      "id": "technical-prose-uses-controlled-terms",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CODEX_SESSION",
+        "capturedAt": "2026-07-29",
+        "evidenceRefs": [
+          "The user explicitly invoked the writing workflow to revise published technical documentation and verify its rendered result."
+        ],
+        "sessionIds": [
+          "019fac69-7232-7cb2-93bf-8cecafe2d01f"
+        ]
+      },
+      "prompt": "Rewrite this published technical documentation with direct language and stable repository terminology, then verify the changed prose.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "observedRoute": {
+        "summary": "A prose revision can improve tone while changing technical meaning, introducing competing terms, or skipping the repository glossary.",
+        "risk": "Readers receive polished text that conflicts with the source contract or creates semantic shadowing.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Load the source facts, nearby writing rules, and repository glossary before revising prose.",
+        "Use one canonical name per concept and migrate only clear known synonyms.",
+        "Run the glossary checker and the smallest rendered or documentation check for the changed surface."
+      ],
+      "forbiddenActions": [
+        "Invent behavior, guarantees, or product scope not supported by source evidence.",
+        "Register an ambiguous synonym or shadow an existing glossary term.",
+        "Apply prose rules to code identifiers, command syntax, or machine-readable contracts."
+      ],
+      "recoveryExpectation": "A good revision should preserve source meaning, resolve terminology mechanically where possible, and leave uncertain meaning for clarification.",
+      "productiveOutcome": "Technical prose becomes easier to read without weakening or duplicating the repository's semantic contract.",
+      "verificationEvidence": [
+        "Every material claim remains traceable to the source documentation or code contract.",
+        "The repository glossary check passes when a glossary is present.",
+        "The changed rendered documentation is inspected when presentation affects the deliverable."
+      ],
+      "notes": "This case turns a repeated writing request into a source-backed terminology and rendering workflow."
     }
   ]
 }

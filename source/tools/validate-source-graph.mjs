@@ -520,6 +520,7 @@ for (const casesPath of listFiles("source/evals", (file) => file.endsWith(".json
   validateRoutingCaseSet(relativeToRepo(casesPath), primitiveIndex);
 }
 const routingCases = buildRoutingCaseIndex();
+validatePluginRoutingCoverage(routingCases);
 for (const observationsPath of listFiles("source/evals", (file) => file.endsWith(".json"))) {
   validateRoutingFieldObservationSet(relativeToRepo(observationsPath), routingCases);
 }
@@ -871,6 +872,26 @@ function buildRoutingCaseIndex() {
   return cases;
 }
 
+function validatePluginRoutingCoverage(routingCases) {
+  const routedPrimitives = new Set(
+    [...routingCases.values()].map(
+      (routingCase) => `${routingCase.expectedPrimitive?.type}:${routingCase.expectedPrimitive?.name}`,
+    ),
+  );
+
+  for (const [pluginName, manifest] of pluginManifests) {
+    const pluginPrimitives = [
+      { type: "PLUGIN", name: pluginName },
+      ...(manifest.skills ?? []),
+      ...(manifest.agents ?? []),
+      ...(manifest.hooks ?? []),
+    ];
+    if (!pluginPrimitives.some((primitive) => routedPrimitives.has(`${primitive.type}:${primitive.name}`))) {
+      fail(`${pluginManifestPath(pluginName)}: plugin must have at least one routing case`);
+    }
+  }
+}
+
 function validateRoutingFieldObservationSet(relativePath, routingCases) {
   const payload = readJson(relativePath);
   if (!payload) return;
@@ -1101,7 +1122,7 @@ function validateRoutingSource(owner, source) {
     fail(`${owner}: source is required`);
     return;
   }
-  if (!["CURRENT_SOURCE", "MEMORY_INDEX", "USER_CLARIFICATION", "LOCAL_VALIDATION"].includes(source.type)) {
+  if (!["CODEX_SESSION", "CURRENT_SOURCE", "MEMORY_INDEX", "USER_CLARIFICATION", "LOCAL_VALIDATION"].includes(source.type)) {
     fail(`${owner}: source.type is invalid`);
   }
   if (typeof source.capturedAt !== "string" || !source.capturedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
@@ -1109,6 +1130,19 @@ function validateRoutingSource(owner, source) {
   }
   if (!Array.isArray(source.evidenceRefs) || source.evidenceRefs.length === 0) {
     fail(`${owner}: source.evidenceRefs must be a non-empty array`);
+  }
+  if (source.type === "CODEX_SESSION") {
+    if (!Array.isArray(source.sessionIds) || source.sessionIds.length === 0) {
+      fail(`${owner}: CODEX_SESSION source.sessionIds must be a non-empty array`);
+    } else {
+      for (const sessionId of source.sessionIds) {
+        if (typeof sessionId !== "string" || !sessionId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)) {
+          fail(`${owner}: source.sessionIds contains an invalid session id`);
+        }
+      }
+    }
+  } else if (source.sessionIds !== undefined) {
+    fail(`${owner}: source.sessionIds is only valid for CODEX_SESSION`);
   }
 }
 
