@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T22:40:23-04:00",
+  "generatedAt": "2026-08-01T14:09:29-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -167,21 +167,21 @@
         },
         {
           "name": "openapi-contract-authoring",
-          "sha256": "sha256:12de2df158665bc77789833b5dacddcbd9f7b342255e37926f4a9867ed279218",
+          "sha256": "sha256:78480f0c947133c82123f313714d524c80ea357866bb316e07ed2f1e4266f0f4",
           "sourcePath": "source/skills/openapi-contract-authoring",
           "targetPath": "skills/openapi-contract-authoring",
           "type": "SKILL"
         },
         {
           "name": "openapi-contract-rating",
-          "sha256": "sha256:77eb7225c48f301abb018da20b1f7565d2db768bc5f737b825d149fbcc6c186d",
+          "sha256": "sha256:300005cd2173b3be79b70a51df72a5b607a5156ba1f733a59f091d4ea7d163b0",
           "sourcePath": "source/skills/openapi-contract-rating",
           "targetPath": "skills/openapi-contract-rating",
           "type": "SKILL"
         },
         {
           "name": "openapi-schema-modeling",
-          "sha256": "sha256:10ebe13da126eb7b274e9f1042ca665b25c5eae44c3ee25b7a6f28b8b8ab8417",
+          "sha256": "sha256:b1e94bfac4e51a55841b2ef1c3373105dba2bd19ba5711ad2206ff314330ce51",
           "sourcePath": "source/skills/openapi-schema-modeling",
           "targetPath": "skills/openapi-schema-modeling",
           "type": "SKILL"
@@ -265,7 +265,7 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:05ed5edfa487f5ae76c5a84c77b737f69111e00808e035a3a801e5426fe90253",
+          "sha256": "sha256:59fb6f075a197415ebfcd701a29cf50ad1b0c9100e0fca5c49c0e51cffbc8ba8",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
@@ -496,7 +496,7 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:71218bb7130e1a584d579e0acff19b81230499e3f33e98154600706b741a2ff9",
+          "sha256": "sha256:6abc9d6b91ba2f229723ddaf54f56c8aaf3680b4625befb9c7edc50d13c0b27c",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
@@ -530,6 +530,20 @@
       "name": "terminal-ui-design",
       "references": [
         {
+          "name": "schema-driven-design",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
+          "sourcePath": "source/concepts/schema-driven-design/core.md",
+          "targetPath": "instructions/schema-driven-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "type-safety",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
+          "sourcePath": "source/concepts/type-safety/core.md",
+          "targetPath": "instructions/type-safety.md",
+          "type": "INSTRUCTION"
+        },
+        {
           "name": "terminal-ui-design",
           "sha256": "sha256:f2160302c633420b557d9f6d5872267d35f4171d58c4a4fd6263d0f0a5474156",
           "sourcePath": "source/skills/terminal-ui-design",
@@ -544,8 +558,22 @@
       "name": "writing",
       "references": [
         {
+          "name": "schema-driven-design",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
+          "sourcePath": "source/concepts/schema-driven-design/core.md",
+          "targetPath": "instructions/schema-driven-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "type-safety",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
+          "sourcePath": "source/concepts/type-safety/core.md",
+          "targetPath": "instructions/type-safety.md",
+          "type": "INSTRUCTION"
+        },
+        {
           "name": "controlled-technical-writing",
-          "sha256": "sha256:d4cbce41f99f494745d22193b0312df119904101d447ebe4c4881b094c2dcb4e",
+          "sha256": "sha256:42a7d8400d7abd01506bc18c598500d4c53ead12945324bbb90bfd7899c47a99",
           "sourcePath": "source/skills/controlled-technical-writing",
           "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
@@ -573,7 +601,7 @@
         },
         {
           "name": "intellij-plugin-delivery",
-          "sha256": "sha256:5c01cda31738eea430a178952941b65133727c2ef04ab42272232a71b225c639",
+          "sha256": "sha256:99eb9ea2f5d1a5d3de1ab61d123f547146e9c2d809ba428ae41afcde2d0efc4b",
           "sourcePath": "source/skills/intellij-plugin-delivery",
           "targetPath": "skills/intellij-plugin-delivery",
           "type": "SKILL"
@@ -586,8 +614,22 @@
       "name": "kast-operations",
       "references": [
         {
+          "name": "schema-driven-design",
+          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
+          "sourcePath": "source/concepts/schema-driven-design/core.md",
+          "targetPath": "instructions/schema-driven-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "type-safety",
+          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
+          "sourcePath": "source/concepts/type-safety/core.md",
+          "targetPath": "instructions/type-safety.md",
+          "type": "INSTRUCTION"
+        },
+        {
           "name": "kast-installation-diagnosis",
-          "sha256": "sha256:2d5ad77af3244acff59348caa0afe3cb3c7c99b9d931a99ba4f1b71c19cc0e93",
+          "sha256": "sha256:a828b8a3c617b283d436325e6169c766445c0e0f3bb52dc6956a69bcabd8ca5e",
           "sourcePath": "source/skills/kast-installation-diagnosis",
           "targetPath": "skills/kast-installation-diagnosis",
           "type": "SKILL"
@@ -601,14 +643,14 @@
         },
         {
           "name": "kast-performance-assessment",
-          "sha256": "sha256:e397a3b00d4385a790bc3024d69933728d7279a6530f544d95bc5f19c438f67a",
+          "sha256": "sha256:3aa5f2ffbaefabfe9f128af7bdded9db8dc48f8e699a97f763c91121c628e3d7",
           "sourcePath": "source/skills/kast-performance-assessment",
           "targetPath": "skills/kast-performance-assessment",
           "type": "SKILL"
         },
         {
           "name": "sqlite-readonly-navigation",
-          "sha256": "sha256:a781f3eb91c0ddf9fca0a81d93fdb4645db57d1de5083f2a1d7afa3754125709",
+          "sha256": "sha256:0ea44cd846e482a01b3e5db51cdec9f1390a3eba942c135eb7b7d59718c29354",
           "sourcePath": "source/skills/sqlite-readonly-navigation",
           "targetPath": "skills/sqlite-readonly-navigation",
           "type": "SKILL"
@@ -619,6 +661,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "10fad25f37c74565d57e229ff82e463f198fc589",
+  "sourceSha": "81bb29a1c2782c6efaddadcd18dada798b8e5b1b",
   "type": "HYDRATED_MARKETPLACE"
 }

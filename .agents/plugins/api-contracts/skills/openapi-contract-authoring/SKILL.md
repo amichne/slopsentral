@@ -1,6 +1,6 @@
 ---
 name: "openapi-contract-authoring"
-description: "Author or revise OpenAPI specifications with schema-driven operation contracts, invariant-filled component schemas, typed errors, examples, and validation/generation evidence."
+description: "Use when authoring or revising OpenAPI specifications with schema-driven operations, invariant-filled schemas, typed errors, examples, and validation evidence."
 ---
 
 # OpenAPI Contract Authoring

@@ -1,6 +1,6 @@
 ---
 name: "controlled-technical-writing"
-description: "Write or revise technical prose with controlled language and disambiguated glossary lookup. Use for docs, READMEs, PR text, error messages, release notes, or comments that need plain wording, one name per concept, ALL CAPS definitions, or known-synonym migration."
+description: "Use when writing or revising technical prose that needs plain wording, stable terms, disambiguated glossary lookup, one name per concept, or known-synonym migration."
 ---
 
 # Controlled Technical Writing

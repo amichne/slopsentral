@@ -1,6 +1,6 @@
 ---
 name: "sqlite-readonly-navigation"
-description: "Open and navigate an existing SQLite database through a defensively read-only connection. Use for schema, table, index, foreign-key, generation, query-plan, and snapshot inspection, including resolving Kast's exact workspace source index from existing receipt-owned metadata; not for migrations, repair, VACUUM, checkpoints, backups, or any write."
+description: "Use when inspecting an existing SQLite database through a defensively read-only connection, including schemas, indexes, query plans, snapshots, and Kast's receipt-owned workspace source index; not for any write."
 ---
 
 # SQLite Read-Only Navigation

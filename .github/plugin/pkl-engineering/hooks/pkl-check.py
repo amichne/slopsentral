@@ -55,7 +55,10 @@ def emit(payload: Mapping[str, Any]) -> None:
 
 
 def build_parser() -> AxiParser:
-    parser = AxiParser(description="Run one Pkl repository proof through the pkl-engineering façade", allow_abbrev=False)
+    parser = AxiParser(
+        description="Run one Pkl repository proof through the pkl-engineering façade",
+        allow_abbrev=False,
+    )
     parser.add_argument("--repo", type=Path, default=Path("."))
     parser.add_argument("--check", required=True, choices=("format", "evaluate", "test"))
     parser.add_argument("--agent-bin", type=Path, default=os.environ.get("PKL_AGENT_BIN"))
@@ -141,7 +144,15 @@ def entrypoints(repo: Path) -> list[str]:
 
 
 def resolve_agent_bin(value: Path | None) -> Path:
-    candidate = value.expanduser().resolve() if value else Path(__file__).resolve().parent.parent / "skills" / "pkl-engineering" / "scripts" / "pkl_agent"
+    candidate = (
+        value.expanduser().resolve()
+        if value
+        else Path(__file__).resolve().parent.parent
+        / "skills"
+        / "pkl-engineering"
+        / "scripts"
+        / "pkl_agent"
+    )
     if not candidate.is_file() or not os.access(candidate, os.X_OK):
         raise UsageError(f"pkl-engineering façade is missing or not executable: {candidate}")
     return candidate

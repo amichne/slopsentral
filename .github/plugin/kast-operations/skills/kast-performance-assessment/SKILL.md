@@ -1,6 +1,6 @@
 ---
 name: "kast-performance-assessment"
-description: "Characterize observed Kast latency, CPU, allocation, indexing, graph, database, or agent-workflow overhead with repeatable measurements. Use to establish cold and warm baselines, temporarily enable implemented telemetry or structured tracing, capture exact-process JFR, compare runs, and restore configuration; not for unmeasured optimization claims or generic CI tuning."
+description: "Use when measuring Kast latency, CPU, allocation, indexing, graph, database, or agent-workflow overhead with cold and warm baselines, implemented telemetry, exact-process JFR, and repeatable comparisons; not for unmeasured optimization."
 ---
 
 # Kast Performance Assessment

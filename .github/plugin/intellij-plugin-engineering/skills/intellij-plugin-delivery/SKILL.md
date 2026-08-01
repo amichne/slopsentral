@@ -1,6 +1,6 @@
 ---
 name: "intellij-plugin-delivery"
-description: "Develop, debug, verify, package, and deliver existing IntelliJ Platform plugins. Use for plugin.xml, IntelliJ Platform Gradle Plugin 2.x, services, extensions, coroutines, disposal, PSI, indexes, dumb mode, Plugin Verifier, Starter/Driver UI automation, testIdeUi, dynamic unload, IDE sandboxes, or Kast's IDEA backend and exact-root workflow."
+description: "Use when developing, debugging, verifying, packaging, or delivering an existing IntelliJ Platform plugin, including plugin.xml, Gradle, services, PSI, indexes, Plugin Verifier, UI automation, sandboxes, or Kast's IDEA backend."
 ---
 
 # IntelliJ Plugin Delivery

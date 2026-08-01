@@ -20,9 +20,10 @@ this skill owns the turn workflow and proof discipline.
 - Treat JSON, CLI args, hook input, Gradle reports, Kast payloads, and persisted
   workflow state as boundary data with a parser, schema, constructor, or
   validator.
-- Prefer the packaged `kast` skill or native Kast tools for Kotlin identity,
-  references, hierarchy, diagnostics, insertion points, renames, and edit
-  validation.
+- Prefer native Kast commands for Kotlin identity, references, hierarchy,
+  diagnostics, insertion points, renames, and edit validation. Load
+  `kast-kotlin-structural-analysis` for chained structural queries when it is
+  installed.
 - Keep generic Git, PR, release, and CI ownership in delivery skills.
 
 ## Workflow
@@ -32,9 +33,9 @@ this skill owns the turn workflow and proof discipline.
 2. For non-trivial work, create file-backed evidence with
    `python3 scripts/kotlin_workflow_state init --repo .`, then record intent
    with `python3 scripts/kotlin_workflow_state intent ...`.
-3. Orient semantically with Kast before touching Kotlin symbols. For CLI
-   fallback, use `bash scripts/kast_rpc_file.sh` with request and response
-   files under `.agent-turn/kotlin-agentic-correctness/`.
+3. Orient semantically with the public Kast command surface before touching
+   Kotlin symbols. Use `kast-kotlin-structural-analysis` for chained structural
+   queries when it is installed; use native Kast commands for routine lookups.
 4. Use TDD for behavior changes. When the generic `tdd` skill is available,
    treat the targeted Gradle or repository command as its stable executable
    check specification. Add the smallest public-behavior test that proves the
@@ -59,8 +60,8 @@ filesystem evidence, and Kast semantics.
 
 - Stable Kotlin policy: `kotlin-code-correctness`
 - Filesystem evidence: `references/filesystem-evidence-contract.md`
-- Kast file-first fallback: `references/kast-file-first.md`
-- Scripts: `scripts/kotlin_workflow_state`, `scripts/kast_rpc_file.sh`
+- Kast structural queries: `kast-kotlin-structural-analysis` when installed
+- Scripts: `scripts/kotlin_workflow_state`
 - Narrow skills: `kotlin-design-practices`, `kotlin-gradle-validation`,
   `kotlin-review`, and `negative-capability-proof`
 - Generic executable-check TDD: `tdd` when installed.

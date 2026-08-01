@@ -15,13 +15,11 @@ STATE_VERSION = 1
 READ_TOOL_NAMES = {
     "cat",
     "find",
-    "functions.exec_command",
     "grep",
     "head",
     "less",
     "mcp_idea2_read_file",
     "mcp_idea_read_file",
-    "multi_tool_use.parallel",
     "nl",
     "read_file",
     "rg",
@@ -220,11 +218,11 @@ def payload_references_path(repo_root: Path, payload: Any, target: Path) -> bool
         or {}
     )
 
-    if tool_name in READ_TOOL_NAMES and arguments_reference_path(repo_root, args, target):
-        return True
-
     command = command_text(args)
-    if command and command_reads_path(repo_root, command, target):
+    if command:
+        return command_reads_path(repo_root, command, target)
+
+    if tool_name in READ_TOOL_NAMES and arguments_reference_path(repo_root, args, target):
         return True
 
     for nested_key in ("tool_uses", "tools", "calls"):

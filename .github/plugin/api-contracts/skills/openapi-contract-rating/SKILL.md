@@ -1,6 +1,6 @@
 ---
 name: "openapi-contract-rating"
-description: "Rate or review OpenAPI specifications against type-driven and schema-driven criteria, with evidence-backed findings, scorecards, validation notes, and concrete contract-strengthening fixes."
+description: "Use when rating or reviewing OpenAPI specifications against type-driven criteria with evidence-backed findings, scorecards, validation notes, and concrete fixes."
 ---
 
 # OpenAPI Contract Rating
