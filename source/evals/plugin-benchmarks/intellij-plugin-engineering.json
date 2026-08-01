@@ -17,7 +17,7 @@
     "type": "PLUGIN_EVAL_WORKSPACE",
     "sourcePath": "../kast",
     "setupMode": "git-worktree",
-    "preserve": "on-failure"
+    "preserve": "never"
   },
   "targetProvisioning": {
     "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
@@ -26,6 +26,7 @@
   "verifiers": {
     "type": "PLUGIN_EVAL_VERIFIERS",
     "commands": [
+      "./gradlew :backend-idea:test :backend-idea:buildPlugin :backend-idea:verifyPluginStructure --no-daemon",
       "git diff --check"
     ]
   },
@@ -53,7 +54,7 @@
         "type": "SKILL",
         "name": "intellij-plugin-delivery"
       },
-      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Make the requested backend-idea maintenance change through its current architecture, run focused proof, and build the plugin ZIP without unrelated upgrades.",
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Make the requested backend-idea maintenance change through its current architecture, run focused proof, and build the plugin ZIP without unrelated upgrades. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run records repository instructions and checked-in Gradle, JDK, platform, plugin.xml, and test surfaces.",
         "No new scaffold or incidental version migration replaces the existing project.",
@@ -72,7 +73,7 @@
         "type": "SKILL",
         "name": "intellij-plugin-delivery"
       },
-      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Fix reference indexing so Java or Scala PSI targets do not abort later Kotlin rows, and prove it with the focused backend test.",
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Fix reference indexing so Java or Scala PSI targets do not abort later Kotlin rows, and prove it with the focused backend test. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The shared scanner filters to KtNamedDeclaration before Kotlin-specific path or range access.",
         "Unsupported target languages are skipped without ending the batch.",
@@ -91,7 +92,7 @@
         "type": "SKILL",
         "name": "intellij-plugin-delivery"
       },
-      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Check exact-root IDEA readiness and validate what is supported without hiding or bypassing any typed blocker.",
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Check exact-root IDEA readiness and validate what is supported without hiding or bypassing any typed blocker. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run records exact-root context or readiness evidence.",
         "No unsupported macOS headless fallback or global-install repair is used.",
@@ -110,7 +111,7 @@
         "type": "SKILL",
         "name": "intellij-plugin-delivery"
       },
-      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Build the backend-idea artifact and report which later delivery stages belong to repository-level workflows.",
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Build the backend-idea artifact and report which later delivery stages belong to repository-level workflows. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "buildPlugin produces and identifies the unsigned backend-idea ZIP.",
         "Signing, update-feed generation, publication, and channel policy remain outside backend-idea.",
@@ -129,7 +130,7 @@
         "type": "SKILL",
         "name": "intellij-plugin-delivery"
       },
-      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Add one agent-runnable UI integration test for a real backend-idea user flow, execute it non-interactively, and retain useful failure artifacts.",
+      "userInput": "Use IntelliJ Plugin Engineering in this isolated Kast worktree. Add one agent-runnable UI integration test for a real backend-idea user flow, execute it non-interactively, and retain useful failure artifacts. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "A repository-owned JUnit 5 Starter and Driver task installs the exact built plugin into an isolated IDE sandbox.",
         "The test uses stable actions or scoped semantic component selectors and asserts the visible result.",

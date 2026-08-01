@@ -9,6 +9,7 @@
     "source-graph-edits-use-canonical-source-and-gates",
     "shell-check-tdd-uses-stable-red-green-proof",
     "push-request-means-branch-commit-push-pr",
+    "dirty-worktree-uses-scoped-git-change-flow",
     "ci-failure-triage-uses-remote-check-evidence",
     "plugin-install-recovery-proves-installed-state",
     "production-sharing-requires-quality-audit-evidence",
@@ -20,7 +21,8 @@
     "intellij-mixed-language-psi-targets-filter-before-access",
     "kast-intellij-readiness-preserves-typed-blocker",
     "kast-intellij-distribution-respects-module-ownership",
-    "intellij-ui-testing-uses-starter-driver-contract"
+    "intellij-ui-testing-uses-starter-driver-contract",
+    "kotlin-structural-analysis-uses-kast-surface"
   ],
   "observations": [
     {
@@ -114,6 +116,29 @@
         "Open a PR without a concise rationale and residual-risk note."
       ],
       "notes": "A passing delivery run treats push/PR language as an end-to-end delivery request while preserving unrelated work."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "dirty-worktree-uses-scoped-git-change-flow",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "git-change-flow"
+      },
+      "satisfiedAllowedActions": [
+        "Start with Git status and inspect the relevant unstaged diff before staging.",
+        "Treat uncommitted changes outside the requested scope as user work and leave them untouched.",
+        "Stage only requested paths, review the cached diff, and run git diff --cached --check."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Before-and-after Git status shows unrelated files remain intact and unstaged.",
+        "The cached diff contains only requested paths and git diff --cached --check succeeds."
+      ],
+      "avoidedForbiddenActions": [
+        "Run git add -A when the whole dirty tree is not in scope.",
+        "Stash, revert, overwrite, amend, or rebase unrelated user work without explicit authority.",
+        "Claim scoped commit readiness without reviewing the staged diff."
+      ],
+      "notes": "A passing local Git run isolates requested paths in the index and preserves every unrelated working-tree change."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -281,6 +306,29 @@
         "Claim Gradle proof without a successful focused command."
       ],
       "notes": "A passing run proves this route by delivering: Kotlin invariant changes are grounded in semantic evidence and type-level enforcement rather than search-and-replace edits."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "kotlin-structural-analysis-uses-kast-surface",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-kotlin-structural-analysis"
+      },
+      "satisfiedAllowedActions": [
+        "Confirm the exact Gradle workspace and Kast readiness before making semantic claims.",
+        "Anchor each chained query on an exact fully qualified symbol, signature, or selector handle.",
+        "Use public Kast relationship or topology commands and preserve coverage, qualification, and continuation state."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The run records the exact workspace plus READY runtime and reference-index state.",
+        "The answer cites exact symbol identity, the Kast command chain, coverage, qualification, and continuation state."
+      ],
+      "avoidedForbiddenActions": [
+        "Read Codex session JSONL as evidence of Kotlin code structure.",
+        "Use generic text analysis or a non-compiler graph as the semantic authority for Kotlin or Gradle.",
+        "Claim a complete negative or impact result while output is truncated, qualified, or has a continuation."
+      ],
+      "notes": "A passing structural run uses Kast for Kotlin semantics and keeps session history or generic text analysis outside the code-evidence boundary."
     },
     {
       "type": "ROUTING_OBSERVATION",

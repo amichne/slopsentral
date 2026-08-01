@@ -1,0 +1,62 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "pkl-engineering",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "python3 -m unittest source/skills/pkl-engineering/scripts/tests/test_pkl_agent.py",
+      "node source/tools/validate-source-graph.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run in an isolated slopsentral worktree with the bundled safe Pkl facade.",
+    "The benchmark may change only local fixtures and must not publish or modify remote state."
+  ],
+  "setupQuestions": [
+    "Which bounded Pkl module and consumer JSON are safe to revise in this disposable worktree?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "evaluated-pkl-contract",
+      "title": "Evaluated Pkl contract",
+      "purpose": "Measure whether a Pkl change is evaluated and tested under an explicit capability policy before consumer JSON is rendered.",
+      "routingCaseIds": [
+        "pkl-implementation-proves-evaluated-contract"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-engineering"
+      },
+      "userInput": "Use Pkl Engineering in this isolated workspace. Change one bounded Pkl configuration contract, evaluate its real entry module under an explicit policy, run focused tests without snapshot updates, and derive the consumer JSON from the typed model. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The real Pkl entry module evaluates under an explicit resource and module policy.",
+        "Focused Pkl tests pass without unreviewed snapshot writes.",
+        "Consumer JSON is rendered from the typed Pkl module and is not hand-edited."
+      ]
+    }
+  ]
+}

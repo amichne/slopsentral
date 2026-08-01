@@ -1,0 +1,61 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "engineering-baseline",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "node source/tools/validate-source-graph.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run in an isolated slopsentral worktree with one stable shell-invokable check specification.",
+    "The benchmark may change only local files and must not publish or modify remote state."
+  ],
+  "setupQuestions": [
+    "Which small repository invariant has a deterministic shell-invokable oracle?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "executable-check-red-green",
+      "title": "Executable-check red-green proof",
+      "purpose": "Measure whether a repository invariant is test-driven with the same stable command and an intended RED signal before implementation.",
+      "routingCaseIds": [
+        "shell-check-tdd-uses-stable-red-green-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Use Engineering Baseline in this isolated workspace. Add one repository policy that rejects duplicate manifest names. Prove the missing behavior with a stable shell-invokable RED check, implement the narrow fix, and rerun the same check GREEN. Do not commit, push, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "RED and GREEN use the same working directory, command, controlled inputs, and meaningful environment.",
+        "The RED signal is the intended missing behavior, not an infrastructure or syntax failure.",
+        "The narrow implementation passes the focused check and source graph validation."
+      ]
+    }
+  ]
+}

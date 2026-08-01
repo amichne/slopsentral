@@ -1,6 +1,6 @@
 ---
 name: "kast-installation-diagnosis"
-description: "Diagnose a current Kast installation, workspace authority, runtime, plugin, or configuration mismatch and apply only supported repairs when requested. Use for missing or stale binaries, receipts, workspace metadata, IDEA/headless backend readiness, typed setup failures, debug logging preparation, or post-install verification; not for routine Kotlin or Gradle semantic queries."
+description: "Use when diagnosing a Kast installation, workspace authority, runtime, plugin, or configuration mismatch, including stale binaries, receipts, backend readiness, typed setup failures, or post-install verification; not for routine Kotlin or Gradle queries."
 ---
 
 # Kast Installation Diagnosis

@@ -1,0 +1,81 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "git-ci-operations",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "node source/tools/validate-source-graph.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run in an isolated slopsentral worktree and preserve any unrelated local files.",
+    "The benchmark may change only local files and must not publish or modify remote state."
+  ],
+  "setupQuestions": [
+    "Which repeated CI shell fragment is safe to move into a local repository script?",
+    "Which requested files may be staged while unrelated work remains untouched?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "safe-reusable-ci-shell",
+      "title": "Safe reusable CI shell",
+      "purpose": "Measure whether repeated CI shell becomes a repository-owned script with explicit safety boundaries and local proof.",
+      "routingCaseIds": [
+        "ci-shell-automation-uses-safe-reusable-scripts"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "shell-script-safety"
+      },
+      "userInput": "Use Git and CI Operations in this isolated workspace. Move one repeated CI shell fragment into a reusable repository script, preserve unrelated work, and validate its syntax, safety, success path, and expected failure path locally. Do not commit, push, dispatch a workflow, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The script has strict mode, validated inputs, safe temporary-file cleanup, and explicit destructive-operation boundaries where applicable.",
+        "bash -n and the repository shell-safety helper pass for the touched script.",
+        "Representative success and expected-failure paths run locally without touching remote state."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "dirty-worktree-scoped-staging",
+      "title": "Dirty worktree scoped staging",
+      "purpose": "Measure whether Git preparation preserves unrelated work and proves the exact staged change set.",
+      "routingCaseIds": [
+        "dirty-worktree-uses-scoped-git-change-flow"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "git-change-flow"
+      },
+      "userInput": "Use Git and CI Operations in this isolated dirty worktree. Inspect all changes, stage only the requested validated files, and prove the staged diff is clean. Do not commit, push, open a pull request, or modify remote state.",
+      "successChecklist": [
+        "The run records the initial dirty state before staging.",
+        "Only the requested paths enter the staged diff.",
+        "Unrelated tracked and untracked user work remains unchanged."
+      ]
+    }
+  ]
+}

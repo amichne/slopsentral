@@ -1,0 +1,62 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "api-contracts",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "python3 source/skills/openapi-schema-modeling/scripts/validate-yaml-examples.py",
+      "node source/tools/validate-source-graph.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run in an isolated slopsentral worktree and keep generated provider output untouched.",
+    "The benchmark may change only local files and must not publish or modify remote state."
+  ],
+  "setupQuestions": [
+    "Which local JSON Schema or OpenAPI boundary is safe to revise in this disposable worktree?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "typed-api-boundary",
+      "title": "Typed API boundary",
+      "purpose": "Measure whether API boundary work encodes invalid states in JSON Schema and OpenAPI and validates its examples.",
+      "routingCaseIds": [
+        "api-boundary-work-belongs-to-api-contracts"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "api-contracts"
+      },
+      "userInput": "Use API Contracts in this isolated workspace. Design or revise a persisted JSON and OpenAPI boundary with discriminated variants, typed errors, examples, and validation evidence. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The contract encodes variant and error invariants instead of relying on prose or unconstrained primitives.",
+        "JSON Schema and OpenAPI examples validate with the repository-owned checks.",
+        "The run changes only local source-owned contract material."
+      ]
+    }
+  ]
+}

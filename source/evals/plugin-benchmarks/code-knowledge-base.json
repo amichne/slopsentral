@@ -1,0 +1,60 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "code-knowledge-base",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": "../kast",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run only in an isolated Kast worktree and keep the primary checkout untouched.",
+    "The benchmark may change only local documentation evidence and must not publish or modify remote state."
+  ],
+  "setupQuestions": [
+    "Which bounded Kotlin or Gradle concept should become a source-backed OKF bundle?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "source-backed-okf-bundle",
+      "title": "Source-backed OKF bundle",
+      "purpose": "Measure whether knowledge work retains signatures, code sources, impact evidence, and drift checks instead of producing generic prose.",
+      "routingCaseIds": [
+        "okf-knowledge-work-is-not-generic-doc-authoring"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "code-knowledge-base"
+      },
+      "userInput": "Use Code Knowledge Base in this isolated Kast worktree. Create or refresh one bounded source-backed Kotlin or Gradle OKF concept with signature evidence, code_sources impact checks, and drift proof. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The knowledge artifact retains concrete code_sources or signature evidence.",
+        "The focused code knowledge check and relevant documentation check pass.",
+        "The result stays inside the Code Knowledge Base boundary and does not become generic prose."
+      ]
+    }
+  ]
+}

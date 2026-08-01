@@ -24,7 +24,7 @@
         "type": "PLUGIN_EVAL_WORKSPACE",
         "sourcePath": "../kast",
         "setupMode": "git-worktree",
-        "preserve": "on-failure"
+        "preserve": "never"
       },
       "targetProvisioning": {
         "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
@@ -217,7 +217,9 @@
         },
         "sandbox": {
           "type": "string",
-          "minLength": 1,
+          "enum": [
+            "workspace-write"
+          ],
           "examples": [
             "workspace-write"
           ]
@@ -225,9 +227,7 @@
         "approvalPolicy": {
           "type": "string",
           "enum": [
-            "never",
-            "on-request",
-            "on-failure"
+            "never"
           ],
           "examples": [
             "never"
@@ -235,6 +235,7 @@
         },
         "extraArgs": {
           "type": "array",
+          "maxItems": 0,
           "items": {
             "type": "string"
           },
@@ -265,7 +266,7 @@
         },
         "sourcePath": {
           "type": "string",
-          "minLength": 1,
+          "pattern": "^(\\.|\\.\\./[A-Za-z0-9._-]+)$",
           "examples": [
             "../kast"
           ]
@@ -273,7 +274,6 @@
         "setupMode": {
           "type": "string",
           "enum": [
-            "copy",
             "git-worktree"
           ],
           "examples": [
@@ -283,12 +283,10 @@
         "preserve": {
           "type": "string",
           "enum": [
-            "always",
-            "on-failure",
             "never"
           ],
           "examples": [
-            "on-failure"
+            "never"
           ]
         }
       }
@@ -396,6 +394,7 @@
         "userInput": {
           "type": "string",
           "minLength": 1,
+          "pattern": "\\bDo not\\b.*\\b(?:remote state|remote writes)\\b",
           "examples": [
             "Use Kotlin Engineering for this Kotlin repository."
           ]

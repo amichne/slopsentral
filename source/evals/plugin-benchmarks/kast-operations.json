@@ -1,0 +1,80 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "kast-operations",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": "../kast",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run against an isolated Kast worktree and diagnose through supported public or administrative commands.",
+    "The benchmark is read-only and must not repair, publish, or modify local installation or remote state."
+  ],
+  "setupQuestions": [
+    "Which exact Kast workspace root and installed runtime should provide the diagnostic evidence?",
+    "Which Kotlin symbols and relationships define the structural question?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "typed-kast-install-diagnosis",
+      "title": "Typed Kast installation diagnosis",
+      "purpose": "Measure whether installation diagnosis preserves Git, binary, plugin, runtime, exact-root, and index states instead of collapsing them into one health claim.",
+      "routingCaseIds": [
+        "kast-install-diagnosis-preserves-typed-state"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-installation-diagnosis"
+      },
+      "userInput": "Use Kast Operations to audit this local Kast installation. Record CLI, runtime, plugin, exact-root readiness, and reference-index state separately, and identify the owning repair command without running it. Do not edit installation metadata, run a repair, push, publish, or otherwise modify local installation or remote state.",
+      "successChecklist": [
+        "The audit resolves supported command names and records fresh evidence for every typed state.",
+        "Exact-root READY and reference-index readiness remain separate facts.",
+        "The result identifies the owning repair route and leaves the installation unchanged."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "compiler-backed-kotlin-structure",
+      "title": "Compiler-backed Kotlin structure",
+      "purpose": "Measure whether Kotlin structure comes from exact-root Kast symbols and relationships instead of session logs or text heuristics.",
+      "routingCaseIds": [
+        "kotlin-structural-analysis-uses-kast-surface"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-kotlin-structural-analysis"
+      },
+      "userInput": "Use Kast Operations to answer a Kotlin call-and-type-structure question from the exact workspace root. Record readiness, resolve exact symbols, and follow the required relationships through public Kast commands. Do not use Codex session JSONL, generic text analysis, source edits, installation repair, or remote writes.",
+      "successChecklist": [
+        "The run records exact-root runtime and reference-index readiness before relationship claims.",
+        "The result uses exact symbol identity and Kast relationship commands for every structural claim.",
+        "Any incomplete coverage remains explicit instead of being replaced by session or text heuristics."
+      ]
+    }
+  ]
+}

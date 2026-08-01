@@ -17,7 +17,7 @@
     "type": "PLUGIN_EVAL_WORKSPACE",
     "sourcePath": ".",
     "setupMode": "git-worktree",
-    "preserve": "on-failure"
+    "preserve": "never"
   },
   "targetProvisioning": {
     "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
@@ -55,11 +55,11 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Effective Delivery to triage a failing GitHub Actions check. Identify the current failing job and run URL, fix the owning source or workflow, run the closest local proof, push if required, and re-read the remote check state.",
+      "userInput": "Use Effective Delivery to triage a failing GitHub Actions check. Identify the current failing job and run URL, prepare the owning source or workflow repair locally, and run the closest local proof. Do not push, rerun, dispatch, comment on, or otherwise modify remote state.",
       "successChecklist": [
         "The run cites current PR metadata from the GitHub app when available, uses native gh only for a connector gap and Actions evidence, and pins the evidence to the head SHA.",
         "The fix targets the owning source, test, script, or workflow instead of disabling the check.",
-        "The final evidence includes local validation and updated remote check state or exact pending checks."
+        "The final evidence includes local validation and the current remote check state without changing it."
       ]
     },
     {
@@ -74,7 +74,7 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Effective Delivery to tell me whether PR 42 is green. Use the connected GitHub app first for supported PR metadata, native gh only for a connector gap, and the native gh-backed observer for CI state. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you.",
+      "userInput": "Use Effective Delivery to tell me whether PR 42 is green. Use the connected GitHub app first for supported PR metadata, native gh only for a connector gap, and the native gh-backed observer for CI state. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you. Do not push, rerun, dispatch, comment on, or otherwise modify remote state.",
       "successChecklist": [
         "Supported PR metadata comes from the connected GitHub app when available; native gh fills only a connector gap, and the observer classifies the current head.",
         "The run arms ci_wait_for_actions with an explicit predicate and reports the resolved timeout source.",
@@ -94,7 +94,7 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Effective Delivery to revise a GitHub Actions workflow so repeated setup or validation logic becomes reusable and the jobs keep explicit permissions, concurrency, and local validation commands.",
+      "userInput": "Use Effective Delivery to revise a GitHub Actions workflow so repeated setup or validation logic becomes reusable and the jobs keep explicit permissions, concurrency, and local validation commands. Do not commit, push, dispatch, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "Shared logic is moved to workflow_call or a versioned repo script when reuse is needed.",
         "Workflow permissions and concurrency are explicit and narrow.",
@@ -113,7 +113,7 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Effective Delivery to optimize this workflow's dependency graph. Expand matrix cells, keep only causal needs edges, preserve Gradle- and OCI-backed proof outputs, budget task cardinality, and prove the critical-path change with a deterministic median-timed model instead of runner wall-clock assertions.",
+      "userInput": "Use Effective Delivery to optimize this workflow's dependency graph. Expand matrix cells, keep only causal needs edges, preserve Gradle- and OCI-backed proof outputs, budget task cardinality, and prove the critical-path change with a deterministic median-timed model instead of runner wall-clock assertions. Do not commit, push, dispatch, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run models each matrix cell or reusable invocation as an execution node and removes dependencies on unrelated required jobs.",
         "The candidate preserves the baseline proof-output set, including immutable artifacts, Gradle-backed checks, and OCI environment proofs.",
@@ -133,11 +133,11 @@
         "type": "SKILL",
         "name": "pull-request-lifecycle"
       },
-      "userInput": "Use Effective Delivery with Git Operations to make a focused change, stage only scoped files, commit, push, open or update the PR through the connected GitHub app first and native gh only for a connector gap, and arm bounded CI events until it is green or an exact failing, pending, or timeout signal remains.",
+      "userInput": "Use Effective Delivery with Git Operations to prepare a focused local change, audit scoped staging, and produce a PR and CI handoff plan. Do not commit, push, open or update a PR, arm remote events, or otherwise modify remote state.",
       "successChecklist": [
         "The run preserves unrelated work and stages only the requested change set.",
-        "The PR handoff includes branch, base, head SHA, validation commands, and residual risks.",
-        "Remote check claims are backed by typed current-head state after the latest push, without eager model-driven polling."
+        "The proposed PR handoff includes branch, base, prospective validation commands, and residual risks.",
+        "Any remote check facts are read-only, current-head observations and are not changed by the run."
       ]
     }
   ]

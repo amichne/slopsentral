@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -gt 1 ]]; then
+    echo "usage: compile-kotlin-concepts [KOTLINC]" >&2
+    exit 2
+fi
+
+compiler_name=${1:-kotlinc}
+compiler=$(command -v "$compiler_name") || {
+    echo "compile-kotlin-concepts: compiler not found: $compiler_name" >&2
+    exit 2
+}
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+repo_root=$(cd "$script_dir/../.." && pwd -P)
+artifact_root=$(mktemp -d)
+trap 'rm -rf -- "$artifact_root"' EXIT
+
+compiled=0
+while IFS= read -r -d '' source_file; do
+    compiled=$((compiled + 1))
+    "$compiler" "$source_file" -d "$artifact_root/concept-$compiled.jar"
+done < <(find "$repo_root/source/concepts" -type f -name '*.kt' -print0)
+
+if [[ $compiled -eq 0 ]]; then
+    echo "compile-kotlin-concepts: no Kotlin concept files found" >&2
+    exit 1
+fi
+
+failure_fixture="$repo_root/source/tools/fixtures/kotlin-concepts/non-exhaustive-sealed-when.fail.kt"
+diagnostics="$artifact_root/expected-failure.txt"
+if "$compiler" "$failure_fixture" -d "$artifact_root/unexpected.jar" 2>"$diagnostics"; then
+    echo "compile-kotlin-concepts: expected sealed-when fixture to fail" >&2
+    exit 1
+fi
+if ! grep -Fq "must be exhaustive" "$diagnostics"; then
+    echo "compile-kotlin-concepts: fixture failed for the wrong reason" >&2
+    cat "$diagnostics" >&2
+    exit 1
+fi
+
+echo "OK Kotlin concepts: $compiled compiled; sealed-when misuse rejected"
