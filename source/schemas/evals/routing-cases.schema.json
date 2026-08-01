@@ -17,10 +17,16 @@
       "type": "string"
     },
     "type": {
-      "const": "ROUTING_CASE_SET"
+      "type": "string",
+      "enum": [
+        "ROUTING_CASE_SET"
+      ]
     },
     "schemaVersion": {
-      "const": 2
+      "type": "integer",
+      "enum": [
+        2
+      ]
     },
     "name": {
       "type": "string",
@@ -209,11 +215,18 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "type",
         "summary",
         "risk",
         "loadedPrimitives"
       ],
       "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ROUTING_ROUTE_OBSERVATION"
+          ]
+        },
         "summary": {
           "type": "string",
           "minLength": 1

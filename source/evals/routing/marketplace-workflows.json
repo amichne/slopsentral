@@ -23,6 +23,7 @@
         "name": "agent-platform-authoring"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A provider-adapter route can spend the turn diffing generated marketplace payloads instead of auditing canonical source plugins and primitives.",
         "risk": "Token budget is wasted on generated churn and the source graph remains ambiguous.",
         "loadedPrimitives": []
@@ -63,6 +64,7 @@
         "name": "plugin-composition-authoring"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A plugin composition change can be implemented by copying skill payloads into the plugin folder or by relying only on broad source validation.",
         "risk": "Primitive ownership becomes hidden inside the plugin and manifest/catalog drift is not caught near the edited surface.",
         "loadedPrimitives": [
@@ -105,6 +107,7 @@
         "name": "primitive-routing-evaluation"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A routing miss can be handled as a one-off prompt tweak without adding a sanitized case or replay observation.",
         "risk": "The same miss regresses later because no corpus contract exercises the intended primitive route.",
         "loadedPrimitives": [
@@ -149,6 +152,7 @@
         "name": "kotlin-engineering"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A broad Kotlin plugin can absorb baseline executable-check TDD or generic Git, PR, CI, and shell-safety primitives, duplicating neighboring plugin owners.",
         "risk": "Baseline and delivery workflows can load twice while the Kotlin trigger becomes too broad for non-Kotlin implementation or operational tasks.",
         "loadedPrimitives": [
@@ -197,6 +201,7 @@
         "name": "repository-onboarding"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Older Intelligence memories can route setup work toward deprecated APM, Node, Python, or package-manager-era flows.",
         "risk": "Agents use obsolete commands and miss the current source-of-truth split between marketplace source and CLI validation.",
         "loadedPrimitives": []
@@ -236,6 +241,7 @@
         "name": "repository-onboarding"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A setup failure can be misread as source corruption or fixed by hand-editing generated caches.",
         "risk": "Local caches diverge from source and the successful install path is not reproducible.",
         "loadedPrimitives": []
@@ -275,6 +281,7 @@
         "name": "code-knowledge-base"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "The request can be routed to generic documentation authoring or Kotlin implementation because it mentions docs and Kotlin.",
         "risk": "Generated knowledge pages lose code-source backing, signature evidence, and drift checks.",
         "loadedPrimitives": [
@@ -318,6 +325,7 @@
         "name": "api-contracts"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Type-safety language can route API boundary work into Kotlin engineering or general schema maintenance alone.",
         "risk": "Operation-level examples, OpenAPI review, and typed error modeling are missed.",
         "loadedPrimitives": [
@@ -361,6 +369,7 @@
         "name": "required-skill-read"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Hook requirement data can be persisted as ad hoc JSON without a schema or reference checks.",
         "risk": "A hook silently points at a missing skill, stale schema, or non-marketplace-visible required primitive.",
         "loadedPrimitives": [
@@ -403,6 +412,7 @@
         "name": "primitive-quality-audit"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Placeholder skills can remain marketplace-visible because they are syntactically valid primitive directories.",
         "risk": "Agents load useless skills, waste context, and attribute capability to empty migration shells.",
         "loadedPrimitives": []

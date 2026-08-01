@@ -268,11 +268,11 @@
       },
       "satisfiedAllowedActions": [
         "Frame the trusted domain shape before editing.",
-        "Use Kast or file-backed semantic evidence for Kotlin identity, references, or diagnostics.",
+        "Use Kast semantic evidence for Kotlin identity, references, or diagnostics.",
         "Run the narrowest Gradle compile or test task that proves the affected module."
       ],
       "satisfiedVerificationEvidence": [
-        "The run records Kast or file-backed semantic evidence for affected Kotlin symbols.",
+        "The run records Kast semantic evidence for affected Kotlin symbols.",
         "Focused Gradle proof covers the affected module or test target."
       ],
       "avoidedForbiddenActions": [

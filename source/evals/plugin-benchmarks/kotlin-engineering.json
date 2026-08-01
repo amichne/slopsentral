@@ -55,7 +55,7 @@
       },
       "userInput": "Use Kotlin Engineering for this Kotlin repository. Change a Kotlin API so an invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass.",
       "successChecklist": [
-        "The run records Kast or file-backed semantic evidence for affected Kotlin symbols.",
+        "The run records Kast semantic evidence for affected Kotlin symbols.",
         "The implementation moves the invariant into Kotlin types rather than comments, nullable flags, or caller discipline.",
         "The final answer includes the focused successful Gradle command."
       ]

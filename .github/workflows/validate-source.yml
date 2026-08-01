@@ -41,6 +41,9 @@ jobs:
           node source/skills/manage-json-schemas/scripts/schema-contracts.js \
             policy \
             --schema source/schemas/evals/routing-field-observations.schema.json
+          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
+            profile \
+            --schema source/schemas/evals/routing-cases.schema.json
 
       - name: Validate Pkl engineering facade
         env:

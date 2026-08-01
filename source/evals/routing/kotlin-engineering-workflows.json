@@ -14,7 +14,7 @@
         "evidenceRefs": [
           "source/skills/kotlin-agentic-correctness/SKILL.md",
           "source/skills/kotlin-design-practices/SKILL.md",
-          "source/skills/kotlin-agentic-correctness/references/kast-file-first.md"
+          "source/skills/kast-kotlin-structural-analysis/SKILL.md"
         ]
       },
       "prompt": "Change a Kotlin API so invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass.",
@@ -23,6 +23,7 @@
         "name": "kotlin-agentic-correctness"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "The Kotlin workflow can be loaded but bypassed by text search, primitive string edits, and broad Gradle commands without semantic evidence.",
         "risk": "The change may compile only by accident, miss call sites, or preserve invalid states behind new helper names.",
         "loadedPrimitives": [
@@ -32,7 +33,7 @@
       },
       "allowedActions": [
         "Frame the trusted domain shape before editing.",
-        "Use Kast or file-backed semantic evidence for Kotlin identity, references, or diagnostics.",
+        "Use Kast semantic evidence for Kotlin identity, references, or diagnostics.",
         "Run the narrowest Gradle compile or test task that proves the affected module."
       ],
       "forbiddenActions": [
@@ -44,7 +45,7 @@
       "notes": "This case measures whether Kotlin Engineering changes the implementation path, not just whether it was mentioned.",
       "productiveOutcome": "Kotlin invariant changes are grounded in semantic evidence and type-level enforcement rather than search-and-replace edits.",
       "verificationEvidence": [
-        "The run records Kast or file-backed semantic evidence for affected Kotlin symbols.",
+        "The run records Kast semantic evidence for affected Kotlin symbols.",
         "Focused Gradle proof covers the affected module or test target."
       ]
     },
@@ -64,6 +65,7 @@
         "name": "kotlin-gradle-validation"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Agents can skim console text, patch a likely file, and rerun a broad task without reading structured test or problem reports.",
         "risk": "The root cause may be misdiagnosed, flaky failures may be hidden, and validation cost grows without better confidence.",
         "loadedPrimitives": [
@@ -107,6 +109,7 @@
         "name": "negative-capability-proof"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Type-safety requests can stop at normal tests or prose assertions instead of demonstrating the before-and-after negative capability.",
         "risk": "The implementation may still allow the bad operation through another constructor, nullable flag, or primitive escape hatch.",
         "loadedPrimitives": [
@@ -154,6 +157,7 @@
         "name": "kotlin-repo-default"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Baseline TDD, Kotlin best-practice implementation, and generic delivery can collapse into one package, causing duplicate skills or missing proof handoffs.",
         "risk": "The run can ignore stable red-green proof or Kotlin semantics, or bloat Kotlin Engineering with baseline, branch, PR, and CI ownership it should not own.",
         "loadedPrimitives": [

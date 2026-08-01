@@ -22,6 +22,7 @@
         "name": "define-goal"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A continuation can collapse the long objective into a smaller local edit, then claim success without auditing the original requirements.",
         "risk": "The workflow looks busy but drifts away from the user's actual end state and leaves completion unproven.",
         "loadedPrimitives": []
@@ -62,6 +63,7 @@
         "name": "source-graph-consolidation"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Marketplace work can route to generated provider payloads or installed caches instead of the canonical source graph.",
         "risk": "The source of truth remains wrong while generated outputs or local caches receive unreviewable drift.",
         "loadedPrimitives": [
@@ -105,6 +107,7 @@
         "name": "tdd"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A test-first request without a conventional test runner can skip TDD or route to Git and CI merely because the proof is a shell command.",
         "risk": "The implementation changes before a meaningful failure is observed, or an infrastructure failure is mislabeled as RED and provides false regression evidence.",
         "loadedPrimitives": [
@@ -146,6 +149,7 @@
         "name": "pull-request-lifecycle"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A push request can be answered with only a local summary or an unscoped commit that sweeps unrelated dirt into the branch.",
         "risk": "The user still has to perform the delivery work, or the PR contains unrelated changes that are hard to review.",
         "loadedPrimitives": [
@@ -187,6 +191,7 @@
         "name": "github-ci-operations"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Agents can inspect local workflow YAML or guess from stale console snippets without checking the live run and job evidence.",
         "risk": "The patch may fix the wrong thing, miss a repeated failure signature, or claim success before GitHub has verified it.",
         "loadedPrimitives": [
@@ -231,6 +236,7 @@
         "name": "github-ci-operations"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A green-check claim can be made from remembered state while the model repeatedly asks whether unchanged checks have moved.",
         "risk": "The user gets token-heavy status chatter and may merge with pending, failing, skipped-required, or uninspected checks.",
         "loadedPrimitives": [
@@ -274,6 +280,7 @@
         "name": "github-ci-operations"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Workflow authoring can become copy-pasted YAML or long inline shell without local proof boundaries.",
         "risk": "CI becomes hard to reuse, hard to debug locally, and risky to compose with release or generated-output jobs.",
         "loadedPrimitives": [
@@ -321,6 +328,7 @@
         "name": "shell-script-safety"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Repeated CI shell can remain inline in workflow YAML and be reviewed only by eyeballing the happy path.",
         "risk": "Quoting, unset variables, destructive operations, temp cleanup, and local reproducibility regress silently.",
         "loadedPrimitives": [
@@ -362,6 +370,7 @@
         "name": "repository-onboarding"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Install recovery can stop at source validation or mutate cache files directly without proving the consumer CLI sees the plugin.",
         "risk": "The marketplace source may be valid while the user's actual Codex environment still cannot load the shared workflow.",
         "loadedPrimitives": []
@@ -402,6 +411,7 @@
         "name": "primitive-quality-audit"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A share-readiness decision can be based on passing JSON syntax and positive wording rather than evidence of routing clarity, independence, provenance, validation, and runtime safety.",
         "risk": "The team receives primitives that load in the wrong situations, duplicate ownership, or lack reproducible validation.",
         "loadedPrimitives": [
@@ -445,6 +455,7 @@
         "name": "kast-installation-diagnosis"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Install diagnosis can collapse distinct Git, binary, plugin, runtime, workspace, and index states into one vague healthy or broken claim.",
         "risk": "A partial repair can leave the selected workspace unusable while later work trusts stale or mismatched evidence.",
         "loadedPrimitives": []
@@ -489,6 +500,7 @@
         "name": "terminal-ui-design"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Terminal design work can become generic visual decoration or resurrect a TUI after the product has explicitly removed that surface.",
         "risk": "The result can break machine-readable output, terminal cleanup, accessibility, or the product's accepted scope.",
         "loadedPrimitives": []
@@ -531,6 +543,7 @@
         "name": "controlled-technical-writing"
       },
       "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A prose revision can improve tone while changing technical meaning, introducing competing terms, or skipping the repository glossary.",
         "risk": "Readers receive polished text that conflicts with the source contract or creates semantic shadowing.",
         "loadedPrimitives": []

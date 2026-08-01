@@ -1170,6 +1170,9 @@ function validateObservedRoute(owner, observedRoute) {
     fail(`${owner}: observedRoute is required`);
     return;
   }
+  if (observedRoute.type !== "ROUTING_ROUTE_OBSERVATION") {
+    fail(`${owner}: observedRoute.type must be ROUTING_ROUTE_OBSERVATION`);
+  }
   if (typeof observedRoute.summary !== "string" || !observedRoute.summary.trim()) {
     fail(`${owner}: observedRoute.summary is required`);
   }
