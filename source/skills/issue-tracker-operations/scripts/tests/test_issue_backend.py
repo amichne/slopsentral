@@ -369,6 +369,39 @@ class IssueBackendCliTest(unittest.TestCase):
         self.assertEqual(payload["failure"]["mutationState"], "NOT_STARTED")
         self.assertNotIn("gitlab", completed.stderr.lower())
 
+    def test_malformed_provider_result_retains_command_evidence(self) -> None:
+        completed = self.run_cli(
+            "view",
+            "KAST-42",
+            "--json",
+            environment={
+                "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
+                "ISSUE_BACKEND_TEST_ACLI_VIEW": json.dumps(
+                    {"fields": {"summary": "Missing identity"}}
+                ),
+            },
+        )
+
+        self.assertEqual(completed.returncode, 1)
+        payload = json.loads(completed.stdout)["result"]
+        self.assertEqual(payload["failure"]["id"], "PROVIDER_OUTPUT_INVALID")
+        self.assertEqual(payload["evidence"][0]["executable"], "acli")
+        self.assertEqual(payload["evidence"][0]["exitCode"], 0)
+
+    def test_provider_stderr_does_not_enter_the_canonical_failure(self) -> None:
+        completed = self.run_cli(
+            "view",
+            "UNEXPECTED-1",
+            "--json",
+            environment={"EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira"},
+        )
+
+        self.assertEqual(completed.returncode, 1)
+        payload = json.loads(completed.stdout)["result"]
+        self.assertEqual(payload["failure"]["id"], "PROVIDER_COMMAND_FAILED")
+        self.assertNotIn("unexpected acli command", completed.stdout)
+        self.assertEqual(payload["evidence"][0]["exitCode"], 64)
+
 
 if __name__ == "__main__":
     unittest.main()
