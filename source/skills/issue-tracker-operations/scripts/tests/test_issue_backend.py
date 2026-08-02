@@ -104,12 +104,12 @@ class IssueBackendCliTest(unittest.TestCase):
         self.assertEqual(
             result["capabilities"],
             [
-                {"name": "DIRECT_BLOCKER_MAP", "support": "NATIVE"},
-                {"name": "VIEW", "support": "NATIVE"},
-                {"name": "CREATE", "support": "UNSUPPORTED"},
-                {"name": "UPDATE", "support": "UNSUPPORTED"},
-                {"name": "COMMENT", "support": "UNSUPPORTED"},
-                {"name": "HIERARCHY_MAP", "support": "UNSUPPORTED"},
+                {"type": "ISSUE_BACKEND_CAPABILITY", "name": "DIRECT_BLOCKER_MAP", "support": "NATIVE"},
+                {"type": "ISSUE_BACKEND_CAPABILITY", "name": "VIEW", "support": "NATIVE"},
+                {"type": "ISSUE_BACKEND_CAPABILITY", "name": "CREATE", "support": "UNSUPPORTED"},
+                {"type": "ISSUE_BACKEND_CAPABILITY", "name": "UPDATE", "support": "UNSUPPORTED"},
+                {"type": "ISSUE_BACKEND_CAPABILITY", "name": "COMMENT", "support": "UNSUPPORTED"},
+                {"type": "ISSUE_BACKEND_CAPABILITY", "name": "HIERARCHY_MAP", "support": "UNSUPPORTED"},
             ],
         )
         self.assertNotIn("GITLAB", completed.stdout)
@@ -134,9 +134,9 @@ class IssueBackendCliTest(unittest.TestCase):
         )
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        self.assertTrue(completed.stdout.startswith("type: ISSUE_BACKEND_RESULT\n"))
+        self.assertTrue(completed.stdout.startswith("type: ISSUE_BACKEND_CAPABILITIES_RESULT\n"))
         self.assertIn("backend: JIRA\n", completed.stdout)
-        self.assertIn("capabilities[6]{name,support}:\n", completed.stdout)
+        self.assertIn("capabilities[6]{type,name,support}:\n", completed.stdout)
         self.assertFalse(completed.stdout.lstrip().startswith("{"))
 
     def test_jira_view_invokes_official_acli_and_normalizes_the_issue(self) -> None:
@@ -163,12 +163,13 @@ class IssueBackendCliTest(unittest.TestCase):
         self.assertEqual(
             result["issue"],
             {
+                "type": "ISSUE_BACKEND_ISSUE",
                 "id": "KAST-42",
                 "state": "In Progress",
                 "title": "Typed Jira adapter",
-                "url": None,
             },
         )
+        self.assertEqual(result["evidence"][0]["type"], "ISSUE_BACKEND_COMMAND_EVIDENCE")
         self.assertEqual(
             self.commands(),
             [
@@ -250,23 +251,31 @@ class IssueBackendCliTest(unittest.TestCase):
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
         result = json.loads(completed.stdout)
+        self.assertEqual(result["type"], "ISSUE_BACKEND_DEPENDENCY_MAP_RESULT")
+        self.assertEqual(result["dependencyMap"]["type"], "ISSUE_BACKEND_DEPENDENCY_MAP")
         self.assertEqual(result["dependencyMap"]["root"], "KAST-42")
         self.assertEqual(
             result["dependencyMap"]["edges"],
             [
                 {
+                    "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
                     "relation": "BLOCKS",
-                    "source": {"id": "KAST-7", "title": "Schema first"},
-                    "target": {"id": "KAST-42", "title": None},
+                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "KAST-7", "title": "Schema first"},
+                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "KAST-42"},
                 },
                 {
+                    "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
                     "relation": "BLOCKS",
-                    "source": {"id": "KAST-42", "title": None},
-                    "target": {"id": "KAST-99", "title": "Consumer"},
+                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "KAST-42"},
+                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "KAST-99", "title": "Consumer"},
                 },
             ],
         )
         self.assertEqual(result["dependencyMap"]["coverage"]["depth"], 1)
+        self.assertEqual(
+            result["dependencyMap"]["coverage"]["type"],
+            "ISSUE_BACKEND_DEPENDENCY_COVERAGE",
+        )
         self.assertEqual(result["dependencyMap"]["coverage"]["hierarchy"], "UNSUPPORTED")
         self.assertEqual(
             self.commands(),
@@ -301,14 +310,16 @@ class IssueBackendCliTest(unittest.TestCase):
             result["dependencyMap"]["edges"],
             [
                 {
+                    "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
                     "relation": "BLOCKS",
-                    "source": {"id": "7", "title": "Schema first"},
-                    "target": {"id": "42", "title": None},
+                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "7", "title": "Schema first"},
+                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "42"},
                 },
                 {
+                    "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
                     "relation": "BLOCKS",
-                    "source": {"id": "42", "title": None},
-                    "target": {"id": "99", "title": "Consumer"},
+                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "42"},
+                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "99", "title": "Consumer"},
                 },
             ],
         )
@@ -326,7 +337,9 @@ class IssueBackendCliTest(unittest.TestCase):
         self.assertEqual(completed.returncode, 1)
         result = json.loads(completed.stdout)
         self.assertEqual(result["outcome"], "REJECTED")
+        self.assertEqual(result["type"], "ISSUE_BACKEND_FAILURE")
         self.assertEqual(result["failure"]["id"], "BACKEND_UNSUPPORTED")
+        self.assertEqual(result["failure"]["type"], "ISSUE_BACKEND_FAILURE_DETAIL")
         self.assertEqual(result["failure"]["mutationState"], "NOT_STARTED")
         self.assertNotIn("gitlab", completed.stderr.lower())
 
