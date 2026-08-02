@@ -99,10 +99,12 @@ class IssueBackendCliTest(unittest.TestCase):
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
         result = json.loads(completed.stdout)
-        self.assertEqual(result["outcome"], "COMPLETE")
-        self.assertEqual(result["backend"], "JIRA")
+        self.assertEqual(result["type"], "ISSUE_BACKEND_RESULT")
+        payload = result["result"]
+        self.assertEqual(payload["outcome"], "COMPLETE")
+        self.assertEqual(payload["backend"], "JIRA")
         self.assertEqual(
-            result["capabilities"],
+            payload["capabilities"],
             [
                 {"type": "ISSUE_BACKEND_CAPABILITY", "name": "DIRECT_BLOCKER_MAP", "support": "NATIVE"},
                 {"type": "ISSUE_BACKEND_CAPABILITY", "name": "VIEW", "support": "NATIVE"},
@@ -125,7 +127,7 @@ class IssueBackendCliTest(unittest.TestCase):
         )
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        self.assertEqual(json.loads(completed.stdout)["backend"], "GITHUB")
+        self.assertEqual(json.loads(completed.stdout)["result"]["backend"], "GITHUB")
 
     def test_default_output_is_toon_derived_from_the_canonical_result(self) -> None:
         completed = self.run_cli(
@@ -134,9 +136,10 @@ class IssueBackendCliTest(unittest.TestCase):
         )
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        self.assertTrue(completed.stdout.startswith("type: ISSUE_BACKEND_CAPABILITIES_RESULT\n"))
-        self.assertIn("backend: JIRA\n", completed.stdout)
-        self.assertIn("capabilities[6]{type,name,support}:\n", completed.stdout)
+        self.assertTrue(completed.stdout.startswith("type: ISSUE_BACKEND_RESULT\n"))
+        self.assertIn("  type: ISSUE_BACKEND_CAPABILITIES_RESULT\n", completed.stdout)
+        self.assertIn("  backend: JIRA\n", completed.stdout)
+        self.assertIn("  capabilities[6]{type,name,support}:\n", completed.stdout)
         self.assertFalse(completed.stdout.lstrip().startswith("{"))
 
     def test_jira_view_invokes_official_acli_and_normalizes_the_issue(self) -> None:
@@ -160,8 +163,9 @@ class IssueBackendCliTest(unittest.TestCase):
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
         result = json.loads(completed.stdout)
+        payload = result["result"]
         self.assertEqual(
-            result["issue"],
+            payload["issue"],
             {
                 "type": "ISSUE_BACKEND_ISSUE",
                 "id": "KAST-42",
@@ -169,7 +173,7 @@ class IssueBackendCliTest(unittest.TestCase):
                 "title": "Typed Jira adapter",
             },
         )
-        self.assertEqual(result["evidence"][0]["type"], "ISSUE_BACKEND_COMMAND_EVIDENCE")
+        self.assertEqual(payload["evidence"][0]["type"], "ISSUE_BACKEND_COMMAND_EVIDENCE")
         self.assertEqual(
             self.commands(),
             [
@@ -200,7 +204,7 @@ class IssueBackendCliTest(unittest.TestCase):
         )
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        self.assertEqual(json.loads(completed.stdout)["issue"]["id"], "42")
+        self.assertEqual(json.loads(completed.stdout)["result"]["issue"]["id"], "42")
         self.assertEqual(
             self.commands(),
             [
@@ -251,11 +255,12 @@ class IssueBackendCliTest(unittest.TestCase):
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
         result = json.loads(completed.stdout)
-        self.assertEqual(result["type"], "ISSUE_BACKEND_DEPENDENCY_MAP_RESULT")
-        self.assertEqual(result["dependencyMap"]["type"], "ISSUE_BACKEND_DEPENDENCY_MAP")
-        self.assertEqual(result["dependencyMap"]["root"], "KAST-42")
+        payload = result["result"]
+        self.assertEqual(payload["type"], "ISSUE_BACKEND_DEPENDENCY_MAP_RESULT")
+        self.assertEqual(payload["dependencyMap"]["type"], "ISSUE_BACKEND_DEPENDENCY_MAP")
+        self.assertEqual(payload["dependencyMap"]["root"], "KAST-42")
         self.assertEqual(
-            result["dependencyMap"]["edges"],
+            payload["dependencyMap"]["edges"],
             [
                 {
                     "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
@@ -271,12 +276,12 @@ class IssueBackendCliTest(unittest.TestCase):
                 },
             ],
         )
-        self.assertEqual(result["dependencyMap"]["coverage"]["depth"], 1)
+        self.assertEqual(payload["dependencyMap"]["coverage"]["depth"], 1)
         self.assertEqual(
-            result["dependencyMap"]["coverage"]["type"],
+            payload["dependencyMap"]["coverage"]["type"],
             "ISSUE_BACKEND_DEPENDENCY_COVERAGE",
         )
-        self.assertEqual(result["dependencyMap"]["coverage"]["hierarchy"], "UNSUPPORTED")
+        self.assertEqual(payload["dependencyMap"]["coverage"]["hierarchy"], "UNSUPPORTED")
         self.assertEqual(
             self.commands(),
             [
@@ -305,7 +310,7 @@ class IssueBackendCliTest(unittest.TestCase):
         )
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        result = json.loads(completed.stdout)
+        result = json.loads(completed.stdout)["result"]
         self.assertEqual(
             result["dependencyMap"]["edges"],
             [
@@ -336,11 +341,13 @@ class IssueBackendCliTest(unittest.TestCase):
 
         self.assertEqual(completed.returncode, 1)
         result = json.loads(completed.stdout)
-        self.assertEqual(result["outcome"], "REJECTED")
-        self.assertEqual(result["type"], "ISSUE_BACKEND_FAILURE")
-        self.assertEqual(result["failure"]["id"], "BACKEND_UNSUPPORTED")
-        self.assertEqual(result["failure"]["type"], "ISSUE_BACKEND_FAILURE_DETAIL")
-        self.assertEqual(result["failure"]["mutationState"], "NOT_STARTED")
+        self.assertEqual(result["type"], "ISSUE_BACKEND_RESULT")
+        payload = result["result"]
+        self.assertEqual(payload["outcome"], "REJECTED")
+        self.assertEqual(payload["type"], "ISSUE_BACKEND_FAILURE")
+        self.assertEqual(payload["failure"]["id"], "BACKEND_UNSUPPORTED")
+        self.assertEqual(payload["failure"]["type"], "ISSUE_BACKEND_FAILURE_DETAIL")
+        self.assertEqual(payload["failure"]["mutationState"], "NOT_STARTED")
         self.assertNotIn("gitlab", completed.stderr.lower())
 
 
