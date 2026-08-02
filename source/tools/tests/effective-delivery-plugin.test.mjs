@@ -61,6 +61,22 @@ test("default delivery composition does not activate automatic CI hooks", () => 
   assert.equal(benchmark.targetName, "effective-delivery");
 });
 
+test("source validation executes the issue backend contracts", () => {
+  const workflow = fs.readFileSync(
+    path.join(repoRoot, ".github/workflows/validate-source.yml"),
+    "utf8",
+  );
+
+  assert.match(
+    workflow,
+    /source\/skills\/issue-tracker-operations\/scripts\/tests/,
+  );
+  assert.match(
+    workflow,
+    /source\/skills\/issue-tracker-operations\/references\/issue-backend-result\.schema\.json/,
+  );
+});
+
 test("authored delivery surfaces do not require the removed GitHub adapter", () => {
   const marker = ["a", "x", "i"].join("");
   const forbidden = new RegExp(
