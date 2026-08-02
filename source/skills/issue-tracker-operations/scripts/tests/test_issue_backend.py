@@ -142,6 +142,25 @@ class IssueBackendCliTest(unittest.TestCase):
         self.assertIn("  capabilities[6]{type,name,support}:\n", completed.stdout)
         self.assertFalse(completed.stdout.lstrip().startswith("{"))
 
+    def test_toon_object_list_places_the_first_field_on_the_hyphen_line(self) -> None:
+        completed = self.run_cli(
+            "view",
+            "KAST-42",
+            environment={
+                "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
+                "ISSUE_BACKEND_TEST_ACLI_VIEW": json.dumps(
+                    {"key": "KAST-42", "fields": {"summary": "Typed Jira adapter"}}
+                ),
+            },
+        )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn(
+            "    - type: ISSUE_BACKEND_COMMAND_EVIDENCE\n",
+            completed.stdout,
+        )
+        self.assertNotIn("\n    -\n", completed.stdout)
+
     def test_jira_view_invokes_official_acli_and_normalizes_the_issue(self) -> None:
         completed = self.run_cli(
             "view",
