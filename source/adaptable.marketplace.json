@@ -161,16 +161,20 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/effective-delivery"
         },
-        "version": "0.3.0"
+        "version": "0.4.0"
       },
-      "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and explicit event-driven observation.",
+      "description": "Effective software delivery through backend-neutral issue reads, direct dependency evidence, PR follow-through, optimized GitHub Actions workflow graphs, and structured CI observation.",
       "tags": [
         "actions",
         "automation",
+        "backend",
         "ci",
+        "dependencies",
         "duration",
         "evidence",
         "github",
+        "issues",
+        "jira",
         "optimization",
         "pull-requests",
         "release",
@@ -489,6 +493,15 @@
       },
       "path": "skills/github-ci-operations",
       "name": "github-ci-operations"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/issue-tracker-operations",
+      "name": "issue-tracker-operations"
     },
     {
       "type": "SKILL",

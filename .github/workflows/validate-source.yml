@@ -47,6 +47,9 @@ jobs:
           node source/skills/manage-json-schemas/scripts/schema-contracts.js \
             profile \
             --schema source/schemas/evals/routing-cases.schema.json
+          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
+            policy \
+            --schema source/skills/issue-tracker-operations/references/issue-backend-result.schema.json
 
       - name: Run Python unit checks
         run: |
@@ -57,6 +60,7 @@ jobs:
             source/hooks/tests \
             source/skills/code-knowledge-base/scripts/tests \
             source/skills/github-ci-operations/scripts/tests \
+            source/skills/issue-tracker-operations/scripts/tests \
             source/skills/openapi-schema-modeling/scripts/tests \
             source/skills/pkl-specification/scripts/tests \
             source/skills/pkl-tooling-setup/scripts/tests \

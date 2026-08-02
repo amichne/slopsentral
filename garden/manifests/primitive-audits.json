@@ -337,6 +337,9 @@
           "source/skills/github-ci-operations",
           "source/skills/github-ci-operations/scripts/ci_actions_observer.py",
           "source/skills/github-ci-operations/scripts/ci_wait_for_actions",
+          "source/skills/issue-tracker-operations",
+          "source/skills/issue-tracker-operations/references/issue-backend-result.schema.json",
+          "source/skills/issue-tracker-operations/scripts/issue_backend",
           "source/skills/pull-request-lifecycle",
           "source/evals/routing/daily-driver-workflows.json",
           "source/evals/routing/fixtures/golden-routing-observations.json",
@@ -345,16 +348,18 @@
           ".github/workflows/materialize-marketplace.yml"
         ]
       },
-      "baseline": "Effective Delivery composes the existing PR, GitHub Actions, workflow-graph, release, and quiet-observation primitives after splitting them from host-neutral Git and shell mechanics.",
+      "baseline": "Effective Delivery composes issue reads, direct blocker evidence, PR follow-through, GitHub Actions, workflow-graph, release, and quiet-observation primitives while host-neutral Git and shell mechanics remain separate.",
       "decision": "PROMOTE_READY",
       "confidence": "HIGH",
-      "reviewedAt": "2026-07-30",
+      "reviewedAt": "2026-08-02",
       "reviewedBy": "codex",
       "capabilityBoundary": {
         "status": "PASS",
         "evidence": [
-          "source/plugins/effective-delivery/plugin.json scopes the plugin to PR follow-through, structured CI evidence, GitHub Actions workflow graphs, releases, and duration-aware observation.",
+          "source/plugins/effective-delivery/plugin.json scopes the plugin to backend-neutral issue reads, direct blocker maps, PR follow-through, structured CI evidence, GitHub Actions workflow graphs, releases, and duration-aware observation.",
           "The plugin explicitly excludes local-only Git mechanics and generic implementation TDD, which remain independent repository capabilities.",
+          "source/skills/issue-tracker-operations selects GITHUB or JIRA before execution, reports exact capabilities, and keeps remote writes unsupported.",
+          "The Jira adapter is new source that invokes Atlassian acli; it does not wrap the stale jira-resolve-ticket primitive.",
           "source/skills/github-ci-operations keeps CI ownership on live GitHub check/run evidence, workflow design, releases, and provider-specific CI triage.",
           "source/skills/pull-request-lifecycle composes Git hygiene and CI watching without absorbing GitHub Actions internals."
         ]
@@ -363,10 +368,13 @@
         "status": "PASS",
         "evidence": [
           "source/tools/validate-source-graph.mjs validates plugin references, standalone skill exposure, routing cases, plugin benchmarks, audit records, profiles, hooks, and runtime-link records.",
+          "source/skills/issue-tracker-operations/references/issue-backend-result.schema.json defines a closed discriminated envelope for capability, view, dependency-map, and failure results.",
+          "source/skills/issue-tracker-operations/scripts/issue_backend parses provider JSON into typed domain objects and emits canonical JSON or a TOON projection.",
+          "source/skills/issue-tracker-operations/scripts/tests/test_issue_backend.py verifies environment selection, override precedence, acli and gh command boundaries, blocker direction, coverage, and typed rejection.",
           "source/skills/github-ci-operations/scripts/ci_actions_observer.py parses native gh JSON into typed observations, persists active requests and duration samples under Git metadata, and emits stable pending, success, failure, timeout, or error outcomes.",
           "source/skills/github-ci-operations/scripts/ci_wait_for_actions provides explicit arm, await, status, and profile commands over the typed observer while keeping Actions reads on authenticated native gh.",
-          "source/evals/routing/daily-driver-workflows.json records CI-specific expectations for current check evidence, composable workflow authoring, and quiet observation.",
-          "source/evals/plugin-benchmarks/effective-delivery.json defines Codex benchmark scenarios for CI triage, structured green claims, workflow-graph optimization, and PR green-loop delivery."
+          "source/evals/routing/daily-driver-workflows.json records issue-backend selection plus CI-specific expectations for current check evidence, composable workflow authoring, and quiet observation.",
+          "source/evals/plugin-benchmarks/effective-delivery.json defines Codex benchmark scenarios for issue dependency evidence, CI triage, structured green claims, workflow-graph optimization, and PR green-loop delivery."
         ]
       },
       "provenance": {
@@ -375,6 +383,7 @@
         "evidence": [
           "garden/manifests/promotions.json records github-ci-operations and pull-request-lifecycle as promoted canonical primitives.",
           "The plugin manifest references canonical source primitives by path instead of copying payloads into source/plugins/effective-delivery.",
+          "issue-tracker-operations is a local source primitive with non-colliding naming and a provider facade rather than copied provider skill material.",
           "The GitHub Actions observer and CLI are local source additions that implement repository-neutral CI observation rather than copied first-party provider material."
         ]
       },
@@ -382,6 +391,13 @@
         "status": "PASS",
         "commands": [
           "node source/tools/validate-source-graph.mjs",
+          "node source/skills/manage-json-schemas/scripts/schema-contracts.js policy --schema source/skills/issue-tracker-operations/references/issue-backend-result.schema.json",
+          "node source/skills/manage-json-schemas/scripts/schema-contracts.js validate --schema source/skills/issue-tracker-operations/references/issue-backend-result.schema.json --data source/skills/issue-tracker-operations/references/examples/jira-capabilities.json",
+          "node source/skills/manage-json-schemas/scripts/schema-contracts.js validate --schema source/skills/issue-tracker-operations/references/issue-backend-result.schema.json --data source/skills/issue-tracker-operations/references/examples/jira-view.json",
+          "node source/skills/manage-json-schemas/scripts/schema-contracts.js validate --schema source/skills/issue-tracker-operations/references/issue-backend-result.schema.json --data source/skills/issue-tracker-operations/references/examples/github-dependency-map.json",
+          "node source/skills/manage-json-schemas/scripts/schema-contracts.js validate --schema source/skills/issue-tracker-operations/references/issue-backend-result.schema.json --data source/skills/issue-tracker-operations/references/examples/unsupported-backend.json",
+          "python3 -m py_compile source/skills/issue-tracker-operations/scripts/issue_backend source/skills/issue-tracker-operations/scripts/issue_backend_config.py source/skills/issue-tracker-operations/scripts/issue_backend_output.py source/skills/issue-tracker-operations/scripts/issue_backend_providers.py source/skills/issue-tracker-operations/scripts/issue_backend_types.py",
+          "python3 -m unittest discover -s source/skills/issue-tracker-operations/scripts/tests -p 'test_*.py'",
           "python3 -m py_compile source/skills/github-ci-operations/scripts/ci_actions_observer.py source/skills/github-ci-operations/scripts/ci_wait_for_actions",
           "python3 -m unittest discover -s source/skills/github-ci-operations/scripts/tests -p 'test_*.py'",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
@@ -394,19 +410,23 @@
         "status": "PASS",
         "evidence": [
           "Effective Delivery is exposed through source marketplace composition and this audit does not require direct runtime writes.",
+          "The issue facade exposes read-only capability, view, and dependency-map commands; it has no remote mutation parser path.",
+          "The provider runner executes gh or acli with an argument vector, captures command status, excludes raw stderr, and never uses a shell.",
           "The CI observer uses authenticated native gh for GitHub Actions reads, stores runtime state beneath git rev-parse --git-path ci/github-actions, and never reruns workflows or mutates GitHub state.",
           "The explicit await command blocks only after an observation is armed, returns one meaningful transition or timeout, and clears the active request before it exits.",
           "Provider output remains a projected proof target rather than an authored change surface."
         ]
       },
       "residualRisks": [
-        "Effective Delivery 0.3 starts a new observer state namespace; operators must finish active 0.2 waits and export desired profiles before upgrading.",
+        "Effective Delivery 0.4 adds a read-only issue facade; create, update, comment, hierarchy, and transitive dependency operations remain unsupported until separate adapter parity contracts pass.",
+        "Live authenticated Jira and GitHub issue reads still need benchmark evidence because local contract tests use provider-boundary doubles.",
+        "Atlassian acli and GitHub API output can evolve, so provider JSON drift must remain a typed rejection until parser fixtures are updated.",
         "source/evals/plugin-benchmarks/effective-delivery.json still needs observed benchmark usage from a live repository with real PR checks.",
         "Observed benchmark timing still needs enough real repository samples for the sparse timeout fallback to converge on repository-specific p95 durations.",
         "Repository scripts can still invoke other GitHub clients unless their own checks prohibit them.",
         "Live release or deployment workflows still require separate approval before tags, releases, protected environments, or secrets are changed."
       ],
-      "nextAction": "Run the event-driven benchmark scenarios against representative repositories, collect terminal duration samples through ci_wait_for_actions, feed benchmark-usage.jsonl into plugin-eval analyze --observed-usage, and record field observations for any CI routing misses."
+      "nextAction": "Run the issue-backend scenario once with authenticated gh and once with authenticated acli, then run the event-driven CI scenarios and feed observed usage into plugin-eval analysis."
     },
     {
       "type": "PRIMITIVE_AUDIT",
