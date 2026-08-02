@@ -28,6 +28,7 @@ test("effective delivery keeps explicit CI observation without automatic hooks",
   assert.deepEqual(names(git, "hooks"), []);
   assert.deepEqual(names(delivery, "skills"), [
     "github-ci-operations",
+    "issue-tracker-operations",
     "pull-request-lifecycle",
   ]);
   assert.deepEqual(names(delivery, "hooks"), []);
