@@ -166,7 +166,7 @@
         "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
         "Use engineering-baseline for generic executable-check TDD, repository onboarding, and instruction hygiene.",
         "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
-        "Use effective-delivery for pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
         "Use the kotlin-repo-default profile to compose all four plugins without duplicate skills, agents, or hooks."
       ],
       "forbiddenActions": [
@@ -181,7 +181,7 @@
         "engineering-baseline owns generic executable-check TDD and repository guardrails.",
         "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
         "git-ci-operations owns host-neutral Git and shell automation primitives.",
-        "effective-delivery owns PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
+        "effective-delivery owns issue reads, direct blocker maps, PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
       ]
     },
     {

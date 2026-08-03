@@ -45,6 +45,26 @@
   "scenarios": [
     {
       "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "issue-backend-direct-dependency-evidence",
+      "title": "Configured issue backend dependency evidence",
+      "purpose": "Measure whether Effective Delivery selects the configured issue host, uses the native provider CLI, and keeps direct blocker evidence distinct from hierarchy and transitive claims.",
+      "routingCaseIds": [
+        "issue-backend-selection-preserves-native-dependencies"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "issue-tracker-operations"
+      },
+      "userInput": "Use Effective Delivery to inspect item 42 through the configured issue backend and report its direct blockers. If Jira is selected, use Atlassian acli. Do not create, edit, comment on, link, transition, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run resolves GITHUB or JIRA before provider execution and inspects capability support.",
+        "GitHub reads use gh and Jira reads use acli jira workitem commands.",
+        "Each BLOCKS edge preserves source-to-target direction from native relationship data.",
+        "The result declares depth one and does not claim hierarchy or transitive completeness."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
       "id": "ci-triage-current-run-evidence",
       "title": "CI triage from current run evidence",
       "purpose": "Measure whether CI failure work starts from live GitHub check/run evidence and fixes the owning source rather than guessing from stale local state.",

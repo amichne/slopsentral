@@ -9,6 +9,7 @@
     "source-graph-edits-use-canonical-source-and-gates",
     "shell-check-tdd-uses-stable-red-green-proof",
     "push-request-means-branch-commit-push-pr",
+    "issue-backend-selection-preserves-native-dependencies",
     "dirty-worktree-uses-scoped-git-change-flow",
     "ci-failure-triage-uses-remote-check-evidence",
     "plugin-install-recovery-proves-installed-state",
@@ -116,6 +117,30 @@
         "Open a PR without a concise rationale and residual-risk note."
       ],
       "notes": "A passing delivery run treats push/PR language as an end-to-end delivery request while preserving unrelated work."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "issue-backend-selection-preserves-native-dependencies",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "issue-tracker-operations"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve the backend from an explicit override or EFFECTIVE_DELIVERY_ISSUE_BACKEND.",
+        "Inspect declared capabilities before provider execution.",
+        "Read the issue and direct blocker map through the facade, then preserve BLOCKS direction and bounded coverage."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The result names GITHUB or JIRA and records gh or acli command evidence.",
+        "The direct map declares depth one and marks hierarchy and transitive traversal unsupported."
+      ],
+      "avoidedForbiddenActions": [
+        "Invoke the legacy jira executable or route through jira-resolve-ticket.",
+        "Infer blocker links from issue body text or labels.",
+        "Represent hierarchy or transitive traversal as complete direct blocker evidence.",
+        "Run a provider-specific remote write outside the facade capability contract."
+      ],
+      "notes": "A passing issue read selects one declared backend and retains native relationship evidence without provider-specific writes."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -389,7 +414,7 @@
         "Use engineering-baseline for the generic executable-check red-green-refactor loop.",
         "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
         "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
-        "Use effective-delivery for pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
         "Use the profile to compose all four without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
@@ -484,14 +509,14 @@
         "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
         "Use engineering-baseline for generic executable-check TDD, repository onboarding, and instruction hygiene.",
         "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
-        "Use effective-delivery for pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
         "Use the kotlin-repo-default profile to compose all four plugins without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
         "engineering-baseline owns generic executable-check TDD and repository guardrails.",
         "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
         "git-ci-operations owns host-neutral Git and shell automation primitives.",
-        "effective-delivery owns PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
+        "effective-delivery owns issue reads, direct blocker maps, PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
       ],
       "avoidedForbiddenActions": [
         "Put generic TDD, Git, CI, PR, or shell automation skills inside kotlin-engineering.",

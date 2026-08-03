@@ -216,7 +216,7 @@
         "Use engineering-baseline for the generic executable-check red-green-refactor loop.",
         "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
         "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
-        "Use effective-delivery for pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
         "Use the profile to compose all four without duplicate skills, agents, or hooks."
       ],
       "forbiddenActions": [

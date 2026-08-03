@@ -175,6 +175,52 @@
       "notes": "This turns a frequent user shorthand into a measurable full-delivery workflow."
     },
     {
+      "id": "issue-backend-selection-preserves-native-dependencies",
+      "type": "ADAPTER_DRIFT",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-08-02",
+        "evidenceRefs": [
+          "source/skills/issue-tracker-operations/SKILL.md",
+          "source/skills/issue-tracker-operations/references/issue-backend-contract.md",
+          "source/skills/issue-tracker-operations/scripts/issue_backend",
+          "source/plugins/effective-delivery/plugin.json"
+        ]
+      },
+      "prompt": "Use Effective Delivery to inspect the configured issue backend and show the direct blockers for item 42. Jira must use Atlassian acli. Do not change any issue or infer dependencies from body text.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "issue-tracker-operations"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Issue work can branch directly to one provider command, reuse a stale Jira resolver, or treat prose and parent-child containment as blocker evidence.",
+        "risk": "The selected backend becomes an implicit model choice, Jira bypasses Atlassian acli, or dependency direction and coverage become false.",
+        "loadedPrimitives": [
+          "github-ci-operations",
+          "jira-resolve-ticket"
+        ]
+      },
+      "allowedActions": [
+        "Resolve the backend from an explicit override or EFFECTIVE_DELIVERY_ISSUE_BACKEND.",
+        "Inspect declared capabilities before provider execution.",
+        "Read the issue and direct blocker map through the facade, then preserve BLOCKS direction and bounded coverage."
+      ],
+      "forbiddenActions": [
+        "Invoke the legacy jira executable or route through jira-resolve-ticket.",
+        "Infer blocker links from issue body text or labels.",
+        "Represent hierarchy or transitive traversal as complete direct blocker evidence.",
+        "Run a provider-specific remote write outside the facade capability contract."
+      ],
+      "recoveryExpectation": "If selection, authentication, provider JSON, or capability admission fails, return the typed rejection and do not try an undeclared provider fallback.",
+      "productiveOutcome": "Issue dependency reads become host-selectable while retaining native GitHub or Jira authority, exact blocker direction, and explicit evidence limits.",
+      "verificationEvidence": [
+        "The result names GITHUB or JIRA and records gh or acli command evidence.",
+        "The direct map declares depth one and marks hierarchy and transitive traversal unsupported."
+      ],
+      "notes": "This protects the issue-host seam without claiming write parity or arbitrary backend support."
+    },
+    {
       "id": "dirty-worktree-uses-scoped-git-change-flow",
       "type": "LOADED_BYPASSED",
       "source": {

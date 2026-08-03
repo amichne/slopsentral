@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "effective-delivery",
-  "version": "0.3.0",
-  "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and explicit event-driven observation.",
+  "version": "0.4.0",
+  "description": "Effective software delivery through backend-neutral issue reads, direct dependency evidence, PR follow-through, optimized GitHub Actions workflow graphs, and structured CI observation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -18,6 +18,15 @@
       },
       "path": "skills/github-ci-operations",
       "name": "github-ci-operations"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/issue-tracker-operations",
+      "name": "issue-tracker-operations"
     },
     {
       "type": "SKILL",
@@ -53,11 +62,11 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install alongside git-ci-operations when agents must publish pull requests, optimize or repair GitHub Actions, and wait for remote delivery evidence without model-driven polling.",
-    "notFor": "Local-only Git changes, generic implementation TDD, language-specific semantic review, or non-GitHub delivery systems without a structured observer.",
+    "dailyDriver": "Install alongside git-ci-operations when agents must read GitHub or Jira issue dependencies, publish pull requests, repair GitHub Actions, and wait for delivery evidence.",
+    "notFor": "Local-only Git changes, generic implementation TDD, language-specific semantic review, issue mutation, or an issue backend outside the declared facade capabilities.",
     "owner": "effective-delivery",
     "principle": "wait-on-structured-evidence",
     "role": "effective-delivery",
-    "scope": "Pull-request lifecycle, GitHub Actions triage and optimization, workflow-graph proof, releases, structured CI evidence, duration prediction, and quiet event-driven waiting."
+    "scope": "Backend-neutral issue reads, direct blocker maps, pull-request lifecycle, GitHub Actions triage and optimization, workflow-graph proof, releases, structured CI evidence, and quiet event-driven waiting."
   }
 }
