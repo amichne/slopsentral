@@ -218,15 +218,19 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Effective software delivery through PR follow-through, optimized GitHub Actions workflow graphs, structured CI evidence, duration-aware waiting, and explicit event-driven observation.",
+      "description": "Effective software delivery through backend-neutral issue reads, direct dependency evidence, PR follow-through, optimized GitHub Actions workflow graphs, and structured CI observation.",
       "keywords": [
         "actions",
         "automation",
+        "backend",
         "ci",
+        "dependencies",
         "duration",
         "effective-delivery",
         "evidence",
         "github",
+        "issues",
+        "jira",
         "optimization",
         "pull-requests",
         "release",
@@ -240,17 +244,21 @@
       "tags": [
         "actions",
         "automation",
+        "backend",
         "ci",
+        "dependencies",
         "duration",
         "evidence",
         "github",
+        "issues",
+        "jira",
         "optimization",
         "pull-requests",
         "release",
         "skills",
         "workflow-graph"
       ],
-      "version": "0.3.0"
+      "version": "0.4.0"
     },
     {
       "author": {

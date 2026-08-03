@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-01T14:09:29-04:00",
+  "generatedAt": "2026-08-02T21:04:32-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -369,6 +369,13 @@
           "type": "SKILL"
         },
         {
+          "name": "issue-tracker-operations",
+          "sha256": "sha256:3daa7ec476e7ed809a87baf8dce6c465e77799c05f74e10dc30c90f64f854624",
+          "sourcePath": "source/skills/issue-tracker-operations",
+          "targetPath": "skills/issue-tracker-operations",
+          "type": "SKILL"
+        },
+        {
           "name": "pull-request-lifecycle",
           "sha256": "sha256:0732b16062c6bfa7bc54d3d4c2e85eae619b8470190834f9c5e0684c38cbfc29",
           "sourcePath": "source/skills/pull-request-lifecycle",
@@ -377,7 +384,7 @@
         }
       ],
       "sourceManifest": "source/plugins/effective-delivery/plugin.json",
-      "version": "0.3.0"
+      "version": "0.4.0"
     },
     {
       "name": "agent-platform-authoring",
@@ -661,6 +668,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "81bb29a1c2782c6efaddadcd18dada798b8e5b1b",
+  "sourceSha": "506117667d7288aad96dc3aecd7f718e8addd128",
   "type": "HYDRATED_MARKETPLACE"
 }
