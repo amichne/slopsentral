@@ -1,18 +1,38 @@
 ---
 name: "doc-coauthoring"
-description: "Guide users through a structured workflow for co-authoring documentation. Use when user wants to write documentation, proposals, technical specs, decision docs, or similar structured content. This workflow helps users efficiently transfer context, refine content through iteration, and verify the doc works for readers. Trigger when user mentions writing docs, creating proposals, drafting specs, or similar documentation tasks."
+description: "Guide users through the Claude-specific doc co-authoring workflow: context gathering, artifact-backed section drafting, connector-assisted source gathering, and Reader Claude testing. Use when the user explicitly asks for this guided co-authoring flow, Claude artifact workflow, or fresh-Claude reader test. For local repository docs, agent-readable reference material, docs-as-code sites, or source-backed OKF knowledge bundles, use the narrower local workflow primitives instead."
 ---
 
 # Doc Co-Authoring Workflow
 
-This skill provides a structured workflow for guiding users through collaborative document creation. Act as an active guide, walking users through three stages: Context Gathering, Refinement & Structure, and Reader Testing.
+This skill provides a structured Claude-oriented workflow for guiding users
+through collaborative document creation. Act as an active guide, walking users
+through three stages: Context Gathering, Refinement & Structure, and Reader
+Testing.
+
+## Routing Boundary
+
+Use this skill when the requested output is the guided co-authoring experience
+itself: Claude connector-assisted context gathering, artifact-backed section
+drafting, and Reader Claude testing.
+
+Do not use this skill as the default route for all documentation work:
+
+- Use `reference-doc-workflow` for local repository documents, proposals,
+  technical specs, decision docs, RFCs, or agent-readable reference material.
+- Use `site-docs-authoring` for docs-as-code sites, MkDocs/Zensical navigation,
+  or site structure work.
+- Use `code-knowledge-base` when the deliverable is an OKF knowledge bundle,
+  signature index, `code_sources` impact check, or source-backed drift workflow.
 
 ## When to Offer This Workflow
 
 **Trigger conditions:**
-- User mentions writing documentation: "write a doc", "draft a proposal", "create a spec", "write up"
-- User mentions specific doc types: "PRD", "design doc", "decision doc", "RFC"
-- User seems to be starting a substantial writing task
+- User asks for the `doc-coauthoring` workflow by name.
+- User asks for Claude-guided document co-authoring, artifacts, connector-based
+  context gathering, or Reader Claude testing.
+- User wants a substantial writing task managed through the three-stage
+  co-authoring loop below rather than ordinary local document editing.
 
 **Initial offer:**
 Offer the user a structured workflow for co-authoring the document. Explain the three stages:
