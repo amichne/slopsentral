@@ -2,14 +2,23 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "kast-operations",
-  "version": "0.1.1",
-  "description": "Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
+  "version": "0.2.0",
+  "description": "Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral"
   },
   "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kast-idea-backend-delivery",
+      "name": "kast-idea-backend-delivery"
+    },
     {
       "type": "SKILL",
       "source": {
@@ -71,9 +80,9 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for local Kast diagnosis, measured performance work, Kotlin structural analysis, or defensively read-only SQLite inspection.",
+    "dailyDriver": "Install for local Kast diagnosis, IDEA backend delivery, measured performance work, Kotlin structural analysis, or defensively read-only SQLite inspection.",
     "notFor": "Kotlin source mutation, non-Kotlin graphs, GitHub Actions performance, database writes or repair, or replacement of product-owned public commands.",
     "role": "kast-operations",
-    "scope": "Live-install diagnosis and supported repair, representative performance measurement, compiler-backed Kotlin structure, and read-only SQLite navigation."
+    "scope": "Live-install diagnosis and supported repair, IDEA backend lifecycle and distribution boundaries, representative performance measurement, compiler-backed Kotlin structure, and read-only SQLite navigation."
   }
 }

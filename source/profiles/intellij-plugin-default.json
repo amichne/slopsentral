@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 1,
   "name": "intellij-plugin-default",
-  "description": "IntelliJ Platform plugin development workflow composed from baseline engineering, Kotlin and Gradle correctness, host-neutral Git operations, effective delivery, and the unique IntelliJ delivery skill.",
+  "description": "IntelliJ Platform engineering workflow composed from baseline engineering, Kotlin and Gradle correctness, host-neutral Git operations, effective delivery, and focused IntelliJ skills.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -18,7 +18,7 @@
     "kotlin-engineering",
     "git-ci-operations",
     "effective-delivery",
-    "intellij-plugin-engineering"
+    "intellij-engineering"
   ],
   "hooks": [
     {

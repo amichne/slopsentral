@@ -798,7 +798,7 @@
       "satisfiedAllowedActions": [
         "Use engineering-baseline for the stable red-green-refactor check.",
         "Use Kotlin Engineering for Kotlin semantics and Gradle proof.",
-        "Use IntelliJ Plugin Engineering for plugin lifecycle, compatibility, and ZIP verification.",
+        "Use IntelliJ Engineering for plugin lifecycle, compatibility, and ZIP verification.",
         "Use Git and CI Operations for scoped staging, commit, push, PR, and CI follow-through.",
         "Use the profile to compose all four plugins without duplicate skills, agents, or hooks."
       ],
@@ -809,7 +809,7 @@
       ],
       "avoidedForbiddenActions": [
         "Handle the full workflow with only intellij-plugin-delivery.",
-        "Move generic TDD, Kotlin semantics, Git, PR, or CI ownership into IntelliJ Plugin Engineering.",
+        "Move generic TDD, Kotlin semantics, Git, PR, or CI ownership into IntelliJ Engineering.",
         "Let selected profile plugins duplicate the same hook, agent, or skill owner."
       ],
       "notes": "A passing replay routes end-to-end IntelliJ plugin delivery through the four-plugin default profile while preserving primitive ownership."
@@ -842,7 +842,7 @@
       "caseId": "intellij-mixed-language-psi-targets-filter-before-access",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-plugin-delivery"
+        "name": "intellij-psi-indexing"
       },
       "satisfiedAllowedActions": [
         "Filter resolved targets to KtNamedDeclaration at the shared scanner boundary before Kotlin-specific path, range, or textRange access.",
@@ -865,7 +865,7 @@
       "caseId": "kast-intellij-readiness-preserves-typed-blocker",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-plugin-delivery"
+        "name": "kast-idea-backend-delivery"
       },
       "satisfiedAllowedActions": [
         "Read Kast and backend-idea repository instructions and run context and readiness for the exact repository root.",
@@ -888,7 +888,7 @@
       "caseId": "kast-intellij-distribution-respects-module-ownership",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-plugin-delivery"
+        "name": "kast-idea-backend-delivery"
       },
       "satisfiedAllowedActions": [
         "Build and verify the unsigned plugin ZIP through backend-idea's existing Gradle contract.",
@@ -911,7 +911,7 @@
       "caseId": "intellij-ui-testing-uses-starter-driver-contract",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-plugin-delivery"
+        "name": "intellij-platform-testing"
       },
       "satisfiedAllowedActions": [
         "Use the repository-pinned IntelliJ Platform Gradle Plugin to expose a JUnit 5 Starter and Driver testIdeUi task in an isolated sandbox.",
@@ -1003,6 +1003,75 @@
         "Apply prose rules to code identifiers, command syntax, or machine-readable contracts."
       ],
       "notes": "A passing replay preserves meaning, canonical terms, glossary checks, and rendered-document verification."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "intellij-live-freeze-uses-diagnostics-mcp-before-profiler",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "ide-diagnostics-mcp"
+      },
+      "satisfiedAllowedActions": [
+        "Capture bounded diagnostics MCP samples before and during the named action.",
+        "Compare CPU, thread-state, blocked/waited, native-hint, and truncation evidence.",
+        "Escalate only the named concrete suspect method to an IDE Perf clear, trace, reproduce, and reset sequence."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The capture records IDE build, sample parameters, action timing, and before/during comparison.",
+        "The trace plan names one concrete FQCN#method and ends with reset."
+      ],
+      "avoidedForbiddenActions": [
+        "Infer a live hot thread from repository text or build output.",
+        "Begin with package-wide IDE Perf wildcards or leave tracepoints active.",
+        "Edit VM options or install IDE Perf without an explicit helper invocation."
+      ],
+      "notes": "A passing replay uses live MCP evidence before one bounded IDE Perf escalation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "intellij-heavy-test-requires-real-project-state",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-platform-testing"
+      },
+      "satisfiedAllowedActions": [
+        "Choose a heavy fixture because real project, module, VFS, and index persistence are required.",
+        "Make import and reimport setup deterministic and wait on named readiness conditions.",
+        "Retain the first failure, IDE log, and fixture path before any retry."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The test demonstrates initial import and changed reimport in an isolated real project.",
+        "Named readiness replaces sleeps and the fixture is disposed after the case."
+      ],
+      "avoidedForbiddenActions": [
+        "Force the behavior into a light fixture that cannot represent its state.",
+        "Use fixed sleeps or blind retries to hide lifecycle races.",
+        "Reuse dirty global IDE or project state between cases."
+      ],
+      "notes": "A passing replay selects a heavy fixture only because the required real project state demands it."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "intellij-external-system-import-routes-to-integrations",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-platform-integrations"
+      },
+      "satisfiedAllowedActions": [
+        "Keep external identity, model acquisition, IntelliJ model translation, and task execution as explicit boundaries.",
+        "Prove unchanged and changed reimport, removal, cancellation, and task execution.",
+        "Use External System task APIs instead of inventing a parallel run protocol."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Initial, unchanged, changed, and removal imports leave the expected owned model.",
+        "Task execution records process result, cancellation, and structured failure evidence."
+      ],
+      "avoidedForbiddenActions": [
+        "Create duplicate project-model nodes on unchanged reimport.",
+        "Delete state owned by another integration.",
+        "Collapse External System tasks into an unrelated run configuration abstraction."
+      ],
+      "notes": "A passing replay preserves External System import and task boundaries across repeated synchronization."
     }
   ]
 }

@@ -13,17 +13,17 @@ const repoRoot =
 const sourceRoot = path.join(repoRoot, "source");
 
 const allowedSharedSkills = new Map([
-  ["git-change-flow", ["git-ci-operations", "intellij-plugin-engineering"]],
-  ["github-ci-operations", ["git-ci-operations", "intellij-plugin-engineering"]],
-  ["kotlin-agentic-correctness", ["intellij-plugin-engineering", "kotlin-engineering"]],
-  ["kotlin-gradle-validation", ["intellij-plugin-engineering", "kotlin-engineering"]],
+  ["git-change-flow", ["git-ci-operations", "intellij-engineering"]],
+  ["github-ci-operations", ["git-ci-operations", "intellij-engineering"]],
+  ["kotlin-agentic-correctness", ["intellij-engineering", "kotlin-engineering"]],
+  ["kotlin-gradle-validation", ["intellij-engineering", "kotlin-engineering"]],
   ["manage-json-schemas", ["api-contracts"]],
-  ["pull-request-lifecycle", ["git-ci-operations", "intellij-plugin-engineering"]],
+  ["pull-request-lifecycle", ["git-ci-operations", "intellij-engineering"]],
   ["reference-doc-workflow", ["agent-platform-authoring", "code-knowledge-base"]],
   ["repository-signature-indexing", ["agent-platform-authoring", "code-knowledge-base"]],
   ["shell-script-safety", ["agent-platform-authoring", "git-ci-operations"]],
   ["site-docs-authoring", ["agent-platform-authoring", "code-knowledge-base"]],
-  ["tdd", ["engineering-baseline", "intellij-plugin-engineering"]],
+  ["tdd", ["engineering-baseline", "intellij-engineering"]],
 ]);
 
 const routingCaseTypes = new Set([

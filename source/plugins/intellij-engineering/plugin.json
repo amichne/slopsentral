@@ -1,0 +1,71 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "intellij-engineering",
+  "version": "0.1.0",
+  "description": "IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": { "type": "LOCAL_SOURCE", "path": "./" },
+      "path": "skills/intellij-plugin-delivery",
+      "name": "intellij-plugin-delivery"
+    },
+    {
+      "type": "SKILL",
+      "source": { "type": "LOCAL_SOURCE", "path": "./" },
+      "path": "skills/ide-diagnostics-mcp",
+      "name": "ide-diagnostics-mcp"
+    },
+    {
+      "type": "SKILL",
+      "source": { "type": "LOCAL_SOURCE", "path": "./" },
+      "path": "skills/intellij-psi-indexing",
+      "name": "intellij-psi-indexing"
+    },
+    {
+      "type": "SKILL",
+      "source": { "type": "LOCAL_SOURCE", "path": "./" },
+      "path": "skills/intellij-platform-testing",
+      "name": "intellij-platform-testing"
+    },
+    {
+      "type": "SKILL",
+      "source": { "type": "LOCAL_SOURCE", "path": "./" },
+      "path": "skills/intellij-platform-integrations",
+      "name": "intellij-platform-integrations"
+    }
+  ],
+  "agents": [],
+  "instructions": [
+    {
+      "type": "INSTRUCTION",
+      "source": { "type": "LOCAL_SOURCE", "path": "./" },
+      "path": "concepts/type-safety/core.md",
+      "name": "type-safety"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": { "type": "LOCAL_SOURCE", "path": "./" },
+      "path": "concepts/schema-driven-design/core.md",
+      "name": "schema-driven-design"
+    }
+  ],
+  "hooks": [],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Install through intellij-plugin-default for the complete Kotlin, Gradle, Git, CI, and IntelliJ workflow.",
+    "informationExchange": "platform-contracts-diagnostics-psi-index-test-evidence-integration-models-and-delivery-state",
+    "notFor": "IDE end-user configuration, copied upstream documentation, generic Kotlin work, or Kast backend lifecycle work owned by kast-operations.",
+    "owner": "intellij-engineering",
+    "packageBoundary": "This plugin owns IntelliJ-specific engineering decisions. Shared Kotlin, Gradle, TDD, Git, PR, and CI capabilities remain composed by intellij-plugin-default.",
+    "principle": "route-to-the-narrowest-platform-boundary-and-prove-it-with-live-or-executable-evidence",
+    "role": "intellij-engineering",
+    "scope": "IntelliJ Platform plugin delivery, live IDE diagnosis, PSI and indexes, platform tests, run configurations, and External System integrations."
+  }
+}

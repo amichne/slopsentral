@@ -14,8 +14,14 @@ function plugin(name) {
 }
 
 test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () => {
-  const intellij = plugin("intellij-plugin-engineering");
-  assert.deepEqual(intellij.skills.map(({ name }) => name), ["intellij-plugin-delivery"]);
+  const intellij = plugin("intellij-engineering");
+  assert.deepEqual(intellij.skills.map(({ name }) => name), [
+    "intellij-plugin-delivery",
+    "ide-diagnostics-mcp",
+    "intellij-psi-indexing",
+    "intellij-platform-testing",
+    "intellij-platform-integrations",
+  ]);
   assert.deepEqual(intellij.instructions.map(({ name }) => name), [
     "type-safety",
     "schema-driven-design",
@@ -28,7 +34,7 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     "kotlin-engineering",
     "git-ci-operations",
     "effective-delivery",
-    "intellij-plugin-engineering",
+    "intellij-engineering",
   ]);
   assert.deepEqual(profile.hooks.map(({ name }) => name), [
     "agents-md-turn-refresh",

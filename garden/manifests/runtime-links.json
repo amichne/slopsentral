@@ -6,6 +6,52 @@
   "entries": [
     {
       "type": "RUNTIME_LINK",
+      "id": "codex-intellij-engineering-marketplace-cutover",
+      "runtime": "CODEX",
+      "sourcePath": "source/plugins/intellij-engineering/plugin.json",
+      "targetPath": "intellij-engineering@slopsentral",
+      "primitiveTypes": [
+        "PLUGIN",
+        "SKILL",
+        "INSTRUCTION"
+      ],
+      "strategy": "MARKETPLACE_IMPORT",
+      "status": "READY",
+      "requiresApproval": true,
+      "collisionPolicy": "SKIP_EXISTING",
+      "activationCommand": "codex plugin add intellij-engineering@slopsentral",
+      "validationCommands": [
+        "node source/tools/validate-source-graph.mjs",
+        "node source/tools/run-routing-evals.mjs --require-all-observed",
+        "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
+        "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+      ],
+      "notes": "After exact-head CI succeeds, refresh the marketplace, move the standalone ide-diagnostics-mcp skill to a recoverable backup outside discovery, remove the prior IntelliJ plugin coordinate, and install this coordinate. No compatibility alias remains."
+    },
+    {
+      "type": "RUNTIME_LINK",
+      "id": "codex-kast-operations-idea-backend-import",
+      "runtime": "CODEX",
+      "sourcePath": "source/plugins/kast-operations/plugin.json",
+      "targetPath": "kast-operations@slopsentral",
+      "primitiveTypes": [
+        "PLUGIN",
+        "SKILL",
+        "INSTRUCTION"
+      ],
+      "strategy": "MARKETPLACE_IMPORT",
+      "status": "READY",
+      "requiresApproval": true,
+      "collisionPolicy": "SKIP_EXISTING",
+      "activationCommand": "codex plugin add kast-operations@slopsentral",
+      "validationCommands": [
+        "node source/tools/validate-source-graph.mjs",
+        "node source/tools/run-routing-evals.mjs --require-all-observed"
+      ],
+      "notes": "Install alongside intellij-engineering so Kast-only backend lifecycle and distribution work routes to kast-idea-backend-delivery."
+    },
+    {
+      "type": "RUNTIME_LINK",
       "id": "codex-kotlin-engineering-marketplace-import",
       "runtime": "CODEX",
       "sourcePath": "source/plugins/kotlin-engineering/plugin.json",

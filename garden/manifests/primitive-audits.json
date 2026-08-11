@@ -430,62 +430,69 @@
     },
     {
       "type": "PRIMITIVE_AUDIT",
-      "id": "intellij-plugin-engineering-plugin-production-readiness",
+      "id": "intellij-engineering-plugin-production-readiness",
       "target": {
         "kind": "PLUGIN",
-        "name": "intellij-plugin-engineering",
+        "name": "intellij-engineering",
         "paths": [
-          "source/plugins/intellij-plugin-engineering/plugin.json",
+          "source/plugins/intellij-engineering/plugin.json",
           "source/profiles/intellij-plugin-default.json",
           "source/skills/intellij-plugin-delivery",
+          "source/skills/ide-diagnostics-mcp",
+          "source/skills/intellij-psi-indexing",
+          "source/skills/intellij-platform-testing",
+          "source/skills/intellij-platform-integrations",
+          "source/skills/kast-idea-backend-delivery",
+          "source/plugins/kast-operations/plugin.json",
           "source/adaptable.marketplace.json",
           "source/tools/validate-source-graph.mjs",
-          "source/evals/routing/intellij-plugin-engineering-workflows.json",
+          "source/evals/routing/intellij-engineering-workflows.json",
           "source/evals/routing/fixtures/golden-routing-observations.json",
-          "source/evals/plugin-benchmarks/intellij-plugin-engineering.json"
+          "source/evals/plugin-benchmarks/intellij-engineering.json"
         ]
       },
-      "baseline": "The repository had reusable Kotlin, Gradle, TDD, Git, CI, and PR primitives but no compact IntelliJ Platform delivery workflow or Kast-specific IDEA backend routing boundary.",
+      "baseline": "The former IntelliJ plugin 0.1.1 combined delivery, PSI, testing, and Kast guidance while live IDE diagnostics remained a standalone user skill.",
       "decision": "PROMOTE_READY",
       "confidence": "HIGH",
-      "reviewedAt": "2026-07-28",
+      "reviewedAt": "2026-08-10",
       "reviewedBy": "codex",
       "capabilityBoundary": {
         "status": "PASS",
         "evidence": [
-          "source/skills/intellij-plugin-delivery owns IntelliJ Platform contracts, repository-led build proof, and a conditional Kast delivery playbook without adding scaffolding.",
-          "source/plugins/intellij-plugin-engineering/plugin.json owns only IntelliJ-specific delivery guidance plus the marketplace-wide type-safety and schema-design baselines.",
-          "source/profiles/intellij-plugin-default.json composes engineering-baseline, kotlin-engineering, git-ci-operations, and intellij-plugin-engineering without duplicate skill or hook ownership.",
-          "The IntelliJ plugin declares no hooks or agents; the workflow profile selects each existing hook from its singular owner.",
-          "The Kast playbook keeps signing, feed generation, publication, and channel policy outside backend-idea."
+          "source/plugins/intellij-engineering/plugin.json exposes five independent IntelliJ-specific skills with no compatibility alias, hooks, or agents.",
+          "Delivery, live diagnostics, PSI/indexing, platform testing, and run/External System integration each have a narrow trigger and reference boundary.",
+          "source/skills/kast-idea-backend-delivery moves Kast-only lifecycle and distribution authority into kast-operations 0.2.0.",
+          "source/profiles/intellij-plugin-default.json retains its public profile name and composes the renamed plugin without duplicate skill or hook ownership.",
+          "The diagnostics helper is non-interactive, dry-run by default, and does not install IDE Perf or mutate VM options implicitly."
         ]
       },
       "schemaCoverage": {
         "status": "PASS",
         "evidence": [
-          "source/tools/validate-source-graph.mjs validates the marketplace entry, standalone skill, slim referential plugin, workflow profile, exact skill and hook ownership, routing cases, benchmark, and audit.",
-          "source/evals/routing/intellij-plugin-engineering-workflows.json covers existing-plugin maintenance, mixed-language PSI filtering, exact-root readiness blockers, Kast distribution ownership, and programmatic Starter and Driver UI tests.",
+          "source/tools/validate-source-graph.mjs validates marketplace composition, standalone skills, workflow profile, ownership, routing, benchmarks, and this audit.",
+          "source/evals/routing/intellij-engineering-workflows.json covers delivery, live diagnostics, PSI, heavy/UI testing, integrations, and Kast routing boundaries.",
           "source/evals/routing/fixtures/golden-routing-observations.json covers every new case through the full-corpus replay gate.",
-          "source/evals/plugin-benchmarks/intellij-plugin-engineering.json targets an isolated Kast worktree and links each scenario to its routing case."
+          "source/evals/plugin-benchmarks/intellij-engineering.json links one scenario to each of the five plugin skills; kast-operations owns the moved IDEA backend scenarios.",
+          "Plugin Eval on the materialized plugin reports 91/B with zero failures or errors; every individual skill reports 100/A with zero warnings, failures, or errors."
         ]
       },
       "provenance": {
         "status": "PASS",
         "firstPartyCollisionCheck": "CHECKED_NO_COLLISION",
         "evidence": [
-          "The local public names intellij-plugin-engineering and intellij-plugin-delivery do not collide with the audited upstream skill names.",
-          "source/skills/intellij-plugin-delivery/references/sources.md records four MIT-licensed upstream repositories, exact audited commits, retained ideas, rejected claims, and authoritative JetBrains links.",
-          "Primary synthesis was audited at https://github.com/gadfly3173/intellij-platform-sdk-skills/commit/9f504a29bc9c88dce59e94b72ebb4bce36d9b5b3.",
-          "Diagnostic concepts were audited at https://github.com/buyoung/skills/commit/dc29214c7317d0e96c80835ed6330fd61c2bd0b0.",
-          "Rejected stale or unsafe guidance was audited at https://github.com/duckyman-ai/agent-skills/commit/3f4e102ad2c0172f1dc95784058a8413d4803f6e and https://github.com/titonio/opencode-jb/commit/69bebeabe2dcf55d4681380697909bdc41df7847.",
-          "The skill is a source-owned rewrite and copies no upstream payload, scripts, templates, or scaffolding."
+          "The local public names intellij-engineering and its five skills do not collide with the audited IDE Perf repository.",
+          "IDE Perf guidance is synthesized from google/ide-perf at 26d3a1e834eb78c36585f0d080ceaa080e580b3d under Apache-2.0.",
+          "PSI, indexes, VFS, patterns, tests, run configurations, and External System guidance is synthesized from official JetBrains documentation audited at intellij-sdk-docs commit 14ecf08ee392d9f42c0f4aadc5aafa911f156e22.",
+          "The promoted diagnostics skill preserves the standalone MCP capture contract while adding locally authored safe helper behavior.",
+          "No upstream documentation, repository payload, or IDE Perf implementation is copied."
         ]
       },
       "validation": {
         "status": "PASS",
         "commands": [
-          "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin intellij-plugin-engineering",
-          "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id intellij-plugin-engineering-plugin-production-readiness",
+          "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin intellij-engineering",
+          "python3 source/skills/primitive-quality-audit/scripts/primitive_audit_record check --audit-id intellij-engineering-plugin-production-readiness",
+          "python3 -m unittest discover -s source/skills/ide-diagnostics-mcp/scripts/tests -p 'test_*.py'",
           "node source/tools/validate-source-graph.mjs",
           "node source/tools/run-routing-evals.mjs --require-all-observed",
           "node --test source/tools/tests/intellij-workflow-profile.test.mjs source/tools/tests/plugin-hook-ownership.test.mjs",
@@ -497,19 +504,20 @@
       "runtimeSafety": {
         "status": "PASS",
         "evidence": [
-          "This change authors only source-owned Slopsentral content and validation evidence.",
-          "Provider projections are disposable proof targets; generated provider output and installed caches are not edited.",
+          "Source-owned changes are projected into disposable validation targets before publication; generated provider output and installed caches are never edited.",
           "The benchmark declares a git-worktree workspace and explicitly protects the dirty primary Kast checkout.",
-          "No hook activation, agent installation, signing, publication, or Kast mutation is performed by this audit."
+          "Live cutover is recoverable: refresh the marketplace only after exact-head CI, back up the standalone skill outside discovery, then replace installed plugin coordinates.",
+          "VM-option mutation remains an explicit helper apply operation with path rejection, backup, atomic replacement, and idempotent no-op behavior."
         ]
       },
       "residualRisks": [
         "JetBrains Platform, Gradle plugin, JDK, and Kotlin compatibility guidance can drift and must be rechecked against repository build files and current official documentation.",
         "JetBrains marks Driver and its UI components experimental, so target-build API changes and selector drift require focused maintenance.",
-        "source/evals/plugin-benchmarks/intellij-plugin-engineering.json still needs observed use in an isolated Kast worktree before token and retry budgets can be tuned.",
+        "Plugin Eval reports static token estimates of 321 trigger, 2897 invoked, and 9833 deferred tokens for the composed plugin; no observed usage was attached, so its two budget warnings are static rather than measured.",
+        "source/evals/plugin-benchmarks/intellij-engineering.json still needs observed use before token and retry budgets can be tuned.",
         "Kast exact-root commands and backend-idea task names should be rediscovered from the target revision during each live delivery."
       ],
-      "nextAction": "Run the benchmark against a clean isolated Kast worktree, collect benchmark-usage.jsonl, and record field observations for any trigger misses or unsupported fallbacks."
+      "nextAction": "Collect observed benchmark usage for all five skills and preserve any target-build API drift as a source update rather than a runtime cache edit."
     }
   ]
 }

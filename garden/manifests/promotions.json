@@ -332,6 +332,13 @@
     },
     {
       "type": "SKILL",
+      "name": "ide-diagnostics-mcp",
+      "canonicalPath": "source/skills/ide-diagnostics-mcp",
+      "sourcePath": "/Users/amichne/.agents/skills/ide-diagnostics-mcp",
+      "handling": "promoted-canonical"
+    },
+    {
+      "type": "SKILL",
       "name": "web-artifacts-builder",
       "canonicalPath": "source/skills/web-artifacts-builder",
       "sourcePath": "/Users/amichne/code/intelligence/source/skills/web-artifacts-builder",

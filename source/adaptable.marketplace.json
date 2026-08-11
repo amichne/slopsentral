@@ -285,24 +285,23 @@
     },
     {
       "type": "PLUGIN_ENTRY",
-      "name": "intellij-plugin-engineering",
+      "name": "intellij-engineering",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
-        "name": "intellij-plugin-engineering",
+        "name": "intellij-engineering",
         "source": {
           "type": "LOCAL_SOURCE",
-          "path": "./plugins/intellij-plugin-engineering"
+          "path": "./plugins/intellij-engineering"
         },
-        "version": "0.1.1"
+        "version": "0.1.0"
       },
-      "description": "IntelliJ Platform plugin delivery guidance for descriptors, lifecycle, threading, PSI and indexes, Starter/Driver UI tests, Plugin Verifier, packaging, and dynamic unload.",
+      "description": "IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.",
       "tags": [
         "ci",
         "delivery",
         "gradle",
         "intellij",
         "jetbrains",
-        "kast",
         "kotlin",
         "plugin-development",
         "psi",
@@ -322,9 +321,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kast-operations"
         },
-        "version": "0.1.1"
+        "version": "0.2.0"
       },
-      "description": "Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
+      "description": "Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
       "tags": [
         "diagnostics",
         "kast",
@@ -891,6 +890,51 @@
       },
       "path": "skills/intellij-plugin-delivery",
       "name": "intellij-plugin-delivery"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/ide-diagnostics-mcp",
+      "name": "ide-diagnostics-mcp"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/intellij-psi-indexing",
+      "name": "intellij-psi-indexing"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/intellij-platform-testing",
+      "name": "intellij-platform-testing"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/intellij-platform-integrations",
+      "name": "intellij-platform-integrations"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kast-idea-backend-delivery",
+      "name": "kast-idea-backend-delivery"
     },
     {
       "type": "SKILL",

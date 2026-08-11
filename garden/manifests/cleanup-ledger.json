@@ -4,6 +4,13 @@
   "policy": "prove-then-remove",
   "entries": [
     {
+      "action": "promoted-and-backed-up-before-cutover",
+      "path": "/Users/amichne/.agents/skills/ide-diagnostics-mcp",
+      "reason": "The standalone live-diagnostics skill is now canonical inside intellij-engineering and would otherwise create duplicate discovery ownership.",
+      "replacement": "source/skills/ide-diagnostics-mcp via intellij-engineering@slopsentral",
+      "status": "recoverable-runtime-migration"
+    },
+    {
       "action": "excluded-from-promotion",
       "path": "/Users/amichne/code/intelligence/source/skills/.system",
       "reason": "First-party/system skills are upstream-owned, not slopsentral-owned.",

@@ -7,6 +7,7 @@ import test from "node:test";
 
 const repoRoot = path.resolve(import.meta.dirname, "../../..");
 const skillNames = [
+  "kast-idea-backend-delivery",
   "kast-installation-diagnosis",
   "kast-performance-assessment",
   "kast-kotlin-structural-analysis",
@@ -17,7 +18,7 @@ function readJson(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(repoRoot, relativePath), "utf8"));
 }
 
-test("kast-operations exposes four standalone operator skills", () => {
+test("kast-operations exposes five standalone operator skills", () => {
   const plugin = readJson("source/plugins/kast-operations/plugin.json");
   assert.deepEqual(plugin.skills.map(({ name }) => name), skillNames);
 

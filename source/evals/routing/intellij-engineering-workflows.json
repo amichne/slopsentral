@@ -2,8 +2,8 @@
   "$schema": "../../schemas/evals/routing-cases.schema.json",
   "type": "ROUTING_CASE_SET",
   "schemaVersion": 2,
-  "name": "intellij-plugin-engineering-workflow-routing",
-  "description": "Focused routing cases for maintaining and delivering IntelliJ Platform plugins, including Kast's IDEA backend.",
+  "name": "intellij-engineering-workflow-routing",
+  "description": "Focused routing cases for IntelliJ Platform delivery, diagnostics, PSI and indexing, testing, integrations, and Kast IDEA backend ownership.",
   "cases": [
     {
       "id": "intellij-full-delivery-uses-default-profile",
@@ -16,7 +16,7 @@
           "source/plugins/engineering-baseline/plugin.json",
           "source/plugins/kotlin-engineering/plugin.json",
           "source/plugins/git-ci-operations/plugin.json",
-          "source/plugins/intellij-plugin-engineering/plugin.json"
+          "source/plugins/intellij-engineering/plugin.json"
         ]
       },
       "prompt": "Implement a Kotlin feature in this existing IntelliJ plugin with red-green proof, build and verify the plugin ZIP, commit and push the scoped change, open a PR, and monitor CI.",
@@ -32,19 +32,19 @@
           "engineering-baseline",
           "kotlin-engineering",
           "git-ci-operations",
-          "intellij-plugin-engineering"
+          "intellij-engineering"
         ]
       },
       "allowedActions": [
         "Use engineering-baseline for the stable red-green-refactor check.",
         "Use Kotlin Engineering for Kotlin semantics and Gradle proof.",
-        "Use IntelliJ Plugin Engineering for plugin lifecycle, compatibility, and ZIP verification.",
+        "Use IntelliJ Engineering for plugin lifecycle, compatibility, and ZIP verification.",
         "Use Git and CI Operations for scoped staging, commit, push, PR, and CI follow-through.",
         "Use the profile to compose all four plugins without duplicate skills, agents, or hooks."
       ],
       "forbiddenActions": [
         "Handle the full workflow with only intellij-plugin-delivery.",
-        "Move generic TDD, Kotlin semantics, Git, PR, or CI ownership into IntelliJ Plugin Engineering.",
+        "Move generic TDD, Kotlin semantics, Git, PR, or CI ownership into IntelliJ Engineering.",
         "Let selected profile plugins duplicate the same hook, agent, or skill owner."
       ],
       "recoveryExpectation": "A good run should preserve the four ownership boundaries while completing the requested IntelliJ implementation and delivery chain.",
@@ -105,21 +105,21 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-07-28",
         "evidenceRefs": [
-          "source/skills/intellij-plugin-delivery/references/platform-contracts.md",
-          "source/skills/intellij-plugin-delivery/references/kast-delivery.md"
+          "source/skills/intellij-psi-indexing/SKILL.md",
+          "source/skills/intellij-psi-indexing/references/psi-indexing-vfs.md"
         ]
       },
       "prompt": "Fix an IntelliJ reference-indexing batch that aborts when a Kotlin reference resolves to a Java or Scala PSI declaration.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-plugin-delivery"
+        "name": "intellij-psi-indexing"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "The IntelliJ skill can be loaded while the implementation still performs Kotlin-specific path or range access before filtering resolved PSI targets.",
         "risk": "One non-Kotlin target can terminate the batch and hide valid later Kotlin references.",
         "loadedPrimitives": [
-          "intellij-plugin-delivery",
+          "intellij-psi-indexing",
           "kotlin-agentic-correctness"
         ]
       },
@@ -148,20 +148,20 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-07-28",
         "evidenceRefs": [
-          "source/skills/intellij-plugin-delivery/references/kast-delivery.md"
+          "source/skills/kast-idea-backend-delivery/SKILL.md"
         ]
       },
       "prompt": "Validate Kast's IDEA plugin from macOS when exact-root readiness reports an IDEA backend blocker.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-plugin-delivery"
+        "name": "kast-idea-backend-delivery"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A generic Kotlin workflow can bypass the exact-root IDEA readiness result and attempt an unsupported headless fallback.",
         "risk": "Stale semantic state may be mistaken for current proof, or a built artifact may be mistaken for an installed and active plugin.",
         "loadedPrimitives": [
-          "intellij-plugin-delivery",
+          "kast-idea-backend-delivery",
           "kotlin-agentic-correctness"
         ]
       },
@@ -190,21 +190,21 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-07-28",
         "evidenceRefs": [
-          "source/skills/intellij-plugin-delivery/references/build-and-verification.md",
-          "source/skills/intellij-plugin-delivery/references/kast-delivery.md"
+          "source/skills/kast-idea-backend-delivery/SKILL.md",
+          "source/skills/intellij-plugin-delivery/references/build-and-verification.md"
         ]
       },
       "prompt": "Prepare Kast's backend-idea plugin artifact and explain what is and is not owned by that module.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-plugin-delivery"
+        "name": "kast-idea-backend-delivery"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Plugin delivery can collapse build, local installation, signing, feed generation, and publication into one module workflow.",
         "risk": "The backend may gain release responsibilities owned by repository-level workflows, or unsigned local artifacts may be described as published.",
         "loadedPrimitives": [
-          "intellij-plugin-delivery",
+          "kast-idea-backend-delivery",
           "github-ci-operations",
           "pull-request-lifecycle"
         ]
@@ -234,21 +234,21 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-07-28",
         "evidenceRefs": [
-          "source/skills/intellij-plugin-delivery/references/ui-automation.md",
+          "source/skills/intellij-platform-testing/references/ui-automation.md",
           "https://plugins.jetbrains.com/docs/intellij/integration-tests-ui.html"
         ]
       },
       "prompt": "Add an agent-runnable UI test for an IntelliJ plugin tool-window flow and retain enough evidence to diagnose failures.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-plugin-delivery"
+        "name": "intellij-platform-testing"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Agents can fall back to screen coordinates, screenshots, sleeps, or the user's daily IDE instead of a repository-owned integration-test contract.",
         "risk": "The test becomes flaky, non-reproducible, unsafe for local state, and unable to distinguish UI regressions from IDE startup failures.",
         "loadedPrimitives": [
-          "intellij-plugin-delivery",
+          "intellij-platform-testing",
           "kotlin-gradle-validation",
           "tdd"
         ]
@@ -272,6 +272,134 @@
         "The run records the exact Gradle task, focused test, target IDE build, and tested plugin artifact.",
         "The UI test uses semantic component or action selectors and asserts the final visible state.",
         "The result records IDE exit, exception or freeze status, and failure artifact paths."
+      ]
+    },
+    {
+      "id": "intellij-live-freeze-uses-diagnostics-mcp-before-profiler",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-08-10",
+        "evidenceRefs": [
+          "source/skills/ide-diagnostics-mcp/SKILL.md",
+          "source/skills/ide-diagnostics-mcp/references/ide-perf.md"
+        ]
+      },
+      "prompt": "Diagnose which running IntelliJ thread causes a repeatable CPU spike during completion, then plan one bounded method trace.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "ide-diagnostics-mcp"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "A generic profiler workflow can skip low-overhead live IDE evidence or trace a broad package before a suspect method is known.",
+        "risk": "The investigation adds overhead without preserving an action-correlated baseline or a falsifiable method hypothesis.",
+        "loadedPrimitives": [
+          "ide-diagnostics-mcp"
+        ]
+      },
+      "allowedActions": [
+        "Capture bounded diagnostics MCP samples before and during the named action.",
+        "Compare CPU, thread-state, blocked/waited, native-hint, and truncation evidence.",
+        "Escalate only the named concrete suspect method to an IDE Perf clear, trace, reproduce, and reset sequence."
+      ],
+      "forbiddenActions": [
+        "Infer a live hot thread from repository text or build output.",
+        "Begin with package-wide IDE Perf wildcards or leave tracepoints active.",
+        "Edit VM options or install IDE Perf without an explicit helper invocation."
+      ],
+      "recoveryExpectation": "A good run should produce comparable live samples and one bounded trace plan without silently mutating the IDE.",
+      "notes": "Diagnostics MCP is the low-overhead first lane; IDE Perf is a targeted escalation.",
+      "productiveOutcome": "The suspected hot method is grounded in live action-specific process evidence.",
+      "verificationEvidence": [
+        "The capture records IDE build, sample parameters, action timing, and before/during comparison.",
+        "The trace plan names one concrete FQCN#method and ends with reset."
+      ]
+    },
+    {
+      "id": "intellij-heavy-test-requires-real-project-state",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-08-10",
+        "evidenceRefs": [
+          "source/skills/intellij-platform-testing/SKILL.md",
+          "source/skills/intellij-platform-testing/references/test-levels.md"
+        ]
+      },
+      "prompt": "Test an IntelliJ project import that must persist real module roots and index state across reimport.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-platform-testing"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "A light fixture can be selected by habit even when the behavior requires a real project model, VFS, and persisted index state.",
+        "risk": "The test passes against an in-memory approximation and never exercises the lifecycle that regressed.",
+        "loadedPrimitives": [
+          "intellij-platform-testing",
+          "tdd"
+        ]
+      },
+      "allowedActions": [
+        "Choose a heavy fixture because real project, module, VFS, and index persistence are required.",
+        "Make import and reimport setup deterministic and wait on named readiness conditions.",
+        "Retain the first failure, IDE log, and fixture path before any retry."
+      ],
+      "forbiddenActions": [
+        "Force the behavior into a light fixture that cannot represent its state.",
+        "Use fixed sleeps or blind retries to hide lifecycle races.",
+        "Reuse dirty global IDE or project state between cases."
+      ],
+      "recoveryExpectation": "A good run should use the minimum fixture that can represent the real persistence boundary and leave focused evidence.",
+      "notes": "Fixture weight follows required platform state, not feature importance.",
+      "productiveOutcome": "Import persistence and reimport behavior are proven against real IntelliJ project state.",
+      "verificationEvidence": [
+        "The test demonstrates initial import and changed reimport in an isolated real project.",
+        "Named readiness replaces sleeps and the fixture is disposed after the case."
+      ]
+    },
+    {
+      "id": "intellij-external-system-import-routes-to-integrations",
+      "type": "WRONG_PRIMITIVE",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-08-10",
+        "evidenceRefs": [
+          "source/skills/intellij-platform-integrations/SKILL.md",
+          "source/skills/intellij-platform-integrations/references/run-and-external-system.md"
+        ]
+      },
+      "prompt": "Implement idempotent External System project import plus execution of one discovered external task.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-platform-integrations"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Generic plugin delivery can conflate external project import, IntelliJ project-model mutation, and run configuration execution.",
+        "risk": "Reimport duplicates or deletes model nodes, and external task lifecycle loses cancellation or structured failure.",
+        "loadedPrimitives": [
+          "intellij-platform-integrations",
+          "intellij-platform-testing"
+        ]
+      },
+      "allowedActions": [
+        "Keep external identity, model acquisition, IntelliJ model translation, and task execution as explicit boundaries.",
+        "Prove unchanged and changed reimport, removal, cancellation, and task execution.",
+        "Use External System task APIs instead of inventing a parallel run protocol."
+      ],
+      "forbiddenActions": [
+        "Create duplicate project-model nodes on unchanged reimport.",
+        "Delete state owned by another integration.",
+        "Collapse External System tasks into an unrelated run configuration abstraction."
+      ],
+      "recoveryExpectation": "A good run should reconcile owned model state idempotently and preserve task cancellation and failures.",
+      "notes": "The integration skill owns both project-model import and External System task boundaries.",
+      "productiveOutcome": "External project import and task execution remain stable across repeated synchronization.",
+      "verificationEvidence": [
+        "Initial, unchanged, changed, and removal imports leave the expected owned model.",
+        "Task execution records process result, cancellation, and structured failure evidence."
       ]
     }
   ]

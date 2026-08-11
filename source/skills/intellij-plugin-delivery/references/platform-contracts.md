@@ -34,31 +34,13 @@ extension-point names and API signatures.
 
 ## Threading and Cancellation
 
-- Read PSI, VFS, documents, indexes, and project models under read access. Keep
-  read actions short and re-check object validity after asynchronous boundaries.
 - Perform PSI or document mutations in a write command so undo semantics are
   preserved. Keep preparation outside the write action.
 - Keep blocking work off the Event Dispatch Thread. For Kotlin plugins on
   supported platform versions, prefer suspending read/write APIs and
   `Dispatchers.EDT` for UI handoff.
-- Use smart-mode constraints for index-backed work. Mark code dumb-aware only
-  when every reachable operation is genuinely safe during indexing.
 - Check cancellation in long loops and rethrow
   `ProcessCanceledException`/`CancellationException`.
-
-## PSI and Indexing
-
-- Do not assume a reference resolves to the requested source language.
-  Narrow the resolved element to the required declaration type before reading
-  language-specific file identity, offsets, text ranges, or metadata.
-- Keep raw PSI, analysis sessions, and mutable index objects inside their valid
-  read-action lifetime. Persist stable identities or immutable projections.
-- Use smart pointers only when PSI identity must survive document changes; do
-  not keep raw `PsiElement` instances in long-lived services.
-- Prefer platform indexes or project-model discovery over recursive filesystem
-  walks for IDE-owned source inventories.
-- Treat `IndexNotReadyException`, stale PSI, invalid elements, and cancellation
-  as lifecycle signals, not generic exceptions to swallow.
 
 ## Focused Failure Checks
 
@@ -68,8 +50,7 @@ extension-point names and API signatures.
 | Missing class at runtime | Bundled-plugin dependency and target product |
 | UI freeze or assertion | EDT work, read/write scope, cancellation |
 | Leak or unload failure | Static state, service scope, disposable tree |
-| Mixed-language indexing crash | Resolved PSI type before path/range access |
-| Works after indexing only | Dumb-mode declaration and index dependency |
+| Read/write assertion | Access scope and write-command ownership |
 
 Authoritative references:
 [Threading Model](https://plugins.jetbrains.com/docs/intellij/threading-model.html),
