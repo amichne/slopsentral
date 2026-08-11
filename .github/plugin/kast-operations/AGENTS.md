@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.
+Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.
 
 ## Operating Rules
 
@@ -28,6 +28,7 @@ Operational diagnosis, performance measurement, Kotlin structural analysis, and 
 
 ## Skill Primitives
 
+- `kast-idea-backend-delivery`: `skills/kast-idea-backend-delivery` (source: `source/skills/kast-idea-backend-delivery`)
 - `kast-installation-diagnosis`: `skills/kast-installation-diagnosis` (source: `source/skills/kast-installation-diagnosis`)
 - `kast-kotlin-structural-analysis`: `skills/kast-kotlin-structural-analysis` (source: `source/skills/kast-kotlin-structural-analysis`)
 - `kast-performance-assessment`: `skills/kast-performance-assessment` (source: `source/skills/kast-performance-assessment`)

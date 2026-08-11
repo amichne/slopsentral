@@ -3,7 +3,7 @@
     "name": "Amichne"
   },
   "category": "Coding",
-  "description": "Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
+  "description": "Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
   "keywords": [
     "diagnostics",
     "kast",
@@ -28,5 +28,5 @@
     "sqlite",
     "structural-analysis"
   ],
-  "version": "0.1.1"
+  "version": "0.2.0"
 }

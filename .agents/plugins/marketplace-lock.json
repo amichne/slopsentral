@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-02T21:04:32-04:00",
+  "generatedAt": "2026-08-10T23:14:20-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -590,7 +590,7 @@
       "version": "0.1.0"
     },
     {
-      "name": "intellij-plugin-engineering",
+      "name": "intellij-engineering",
       "references": [
         {
           "name": "schema-driven-design",
@@ -607,15 +607,43 @@
           "type": "INSTRUCTION"
         },
         {
+          "name": "ide-diagnostics-mcp",
+          "sha256": "sha256:4d18e0df0a3f28e248cce1ef8cd10fad16dff4df570202adcec877e971713d29",
+          "sourcePath": "source/skills/ide-diagnostics-mcp",
+          "targetPath": "skills/ide-diagnostics-mcp",
+          "type": "SKILL"
+        },
+        {
+          "name": "intellij-platform-integrations",
+          "sha256": "sha256:64094f36ad10c11ae2fc72f62c87ecb66343346c59b1f61244771d32c16627c7",
+          "sourcePath": "source/skills/intellij-platform-integrations",
+          "targetPath": "skills/intellij-platform-integrations",
+          "type": "SKILL"
+        },
+        {
+          "name": "intellij-platform-testing",
+          "sha256": "sha256:c59984edc2458fcb60b496dd3f88e71a29476c1df9c0ae6f86334b43e0643693",
+          "sourcePath": "source/skills/intellij-platform-testing",
+          "targetPath": "skills/intellij-platform-testing",
+          "type": "SKILL"
+        },
+        {
           "name": "intellij-plugin-delivery",
-          "sha256": "sha256:99eb9ea2f5d1a5d3de1ab61d123f547146e9c2d809ba428ae41afcde2d0efc4b",
+          "sha256": "sha256:ce30899a37779143d0b27039c3c32d48376a8f1c9bedc2f0041f09914a92eebb",
           "sourcePath": "source/skills/intellij-plugin-delivery",
           "targetPath": "skills/intellij-plugin-delivery",
           "type": "SKILL"
+        },
+        {
+          "name": "intellij-psi-indexing",
+          "sha256": "sha256:a4ed5b9a184ad064d178562f506462a76d7454195c05ba1441331628064955c1",
+          "sourcePath": "source/skills/intellij-psi-indexing",
+          "targetPath": "skills/intellij-psi-indexing",
+          "type": "SKILL"
         }
       ],
-      "sourceManifest": "source/plugins/intellij-plugin-engineering/plugin.json",
-      "version": "0.1.1"
+      "sourceManifest": "source/plugins/intellij-engineering/plugin.json",
+      "version": "0.1.0"
     },
     {
       "name": "kast-operations",
@@ -633,6 +661,13 @@
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
+        },
+        {
+          "name": "kast-idea-backend-delivery",
+          "sha256": "sha256:251eef3b5e124224e36afb925a2bb025ed225d7bdbabfb47f61207cb1c553278",
+          "sourcePath": "source/skills/kast-idea-backend-delivery",
+          "targetPath": "skills/kast-idea-backend-delivery",
+          "type": "SKILL"
         },
         {
           "name": "kast-installation-diagnosis",
@@ -664,10 +699,10 @@
         }
       ],
       "sourceManifest": "source/plugins/kast-operations/plugin.json",
-      "version": "0.1.1"
+      "version": "0.2.0"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "506117667d7288aad96dc3aecd7f718e8addd128",
+  "sourceSha": "61f540a4814ea82da0a7c986b2ac8e323a7d1816",
   "type": "HYDRATED_MARKETPLACE"
 }

@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
+  "description": "Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
   "interface": {
     "brandColor": "#2563EB",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Kast Operations",
-    "longDescription": "Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
+    "longDescription": "Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Operational diagnosis, performance measurement, Kotlin structural ana...",
+    "shortDescription": "Operational diagnosis, IDEA backend delivery, performance measurement...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -37,5 +37,5 @@
   "license": "UNLICENSED",
   "name": "kast-operations",
   "skills": "./skills/",
-  "version": "0.1.1"
+  "version": "0.2.0"
 }

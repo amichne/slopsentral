@@ -126,13 +126,13 @@
     },
     {
       "category": "Engineering",
-      "name": "intellij-plugin-engineering",
+      "name": "intellij-engineering",
       "policy": {
         "authentication": "ON_INSTALL",
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/intellij-plugin-engineering",
+        "path": "./.agents/plugins/intellij-engineering",
         "source": "local"
       }
     },

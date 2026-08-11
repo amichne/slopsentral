@@ -1,8 +1,8 @@
-# Kast Operations Plugin Instructions
+# Intellij Engineering Plugin Instructions
 
 ## Scope
 
-This generated adapter applies to the `kast-operations` plugin payload. Do not edit it directly; update the provider-neutral primitives or plugin manifest, then regenerate the marketplace output.
+This generated adapter applies to the `intellij-engineering` plugin payload. Do not edit it directly; update the provider-neutral primitives or plugin manifest, then regenerate the marketplace output.
 
 ## Runtime Boundary
 
@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.
+IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.
 
 ## Operating Rules
 
@@ -28,8 +28,8 @@ Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin st
 
 ## Skill Primitives
 
-- `kast-idea-backend-delivery`: `skills/kast-idea-backend-delivery` (source: `source/skills/kast-idea-backend-delivery`)
-- `kast-installation-diagnosis`: `skills/kast-installation-diagnosis` (source: `source/skills/kast-installation-diagnosis`)
-- `kast-kotlin-structural-analysis`: `skills/kast-kotlin-structural-analysis` (source: `source/skills/kast-kotlin-structural-analysis`)
-- `kast-performance-assessment`: `skills/kast-performance-assessment` (source: `source/skills/kast-performance-assessment`)
-- `sqlite-readonly-navigation`: `skills/sqlite-readonly-navigation` (source: `source/skills/sqlite-readonly-navigation`)
+- `ide-diagnostics-mcp`: `skills/ide-diagnostics-mcp` (source: `source/skills/ide-diagnostics-mcp`)
+- `intellij-platform-integrations`: `skills/intellij-platform-integrations` (source: `source/skills/intellij-platform-integrations`)
+- `intellij-platform-testing`: `skills/intellij-platform-testing` (source: `source/skills/intellij-platform-testing`)
+- `intellij-plugin-delivery`: `skills/intellij-plugin-delivery` (source: `source/skills/intellij-plugin-delivery`)
+- `intellij-psi-indexing`: `skills/intellij-psi-indexing` (source: `source/skills/intellij-psi-indexing`)

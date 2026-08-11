@@ -407,15 +407,14 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "IntelliJ Platform plugin delivery guidance for descriptors, lifecycle, threading, PSI and indexes, Starter/Driver UI tests, Plugin Verifier, packaging, and dynamic unload.",
+      "description": "IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.",
       "keywords": [
         "ci",
         "delivery",
         "gradle",
         "intellij",
-        "intellij-plugin-engineering",
+        "intellij-engineering",
         "jetbrains",
-        "kast",
         "kotlin",
         "plugin-development",
         "psi",
@@ -425,8 +424,8 @@
         "verification"
       ],
       "license": "UNLICENSED",
-      "name": "intellij-plugin-engineering",
-      "source": "intellij-plugin-engineering",
+      "name": "intellij-engineering",
+      "source": "intellij-engineering",
       "strict": true,
       "tags": [
         "ci",
@@ -434,7 +433,6 @@
         "gradle",
         "intellij",
         "jetbrains",
-        "kast",
         "kotlin",
         "plugin-development",
         "psi",
@@ -443,14 +441,14 @@
         "ui-testing",
         "verification"
       ],
-      "version": "0.1.1"
+      "version": "0.1.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Coding",
-      "description": "Operational diagnosis, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
+      "description": "Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
       "keywords": [
         "diagnostics",
         "kast",
@@ -476,7 +474,7 @@
         "sqlite",
         "structural-analysis"
       ],
-      "version": "0.1.1"
+      "version": "0.2.0"
     }
   ]
 }
