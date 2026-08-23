@@ -1,6 +1,6 @@
 ---
 name: kotlin-review
-description: Use when reviewing Kotlin diffs, PRs, or changed files for type safety, parse-dont-validate boundaries, package cohesion, duplication, primitive traps, or expected failures.
+description: Use when reviewing Kotlin diffs, PRs, or changed files for type safety, proof-carrying refinement, module boundaries, scoped repository guidance, package cohesion, duplication, primitive traps, or expected failures.
 ---
 
 # Kotlin Review
@@ -11,6 +11,8 @@ instructions, and deduplicates the result into one actionable finding list.
 
 Use the `kotlin-code-correctness` instruction as the review acceptance
 standard. Copilot packages expose it as `instructions/kotlin-code-correctness.md`.
+Use `kotlin-repository-engineering` when module topology, task evidence,
+generated surfaces, repository guidance, or verification breadth changed.
 This skill owns review routing and finding synthesis, not the evergreen Kotlin
 policy itself.
 
@@ -28,6 +30,9 @@ Use these bundled primitives when they are available:
 - `kotlin-code-correctness`: apply the stable instruction for Kotlin domain
   shape, boundary parsing, package ownership, expected failures, state safety,
   and proof.
+- `kotlin-repository-engineering`: apply the stable instruction for Gradle
+  topology, module direction, session task proof, scoped `AGENTS.md`, generated
+  ownership, installed-artifact checks, and widening verification.
 - `type-safety` and `schema-driven-design`: use as normative instructions for
   invalid-state prevention and boundary assertions.
 - `kotlin-design-practices`: load for detailed Kotlin layout, API, idiom, and testing
@@ -47,6 +52,8 @@ agent files.
 
 2. Load the `kotlin-code-correctness` instruction when the diff needs a stable
    Kotlin standard beyond a narrow agent profile.
+   Load `kotlin-repository-engineering` when the diff changes repository-level
+   ownership, proof, or verification contracts.
 
 3. Route review passes.
    Use the captain for broad review or when multiple axes apply. Use focused

@@ -61,6 +61,7 @@ jobs:
             source/skills/code-knowledge-base/scripts/tests \
             source/skills/github-ci-operations/scripts/tests \
             source/skills/issue-tracker-operations/scripts/tests \
+            source/skills/kotlin-agentic-correctness/scripts/tests \
             source/skills/openapi-schema-modeling/scripts/tests \
             source/skills/pkl-specification/scripts/tests \
             source/skills/pkl-tooling-setup/scripts/tests \

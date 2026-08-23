@@ -108,20 +108,30 @@
         },
         "version": "0.1.0"
       },
-      "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, Gradle wrapper integrity, and Kotlin package-layout hooks. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+      "description": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, scoped repository guidance, session task evidence, established library use, kotlinx.serialization, Ktor, Clikt, optional GraalVM CLI delivery, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
       "tags": [
         "agents",
         "best-practices",
+        "cli",
+        "clikt",
         "evidence",
+        "graalvm",
         "gradle",
         "hooks",
         "kast",
         "kotlin",
+        "ktor",
+        "libraries",
+        "module-boundaries",
         "package-cohesion",
         "proof",
+        "repository-guidance",
+        "repository-topology",
         "review",
         "semantic-navigation",
+        "serialization",
         "skills",
+        "task-evidence",
         "testing",
         "type-safety",
         "validation"
@@ -519,6 +529,15 @@
       },
       "path": "skills/kotlin-design-practices",
       "name": "kotlin-design-practices"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kotlin-application-stack",
+      "name": "kotlin-application-stack"
     },
     {
       "type": "SKILL",
@@ -1038,6 +1057,15 @@
       },
       "path": "concepts/kotlin-code-correctness/core.md",
       "name": "kotlin-code-correctness"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "concepts/kotlin-repository-engineering/core.md",
+      "name": "kotlin-repository-engineering"
     },
     {
       "type": "INSTRUCTION",

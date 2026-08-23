@@ -1,6 +1,6 @@
 ---
 name: kotlin-boundary-contract-reviewer
-description: Use this review agent after Kotlin changes to public APIs, adapters, CLI commands, serialization, persistence, HTTP, messaging, or interop boundaries. It enforces parse-don't-validate and explicit boundary failures.
+description: Use this review agent after Kotlin changes to public APIs, adapters, CLI commands, serialization, persistence, HTTP, messaging, or interop boundaries. It enforces parse-don't-validate, explicit boundary failures, and implementation-type isolation.
 model: sonnet
 ---
 
@@ -31,9 +31,16 @@ external SDK adapters, and Java/platform interop.
    - Parsing, normalization, and validation should happen once before core use.
    - Repeated `require`, `check`, regex, or nullable guard logic inside core
      code is evidence that the boundary is too weak.
+   - A parser or refiner should return a stronger representation, and callers
+     should consume that result instead of discarding it or unpacking it back to
+     a primitive.
+   - Changed production refinement APIs should document the concrete input and
+     output types, gained invariant, finite failure, and raw extraction boundary.
 
 3. Failure contract
    - Boundary failures must be explicit, stable, and testable.
+   - A proof-carrying transition must not use `Boolean`, `Unit`, `null`, the
+     original input, or an arbitrary exception as its success protocol.
    - Prefer the repository's established result or error type. If none exists,
      use Kotlin `Result` or a focused sealed error type before introducing a
      broad wrapper.
@@ -43,6 +50,14 @@ external SDK adapters, and Java/platform interop.
      inward unless the function is itself an adapter.
    - Domain types should not grow serialization or transport concerns only to
      satisfy boundary convenience.
+   - Public cross-module domain APIs should not expose framework, transport,
+     serializer, engine, persistence, or SDK types.
+   - Focused adapter modules should own concrete implementations. One minimal
+     integration module should select and configure them.
+   - A replaceable binding should satisfy the same contract suite without
+     changing domain callers.
+   - A dependency or public-API check should fail when implementation types
+     enter a pure module. Review claims are not sufficient evidence.
 
 ## Output
 

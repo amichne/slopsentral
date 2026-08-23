@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "name": "kotlin-engineering",
   "version": "0.1.0",
-  "description": "Kotlin best-practices package for type-driven design, parse-dont-validate APIs, Kast-backed navigation, focused review, Gradle proof, Gradle wrapper integrity, and Kotlin package-layout hooks. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+  "description": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, scoped repository guidance, session task evidence, established library use, kotlinx.serialization, Ktor, Clikt, optional GraalVM CLI delivery, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -36,6 +36,15 @@
       },
       "path": "skills/kotlin-design-practices",
       "name": "kotlin-design-practices"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kotlin-application-stack",
+      "name": "kotlin-application-stack"
     },
     {
       "type": "SKILL",
@@ -110,6 +119,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "concepts/kotlin-repository-engineering/core.md",
+      "name": "kotlin-repository-engineering"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "concepts/type-safety/core.md",
       "name": "type-safety"
     },
@@ -161,9 +179,9 @@
     "kast": "prefer-packaged-kast-skill-or-file-backed-rpc",
     "notFor": "Non-Kotlin repositories, generic Git/CI delivery, release management, API-only contract governance, or platform marketplace authoring work.",
     "owner": "kotlin-engineering",
-    "packageBoundary": "Kotlin semantics and proof only; local Git work stays in git-ci-operations, while PR, CI, and release work stays in effective-delivery.",
-    "principle": "encode-kotlin-invariants-in-types-and-prove-them-with-focused-evidence",
+    "packageBoundary": "Kotlin semantics, library bindings, and proof only; local Git work stays in git-ci-operations, while PR, CI, and release work stays in effective-delivery.",
+    "principle": "preserve-proof-in-kotlin-types-keep-implementation-libraries-behind-swappable-bindings-and-prove-code-and-repository-behavior-with-focused-evidence",
     "role": "kotlin-best-practices",
-    "scope": "Kotlin implementation and review best practices: domain modeling, parse-dont-validate boundaries, package cohesion, Kast or file-backed semantic navigation, negative capability proof, Gradle validation, Gradle wrapper integrity, and Kotlin-specific hook checks."
+    "scope": "Kotlin implementation and review best practices: domain modeling, proof-carrying refinement, repository and Gradle topology, scoped AGENTS.md guidance, session task evidence, pure cross-module APIs, established library selection, kotlinx.serialization, Ktor, Clikt, optional GraalVM CLI delivery, package cohesion, installed-artifact dogfooding, Kast or file-backed semantic navigation, negative capability proof, widening Gradle validation, and Kotlin-specific hook checks."
   }
 }

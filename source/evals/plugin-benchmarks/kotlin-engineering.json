@@ -33,6 +33,7 @@
   "notes": [
     "Run this benchmark from the slopsentral checkout after materializing the Kotlin Engineering best-practices package.",
     "The default workspace.sourcePath assumes a sibling Kotlin repository; teams should replace it with their own Kotlin/Gradle repository path before collecting baseline usage.",
+    "The repository-guidance scenario is a portable rewrite of the current Kast AGENTS.md observed on 2026-08-23; it excludes Kast-specific module counts, platform versions, documentation tooling, and exact commands.",
     "Feed the resulting benchmark-usage.jsonl back into plugin-eval analyze with --observed-usage before treating static budget warnings as production blockers."
   ],
   "setupQuestions": [
@@ -99,6 +100,50 @@
         "The run records a before-state misuse or representable invalid state.",
         "The fix moves enforcement into Kotlin types, constructors, or sealed APIs.",
         "The after-state proof shows the misuse no longer compiles or is no longer constructible."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-repository-task-and-topology-proof",
+      "title": "Kotlin repository task and topology proof",
+      "purpose": "Measure whether Kotlin Engineering preserves task, refinement, module, instruction, consumer, and installed-artifact evidence across a multi-module behavior change.",
+      "routingCaseIds": [
+        "kotlin-repository-work-preserves-task-and-topology-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-agentic-correctness"
+      },
+      "userInput": "Use Kotlin Engineering to implement this multi-module behavior change. Preserve each validated Kotlin value as a stronger type across callers, keep concrete adapters out of pure module APIs, maintain only the AGENTS.md files whose durable facts changed, and leave fresh executable red and green task proof. Widen verification through the owning module, affected consumers, generated boundaries, and installed public artifact only where the changed contract requires it. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The numbered task has five definition files and kotlin_task_evidence check accepts current red and green proof outputs.",
+        "Changed validation APIs document and return stronger types or closed typed failures, and callers consume those results.",
+        "Pure modules expose domain-owned contracts while one minimal integration module selects concrete adapters.",
+        "A mechanical dependency or public-API check rejects implementation leakage.",
+        "Root topology and nearest local AGENTS.md guidance agree with Gradle membership and changed ownership without duplicated parent rules.",
+        "Verification records only the affected focused, owner, consumer, generated-boundary, and installed-artifact rings."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-application-stack-private-bindings",
+      "title": "Kotlin application stack private bindings",
+      "purpose": "Measure whether Kotlin Engineering uses the preferred application libraries without exposing their implementation types through domain modules or imposing native-image delivery without evidence.",
+      "routingCaseIds": [
+        "kotlin-application-stack-keeps-library-bindings-private"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-application-stack"
+      },
+      "userInput": "Use Kotlin Engineering to build this Kotlin CLI and HTTP client. Use Clikt command families with sensible defaults and shell completion, Ktor Client, and kotlinx.serialization. Keep domain modules pure, select concrete bindings in one small integration module, add public CLI and adapter tests, and adopt GraalVM native-image delivery only if a feasibility check supports it. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "Public domain signatures do not expose Clikt, Ktor, serialization, engine, or native-image types.",
+        "A focused adapter implements a domain-owned capability and one integration module selects it.",
+        "A mechanical dependency or public-API check rejects implementation leakage into pure modules.",
+        "Clikt tests cover help, defaults, completion, one successful command, and one rejected invocation.",
+        "Ktor client tests use MockEngine and serialized fixtures without live network access.",
+        "The native-image choice records compatibility and measurable delivery criteria instead of applying a universal rule."
       ]
     },
     {
