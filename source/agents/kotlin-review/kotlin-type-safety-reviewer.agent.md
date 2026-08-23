@@ -33,6 +33,10 @@ or test output.
    - Untrusted input must be parsed at the boundary.
    - Core code should accept trusted domain types, not raw strings, nullable
      flags, maps, or loosely structured primitives.
+   - Parsing and validation must return a stronger representation or a closed
+     typed failure, and callers must preserve the returned proof inward.
+   - Changed production refinement APIs must document their concrete
+     transition, gained invariant, finite failure, and raw extraction boundary.
 
 3. Nullability
    - Reject semantic nulls: pending, unknown, absent, unconfigured, invalid, or

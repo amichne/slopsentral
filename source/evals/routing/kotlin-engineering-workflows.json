@@ -183,6 +183,111 @@
       ]
     },
     {
+      "id": "kotlin-repository-work-preserves-task-and-topology-proof",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-08-23",
+        "evidenceRefs": [
+          "source/concepts/kotlin-repository-engineering/core.md",
+          "source/concepts/kotlin-code-correctness/core.md",
+          "source/skills/kotlin-agentic-correctness/SKILL.md",
+          "source/skills/kotlin-agentic-correctness/scripts/kotlin_task_evidence"
+        ]
+      },
+      "prompt": "Implement a behavior change in this multi-module Kotlin repository. Preserve proof-carrying validation across callers, keep implementation bindings out of pure modules, maintain scoped AGENTS.md guidance, and leave fresh executable red and green evidence before widening verification to affected consumers and the installed public artifact.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-agentic-correctness"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Kotlin implementation can be locally correct while repository topology, task proof, child guidance, direct consumers, or the installed artifact remain stale.",
+        "risk": "The change can discard a validated representation across modules, couple pure APIs to one adapter, or claim completion from uncaptured tests and generated output that users never execute.",
+        "loadedPrimitives": [
+          "kotlin-agentic-correctness"
+        ]
+      },
+      "allowedActions": [
+        "Derive project membership and ownership from Gradle settings and current repository instructions.",
+        "Create five task definition files and capture current red and green proof outputs with the task authority scripts.",
+        "Carry each refined Kotlin value inward and document its transition, gained invariant, finite failure, and raw extraction boundary.",
+        "Keep pure contracts inward, adapters outward, and the complete implementation selection in one minimal integration module.",
+        "Update only scoped AGENTS.md files whose durable facts changed.",
+        "Verify the focused behavior, owning module, direct consumers, generated boundaries, and installed public artifact when each ring is affected."
+      ],
+      "forbiddenActions": [
+        "Replace captured task proof with a prose summary or uncaptured command.",
+        "Return Boolean, Unit, null, the original primitive, or an arbitrary exception from a proof-carrying validation boundary.",
+        "Expose adapter or framework types through a pure cross-module API.",
+        "Copy repository-wide rules into every child AGENTS.md or create placeholder guides for grouping directories.",
+        "Patch generated output when an authored source exists or present staged build output as installed-product proof."
+      ],
+      "recoveryExpectation": "A good run should leave current task proof, preserved Kotlin refinements, mechanically defended dependency direction, accurate scoped guidance, and verification that widens only across changed contracts.",
+      "notes": "This portable case generalizes the current Kast root AGENTS.md observed on 2026-08-23. Kast-specific module counts, macOS indexer versions, documentation tooling, and exact commands are deliberately excluded.",
+      "productiveOutcome": "Kotlin repository changes remain locally focused while carrying enough executable and structural evidence to trust the affected module graph and public artifact.",
+      "verificationEvidence": [
+        "kotlin_task_evidence check accepts current red-proof.out and green-proof.out for the numbered task.",
+        "Changed parser and refiner callers consume stronger output types without primitive re-expansion.",
+        "A dependency or public-API check rejects implementation leakage into pure modules.",
+        "The root topology and nearest changed AGENTS.md files agree with current Gradle membership and ownership.",
+        "Focused, owner, consumer, generated-boundary, and installed-artifact observations are recorded when their contracts changed."
+      ]
+    },
+    {
+      "id": "kotlin-application-stack-keeps-library-bindings-private",
+      "type": "LOADED_BYPASSED",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-08-23",
+        "evidenceRefs": [
+          "source/skills/kotlin-application-stack/SKILL.md",
+          "source/skills/kotlin-application-stack/references/clikt-cli-design.md",
+          "source/skills/kotlin-application-stack/references/kotlinx-serialization-and-ktor.md",
+          "source/skills/kotlin-application-stack/references/graalvm-native-cli.md",
+          "source/concepts/kotlin-code-correctness/core.md"
+        ]
+      },
+      "prompt": "Build a Kotlin CLI that calls an HTTP service. Use Clikt command families with unsurprising defaults and shell completion, Ktor Client, and kotlinx.serialization. Keep the domain modules pure, bind implementations in one small integration module, test the public CLI and HTTP adapter, and decide from evidence whether a GraalVM native executable is worthwhile.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-application-stack"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Kotlin application work can use the requested libraries while still leaking Clikt, Ktor, or serialization types into shared APIs, hand-writing solved infrastructure, or treating native-image delivery as mandatory.",
+        "risk": "Callers become coupled to one implementation, replacement requires cross-module edits, command shapes drift, and tests prove framework pieces instead of the public behavior.",
+        "loadedPrimitives": [
+          "kotlin-agentic-correctness",
+          "kotlin-design-practices"
+        ]
+      },
+      "allowedActions": [
+        "Define domain-owned values, capabilities, and finite failures before selecting bindings.",
+        "Keep Clikt, Ktor, serialization, engines, and native-image configuration in adapter or integration modules.",
+        "Use one stable Clikt command graph with defaults, generated completion, and public command tests.",
+        "Use MockEngine and serializer fixtures for the Ktor client boundary.",
+        "Add or run a mechanical dependency or public-API gate for pure modules.",
+        "Adopt GraalVM delivery only after compatibility and measured-value checks pass."
+      ],
+      "forbiddenActions": [
+        "Expose CliktCommand, HttpClient, HttpResponse, JsonElement, KSerializer, or engine types through domain APIs.",
+        "Hand-write CLI parsing, JSON encoding, HTTP transport, or retry infrastructure without a repository constraint that rules out established libraries.",
+        "Make native-image compilation a universal Kotlin CLI requirement.",
+        "Claim bindings are replaceable without a shared contract suite."
+      ],
+      "recoveryExpectation": "A good run should leave pure domain modules, focused adapters, one integration binding, consistent help and completion, reusable contract tests, and an explicit native-image decision.",
+      "notes": "This case measures whether preferred libraries reduce owned infrastructure without becoming the cross-module API.",
+      "productiveOutcome": "Kotlin applications use maintained libraries behind domain-owned contracts and keep implementation replacement local to adapter and integration modules.",
+      "verificationEvidence": [
+        "No public domain signature contains a selected library's implementation types.",
+        "A mechanical architecture check rejects selected library dependencies or public types in pure modules.",
+        "CLI tests cover help, defaults, completion, a successful leaf, and a rejected invocation.",
+        "HTTP adapter tests use Ktor MockEngine and serialized fixtures without live network access.",
+        "The native-image decision cites compatibility and measured delivery targets."
+      ]
+    },
+    {
       "id": "kotlin-delivery-keeps-git-ci-companion-boundary",
       "type": "WRONG_PRIMITIVE",
       "source": {

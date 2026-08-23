@@ -17,6 +17,15 @@ One session directory should contain:
 <timestamp>-<slug>/
   session.json
   intent.json
+  tasks/
+    001/
+      TASK.md
+      red.md
+      red.sh
+      green.md
+      green.sh
+      red-proof.out
+      green-proof.out
   kast/
     *.request.json
     *.response.json
@@ -52,3 +61,18 @@ A finished Kotlin turn should be able to point to:
 - the Gradle or test log paths for executed proof commands;
 - a scorecard with no `Fail` dimensions;
 - a short summary of residual `Concern` ratings, if any.
+
+For implementation work, each numbered task must also satisfy
+`kotlin-repository-engineering`: five definition files plus fresh red and green
+proof outputs. Use `kotlin_task_evidence run` to capture a proof and
+`kotlin_task_evidence check` to validate the complete task. The helper
+binds each proof to the current task definitions with a content digest, so an
+edit to the task or scripts makes prior proof stale.
+
+From the repository root, run:
+
+```shell
+python3 scripts/kotlin_task_evidence run --repo . --task-dir <session>/tasks/001 --phase red
+python3 scripts/kotlin_task_evidence run --repo . --task-dir <session>/tasks/001 --phase green
+python3 scripts/kotlin_task_evidence check --repo . --task-dir <session>/tasks/001 --phase complete
+```

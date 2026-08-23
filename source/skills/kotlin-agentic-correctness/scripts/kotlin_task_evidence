@@ -1,0 +1,271 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import hashlib
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+
+PROOF_FORMAT_VERSION = 1
+TASK_DEFINITION_FILES = ("TASK.md", "red.md", "red.sh", "green.md", "green.sh")
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Capture and validate session-scoped implementation task proof."
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    run = subparsers.add_parser(
+        "run",
+        help="Run a task proof script and capture stdout, stderr, and status.",
+    )
+    add_common_arguments(run)
+    run.add_argument("--phase", choices=("red", "green"), required=True, help="Proof phase to run.")
+    run.set_defaults(func=run_task_proof)
+
+    check = subparsers.add_parser(
+        "check",
+        help="Validate task definitions and captured proof against current content.",
+    )
+    add_common_arguments(check)
+    check.add_argument(
+        "--phase",
+        choices=("red", "green", "complete"),
+        default="complete",
+        help="Proof phase to validate. Defaults to complete.",
+    )
+    check.set_defaults(func=check_task_proof)
+
+    args = parser.parse_args(argv)
+    return args.func(args)
+
+
+def add_common_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--repo", default=".", help="Repository root.")
+    parser.add_argument("--task-dir", required=True, help="Numbered tasks/NNN directory.")
+
+
+def run_task_proof(args: argparse.Namespace) -> int:
+    repo_root = Path(args.repo).resolve()
+    task_dir = resolve_path(repo_root, args.task_dir)
+    errors = validate_task_definition(task_dir)
+    if errors:
+        return report_task_errors(task_dir, errors)
+
+    script_name = f"{args.phase}.sh"
+    proof_file = task_dir / f"{args.phase}-proof.out"
+    definition_digest = task_definition_digest(task_dir)
+    started_at = utc_now_iso()
+    try:
+        completed = subprocess.run(
+            [str(task_dir / script_name)],
+            cwd=repo_root,
+            text=True,
+            errors="replace",
+            capture_output=True,
+            check=False,
+        )
+    except OSError as error:
+        return report_task_errors(task_dir, [f"could not execute {script_name}: {error}"])
+
+    proof = render_task_proof(
+        script_name=script_name,
+        definition_digest=definition_digest,
+        started_at=started_at,
+        finished_at=utc_now_iso(),
+        stdout=completed.stdout,
+        stderr=completed.stderr,
+        exit_code=completed.returncode,
+    )
+    atomic_write_text(proof_file, proof)
+    print(
+        json.dumps(
+            {
+                "taskDir": str(task_dir),
+                "phase": args.phase,
+                "proofFile": str(proof_file),
+                "exitCode": completed.returncode,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return completed.returncode
+
+
+def check_task_proof(args: argparse.Namespace) -> int:
+    repo_root = Path(args.repo).resolve()
+    task_dir = resolve_path(repo_root, args.task_dir)
+    errors = validate_task_definition(task_dir)
+    phases = ("red", "green") if args.phase == "complete" else (args.phase,)
+    if not errors:
+        expected_digest = task_definition_digest(task_dir)
+        for phase in phases:
+            errors.extend(validate_proof_file(task_dir, phase, expected_digest))
+    if errors:
+        return report_task_errors(task_dir, errors)
+
+    print(
+        json.dumps(
+            {
+                "taskDir": str(task_dir),
+                "phase": args.phase,
+                "valid": True,
+                "definitionSha256": task_definition_digest(task_dir),
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+def validate_task_definition(task_dir: Path) -> list[str]:
+    errors: list[str] = []
+    if not task_dir.is_dir():
+        return [f"task directory does not exist: {task_dir}"]
+    if task_dir.parent.name != "tasks" or re.fullmatch(r"[0-9]{3}", task_dir.name) is None:
+        errors.append("task directory must use the session tasks/NNN shape")
+
+    for name in TASK_DEFINITION_FILES:
+        path = task_dir / name
+        if not path.is_file():
+            errors.append(f"missing task definition: {name}")
+            continue
+        if not path.read_text(encoding="utf-8").strip():
+            errors.append(f"task definition is empty: {name}")
+
+    for phase in ("red", "green"):
+        script_name = f"{phase}.sh"
+        script = task_dir / script_name
+        description = task_dir / f"{phase}.md"
+        if script.is_file() and script.stat().st_mode & 0o111 == 0:
+            errors.append(f"task authority is not executable: {script_name}")
+        if description.is_file() and script_name not in description.read_text(encoding="utf-8"):
+            errors.append(f"{phase}.md must name {script_name} as its executable authority")
+    return errors
+
+
+def task_definition_digest(task_dir: Path) -> str:
+    digest = hashlib.sha256()
+    for name in TASK_DEFINITION_FILES:
+        payload = (task_dir / name).read_bytes()
+        digest.update(name.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(len(payload).to_bytes(8, byteorder="big"))
+        digest.update(payload)
+    return digest.hexdigest()
+
+
+def render_task_proof(
+    *,
+    script_name: str,
+    definition_digest: str,
+    started_at: str,
+    finished_at: str,
+    stdout: str,
+    stderr: str,
+    exit_code: int,
+) -> str:
+    return (
+        f"proof-format-version: {PROOF_FORMAT_VERSION}\n"
+        f"proof-script: {script_name}\n"
+        f"proof-definition-sha256: {definition_digest}\n"
+        f"proof-started-at: {started_at}\n"
+        "--- stdout ---\n"
+        f"{ensure_trailing_newline(stdout)}"
+        "--- stderr ---\n"
+        f"{ensure_trailing_newline(stderr)}"
+        "--- proof-result ---\n"
+        f"proof-exit-code: {exit_code}\n"
+        f"proof-finished-at: {finished_at}\n"
+    )
+
+
+def validate_proof_file(task_dir: Path, phase: str, expected_digest: str) -> list[str]:
+    proof_name = f"{phase}-proof.out"
+    proof_file = task_dir / proof_name
+    if not proof_file.is_file():
+        return [f"missing captured proof: {proof_name}"]
+
+    text = proof_file.read_text(encoding="utf-8")
+    header, stdout_marker, remainder = text.partition("--- stdout ---\n")
+    observations, result_marker, result = remainder.rpartition("--- proof-result ---\n")
+    if not stdout_marker or not result_marker:
+        return [f"invalid proof structure: {proof_name}"]
+
+    metadata = parse_proof_fields(header)
+    result_fields = parse_proof_fields(result)
+    errors: list[str] = []
+    if metadata.get("proof-format-version") != str(PROOF_FORMAT_VERSION):
+        errors.append(f"unsupported proof format: {proof_name}")
+    if metadata.get("proof-script") != f"{phase}.sh":
+        errors.append(f"proof does not identify {phase}.sh: {proof_name}")
+    if metadata.get("proof-definition-sha256") != expected_digest:
+        errors.append(f"proof is stale for the current task definition: {proof_name}")
+    if result_fields.get("proof-exit-code") != "0":
+        errors.append(f"proof script did not exit successfully: {proof_name}")
+    if "--- stderr ---\n" not in observations:
+        errors.append(f"proof does not contain separate stdout and stderr capture: {proof_name}")
+    else:
+        stdout, stderr = observations.split("--- stderr ---\n", maxsplit=1)
+        if not stdout.strip() and not stderr.strip():
+            errors.append(f"proof contains no observed check output: {proof_name}")
+    if not metadata.get("proof-started-at") or not result_fields.get("proof-finished-at"):
+        errors.append(f"proof is missing timing metadata: {proof_name}")
+    return errors
+
+
+def parse_proof_fields(text: str) -> dict[str, str]:
+    fields: dict[str, str] = {}
+    for line in text.splitlines():
+        key, separator, value = line.partition(": ")
+        if separator:
+            fields[key] = value
+    return fields
+
+
+def ensure_trailing_newline(value: str) -> str:
+    if not value:
+        return ""
+    return value if value.endswith("\n") else value + "\n"
+
+
+def report_task_errors(task_dir: Path, errors: list[str]) -> int:
+    print(
+        json.dumps(
+            {"taskDir": str(task_dir), "valid": False, "errors": errors},
+            indent=2,
+            sort_keys=True,
+        ),
+        file=sys.stderr,
+    )
+    return 1
+
+
+def resolve_path(repo_root: Path, value: str) -> Path:
+    path = Path(value).expanduser()
+    if path.is_absolute():
+        return path.resolve()
+    return (repo_root / path).resolve()
+
+
+def utc_now_iso() -> str:
+    return dt.datetime.now(dt.timezone.utc).isoformat()
+
+
+def atomic_write_text(path: Path, value: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(value, encoding="utf-8")
+    temporary.replace(path)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

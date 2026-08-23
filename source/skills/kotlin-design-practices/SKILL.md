@@ -31,7 +31,10 @@ interfaces, and typed outcomes; it does not redefine the cross-language rules.
 ## Workflow
 
 1. Inspect the immediate package, tests, and existing abstractions.
-2. Load `kotlin-code-correctness` when the task needs repo-level Kotlin policy.
+2. Load `kotlin-code-correctness` when the task needs stable code-level Kotlin
+   policy. Load `kotlin-repository-engineering` when module topology, task
+   evidence, repository guidance, generated ownership, or verification breadth
+   is in scope.
 3. Choose the narrowest semantic unit that owns the change.
 4. Add one tracer-bullet public-behavior test, then implement the smallest
    vertical slice.
@@ -55,7 +58,11 @@ Load only the smallest reference that matches the task:
 ## Ownership Boundary
 
 - `kotlin-code-correctness` owns evergreen Kotlin acceptance policy.
+- `kotlin-repository-engineering` owns evergreen Kotlin repository structure
+  and proof policy.
 - `kotlin-agentic-correctness` owns file-backed implementation workflow.
+- `kotlin-application-stack` owns standard or established library selection and
+  focused bindings for serialization, HTTP, CLI, and optional native delivery.
 - `kotlin-gradle-validation` owns Gradle command execution and build evidence.
 - `kotlin-review` owns review orchestration and reviewer routing.
 - `negative-capability-proof` owns before/after proof that invalid Kotlin states
