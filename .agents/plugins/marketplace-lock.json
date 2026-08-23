@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T23:14:20-04:00",
+  "generatedAt": "2026-08-23T18:09:59-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -195,7 +195,7 @@
       "references": [
         {
           "name": "kotlin-boundary-contract-reviewer",
-          "sha256": "sha256:f059a141e0f5ad8d32cf0c5ce9de12bd8fdf8b468a49f82c7c28423687b268fc",
+          "sha256": "sha256:274c581d5267fc3ced330e82637589382aa671194df3e7535567a4946aa1ab1f",
           "sourcePath": "source/agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
           "targetPath": "agents/kotlin-boundary-contract-reviewer.agent.md",
           "type": "AGENT"
@@ -209,14 +209,14 @@
         },
         {
           "name": "kotlin-review-captain",
-          "sha256": "sha256:122bdf8f1f296b53bbda793982475adf26286dd43c42306dafd3ccda302df89d",
+          "sha256": "sha256:f9e4097fa42706e492c5540d474851cb1ff63f1b00f78c92ff47863fce1a6e81",
           "sourcePath": "source/agents/kotlin-review/kotlin-review-captain.agent.md",
           "targetPath": "agents/kotlin-review-captain.agent.md",
           "type": "AGENT"
         },
         {
           "name": "kotlin-type-safety-reviewer",
-          "sha256": "sha256:0b7ef93d37c9d71b042d126da4ce83549dfdf5f3acca391afd6caef26a66f8d7",
+          "sha256": "sha256:5682b79b15917d7148437c09593bc52a1cdae4068c8f214ffa8fbfac0ed0b02b",
           "sourcePath": "source/agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
           "targetPath": "agents/kotlin-type-safety-reviewer.agent.md",
           "type": "AGENT"
@@ -244,9 +244,16 @@
         },
         {
           "name": "kotlin-code-correctness",
-          "sha256": "sha256:6384593dbc8e40116e86dfa7b9bbd80b528de2d697c7a9c5084bfa5f02d7ef51",
+          "sha256": "sha256:8672c7a9936a12956b36f395f652ab6329aa31890783818b4e9443022cb15ab5",
           "sourcePath": "source/concepts/kotlin-code-correctness/core.md",
           "targetPath": "instructions/kotlin-code-correctness.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "kotlin-repository-engineering",
+          "sha256": "sha256:0db005727404002c26bbd4422aa18dc2956ceda905f14cc6ae3dae2386613112",
+          "sourcePath": "source/concepts/kotlin-repository-engineering/core.md",
+          "targetPath": "instructions/kotlin-repository-engineering.md",
           "type": "INSTRUCTION"
         },
         {
@@ -265,14 +272,21 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:59fb6f075a197415ebfcd701a29cf50ad1b0c9100e0fca5c49c0e51cffbc8ba8",
+          "sha256": "sha256:7e8849e381a31964c2faa9343ff4b636b4ec97d744f2ed9d8c2814c4f0748f5d",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
         },
         {
+          "name": "kotlin-application-stack",
+          "sha256": "sha256:a1e6318cae4964edb1cf7238e97f413a46c46a05d2c0bf59c8772e436c9b419c",
+          "sourcePath": "source/skills/kotlin-application-stack",
+          "targetPath": "skills/kotlin-application-stack",
+          "type": "SKILL"
+        },
+        {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:01bd651ed2469685f007e6b93b0aad1237aafcc63f0845c48d124c86b2bee2f7",
+          "sha256": "sha256:f073cac890cea1cd8b51c2f31a8b13015030d5d16b27b46daad9fd3a1147d431",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
@@ -286,7 +300,7 @@
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:3aa7708f7a142ccc389973b8680f5315ae86751ae7dcbb154378223be8530f1f",
+          "sha256": "sha256:9924bc804b99cfb0317bd7beeb3fbd7aab2209396bc8b28a5da734dde04cdbbe",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
           "type": "SKILL"
@@ -703,6 +717,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "61f540a4814ea82da0a7c986b2ac8e323a7d1816",
+  "sourceSha": "0c28aa2b8f2f92ed6cf035abf47aef24910b3060",
   "type": "HYDRATED_MARKETPLACE"
 }

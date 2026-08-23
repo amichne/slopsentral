@@ -1,6 +1,6 @@
 ---
 name: kotlin-agentic-correctness
-description: Use when Kotlin work needs typed design discipline, invariant-oriented Kotlin standards, filesystem-backed evidence, Kast semantic tooling, Gradle validation, TDD, or PR-ready proof.
+description: Use when Kotlin work needs typed design discipline, proof-carrying refinement, repository or module topology, session task evidence, scoped AGENTS.md guidance, Kast semantic tooling, widening Gradle validation, TDD, or PR-ready proof.
 ---
 
 # Kotlin Agentic Correctness
@@ -13,6 +13,8 @@ this skill owns the turn workflow and proof discipline.
 ## Operating Contract
 
 - Apply `kotlin-code-correctness` before choosing implementation shape.
+- Apply `kotlin-repository-engineering` to module topology, scoped repository
+  guidance, task evidence, generated surfaces, and widening verification.
 - Model important concepts as value classes, sealed hierarchies, enums, private
   constructors, focused factories, and typed expected failures.
 - Parse untrusted data once at the edge; core Kotlin should receive trusted
@@ -30,9 +32,11 @@ this skill owns the turn workflow and proof discipline.
 
 1. Frame the trusted shape: boundary inputs, domain values, invariants,
    expected failures, package owner, and proof target.
-2. For non-trivial work, create file-backed evidence with
+2. For implementation work, create file-backed evidence with
    `python3 scripts/kotlin_workflow_state init --repo .`, then record intent
-   with `python3 scripts/kotlin_workflow_state intent ...`.
+   with `python3 scripts/kotlin_workflow_state intent ...`. Define the numbered
+   task under that session, capture each proof with `kotlin_task_evidence run`,
+   and validate it with `kotlin_task_evidence check`.
 3. Orient semantically with the public Kast command surface before touching
    Kotlin symbols. Use `kast-kotlin-structural-analysis` for chained structural
    queries when it is installed; use native Kast commands for routine lookups.
@@ -59,11 +63,14 @@ filesystem evidence, and Kast semantics.
 ## Reference Map
 
 - Stable Kotlin policy: `kotlin-code-correctness`
+- Stable repository policy: `kotlin-repository-engineering`
 - Filesystem evidence: `references/filesystem-evidence-contract.md`
 - Kast structural queries: `kast-kotlin-structural-analysis` when installed
-- Scripts: `scripts/kotlin_workflow_state`
-- Narrow skills: `kotlin-design-practices`, `kotlin-gradle-validation`,
-  `kotlin-review`, and `negative-capability-proof`
+- Scripts: `scripts/kotlin_workflow_state` and
+  `scripts/kotlin_task_evidence`
+- Narrow skills: `kotlin-design-practices`, `kotlin-application-stack`,
+  `kotlin-gradle-validation`, `kotlin-review`, and
+  `negative-capability-proof`
 - Generic executable-check TDD: `tdd` when installed.
 - Generic delivery: use `git-ci-operations` for local Git and
   `effective-delivery` for PR, CI, and release work when installed.

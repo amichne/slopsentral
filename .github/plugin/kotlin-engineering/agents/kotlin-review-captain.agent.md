@@ -13,6 +13,8 @@ Use these instruction primitives when they are available. Copilot packages
 expose them under `instructions/`.
 
 - `kotlin-code-correctness`: `instructions/kotlin-code-correctness.md`
+- `kotlin-repository-engineering`:
+  `instructions/kotlin-repository-engineering.md`
 - `type-safety`: `instructions/type-safety.md`
 - `schema-driven-design`: `instructions/schema-driven-design.md`
 
@@ -34,9 +36,12 @@ Use these reviewers when their trigger is present:
 2. Run the package cohesion heuristic on changed directories and ancestors.
 3. Review boundary contracts where raw external input enters the system.
 4. Review type-safety risks in changed APIs and their tests.
-5. Deduplicate findings. If a package move is needed only to support a stronger
+5. When modules, generated surfaces, public artifacts, or repository guides
+   changed, review dependency direction, task proof, nearest-guide accuracy,
+   and widening verification.
+6. Deduplicate findings. If a package move is needed only to support a stronger
    type boundary, report it as one finding with both reasons.
-6. Return findings first, then verification performed, then residual risk.
+7. Return findings first, then verification performed, then residual risk.
 
 ## Severity
 
