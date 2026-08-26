@@ -13,6 +13,9 @@ on:
 permissions:
   contents: read
 
+env:
+  GRADLE_DYNAMIC_TOOLS_VERSION: "0.1.0"
+
 jobs:
   native:
     name: Native image (${{ matrix.target }})
@@ -51,7 +54,7 @@ jobs:
         run: |
           set -euo pipefail
           binary="build/native/nativeCompile/gradle-dynamic-tools"
-          expected_version="0.1.0"
+          expected_version="${GRADLE_DYNAMIC_TOOLS_VERSION}"
           if [[ "${GITHUB_REF}" == refs/tags/gradle-dynamic-tools-v* ]]; then
             expected_version="${GITHUB_REF_NAME#gradle-dynamic-tools-v}"
           fi
@@ -73,7 +76,7 @@ jobs:
         working-directory: source/tools/gradle-dynamic-tools
         run: |
           set -euo pipefail
-          version="${GITHUB_REF_NAME#gradle-dynamic-tools-v}"
+          version="${GRADLE_DYNAMIC_TOOLS_VERSION}"
           archive="gradle-dynamic-tools-${version}-${{ matrix.target }}.tar.gz"
           staging="${RUNNER_TEMP}/gradle-dynamic-tools-${version}-${{ matrix.target }}"
           mkdir -p "${staging}" dist
