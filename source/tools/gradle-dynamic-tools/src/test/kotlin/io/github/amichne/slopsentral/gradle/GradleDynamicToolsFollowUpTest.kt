@@ -3,6 +3,7 @@ package io.github.amichne.slopsentral.gradle
 import io.github.amichne.slopsentral.gradle.debug.DebugFailure
 import io.github.amichne.slopsentral.gradle.debug.JavaDebugger
 import io.github.amichne.slopsentral.gradle.debug.JdiDebuggerService
+import io.github.amichne.slopsentral.gradle.discovery.WrapperGradleTaskDiscoverer
 import io.github.amichne.slopsentral.gradle.domain.DebugAttachOutcome
 import io.github.amichne.slopsentral.gradle.domain.DebugAttachment
 import io.github.amichne.slopsentral.gradle.domain.DebugControl
@@ -63,9 +64,13 @@ class GradleDynamicToolsFollowUpTest {
     lateinit var repository: Path
 
     @Test
-    fun `tooling api discovers bounded task metadata from a multi-project build`() {
+    fun `wrapper process discovers bounded task metadata from a multi-project build`() {
         createGradleFixture(repository)
-        val dispatcher = GradleToolDispatcher(repository, GradleRunService(FollowUpManualExecutor()))
+        val dispatcher = GradleToolDispatcher(
+            repository,
+            GradleRunService(FollowUpManualExecutor()),
+            discoverer = WrapperGradleTaskDiscoverer(),
+        )
 
         val result = dispatcher.call(
             "gradle",

@@ -9,12 +9,10 @@ version = "0.1.0"
 
 repositories {
     mavenCentral()
-    maven("https://repo.gradle.org/gradle/libs-releases")
 }
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
-    implementation("org.gradle:gradle-tooling-api:9.7.1")
 
     testImplementation(kotlin("test"))
 }
@@ -46,6 +44,7 @@ graalvmNative {
             buildArgs.add("--no-fallback")
             buildArgs.add("--add-modules=jdk.jdi")
             buildArgs.add("--enable-url-protocols=http,https")
+            buildArgs.add("--initialize-at-build-time=kotlin")
             buildArgs.add("--install-exit-handlers")
             resources.autodetect()
         }

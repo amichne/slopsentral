@@ -6,7 +6,7 @@ This Kotlin host starts one ephemeral Codex App Server thread and registers an e
 - `start` launches repository wrapper tasks or filtered tests without a shell.
 - `observe` returns cursor-addressed output and terminal state.
 - `cancel` idempotently requests cancellation.
-- `discover` reads bounded task metadata through the Gradle Tooling API.
+- `discover` reads bounded task metadata through an isolated repository-wrapper probe.
 - `history` lists or reads repository-persistent run summaries.
 - `debug` attaches to a debug-enabled test JVM and inspects or controls it through JDI.
 

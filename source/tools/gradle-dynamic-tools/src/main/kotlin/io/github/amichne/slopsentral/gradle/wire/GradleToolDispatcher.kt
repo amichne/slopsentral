@@ -7,7 +7,7 @@ import io.github.amichne.slopsentral.gradle.debug.JavaDebugger
 import io.github.amichne.slopsentral.gradle.debug.JdiDebuggerService
 import io.github.amichne.slopsentral.gradle.discovery.GradleTaskDiscoverer
 import io.github.amichne.slopsentral.gradle.discovery.GradleTaskDiscoveryFailure
-import io.github.amichne.slopsentral.gradle.discovery.ToolingApiGradleTaskDiscoverer
+import io.github.amichne.slopsentral.gradle.discovery.WrapperGradleTaskDiscoverer
 import io.github.amichne.slopsentral.gradle.domain.DebugAttachment
 import io.github.amichne.slopsentral.gradle.domain.DebugControl
 import io.github.amichne.slopsentral.gradle.domain.DebugEndpoint
@@ -438,7 +438,7 @@ class ToolSchemaCatalog private constructor(
 class GradleToolDispatcher(
     repositoryRoot: Path,
     private val runs: GradleRunService,
-    private val discoverer: GradleTaskDiscoverer = ToolingApiGradleTaskDiscoverer(),
+    private val discoverer: GradleTaskDiscoverer = WrapperGradleTaskDiscoverer(),
     private val debugger: JavaDebugger = JdiDebuggerService(),
     val schemas: ToolSchemaCatalog = ToolSchemaCatalog.bundled(),
 ) {
