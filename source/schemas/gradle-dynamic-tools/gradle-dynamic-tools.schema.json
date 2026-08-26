@@ -24,6 +24,15 @@
         },
         {
           "$ref": "cancel.schema.json"
+        },
+        {
+          "$ref": "discover.schema.json"
+        },
+        {
+          "$ref": "history.schema.json"
+        },
+        {
+          "$ref": "debug.schema.json"
         }
       ],
       "discriminator": {

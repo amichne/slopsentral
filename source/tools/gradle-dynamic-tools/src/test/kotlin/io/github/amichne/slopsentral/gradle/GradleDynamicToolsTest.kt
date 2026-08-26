@@ -235,7 +235,7 @@ class GradleDynamicToolsTest {
             .jsonArray.single().jsonObject
         assertEquals("gradle", namespace.string("name"))
         assertEquals(
-            setOf("start", "observe", "cancel"),
+            setOf("start", "observe", "cancel", "discover", "history", "debug"),
             namespace["tools"]!!.jsonArray.map { it.jsonObject.string("name") }.toSet(),
         )
         namespace["tools"]!!.jsonArray.forEach { tool ->

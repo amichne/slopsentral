@@ -4,9 +4,11 @@ import io.github.amichne.slopsentral.gradle.appserver.AppServerProcessFailure
 import io.github.amichne.slopsentral.gradle.appserver.CodexAppServerClient
 import io.github.amichne.slopsentral.gradle.appserver.CodexTurnOutcome
 import io.github.amichne.slopsentral.gradle.appserver.ProcessJsonLineTransport
+import io.github.amichne.slopsentral.gradle.debug.JdiDebuggerService
 import io.github.amichne.slopsentral.gradle.domain.GradleProject
 import io.github.amichne.slopsentral.gradle.domain.ProjectAdmissionFailure
 import io.github.amichne.slopsentral.gradle.domain.Refinement
+import io.github.amichne.slopsentral.gradle.history.FileRunHistoryStore
 import io.github.amichne.slopsentral.gradle.runtime.GradleRunService
 import io.github.amichne.slopsentral.gradle.runtime.SystemGradleExecutor
 import io.github.amichne.slopsentral.gradle.wire.GradleToolDispatcher
@@ -54,25 +56,30 @@ fun main(args: Array<String>) {
         }
     }
 
-    GradleRunService(SystemGradleExecutor()).use { runs ->
-        val dispatcher = GradleToolDispatcher(project.root, runs)
-        when (val opening = ProcessJsonLineTransport.start(project.root)) {
-            is Refinement.Rejected -> {
-                System.err.println(opening.failure.cliMessage())
-                exitProcess(3)
-            }
-            is Refinement.Accepted -> opening.value.use { transport ->
-                when (
-                    val outcome = CodexAppServerClient(transport, dispatcher).run(
-                        repository = project.root,
-                        prompt = configuration.prompt,
-                        model = configuration.model,
-                    )
-                ) {
-                    is CodexTurnOutcome.Completed -> println(outcome.finalAnswer)
-                    is CodexTurnOutcome.Rejected -> {
-                        System.err.println("${outcome.failure.code}: ${outcome.failure.message}")
-                        exitProcess(4)
+    JdiDebuggerService().use { debugger ->
+        GradleRunService(
+            executor = SystemGradleExecutor(),
+            history = FileRunHistoryStore(project.root),
+        ).use { runs ->
+            val dispatcher = GradleToolDispatcher(project.root, runs, debugger = debugger)
+            when (val opening = ProcessJsonLineTransport.start(project.root)) {
+                is Refinement.Rejected -> {
+                    System.err.println(opening.failure.cliMessage())
+                    exitProcess(3)
+                }
+                is Refinement.Accepted -> opening.value.use { transport ->
+                    when (
+                        val outcome = CodexAppServerClient(transport, dispatcher).run(
+                            repository = project.root,
+                            prompt = configuration.prompt,
+                            model = configuration.model,
+                        )
+                    ) {
+                        is CodexTurnOutcome.Completed -> println(outcome.finalAnswer)
+                        is CodexTurnOutcome.Rejected -> {
+                            System.err.println("${outcome.failure.code}: ${outcome.failure.message}")
+                            exitProcess(4)
+                        }
                     }
                 }
             }

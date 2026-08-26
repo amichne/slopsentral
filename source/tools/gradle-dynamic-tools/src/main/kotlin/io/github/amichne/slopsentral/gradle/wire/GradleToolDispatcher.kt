@@ -2,20 +2,44 @@
 
 package io.github.amichne.slopsentral.gradle.wire
 
+import io.github.amichne.slopsentral.gradle.debug.DebugFailure
+import io.github.amichne.slopsentral.gradle.debug.JavaDebugger
+import io.github.amichne.slopsentral.gradle.debug.JdiDebuggerService
+import io.github.amichne.slopsentral.gradle.discovery.GradleTaskDiscoverer
+import io.github.amichne.slopsentral.gradle.discovery.GradleTaskDiscoveryFailure
+import io.github.amichne.slopsentral.gradle.discovery.ToolingApiGradleTaskDiscoverer
+import io.github.amichne.slopsentral.gradle.domain.DebugAttachment
+import io.github.amichne.slopsentral.gradle.domain.DebugControl
+import io.github.amichne.slopsentral.gradle.domain.DebugEndpoint
+import io.github.amichne.slopsentral.gradle.domain.DebugLaunch
+import io.github.amichne.slopsentral.gradle.domain.DebugStack
+import io.github.amichne.slopsentral.gradle.domain.DebugThreadId
+import io.github.amichne.slopsentral.gradle.domain.DebugThreads
+import io.github.amichne.slopsentral.gradle.domain.DebugTimeout
+import io.github.amichne.slopsentral.gradle.domain.DiscoveredGradleTask
+import io.github.amichne.slopsentral.gradle.domain.DiscoveryLimit
 import io.github.amichne.slopsentral.gradle.domain.EventCursor
 import io.github.amichne.slopsentral.gradle.domain.GradleInvocation
 import io.github.amichne.slopsentral.gradle.domain.GradleOperation
 import io.github.amichne.slopsentral.gradle.domain.GradleProject
 import io.github.amichne.slopsentral.gradle.domain.GradleTaskPath
+import io.github.amichne.slopsentral.gradle.domain.HistoryLimit
 import io.github.amichne.slopsentral.gradle.domain.ProjectAdmissionFailure
 import io.github.amichne.slopsentral.gradle.domain.Refinement
 import io.github.amichne.slopsentral.gradle.domain.RunCancellation
 import io.github.amichne.slopsentral.gradle.domain.RunId
 import io.github.amichne.slopsentral.gradle.domain.RunObservation
+import io.github.amichne.slopsentral.gradle.domain.RunSummary
+import io.github.amichne.slopsentral.gradle.domain.StackFrameLimit
+import io.github.amichne.slopsentral.gradle.domain.TaskDiscovery
+import io.github.amichne.slopsentral.gradle.domain.TaskDiscoveryRequest
+import io.github.amichne.slopsentral.gradle.domain.TaskQuery
 import io.github.amichne.slopsentral.gradle.domain.TestSelector
 import io.github.amichne.slopsentral.gradle.domain.WaitDuration
 import io.github.amichne.slopsentral.gradle.runtime.GradleRunService
+import io.github.amichne.slopsentral.gradle.runtime.DebugTargetFailure
 import io.github.amichne.slopsentral.gradle.runtime.RunCancellationFailure
+import io.github.amichne.slopsentral.gradle.runtime.RunHistoryFailure
 import io.github.amichne.slopsentral.gradle.runtime.RunObservationFailure
 import io.github.amichne.slopsentral.gradle.runtime.RunStartFailure
 import io.github.amichne.slopsentral.gradle.runtime.StartedRun
@@ -58,8 +82,17 @@ private sealed interface StartOperationDocument {
     data class Tests(
         val task: String,
         val selectors: List<TestSelectorDocument>,
+        val debug: DebugLaunchDocument? = null,
     ) : StartOperationDocument
 }
+
+@Serializable
+private enum class DebugLaunchDocumentType {
+    JDWP,
+}
+
+@Serializable
+private data class DebugLaunchDocument(val type: DebugLaunchDocumentType)
 
 @Serializable
 private enum class TestSelectorDocumentType {
@@ -97,12 +130,93 @@ private data class CancelDocument(
 )
 
 @Serializable
+private enum class DiscoverDocumentType {
+    DISCOVER,
+}
+
+@Serializable
+private data class DiscoverDocument(
+    val type: DiscoverDocumentType,
+    val query: String? = null,
+    val limit: Int,
+)
+
+@Serializable
+private enum class HistoryDocumentType {
+    HISTORY,
+}
+
+@Serializable
+private data class HistoryDocument(
+    val type: HistoryDocumentType,
+    val operation: HistoryOperationDocument,
+)
+
+@Serializable
+private sealed interface HistoryOperationDocument {
+    @Serializable
+    @SerialName("LIST")
+    data class ListRuns(val limit: Int) : HistoryOperationDocument
+
+    @Serializable
+    @SerialName("READ")
+    data class ReadRun(val runId: String) : HistoryOperationDocument
+}
+
+@Serializable
+private enum class DebugDocumentType {
+    DEBUG,
+}
+
+@Serializable
+private data class DebugDocument(
+    val type: DebugDocumentType,
+    val runId: String,
+    val operation: DebugOperationDocument,
+)
+
+@Serializable
+private sealed interface DebugOperationDocument {
+    @Serializable
+    @SerialName("ATTACH")
+    data class Attach(val timeoutMillis: Int) : DebugOperationDocument
+
+    @Serializable
+    @SerialName("THREADS")
+    data object Threads : DebugOperationDocument
+
+    @Serializable
+    @SerialName("STACK")
+    data class Stack(val threadId: Long, val maximumFrames: Int) : DebugOperationDocument
+
+    @Serializable
+    @SerialName("PAUSE")
+    data object Pause : DebugOperationDocument
+
+    @Serializable
+    @SerialName("RESUME")
+    data object Resume : DebugOperationDocument
+
+    @Serializable
+    @SerialName("DETACH")
+    data object Detach : DebugOperationDocument
+}
+
+@Serializable
+private data class DebugEndpointDocument(
+    val type: String = "DEBUG_ENDPOINT",
+    val host: String,
+    val port: Int,
+)
+
+@Serializable
 private data class StartedResultDocument(
     val type: String = "GRADLE_STARTED",
     val runId: String,
     val state: String,
     val command: List<String>,
     val startedAt: String,
+    val debugEndpoint: DebugEndpointDocument?,
 )
 
 @Serializable
@@ -124,6 +238,7 @@ private data class ObservationResultDocument(
     val durationMillis: Long?,
     val events: List<OutputEventDocument>,
     val nextCursor: Long,
+    val debugEndpoint: DebugEndpointDocument?,
 )
 
 @Serializable
@@ -132,6 +247,91 @@ private data class CancellationResultDocument(
     val runId: String,
     val outcome: String,
     val state: String,
+)
+
+@Serializable
+private data class DiscoveredTaskDocument(
+    val type: String = "GRADLE_TASK",
+    val path: String,
+    val name: String,
+    val projectPath: String,
+    val group: String?,
+    val description: String?,
+)
+
+@Serializable
+private data class TaskDiscoveryResultDocument(
+    val type: String = "GRADLE_TASK_DISCOVERY",
+    val tasks: List<DiscoveredTaskDocument>,
+    val truncated: Boolean,
+)
+
+@Serializable
+private data class RunSummaryDocument(
+    val type: String = "GRADLE_RUN_SUMMARY",
+    val runId: String,
+    val state: String,
+    val command: List<String>,
+    val startedAt: String,
+    val finishedAt: String?,
+    val exitCode: Int?,
+    val durationMillis: Long?,
+    val debugEndpoint: DebugEndpointDocument?,
+)
+
+@Serializable
+private data class RunHistoryResultDocument(
+    val type: String = "GRADLE_RUN_HISTORY",
+    val runs: List<RunSummaryDocument>,
+)
+
+@Serializable
+private data class DebugAttachmentResultDocument(
+    val type: String = "DEBUG_ATTACHMENT",
+    val runId: String,
+    val outcome: String,
+    val endpoint: DebugEndpointDocument,
+)
+
+@Serializable
+private data class DebugThreadDocument(
+    val type: String = "DEBUG_THREAD",
+    val id: Long,
+    val name: String,
+    val state: String,
+    val suspended: Boolean,
+)
+
+@Serializable
+private data class DebugThreadsResultDocument(
+    val type: String = "DEBUG_THREADS",
+    val runId: String,
+    val threads: List<DebugThreadDocument>,
+)
+
+@Serializable
+private data class DebugStackFrameDocument(
+    val type: String = "DEBUG_STACK_FRAME",
+    val index: Int,
+    val declaringType: String,
+    val methodName: String,
+    val lineNumber: Int,
+    val sourceName: String?,
+)
+
+@Serializable
+private data class DebugStackResultDocument(
+    val type: String = "DEBUG_STACK",
+    val runId: String,
+    val thread: DebugThreadDocument,
+    val frames: List<DebugStackFrameDocument>,
+)
+
+@Serializable
+private data class DebugControlResultDocument(
+    val type: String = "DEBUG_CONTROL",
+    val runId: String,
+    val outcome: String,
 )
 
 @Serializable
@@ -146,6 +346,21 @@ private enum class ToolFailureCode {
     PROCESS_START_FAILED,
     UNKNOWN_RUN,
     CURSOR_AHEAD,
+    TASK_DISCOVERY_FAILED,
+    TASK_MODEL_UNAVAILABLE,
+    PERSISTENCE_FAILED,
+    CORRUPT_HISTORY,
+    DEBUG_NOT_ENABLED,
+    RUN_NOT_ACTIVE,
+    DEBUG_CONNECTOR_UNAVAILABLE,
+    DEBUG_ATTACH_TIMEOUT,
+    DEBUG_ATTACH_FAILED,
+    DEBUG_NOT_ATTACHED,
+    DEBUG_DISCONNECTED,
+    DEBUG_UNKNOWN_THREAD,
+    DEBUG_THREAD_NOT_SUSPENDED,
+    DEBUG_FRAME_INFORMATION_UNAVAILABLE,
+    DEBUG_CONTROL_FAILED,
 }
 
 @Serializable
@@ -169,7 +384,8 @@ data class DynamicToolDefinition(
 class ToolSchemaCatalog private constructor(
     private val definitions: Map<String, DynamicToolDefinition>,
 ) {
-    fun all(): List<DynamicToolDefinition> = listOf("start", "observe", "cancel").map(definitions::getValue)
+    fun all(): List<DynamicToolDefinition> =
+        listOf("start", "observe", "cancel", "discover", "history", "debug").map(definitions::getValue)
 
     companion object {
         fun bundled(): ToolSchemaCatalog {
@@ -189,6 +405,21 @@ class ToolSchemaCatalog private constructor(
                     "Idempotently request cancellation of one known Gradle run.",
                     "cancel.schema.json",
                 ),
+                Triple(
+                    "discover",
+                    "Discover bounded task metadata from the repository Gradle project model.",
+                    "discover.schema.json",
+                ),
+                Triple(
+                    "history",
+                    "List or read repository-persistent Gradle run summaries.",
+                    "history.schema.json",
+                ),
+                Triple(
+                    "debug",
+                    "Attach to and inspect or control the JDI session for a debug-enabled test run.",
+                    "debug.schema.json",
+                ),
             ).associate { (name, description, resource) ->
                 val text = checkNotNull(ToolSchemaCatalog::class.java.classLoader.getResource(resource)) {
                     "missing bundled dynamic-tool schema: $resource"
@@ -207,6 +438,8 @@ class ToolSchemaCatalog private constructor(
 class GradleToolDispatcher(
     repositoryRoot: Path,
     private val runs: GradleRunService,
+    private val discoverer: GradleTaskDiscoverer = ToolingApiGradleTaskDiscoverer(),
+    private val debugger: JavaDebugger = JdiDebuggerService(),
     val schemas: ToolSchemaCatalog = ToolSchemaCatalog.bundled(),
 ) {
     private val repositoryRoot = repositoryRoot.toAbsolutePath().normalize()
@@ -219,6 +452,9 @@ class GradleToolDispatcher(
             "start" -> start(arguments)
             "observe" -> observe(arguments)
             "cancel" -> cancel(arguments)
+            "discover" -> discover(arguments)
+            "history" -> history(arguments)
+            "debug" -> debug(arguments)
             else -> failure(ToolFailureCode.UNKNOWN_TOOL, "Unknown gradle tool.")
         }
     }
@@ -244,6 +480,10 @@ class GradleToolDispatcher(
                 RunStartFailure.PROCESS_START_FAILED -> failure(
                     ToolFailureCode.PROCESS_START_FAILED,
                     "The repository Gradle wrapper could not be started.",
+                )
+                RunStartFailure.PERSISTENCE_FAILED -> failure(
+                    ToolFailureCode.PERSISTENCE_FAILED,
+                    "The run summary or repository ownership lock could not be persisted.",
                 )
             }
         }
@@ -275,6 +515,10 @@ class GradleToolDispatcher(
                     ToolFailureCode.CURSOR_AHEAD,
                     "The requested cursor is beyond the run event stream.",
                 )
+                RunObservationFailure.PERSISTENCE_FAILED -> failure(
+                    ToolFailureCode.PERSISTENCE_FAILED,
+                    "The terminal run summary could not be persisted.",
+                )
             }
         }
     }
@@ -293,8 +537,116 @@ class GradleToolDispatcher(
                     ToolFailureCode.UNKNOWN_RUN,
                     "The run ID is not known by this host.",
                 )
+                RunCancellationFailure.PERSISTENCE_FAILED -> failure(
+                    ToolFailureCode.PERSISTENCE_FAILED,
+                    "The cancellation state could not be persisted.",
+                )
             }
         }
+    }
+
+    private fun discover(arguments: JsonElement): DynamicToolResult {
+        val document = decode<DiscoverDocument>(arguments)
+            ?: return invalidArguments("Arguments do not match the DISCOVER contract.")
+        val limit = when (val admitted = DiscoveryLimit.admit(document.limit)) {
+            is Refinement.Accepted -> admitted.value
+            is Refinement.Rejected -> return invalidArguments("limit must be between 1 and 1000.")
+        }
+        val query = document.query?.let { raw ->
+            when (val admitted = TaskQuery.admit(raw)) {
+                is Refinement.Accepted -> admitted.value
+                is Refinement.Rejected -> return invalidArguments("query must be a nonempty single-line value.")
+            }
+        }
+        val project = when (val admitted = GradleProject.admit(repositoryRoot)) {
+            is Refinement.Accepted -> admitted.value
+            is Refinement.Rejected -> return projectFailure(admitted.failure)
+        }
+        return when (val discovery = discoverer.discover(project, TaskDiscoveryRequest(query, limit))) {
+            is Refinement.Accepted -> success(discovery.value.toDocument())
+            is Refinement.Rejected -> when (discovery.failure) {
+                GradleTaskDiscoveryFailure.CONNECTION_FAILED -> failure(
+                    ToolFailureCode.TASK_DISCOVERY_FAILED,
+                    "Gradle task discovery could not connect to the repository build.",
+                )
+                GradleTaskDiscoveryFailure.MODEL_UNAVAILABLE -> failure(
+                    ToolFailureCode.TASK_MODEL_UNAVAILABLE,
+                    "The repository build does not expose the Gradle project model.",
+                )
+            }
+        }
+    }
+
+    private fun history(arguments: JsonElement): DynamicToolResult {
+        val document = decode<HistoryDocument>(arguments)
+            ?: return invalidArguments("Arguments do not match the HISTORY contract.")
+        return when (val operation = document.operation) {
+            is HistoryOperationDocument.ListRuns -> {
+                val limit = when (val admitted = HistoryLimit.admit(operation.limit)) {
+                    is Refinement.Accepted -> admitted.value
+                    is Refinement.Rejected -> return invalidArguments("limit must be between 1 and 100.")
+                }
+                when (val summaries = runs.listHistory(limit)) {
+                    is Refinement.Accepted -> success(RunHistoryResultDocument(runs = summaries.value.map { it.toDocument() }))
+                    is Refinement.Rejected -> historyFailure(summaries.failure)
+                }
+            }
+            is HistoryOperationDocument.ReadRun -> {
+                val runId = operation.runId.admitRunId() ?: return invalidRunId()
+                when (val summary = runs.readHistory(runId)) {
+                    is Refinement.Accepted -> success(RunHistoryResultDocument(runs = listOf(summary.value.toDocument())))
+                    is Refinement.Rejected -> historyFailure(summary.failure)
+                }
+            }
+        }
+    }
+
+    private fun debug(arguments: JsonElement): DynamicToolResult {
+        val document = decode<DebugDocument>(arguments)
+            ?: return invalidArguments("Arguments do not match the DEBUG contract.")
+        val runId = document.runId.admitRunId() ?: return invalidRunId()
+        return when (val operation = document.operation) {
+            is DebugOperationDocument.Attach -> {
+                val timeout = when (val admitted = DebugTimeout.admit(document.operation.timeoutMillis)) {
+                    is Refinement.Accepted -> admitted.value
+                    is Refinement.Rejected -> return invalidArguments("timeoutMillis must be between 1 and 30000.")
+                }
+                withDebugTarget(runId) { endpoint ->
+                    debugger.attach(runId, endpoint, timeout).toToolResult(DebugAttachment::toDocument)
+                }
+            }
+            DebugOperationDocument.Threads -> withDebugTarget(runId) {
+                debugger.threads(runId).toToolResult(DebugThreads::toDocument)
+            }
+            is DebugOperationDocument.Stack -> {
+                val threadId = when (val admitted = DebugThreadId.admit(operation.threadId)) {
+                    is Refinement.Accepted -> admitted.value
+                    is Refinement.Rejected -> return invalidArguments("threadId must be greater than zero.")
+                }
+                val maximumFrames = when (val admitted = StackFrameLimit.admit(operation.maximumFrames)) {
+                    is Refinement.Accepted -> admitted.value
+                    is Refinement.Rejected -> return invalidArguments("maximumFrames must be between 1 and 128.")
+                }
+                withDebugTarget(runId) {
+                    debugger.stack(runId, threadId, maximumFrames).toToolResult(DebugStack::toDocument)
+                }
+            }
+            DebugOperationDocument.Pause -> withDebugTarget(runId) {
+                debugger.pause(runId).toToolResult(DebugControl::toDocument)
+            }
+            DebugOperationDocument.Resume -> withDebugTarget(runId) {
+                debugger.resume(runId).toToolResult(DebugControl::toDocument)
+            }
+            DebugOperationDocument.Detach -> debugger.detach(runId).toToolResult(DebugControl::toDocument)
+        }
+    }
+
+    private inline fun withDebugTarget(
+        runId: RunId,
+        operation: (DebugEndpoint) -> DynamicToolResult,
+    ): DynamicToolResult = when (val admitted = runs.debugTarget(runId)) {
+        is Refinement.Accepted -> operation(admitted.value.endpoint)
+        is Refinement.Rejected -> debugTargetFailure(admitted.failure)
     }
 
     private fun started(started: StartedRun): DynamicToolResult {
@@ -304,8 +656,82 @@ class GradleToolDispatcher(
                 state = started.state.name,
                 command = started.command,
                 startedAt = started.startedAt.toString(),
+                debugEndpoint = started.debugEndpoint?.toDocument(),
             ),
         )
+    }
+
+    private fun historyFailure(failure: RunHistoryFailure): DynamicToolResult = when (failure) {
+        RunHistoryFailure.UNKNOWN_RUN -> failure(
+            ToolFailureCode.UNKNOWN_RUN,
+            "The run ID has no persisted summary.",
+        )
+        RunHistoryFailure.PERSISTENCE_FAILED -> failure(
+            ToolFailureCode.PERSISTENCE_FAILED,
+            "Persistent run history could not be read.",
+        )
+        RunHistoryFailure.CORRUPT_HISTORY -> failure(
+            ToolFailureCode.CORRUPT_HISTORY,
+            "Persistent run history contains an invalid summary.",
+        )
+    }
+
+    private fun debugTargetFailure(failure: DebugTargetFailure): DynamicToolResult = when (failure) {
+        DebugTargetFailure.UNKNOWN_RUN -> failure(ToolFailureCode.UNKNOWN_RUN, "The run ID is not known.")
+        DebugTargetFailure.DEBUG_NOT_ENABLED -> failure(
+            ToolFailureCode.DEBUG_NOT_ENABLED,
+            "The run was not started with JDWP debugging enabled.",
+        )
+        DebugTargetFailure.RUN_NOT_ACTIVE -> failure(
+            ToolFailureCode.RUN_NOT_ACTIVE,
+            "The debug-enabled run is no longer active in this host.",
+        )
+    }
+
+    private fun debugFailure(failure: DebugFailure): DynamicToolResult = when (failure) {
+        DebugFailure.CONNECTOR_UNAVAILABLE -> failure(
+            ToolFailureCode.DEBUG_CONNECTOR_UNAVAILABLE,
+            "The JDK socket attaching connector is unavailable.",
+        )
+        DebugFailure.ATTACH_TIMEOUT -> failure(
+            ToolFailureCode.DEBUG_ATTACH_TIMEOUT,
+            "The JDWP endpoint did not accept the debugger before the timeout.",
+        )
+        DebugFailure.ATTACH_FAILED -> failure(
+            ToolFailureCode.DEBUG_ATTACH_FAILED,
+            "The debugger could not attach to the JDWP endpoint.",
+        )
+        DebugFailure.NOT_ATTACHED -> failure(
+            ToolFailureCode.DEBUG_NOT_ATTACHED,
+            "No debugger is attached to this run.",
+        )
+        DebugFailure.DISCONNECTED -> failure(
+            ToolFailureCode.DEBUG_DISCONNECTED,
+            "The debug target disconnected.",
+        )
+        DebugFailure.UNKNOWN_THREAD -> failure(
+            ToolFailureCode.DEBUG_UNKNOWN_THREAD,
+            "The debug thread ID is not known.",
+        )
+        DebugFailure.THREAD_NOT_SUSPENDED -> failure(
+            ToolFailureCode.DEBUG_THREAD_NOT_SUSPENDED,
+            "Stack frames are available only for a suspended thread.",
+        )
+        DebugFailure.FRAME_INFORMATION_UNAVAILABLE -> failure(
+            ToolFailureCode.DEBUG_FRAME_INFORMATION_UNAVAILABLE,
+            "The target could not provide stack-frame information.",
+        )
+        DebugFailure.CONTROL_FAILED -> failure(
+            ToolFailureCode.DEBUG_CONTROL_FAILED,
+            "The requested debugger control operation failed.",
+        )
+    }
+
+    private inline fun <Value, reified Document> Refinement<Value, DebugFailure>.toToolResult(
+        document: (Value) -> Document,
+    ): DynamicToolResult = when (this) {
+        is Refinement.Accepted -> success(document(value))
+        is Refinement.Rejected -> debugFailure(failure)
     }
 
     private fun projectFailure(failure: ProjectAdmissionFailure): DynamicToolResult = when (failure) {
@@ -337,6 +763,8 @@ class GradleToolDispatcher(
 
     private fun invalidArguments(message: String): DynamicToolResult = failure(ToolFailureCode.INVALID_ARGUMENTS, message)
 
+    private fun invalidRunId(): DynamicToolResult = invalidArguments("runId must be a canonical UUID.")
+
     private inline fun <reified Document> success(document: Document): DynamicToolResult =
         DynamicToolResult(success = true, text = wireJson.encodeToString(document))
 
@@ -363,7 +791,13 @@ private fun StartOperationDocument.admit(): Refinement<GradleOperation, String> 
             Refinement.Rejected("selectors must contain 1 to 64 unique test patterns.")
         } else {
             selectors.map { it.pattern }.admitAll(TestSelector::admit)?.let {
-                Refinement.Accepted(GradleOperation.Tests(admittedTask.value, it))
+                Refinement.Accepted(
+                    GradleOperation.Tests(
+                        task = admittedTask.value,
+                        selectors = it,
+                        debug = debug?.let { DebugLaunch.JDWP },
+                    ),
+                )
             } ?: Refinement.Rejected("Every test selector must be nonblank and single-line.")
         }
     }
@@ -392,10 +826,87 @@ private fun RunObservation.toDocument(): ObservationResultDocument = Observation
     durationMillis = durationMillis,
     events = events.map { OutputEventDocument(cursor = it.cursor.value, text = it.text) },
     nextCursor = nextCursor.value,
+    debugEndpoint = debugEndpoint?.toDocument(),
 )
 
 private fun RunCancellation.toDocument(): CancellationResultDocument = CancellationResultDocument(
     runId = runId.value.toString(),
     outcome = outcome.name,
     state = state.name,
+)
+
+private fun String.admitRunId(): RunId? = when (val admitted = RunId.admit(this)) {
+    is Refinement.Accepted -> admitted.value
+    is Refinement.Rejected -> null
+}
+
+private fun DebugEndpoint.toDocument(): DebugEndpointDocument = DebugEndpointDocument(
+    host = host,
+    port = port,
+)
+
+private fun TaskDiscovery.toDocument(): TaskDiscoveryResultDocument = TaskDiscoveryResultDocument(
+    tasks = tasks.map(DiscoveredGradleTask::toDocument),
+    truncated = truncated,
+)
+
+private fun DiscoveredGradleTask.toDocument(): DiscoveredTaskDocument = DiscoveredTaskDocument(
+    path = path,
+    name = name,
+    projectPath = projectPath,
+    group = group,
+    description = description,
+)
+
+private fun RunSummary.toDocument(): RunSummaryDocument = RunSummaryDocument(
+    runId = runId.value.toString(),
+    state = state.name,
+    command = command,
+    startedAt = startedAt.toString(),
+    finishedAt = finishedAt?.toString(),
+    exitCode = exitCode,
+    durationMillis = durationMillis,
+    debugEndpoint = debugEndpoint?.toDocument(),
+)
+
+private fun DebugAttachment.toDocument(): DebugAttachmentResultDocument = DebugAttachmentResultDocument(
+    runId = runId.value.toString(),
+    outcome = outcome.name,
+    endpoint = endpoint.toDocument(),
+)
+
+private fun DebugThreads.toDocument(): DebugThreadsResultDocument = DebugThreadsResultDocument(
+    runId = runId.value.toString(),
+    threads = threads.map {
+        DebugThreadDocument(
+            id = it.id,
+            name = it.name,
+            state = it.state.name,
+            suspended = it.suspended,
+        )
+    },
+)
+
+private fun DebugStack.toDocument(): DebugStackResultDocument = DebugStackResultDocument(
+    runId = runId.value.toString(),
+    thread = DebugThreadDocument(
+        id = thread.id,
+        name = thread.name,
+        state = thread.state.name,
+        suspended = thread.suspended,
+    ),
+    frames = frames.map {
+        DebugStackFrameDocument(
+            index = it.index,
+            declaringType = it.declaringType,
+            methodName = it.methodName,
+            lineNumber = it.lineNumber,
+            sourceName = it.sourceName,
+        )
+    },
+)
+
+private fun DebugControl.toDocument(): DebugControlResultDocument = DebugControlResultDocument(
+    runId = runId.value.toString(),
+    outcome = outcome.name,
 )

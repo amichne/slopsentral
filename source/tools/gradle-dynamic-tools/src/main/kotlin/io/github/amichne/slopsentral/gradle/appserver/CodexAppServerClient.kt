@@ -248,8 +248,8 @@ class CodexAppServerClient(
         type = "namespace",
         name = "gradle",
         description =
-            "Run, observe, and cancel one Gradle wrapper invocation in the current repository. " +
-                "Use observe until the run reaches SUCCEEDED, FAILED, or CANCELLED.",
+            "Discover tasks; run, observe, and cancel one Gradle wrapper invocation; read durable history; " +
+                "and attach JDI to debug-enabled tests. Use observe until the run becomes terminal.",
         tools = dispatcher.schemas.all().map { definition ->
             DynamicToolFunctionDocument(
                 type = "function",

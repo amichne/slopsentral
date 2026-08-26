@@ -131,6 +131,29 @@
                   }
                 ]
               ]
+            },
+            "debug": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "JDWP"
+                  ],
+                  "examples": [
+                    "JDWP"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false,
+              "examples": [
+                {
+                  "type": "JDWP"
+                }
+              ]
             }
           },
           "required": [
@@ -148,7 +171,10 @@
                   "type": "TEST_SELECTOR",
                   "pattern": "com.example.WidgetTest.createsWidget"
                 }
-              ]
+              ],
+              "debug": {
+                "type": "JDWP"
+              }
             }
           ]
         }

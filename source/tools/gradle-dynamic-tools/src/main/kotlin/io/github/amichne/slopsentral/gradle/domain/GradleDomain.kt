@@ -51,6 +51,13 @@ enum class ValueAdmissionFailure {
     INVALID_RUN_ID,
     INVALID_CURSOR,
     INVALID_WAIT_DURATION,
+    INVALID_DISCOVERY_LIMIT,
+    INVALID_TASK_QUERY,
+    INVALID_HISTORY_LIMIT,
+    INVALID_DEBUG_PORT,
+    INVALID_DEBUG_TIMEOUT,
+    INVALID_DEBUG_THREAD_ID,
+    INVALID_STACK_FRAME_LIMIT,
 }
 
 @JvmInline
@@ -129,13 +136,36 @@ sealed interface GradleOperation {
     data class Tests(
         val task: GradleTaskPath,
         val selectors: List<TestSelector>,
+        val debug: DebugLaunch?,
     ) : GradleOperation
+}
+
+enum class DebugLaunch {
+    JDWP,
+}
+
+@ConsistentCopyVisibility
+data class DebugEndpoint private constructor(
+    val host: String,
+    val port: Int,
+) {
+    companion object {
+        val GradleTest = DebugEndpoint("127.0.0.1", 5005)
+
+        fun loopback(port: Int): Refinement<DebugEndpoint, ValueAdmissionFailure> =
+            if (port in 1..65535) {
+                Refinement.Accepted(DebugEndpoint("127.0.0.1", port))
+            } else {
+                Refinement.Rejected(ValueAdmissionFailure.INVALID_DEBUG_PORT)
+            }
+    }
 }
 
 data class GradleInvocation(
     val project: GradleProject,
     val executable: Path,
     val arguments: List<String>,
+    val debugEndpoint: DebugEndpoint?,
 ) {
     val displayCommand: List<String> = listOf("./gradlew") + arguments
 
@@ -152,10 +182,19 @@ data class GradleInvocation(
                             add("--tests")
                             add(selector.value)
                         }
+                        if (operation.debug == DebugLaunch.JDWP) add("--debug-jvm")
                     }
                 }
             }
-            return GradleInvocation(project, project.wrapper, arguments)
+            return GradleInvocation(
+                project = project,
+                executable = project.wrapper,
+                arguments = arguments,
+                debugEndpoint = when (operation) {
+                    is GradleOperation.Tasks -> null
+                    is GradleOperation.Tests -> operation.debug?.let { DebugEndpoint.GradleTest }
+                },
+            )
         }
     }
 }
@@ -166,6 +205,7 @@ enum class RunState {
     SUCCEEDED,
     FAILED,
     CANCELLED,
+    ABANDONED,
     ;
 
     val isActive: Boolean
@@ -187,6 +227,7 @@ data class RunObservation(
     val durationMillis: Long?,
     val events: List<RunEvent>,
     val nextCursor: EventCursor,
+    val debugEndpoint: DebugEndpoint?,
 )
 
 enum class CancelOutcome {
