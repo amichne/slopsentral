@@ -1,8 +1,11 @@
 plugins {
     kotlin("jvm") version "2.4.10"
     kotlin("plugin.serialization") version "2.4.10"
+    id("org.graalvm.buildtools.native") version "1.1.9"
     application
 }
+
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -32,6 +35,21 @@ sourceSets {
 application {
     mainClass = "io.github.amichne.slopsentral.gradle.MainKt"
     applicationDefaultJvmArgs = listOf("--add-modules=jdk.jdi")
+}
+
+graalvmNative {
+    toolchainDetection.set(true)
+    binaries {
+        named("main") {
+            imageName.set("gradle-dynamic-tools")
+            mainClass.set(application.mainClass)
+            buildArgs.add("--no-fallback")
+            buildArgs.add("--add-modules=jdk.jdi")
+            buildArgs.add("--enable-url-protocols=http,https")
+            buildArgs.add("--install-exit-handlers")
+            resources.autodetect()
+        }
+    }
 }
 
 tasks.test {

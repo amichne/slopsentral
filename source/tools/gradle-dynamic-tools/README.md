@@ -30,6 +30,27 @@ Run the focused checks:
 ./gradlew test
 ```
 
+Build and smoke-test the native executable with a GraalVM 21 JDK:
+
+```shell
+./gradlew nativeCompile
+./build/native/nativeCompile/gradle-dynamic-tools --version
+./build/native/nativeCompile/gradle-dynamic-tools --help
+```
+
+Tagged releases publish no-fallback native archives for macOS arm64 and Linux x64. For example,
+install the macOS archive with GitHub CLI:
+
+```shell
+gh release download gradle-dynamic-tools-v0.1.0 \
+  --repo amichne/slopsentral \
+  --pattern 'gradle-dynamic-tools-0.1.0-macos-arm64.tar.gz'
+tar -xzf gradle-dynamic-tools-0.1.0-macos-arm64.tar.gz
+install -m 755 \
+  gradle-dynamic-tools-0.1.0-macos-arm64/gradle-dynamic-tools \
+  ~/.local/bin/gradle-dynamic-tools
+```
+
 Start one model turn against another Gradle repository:
 
 ```shell

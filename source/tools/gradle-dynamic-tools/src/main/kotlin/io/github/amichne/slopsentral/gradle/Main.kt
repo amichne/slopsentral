@@ -8,6 +8,7 @@ import io.github.amichne.slopsentral.gradle.debug.JdiDebuggerService
 import io.github.amichne.slopsentral.gradle.domain.GradleProject
 import io.github.amichne.slopsentral.gradle.domain.ProjectAdmissionFailure
 import io.github.amichne.slopsentral.gradle.domain.Refinement
+import io.github.amichne.slopsentral.gradle.domain.ReleaseVersion
 import io.github.amichne.slopsentral.gradle.history.FileRunHistoryStore
 import io.github.amichne.slopsentral.gradle.runtime.GradleRunService
 import io.github.amichne.slopsentral.gradle.runtime.SystemGradleExecutor
@@ -35,12 +36,18 @@ private enum class CliFailure {
 private sealed interface CliAdmission {
     data class Accepted(val configuration: CliConfiguration) : CliAdmission
 
+    data class VersionRequested(val version: ReleaseVersion) : CliAdmission
+
     data class Rejected(val failure: CliFailure) : CliAdmission
 }
 
 fun main(args: Array<String>) {
     val configuration = when (val admission = parseArguments(args)) {
         is CliAdmission.Accepted -> admission.configuration
+        is CliAdmission.VersionRequested -> {
+            println("gradle-dynamic-tools ${admission.version}")
+            return
+        }
         is CliAdmission.Rejected -> {
             val output = if (admission.failure == CliFailure.HELP_REQUESTED) System.out else System.err
             output.println(usage)
@@ -94,6 +101,7 @@ private fun parseArguments(args: Array<String>): CliAdmission {
     while (index < args.size) {
         when (args[index]) {
             "--help", "-h" -> return CliAdmission.Rejected(CliFailure.HELP_REQUESTED)
+            "--version" -> return CliAdmission.VersionRequested(ReleaseVersion.CURRENT)
             "--cwd" -> {
                 if (index + 1 >= args.size) return CliAdmission.Rejected(CliFailure.MISSING_OPTION_VALUE)
                 repository = Path.of(args[index + 1]).toAbsolutePath().normalize()
