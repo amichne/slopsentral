@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/gradle-dynamic-tools/start.schema.json",
+  "title": "START",
+  "description": "Starts one task or test Gradle invocation in the thread working directory.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "START"
+      ],
+      "examples": [
+        "START"
+      ]
+    },
+    "operation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "TASKS"
+              ],
+              "examples": [
+                "TASKS"
+              ]
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256,
+                "pattern": "^(?::[A-Za-z0-9_.-]+)+$|^[A-Za-z][A-Za-z0-9_.-]*$",
+                "examples": [
+                  ":app:test"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true,
+              "examples": [
+                [
+                  ":app:test"
+                ]
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "tasks"
+          ],
+          "additionalProperties": false,
+          "examples": [
+            {
+              "type": "TASKS",
+              "tasks": [
+                ":app:test"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "TESTS"
+              ],
+              "examples": [
+                "TESTS"
+              ]
+            },
+            "task": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^(?::[A-Za-z0-9_.-]+)+$|^[A-Za-z][A-Za-z0-9_.-]*$",
+              "examples": [
+                ":app:test"
+              ]
+            },
+            "selectors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "TEST_SELECTOR"
+                    ],
+                    "examples": [
+                      "TEST_SELECTOR"
+                    ]
+                  },
+                  "pattern": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512,
+                    "pattern": "^[^\\r\\n]+$",
+                    "examples": [
+                      "com.example.WidgetTest.createsWidget"
+                    ]
+                  }
+                },
+                "required": [
+                  "type",
+                  "pattern"
+                ],
+                "additionalProperties": false,
+                "examples": [
+                  {
+                    "type": "TEST_SELECTOR",
+                    "pattern": "com.example.WidgetTest.createsWidget"
+                  }
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 64,
+              "uniqueItems": true,
+              "examples": [
+                [
+                  {
+                    "type": "TEST_SELECTOR",
+                    "pattern": "com.example.WidgetTest.createsWidget"
+                  }
+                ]
+              ]
+            },
+            "debug": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "JDWP"
+                  ],
+                  "examples": [
+                    "JDWP"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false,
+              "examples": [
+                {
+                  "type": "JDWP"
+                }
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "task",
+            "selectors"
+          ],
+          "additionalProperties": false,
+          "examples": [
+            {
+              "type": "TESTS",
+              "task": ":app:test",
+              "selectors": [
+                {
+                  "type": "TEST_SELECTOR",
+                  "pattern": "com.example.WidgetTest.createsWidget"
+                }
+              ],
+              "debug": {
+                "type": "JDWP"
+              }
+            }
+          ]
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "examples": [
+        {
+          "type": "TASKS",
+          "tasks": [
+            ":app:test"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "type",
+    "operation"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "type": "START",
+      "operation": {
+        "type": "TASKS",
+        "tasks": [
+          ":app:test"
+        ]
+      }
+    }
+  ]
+}

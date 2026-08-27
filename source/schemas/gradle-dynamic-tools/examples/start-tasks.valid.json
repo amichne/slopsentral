@@ -1,0 +1,10 @@
+{
+  "type": "START",
+  "operation": {
+    "type": "TASKS",
+    "tasks": [
+      ":app:test",
+      ":lib:check"
+    ]
+  }
+}

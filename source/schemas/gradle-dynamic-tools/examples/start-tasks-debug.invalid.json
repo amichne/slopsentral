@@ -1,0 +1,12 @@
+{
+  "type": "START",
+  "operation": {
+    "type": "TASKS",
+    "tasks": [
+      ":app:test"
+    ],
+    "debug": {
+      "type": "JDWP"
+    }
+  }
+}

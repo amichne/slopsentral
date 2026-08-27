@@ -1,0 +1,8 @@
+{
+  "type": "GRADLE_DYNAMIC_TOOLS",
+  "gradleDynamicTools": {
+    "type": "DISCOVER",
+    "query": "test",
+    "limit": 100
+  }
+}

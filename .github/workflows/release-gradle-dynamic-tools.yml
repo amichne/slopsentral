@@ -1,0 +1,146 @@
+name: Release Gradle Dynamic Tools
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/release-gradle-dynamic-tools.yml"
+      - "source/tools/gradle-dynamic-tools/**"
+  push:
+    tags:
+      - "gradle-dynamic-tools-v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  GRADLE_DYNAMIC_TOOLS_VERSION: "0.2.0"
+
+jobs:
+  native:
+    name: Native image (${{ matrix.target }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            target: macos-arm64
+          - runner: ubuntu-latest
+            target: linux-x64
+
+    steps:
+      - name: Check out release tag
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: "21"
+          distribution: graalvm
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache: gradle
+          native-image-job-reports: "true"
+
+      - name: Test and compile native image
+        working-directory: source/tools/gradle-dynamic-tools
+        run: |
+          ./gradlew test
+          ./gradlew nativeCompile --no-configuration-cache
+
+      - name: Smoke test native image
+        shell: bash
+        working-directory: source/tools/gradle-dynamic-tools
+        run: |
+          set -euo pipefail
+          binary="build/native/nativeCompile/gradle-dynamic-tools"
+          expected_version="${GRADLE_DYNAMIC_TOOLS_VERSION}"
+          if [[ "${GITHUB_REF}" == refs/tags/gradle-dynamic-tools-v* ]]; then
+            expected_version="${GITHUB_REF_NAME#gradle-dynamic-tools-v}"
+          fi
+          test "$("${binary}" --version)" = "gradle-dynamic-tools ${expected_version}"
+          "${binary}" --help
+          "${binary}" codex --help | grep -F \
+            "gradle-dynamic-tools codex [--cwd REPOSITORY] [-- CODEX_ARGUMENTS...]"
+          test -x install.sh
+          bash -n install.sh
+
+          facade_smoke_dir="$(mktemp -d)"
+          ln -s /usr/bin/true "${facade_smoke_dir}/codex"
+          PATH="${facade_smoke_dir}:${PATH}" \
+            "${binary}" codex --cwd "${PWD}" -- --model smoke-test
+          unlink "${facade_smoke_dir}/codex"
+          rmdir "${facade_smoke_dir}"
+
+          set +e
+          "${binary}" --cwd "${RUNNER_TEMP}/missing-gradle-project" -- "run help" \
+            >"${RUNNER_TEMP}/expected-failure.stdout" \
+            2>"${RUNNER_TEMP}/expected-failure.stderr"
+          status=$?
+          set -e
+          test "${status}" -eq 2
+          grep -F "The --cwd value is not a directory." "${RUNNER_TEMP}/expected-failure.stderr"
+
+      - name: Package native image
+        id: package
+        shell: bash
+        working-directory: source/tools/gradle-dynamic-tools
+        run: |
+          set -euo pipefail
+          version="${GRADLE_DYNAMIC_TOOLS_VERSION}"
+          archive="gradle-dynamic-tools-${version}-${{ matrix.target }}.tar.gz"
+          staging="${RUNNER_TEMP}/gradle-dynamic-tools-${version}-${{ matrix.target }}"
+          mkdir -p "${staging}" dist
+          cp build/native/nativeCompile/gradle-dynamic-tools "${staging}/"
+          cp README.md "${staging}/"
+          cp install.sh "${staging}/"
+          tar -C "${RUNNER_TEMP}" -czf "dist/${archive}" "$(basename "${staging}")"
+          (cd dist && shasum -a 256 "${archive}" >"${archive}.sha256")
+
+      - name: Upload release assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-dynamic-tools-${{ matrix.target }}
+          path: source/tools/gradle-dynamic-tools/dist/*
+          if-no-files-found: error
+
+  release:
+    name: Publish prerelease
+    needs: native
+    if: startsWith(github.ref, 'refs/tags/gradle-dynamic-tools-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download release assets
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create or reconcile prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          title="Gradle Dynamic Tools ${tag#gradle-dynamic-tools-v}"
+          notes="Experimental native bridge for stock Codex CLI conversations with persistent Gradle dynamic tools, repository-scoped runs, task discovery, history, and JDI test debugging."
+          if gh release view "${tag}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            gh release edit "${tag}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --title "${title}" \
+              --notes "${notes}" \
+              --prerelease
+          else
+            gh release create "${tag}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --verify-tag \
+              --title "${title}" \
+              --notes "${notes}" \
+              --prerelease
+          fi
+          gh release upload "${tag}" dist/* \
+            --repo "${GITHUB_REPOSITORY}" \
+            --clobber
