@@ -5,14 +5,20 @@ plugins {
     application
 }
 
-version = "0.1.0"
+version = "0.2.0"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    val ktorVersion = "3.5.2"
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+    implementation("io.ktor:ktor-server-cio-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-websockets-jvm:$ktorVersion")
+    runtimeOnly("org.slf4j:slf4j-nop:2.0.18")
 
     testImplementation(kotlin("test"))
 }

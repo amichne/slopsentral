@@ -3,8 +3,8 @@
 package io.github.amichne.slopsentral.gradle.appserver
 
 import io.github.amichne.slopsentral.gradle.domain.Refinement
+import io.github.amichne.slopsentral.gradle.wire.DynamicToolCaller
 import io.github.amichne.slopsentral.gradle.wire.DynamicToolResult
-import io.github.amichne.slopsentral.gradle.wire.GradleToolDispatcher
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -20,16 +20,11 @@ import java.io.BufferedWriter
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Path
+import java.util.concurrent.atomic.AtomicBoolean
 
 private const val INITIALIZE_REQUEST_ID = 1L
 private const val THREAD_START_REQUEST_ID = 2L
 private const val TURN_START_REQUEST_ID = 3L
-
-private val appServerJson = Json {
-    encodeDefaults = true
-    explicitNulls = false
-    ignoreUnknownKeys = true
-}
 
 interface JsonLineTransport : AutoCloseable {
     fun send(line: String)
@@ -63,7 +58,7 @@ sealed interface CodexTurnOutcome {
 
 class CodexAppServerClient(
     private val transport: JsonLineTransport,
-    private val dispatcher: GradleToolDispatcher,
+    private val tools: DynamicToolCaller,
 ) {
     fun run(
         repository: Path,
@@ -93,7 +88,7 @@ class CodexAppServerClient(
                 clientInfo = ClientInfoDocument(
                     name = "gradle-dynamic-tools",
                     title = "Gradle dynamic tools POC",
-                    version = "0.1.0",
+                    version = "0.2.0",
                 ),
                 capabilities = InitializeCapabilitiesDocument(
                     experimentalApi = true,
@@ -116,7 +111,7 @@ class CodexAppServerClient(
                 sandbox = AppServerSandboxModeDocument.READ_ONLY,
                 ephemeral = true,
                 experimentalRawEvents = false,
-                dynamicTools = listOf(dynamicToolNamespace()),
+                dynamicTools = listOf(tools.dynamicToolNamespace()),
                 model = model,
             ),
         )
@@ -190,7 +185,7 @@ class CodexAppServerClient(
             appServerJson.decodeFromJsonElement<DynamicToolCallParamsDocument>(it)
         }
         val result = if (call.threadId == threadId && call.turnId == turnId) {
-            dispatcher.call(call.namespace, call.tool, call.arguments)
+            tools.call(call.namespace, call.tool, call.arguments)
         } else {
             DynamicToolResult(
                 success = false,
@@ -244,22 +239,6 @@ class CodexAppServerClient(
         }
     }
 
-    private fun dynamicToolNamespace(): DynamicToolNamespaceDocument = DynamicToolNamespaceDocument(
-        type = "namespace",
-        name = "gradle",
-        description =
-            "Discover tasks; run, observe, and cancel one Gradle wrapper invocation; read durable history; " +
-                "and attach JDI to debug-enabled tests. Use observe until the run becomes terminal.",
-        tools = dispatcher.schemas.all().map { definition ->
-            DynamicToolFunctionDocument(
-                type = "function",
-                name = definition.name,
-                description = definition.description,
-                inputSchema = definition.inputSchema,
-                deferLoading = false,
-            )
-        },
-    )
 }
 
 private sealed interface AwaitedResult {
@@ -330,23 +309,6 @@ private enum class AppServerSandboxModeDocument {
 }
 
 @Serializable
-private data class DynamicToolNamespaceDocument(
-    val type: String,
-    val name: String,
-    val description: String,
-    val tools: List<DynamicToolFunctionDocument>,
-)
-
-@Serializable
-private data class DynamicToolFunctionDocument(
-    val type: String,
-    val name: String,
-    val description: String,
-    val inputSchema: JsonObject,
-    val deferLoading: Boolean,
-)
-
-@Serializable
 private data class ThreadStartResultDocument(
     val thread: IdentityDocument,
     val model: String,
@@ -369,28 +331,6 @@ private data class TextUserInputDocument(
     val type: String,
     val text: String,
     @SerialName("text_elements") val textElements: List<JsonElement>,
-)
-
-@Serializable
-private data class DynamicToolCallParamsDocument(
-    val threadId: String,
-    val turnId: String,
-    val callId: String,
-    val namespace: String? = null,
-    val tool: String,
-    val arguments: JsonElement,
-)
-
-@Serializable
-private data class DynamicToolCallResponseDocument(
-    val contentItems: List<DynamicToolOutputTextDocument>,
-    val success: Boolean,
-)
-
-@Serializable
-private data class DynamicToolOutputTextDocument(
-    val type: String,
-    val text: String,
 )
 
 @Serializable
@@ -427,6 +367,9 @@ class ProcessJsonLineTransport private constructor(
     private val reader: BufferedReader,
     private val writer: BufferedWriter,
 ) : JsonLineTransport {
+    private val closed = AtomicBoolean(false)
+
+    @Synchronized
     override fun send(line: String) {
         writer.write(line)
         writer.newLine()
@@ -436,6 +379,7 @@ class ProcessJsonLineTransport private constructor(
     override fun receive(): String = reader.readLine() ?: throw IOException("app-server stdout closed")
 
     override fun close() {
+        if (!closed.compareAndSet(false, true)) return
         try {
             writer.close()
         } finally {
@@ -448,14 +392,26 @@ class ProcessJsonLineTransport private constructor(
     }
 
     companion object {
-        fun start(repository: Path): Refinement<ProcessJsonLineTransport, AppServerProcessFailure> = try {
-            val process = ProcessBuilder(
-                "codex",
-                "app-server",
-                "--disable",
-                "shell_tool",
-                "--stdio",
-            ).directory(repository.toFile()).start()
+        fun start(repository: Path): Refinement<ProcessJsonLineTransport, AppServerProcessFailure> =
+            start(repository, disableShellTool = true)
+
+        fun startForBridge(repository: Path): Refinement<ProcessJsonLineTransport, AppServerProcessFailure> =
+            start(repository, disableShellTool = false)
+
+        private fun start(
+            repository: Path,
+            disableShellTool: Boolean,
+        ): Refinement<ProcessJsonLineTransport, AppServerProcessFailure> = try {
+            val command = buildList {
+                add("codex")
+                add("app-server")
+                if (disableShellTool) {
+                    add("--disable")
+                    add("shell_tool")
+                }
+                add("--stdio")
+            }
+            val process = ProcessBuilder(command).directory(repository.toFile()).start()
             Thread.ofPlatform()
                 .daemon(true)
                 .name("gradle-dynamic-tools-app-server-stderr")

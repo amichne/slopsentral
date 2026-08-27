@@ -52,6 +52,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import java.nio.file.Path
+import java.security.MessageDigest
 
 private val wireJson = Json {
     classDiscriminator = "type"
@@ -381,11 +382,30 @@ data class DynamicToolDefinition(
     val inputSchema: JsonObject,
 )
 
+interface DynamicToolCaller {
+    val schemas: ToolSchemaCatalog
+
+    fun call(namespace: String?, tool: String, arguments: JsonElement): DynamicToolResult
+}
+
 class ToolSchemaCatalog private constructor(
     private val definitions: Map<String, DynamicToolDefinition>,
 ) {
     fun all(): List<DynamicToolDefinition> =
         listOf("start", "observe", "cancel", "discover", "history", "debug").map(definitions::getValue)
+
+    val contractSha256: String by lazy {
+        val digest = MessageDigest.getInstance("SHA-256")
+        all().forEach { definition ->
+            digest.update(definition.name.toByteArray(Charsets.UTF_8))
+            digest.update(0)
+            digest.update(definition.description.toByteArray(Charsets.UTF_8))
+            digest.update(0)
+            digest.update(definition.inputSchema.toString().toByteArray(Charsets.UTF_8))
+            digest.update(0)
+        }
+        digest.digest().joinToString(separator = "") { byte -> "%02x".format(byte) }
+    }
 
     companion object {
         fun bundled(): ToolSchemaCatalog {
@@ -440,11 +460,11 @@ class GradleToolDispatcher(
     private val runs: GradleRunService,
     private val discoverer: GradleTaskDiscoverer = WrapperGradleTaskDiscoverer(),
     private val debugger: JavaDebugger = JdiDebuggerService(),
-    val schemas: ToolSchemaCatalog = ToolSchemaCatalog.bundled(),
-) {
+    override val schemas: ToolSchemaCatalog = ToolSchemaCatalog.bundled(),
+) : DynamicToolCaller {
     private val repositoryRoot = repositoryRoot.toAbsolutePath().normalize()
 
-    fun call(namespace: String?, tool: String, arguments: JsonElement): DynamicToolResult {
+    override fun call(namespace: String?, tool: String, arguments: JsonElement): DynamicToolResult {
         if (namespace != "gradle") {
             return failure(ToolFailureCode.UNKNOWN_TOOL, "Expected the gradle dynamic-tool namespace.")
         }

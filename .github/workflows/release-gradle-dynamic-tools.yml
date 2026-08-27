@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 env:
-  GRADLE_DYNAMIC_TOOLS_VERSION: "0.1.0"
+  GRADLE_DYNAMIC_TOOLS_VERSION: "0.2.0"
 
 jobs:
   native:
@@ -60,6 +60,17 @@ jobs:
           fi
           test "$("${binary}" --version)" = "gradle-dynamic-tools ${expected_version}"
           "${binary}" --help
+          "${binary}" codex --help | grep -F \
+            "gradle-dynamic-tools codex [--cwd REPOSITORY] [-- CODEX_ARGUMENTS...]"
+          test -x install.sh
+          bash -n install.sh
+
+          facade_smoke_dir="$(mktemp -d)"
+          ln -s /usr/bin/true "${facade_smoke_dir}/codex"
+          PATH="${facade_smoke_dir}:${PATH}" \
+            "${binary}" codex --cwd "${PWD}" -- --model smoke-test
+          unlink "${facade_smoke_dir}/codex"
+          rmdir "${facade_smoke_dir}"
 
           set +e
           "${binary}" --cwd "${RUNNER_TEMP}/missing-gradle-project" -- "run help" \
@@ -82,6 +93,7 @@ jobs:
           mkdir -p "${staging}" dist
           cp build/native/nativeCompile/gradle-dynamic-tools "${staging}/"
           cp README.md "${staging}/"
+          cp install.sh "${staging}/"
           tar -C "${RUNNER_TEMP}" -czf "dist/${archive}" "$(basename "${staging}")"
           (cd dist && shasum -a 256 "${archive}" >"${archive}.sha256")
 
@@ -114,7 +126,7 @@ jobs:
           set -euo pipefail
           tag="${GITHUB_REF_NAME}"
           title="Gradle Dynamic Tools ${tag#gradle-dynamic-tools-v}"
-          notes="Experimental Codex App Server host with Gradle runs, task discovery, persistent history, and JDI test debugging."
+          notes="Experimental native bridge for stock Codex CLI conversations with persistent Gradle dynamic tools, repository-scoped runs, task discovery, history, and JDI test debugging."
           if gh release view "${tag}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
             gh release edit "${tag}" \
               --repo "${GITHUB_REPOSITORY}" \

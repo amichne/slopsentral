@@ -1,5 +1,11 @@
 package io.github.amichne.slopsentral.gradle
 
+import io.github.amichne.slopsentral.gradle.appserver.CodexCliArguments
+import io.github.amichne.slopsentral.gradle.appserver.CodexCliRunOutcome
+import io.github.amichne.slopsentral.gradle.appserver.CodexCliRunner
+import io.github.amichne.slopsentral.gradle.appserver.CodexSessionFacade
+import io.github.amichne.slopsentral.gradle.appserver.CodexSessionOutcome
+import io.github.amichne.slopsentral.gradle.appserver.SystemCodexCliRunner
 import io.github.amichne.slopsentral.gradle.debug.DebugFailure
 import io.github.amichne.slopsentral.gradle.debug.JavaDebugger
 import io.github.amichne.slopsentral.gradle.debug.JdiDebuggerService
@@ -30,15 +36,25 @@ import io.github.amichne.slopsentral.gradle.runtime.GradleRunService
 import io.github.amichne.slopsentral.gradle.runtime.RunIdSource
 import io.github.amichne.slopsentral.gradle.runtime.RunStartFailure
 import io.github.amichne.slopsentral.gradle.runtime.TimeSource
+import io.github.amichne.slopsentral.gradle.wire.DynamicToolCaller
+import io.github.amichne.slopsentral.gradle.wire.DynamicToolResult
 import io.github.amichne.slopsentral.gradle.wire.GradleToolDispatcher
+import io.github.amichne.slopsentral.gradle.wire.LoopbackEndpoint
+import io.github.amichne.slopsentral.gradle.wire.ToolSchemaCatalog
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.junit.jupiter.api.io.TempDir
-import java.net.ServerSocket
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.IOException
+import java.io.PrintStream
+import java.net.InetSocketAddress
+import java.net.ServerSocket
+import java.net.Socket
 import java.nio.file.Files
 import java.nio.file.Path
 import java.time.Instant
@@ -46,9 +62,11 @@ import java.util.UUID
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import kotlin.io.path.createDirectories
+import kotlin.io.path.readLines
 import kotlin.io.path.writeText
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
@@ -62,6 +80,108 @@ private val followUpTime = Instant.parse("2026-08-26T16:00:00Z")
 class GradleDynamicToolsFollowUpTest {
     @TempDir
     lateinit var repository: Path
+
+    @Test
+    fun `root help presents one-command Codex facade`() {
+        val output = ByteArrayOutputStream()
+        val original = System.out
+        try {
+            System.setOut(PrintStream(output, true, Charsets.UTF_8))
+            main(arrayOf("--help"))
+        } finally {
+            System.setOut(original)
+        }
+
+        assertTrue(
+            output.toString(Charsets.UTF_8).contains(
+                "gradle-dynamic-tools codex [--cwd REPOSITORY] [-- CODEX_ARGUMENTS...]",
+            ),
+            output.toString(Charsets.UTF_8),
+        )
+    }
+
+    @Test
+    fun `one-command facade owns the bridge for the Codex session`() {
+        createWrapper(repository)
+        val project = GradleProject.admit(repository).accepted()
+        val runner = RecordingCodexCliRunner()
+
+        val outcome = CodexSessionFacade(runner).run(
+            project = project,
+            tools = SessionRecordingTools,
+            arguments = CodexCliArguments.of(listOf("--model", "test-model")),
+        )
+
+        assertEquals(CodexSessionOutcome.Completed(exitCode = 17), outcome)
+        assertEquals(project.root, runner.repository)
+        assertEquals(listOf("--model", "test-model"), runner.arguments.values)
+        val endpoint = assertNotNull(runner.endpoint)
+        assertFailsWith<IOException> {
+            Socket().use { socket ->
+                socket.connect(InetSocketAddress("127.0.0.1", endpoint.port), 250)
+            }
+        }
+    }
+
+    @Test
+    fun `codex command refines repository options from passthrough arguments`() {
+        val admission = assertIs<CliAdmission.Accepted>(
+            parseArguments(
+                arrayOf(
+                    "codex",
+                    "--cwd",
+                    repository.toString(),
+                    "--",
+                    "--model",
+                    "test-model",
+                    "resume",
+                    "--last",
+                ),
+            ),
+        )
+        val configuration = assertIs<CliConfiguration.InteractiveCodex>(admission.configuration)
+
+        assertEquals(repository.toAbsolutePath().normalize(), configuration.repository)
+        assertEquals(
+            listOf("--model", "test-model", "resume", "--last"),
+            configuration.arguments.values,
+        )
+    }
+
+    @Test
+    fun `system Codex runner preserves the stock remote CLI contract`() {
+        val executable = repository.resolve("fake-codex")
+        executable.writeText(
+            """
+                #!/bin/sh
+                printf '%s\n' "${'$'}@" > codex-arguments.txt
+                exit 0
+            """.trimIndent() + "\n",
+        )
+        executable.toFile().setExecutable(true)
+        val endpoint = LoopbackEndpoint.admit("127.0.0.1:45123").accepted()
+
+        val outcome = SystemCodexCliRunner(executable.toString()).run(
+            repository,
+            endpoint,
+            CodexCliArguments.of(listOf("--model", "test-model", "resume", "--last")),
+        )
+
+        assertEquals(CodexCliRunOutcome.Completed(exitCode = 0), outcome)
+        assertEquals(
+            listOf(
+                "--remote",
+                "ws://127.0.0.1:45123",
+                "-C",
+                repository.toString(),
+                "--model",
+                "test-model",
+                "resume",
+                "--last",
+            ),
+            repository.resolve("codex-arguments.txt").readLines(),
+        )
+    }
 
     @Test
     fun `wrapper process discovers bounded task metadata from a multi-project build`() {
@@ -307,6 +427,36 @@ private class FollowUpDebugger : JavaDebugger {
         Refinement.Accepted(DebugControl(runId, DebugControlOutcome.DETACHED))
 
     override fun close() = Unit
+}
+
+private class RecordingCodexCliRunner : CodexCliRunner {
+    var repository: Path? = null
+        private set
+    var endpoint: LoopbackEndpoint? = null
+        private set
+    lateinit var arguments: CodexCliArguments
+        private set
+
+    override fun run(
+        repository: Path,
+        bridge: LoopbackEndpoint,
+        arguments: CodexCliArguments,
+    ): CodexCliRunOutcome {
+        this.repository = repository
+        this.endpoint = bridge
+        this.arguments = arguments
+        Socket().use { socket ->
+            socket.connect(InetSocketAddress("127.0.0.1", bridge.port), 1_000)
+        }
+        return CodexCliRunOutcome.Completed(exitCode = 17)
+    }
+}
+
+private object SessionRecordingTools : DynamicToolCaller {
+    override val schemas: ToolSchemaCatalog = ToolSchemaCatalog.bundled()
+
+    override fun call(namespace: String?, tool: String, arguments: JsonElement): DynamicToolResult =
+        DynamicToolResult(success = false, text = "The lifecycle test does not call tools.")
 }
 
 private fun createWrapper(repository: Path) {

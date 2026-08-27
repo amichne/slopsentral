@@ -4,6 +4,8 @@ import io.github.amichne.slopsentral.gradle.appserver.CodexAppServerClient
 import io.github.amichne.slopsentral.gradle.appserver.CodexTurnOutcome
 import io.github.amichne.slopsentral.gradle.appserver.JsonLineTransport
 import io.github.amichne.slopsentral.gradle.domain.GradleInvocation
+import io.github.amichne.slopsentral.gradle.domain.GradleProject
+import io.github.amichne.slopsentral.gradle.domain.Refinement
 import io.github.amichne.slopsentral.gradle.runtime.GradleExecutor
 import io.github.amichne.slopsentral.gradle.runtime.GradleProcessEvents
 import io.github.amichne.slopsentral.gradle.runtime.GradleProcessHandle
@@ -12,6 +14,10 @@ import io.github.amichne.slopsentral.gradle.runtime.RunIdSource
 import io.github.amichne.slopsentral.gradle.runtime.SystemGradleExecutor
 import io.github.amichne.slopsentral.gradle.runtime.TimeSource
 import io.github.amichne.slopsentral.gradle.wire.GradleToolDispatcher
+import io.github.amichne.slopsentral.gradle.wire.GradleToolWireClient
+import io.github.amichne.slopsentral.gradle.wire.GradleToolWireServer
+import io.github.amichne.slopsentral.gradle.wire.LoopbackBinding
+import io.github.amichne.slopsentral.gradle.wire.WireConnectionFailure
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.boolean
@@ -20,6 +26,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
+import java.nio.file.Files
 import java.time.Instant
 import java.util.UUID
 import kotlin.io.path.writeText
@@ -209,6 +216,7 @@ class GradleDynamicToolsTest {
     fun `app server client registers schemas and answers a live dynamic call`() {
         val executor = ManualGradleExecutor()
         val dispatcher = dispatcher(executor)
+        val project = admittedProject(repository)
         val transport = ScriptedTransport(
             """{"id":1,"result":{"userAgent":"test"}}""",
             """{"id":2,"result":{"thread":{"id":"thread-1"},"model":"gpt-test"}}""",
@@ -218,15 +226,25 @@ class GradleDynamicToolsTest {
             """{"method":"turn/completed","params":{"threadId":"thread-1","turn":{"id":"turn-1","status":"completed"}}}""",
         )
 
-        val outcome = CodexAppServerClient(transport, dispatcher).run(
-            repository = repository,
-            prompt = "Run :app:test and report the result.",
-            model = null,
-        )
+        val server = assertIs<Refinement.Accepted<GradleToolWireServer>>(
+            GradleToolWireServer.start(LoopbackBinding.ephemeral(), project, dispatcher),
+        ).value
+        val outcome = server.use {
+            assertIs<Refinement.Accepted<GradleToolWireClient>>(
+                GradleToolWireClient.connect(server.endpoint, project),
+            ).value.use { remoteTools ->
+                CodexAppServerClient(transport, remoteTools).run(
+                    repository = repository,
+                    prompt = "Run :app:test and report the result.",
+                    model = null,
+                )
+            }
+        }
 
         val result = assertIs<CodexTurnOutcome.Completed>(outcome)
         assertEquals("Gradle run started.", result.finalAnswer)
         assertEquals(1, executor.startCount)
+        assertTrue(dispatcher.schemas.contractSha256.matches(Regex("[0-9a-f]{64}")))
         val threadStart = transport.sent
             .map(testJson::parseToJsonElement)
             .map { it.jsonObject }
@@ -247,6 +265,69 @@ class GradleDynamicToolsTest {
             .map { it.jsonObject }
             .single { it["id"]?.jsonPrimitive?.content == "tool-request-1" }
         assertTrue(toolResponse["result"]!!.jsonObject["success"]!!.jsonPrimitive.boolean)
+        executor.complete(exitCode = 0)
+    }
+
+    @Test
+    fun `wire server preserves a run across independently admitted clients`() {
+        val executor = ManualGradleExecutor()
+        val dispatcher = dispatcher(executor)
+        val project = admittedProject(repository)
+        val otherRepository = repository.resolve("other-repository")
+        Files.createDirectories(otherRepository)
+        otherRepository.resolve("gradlew").writeText("#!/bin/sh\nexit 0\n")
+        otherRepository.resolve("gradlew").toFile().setExecutable(true)
+        val otherProject = admittedProject(otherRepository)
+        val server = assertIs<Refinement.Accepted<GradleToolWireServer>>(
+            GradleToolWireServer.start(
+                binding = LoopbackBinding.ephemeral(),
+                project = project,
+                tools = dispatcher,
+            ),
+        ).value
+
+        server.use {
+            val mismatch = GradleToolWireClient.connect(server.endpoint, otherProject)
+            assertEquals(
+                WireConnectionFailure.REPOSITORY_MISMATCH,
+                assertIs<Refinement.Rejected<WireConnectionFailure>>(mismatch).failure,
+            )
+            assertEquals(0, executor.startCount)
+
+            val started = assertIs<Refinement.Accepted<GradleToolWireClient>>(
+                GradleToolWireClient.connect(server.endpoint, project),
+            ).value.use { firstClient ->
+                firstClient.call(
+                    "gradle",
+                    "start",
+                    testJson.parseToJsonElement(
+                        """{"type":"START","operation":{"type":"TASKS","tasks":[":app:test"]}}""",
+                    ),
+                )
+            }
+            assertTrue(started.success, started.text)
+            executor.output("persistent output")
+
+            val observed = assertIs<Refinement.Accepted<GradleToolWireClient>>(
+                GradleToolWireClient.connect(server.endpoint, project),
+            ).value.use { secondClient ->
+                secondClient.call(
+                    "gradle",
+                    "observe",
+                    testJson.parseToJsonElement(
+                        """{"type":"OBSERVE","runId":"$firstRunId","after":0,"waitMillis":0}""",
+                    ),
+                )
+            }
+
+            assertTrue(observed.success, observed.text)
+            assertEquals(
+                "persistent output",
+                observed.payload()["events"]!!.jsonArray.single().jsonObject.string("text"),
+            )
+            assertEquals(1, executor.startCount)
+            executor.complete(exitCode = 0)
+        }
     }
 
     private fun dispatcher(executor: ManualGradleExecutor): GradleToolDispatcher {
@@ -261,6 +342,9 @@ class GradleDynamicToolsTest {
         )
         return GradleToolDispatcher(repository, service)
     }
+
+    private fun admittedProject(root: Path): GradleProject =
+        assertIs<Refinement.Accepted<GradleProject>>(GradleProject.admit(root)).value
 }
 
 private class ManualGradleExecutor : GradleExecutor {
