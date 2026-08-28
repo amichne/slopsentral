@@ -15,7 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "qualify": "tsx src/runtime/cli.ts qualify",
-    "smoke": "node dist/broker.mjs --version && node dist/broker.mjs catalog | node scripts/verify-catalog-output.mjs",
+    "smoke": "node dist/broker.mjs --version && KAST_EXECUTABLE=./test/kast-cli.fixture.ts node dist/broker.mjs catalog | node scripts/verify-catalog-output.mjs",
     "test": "tsx --test test/**/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
