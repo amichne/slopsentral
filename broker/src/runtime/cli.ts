@@ -50,7 +50,7 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
     return 2;
   }
   if (command === "catalog") {
-    const broker = createFederatedBroker(config.value);
+    const broker = await createFederatedBroker(config.value);
     if (broker.type === "failure") {
       process.stderr.write(`${JSON.stringify({ failure: broker.failure })}\n`);
       return 2;
@@ -81,7 +81,8 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
         );
         return 2;
       }
-      process.stdout.write(`${JSON.stringify(qualified.value)}\n`);
+      const { contract: _contract, ...summary } = qualified.value;
+      process.stdout.write(`${JSON.stringify(summary)}\n`);
       return 0;
     }
     const qualified = await qualifyCodexProtocol({

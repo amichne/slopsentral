@@ -20,7 +20,7 @@ export const startBrokerRuntime = async (
   config: RuntimeConfig,
   logger: BrokerLogger,
 ): Promise<Outcome<RunningBrokerRuntime, BrokerFailure>> => {
-  const broker = createFederatedBroker(config, (observation) =>
+  const broker = await createFederatedBroker(config, (observation) =>
     logger.write(observation),
   );
   if (broker.type === "failure") return broker;

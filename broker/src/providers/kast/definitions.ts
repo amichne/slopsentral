@@ -1,168 +1,74 @@
-import { Type } from "@sinclair/typebox";
+import type { TSchema } from "@sinclair/typebox";
 
 import { canonicalJson } from "../../broker/canonical.ts";
 import { defineTool } from "../../broker/index.ts";
+import type { Outcome, ToolDefinition } from "../../broker/types.ts";
+import type { KastCliInvocation, KastServerContract } from "./contract.ts";
 import type { KastRuntime } from "./runtime.ts";
-import { KastOutput, RelationKind } from "./schemas.ts";
 
-const presentKastOutput = (output: typeof KastOutput.static) => ({
-  success: output.status === "completed",
-  contentItems: [{ type: "inputText" as const, text: canonicalJson(output) }],
-});
+export const createKastTools = (
+  contract: KastServerContract,
+): readonly ToolDefinition<KastRuntime>[] =>
+  contract.tools.map((tool) =>
+    defineTool<KastRuntime, TSchema, TSchema>({
+      name: tool.name,
+      description: tool.description,
+      input: tool.inputSchema,
+      output: tool.outputSchema,
+      loading: tool.deferLoading ? "deferred" : "eager",
+      invoke: async (runtime, input, context) => {
+        const arguments_ = bindCliInvocation(tool.invocation, input);
+        if (arguments_.type === "failure") return arguments_;
+        return runtime.execute(arguments_.value, context);
+      },
+      present: (output) => ({
+        success: isRecord(output) && output.status === "completed",
+        contentItems: [
+          { type: "inputText" as const, text: canonicalJson(output) },
+        ],
+      }),
+    }),
+  );
 
-const Limit = Type.Integer({ minimum: 1, maximum: 1_000 });
-const NonBlankText = Type.String({ minLength: 1, maxLength: 16_384 });
-const WorkspaceFile = Type.String({ minLength: 1, maxLength: 4_096 });
-
-const SymbolDiscoverInput = Type.Union([
-  Type.Object(
-    {
-      mode: Type.Literal("name"),
-      query: NonBlankText,
-      kind: Type.Union([
-        Type.Literal("file"),
-        Type.Literal("class"),
-        Type.Literal("symbol"),
-      ]),
-      match: Type.Union([Type.Literal("fuzzy"), Type.Literal("exact-name")]),
-      limit: Limit,
-    },
-    { additionalProperties: false },
-  ),
-  Type.Object(
-    {
-      mode: Type.Literal("location"),
-      file: WorkspaceFile,
-      offset: Type.Integer({ minimum: 0 }),
-      limit: Limit,
-    },
-    { additionalProperties: false },
-  ),
-  Type.Object(
-    { mode: Type.Literal("structure"), file: WorkspaceFile, limit: Limit },
-    { additionalProperties: false },
-  ),
-  Type.Object(
-    {
-      mode: Type.Literal("text"),
-      query: NonBlankText,
-      scope: Type.Literal("workspace"),
-      limit: Limit,
-    },
-    { additionalProperties: false },
-  ),
-  Type.Object(
-    {
-      mode: Type.Literal("text"),
-      query: NonBlankText,
-      scope: Type.Literal("file"),
-      file: WorkspaceFile,
-      limit: Limit,
-    },
-    { additionalProperties: false },
-  ),
-]);
-
-export const kastSymbolDiscover = defineTool<
-  KastRuntime,
-  typeof SymbolDiscoverInput,
-  typeof KastOutput
->({
-  name: "symbol_discover",
-  description:
-    "Discover bounded Kotlin symbol candidates through Kast's canonical operation.",
-  input: SymbolDiscoverInput,
-  output: KastOutput,
-  loading: "deferred",
-  invoke: (runtime, input, context) => {
-    const arguments_ = ["symbol", "discover", `--mode=${input.mode}`];
-    switch (input.mode) {
-      case "name":
-        arguments_.push(
-          `--query=${input.query}`,
-          `--kind=${input.kind}`,
-          `--match=${input.match}`,
-        );
-        break;
-      case "location":
-        arguments_.push(`--file=${input.file}`, `--offset=${input.offset}`);
-        break;
-      case "structure":
-        arguments_.push(`--file=${input.file}`);
-        break;
-      case "text":
-        arguments_.push(`--query=${input.query}`, `--scope=${input.scope}`);
-        if (input.scope === "file") arguments_.push(`--file=${input.file}`);
-        break;
-    }
-    arguments_.push(`--limit=${input.limit}`);
-    return runtime.execute(arguments_, context);
-  },
-  present: presentKastOutput,
-});
-
-const SymbolResolveInput = Type.Object(
-  { candidate: NonBlankText },
-  { additionalProperties: false },
-);
-
-export const kastSymbolResolve = defineTool<
-  KastRuntime,
-  typeof SymbolResolveInput,
-  typeof KastOutput
->({
-  name: "symbol_resolve",
-  description:
-    "Refine one Kast discovery candidate to an exact generation-bound selector.",
-  input: SymbolResolveInput,
-  output: KastOutput,
-  loading: "deferred",
-  invoke: (runtime, input, context) =>
-    runtime.execute(
-      ["symbol", "resolve", `--candidate=${input.candidate}`],
-      context,
+const bindCliInvocation = (
+  invocation: KastCliInvocation,
+  input: unknown,
+): Outcome<readonly string[], { readonly code: string }> => {
+  if (!isRecord(input)) {
+    return { type: "failure", failure: { code: "KAST_INPUT_NOT_OBJECT" } };
+  }
+  const bindings = new Map(
+    invocation.bindings.map(
+      (binding) => [binding.inputField, binding] as const,
     ),
-  present: presentKastOutput,
-});
+  );
+  if (Object.keys(input).some((field) => !bindings.has(field))) {
+    return { type: "failure", failure: { code: "KAST_BINDING_MISMATCH" } };
+  }
+  const arguments_: string[] = [...invocation.command];
+  for (const binding of invocation.bindings) {
+    if (!Object.hasOwn(input, binding.inputField)) continue;
+    const value = cliScalar(input[binding.inputField]);
+    if (value.type === "failure") return value;
+    arguments_.push(`${binding.option}=${value.value}`);
+  }
+  return { type: "success", value: arguments_ };
+};
 
-const TraversalRunInput = Type.Object(
-  {
-    selector: NonBlankText,
-    relation: RelationKind,
-    maximumDepth: Limit,
-    maximumResults: Limit,
-  },
-  { additionalProperties: false },
-);
+type CliScalar =
+  | { readonly type: "encoded"; readonly value: string }
+  | { readonly type: "failure"; readonly failure: { readonly code: string } };
 
-export const kastTraversalRun = defineTool<
-  KastRuntime,
-  typeof TraversalRunInput,
-  typeof KastOutput
->({
-  name: "traversal_run",
-  description:
-    "Traverse one Kast semantic relation with explicit depth and result bounds.",
-  input: TraversalRunInput,
-  output: KastOutput,
-  loading: "deferred",
-  invoke: (runtime, input, context) =>
-    runtime.execute(
-      [
-        "traversal",
-        "run",
-        `--selector=${input.selector}`,
-        `--relation=${input.relation}`,
-        `--maximum-depth=${input.maximumDepth}`,
-        `--maximum-results=${input.maximumResults}`,
-      ],
-      context,
-    ),
-  present: presentKastOutput,
-});
+const cliScalar = (value: unknown): CliScalar => {
+  if (typeof value === "string") return { type: "encoded", value };
+  if (typeof value === "boolean") {
+    return { type: "encoded", value: value ? "true" : "false" };
+  }
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return { type: "encoded", value: String(value) };
+  }
+  return { type: "failure", failure: { code: "KAST_OPTION_NOT_SCALAR" } };
+};
 
-export const kastTools = [
-  kastSymbolDiscover,
-  kastSymbolResolve,
-  kastTraversalRun,
-] as const;
+const isRecord = (value: unknown): value is Readonly<Record<string, unknown>> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);

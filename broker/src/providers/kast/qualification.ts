@@ -1,24 +1,17 @@
+import type { TSchema } from "@sinclair/typebox";
+import { TypeGuard } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 
 import { canonicalJson, sha256 } from "../../broker/canonical.ts";
 import type { Outcome } from "../../broker/types.ts";
 import type { ProcessExecutor } from "../process.ts";
+import type { KastServerContract, KastServerTool } from "./contract.ts";
+import { projectJsonSchema } from "./json-schema.ts";
 import { KastCapabilityDocument } from "./schemas.ts";
 
 const MAXIMUM_KAST_DOCUMENT_BYTES = 512 * 1024;
 const MAXIMUM_KAST_VERSION_BYTES = 4 * 1024;
-
-const requiredOperations = [
-  "symbol.discover",
-  "symbol.resolve",
-  "traversal.run",
-] as const;
-
-const requiredCommands = [
-  "symbol discover --mode <name|location|structure|text> ... --limit <1..1000>",
-  "symbol resolve --candidate <candidate-selector>",
-  "traversal run --selector <exact-selector> --relation <kind> --maximum-depth <1..1000> --maximum-results <1..1000>",
-] as const;
+const SUPPORTED_SERVER_PROJECTION_SCHEMA_VERSION = 1;
 
 export interface KastQualificationOptions {
   readonly executable: string;
@@ -28,9 +21,11 @@ export interface KastQualificationOptions {
 
 export interface KastQualification {
   readonly cliVersion: string;
+  readonly contract: KastServerContract;
   readonly schemaDigest: string;
   readonly schemaVersion: number;
-  readonly wireSchemaId: string;
+  readonly serverProjectionVersion: number;
+  readonly toolCount: number;
 }
 
 export type KastQualificationFailure =
@@ -69,56 +64,168 @@ export const qualifyKast = async (
   if (schema.type === "failure" || schema.value.exitCode !== 0) {
     return { type: "failure", failure: { code: "KAST_SCHEMA_UNAVAILABLE" } };
   }
-  const document = parseJson(schema.value.stdout);
+  const parsed = parseJson(schema.value.stdout);
   if (
-    document === undefined ||
-    !Value.Check(KastCapabilityDocument, document)
+    parsed.type === "rejected" ||
+    !Value.Check(KastCapabilityDocument, parsed.value)
   ) {
     return { type: "failure", failure: { code: "KAST_SCHEMA_INVALID" } };
   }
-  const capability = Value.Decode(KastCapabilityDocument, document);
-  if (!compatibleCapability(capability)) {
-    return { type: "failure", failure: { code: "KAST_SCHEMA_INCOMPATIBLE" } };
+  const capability = Value.Decode(KastCapabilityDocument, parsed.value);
+  const contract = admitContract(capability);
+  if (contract.type === "rejected") {
+    return {
+      type: "failure",
+      failure: { code: "KAST_SCHEMA_INCOMPATIBLE" },
+    };
   }
   return {
     type: "success",
     value: {
       cliVersion,
-      schemaDigest: sha256(canonicalJson(document)),
+      contract: contract.value,
+      schemaDigest: sha256(canonicalJson(parsed.value)),
       schemaVersion: capability.schemaVersion,
-      wireSchemaId: capability.wireSchema.wireSchemaId,
+      serverProjectionVersion: capability.serverProjection.schemaVersion,
+      toolCount: contract.value.tools.length,
     },
   };
 };
 
-const compatibleCapability = (
-  capability: typeof KastCapabilityDocument.static,
-): boolean => {
+type Capability = typeof KastCapabilityDocument.static;
+
+type ContractAdmission =
+  | { readonly type: "admitted"; readonly value: KastServerContract }
+  | { readonly type: "rejected" };
+
+const admitContract = (capability: Capability): ContractAdmission => {
   if (
-    capability.schemaVersion !== capability.operationRegistry.schemaVersion ||
-    capability.schemaVersion !== capability.wireSchema.schemaVersion
+    capability.serverProjection.schemaVersion !==
+    SUPPORTED_SERVER_PROJECTION_SCHEMA_VERSION
   ) {
-    return false;
+    return { type: "rejected" };
   }
-  const operations = new Set(capability.operationRegistry.operationIds);
-  const commands = new Set(capability.cliProjection.commands);
+  const tools = capability.serverProjection.tools;
   if (
-    operations.size !== capability.operationRegistry.operationIds.length ||
-    commands.size !== capability.cliProjection.commands.length
+    hasDuplicates(tools.map(({ name }) => name)) ||
+    hasDuplicates(tools.map(({ operationId }) => operationId))
   ) {
-    return false;
+    return { type: "rejected" };
+  }
+
+  const admittedTools: KastServerTool[] = [];
+  for (const tool of tools) {
+    const inputSchema = projectJsonSchema(tool.inputSchema);
+    const outputSchema = projectJsonSchema(tool.outputSchema);
+    if (inputSchema.type === "failure" || outputSchema.type === "failure") {
+      return { type: "rejected" };
+    }
+    const properties = inputSchemaProperties(inputSchema.value);
+    if (properties.type === "rejected") return properties;
+    const inputFields = tool.invocation.bindings.map(
+      ({ inputField }) => inputField,
+    );
+    const options = tool.invocation.bindings.map(({ option }) => option);
+    const boundFields = new Set(inputFields);
+    if (
+      hasDuplicates(inputFields) ||
+      hasDuplicates(options) ||
+      [...properties.values].some((property) => !boundFields.has(property)) ||
+      inputFields.some((field) => !properties.values.has(field))
+    ) {
+      return { type: "rejected" };
+    }
+    admittedTools.push({
+      operationId: tool.operationId,
+      name: tool.name,
+      description: tool.description,
+      deferLoading: tool.deferLoading,
+      cliUsage: tool.cliUsage,
+      inputSchema: inputSchema.value,
+      outputSchema: outputSchema.value,
+      invocation: {
+        type: "CLI",
+        command: [...tool.invocation.command],
+        bindings: tool.invocation.bindings.map((binding) => ({ ...binding })),
+      },
+    });
+  }
+  return {
+    type: "admitted",
+    value: {
+      schemaVersion: capability.serverProjection.schemaVersion,
+      namespace: "kast",
+      tools: admittedTools,
+    },
+  };
+};
+
+type SchemaProperties =
+  | { readonly type: "admitted"; readonly values: ReadonlySet<string> }
+  | { readonly type: "rejected" };
+
+const inputSchemaProperties = (schema: TSchema): SchemaProperties => {
+  if (schema.type === "object" && isRecord(schema.properties)) {
+    if (
+      Object.values(schema.properties).some(
+        (property) =>
+          !TypeGuard.IsSchema(property) || !isCliOptionScalarSchema(property),
+      )
+    ) {
+      return { type: "rejected" };
+    }
+    return {
+      type: "admitted",
+      values: new Set(Object.keys(schema.properties)),
+    };
+  }
+  if (!Array.isArray(schema.anyOf) || schema.anyOf.length === 0) {
+    return { type: "rejected" };
+  }
+  const values = new Set<string>();
+  for (const variant of schema.anyOf) {
+    if (!TypeGuard.IsSchema(variant)) return { type: "rejected" };
+    const properties = inputSchemaProperties(variant);
+    if (properties.type === "rejected") return properties;
+    properties.values.forEach((property) => values.add(property));
+  }
+  return { type: "admitted", values };
+};
+
+const isCliOptionScalarSchema = (schema: TSchema): boolean => {
+  if (
+    schema.type === "string" ||
+    schema.type === "integer" ||
+    schema.type === "number" ||
+    schema.type === "boolean"
+  ) {
+    return true;
   }
   return (
-    requiredOperations.every((operation) => operations.has(operation)) &&
-    requiredCommands.every((command) => commands.has(command))
+    Array.isArray(schema.anyOf) &&
+    schema.anyOf.length > 0 &&
+    schema.anyOf.every(
+      (variant) =>
+        TypeGuard.IsSchema(variant) && isCliOptionScalarSchema(variant),
+    )
   );
 };
 
-const parseJson = (source: string): unknown | undefined => {
+const hasDuplicates = (values: readonly string[]): boolean =>
+  new Set(values).size !== values.length;
+
+const isRecord = (value: unknown): value is Readonly<Record<string, unknown>> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+type JsonParsing =
+  | { readonly type: "parsed"; readonly value: unknown }
+  | { readonly type: "rejected" };
+
+const parseJson = (source: string): JsonParsing => {
   try {
     const value: unknown = JSON.parse(source);
-    return value;
+    return { type: "parsed", value };
   } catch {
-    return undefined;
+    return { type: "rejected" };
   }
 };

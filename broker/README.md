@@ -3,7 +3,8 @@
 This package is a strict TypeScript proxy for the runtime-qualified Codex App Server protocol. It
 owns the normal local App Server control socket, supervises one private upstream
 `codex app-server` process, injects one deterministic dynamic-tool catalog, and routes typed calls
-to independent, lazy Gradle and Kast providers.
+to independent Gradle and Kast providers. Provider execution remains lazy; installed contracts are
+qualified before the catalog is published.
 
 The broker does not replace, wrap, alias, or shadow `codex`. Start the broker, then use the normal
 managed `codex` command. If another process already owns either socket, startup fails closed.
@@ -11,7 +12,8 @@ managed `codex` command. If another process already owns either socket, startup 
 ## Qualified contracts
 
 - Codex: any installed CLI that emits the required experimental App Server schemas
-- Kast: any installed CLI whose live capability schema proves the broker-owned operations
+- Kast: any installed CLI whose live `--schema` document contains the supported
+  `serverProjection` contract
 - Node.js: 22 or newer
 
 At startup the broker asks the configured executable for its version and runs
@@ -20,23 +22,30 @@ digests the complete output, locates the ten App Server messages the broker owns
 their validators before launching that same executable. Generated schemas remain ephemeral. A CLI
 that lacks the command or any required contract fails closed as `CodexProtocolIncompatible`.
 
-Kast remains lazy. Before its first semantic call, the broker runs the configured executable's
-`--version` and `--schema` commands, decodes the bounded capability document, proves schema-version
-consistency plus the three required operation and CLI projections, and records a canonical digest.
-Compatible CLI and schema versions are accepted; incomplete or malformed capabilities fail closed.
+Before constructing the catalog, the broker runs the exact configured Kast executable's
+`--version` and `--schema` commands. It bounds and decodes the capability document, admits the
+installed `serverProjection` JSON Schema subset, and obtains tool names, descriptions, input and
+output schemas, loading policy, operation identities, command tokens, and field-to-option bindings
+from that document. It records the complete canonical digest. Before the first Kast invocation,
+the lazy runtime qualifies the same executable again and rejects any version or contract drift as
+`KAST_CONTRACT_CHANGED`. Incomplete, malformed, unmapped, duplicated, or unsupported projections
+fail closed.
 
 ## Tools
 
-The static catalog is available without starting either provider:
+The deterministic catalog is available after contract qualification without starting either
+provider runtime:
 
 - `gradle.inspect`, `gradle.tasks`, and `gradle.dependencies` execute the target repository's exact
   executable `gradlew` path without a shell.
-- `kast.symbol_discover`, `kast.symbol_resolve`, and `kast.traversal_run` preserve Kast's bounded,
-  discriminated semantic contracts.
+- The currently installed Kast projection advertises `kast.symbol_discover`,
+  `kast.symbol_resolve`, and `kast.traversal_run`. Those identities and shapes are not owned by the
+  broker; another compatible installed projection changes the catalog dynamically.
 
-All MVP tools are read-only. Model arguments cross one strict TypeBox decoder before provider
-startup or invocation. Unknown properties, invalid scalar values, incomplete variants, and invalid
-constraints are finite `InvalidArguments` failures.
+All current tools are read-only. Kast's admitted JSON Schemas are refined into executable TypeBox
+schemas before entering the catalog. Model arguments cross that exact decoder before provider
+startup or invocation. Unknown properties, invalid scalar values, incomplete variants, unsupported
+CLI bindings, and invalid constraints are finite failures.
 
 ## Run
 
@@ -67,7 +76,8 @@ Configuration is sourced once at the runtime boundary:
 - `CODEX_EXECUTABLE` selects the exact executable whose generated contract is qualified and whose
   App Server is launched.
 - `KAST_EXECUTABLE` selects the exact Kast executable whose live capability schema is qualified;
-  the default is `kast`.
+  the default is `kast`. Use an absolute version-scoped path when catalog identity must not follow a
+  mutable `PATH` or installer `current` link.
 - `BROKER_PROVIDER_CWD` selects the qualification workspace; the default is the broker's startup
   directory.
 
@@ -88,8 +98,9 @@ runtime protocol qualification, unit/integration tests, and the bundled executab
 installed-upstream acceptance generates the installed Codex CLI's exact contract, starts one App
 Server process behind the public broker socket, completes initialization, and proves providers
 remain absent before their first calls. Unit tests separately prove that an arbitrary version
-string is admitted when its generated contract is compatible. The same proof covers arbitrary
-Kast CLI and schema versions whose capability manifests retain the broker-owned operations.
+string is admitted when its generated contract is compatible. A Kast fixture changes both a tool
+name and its input field and proves the catalog and resulting CLI invocation follow only that
+selected executable's projection.
 
 The installed-system acceptance requires `gradle`, the qualified `kast`, and a compatible `codex`
 on `PATH`. It creates and removes a disposable consumer Gradle repository outside this package,

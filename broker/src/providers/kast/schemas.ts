@@ -1,68 +1,77 @@
 import { Type } from "@sinclair/typebox";
 
 const BoundedText = Type.String({ minLength: 1, maxLength: 16_384 });
+const CliToken = Type.String({ minLength: 1, maxLength: 4_096 });
+const InputField = Type.String({
+  minLength: 1,
+  maxLength: 64,
+  pattern: "^[a-z][A-Za-z0-9]*$",
+});
+const OperationId = Type.String({
+  minLength: 3,
+  maxLength: 128,
+  pattern: "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$",
+});
 const SchemaVersion = Type.Integer({ minimum: 1 });
+const OpenComponent = Type.Object({}, { additionalProperties: true });
+const ToolName = Type.String({
+  minLength: 1,
+  maxLength: 64,
+  pattern: "^[a-z][a-z0-9_]*$",
+});
+
+const KastServerToolDocument = Type.Object(
+  {
+    operationId: OperationId,
+    name: ToolName,
+    description: BoundedText,
+    deferLoading: Type.Boolean(),
+    cliUsage: BoundedText,
+    inputSchema: Type.Unknown(),
+    outputSchema: Type.Unknown(),
+    invocation: Type.Object(
+      {
+        type: Type.Literal("CLI"),
+        command: Type.Array(CliToken, { minItems: 1, maxItems: 16 }),
+        bindings: Type.Array(
+          Type.Object(
+            {
+              type: Type.Literal("OPTION"),
+              inputField: InputField,
+              option: Type.String({
+                minLength: 3,
+                maxLength: 128,
+                pattern: "^--[a-z][a-z0-9-]*$",
+              }),
+            },
+            { additionalProperties: false },
+          ),
+          { maxItems: 64 },
+        ),
+      },
+      { additionalProperties: false },
+    ),
+  },
+  { additionalProperties: false },
+);
 
 export const KastCapabilityDocument = Type.Object(
   {
     schemaVersion: SchemaVersion,
-    operationRegistry: Type.Object(
+    operationRegistry: Type.Optional(OpenComponent),
+    wireSchema: Type.Optional(OpenComponent),
+    cliProjection: Type.Optional(OpenComponent),
+    serverProjection: Type.Object(
       {
         schemaVersion: SchemaVersion,
-        operationIds: Type.Array(BoundedText, { maxItems: 1_024 }),
+        namespace: Type.Literal("kast"),
+        tools: Type.Array(KastServerToolDocument, {
+          minItems: 1,
+          maxItems: 64,
+        }),
       },
-      { additionalProperties: true },
-    ),
-    wireSchema: Type.Object(
-      {
-        schemaVersion: SchemaVersion,
-        wireSchemaId: BoundedText,
-      },
-      { additionalProperties: true },
-    ),
-    cliProjection: Type.Object(
-      {
-        localFlags: Type.Array(BoundedText, { maxItems: 1_024 }),
-        lifecycleCommands: Type.Array(BoundedText, { maxItems: 1_024 }),
-        commands: Type.Array(BoundedText, { maxItems: 1_024 }),
-      },
-      { additionalProperties: true },
+      { additionalProperties: false },
     ),
   },
   { additionalProperties: true },
-);
-
-export const JsonValue = Type.Recursive((Self) =>
-  Type.Union([
-    Type.Null(),
-    Type.Boolean(),
-    Type.Number(),
-    Type.String(),
-    Type.Array(Self),
-    Type.Record(Type.String(), Self),
-  ]),
-);
-
-export const KastOutput = Type.Union([
-  Type.Object(
-    { status: Type.Literal("completed"), document: JsonValue },
-    { additionalProperties: false },
-  ),
-  Type.Object(
-    { status: Type.Literal("rejected"), diagnostic: JsonValue },
-    { additionalProperties: false },
-  ),
-]);
-
-export const RelationKind = Type.Union(
-  [
-    Type.Literal("references"),
-    Type.Literal("callers"),
-    Type.Literal("callees"),
-    Type.Literal("implementations"),
-    Type.Literal("inheritors"),
-    Type.Literal("overrides"),
-    Type.Literal("type-uses"),
-  ],
-  { description: "One canonical Kast semantic relation." },
 );

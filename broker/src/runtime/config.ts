@@ -3,7 +3,7 @@ import { join, resolve } from "node:path";
 
 import type { BrokerLimits, Outcome } from "../broker/types.ts";
 
-export const BROKER_VERSION = "0.4.0";
+export const BROKER_VERSION = "0.5.0";
 
 export interface RuntimeConfig {
   readonly brokerLimits: BrokerLimits;

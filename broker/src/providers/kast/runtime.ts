@@ -1,5 +1,3 @@
-import { Value } from "@sinclair/typebox/value";
-
 import type {
   InvocationContext,
   Outcome,
@@ -8,7 +6,6 @@ import type {
 import type { ProcessExecutor } from "../process.ts";
 import type { KastQualification } from "./qualification.ts";
 import { qualifyKast } from "./qualification.ts";
-import { KastOutput } from "./schemas.ts";
 
 const MAXIMUM_KAST_OUTPUT_BYTES = 512 * 1024;
 
@@ -17,7 +14,7 @@ export interface KastRuntime {
   readonly execute: (
     arguments_: readonly string[],
     context: InvocationContext,
-  ) => Promise<Outcome<typeof KastOutput.static, ProviderCallFailure>>;
+  ) => Promise<Outcome<unknown, ProviderCallFailure>>;
 }
 
 export interface KastRuntimeOptions {
@@ -28,10 +25,20 @@ export interface KastRuntimeOptions {
 
 export const startKastRuntime = async (
   options: KastRuntimeOptions,
+  expected: KastQualification,
   signal: AbortSignal,
 ): Promise<Outcome<KastRuntime, { readonly code: string }>> => {
   const qualification = await qualifyKast(options, signal);
   if (qualification.type === "failure") return qualification;
+  if (
+    qualification.value.cliVersion !== expected.cliVersion ||
+    qualification.value.schemaDigest !== expected.schemaDigest
+  ) {
+    return {
+      type: "failure",
+      failure: { code: "KAST_CONTRACT_CHANGED" },
+    };
+  }
 
   return {
     type: "success",
@@ -47,7 +54,7 @@ const executeKast = async (
   options: KastRuntimeOptions,
   arguments_: readonly string[],
   context: InvocationContext,
-): Promise<Outcome<typeof KastOutput.static, ProviderCallFailure>> => {
+): Promise<Outcome<unknown, ProviderCallFailure>> => {
   const result = await options.processExecutor({
     executable: options.executable,
     arguments: arguments_,
@@ -61,22 +68,27 @@ const executeKast = async (
   const document = parseJson(
     result.value.exitCode === 0 ? result.value.stdout : result.value.stderr,
   );
-  const output: unknown =
-    document === undefined
-      ? undefined
-      : result.value.exitCode === 0
-        ? { status: "completed", document }
-        : { status: "rejected", diagnostic: document };
-  return Value.Check(KastOutput, output)
-    ? { type: "success", value: Value.Decode(KastOutput, output) }
-    : { type: "failure", failure: { code: "MALFORMED_KAST_OUTPUT" } };
+  if (document.type === "rejected") {
+    return { type: "failure", failure: { code: "MALFORMED_KAST_OUTPUT" } };
+  }
+  return {
+    type: "success",
+    value:
+      result.value.exitCode === 0
+        ? { status: "completed", document: document.value }
+        : { status: "rejected", diagnostic: document.value },
+  };
 };
 
-const parseJson = (text: string): unknown | undefined => {
+type JsonParsing =
+  | { readonly type: "parsed"; readonly value: unknown }
+  | { readonly type: "rejected" };
+
+const parseJson = (text: string): JsonParsing => {
   try {
     const value: unknown = JSON.parse(text);
-    return value;
+    return { type: "parsed", value };
   } catch {
-    return undefined;
+    return { type: "rejected" };
   }
 };

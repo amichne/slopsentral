@@ -6,7 +6,7 @@ import { describe, test } from "node:test";
 
 import { createBroker } from "../src/broker/index.ts";
 import { createGradleRegistration } from "../src/providers/gradle/registration.ts";
-import { createKastRegistration } from "../src/providers/kast/registration.ts";
+import { qualifyKastRegistration } from "../src/providers/kast/registration.ts";
 import type {
   ProcessExecutor,
   ProcessRequest,
@@ -15,11 +15,20 @@ import type { InvocationContext } from "../src/broker/types.ts";
 import { compatibleKastSchema } from "./kast-schema.fixture.ts";
 
 describe("federation contract", () => {
-  test("Gradle and Kast compose through provider registration only", () => {
-    const created = createBroker([
-      createGradleRegistration(),
-      createKastRegistration(),
-    ]);
+  test("Gradle and Kast compose through provider registration only", async () => {
+    const kast = await qualifyKastRegistration(
+      {
+        processExecutor: async (request) =>
+          request.arguments[0] === "--version"
+            ? processSuccess("kast 999.42.7 (IDE-hosted)\n")
+            : processSuccess(JSON.stringify(compatibleKastSchema())),
+        qualificationCwd: "/workspace",
+      },
+      new AbortController().signal,
+    );
+    assert.equal(kast.type, "success");
+    if (kast.type !== "success") return;
+    const created = createBroker([createGradleRegistration(), kast.value]);
     assert.equal(created.type, "success");
     const tools = Object.fromEntries(
       created.value.catalog.namespaces.map((namespace) => [
@@ -58,18 +67,33 @@ describe("federation contract", () => {
       }
       return processSuccess("Gradle fixture output\n");
     };
-    const created = createBroker([
-      createGradleRegistration({ processExecutor: execute }),
-      createKastRegistration({
+    const kast = await qualifyKastRegistration(
+      {
         executable: "kast",
         processExecutor: execute,
         qualificationCwd: workspace,
-      }),
+      },
+      new AbortController().signal,
+    );
+    assert.equal(kast.type, "success");
+    if (kast.type !== "success") return;
+    const created = createBroker([
+      createGradleRegistration({ processExecutor: execute }),
+      kast.value,
     ]);
     assert.equal(created.type, "success");
 
     try {
-      assert.equal(requests.length, 0);
+      assert.deepEqual(
+        requests.map(({ executable, arguments: arguments_ }) => [
+          executable,
+          ...arguments_,
+        ]),
+        [
+          ["kast", "--version"],
+          ["kast", "--schema"],
+        ],
+      );
       const gradle = await created.value.dispatch({
         namespace: "gradle",
         tool: "inspect",
@@ -79,7 +103,7 @@ describe("federation contract", () => {
       assert.equal(gradle.type, "success");
       assert.deepEqual(
         requests.map(({ executable }) => executable),
-        [wrapper],
+        ["kast", "kast", wrapper],
       );
 
       const kast = await created.value.dispatch({
@@ -95,6 +119,8 @@ describe("federation contract", () => {
           ...arguments_,
         ]),
         [
+          ["kast", "--version"],
+          ["kast", "--schema"],
           [wrapper, "--console=plain", "--no-daemon", "projects"],
           ["kast", "--version"],
           ["kast", "--schema"],
