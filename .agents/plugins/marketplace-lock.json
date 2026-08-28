@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-27T09:55:34-04:00",
+  "generatedAt": "2026-08-28T00:47:49-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -717,6 +717,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "75008a68556fda4b1bc9223a093b94d03e00f4e1",
+  "sourceSha": "0c28aa2b8f2f92ed6cf035abf47aef24910b3060",
   "type": "HYDRATED_MARKETPLACE"
 }
