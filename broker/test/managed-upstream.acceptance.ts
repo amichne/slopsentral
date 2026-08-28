@@ -11,7 +11,7 @@ import { runtimeConfig } from "../src/runtime/config.ts";
 import type { LogRecord } from "../src/runtime/logger.ts";
 import { connectUnixWebSocket } from "../src/runtime/upstream-connection.ts";
 
-test("supported installed Codex starts one qualified App Server process", async () => {
+test("installed Codex generates its contract and starts one App Server process", async () => {
   const directory = await mkdtemp(join(tmpdir(), "broker-upstream-"));
   const config = runtimeConfig(process.env, {
     codexHome: join(directory, "codex-home"),
@@ -25,6 +25,9 @@ test("supported installed Codex starts one qualified App Server process", async 
     write: (record) => records.push(record),
   });
   assert.equal(runtime.type, "success");
+  assert.match(runtime.value.codexVersion, /^codex-cli /u);
+  assert.match(runtime.value.protocolDigest, /^sha256:[a-f0-9]{64}$/u);
+  assert.ok(runtime.value.schemaFileCount >= 10);
 
   try {
     const connection = await connectUnixWebSocket(
@@ -61,6 +64,7 @@ test("supported installed Codex starts one qualified App Server process", async 
         .filter(({ event }) =>
           [
             "upstream.ready",
+            "protocol.qualified",
             "broker.ready",
             "broker.listening",
             "connection.initialized",
@@ -72,6 +76,7 @@ test("supported installed Codex starts one qualified App Server process", async 
         "broker.listening",
         "broker.ready",
         "connection.initialized",
+        "protocol.qualified",
         "upstream.ready",
       ],
     );

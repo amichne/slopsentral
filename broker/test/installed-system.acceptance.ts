@@ -6,14 +6,9 @@ import { promisify } from "node:util";
 
 import type WebSocket from "ws";
 
-import protocolQualification from "../generated/protocol/codex-cli-0.149.1/qualification.json" with { type: "json" };
 import type { InvocationContext } from "../src/broker/types.ts";
 import { startBrokerRuntime } from "../src/runtime/broker-runtime.ts";
-import {
-  BROKER_VERSION,
-  runtimeConfig,
-  SUPPORTED_CODEX_VERSION,
-} from "../src/runtime/config.ts";
+import { BROKER_VERSION, runtimeConfig } from "../src/runtime/config.ts";
 import type { LogRecord } from "../src/runtime/logger.ts";
 import { connectUnixWebSocket } from "../src/runtime/upstream-connection.ts";
 
@@ -116,6 +111,7 @@ const runInstalledAcceptance = async (): Promise<void> => {
     );
 
     const proofs = {
+      protocolQualified: countLogs(logs, "protocol.qualified") === 1,
       upstreamReady: countLogs(logs, "upstream.ready") === 1,
       catalogInjected: countLogs(logs, "thread.catalog_injected") === 1,
       gradleTypedRoute: gradle.type === "success" && gradle.value.success,
@@ -152,8 +148,9 @@ const runInstalledAcceptance = async (): Promise<void> => {
     const accepted = Object.values(proofs).every((proof) => proof);
     const receipt = {
       brokerVersion: BROKER_VERSION,
-      codexVersion: SUPPORTED_CODEX_VERSION,
-      protocolDigest: protocolQualification.protocolDigest,
+      codexVersion: running.value.codexVersion,
+      protocolDigest: running.value.protocolDigest,
+      schemaFileCount: running.value.schemaFileCount,
       catalogDigest: running.value.broker.catalog.digest,
       providers: Object.fromEntries(
         running.value.broker.catalog.providers.map(({ namespace, version }) => [
@@ -167,6 +164,10 @@ const runInstalledAcceptance = async (): Promise<void> => {
         "kast.symbol_discover",
       ],
       routingProofs: [
+        {
+          proof: "runtime-schema-qualified",
+          accepted: proofs.protocolQualified,
+        },
         {
           proof: "public-socket-to-one-private-upstream",
           accepted: proofs.upstreamReady,

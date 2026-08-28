@@ -1,56 +1,85 @@
 import Ajv from "ajv";
+import type { AnySchema, ErrorObject, ValidateFunction } from "ajv";
 
-import dynamicToolCallParamsSchema from "../../generated/protocol/codex-cli-0.149.1/schema/DynamicToolCallParams.json" with { type: "json" };
-import initializeParamsSchema from "../../generated/protocol/codex-cli-0.149.1/schema/v1/InitializeParams.json" with { type: "json" };
-import threadStartParamsSchema from "../../generated/protocol/codex-cli-0.149.1/schema/v2/ThreadStartParams.json" with { type: "json" };
-import threadResumeParamsSchema from "../../generated/protocol/codex-cli-0.149.1/schema/v2/ThreadResumeParams.json" with { type: "json" };
-import threadResumeResponseSchema from "../../generated/protocol/codex-cli-0.149.1/schema/v2/ThreadResumeResponse.json" with { type: "json" };
-import threadForkParamsSchema from "../../generated/protocol/codex-cli-0.149.1/schema/v2/ThreadForkParams.json" with { type: "json" };
-import threadForkResponseSchema from "../../generated/protocol/codex-cli-0.149.1/schema/v2/ThreadForkResponse.json" with { type: "json" };
-import threadStartResponseSchema from "../../generated/protocol/codex-cli-0.149.1/schema/v2/ThreadStartResponse.json" with { type: "json" };
-import turnInterruptParamsSchema from "../../generated/protocol/codex-cli-0.149.1/schema/v2/TurnInterruptParams.json" with { type: "json" };
-import type { InitializeParams } from "../../generated/protocol/codex-cli-0.149.1/typescript/InitializeParams";
-import type { DynamicToolCallParams } from "../../generated/protocol/codex-cli-0.149.1/typescript/v2/DynamicToolCallParams";
-import type { ThreadStartParams } from "../../generated/protocol/codex-cli-0.149.1/typescript/v2/ThreadStartParams";
-import type { ThreadResumeParams } from "../../generated/protocol/codex-cli-0.149.1/typescript/v2/ThreadResumeParams";
-import type { ThreadResumeResponse } from "../../generated/protocol/codex-cli-0.149.1/typescript/v2/ThreadResumeResponse";
-import type { ThreadForkParams } from "../../generated/protocol/codex-cli-0.149.1/typescript/v2/ThreadForkParams";
-import type { ThreadForkResponse } from "../../generated/protocol/codex-cli-0.149.1/typescript/v2/ThreadForkResponse";
-import type { ThreadStartResponse } from "../../generated/protocol/codex-cli-0.149.1/typescript/v2/ThreadStartResponse";
-import type { TurnInterruptParams } from "../../generated/protocol/codex-cli-0.149.1/typescript/v2/TurnInterruptParams";
+import type { Outcome } from "../broker/types.ts";
 
-const ajv = new Ajv({ allErrors: true, strict: false, validateFormats: false });
+export interface CodexProtocolSchemaDocuments {
+  readonly dynamicToolCallParams: AnySchema;
+  readonly dynamicToolCallResponse: AnySchema;
+  readonly initializeParams: AnySchema;
+  readonly threadForkParams: AnySchema;
+  readonly threadForkResponse: AnySchema;
+  readonly threadResumeParams: AnySchema;
+  readonly threadResumeResponse: AnySchema;
+  readonly threadStartParams: AnySchema;
+  readonly threadStartResponse: AnySchema;
+  readonly turnInterruptParams: AnySchema;
+}
 
-export const validateInitializeParams = ajv.compile<InitializeParams>(
-  initializeParamsSchema,
-);
-export const validateDynamicToolCallParams = ajv.compile<DynamicToolCallParams>(
-  dynamicToolCallParamsSchema,
-);
-export const validateThreadStartParams = ajv.compile<ThreadStartParams>(
-  threadStartParamsSchema,
-);
-export const validateThreadResumeParams = ajv.compile<ThreadResumeParams>(
-  threadResumeParamsSchema,
-);
-export const validateThreadResumeResponse = ajv.compile<ThreadResumeResponse>(
-  threadResumeResponseSchema,
-);
-export const validateThreadForkParams = ajv.compile<ThreadForkParams>(
-  threadForkParamsSchema,
-);
-export const validateThreadForkResponse = ajv.compile<ThreadForkResponse>(
-  threadForkResponseSchema,
-);
-export const validateThreadStartResponse = ajv.compile<ThreadStartResponse>(
-  threadStartResponseSchema,
-);
-export const validateTurnInterruptParams = ajv.compile<TurnInterruptParams>(
-  turnInterruptParamsSchema,
-);
+export interface CodexProtocolValidators {
+  readonly dynamicToolCallParams: ValidateFunction<unknown>;
+  readonly dynamicToolCallResponse: ValidateFunction<unknown>;
+  readonly initializeParams: ValidateFunction<unknown>;
+  readonly threadForkParams: ValidateFunction<unknown>;
+  readonly threadForkResponse: ValidateFunction<unknown>;
+  readonly threadResumeParams: ValidateFunction<unknown>;
+  readonly threadResumeResponse: ValidateFunction<unknown>;
+  readonly threadStartParams: ValidateFunction<unknown>;
+  readonly threadStartResponse: ValidateFunction<unknown>;
+  readonly turnInterruptParams: ValidateFunction<unknown>;
+}
+
+interface ProtocolSchemaInvalid {
+  readonly type: "ProtocolSchemaInvalid";
+  readonly detail: string;
+}
+
+export const compileCodexProtocolValidators = (
+  schemas: CodexProtocolSchemaDocuments,
+): Outcome<CodexProtocolValidators, ProtocolSchemaInvalid> => {
+  try {
+    const ajv = new Ajv({
+      allErrors: true,
+      strict: false,
+      validateFormats: false,
+    });
+    return {
+      type: "success",
+      value: {
+        dynamicToolCallParams: ajv.compile<unknown>(
+          schemas.dynamicToolCallParams,
+        ),
+        dynamicToolCallResponse: ajv.compile<unknown>(
+          schemas.dynamicToolCallResponse,
+        ),
+        initializeParams: ajv.compile<unknown>(schemas.initializeParams),
+        threadForkParams: ajv.compile<unknown>(schemas.threadForkParams),
+        threadForkResponse: ajv.compile<unknown>(schemas.threadForkResponse),
+        threadResumeParams: ajv.compile<unknown>(schemas.threadResumeParams),
+        threadResumeResponse: ajv.compile<unknown>(
+          schemas.threadResumeResponse,
+        ),
+        threadStartParams: ajv.compile<unknown>(schemas.threadStartParams),
+        threadStartResponse: ajv.compile<unknown>(schemas.threadStartResponse),
+        turnInterruptParams: ajv.compile<unknown>(schemas.turnInterruptParams),
+      },
+    };
+  } catch (error) {
+    return {
+      type: "failure",
+      failure: {
+        type: "ProtocolSchemaInvalid",
+        detail:
+          error instanceof Error
+            ? error.message
+            : "generated schema could not be compiled",
+      },
+    };
+  }
+};
 
 export const validationDetail = (
-  errors: typeof validateInitializeParams.errors,
+  errors: readonly ErrorObject[] | null | undefined,
 ): string => {
   const first = errors?.[0];
   return first === undefined

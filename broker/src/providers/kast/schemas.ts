@@ -1,5 +1,37 @@
 import { Type } from "@sinclair/typebox";
 
+const BoundedText = Type.String({ minLength: 1, maxLength: 16_384 });
+const SchemaVersion = Type.Integer({ minimum: 1 });
+
+export const KastCapabilityDocument = Type.Object(
+  {
+    schemaVersion: SchemaVersion,
+    operationRegistry: Type.Object(
+      {
+        schemaVersion: SchemaVersion,
+        operationIds: Type.Array(BoundedText, { maxItems: 1_024 }),
+      },
+      { additionalProperties: true },
+    ),
+    wireSchema: Type.Object(
+      {
+        schemaVersion: SchemaVersion,
+        wireSchemaId: BoundedText,
+      },
+      { additionalProperties: true },
+    ),
+    cliProjection: Type.Object(
+      {
+        localFlags: Type.Array(BoundedText, { maxItems: 1_024 }),
+        lifecycleCommands: Type.Array(BoundedText, { maxItems: 1_024 }),
+        commands: Type.Array(BoundedText, { maxItems: 1_024 }),
+      },
+      { additionalProperties: true },
+    ),
+  },
+  { additionalProperties: true },
+);
+
 export const JsonValue = Type.Recursive((Self) =>
   Type.Union([
     Type.Null(),

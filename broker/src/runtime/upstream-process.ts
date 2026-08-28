@@ -1,23 +1,25 @@
-import { execFile, spawn } from "node:child_process";
+import { spawn } from "node:child_process";
 import { chmod, mkdir, rm, stat } from "node:fs/promises";
 import { dirname } from "node:path";
-import { promisify } from "node:util";
 
 import type WebSocket from "ws";
 
 import type { BrokerFailure } from "../broker/failure.ts";
 import type { Outcome } from "../broker/types.ts";
+import type { CodexProtocolValidators } from "../protocol/validators.ts";
+import { qualifyCodexProtocol } from "./codex-protocol.ts";
 import type { RuntimeConfig } from "./config.ts";
-import { SUPPORTED_CODEX_VERSION } from "./config.ts";
 import type { BrokerLogger } from "./logger.ts";
 import { connectUnixWebSocket } from "./upstream-connection.ts";
 
-const execute = promisify(execFile);
-
 export interface ManagedUpstream {
+  readonly codexVersion: string;
   readonly connect: () => Promise<WebSocket>;
   readonly close: () => Promise<void>;
   readonly pid: number;
+  readonly protocolDigest: string;
+  readonly schemaFileCount: number;
+  readonly validators: CodexProtocolValidators;
 }
 
 export const startManagedUpstream = async (
@@ -35,20 +37,6 @@ const startManagedUpstreamChecked = async (
   config: RuntimeConfig,
   logger: BrokerLogger,
 ): Promise<Outcome<ManagedUpstream, BrokerFailure>> => {
-  let actualVersion: string;
-  try {
-    actualVersion = (
-      await execute(config.codexExecutable, ["--version"], { encoding: "utf8" })
-    ).stdout.trim();
-  } catch {
-    return { type: "failure", failure: { type: "UpstreamUnavailable" } };
-  }
-  if (actualVersion !== SUPPORTED_CODEX_VERSION) {
-    return {
-      type: "failure",
-      failure: { type: "UnsupportedCodexVersion", actual: actualVersion },
-    };
-  }
   if (await pathExists(config.privateSocketPath)) {
     return { type: "failure", failure: { type: "UpstreamUnavailable" } };
   }
@@ -56,6 +44,20 @@ const startManagedUpstreamChecked = async (
     mkdir(config.codexHome, { recursive: true }),
     mkdir(dirname(config.privateSocketPath), { recursive: true }),
   ]);
+  const qualification = await qualifyCodexProtocol({
+    codexExecutable: config.codexExecutable,
+    codexHome: config.codexHome,
+    maximumSchemaBytes: config.maximumProtocolSchemaBytes,
+    maximumSchemaFiles: config.maximumProtocolSchemaFiles,
+    timeoutMs: config.protocolQualificationTimeoutMs,
+  });
+  if (qualification.type === "failure") return qualification;
+  logger.write({
+    event: "protocol.qualified",
+    codexVersion: qualification.value.codexVersion,
+    protocolDigest: qualification.value.protocolDigest,
+    schemaFileCount: qualification.value.schemaFileCount,
+  });
   const child = spawn(
     config.codexExecutable,
     ["app-server", "--listen", `unix://${config.privateSocketPath}`],
@@ -82,12 +84,20 @@ const startManagedUpstreamChecked = async (
     return { type: "failure", failure: { type: "UpstreamUnavailable" } };
   }
   await chmod(config.privateSocketPath, 0o600);
-  logger.write({ event: "upstream.ready", codexVersion: actualVersion, pid });
+  logger.write({
+    event: "upstream.ready",
+    codexVersion: qualification.value.codexVersion,
+    pid,
+  });
 
   return {
     type: "success",
     value: {
+      codexVersion: qualification.value.codexVersion,
       pid,
+      protocolDigest: qualification.value.protocolDigest,
+      schemaFileCount: qualification.value.schemaFileCount,
+      validators: qualification.value.validators,
       connect: () =>
         connectUnixWebSocket(
           config.privateSocketPath,

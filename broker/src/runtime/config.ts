@@ -3,8 +3,7 @@ import { join, resolve } from "node:path";
 
 import type { BrokerLimits, Outcome } from "../broker/types.ts";
 
-export const BROKER_VERSION = "0.3.0";
-export const SUPPORTED_CODEX_VERSION = "codex-cli 0.149.1";
+export const BROKER_VERSION = "0.4.0";
 
 export interface RuntimeConfig {
   readonly brokerLimits: BrokerLimits;
@@ -14,7 +13,10 @@ export interface RuntimeConfig {
   readonly kastExecutable: string;
   readonly maximumConnections: number;
   readonly maximumMessageBytes: number;
+  readonly maximumProtocolSchemaBytes: number;
+  readonly maximumProtocolSchemaFiles: number;
   readonly privateSocketPath: string;
+  readonly protocolQualificationTimeoutMs: number;
   readonly providerQualificationCwd: string;
   readonly publicSocketPath: string;
   readonly threadStorePath: string;
@@ -54,9 +56,14 @@ export const runtimeConfig = (
       overrides.kastExecutable ?? environment.KAST_EXECUTABLE ?? "kast",
     maximumConnections: overrides.maximumConnections ?? 8,
     maximumMessageBytes: overrides.maximumMessageBytes ?? 1024 * 1024,
+    maximumProtocolSchemaBytes:
+      overrides.maximumProtocolSchemaBytes ?? 32 * 1024 * 1024,
+    maximumProtocolSchemaFiles: overrides.maximumProtocolSchemaFiles ?? 2_048,
     privateSocketPath: resolve(
       overrides.privateSocketPath ?? join(stateDirectory, "upstream.sock"),
     ),
+    protocolQualificationTimeoutMs:
+      overrides.protocolQualificationTimeoutMs ?? 30_000,
     providerQualificationCwd: resolve(
       overrides.providerQualificationCwd ??
         environment.BROKER_PROVIDER_CWD ??
@@ -74,7 +81,10 @@ export const runtimeConfig = (
   const positive = [
     config.maximumConnections,
     config.maximumMessageBytes,
+    config.maximumProtocolSchemaBytes,
+    config.maximumProtocolSchemaFiles,
     config.connectionInitializationTimeoutMs,
+    config.protocolQualificationTimeoutMs,
     config.upstreamStartupTimeoutMs,
     config.brokerLimits.inFlightCallsPerProvider,
     config.brokerLimits.inFlightCallsPerConnection,

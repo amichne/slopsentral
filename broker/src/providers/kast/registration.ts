@@ -13,7 +13,7 @@ export interface KastProviderOptions {
 export const createKastRegistration = (options: KastProviderOptions = {}) =>
   defineProvider({
     namespace: "kast",
-    version: "0.28.1-206-gbb5bd2145+schema1",
+    version: "runtime-qualified",
     tools: kastTools,
     start: (signal) => {
       if (options.qualificationCwd === undefined) {

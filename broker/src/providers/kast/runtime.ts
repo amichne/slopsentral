@@ -1,18 +1,19 @@
 import { Value } from "@sinclair/typebox/value";
 
-import { canonicalJson } from "../../broker/canonical.ts";
 import type {
   InvocationContext,
   Outcome,
   ProviderCallFailure,
 } from "../../broker/types.ts";
 import type { ProcessExecutor } from "../process.ts";
-import qualification from "./contract/qualification.json" with { type: "json" };
+import type { KastQualification } from "./qualification.ts";
+import { qualifyKast } from "./qualification.ts";
 import { KastOutput } from "./schemas.ts";
 
 const MAXIMUM_KAST_OUTPUT_BYTES = 512 * 1024;
 
 export interface KastRuntime {
+  readonly qualification: KastQualification;
   readonly execute: (
     arguments_: readonly string[],
     context: InvocationContext,
@@ -29,40 +30,13 @@ export const startKastRuntime = async (
   options: KastRuntimeOptions,
   signal: AbortSignal,
 ): Promise<Outcome<KastRuntime, { readonly code: string }>> => {
-  const version = await options.processExecutor({
-    executable: options.executable,
-    arguments: ["--version"],
-    cwd: options.qualificationCwd,
-    maximumOutputBytes: MAXIMUM_KAST_OUTPUT_BYTES,
-    signal,
-  });
-  if (version.type === "failure" || version.value.exitCode !== 0) {
-    return { type: "failure", failure: { code: "KAST_VERSION_UNAVAILABLE" } };
-  }
-  if (version.value.stdout.trim() !== qualification.cliVersion) {
-    return { type: "failure", failure: { code: "KAST_VERSION_INCOMPATIBLE" } };
-  }
-  const schema = await options.processExecutor({
-    executable: options.executable,
-    arguments: ["--schema"],
-    cwd: options.qualificationCwd,
-    maximumOutputBytes: MAXIMUM_KAST_OUTPUT_BYTES,
-    signal,
-  });
-  if (schema.type === "failure" || schema.value.exitCode !== 0) {
-    return { type: "failure", failure: { code: "KAST_SCHEMA_UNAVAILABLE" } };
-  }
-  const schemaDocument = parseJson(schema.value.stdout);
-  if (
-    schemaDocument === undefined ||
-    canonicalJson(schemaDocument) !== canonicalJson(qualification.schema)
-  ) {
-    return { type: "failure", failure: { code: "KAST_SCHEMA_INCOMPATIBLE" } };
-  }
+  const qualification = await qualifyKast(options, signal);
+  if (qualification.type === "failure") return qualification;
 
   return {
     type: "success",
     value: {
+      qualification: qualification.value,
       execute: (arguments_, context) =>
         executeKast(options, arguments_, context),
     },

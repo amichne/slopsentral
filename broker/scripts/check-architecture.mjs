@@ -28,7 +28,7 @@ for (const file of files) {
   }
 
   for (const match of text.matchAll(/(?:[:<,|]|\bextends\s+)\s*any\b/g)) {
-    report(match.index, "explicit any is forbidden outside generated code");
+    report(match.index, "explicit any is forbidden");
   }
   if (owner !== "protocol") {
     for (const match of text.matchAll(/\bas\s+(?!const\b)[A-Za-z_{[]/g)) {
@@ -103,12 +103,7 @@ async function prohibitedJvmArtifacts(directory) {
     "settings.gradle",
     "settings.gradle.kts",
   ]);
-  const skippedDirectories = new Set([
-    ".agent-turn",
-    "dist",
-    "generated",
-    "node_modules",
-  ]);
+  const skippedDirectories = new Set([".agent-turn", "dist", "node_modules"]);
   const results = await Promise.all(
     entries.map((entry) => {
       const path = join(directory, entry.name);

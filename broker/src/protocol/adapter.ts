@@ -1,6 +1,5 @@
 import { Buffer } from "node:buffer";
 
-import type { DynamicToolCallResponse } from "../../generated/protocol/codex-cli-0.149.1/typescript/v2/DynamicToolCallResponse";
 import { canonicalJson } from "../broker/canonical.ts";
 import type { BrokerFailure } from "../broker/failure.ts";
 import type { Broker } from "../broker/types.ts";
@@ -8,18 +7,8 @@ import type { BrokerObserver } from "../broker/types.ts";
 import type { ToolPresentation } from "../broker/types.ts";
 import { compatibleThread } from "./thread-store.ts";
 import type { ThreadCatalogStore } from "./thread-store.ts";
-import {
-  validateDynamicToolCallParams,
-  validateInitializeParams,
-  validateThreadForkParams,
-  validateThreadForkResponse,
-  validateThreadResumeParams,
-  validateThreadResumeResponse,
-  validateThreadStartParams,
-  validateThreadStartResponse,
-  validateTurnInterruptParams,
-  validationDetail,
-} from "./validators.ts";
+import type { CodexProtocolValidators } from "./validators.ts";
+import { validationDetail } from "./validators.ts";
 
 export type ProtocolRouting =
   | { readonly type: "forwardUpstream"; readonly message: string }
@@ -32,6 +21,7 @@ export interface CodexProtocolAdapterOptions {
   readonly broker: Broker;
   readonly observe?: BrokerObserver;
   readonly threadStore: ThreadCatalogStore;
+  readonly validators: CodexProtocolValidators;
 }
 
 type PendingThreadOperation =
@@ -48,6 +38,7 @@ interface ActiveInvocation {
 export class CodexProtocolAdapter {
   readonly #broker: Broker;
   readonly #threadStore: ThreadCatalogStore;
+  readonly #validators: CodexProtocolValidators;
   readonly #observe: BrokerObserver;
   readonly #pendingThreadOperations = new Map<string, PendingThreadOperation>();
   readonly #activeInvocations = new Map<string, ActiveInvocation>();
@@ -55,6 +46,7 @@ export class CodexProtocolAdapter {
   constructor(options: CodexProtocolAdapterOptions) {
     this.#broker = options.broker;
     this.#threadStore = options.threadStore;
+    this.#validators = options.validators;
     const observe = options.observe ?? (() => {});
     this.#observe = (observation) => {
       try {
@@ -123,10 +115,16 @@ export class CodexProtocolAdapter {
     if (!owned) {
       return { type: "forwardDownstream", message };
     }
-    if (!validateDynamicToolCallParams(rawParams)) {
+    if (!this.#validators.dynamicToolCallParams(rawParams)) {
       return {
         type: "close",
-        detail: validationDetail(validateDynamicToolCallParams.errors),
+        detail: validationDetail(this.#validators.dynamicToolCallParams.errors),
+      };
+    }
+    if (!isDynamicToolCallParams(rawParams)) {
+      return {
+        type: "close",
+        detail: "qualified dynamic tool schema omitted broker-owned fields",
       };
     }
     if (typeof document.id !== "string" && typeof document.id !== "number") {
@@ -138,13 +136,16 @@ export class CodexProtocolAdapter {
       this.#broker.catalog.digest,
     );
     if (thread.type === "failure") {
-      return dynamicToolReply(document.id, failurePresentation(thread.failure));
+      return this.#dynamicToolReply(
+        document.id,
+        failurePresentation(thread.failure),
+      );
     }
     if (
       Buffer.byteLength(JSON.stringify(rawParams.arguments), "utf8") >
       this.#broker.limits.maximumToolArgumentBytes
     ) {
-      return dynamicToolReply(
+      return this.#dynamicToolReply(
         document.id,
         failurePresentation({
           type: "BrokerOverloaded",
@@ -156,7 +157,7 @@ export class CodexProtocolAdapter {
       this.#activeInvocations.size >=
       this.#broker.limits.inFlightCallsPerConnection
     ) {
-      return dynamicToolReply(
+      return this.#dynamicToolReply(
         document.id,
         failurePresentation({
           type: "BrokerOverloaded",
@@ -166,7 +167,7 @@ export class CodexProtocolAdapter {
     }
     const invocationId = `${rawParams.threadId}:${rawParams.turnId}:${rawParams.callId}`;
     if (this.#activeInvocations.has(invocationId)) {
-      return dynamicToolReply(
+      return this.#dynamicToolReply(
         document.id,
         failurePresentation({
           type: "ProviderInvocationFailed",
@@ -216,7 +217,7 @@ export class CodexProtocolAdapter {
       Buffer.byteLength(JSON.stringify(presentation), "utf8") >
       this.#broker.limits.maximumToolResultBytes
     ) {
-      return dynamicToolReply(
+      return this.#dynamicToolReply(
         document.id,
         failurePresentation({
           type: "BrokerOverloaded",
@@ -224,15 +225,21 @@ export class CodexProtocolAdapter {
         }),
       );
     }
-    return dynamicToolReply(document.id, presentation);
+    return this.#dynamicToolReply(document.id, presentation);
   }
 
   #initialize(document: Readonly<Record<string, unknown>>): ProtocolRouting {
     const params = document.params;
-    if (!validateInitializeParams(params)) {
+    if (!this.#validators.initializeParams(params)) {
       return invalidOwnedRequest(
         document,
-        validationDetail(validateInitializeParams.errors),
+        validationDetail(this.#validators.initializeParams.errors),
+      );
+    }
+    if (!isInitializeParams(params)) {
+      return invalidOwnedRequest(
+        document,
+        "qualified initialize schema omitted broker-owned fields",
       );
     }
     const capabilities = params.capabilities ?? {
@@ -251,10 +258,16 @@ export class CodexProtocolAdapter {
 
   #threadStart(document: Readonly<Record<string, unknown>>): ProtocolRouting {
     const params = document.params;
-    if (!validateThreadStartParams(params)) {
+    if (!this.#validators.threadStartParams(params)) {
       return invalidOwnedRequest(
         document,
-        validationDetail(validateThreadStartParams.errors),
+        validationDetail(this.#validators.threadStartParams.errors),
+      );
+    }
+    if (!isThreadStartParams(params)) {
+      return invalidOwnedRequest(
+        document,
+        "qualified thread/start schema omitted broker-owned fields",
       );
     }
     const existing = params.dynamicTools ?? [];
@@ -262,9 +275,16 @@ export class CodexProtocolAdapter {
       this.#broker.catalog.namespaces.map(({ name }) => name),
     );
     const conflict = existing.find(
-      (tool) => tool.type === "namespace" && brokerNamespaces.has(tool.name),
+      (tool) =>
+        tool.type === "namespace" &&
+        typeof tool.name === "string" &&
+        brokerNamespaces.has(tool.name),
     );
-    if (conflict !== undefined && conflict.type === "namespace") {
+    if (
+      conflict !== undefined &&
+      conflict.type === "namespace" &&
+      typeof conflict.name === "string"
+    ) {
       return rpcFailure(document.id, {
         type: "CatalogInvalid",
         issues: [`dynamic tool namespace conflict: ${conflict.name}`],
@@ -274,10 +294,10 @@ export class CodexProtocolAdapter {
       ...params,
       dynamicTools: [...existing, ...this.#broker.catalog.namespaces],
     };
-    if (!validateThreadStartParams(refinedParams)) {
+    if (!this.#validators.threadStartParams(refinedParams)) {
       return invalidOwnedRequest(
         document,
-        validationDetail(validateThreadStartParams.errors),
+        validationDetail(this.#validators.threadStartParams.errors),
       );
     }
     const requestKey = rpcIdKey(document.id);
@@ -301,10 +321,16 @@ export class CodexProtocolAdapter {
     message: string,
   ): Promise<ProtocolRouting> {
     const params = document.params;
-    if (!validateThreadResumeParams(params)) {
+    if (!this.#validators.threadResumeParams(params)) {
       return invalidOwnedRequest(
         document,
-        validationDetail(validateThreadResumeParams.errors),
+        validationDetail(this.#validators.threadResumeParams.errors),
+      );
+    }
+    if (!isThreadBindingParams(params)) {
+      return invalidOwnedRequest(
+        document,
+        "qualified thread/resume schema omitted broker-owned fields",
       );
     }
     if (
@@ -347,10 +373,16 @@ export class CodexProtocolAdapter {
     message: string,
   ): Promise<ProtocolRouting> {
     const params = document.params;
-    if (!validateThreadForkParams(params)) {
+    if (!this.#validators.threadForkParams(params)) {
       return invalidOwnedRequest(
         document,
-        validationDetail(validateThreadForkParams.errors),
+        validationDetail(this.#validators.threadForkParams.errors),
+      );
+    }
+    if (!isThreadBindingParams(params)) {
+      return invalidOwnedRequest(
+        document,
+        "qualified thread/fork schema omitted broker-owned fields",
       );
     }
     if (
@@ -392,10 +424,16 @@ export class CodexProtocolAdapter {
     message: string,
   ): ProtocolRouting {
     const params = document.params;
-    if (!validateTurnInterruptParams(params)) {
+    if (!this.#validators.turnInterruptParams(params)) {
       return invalidOwnedRequest(
         document,
-        validationDetail(validateTurnInterruptParams.errors),
+        validationDetail(this.#validators.turnInterruptParams.errors),
+      );
+    }
+    if (!isTurnInterruptParams(params)) {
+      return invalidOwnedRequest(
+        document,
+        "qualified turn/interrupt schema omitted broker-owned fields",
       );
     }
     for (const invocation of this.#activeInvocations.values()) {
@@ -419,17 +457,17 @@ export class CodexProtocolAdapter {
     }
     const valid =
       pending.type === "start"
-        ? validateThreadStartResponse(document.result)
+        ? this.#validators.threadStartResponse(document.result)
         : pending.type === "resume"
-          ? validateThreadResumeResponse(document.result)
-          : validateThreadForkResponse(document.result);
+          ? this.#validators.threadResumeResponse(document.result)
+          : this.#validators.threadForkResponse(document.result);
     if (!valid) {
       const errors =
         pending.type === "start"
-          ? validateThreadStartResponse.errors
+          ? this.#validators.threadStartResponse.errors
           : pending.type === "resume"
-            ? validateThreadResumeResponse.errors
-            : validateThreadForkResponse.errors;
+            ? this.#validators.threadResumeResponse.errors
+            : this.#validators.threadForkResponse.errors;
       return { type: "close", detail: validationDetail(errors) };
     }
     const result = document.result;
@@ -455,6 +493,28 @@ export class CodexProtocolAdapter {
     });
     return { type: "forwardDownstream", message };
   }
+
+  #dynamicToolReply(
+    id: string | number,
+    presentation: ToolPresentation,
+  ): ProtocolRouting {
+    const result: unknown = {
+      success: presentation.success,
+      contentItems: [...presentation.contentItems],
+    };
+    if (!this.#validators.dynamicToolCallResponse(result)) {
+      return {
+        type: "close",
+        detail: validationDetail(
+          this.#validators.dynamicToolCallResponse.errors,
+        ),
+      };
+    }
+    return {
+      type: "replyUpstream",
+      message: JSON.stringify({ id, result }),
+    };
+  }
 }
 
 const parseObject = (
@@ -470,6 +530,63 @@ const parseObject = (
 
 const isRecord = (value: unknown): value is Readonly<Record<string, unknown>> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
+
+const isDynamicToolCallParams = (
+  value: unknown,
+): value is Readonly<{
+  arguments: unknown;
+  callId: string;
+  namespace?: string | null;
+  threadId: string;
+  tool: string;
+  turnId: string;
+}> =>
+  isRecord(value) &&
+  Object.hasOwn(value, "arguments") &&
+  typeof value.callId === "string" &&
+  (value.namespace === undefined ||
+    value.namespace === null ||
+    typeof value.namespace === "string") &&
+  typeof value.threadId === "string" &&
+  typeof value.tool === "string" &&
+  typeof value.turnId === "string";
+
+const isInitializeParams = (
+  value: unknown,
+): value is Readonly<{
+  capabilities?: Readonly<Record<string, unknown>> | null;
+  readonly [key: string]: unknown;
+}> =>
+  isRecord(value) &&
+  (value.capabilities === undefined ||
+    value.capabilities === null ||
+    isRecord(value.capabilities));
+
+const isThreadStartParams = (
+  value: unknown,
+): value is Readonly<{
+  dynamicTools?: readonly Readonly<Record<string, unknown>>[] | null;
+  readonly [key: string]: unknown;
+}> =>
+  isRecord(value) &&
+  (value.dynamicTools === undefined ||
+    value.dynamicTools === null ||
+    (Array.isArray(value.dynamicTools) && value.dynamicTools.every(isRecord)));
+
+const isThreadBindingParams = (
+  value: unknown,
+): value is Readonly<Record<string, unknown>> & { readonly threadId: string } =>
+  isRecord(value) && typeof value.threadId === "string";
+
+const isTurnInterruptParams = (
+  value: unknown,
+): value is Readonly<{
+  threadId: string;
+  turnId: string;
+}> =>
+  isRecord(value) &&
+  typeof value.threadId === "string" &&
+  typeof value.turnId === "string";
 
 const isThreadOperationResult = (
   value: unknown,
@@ -520,17 +637,3 @@ const failurePresentation = (failure: BrokerFailure): ToolPresentation => ({
   success: false,
   contentItems: [{ type: "inputText", text: canonicalJson({ failure }) }],
 });
-
-const dynamicToolReply = (
-  id: string | number,
-  presentation: ToolPresentation,
-): ProtocolRouting => {
-  const result: DynamicToolCallResponse = {
-    success: presentation.success,
-    contentItems: [...presentation.contentItems],
-  };
-  return {
-    type: "replyUpstream",
-    message: JSON.stringify({ id, result }),
-  };
-};

@@ -1,6 +1,9 @@
+import { qualifyKast } from "../providers/kast/qualification.ts";
+import { executeProcess } from "../providers/process.ts";
 import { startBrokerRuntime } from "./broker-runtime.ts";
 import { createFederatedBroker } from "./composition.ts";
 import { BROKER_VERSION, runtimeConfig } from "./config.ts";
+import { qualifyCodexProtocol } from "./codex-protocol.ts";
 import { jsonLogger } from "./logger.ts";
 
 const HELP = `broker ${BROKER_VERSION}
@@ -8,6 +11,8 @@ const HELP = `broker ${BROKER_VERSION}
 Usage:
   broker serve
   broker catalog
+  broker qualify
+  broker qualify kast
   broker --version
   broker --help
 
@@ -25,7 +30,15 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
     process.stdout.write(`broker ${BROKER_VERSION}\n`);
     return 0;
   }
-  if (arguments_.length > 1 || (command !== "serve" && command !== "catalog")) {
+  const qualificationTarget = arguments_[1] ?? "codex";
+  const validQualification =
+    command === "qualify" &&
+    arguments_.length <= 2 &&
+    (qualificationTarget === "codex" || qualificationTarget === "kast");
+  const validSimpleCommand =
+    (arguments_.length === 0 && command === "serve") ||
+    (arguments_.length === 1 && (command === "serve" || command === "catalog"));
+  if (!validQualification && !validSimpleCommand) {
     process.stderr.write(
       `${JSON.stringify({ failure: { type: "ConfigInvalid", detail: "unknown arguments" } })}\n`,
     );
@@ -44,6 +57,53 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
     }
     process.stdout.write(`${JSON.stringify(broker.value.catalog)}\n`);
     await broker.value.close();
+    return 0;
+  }
+  if (command === "qualify") {
+    if (qualificationTarget === "kast") {
+      const qualified = await qualifyKast(
+        {
+          executable: config.value.kastExecutable,
+          processExecutor: executeProcess,
+          qualificationCwd: config.value.providerQualificationCwd,
+        },
+        AbortSignal.timeout(config.value.brokerLimits.providerStartupTimeoutMs),
+      );
+      if (qualified.type === "failure") {
+        process.stderr.write(
+          `${JSON.stringify({
+            failure: {
+              type: "ProviderStartupFailed",
+              namespace: "kast",
+              code: qualified.failure.code,
+            },
+          })}\n`,
+        );
+        return 2;
+      }
+      process.stdout.write(`${JSON.stringify(qualified.value)}\n`);
+      return 0;
+    }
+    const qualified = await qualifyCodexProtocol({
+      codexExecutable: config.value.codexExecutable,
+      codexHome: config.value.codexHome,
+      maximumSchemaBytes: config.value.maximumProtocolSchemaBytes,
+      maximumSchemaFiles: config.value.maximumProtocolSchemaFiles,
+      timeoutMs: config.value.protocolQualificationTimeoutMs,
+    });
+    if (qualified.type === "failure") {
+      process.stderr.write(
+        `${JSON.stringify({ failure: qualified.failure })}\n`,
+      );
+      return 2;
+    }
+    process.stdout.write(
+      `${JSON.stringify({
+        codexVersion: qualified.value.codexVersion,
+        protocolDigest: qualified.value.protocolDigest,
+        schemaFileCount: qualified.value.schemaFileCount,
+      })}\n`,
+    );
     return 0;
   }
 
