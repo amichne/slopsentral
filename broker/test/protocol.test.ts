@@ -10,6 +10,7 @@ import {
 } from "../src/broker/index.ts";
 import { CodexProtocolAdapter } from "../src/protocol/adapter.ts";
 import { MemoryThreadCatalogStore } from "../src/protocol/thread-store.ts";
+import { protocolValidators } from "./protocol-schema.fixture.ts";
 
 const registration = (namespace: string, tool: string) =>
   defineProvider({
@@ -48,6 +49,7 @@ const adapter = () => {
     protocol: new CodexProtocolAdapter({
       broker: created.value,
       threadStore,
+      validators: protocolValidators(),
     }),
   };
 };
@@ -63,7 +65,7 @@ describe("protocol contract", () => {
           clientInfo: {
             name: "managed-codex",
             title: "Managed Codex",
-            version: "0.149.1",
+            version: "test-client",
           },
           capabilities: { experimentalApi: false, requestAttestation: true },
         },
@@ -195,7 +197,7 @@ describe("protocol contract", () => {
       result: {
         thread: {
           id: "thread-created",
-          cliVersion: "0.149.1",
+          cliVersion: "test-cli",
           createdAt: 1,
           cwd: "/workspace",
           ephemeral: false,
@@ -321,6 +323,7 @@ describe("protocol contract", () => {
     const protocol = new CodexProtocolAdapter({
       broker: created.value,
       threadStore,
+      validators: protocolValidators(),
     });
     const toolCall = protocol.fromUpstream(
       JSON.stringify({
@@ -355,7 +358,7 @@ describe("protocol contract", () => {
 const threadOperationResult = (threadId: string, cwd: string) => ({
   thread: {
     id: threadId,
-    cliVersion: "0.149.1",
+    cliVersion: "test-cli",
     createdAt: 1,
     cwd,
     ephemeral: false,

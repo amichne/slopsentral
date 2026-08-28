@@ -11,8 +11,8 @@ import type {
   ProcessExecutor,
   ProcessRequest,
 } from "../src/providers/process.ts";
-import qualification from "../src/providers/kast/contract/qualification.json" with { type: "json" };
 import type { InvocationContext } from "../src/broker/types.ts";
+import { compatibleKastSchema } from "./kast-schema.fixture.ts";
 
 describe("federation contract", () => {
   test("Gradle and Kast compose through provider registration only", () => {
@@ -45,13 +45,13 @@ describe("federation contract", () => {
         request.executable === "kast" &&
         request.arguments[0] === "--version"
       ) {
-        return processSuccess(`${qualification.cliVersion}\n`);
+        return processSuccess("kast 999.42.7 (IDE-hosted)\n");
       }
       if (
         request.executable === "kast" &&
         request.arguments[0] === "--schema"
       ) {
-        return processSuccess(JSON.stringify(qualification.schema));
+        return processSuccess(JSON.stringify(compatibleKastSchema()));
       }
       if (request.executable === "kast") {
         return processSuccess('{"selector":"exact:fixture"}');

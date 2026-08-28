@@ -18,6 +18,7 @@ import { MemoryThreadCatalogStore } from "../src/protocol/thread-store.ts";
 import type { LogRecord } from "../src/runtime/logger.ts";
 import { startSocketServer } from "../src/runtime/server.ts";
 import { connectUnixWebSocket } from "../src/runtime/upstream-connection.ts";
+import { protocolValidators } from "./protocol-schema.fixture.ts";
 
 describe("socket proxy contract", () => {
   test("one downstream connection receives an independent transparent upstream connection", async () => {
@@ -59,6 +60,7 @@ describe("socket proxy contract", () => {
         publicSocketPath: publicSocket,
         threadStore: new MemoryThreadCatalogStore(),
         upstream: () => connectUnixWebSocket(privateSocket, 1024 * 1024),
+        validators: protocolValidators(),
       }),
       "broker socket start",
     );
@@ -77,7 +79,7 @@ describe("socket proxy contract", () => {
             clientInfo: {
               name: "managed",
               title: "Managed",
-              version: "0.149.1",
+              version: "test-client",
             },
             capabilities: { experimentalApi: false, requestAttestation: false },
           },

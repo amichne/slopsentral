@@ -28,8 +28,8 @@ jobs:
           cache: npm
           cache-dependency-path: broker/package-lock.json
 
-      - name: Install qualified Codex
-        run: npm install --global @openai/codex@0.149.1
+      - name: Install current Codex
+        run: npm install --global @openai/codex@latest
 
       - name: Verify package
         working-directory: broker
@@ -95,7 +95,7 @@ jobs:
           set -euo pipefail
           tag="${GITHUB_REF_NAME}"
           title="Broker ${tag#broker-v}"
-          notes="Strict TypeScript proxy for qualified Codex App Server dynamic tools with lazy Gradle and Kast providers."
+          notes="Strict TypeScript proxy for runtime-qualified Codex App Server dynamic tools with lazy Gradle and Kast providers."
           if gh release view "${tag}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
             gh release upload "${tag}" dist/* --repo "${GITHUB_REPOSITORY}" --clobber
             gh release edit "${tag}" --repo "${GITHUB_REPOSITORY}" \

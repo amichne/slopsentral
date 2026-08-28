@@ -10,6 +10,7 @@ import type { Broker } from "../broker/types.ts";
 import { CodexProtocolAdapter } from "../protocol/adapter.ts";
 import type { ProtocolRouting } from "../protocol/adapter.ts";
 import type { ThreadCatalogStore } from "../protocol/thread-store.ts";
+import type { CodexProtocolValidators } from "../protocol/validators.ts";
 import type { BrokerLogger } from "./logger.ts";
 
 export interface SocketServerOptions {
@@ -21,6 +22,7 @@ export interface SocketServerOptions {
   readonly publicSocketPath: string;
   readonly threadStore: ThreadCatalogStore;
   readonly upstream: () => Promise<WebSocket>;
+  readonly validators: CodexProtocolValidators;
 }
 
 export interface RunningSocketServer {
@@ -97,6 +99,7 @@ const bridgeConnection = async (
     observe: (observation) =>
       options.logger.write({ ...observation, connectionId }),
     threadStore: options.threadStore,
+    validators: options.validators,
   });
   let upstream: WebSocket | undefined;
   let connectionState: "accepted" | "initializing" | "active" = "accepted";

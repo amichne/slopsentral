@@ -26,7 +26,11 @@ export type BrokerFailure =
   | { readonly type: "ProviderResultInvalid"; readonly tool: string }
   | { readonly type: "UpstreamUnavailable" }
   | { readonly type: "UpstreamProtocolFailure"; readonly detail: string }
-  | { readonly type: "UnsupportedCodexVersion"; readonly actual: string }
+  | {
+      readonly type: "CodexProtocolIncompatible";
+      readonly actual: string;
+      readonly detail: string;
+    }
   | { readonly type: "InvocationCancelled"; readonly invocationId: string }
   | { readonly type: "InvocationTimedOut"; readonly invocationId: string }
   | { readonly type: "BrokerOverloaded"; readonly limit: string };
