@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "npm run typecheck && esbuild src/runtime/cli.ts --bundle --platform=node --format=esm --target=node22 --banner:js='#!/usr/bin/env node\nimport { createRequire as __createRequire } from \"node:module\"; const require = __createRequire(import.meta.url);' --outfile=dist/broker.mjs",
-    "acceptance:upstream": "tsx --test test/managed-upstream.acceptance.ts",
+    "acceptance:upstream": "KAST_EXECUTABLE=./test/kast-cli.fixture.ts tsx --test test/managed-upstream.acceptance.ts",
     "acceptance:installed": "tsx test/installed-system.acceptance.ts",
     "check": "npm run format:check && npm run typecheck && npm run check:architecture && npm run qualify && npm test && npm run build && npm run smoke",
     "check:architecture": "node scripts/check-architecture.mjs",

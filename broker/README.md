@@ -102,6 +102,10 @@ string is admitted when its generated contract is compatible. A Kast fixture cha
 name and its input field and proves the catalog and resulting CLI invocation follow only that
 selected executable's projection.
 
+The canonical gate and installed-upstream acceptance select a bounded schema-emitting Kast fixture
+so package and Codex supervision proofs do not depend on runner machine state. They never substitute
+for the installed-system acceptance below, which selects and executes the real installed Kast path.
+
 The installed-system acceptance requires `gradle`, the qualified `kast`, and a compatible `codex`
 on `PATH`. It creates and removes a disposable consumer Gradle repository outside this package,
 executes real Gradle and Kast adapters through the same running broker, qualifies decode,
