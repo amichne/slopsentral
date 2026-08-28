@@ -1,0 +1,45 @@
+{
+  "cliVersion": "kast 0.28.1-206-gbb5bd2145 (IDE-hosted)",
+  "schema": {
+    "schemaVersion": 1,
+    "operationRegistry": {
+      "schemaVersion": 1,
+      "operationIds": [
+        "workspace.inspect",
+        "topology.build",
+        "symbol.discover",
+        "symbol.resolve",
+        "symbol.describe",
+        "relation.read",
+        "traversal.run",
+        "diagnostic.check",
+        "change.plan",
+        "change.apply",
+        "change.verify",
+        "change.recover"
+      ]
+    },
+    "wireSchema": {
+      "schemaVersion": 1,
+      "wireSchemaId": "kast-wire-v1"
+    },
+    "cliProjection": {
+      "localFlags": ["--help", "--version", "--schema"],
+      "lifecycleCommands": ["start", "stop", "status", "clean", "reindex"],
+      "commands": [
+        "workspace inspect",
+        "topology build",
+        "symbol discover --mode <name|location|structure|text> ... --limit <1..1000>",
+        "symbol resolve --candidate <candidate-selector>",
+        "symbol describe --selector <exact-selector>",
+        "relation read --selector <exact-selector> --relation <kind> --limit <1..1000>",
+        "traversal run --selector <exact-selector> --relation <kind> --maximum-depth <1..1000> --maximum-results <1..1000>",
+        "diagnostic check --scope <scope> --limit <1..1000>",
+        "change plan --intent <add-file|add-declaration|replace-declaration|rename-symbol> <intent-options>",
+        "change apply --plan <plan-identity>",
+        "change verify --application <application-identity>",
+        "change recover --plan <plan-identity>"
+      ]
+    }
+  }
+}

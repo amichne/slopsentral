@@ -1,0 +1,106 @@
+name: Release Broker
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/release-broker.yml"
+      - "broker/**"
+  push:
+    tags:
+      - "broker-v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    name: Verify and bundle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: broker/package-lock.json
+
+      - name: Install qualified Codex
+        run: npm install --global @openai/codex@0.149.1
+
+      - name: Verify package
+        working-directory: broker
+        run: |
+          npm ci
+          npm run check
+          npm run acceptance:upstream
+          bash -n install.sh
+          expected_version="$(node -p 'require("./package.json").version')"
+          if [[ "${GITHUB_REF}" == refs/tags/broker-v* ]]; then
+            test "${GITHUB_REF_NAME#broker-v}" = "${expected_version}"
+          fi
+          test "$(node dist/broker.mjs --version)" = \
+            "broker ${expected_version}"
+          node dist/broker.mjs --help
+          node dist/broker.mjs catalog > /tmp/broker-catalog.json
+          node -e '
+            const catalog = require("/tmp/broker-catalog.json");
+            if (!catalog.digest.startsWith("sha256:")) process.exit(1);
+            if (catalog.namespaces.map(({ name }) => name).join(",") !== "gradle,kast") process.exit(1);
+          '
+
+      - name: Package bundle
+        shell: bash
+        working-directory: broker
+        run: |
+          set -euo pipefail
+          version="$(node -p 'require("./package.json").version')"
+          archive="broker-${version}.tar.gz"
+          staging="${RUNNER_TEMP}/broker-${version}"
+          mkdir -p "${staging}" dist
+          install -m 0755 dist/broker.mjs "${staging}/broker.mjs"
+          cp README.md install.sh "${staging}/"
+          tar -C "${RUNNER_TEMP}" -czf "dist/${archive}" "$(basename "${staging}")"
+          (cd dist && sha256sum "${archive}" > "${archive}.sha256")
+
+      - name: Upload release assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: broker
+          path: broker/dist/*
+          if-no-files-found: error
+
+  release:
+    name: Publish release
+    needs: bundle
+    if: startsWith(github.ref, 'refs/tags/broker-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download release assets
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create or reconcile release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          title="Broker ${tag#broker-v}"
+          notes="Strict TypeScript proxy for qualified Codex App Server dynamic tools with lazy Gradle and Kast providers."
+          if gh release view "${tag}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            gh release upload "${tag}" dist/* --repo "${GITHUB_REPOSITORY}" --clobber
+            gh release edit "${tag}" --repo "${GITHUB_REPOSITORY}" \
+              --title "${title}" --notes "${notes}" --draft=false --prerelease=false
+          else
+            gh release create "${tag}" dist/* --repo "${GITHUB_REPOSITORY}" --verify-tag \
+              --title "${title}" --notes "${notes}"
+          fi

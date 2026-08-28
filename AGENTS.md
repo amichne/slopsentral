@@ -13,6 +13,8 @@ by hand when the authored source can be fixed instead.
 - `source/skills`, `source/agents`, `source/hooks`, `source/concepts`,
   `source/profiles`, `source/evals`, `source/schemas`, and `source/tools` are
   canonical authored roots.
+- `broker/` is the standalone Codex App Server broker package and release root;
+  it is not a marketplace primitive or generated provider output.
 - `.agents/plugins` and `.github/plugin` are generated output from
   `intelligence project --source . --harness codex|github-copilot`.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
