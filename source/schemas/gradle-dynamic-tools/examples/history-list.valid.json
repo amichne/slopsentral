@@ -1,7 +1,0 @@
-{
-  "type": "HISTORY",
-  "operation": {
-    "type": "LIST",
-    "limit": 20
-  }
-}
