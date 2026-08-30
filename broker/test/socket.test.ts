@@ -15,6 +15,7 @@ import {
   defineTool,
 } from "../src/broker/index.ts";
 import { MemoryThreadCatalogStore } from "../src/protocol/thread-store.ts";
+import { runtimeConfig } from "../src/runtime/config.ts";
 import type { LogRecord } from "../src/runtime/logger.ts";
 import { startSocketServer } from "../src/runtime/server.ts";
 import { connectUnixWebSocket } from "../src/runtime/upstream-connection.ts";
@@ -59,8 +60,13 @@ describe("socket proxy contract", () => {
         maximumMessageBytes: 1024 * 1024,
         publicSocketPath: publicSocket,
         threadStore: new MemoryThreadCatalogStore(),
-        upstream: () => connectUnixWebSocket(privateSocket, 1024 * 1024),
-        validators: protocolValidators(),
+        upstream: async () => ({
+          type: "success",
+          value: {
+            connection: await connectUnixWebSocket(privateSocket, 1024 * 1024),
+            validators: protocolValidators(),
+          },
+        }),
       }),
       "broker socket start",
     );
@@ -112,6 +118,165 @@ describe("socket proxy contract", () => {
       await rm(directory, { force: true, recursive: true });
     }
   });
+
+  test("upstream failure evidence preserves the concrete WebSocket error", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "broker-upstream-error-"));
+    const publicSocket = join(directory, "public.sock");
+    const privateSocket = join(directory, "private.sock");
+    const maximumMessageBytes = 1024;
+    const logs: LogRecord[] = [];
+    const fake = await within(
+      fakeUpstream(privateSocket, []),
+      "fake upstream start",
+    );
+    const created = createBroker([]);
+    assert.equal(created.type, "success");
+    const brokerServer = await within(
+      startSocketServer({
+        broker: created.value,
+        connectionInitializationTimeoutMs: 1_000,
+        logger: { write: (record) => logs.push(record) },
+        maximumConnections: 1,
+        maximumMessageBytes,
+        publicSocketPath: publicSocket,
+        threadStore: new MemoryThreadCatalogStore(),
+        upstream: async () => ({
+          type: "success",
+          value: {
+            connection: await connectUnixWebSocket(
+              privateSocket,
+              maximumMessageBytes,
+            ),
+            validators: protocolValidators(),
+          },
+        }),
+      }),
+      "broker socket start",
+    );
+
+    try {
+      const downstream = await within(
+        connectUnixWebSocket(publicSocket, maximumMessageBytes),
+        "downstream connect",
+      );
+      const initialized = nextTextMessage(downstream);
+      downstream.send(
+        JSON.stringify({
+          id: 1,
+          method: "initialize",
+          params: {
+            clientInfo: {
+              name: "managed",
+              title: "Managed",
+              version: "test-client",
+            },
+            capabilities: {
+              experimentalApi: false,
+              requestAttestation: false,
+            },
+          },
+        }),
+      );
+      await within(initialized, "initialize response");
+      const closed = nextClose(downstream);
+      fake.broadcast("x".repeat(maximumMessageBytes + 1));
+      assert.deepEqual(await within(closed, "downstream close"), {
+        code: 1011,
+        reason: "upstream failed",
+      });
+      const failure = logs.find(
+        ({ event }) => event === "connection.upstream_failed",
+      );
+      assert.equal(failure?.detail, "Max payload size exceeded");
+      assert.equal(failure?.phase, "active");
+      assert.equal(typeof failure?.connectionId, "string");
+    } finally {
+      await within(brokerServer.close(), "broker socket close");
+      await created.value.close();
+      await within(fake.close(), "fake upstream close");
+      await rm(directory, { force: true, recursive: true });
+    }
+  });
+
+  test("default transport admits an App Server frame above one MiB", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "broker-large-frame-"));
+    const publicSocket = join(directory, "public.sock");
+    const privateSocket = join(directory, "private.sock");
+    const config = runtimeConfig({}, { codexHome: directory });
+    assert.equal(config.type, "success");
+    const fake = await within(
+      fakeUpstream(privateSocket, []),
+      "fake upstream start",
+    );
+    const created = createBroker([]);
+    assert.equal(created.type, "success");
+    const brokerServer = await within(
+      startSocketServer({
+        broker: created.value,
+        connectionInitializationTimeoutMs: 1_000,
+        logger: { write: () => {} },
+        maximumConnections: 1,
+        maximumMessageBytes: config.value.maximumMessageBytes,
+        publicSocketPath: publicSocket,
+        threadStore: new MemoryThreadCatalogStore(),
+        upstream: async () => ({
+          type: "success",
+          value: {
+            connection: await connectUnixWebSocket(
+              privateSocket,
+              config.value.maximumMessageBytes,
+            ),
+            validators: protocolValidators(),
+          },
+        }),
+      }),
+      "broker socket start",
+    );
+
+    try {
+      const downstream = await within(
+        connectUnixWebSocket(publicSocket, config.value.maximumMessageBytes),
+        "downstream connect",
+      );
+      const initialized = nextTextMessage(downstream);
+      downstream.send(
+        JSON.stringify({
+          id: 1,
+          method: "initialize",
+          params: {
+            clientInfo: {
+              name: "managed",
+              title: "Managed",
+              version: "test-client",
+            },
+            capabilities: {
+              experimentalApi: false,
+              requestAttestation: false,
+            },
+          },
+        }),
+      );
+      await within(initialized, "initialize response");
+      const forwarded = nextTextMessage(downstream);
+      const largeMessage = JSON.stringify({
+        method: "fixture/large",
+        params: { data: "x".repeat(2 * 1024 * 1024) },
+      });
+      fake.broadcast(largeMessage);
+      const received = await within(forwarded, "large App Server frame");
+      assert.equal(
+        Buffer.byteLength(received),
+        Buffer.byteLength(largeMessage),
+      );
+      assert.equal(parseRecord(received).method, "fixture/large");
+      downstream.close();
+    } finally {
+      await within(brokerServer.close(), "broker socket close");
+      await created.value.close();
+      await within(fake.close(), "fake upstream close");
+      await rm(directory, { force: true, recursive: true });
+    }
+  });
 });
 
 const fakeUpstream = async (socketPath: string, messages: string[]) => {
@@ -128,6 +293,9 @@ const fakeUpstream = async (socketPath: string, messages: string[]) => {
     server.listen(socketPath, resolve);
   });
   return {
+    broadcast: (message: string) => {
+      for (const connection of websockets.clients) connection.send(message);
+    },
     close: async () => {
       for (const connection of websockets.clients) connection.terminate();
       websockets.close();
@@ -150,6 +318,15 @@ const nextTextMessage = (websocket: WebSocket): Promise<string> =>
     websocket.once("error", reject);
     websocket.once("close", (code, reason) =>
       reject(new Error(`closed before message: ${code} ${reason.toString()}`)),
+    );
+  });
+
+const nextClose = (
+  websocket: WebSocket,
+): Promise<{ readonly code: number; readonly reason: string }> =>
+  new Promise((resolve) => {
+    websocket.once("close", (code, reason) =>
+      resolve({ code, reason: reason.toString() }),
     );
   });
 

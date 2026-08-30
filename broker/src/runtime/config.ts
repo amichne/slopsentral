@@ -4,6 +4,7 @@ import { join, resolve } from "node:path";
 import type { BrokerLimits, Outcome } from "../broker/types.ts";
 
 export const BROKER_VERSION = "0.5.0";
+const DEFAULT_MAXIMUM_MESSAGE_BYTES = 64 * 1024 * 1024;
 
 export interface RuntimeConfig {
   readonly brokerLimits: BrokerLimits;
@@ -55,7 +56,8 @@ export const runtimeConfig = (
     kastExecutable:
       overrides.kastExecutable ?? environment.KAST_EXECUTABLE ?? "kast",
     maximumConnections: overrides.maximumConnections ?? 8,
-    maximumMessageBytes: overrides.maximumMessageBytes ?? 1024 * 1024,
+    maximumMessageBytes:
+      overrides.maximumMessageBytes ?? DEFAULT_MAXIMUM_MESSAGE_BYTES,
     maximumProtocolSchemaBytes:
       overrides.maximumProtocolSchemaBytes ?? 32 * 1024 * 1024,
     maximumProtocolSchemaFiles: overrides.maximumProtocolSchemaFiles ?? 2_048,

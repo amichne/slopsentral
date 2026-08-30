@@ -100,7 +100,7 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
     }
     process.stdout.write(
       `${JSON.stringify({
-        codexVersion: qualified.value.codexVersion,
+        codexVersion: qualified.value.codexVersion.value,
         protocolDigest: qualified.value.protocolDigest,
         schemaFileCount: qualified.value.schemaFileCount,
       })}\n`,

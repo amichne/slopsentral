@@ -2,6 +2,19 @@ import { createConnection } from "node:net";
 
 import WebSocket from "ws";
 
+import type { BrokerFailure } from "../broker/failure.ts";
+import type { Outcome } from "../broker/types.ts";
+import type { CodexProtocolValidators } from "../protocol/validators.ts";
+
+export interface QualifiedUpstreamConnection {
+  readonly connection: WebSocket;
+  readonly validators: CodexProtocolValidators;
+}
+
+export type QualifiedUpstreamConnector = () => Promise<
+  Outcome<QualifiedUpstreamConnection, BrokerFailure>
+>;
+
 export const connectUnixWebSocket = (
   socketPath: string,
   maximumPayloadBytes: number,

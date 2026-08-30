@@ -21,6 +21,12 @@ At startup the broker asks the configured executable for its version and runs
 digests the complete output, locates the ten App Server messages the broker owns, and compiles
 their validators before launching that same executable. Generated schemas remain ephemeral. A CLI
 that lacks the command or any required contract fails closed as `CodexProtocolIncompatible`.
+Before admitting each new client, the broker probes that executable's version. When the version
+changes while the broker is running, it generates and validates the replacement contract before
+starting a replacement generation and binds that client's protocol adapter to the replacement
+validators. Existing clients drain on their original generation, and concurrent new clients share
+the same transition. An incompatible replacement is rejected without weakening the active
+contract or requiring a manual broker restart.
 
 Before constructing the catalog, the broker runs the exact configured Kast executable's
 `--version` and `--schema` commands. It bounds and decodes the capability document, admits the
