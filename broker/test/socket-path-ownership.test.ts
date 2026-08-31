@@ -7,7 +7,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 
-import { createBroker } from "../src/broker/index.ts";
+import { startReloadableBroker } from "../src/broker/index.ts";
 import { MemoryThreadCatalogStore } from "../src/protocol/thread-store.ts";
 import { startSocketServer } from "../src/runtime/server.ts";
 import type { QualifiedUpstreamConnector } from "../src/runtime/upstream-connection.ts";
@@ -22,7 +22,10 @@ test("socket path ownership recovers a socket left by an unclean stop", async ()
   const directory = await mkdtemp(join(tmpdir(), "broker-stale-socket-"));
   const publicSocketPath = join(directory, "public.sock");
   await leaveStaleSocket(publicSocketPath);
-  const broker = createBroker([]);
+  const broker = await startReloadableBroker(async () => ({
+    type: "success",
+    value: [],
+  }));
   assert.equal(broker.type, "success");
 
   try {
@@ -56,7 +59,10 @@ test("socket path ownership refuses to replace a live listener", async () => {
   const publicSocketPath = join(directory, "public.sock");
   const owner = createServer();
   await listen(owner, publicSocketPath);
-  const broker = createBroker([]);
+  const broker = await startReloadableBroker(async () => ({
+    type: "success",
+    value: [],
+  }));
   assert.equal(broker.type, "success");
 
   try {

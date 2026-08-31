@@ -1,4 +1,4 @@
-import type { TSchema } from "@sinclair/typebox";
+import type { ProviderToolSchema } from "../../broker/types.ts";
 
 export interface KastCliOptionBinding {
   readonly type: "OPTION";
@@ -12,14 +12,9 @@ export interface KastCliInvocation {
   readonly bindings: readonly KastCliOptionBinding[];
 }
 
-export interface KastServerTool {
+export interface KastServerTool extends ProviderToolSchema {
   readonly operationId: string;
-  readonly name: string;
-  readonly description: string;
-  readonly deferLoading: boolean;
   readonly cliUsage: string;
-  readonly inputSchema: TSchema;
-  readonly outputSchema: TSchema;
   readonly invocation: KastCliInvocation;
 }
 

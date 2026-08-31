@@ -115,7 +115,17 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
     return 2;
   }
   await new Promise<void>((resolve) => {
-    const stop = () => resolve();
+    const reload = () => {
+      logger.write({ event: "catalog.reload_requested", trigger: "SIGHUP" });
+      void running.value.broker.reload();
+    };
+    const stop = () => {
+      process.removeListener("SIGHUP", reload);
+      process.removeListener("SIGINT", stop);
+      process.removeListener("SIGTERM", stop);
+      resolve();
+    };
+    process.on("SIGHUP", reload);
     process.once("SIGINT", stop);
     process.once("SIGTERM", stop);
   });

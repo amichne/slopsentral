@@ -2,9 +2,9 @@
 
 This package is a strict TypeScript proxy for the runtime-qualified Codex App Server protocol. It
 owns the normal local App Server control socket, supervises one private upstream
-`codex app-server` process, injects one deterministic dynamic-tool catalog, and routes typed calls
-to independent Gradle and Kast providers. Provider execution remains lazy; installed contracts are
-qualified before the catalog is published.
+`codex app-server` process, injects a generation-pinned dynamic-tool catalog, and routes typed
+calls to independent Gradle and Kast providers. Provider execution remains lazy; installed
+contracts are qualified before a catalog generation is published.
 
 The broker does not replace, wrap, alias, or shadow `codex`. Start the broker, then use the normal
 managed `codex` command. If another process already owns either socket, startup fails closed.
@@ -37,6 +37,14 @@ the lazy runtime qualifies the same executable again and rejects any version or 
 `KAST_CONTRACT_CHANGED`. Incomplete, malformed, unmapped, duplicated, or unsupported projections
 fail closed.
 
+Before each new downstream connection is initialized, the broker reloads all provider schema
+registrations into a candidate generation. It validates and digests the complete candidate before
+one atomic swap. Existing connections keep leases on their original brokers and drain normally;
+new connections receive the replacement. An unchanged digest is a no-op, and an invalid or
+unavailable replacement rejects that new connection without weakening the active generation.
+Sending `SIGHUP` to the serving broker stages the same atomic reload immediately; no process
+restart or socket replacement is required.
+
 ## Tools
 
 The deterministic catalog is available after contract qualification without starting either
@@ -52,6 +60,19 @@ All current tools are read-only. Kast's admitted JSON Schemas are refined into e
 schemas before entering the catalog. Model arguments cross that exact decoder before provider
 startup or invocation. Unknown properties, invalid scalar values, incomplete variants, unsupported
 CLI bindings, and invalid constraints are finite failures.
+
+`defineProviderSchema` is the common tool-definition boundary. One schema instance owns the
+namespace, version, tool names, descriptions, loading policy, input schemas, output schemas, and
+provider-specific operation metadata. `registerProviderSchema` derives catalog registration,
+input/output decoding, and dispatch from that instance. The provider supplies one explicit runtime
+capability for startup, invocation, and presentation because a data schema describes an operation
+but does not grant process or I/O authority. Kast uses this path directly, so changing its admitted
+server projection does not require a parallel broker tool list.
+
+The complete provider schema has its own SHA-256 identity, including output schemas and
+provider-specific operation metadata. The catalog digest includes those identities; a semantic
+schema change therefore creates a new generation even when its model-facing input shape is
+unchanged.
 
 ## Run
 
@@ -104,8 +125,9 @@ runtime protocol qualification, unit/integration tests, and the bundled executab
 installed-upstream acceptance generates the installed Codex CLI's exact contract, starts one App
 Server process behind the public broker socket, completes initialization, and proves providers
 remain absent before their first calls. Unit tests separately prove that an arbitrary version
-string is admitted when its generated contract is compatible. A Kast fixture changes both a tool
-name and its input field and proves the catalog and resulting CLI invocation follow only that
+string is admitted when its generated contract is compatible. Generation tests prove atomic
+replacement, failed-reload isolation, and old-generation draining. A Kast fixture changes both a
+tool name and its input field and proves the catalog and resulting CLI invocation follow only that
 selected executable's projection.
 
 The canonical gate and installed-upstream acceptance select a bounded schema-emitting Kast fixture

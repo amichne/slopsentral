@@ -10,9 +10,9 @@ import type WebSocket from "ws";
 import { WebSocketServer } from "ws";
 
 import {
-  createBroker,
   defineProvider,
   defineTool,
+  startReloadableBroker,
 } from "../src/broker/index.ts";
 import { MemoryThreadCatalogStore } from "../src/protocol/thread-store.ts";
 import { runtimeConfig } from "../src/runtime/config.ts";
@@ -32,24 +32,26 @@ describe("socket proxy contract", () => {
       fakeUpstream(privateSocket, upstreamMessages),
       "fake upstream start",
     );
-    const created = createBroker([
-      defineProvider({
-        namespace: "fixture",
-        version: "1.0.0",
-        tools: [
-          defineTool({
-            name: "read",
-            description: "fixture",
-            input: Type.Object({}, { additionalProperties: false }),
-            output: Type.Null(),
-            loading: "eager",
-            invoke: async () => ({ type: "success", value: null }),
-            present: () => ({ success: true, contentItems: [] }),
-          }),
-        ],
-        start: async () => ({ type: "success", value: null }),
-      }),
-    ]);
+    const registration = defineProvider({
+      namespace: "fixture",
+      version: "1.0.0",
+      tools: [
+        defineTool({
+          name: "read",
+          description: "fixture",
+          input: Type.Object({}, { additionalProperties: false }),
+          output: Type.Null(),
+          loading: "eager",
+          invoke: async () => ({ type: "success", value: null }),
+          present: () => ({ success: true, contentItems: [] }),
+        }),
+      ],
+      start: async () => ({ type: "success", value: null }),
+    });
+    const created = await startReloadableBroker(async () => ({
+      type: "success",
+      value: [registration],
+    }));
     assert.equal(created.type, "success");
     const brokerServer = await within(
       startSocketServer({
@@ -129,7 +131,10 @@ describe("socket proxy contract", () => {
       fakeUpstream(privateSocket, []),
       "fake upstream start",
     );
-    const created = createBroker([]);
+    const created = await startReloadableBroker(async () => ({
+      type: "success",
+      value: [],
+    }));
     assert.equal(created.type, "success");
     const brokerServer = await within(
       startSocketServer({
@@ -208,7 +213,10 @@ describe("socket proxy contract", () => {
       fakeUpstream(privateSocket, []),
       "fake upstream start",
     );
-    const created = createBroker([]);
+    const created = await startReloadableBroker(async () => ({
+      type: "success",
+      value: [],
+    }));
     assert.equal(created.type, "success");
     const brokerServer = await within(
       startSocketServer({

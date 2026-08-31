@@ -7,7 +7,10 @@ import { dirname } from "node:path";
 import type WebSocket from "ws";
 import { WebSocketServer } from "ws";
 
-import type { Broker } from "../broker/types.ts";
+import type {
+  BrokerGenerationLease,
+  ReloadableBroker,
+} from "../broker/types.ts";
 import { CodexProtocolAdapter } from "../protocol/adapter.ts";
 import type { ProtocolRouting } from "../protocol/adapter.ts";
 import type { ThreadCatalogStore } from "../protocol/thread-store.ts";
@@ -15,7 +18,7 @@ import type { BrokerLogger } from "./logger.ts";
 import type { QualifiedUpstreamConnector } from "./upstream-connection.ts";
 
 export interface SocketServerOptions {
-  readonly broker: Broker;
+  readonly broker: ReloadableBroker;
   readonly connectionInitializationTimeoutMs: number;
   readonly logger: BrokerLogger;
   readonly maximumConnections: number;
@@ -95,6 +98,8 @@ const bridgeConnection = async (
 ): Promise<void> => {
   const connectionId = randomUUID();
   let adapter: CodexProtocolAdapter | undefined;
+  let brokerGeneration: BrokerGenerationLease | undefined;
+  let connectionCatalogDigest: string | undefined;
   let upstream: WebSocket | undefined;
   let connectionState: "accepted" | "initializing" | "active" = "accepted";
   let downstreamInFlight = 0;
@@ -125,6 +130,21 @@ const bridgeConnection = async (
           throw new Error("initialize request omitted an id");
         initialization = createInitializationGate();
         connectionState = "initializing";
+        const refreshed = await options.broker.reload();
+        if (refreshed.type === "failure") {
+          options.logger.write({
+            event: "connection.catalog_rejected",
+            connectionId,
+            failureType: refreshed.failure.type,
+          });
+          throw new Error(`catalog rejected: ${refreshed.failure.type}`);
+        }
+        const acquiredBroker = options.broker.acquire();
+        if (acquiredBroker.type === "failure") {
+          throw new Error(`broker rejected: ${acquiredBroker.failure.type}`);
+        }
+        brokerGeneration = acquiredBroker.value;
+        connectionCatalogDigest = brokerGeneration.broker.catalog.digest;
         const acquired = await options.upstream();
         if (acquired.type === "failure") {
           options.logger.write({
@@ -132,11 +152,12 @@ const bridgeConnection = async (
             connectionId,
             failureType: acquired.failure.type,
           });
+          await releaseBrokerGeneration();
           throw new Error(`upstream rejected: ${acquired.failure.type}`);
         }
         upstream = acquired.value.connection;
         const connectionAdapter = new CodexProtocolAdapter({
-          broker: options.broker,
+          broker: brokerGeneration.broker,
           observe: (observation) =>
             options.logger.write({ ...observation, connectionId }),
           threadStore: options.threadStore,
@@ -185,6 +206,7 @@ const bridgeConnection = async (
         });
         upstream.once("close", () => {
           connectionAdapter.close();
+          void releaseBrokerGeneration();
           initialization?.fail(
             new Error("upstream closed during initialization"),
           );
@@ -192,6 +214,7 @@ const bridgeConnection = async (
         });
         upstream.once("error", (error) => {
           connectionAdapter.close();
+          void releaseBrokerGeneration();
           options.logger.write({
             event: "connection.upstream_failed",
             connectionId,
@@ -222,7 +245,7 @@ const bridgeConnection = async (
         options.logger.write({
           event: "connection.initialized",
           connectionId,
-          catalogDigest: options.broker.catalog.digest,
+          catalogDigest: connectionCatalogDigest ?? "unavailable",
           protocolInitialization: "success",
         });
       }
@@ -243,9 +266,16 @@ const bridgeConnection = async (
   });
   downstream.once("close", () => {
     adapter?.close();
+    void releaseBrokerGeneration();
     initialization?.fail(new Error("downstream closed during initialization"));
     upstream?.close(1001, "downstream closed");
   });
+
+  const releaseBrokerGeneration = async (): Promise<void> => {
+    const acquired = brokerGeneration;
+    brokerGeneration = undefined;
+    await acquired?.release();
+  };
 };
 
 const applyRouting = async (

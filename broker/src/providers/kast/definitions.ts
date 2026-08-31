@@ -1,34 +1,30 @@
-import type { TSchema } from "@sinclair/typebox";
-
 import { canonicalJson } from "../../broker/canonical.ts";
-import { defineTool } from "../../broker/index.ts";
-import type { Outcome, ToolDefinition } from "../../broker/types.ts";
-import type { KastCliInvocation, KastServerContract } from "./contract.ts";
+import type {
+  InvocationContext,
+  Outcome,
+  ToolPresentation,
+} from "../../broker/types.ts";
+import type { KastCliInvocation, KastServerTool } from "./contract.ts";
 import type { KastRuntime } from "./runtime.ts";
 
-export const createKastTools = (
-  contract: KastServerContract,
-): readonly ToolDefinition<KastRuntime>[] =>
-  contract.tools.map((tool) =>
-    defineTool<KastRuntime, TSchema, TSchema>({
-      name: tool.name,
-      description: tool.description,
-      input: tool.inputSchema,
-      output: tool.outputSchema,
-      loading: tool.deferLoading ? "deferred" : "eager",
-      invoke: async (runtime, input, context) => {
-        const arguments_ = bindCliInvocation(tool.invocation, input);
-        if (arguments_.type === "failure") return arguments_;
-        return runtime.execute(arguments_.value, context);
-      },
-      present: (output) => ({
-        success: isRecord(output) && output.status === "completed",
-        contentItems: [
-          { type: "inputText" as const, text: canonicalJson(output) },
-        ],
-      }),
-    }),
-  );
+export const invokeKastTool = async (
+  runtime: KastRuntime,
+  tool: KastServerTool,
+  input: unknown,
+  context: InvocationContext,
+) => {
+  const arguments_ = bindCliInvocation(tool.invocation, input);
+  if (arguments_.type === "failure") return arguments_;
+  return runtime.execute(arguments_.value, context);
+};
+
+export const presentKastOutput = (
+  _tool: KastServerTool,
+  output: unknown,
+): ToolPresentation => ({
+  success: isRecord(output) && output.status === "completed",
+  contentItems: [{ type: "inputText", text: canonicalJson(output) }],
+});
 
 const bindCliInvocation = (
   invocation: KastCliInvocation,

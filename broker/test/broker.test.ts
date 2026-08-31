@@ -125,6 +125,19 @@ describe("catalog contract", () => {
       issues: ["invalid schema: gradle.inspect"],
     });
 
+    const invalidOutputRegistration = provider("gradle", ["inspect"]);
+    const [invalidOutputTool] = invalidOutputRegistration.descriptor.tools;
+    assert.notEqual(invalidOutputTool, undefined);
+    Object.defineProperty(invalidOutputTool, "outputSchema", {
+      value: { arbitrary: true },
+    });
+    const invalidOutputSchema = createBroker([invalidOutputRegistration]);
+    assert.equal(invalidOutputSchema.type, "failure");
+    assert.deepEqual(invalidOutputSchema.failure, {
+      type: "CatalogInvalid",
+      issues: ["invalid output schema: gradle.inspect"],
+    });
+
     const tooMany = createBroker([provider("gradle", ["inspect"])], {
       ...limits,
       maximumDescriptorCount: 0,

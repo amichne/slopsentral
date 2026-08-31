@@ -1,6 +1,7 @@
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 
+import { DEFAULT_BROKER_LIMITS } from "../broker/defaults.ts";
 import type { BrokerLimits, Outcome } from "../broker/types.ts";
 
 export const BROKER_VERSION = "0.5.0";
@@ -38,16 +39,7 @@ export const runtimeConfig = (
   );
   const stateDirectory = join(codexHome, "broker");
   const config: RuntimeConfig = {
-    brokerLimits: overrides.brokerLimits ?? {
-      inFlightCallsPerConnection: 8,
-      inFlightCallsPerProvider: 4,
-      maximumCatalogBytes: 1024 * 1024,
-      maximumDescriptorCount: 64,
-      maximumToolArgumentBytes: 64 * 1024,
-      maximumToolResultBytes: 1024 * 1024,
-      providerInvocationTimeoutMs: 30_000,
-      providerStartupTimeoutMs: 10_000,
-    },
+    brokerLimits: overrides.brokerLimits ?? DEFAULT_BROKER_LIMITS,
     codexExecutable:
       overrides.codexExecutable ?? environment.CODEX_EXECUTABLE ?? "codex",
     codexHome,

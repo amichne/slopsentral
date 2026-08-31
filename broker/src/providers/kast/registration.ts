@@ -1,8 +1,11 @@
-import { defineProvider } from "../../broker/index.ts";
+import {
+  defineProviderSchema,
+  registerProviderSchema,
+} from "../../broker/index.ts";
 import type { Outcome, ProviderRegistration } from "../../broker/types.ts";
 import { executeProcess } from "../process.ts";
 import type { ProcessExecutor } from "../process.ts";
-import { createKastTools } from "./definitions.ts";
+import { invokeKastTool, presentKastOutput } from "./definitions.ts";
 import type { KastQualificationFailure } from "./qualification.ts";
 import { qualifyKast } from "./qualification.ts";
 import { startKastRuntime } from "./runtime.ts";
@@ -24,17 +27,20 @@ export const qualifyKastRegistration = async (
   };
   const qualification = await qualifyKast(runtimeOptions, signal);
   if (qualification.type === "failure") return qualification;
-  const tools = createKastTools(qualification.value.contract);
+  const schema = defineProviderSchema({
+    namespace: qualification.value.contract.namespace,
+    version:
+      `${qualification.value.cliVersion}+server` +
+      `${qualification.value.serverProjectionVersion}`,
+    tools: qualification.value.contract.tools,
+  });
   return {
     type: "success",
-    value: defineProvider({
-      namespace: qualification.value.contract.namespace,
-      version:
-        `${qualification.value.cliVersion}+server` +
-        `${qualification.value.serverProjectionVersion}`,
-      tools,
+    value: registerProviderSchema(schema, {
       start: (startupSignal) =>
         startKastRuntime(runtimeOptions, qualification.value, startupSignal),
+      invoke: invokeKastTool,
+      present: presentKastOutput,
     }),
   };
 };

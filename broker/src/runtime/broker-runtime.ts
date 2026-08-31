@@ -1,7 +1,7 @@
 import type { BrokerFailure } from "../broker/failure.ts";
-import type { Broker, Outcome } from "../broker/types.ts";
+import type { Outcome, ReloadableBroker } from "../broker/types.ts";
 import type { CodexVersion } from "./codex-protocol.ts";
-import { createFederatedBroker } from "./composition.ts";
+import { startFederatedBroker } from "./composition.ts";
 import { BROKER_VERSION } from "./config.ts";
 import type { RuntimeConfig } from "./config.ts";
 import type { BrokerLogger } from "./logger.ts";
@@ -10,7 +10,7 @@ import { FileThreadCatalogStore } from "./thread-store.ts";
 import { startManagedUpstream } from "./upstream-process.ts";
 
 export interface RunningBrokerRuntime {
-  readonly broker: Broker;
+  readonly broker: ReloadableBroker;
   readonly codexVersion: CodexVersion;
   readonly close: () => Promise<void>;
   readonly protocolDigest: string;
@@ -21,7 +21,7 @@ export const startBrokerRuntime = async (
   config: RuntimeConfig,
   logger: BrokerLogger,
 ): Promise<Outcome<RunningBrokerRuntime, BrokerFailure>> => {
-  const broker = await createFederatedBroker(config, (observation) =>
+  const broker = await startFederatedBroker(config, (observation) =>
     logger.write(observation),
   );
   if (broker.type === "failure") return broker;

@@ -139,7 +139,7 @@ const admitContract = (capability: Capability): ContractAdmission => {
       operationId: tool.operationId,
       name: tool.name,
       description: tool.description,
-      deferLoading: tool.deferLoading,
+      loading: tool.deferLoading ? "deferred" : "eager",
       cliUsage: tool.cliUsage,
       inputSchema: inputSchema.value,
       outputSchema: outputSchema.value,
