@@ -39,19 +39,42 @@ export interface CodexProtocolQualificationOptions {
 }
 
 export interface CodexProtocolQualification {
-  readonly codexVersion: string;
+  readonly codexVersion: CodexVersion;
   readonly protocolDigest: string;
   readonly schemaFileCount: number;
   readonly validators: CodexProtocolValidators;
 }
 
-export const qualifyCodexProtocol = async (
-  options: CodexProtocolQualificationOptions,
-): Promise<Outcome<CodexProtocolQualification, BrokerFailure>> => {
+export class CodexVersion {
+  private constructor(readonly value: string) {}
+
+  /**
+   * Refines raw `codex --version` output into a non-empty, bounded identity.
+   * Invalid output is `CodexProtocolIncompatible`; callers preserve this value until a log,
+   * process, or JSON boundary requires its text.
+   */
+  static parse(output: string): Outcome<CodexVersion, BrokerFailure> {
+    if (output.length === 0 || output.length > 512) {
+      return incompatible(output, "invalid Codex version output");
+    }
+    return { type: "success", value: new CodexVersion(output) };
+  }
+
+  equals(other: CodexVersion): boolean {
+    return this.value === other.value;
+  }
+}
+
+export const readCodexVersion = async (
+  options: Pick<
+    CodexProtocolQualificationOptions,
+    "codexExecutable" | "codexHome" | "timeoutMs"
+  >,
+): Promise<Outcome<CodexVersion, BrokerFailure>> => {
   const environment = { ...process.env, CODEX_HOME: options.codexHome };
-  let codexVersion: string;
+  let output: string;
   try {
-    codexVersion = (
+    output = (
       await execute(options.codexExecutable, ["--version"], {
         encoding: "utf8",
         env: environment,
@@ -62,9 +85,16 @@ export const qualifyCodexProtocol = async (
   } catch {
     return { type: "failure", failure: { type: "UpstreamUnavailable" } };
   }
-  if (codexVersion.length === 0 || codexVersion.length > 512) {
-    return incompatible(codexVersion, "invalid Codex version output");
-  }
+  return CodexVersion.parse(output);
+};
+
+export const qualifyCodexProtocol = async (
+  options: CodexProtocolQualificationOptions,
+): Promise<Outcome<CodexProtocolQualification, BrokerFailure>> => {
+  const environment = { ...process.env, CODEX_HOME: options.codexHome };
+  const version = await readCodexVersion(options);
+  if (version.type === "failure") return version;
+  const codexVersion = version.value;
 
   const schemaDirectory = await mkdtemp(
     join(tmpdir(), "broker-codex-protocol-"),
@@ -88,20 +118,23 @@ export const qualifyCodexProtocol = async (
         },
       );
     } catch {
-      return incompatible(codexVersion, "schema generation command failed");
+      return incompatible(
+        codexVersion.value,
+        "schema generation command failed",
+      );
     }
 
     const collected = await collectSchemaFiles(schemaDirectory, options);
     if (collected.type === "failure") {
-      return incompatible(codexVersion, collected.detail);
+      return incompatible(codexVersion.value, collected.detail);
     }
     const selected = selectRequiredSchemas(collected.files);
     if (selected.type === "failure") {
-      return incompatible(codexVersion, selected.detail);
+      return incompatible(codexVersion.value, selected.detail);
     }
     const compiled = compileCodexProtocolValidators(selected.schemas);
     if (compiled.type === "failure") {
-      return incompatible(codexVersion, compiled.failure.detail);
+      return incompatible(codexVersion.value, compiled.failure.detail);
     }
     return {
       type: "success",

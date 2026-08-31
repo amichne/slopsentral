@@ -1,4 +1,6 @@
 export type BrokerFailure =
+  | { readonly type: "BrokerClosed" }
+  | { readonly type: "CatalogReloadFailed"; readonly code: string }
   | { readonly type: "UnknownNamespace"; readonly namespace: string }
   | {
       readonly type: "UnknownTool";

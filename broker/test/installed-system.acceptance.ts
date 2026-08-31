@@ -148,7 +148,7 @@ const runInstalledAcceptance = async (): Promise<void> => {
     const accepted = Object.values(proofs).every((proof) => proof);
     const receipt = {
       brokerVersion: BROKER_VERSION,
-      codexVersion: running.value.codexVersion,
+      codexVersion: running.value.codexVersion.value,
       protocolDigest: running.value.protocolDigest,
       schemaFileCount: running.value.schemaFileCount,
       catalogDigest: running.value.broker.catalog.digest,

@@ -53,7 +53,7 @@ const composition = await readFile(
 );
 for (const registration of [
   "createGradleRegistration",
-  "createKastRegistration",
+  "qualifyKastRegistration",
 ]) {
   const occurrences = files
     .filter((file) => file.includes(`${sep}src${sep}`))

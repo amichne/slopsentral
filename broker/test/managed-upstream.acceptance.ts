@@ -25,7 +25,7 @@ test("installed Codex generates its contract and starts one App Server process",
     write: (record) => records.push(record),
   });
   assert.equal(runtime.type, "success");
-  assert.match(runtime.value.codexVersion, /^codex-cli /u);
+  assert.match(runtime.value.codexVersion.value, /^codex-cli /u);
   assert.match(runtime.value.protocolDigest, /^sha256:[a-f0-9]{64}$/u);
   assert.ok(runtime.value.schemaFileCount >= 10);
 

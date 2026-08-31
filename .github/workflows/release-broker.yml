@@ -33,6 +33,8 @@ jobs:
 
       - name: Verify package
         working-directory: broker
+        env:
+          KAST_EXECUTABLE: ./test/kast-cli.fixture.ts
         run: |
           npm ci
           npm run check

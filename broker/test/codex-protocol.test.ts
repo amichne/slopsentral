@@ -21,7 +21,7 @@ describe("Codex protocol qualification", () => {
 
       assert.equal(qualified.type, "success");
       if (qualified.type !== "success") return;
-      assert.equal(qualified.value.codexVersion, "codex-cli 999.42.7");
+      assert.equal(qualified.value.codexVersion.value, "codex-cli 999.42.7");
       assert.match(qualified.value.protocolDigest, /^sha256:[a-f0-9]{64}$/u);
       assert.equal(qualified.value.schemaFileCount, 10);
       assert.equal(

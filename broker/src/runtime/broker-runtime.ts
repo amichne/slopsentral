@@ -1,6 +1,7 @@
 import type { BrokerFailure } from "../broker/failure.ts";
-import type { Broker, Outcome } from "../broker/types.ts";
-import { createFederatedBroker } from "./composition.ts";
+import type { Outcome, ReloadableBroker } from "../broker/types.ts";
+import type { CodexVersion } from "./codex-protocol.ts";
+import { startFederatedBroker } from "./composition.ts";
 import { BROKER_VERSION } from "./config.ts";
 import type { RuntimeConfig } from "./config.ts";
 import type { BrokerLogger } from "./logger.ts";
@@ -9,8 +10,8 @@ import { FileThreadCatalogStore } from "./thread-store.ts";
 import { startManagedUpstream } from "./upstream-process.ts";
 
 export interface RunningBrokerRuntime {
-  readonly broker: Broker;
-  readonly codexVersion: string;
+  readonly broker: ReloadableBroker;
+  readonly codexVersion: CodexVersion;
   readonly close: () => Promise<void>;
   readonly protocolDigest: string;
   readonly schemaFileCount: number;
@@ -20,7 +21,7 @@ export const startBrokerRuntime = async (
   config: RuntimeConfig,
   logger: BrokerLogger,
 ): Promise<Outcome<RunningBrokerRuntime, BrokerFailure>> => {
-  const broker = createFederatedBroker(config, (observation) =>
+  const broker = await startFederatedBroker(config, (observation) =>
     logger.write(observation),
   );
   if (broker.type === "failure") return broker;
@@ -46,7 +47,6 @@ export const startBrokerRuntime = async (
       publicSocketPath: config.publicSocketPath,
       threadStore: threadStore.value,
       upstream: upstream.value.connect,
-      validators: upstream.value.validators,
     });
   } catch {
     await upstream.value.close();
@@ -64,7 +64,7 @@ export const startBrokerRuntime = async (
     providerRuntimeStates: broker.value.catalog.providers.map(
       ({ namespace }) => `${namespace}=absent`,
     ),
-    codexVersion: upstream.value.codexVersion,
+    codexVersion: upstream.value.codexVersion.value,
     protocolDigest: upstream.value.protocolDigest,
     schemaFileCount: upstream.value.schemaFileCount,
     upstreamPid: upstream.value.pid,
@@ -74,9 +74,15 @@ export const startBrokerRuntime = async (
     type: "success",
     value: {
       broker: broker.value,
-      codexVersion: upstream.value.codexVersion,
-      protocolDigest: upstream.value.protocolDigest,
-      schemaFileCount: upstream.value.schemaFileCount,
+      get codexVersion() {
+        return upstream.value.codexVersion;
+      },
+      get protocolDigest() {
+        return upstream.value.protocolDigest;
+      },
+      get schemaFileCount() {
+        return upstream.value.schemaFileCount;
+      },
       close: async () => {
         await sockets.close();
         await upstream.value.close();

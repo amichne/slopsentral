@@ -1,6 +1,7 @@
 import type { TSchema } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 
+import { canonicalJson, sha256 } from "./canonical.ts";
 import type { BrokerFailure } from "./failure.ts";
 import { ProviderLifecycle } from "./lifecycle.ts";
 import { BoundedSemaphore } from "./semaphore.ts";
@@ -12,9 +13,48 @@ import type {
   Outcome,
   ProviderDefinition,
   ProviderRegistration,
+  ProviderSchema,
+  ProviderSchemaCapability,
+  ProviderToolSchema,
   ToolDefinition,
   ToolDefinitionSpec,
 } from "./types.ts";
+
+export const defineProviderSchema = <
+  const Tool extends ProviderToolSchema,
+  const Schema extends ProviderSchema<Tool>,
+>(
+  schema: Schema,
+): Schema => deepFreeze(schema);
+
+export const registerProviderSchema = <
+  Runtime,
+  const Tool extends ProviderToolSchema,
+>(
+  schema: ProviderSchema<Tool>,
+  capability: ProviderSchemaCapability<Runtime, Tool>,
+): ProviderRegistration => {
+  const admittedSchema = deepFreeze(schema);
+  return defineProvider({
+    namespace: admittedSchema.namespace,
+    schemaDigest: providerSchemaDigest(admittedSchema),
+    version: admittedSchema.version,
+    tools: admittedSchema.tools.map((tool) =>
+      defineTool<Runtime, TSchema, TSchema>({
+        name: tool.name,
+        description: tool.description,
+        input: tool.inputSchema,
+        output: tool.outputSchema,
+        loading: tool.loading,
+        invoke: (runtime, input, context) =>
+          capability.invoke(runtime, tool, input, context),
+        present: (output) => capability.present(tool, output),
+      }),
+    ),
+    start: capability.start,
+    ...(capability.stop === undefined ? {} : { stop: capability.stop }),
+  });
+};
 
 export const defineTool = <
   Runtime,
@@ -26,6 +66,7 @@ export const defineTool = <
   name: spec.name,
   description: spec.description,
   inputSchema: spec.input,
+  outputSchema: spec.output,
   loading: spec.loading,
   decode: (raw): Outcome<DecodedToolInvocation<Runtime>, string> => {
     if (!Value.Check(spec.input, raw)) {
@@ -72,19 +113,53 @@ export const defineTool = <
 
 export const defineProvider = <Runtime>(
   definition: ProviderDefinition<Runtime>,
-): ProviderRegistration => ({
-  descriptor: {
-    namespace: definition.namespace,
-    version: definition.version,
-    tools: definition.tools.map((tool) => ({
-      name: tool.name,
-      description: tool.description,
-      inputSchema: tool.inputSchema,
-      loading: tool.loading,
-    })),
-  },
-  bind: (limits, observe) => bindProvider(definition, limits, observe),
-});
+): ProviderRegistration => {
+  const tools = definition.tools.map((tool) => ({
+    name: tool.name,
+    description: tool.description,
+    inputSchema: tool.inputSchema,
+    outputSchema: tool.outputSchema,
+    loading: tool.loading,
+  }));
+  return {
+    descriptor: {
+      namespace: definition.namespace,
+      schemaDigest:
+        definition.schemaDigest ??
+        providerSchemaDigest({
+          namespace: definition.namespace,
+          version: definition.version,
+          tools,
+        }),
+      version: definition.version,
+      tools,
+    },
+    bind: (limits, observe) => bindProvider(definition, limits, observe),
+  };
+};
+
+const providerSchemaDigest = <Tool extends ProviderToolSchema>(
+  schema: ProviderSchema<Tool>,
+): string =>
+  sha256(
+    canonicalJson({
+      ...schema,
+      tools: [...schema.tools].sort((left, right) =>
+        left.name.localeCompare(right.name),
+      ),
+    }),
+  );
+
+const deepFreeze = <Value>(value: Value): Value => {
+  if (typeof value !== "object" || value === null || Object.isFrozen(value)) {
+    return value;
+  }
+  Object.freeze(value);
+  for (const key of Reflect.ownKeys(value)) {
+    deepFreeze(Reflect.get(value, key));
+  }
+  return value;
+};
 
 const bindProvider = <Runtime>(
   definition: ProviderDefinition<Runtime>,

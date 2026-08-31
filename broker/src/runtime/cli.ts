@@ -50,7 +50,7 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
     return 2;
   }
   if (command === "catalog") {
-    const broker = createFederatedBroker(config.value);
+    const broker = await createFederatedBroker(config.value);
     if (broker.type === "failure") {
       process.stderr.write(`${JSON.stringify({ failure: broker.failure })}\n`);
       return 2;
@@ -81,7 +81,8 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
         );
         return 2;
       }
-      process.stdout.write(`${JSON.stringify(qualified.value)}\n`);
+      const { contract: _contract, ...summary } = qualified.value;
+      process.stdout.write(`${JSON.stringify(summary)}\n`);
       return 0;
     }
     const qualified = await qualifyCodexProtocol({
@@ -99,7 +100,7 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
     }
     process.stdout.write(
       `${JSON.stringify({
-        codexVersion: qualified.value.codexVersion,
+        codexVersion: qualified.value.codexVersion.value,
         protocolDigest: qualified.value.protocolDigest,
         schemaFileCount: qualified.value.schemaFileCount,
       })}\n`,
@@ -114,7 +115,17 @@ const main = async (arguments_: readonly string[]): Promise<number> => {
     return 2;
   }
   await new Promise<void>((resolve) => {
-    const stop = () => resolve();
+    const reload = () => {
+      logger.write({ event: "catalog.reload_requested", trigger: "SIGHUP" });
+      void running.value.broker.reload();
+    };
+    const stop = () => {
+      process.removeListener("SIGHUP", reload);
+      process.removeListener("SIGINT", stop);
+      process.removeListener("SIGTERM", stop);
+      resolve();
+    };
+    process.on("SIGHUP", reload);
     process.once("SIGINT", stop);
     process.once("SIGTERM", stop);
   });

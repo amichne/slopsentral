@@ -7,6 +7,7 @@ import type { BrokerLimits, Outcome, ProviderRegistration } from "./types.ts";
 const NAMESPACE_PATTERN = /^[a-z][a-z0-9-]{0,62}$/;
 const TOOL_PATTERN = /^[a-z][a-z0-9_-]{0,63}$/;
 const MAX_TOOL_NAME_LENGTH = 64;
+const SCHEMA_DIGEST_PATTERN = /^sha256:[0-9a-f]{64}$/;
 
 export interface CatalogFailure {
   readonly type: "CatalogInvalid";
@@ -33,6 +34,7 @@ export interface Catalog {
   readonly namespaces: readonly CatalogNamespace[];
   readonly providers: readonly {
     readonly namespace: string;
+    readonly schemaDigest: string;
     readonly version: string;
   }[];
 }
@@ -62,6 +64,9 @@ export const buildCatalog = (
       issues.push(`duplicate namespace: ${descriptor.namespace}`);
     }
     namespaces.add(descriptor.namespace);
+    if (!SCHEMA_DIGEST_PATTERN.test(descriptor.schemaDigest)) {
+      issues.push(`invalid schema digest: ${descriptor.namespace}`);
+    }
 
     const tools = new Set<string>();
     for (const tool of descriptor.tools) {
@@ -78,6 +83,11 @@ export const buildCatalog = (
       if (!TypeGuard.IsSchema(tool.inputSchema)) {
         issues.push(`invalid schema: ${descriptor.namespace}.${tool.name}`);
       }
+      if (!TypeGuard.IsSchema(tool.outputSchema)) {
+        issues.push(
+          `invalid output schema: ${descriptor.namespace}.${tool.name}`,
+        );
+      }
     }
   }
 
@@ -87,6 +97,7 @@ export const buildCatalog = (
 
   const document = ordered.map(({ descriptor }) => ({
     namespace: descriptor.namespace,
+    schemaDigest: descriptor.schemaDigest,
     providerVersion: descriptor.version,
     tools: [...descriptor.tools]
       .sort((left, right) => left.name.localeCompare(right.name))
@@ -95,6 +106,7 @@ export const buildCatalog = (
         inputSchema: tool.inputSchema,
         loading: tool.loading,
         name: tool.name,
+        outputSchema: tool.outputSchema,
       })),
   }));
   const namespacesDocument = document.map((provider) => ({
@@ -110,7 +122,7 @@ export const buildCatalog = (
     })),
   }));
   if (
-    Buffer.byteLength(canonicalJson(namespacesDocument), "utf8") >
+    Buffer.byteLength(canonicalJson(document), "utf8") >
     limits.maximumCatalogBytes
   ) {
     return {
@@ -121,8 +133,9 @@ export const buildCatalog = (
   const catalog = {
     digest: sha256(canonicalJson(document)),
     namespaces: namespacesDocument,
-    providers: document.map(({ namespace, providerVersion }) => ({
+    providers: document.map(({ namespace, providerVersion, schemaDigest }) => ({
       namespace,
+      schemaDigest,
       version: providerVersion,
     })),
   };

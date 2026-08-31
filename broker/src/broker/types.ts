@@ -33,6 +33,7 @@ export interface ToolDefinition<Runtime> {
   readonly name: string;
   readonly description: string;
   readonly inputSchema: TSchema;
+  readonly outputSchema: TSchema;
   readonly loading: "eager" | "deferred";
   readonly decode: (
     raw: unknown,
@@ -64,14 +65,45 @@ export interface ToolDefinitionSpec<
   readonly present: (output: Static<OutputSchema>) => ToolPresentation;
 }
 
+export interface ProviderToolSchema {
+  readonly name: string;
+  readonly description: string;
+  readonly inputSchema: TSchema;
+  readonly outputSchema: TSchema;
+  readonly loading: "eager" | "deferred";
+}
+
+export interface ProviderSchema<Tool extends ProviderToolSchema> {
+  readonly namespace: string;
+  readonly version: string;
+  readonly tools: readonly Tool[];
+}
+
+export interface ProviderSchemaCapability<
+  Runtime,
+  Tool extends ProviderToolSchema,
+> {
+  readonly start: ProviderDefinition<Runtime>["start"];
+  readonly stop?: ProviderDefinition<Runtime>["stop"];
+  readonly invoke: (
+    runtime: Runtime,
+    tool: Tool,
+    input: unknown,
+    context: InvocationContext,
+  ) => Promise<Outcome<unknown, ProviderCallFailure>>;
+  readonly present: (tool: Tool, output: unknown) => ToolPresentation;
+}
+
 export interface ProviderRegistration {
   readonly descriptor: {
     readonly namespace: string;
+    readonly schemaDigest: string;
     readonly version: string;
     readonly tools: readonly {
       readonly name: string;
       readonly description: string;
       readonly inputSchema: TSchema;
+      readonly outputSchema: TSchema;
       readonly loading: "eager" | "deferred";
     }[];
   };
@@ -79,6 +111,32 @@ export interface ProviderRegistration {
     limits: BrokerLimits,
     observe: BrokerObserver,
   ) => RegisteredProvider;
+}
+
+export type BrokerSchemaLoader = (
+  signal: AbortSignal,
+) => Promise<Outcome<readonly ProviderRegistration[], BrokerFailure>>;
+
+export interface BrokerGenerationLease {
+  readonly broker: Broker;
+  readonly release: () => Promise<void>;
+}
+
+export type BrokerReload =
+  | { readonly type: "unchanged"; readonly catalogDigest: string }
+  | {
+      readonly type: "replaced";
+      readonly previousCatalogDigest: string;
+      readonly catalogDigest: string;
+    };
+
+export interface ReloadableBroker {
+  readonly catalog: import("./catalog.ts").Catalog;
+  readonly limits: BrokerLimits;
+  readonly acquire: () => Outcome<BrokerGenerationLease, BrokerFailure>;
+  readonly dispatch: Broker["dispatch"];
+  readonly reload: () => Promise<Outcome<BrokerReload, BrokerFailure>>;
+  readonly close: () => Promise<void>;
 }
 
 export interface BrokerObservation {
@@ -118,6 +176,7 @@ export interface ProviderStartFailure {
 
 export interface ProviderDefinition<Runtime> {
   readonly namespace: string;
+  readonly schemaDigest?: string;
   readonly version: string;
   readonly tools: readonly ToolDefinition<Runtime>[];
   readonly start: (
