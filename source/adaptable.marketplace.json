@@ -108,21 +108,25 @@
         },
         "version": "0.1.0"
       },
-      "description": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, scoped repository guidance, session task evidence, established library use, kotlinx.serialization, Ktor, Clikt, optional GraalVM CLI delivery, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+      "description": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, compositional API surfaces, typed observability, scoped repository guidance, established library use, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
       "tags": [
         "agents",
+        "api-design",
         "best-practices",
         "cli",
         "clikt",
         "evidence",
         "graalvm",
         "gradle",
+        "higher-order-functions",
         "hooks",
         "kast",
         "kotlin",
         "ktor",
         "libraries",
         "module-boundaries",
+        "observability",
+        "opentelemetry",
         "package-cohesion",
         "proof",
         "repository-guidance",
@@ -132,6 +136,7 @@
         "serialization",
         "skills",
         "task-evidence",
+        "telemetry",
         "testing",
         "type-safety",
         "validation"
@@ -529,6 +534,24 @@
       },
       "path": "skills/kotlin-design-practices",
       "name": "kotlin-design-practices"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kotlin-api-surface-design",
+      "name": "kotlin-api-surface-design"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kotlin-observability-design",
+      "name": "kotlin-observability-design"
     },
     {
       "type": "SKILL",

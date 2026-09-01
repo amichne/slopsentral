@@ -52,6 +52,8 @@ Load only the smallest reference that matches the task:
 - API design: `api-dsl-choices.md`, `api-parameter-selection.md`,
   `api-builders-and-configuration.md`, `api-extensions-and-factories.md`,
   `api-surface-stability.md`, `api-review-guides.md`
+- Focused public API ownership, higher-order composition, value-class interop,
+  and multiplatform seams: `kotlin-api-surface-design` when installed
 - Idiom and smells: `idioms.md`, `kotlin-antipatterns.md`,
   `types-dsls-and-generics.md`
 
@@ -61,6 +63,10 @@ Load only the smallest reference that matches the task:
 - `kotlin-repository-engineering` owns evergreen Kotlin repository structure
   and proof policy.
 - `kotlin-agentic-correctness` owns file-backed implementation workflow.
+- `kotlin-api-surface-design` owns focused public and cross-module function
+  ownership, higher-order composition, value surfaces, and multiplatform seams.
+- `kotlin-observability-design` owns typed-outcome telemetry mapping and
+  OpenTelemetry semantic design at explicit effect boundaries.
 - `kotlin-application-stack` owns standard or established library selection and
   focused bindings for serialization, HTTP, CLI, and optional native delivery.
 - `kotlin-gradle-validation` owns Gradle command execution and build evidence.
