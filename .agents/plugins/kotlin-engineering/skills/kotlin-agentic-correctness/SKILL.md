@@ -68,9 +68,9 @@ filesystem evidence, and Kast semantics.
 - Kast structural queries: `kast-kotlin-structural-analysis` when installed
 - Scripts: `scripts/kotlin_workflow_state` and
   `scripts/kotlin_task_evidence`
-- Narrow skills: `kotlin-design-practices`, `kotlin-application-stack`,
-  `kotlin-gradle-validation`, `kotlin-review`, and
-  `negative-capability-proof`
+- Narrow skills: `kotlin-design-practices`, `kotlin-api-surface-design`,
+  `kotlin-observability-design`, `kotlin-application-stack`,
+  `kotlin-gradle-validation`, `kotlin-review`, and `negative-capability-proof`
 - Generic executable-check TDD: `tdd` when installed.
 - Generic delivery: use `git-ci-operations` for local Git and
   `effective-delivery` for PR, CI, and release work when installed.

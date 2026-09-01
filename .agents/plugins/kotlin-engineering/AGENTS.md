@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, scoped repository guidance, session task evidence, established library use, kotlinx.serialization, Ktor, Clikt, optional GraalVM CLI delivery, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.
+Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, compositional API surfaces, typed observability, scoped repository guidance, established library use, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.
 
 ## Operating Rules
 
@@ -38,9 +38,11 @@ Kotlin best-practices package for type-driven design, proof-carrying validation,
 ## Skill Primitives
 
 - `kotlin-agentic-correctness`: `skills/kotlin-agentic-correctness` (source: `source/skills/kotlin-agentic-correctness`)
+- `kotlin-api-surface-design`: `skills/kotlin-api-surface-design` (source: `source/skills/kotlin-api-surface-design`)
 - `kotlin-application-stack`: `skills/kotlin-application-stack` (source: `source/skills/kotlin-application-stack`)
 - `kotlin-design-practices`: `skills/kotlin-design-practices` (source: `source/skills/kotlin-design-practices`)
 - `kotlin-gradle-validation`: `skills/kotlin-gradle-validation` (source: `source/skills/kotlin-gradle-validation`)
+- `kotlin-observability-design`: `skills/kotlin-observability-design` (source: `source/skills/kotlin-observability-design`)
 - `kotlin-review`: `skills/kotlin-review` (source: `source/skills/kotlin-review`)
 - `negative-capability-proof`: `skills/negative-capability-proof` (source: `source/skills/negative-capability-proof`)
 

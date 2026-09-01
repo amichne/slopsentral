@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T22:17:57-04:00",
+  "generatedAt": "2026-08-31T23:31:24-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -272,9 +272,16 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:7e8849e381a31964c2faa9343ff4b636b4ec97d744f2ed9d8c2814c4f0748f5d",
+          "sha256": "sha256:6b9733a7f74dc733bdc7ab907540dd92a5fe0e7bfa75477ada38566542d87b5e",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
+          "type": "SKILL"
+        },
+        {
+          "name": "kotlin-api-surface-design",
+          "sha256": "sha256:f2ef134f60c18f8c454890d4cc70aef75c4a31235b21f8a8ca1df712978fa2ce",
+          "sourcePath": "source/skills/kotlin-api-surface-design",
+          "targetPath": "skills/kotlin-api-surface-design",
           "type": "SKILL"
         },
         {
@@ -286,7 +293,7 @@
         },
         {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:f073cac890cea1cd8b51c2f31a8b13015030d5d16b27b46daad9fd3a1147d431",
+          "sha256": "sha256:edf9e1f788996f48b9fbf90733ca929100d1f2c84d2ce04e6cca8cf65840b879",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
@@ -296,6 +303,13 @@
           "sha256": "sha256:53e653f17954c6900d81398ea994911671a736c3d1cca1e6476cce655415bd83",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
+          "type": "SKILL"
+        },
+        {
+          "name": "kotlin-observability-design",
+          "sha256": "sha256:e4d72cfae587ad52e249d900f84852e72b9ebc97441135fa47938c180043634c",
+          "sourcePath": "source/skills/kotlin-observability-design",
+          "targetPath": "skills/kotlin-observability-design",
           "type": "SKILL"
         },
         {
@@ -717,6 +731,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "0c28aa2b8f2f92ed6cf035abf47aef24910b3060",
+  "sourceSha": "6fb9f4814c59d057baf7b1cbecbf284e7466f504",
   "type": "HYDRATED_MARKETPLACE"
 }
