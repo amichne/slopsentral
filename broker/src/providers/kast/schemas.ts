@@ -20,40 +20,77 @@ const ToolName = Type.String({
   pattern: "^[a-z][a-z0-9_]*$",
 });
 
-const KastServerToolDocument = Type.Object(
-  {
-    operationId: OperationId,
-    name: ToolName,
-    description: BoundedText,
-    deferLoading: Type.Boolean(),
-    cliUsage: BoundedText,
-    inputSchema: Type.Unknown(),
-    outputSchema: Type.Unknown(),
-    invocation: Type.Object(
-      {
-        type: Type.Literal("CLI"),
-        command: Type.Array(CliToken, { minItems: 1, maxItems: 16 }),
-        bindings: Type.Array(
-          Type.Object(
-            {
-              type: Type.Literal("OPTION"),
-              inputField: InputField,
-              option: Type.String({
-                minLength: 3,
-                maxLength: 128,
-                pattern: "^--[a-z][a-z0-9-]*$",
-              }),
-            },
-            { additionalProperties: false },
-          ),
-          { maxItems: 64 },
+const KastServerToolFields = {
+  operationId: OperationId,
+  name: ToolName,
+  description: BoundedText,
+  deferLoading: Type.Boolean(),
+  cliUsage: BoundedText,
+  inputSchema: Type.Unknown(),
+  outputSchema: Type.Unknown(),
+  invocation: Type.Object(
+    {
+      type: Type.Literal("CLI"),
+      command: Type.Array(CliToken, { minItems: 1, maxItems: 16 }),
+      bindings: Type.Array(
+        Type.Object(
+          {
+            type: Type.Literal("OPTION"),
+            inputField: InputField,
+            option: Type.String({
+              minLength: 3,
+              maxLength: 128,
+              pattern: "^--[a-z][a-z0-9-]*$",
+            }),
+          },
+          { additionalProperties: false },
         ),
-      },
-      { additionalProperties: false },
-    ),
+        { maxItems: 64 },
+      ),
+    },
+    { additionalProperties: false },
+  ),
+} as const;
+
+const KastServerToolV1Document = Type.Object(KastServerToolFields, {
+  additionalProperties: false,
+});
+
+const KastServerToolV2Document = Type.Object(
+  {
+    ...KastServerToolFields,
+    approvalPolicy: Type.Union([
+      Type.Literal("none"),
+      Type.Literal("explicit"),
+    ]),
   },
   { additionalProperties: false },
 );
+
+const KastServerProjectionDocument = Type.Union([
+  Type.Object(
+    {
+      schemaVersion: Type.Literal(1),
+      namespace: Type.Literal("kast"),
+      tools: Type.Array(KastServerToolV1Document, {
+        minItems: 1,
+        maxItems: 64,
+      }),
+    },
+    { additionalProperties: false },
+  ),
+  Type.Object(
+    {
+      schemaVersion: Type.Literal(2),
+      namespace: Type.Literal("kast"),
+      tools: Type.Array(KastServerToolV2Document, {
+        minItems: 1,
+        maxItems: 64,
+      }),
+    },
+    { additionalProperties: false },
+  ),
+]);
 
 export const KastCapabilityDocument = Type.Object(
   {
@@ -61,17 +98,7 @@ export const KastCapabilityDocument = Type.Object(
     operationRegistry: Type.Optional(OpenComponent),
     wireSchema: Type.Optional(OpenComponent),
     cliProjection: Type.Optional(OpenComponent),
-    serverProjection: Type.Object(
-      {
-        schemaVersion: SchemaVersion,
-        namespace: Type.Literal("kast"),
-        tools: Type.Array(KastServerToolDocument, {
-          minItems: 1,
-          maxItems: 64,
-        }),
-      },
-      { additionalProperties: false },
-    ),
+    serverProjection: KastServerProjectionDocument,
   },
   { additionalProperties: true },
 );

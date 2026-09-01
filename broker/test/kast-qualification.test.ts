@@ -6,7 +6,10 @@ import type {
   ProcessExecutor,
   ProcessRequest,
 } from "../src/providers/process.ts";
-import { compatibleKastSchema } from "./kast-schema.fixture.ts";
+import {
+  compatibleKastSchema,
+  projectionV2KastSchema,
+} from "./kast-schema.fixture.ts";
 
 describe("Kast qualification", () => {
   test("accepts arbitrary CLI and schema versions with compatible capabilities", async () => {
@@ -155,6 +158,72 @@ describe("Kast qualification", () => {
     );
 
     assert.equal(qualified.type, "success");
+  });
+
+  test("admits projection v2 and preserves its explicit approval boundary", async () => {
+    const schema = projectionV2KastSchema();
+    const qualified = await qualifyKast(
+      {
+        executable: "/opt/kast/versions/next/bin/kast",
+        processExecutor: fixtureExecutor([], "kast 1000.0.0", schema),
+        qualificationCwd: "/workspace",
+      },
+      new AbortController().signal,
+    );
+
+    assert.equal(qualified.type, "success");
+    if (qualified.type !== "success") return;
+    assert.equal(qualified.value.serverProjectionVersion, 2);
+    assert.deepEqual(
+      qualified.value.contract.tools.map(({ name, approvalPolicy }) => ({
+        name,
+        approvalPolicy,
+      })),
+      [
+        { name: "installed_symbol_lookup", approvalPolicy: "none" },
+        { name: "change_apply", approvalPolicy: "explicit" },
+      ],
+    );
+  });
+
+  test("rejects projection v2 when an approval policy is missing", async () => {
+    const schema = projectionV2KastSchema();
+    const firstTool = schema.serverProjection.tools[0];
+    assert.ok(firstTool);
+    Reflect.deleteProperty(firstTool, "approvalPolicy");
+
+    const qualified = await qualifyKast(
+      {
+        executable: "kast",
+        processExecutor: fixtureExecutor([], "kast 1000.0.0", schema),
+        qualificationCwd: "/workspace",
+      },
+      new AbortController().signal,
+    );
+
+    assert.deepEqual(qualified, {
+      type: "failure",
+      failure: { code: "KAST_SCHEMA_INVALID" },
+    });
+  });
+
+  test("rejects an unsupported server projection version", async () => {
+    const schema = projectionV2KastSchema();
+    schema.serverProjection.schemaVersion = 3;
+
+    const qualified = await qualifyKast(
+      {
+        executable: "kast",
+        processExecutor: fixtureExecutor([], "kast 1000.0.0", schema),
+        qualificationCwd: "/workspace",
+      },
+      new AbortController().signal,
+    );
+
+    assert.deepEqual(qualified, {
+      type: "failure",
+      failure: { code: "KAST_SCHEMA_INVALID" },
+    });
   });
 
   test("rejects a schema without an installed server projection", async () => {

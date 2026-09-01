@@ -14,6 +14,7 @@ export interface KastCliInvocation {
 
 export interface KastServerTool extends ProviderToolSchema {
   readonly operationId: string;
+  readonly approvalPolicy: "none" | "explicit";
   readonly cliUsage: string;
   readonly invocation: KastCliInvocation;
 }

@@ -32,7 +32,9 @@ export const qualifyKastRegistration = async (
     version:
       `${qualification.value.cliVersion}+server` +
       `${qualification.value.serverProjectionVersion}`,
-    tools: qualification.value.contract.tools,
+    tools: qualification.value.contract.tools.filter(
+      ({ approvalPolicy }) => approvalPolicy === "none",
+    ),
   });
   return {
     type: "success",

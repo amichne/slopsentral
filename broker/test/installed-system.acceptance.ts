@@ -13,6 +13,22 @@ import type { LogRecord } from "../src/runtime/logger.ts";
 import { connectUnixWebSocket } from "../src/runtime/upstream-connection.ts";
 
 const execute = promisify(execFile);
+const expectedKastReadTools = [
+  "diagnostic_check",
+  "impact_analyze",
+  "semantic_query",
+  "symbol_inspect",
+  "symbol_lookup",
+  "symbol_resolve",
+  "topology_build",
+  "workspace_ensure_ready",
+] as const;
+const explicitlyGatedKastTools = [
+  "change_apply",
+  "change_plan",
+  "change_recover",
+  "change_verify",
+] as const;
 const runInstalledAcceptance = async (): Promise<void> => {
   const directory = await mkdtemp(join(tmpdir(), "broker-installed-"));
   const workspace = join(directory, "consumer");
@@ -57,6 +73,10 @@ const runInstalledAcceptance = async (): Promise<void> => {
       sandbox: "read-only",
     });
     const startedThread = threadIdentity(started);
+    const kastCatalogTools =
+      running.value.broker.catalog.namespaces
+        .find(({ name }) => name === "kast")
+        ?.tools.map(({ name }) => name) ?? [];
 
     const gradle = await running.value.broker.dispatch({
       namespace: "gradle",
@@ -66,7 +86,7 @@ const runInstalledAcceptance = async (): Promise<void> => {
     });
     const kast = await running.value.broker.dispatch({
       namespace: "kast",
-      tool: "symbol_discover",
+      tool: "symbol_lookup",
       arguments: {
         mode: "name",
         query: "AcceptanceFixture",
@@ -78,7 +98,7 @@ const runInstalledAcceptance = async (): Promise<void> => {
     });
     const invalid = await running.value.broker.dispatch({
       namespace: "kast",
-      tool: "traversal_run",
+      tool: "impact_analyze",
       arguments: {
         selector: "fixture",
         relation: "callers",
@@ -114,6 +134,16 @@ const runInstalledAcceptance = async (): Promise<void> => {
       protocolQualified: countLogs(logs, "protocol.qualified") === 1,
       upstreamReady: countLogs(logs, "upstream.ready") === 1,
       catalogInjected: countLogs(logs, "thread.catalog_injected") === 1,
+      kastProjectionV2:
+        running.value.broker.catalog.providers
+          .find(({ namespace }) => namespace === "kast")
+          ?.version.endsWith("+server2") === true,
+      readCatalogExact:
+        JSON.stringify(kastCatalogTools) ===
+        JSON.stringify(expectedKastReadTools),
+      explicitGateClosed: explicitlyGatedKastTools.every(
+        (tool) => !kastCatalogTools.includes(tool),
+      ),
       gradleTypedRoute: gradle.type === "success" && gradle.value.success,
       kastTypedRoute: kast.type === "success",
       invalidRejected:
@@ -158,11 +188,7 @@ const runInstalledAcceptance = async (): Promise<void> => {
           { version },
         ]),
       ),
-      toolsExercised: [
-        "gradle.inspect",
-        "gradle.tasks",
-        "kast.symbol_discover",
-      ],
+      toolsExercised: ["gradle.inspect", "gradle.tasks", "kast.symbol_lookup"],
       routingProofs: [
         {
           proof: "runtime-schema-qualified",
@@ -174,6 +200,12 @@ const runInstalledAcceptance = async (): Promise<void> => {
         },
         { proof: "gradle-typed-route", accepted: proofs.gradleTypedRoute },
         { proof: "kast-typed-route", accepted: proofs.kastTypedRoute },
+        { proof: "kast-projection-v2", accepted: proofs.kastProjectionV2 },
+        { proof: "kast-read-catalog-exact", accepted: proofs.readCatalogExact },
+        {
+          proof: "kast-explicit-gate-closed",
+          accepted: proofs.explicitGateClosed,
+        },
       ],
       decodeProofs: [
         { proof: "invalid-input-rejected", accepted: proofs.invalidRejected },

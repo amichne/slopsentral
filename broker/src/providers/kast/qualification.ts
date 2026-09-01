@@ -11,7 +11,6 @@ import { KastCapabilityDocument } from "./schemas.ts";
 
 const MAXIMUM_KAST_DOCUMENT_BYTES = 512 * 1024;
 const MAXIMUM_KAST_VERSION_BYTES = 4 * 1024;
-const SUPPORTED_SERVER_PROJECTION_SCHEMA_VERSION = 1;
 
 export interface KastQualificationOptions {
   readonly executable: string;
@@ -99,13 +98,14 @@ type ContractAdmission =
   | { readonly type: "rejected" };
 
 const admitContract = (capability: Capability): ContractAdmission => {
-  if (
-    capability.serverProjection.schemaVersion !==
-    SUPPORTED_SERVER_PROJECTION_SCHEMA_VERSION
-  ) {
-    return { type: "rejected" };
-  }
-  const tools = capability.serverProjection.tools;
+  const projection = capability.serverProjection;
+  const tools =
+    projection.schemaVersion === 1
+      ? projection.tools.map((tool) => ({
+          ...tool,
+          approvalPolicy: "none" as const,
+        }))
+      : projection.tools;
   if (
     hasDuplicates(tools.map(({ name }) => name)) ||
     hasDuplicates(tools.map(({ operationId }) => operationId))
@@ -137,6 +137,7 @@ const admitContract = (capability: Capability): ContractAdmission => {
     }
     admittedTools.push({
       operationId: tool.operationId,
+      approvalPolicy: tool.approvalPolicy,
       name: tool.name,
       description: tool.description,
       loading: tool.deferLoading ? "deferred" : "eager",
@@ -153,7 +154,7 @@ const admitContract = (capability: Capability): ContractAdmission => {
   return {
     type: "admitted",
     value: {
-      schemaVersion: capability.serverProjection.schemaVersion,
+      schemaVersion: projection.schemaVersion,
       namespace: "kast",
       tools: admittedTools,
     },

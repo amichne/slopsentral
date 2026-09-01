@@ -41,6 +41,7 @@ const tool = (
   command: readonly string[],
   inputSchema: Readonly<Record<string, unknown>>,
   bindings: readonly (readonly [inputField: string, option: string])[],
+  approvalPolicy?: "none" | "explicit",
 ) => ({
   operationId,
   name,
@@ -58,6 +59,7 @@ const tool = (
       option,
     })),
   },
+  ...(approvalPolicy === undefined ? {} : { approvalPolicy }),
 });
 
 export const compatibleKastSchema = (schemaVersion = 1) => ({
@@ -193,5 +195,31 @@ export const dynamicKastSchema = () => {
       [["selection", "--candidate"]],
     ),
   ];
+  return schema;
+};
+
+export const projectionV2KastSchema = () => {
+  const schema = dynamicKastSchema();
+  schema.serverProjection.schemaVersion = 2;
+  schema.serverProjection.tools = schema.serverProjection.tools.map(
+    (projectedTool) => ({ ...projectedTool, approvalPolicy: "none" as const }),
+  );
+  schema.serverProjection.tools.push(
+    tool(
+      "change.apply",
+      "change_apply",
+      "Apply one admitted hosted change plan.",
+      "change apply --plan <plan-identity>",
+      ["change", "apply"],
+      {
+        type: "object",
+        additionalProperties: false,
+        properties: { plan: textSchema },
+        required: ["plan"],
+      },
+      [["plan", "--plan"]],
+      "explicit",
+    ),
+  );
   return schema;
 };
