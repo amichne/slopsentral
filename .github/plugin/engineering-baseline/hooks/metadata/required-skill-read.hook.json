@@ -1,0 +1,20 @@
+{
+  "dependsOn": [
+    {
+      "name": "manage-json-schemas",
+      "path": "skills/manage-json-schemas",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "SKILL"
+    }
+  ],
+  "name": "required-skill-read",
+  "path": "hooks/required-skill-read.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

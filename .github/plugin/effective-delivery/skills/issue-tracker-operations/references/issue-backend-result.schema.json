@@ -1,0 +1,854 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/effective-delivery/issue-backend-result.schema.json",
+  "title": "Issue backend result",
+  "description": "Canonical result envelope for Effective Delivery issue backend reads.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "schemaVersion",
+    "result"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "ISSUE_BACKEND_RESULT"
+      ],
+      "examples": [
+        "ISSUE_BACKEND_RESULT"
+      ]
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "enum": [
+        1
+      ],
+      "examples": [
+        1
+      ]
+    },
+    "result": {
+      "$ref": "#/$defs/result"
+    }
+  },
+  "$defs": {
+    "result": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/capabilitiesResult"
+        },
+        {
+          "$ref": "#/$defs/viewResult"
+        },
+        {
+          "$ref": "#/$defs/dependencyMapResult"
+        },
+        {
+          "$ref": "#/$defs/failureResult"
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_CAPABILITIES_RESULT",
+          "outcome": "COMPLETE",
+          "backend": "JIRA",
+          "operation": "CAPABILITIES",
+          "capabilities": [
+            {
+              "type": "ISSUE_BACKEND_CAPABILITY",
+              "name": "VIEW",
+              "support": "NATIVE"
+            }
+          ],
+          "evidence": []
+        },
+        {
+          "type": "ISSUE_BACKEND_FAILURE",
+          "outcome": "REJECTED",
+          "operation": "CAPABILITIES",
+          "failure": {
+            "type": "ISSUE_BACKEND_FAILURE_DETAIL",
+            "id": "BACKEND_REQUIRED",
+            "message": "Select a supported backend.",
+            "mutationState": "NOT_STARTED",
+            "recoverability": "SELECT_SUPPORTED_BACKEND"
+          },
+          "evidence": []
+        }
+      ]
+    },
+    "backend": {
+      "type": "string",
+      "enum": [
+        "GITHUB",
+        "JIRA"
+      ],
+      "examples": [
+        "JIRA"
+      ]
+    },
+    "capabilitiesResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "outcome",
+        "backend",
+        "operation",
+        "capabilities",
+        "evidence"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_CAPABILITIES_RESULT"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_CAPABILITIES_RESULT"
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "COMPLETE"
+          ],
+          "examples": [
+            "COMPLETE"
+          ]
+        },
+        "backend": {
+          "$ref": "#/$defs/backend"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "CAPABILITIES"
+          ],
+          "examples": [
+            "CAPABILITIES"
+          ]
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/capability"
+          },
+          "examples": [
+            [
+              {
+                "type": "ISSUE_BACKEND_CAPABILITY",
+                "name": "VIEW",
+                "support": "NATIVE"
+              }
+            ]
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidenceList"
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_CAPABILITIES_RESULT",
+          "outcome": "COMPLETE",
+          "backend": "JIRA",
+          "operation": "CAPABILITIES",
+          "capabilities": [
+            {
+              "type": "ISSUE_BACKEND_CAPABILITY",
+              "name": "VIEW",
+              "support": "NATIVE"
+            }
+          ],
+          "evidence": []
+        }
+      ]
+    },
+    "viewResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "outcome",
+        "backend",
+        "operation",
+        "issue",
+        "evidence"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_VIEW_RESULT"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_VIEW_RESULT"
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "COMPLETE"
+          ],
+          "examples": [
+            "COMPLETE"
+          ]
+        },
+        "backend": {
+          "$ref": "#/$defs/backend"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "VIEW"
+          ],
+          "examples": [
+            "VIEW"
+          ]
+        },
+        "issue": {
+          "$ref": "#/$defs/issue"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidenceList"
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_VIEW_RESULT",
+          "outcome": "COMPLETE",
+          "backend": "JIRA",
+          "operation": "VIEW",
+          "issue": {
+            "type": "ISSUE_BACKEND_ISSUE",
+            "id": "KAST-42",
+            "title": "Add issue backend facade",
+            "state": "In Progress"
+          },
+          "evidence": []
+        }
+      ]
+    },
+    "dependencyMapResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "outcome",
+        "backend",
+        "operation",
+        "dependencyMap",
+        "evidence"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_DEPENDENCY_MAP_RESULT"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_DEPENDENCY_MAP_RESULT"
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "COMPLETE"
+          ],
+          "examples": [
+            "COMPLETE"
+          ]
+        },
+        "backend": {
+          "$ref": "#/$defs/backend"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "DEPENDENCY_MAP"
+          ],
+          "examples": [
+            "DEPENDENCY_MAP"
+          ]
+        },
+        "dependencyMap": {
+          "$ref": "#/$defs/dependencyMap"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidenceList"
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_DEPENDENCY_MAP_RESULT",
+          "outcome": "COMPLETE",
+          "backend": "GITHUB",
+          "operation": "DEPENDENCY_MAP",
+          "dependencyMap": {
+            "type": "ISSUE_BACKEND_DEPENDENCY_MAP",
+            "root": "42",
+            "edges": [],
+            "coverage": {
+              "type": "ISSUE_BACKEND_DEPENDENCY_COVERAGE",
+              "depth": 1,
+              "directBlockers": "COMPLETE",
+              "hierarchy": "UNSUPPORTED",
+              "transitive": "UNSUPPORTED"
+            }
+          },
+          "evidence": []
+        }
+      ]
+    },
+    "failureResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "outcome",
+        "operation",
+        "failure",
+        "evidence"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_FAILURE"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_FAILURE"
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "REJECTED"
+          ],
+          "examples": [
+            "REJECTED"
+          ]
+        },
+        "backend": {
+          "$ref": "#/$defs/backend"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "CAPABILITIES",
+            "VIEW",
+            "DEPENDENCY_MAP"
+          ],
+          "examples": [
+            "CAPABILITIES"
+          ]
+        },
+        "failure": {
+          "$ref": "#/$defs/failureDetail"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidenceList"
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_FAILURE",
+          "outcome": "REJECTED",
+          "operation": "CAPABILITIES",
+          "failure": {
+            "type": "ISSUE_BACKEND_FAILURE_DETAIL",
+            "id": "BACKEND_UNSUPPORTED",
+            "message": "Select a supported backend.",
+            "mutationState": "NOT_STARTED",
+            "recoverability": "SELECT_SUPPORTED_BACKEND"
+          },
+          "evidence": []
+        }
+      ]
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "support"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_CAPABILITY"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_CAPABILITY"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "enum": [
+            "DIRECT_BLOCKER_MAP",
+            "VIEW",
+            "CREATE",
+            "UPDATE",
+            "COMMENT",
+            "HIERARCHY_MAP"
+          ],
+          "examples": [
+            "DIRECT_BLOCKER_MAP"
+          ]
+        },
+        "support": {
+          "type": "string",
+          "enum": [
+            "NATIVE",
+            "UNSUPPORTED"
+          ],
+          "examples": [
+            "NATIVE"
+          ]
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_CAPABILITY",
+          "name": "DIRECT_BLOCKER_MAP",
+          "support": "NATIVE"
+        }
+      ]
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_ISSUE"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_ISSUE"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "KAST-42"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "Add issue backend facade"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "In Progress"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "https://github.com/octo/repo/issues/42"
+          ]
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_ISSUE",
+          "id": "KAST-42",
+          "title": "Add issue backend facade",
+          "state": "In Progress"
+        }
+      ]
+    },
+    "issueReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_ISSUE_REFERENCE"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_ISSUE_REFERENCE"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "KAST-7"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "Define the result schema"
+          ]
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_ISSUE_REFERENCE",
+          "id": "KAST-7",
+          "title": "Define the result schema"
+        }
+      ]
+    },
+    "dependencyEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "relation",
+        "source",
+        "target"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_DEPENDENCY_EDGE"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_DEPENDENCY_EDGE"
+          ]
+        },
+        "relation": {
+          "type": "string",
+          "enum": [
+            "BLOCKS"
+          ],
+          "examples": [
+            "BLOCKS"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/issueReference"
+        },
+        "target": {
+          "$ref": "#/$defs/issueReference"
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
+          "relation": "BLOCKS",
+          "source": {
+            "type": "ISSUE_BACKEND_ISSUE_REFERENCE",
+            "id": "KAST-7"
+          },
+          "target": {
+            "type": "ISSUE_BACKEND_ISSUE_REFERENCE",
+            "id": "KAST-42"
+          }
+        }
+      ]
+    },
+    "dependencyCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "depth",
+        "directBlockers",
+        "hierarchy",
+        "transitive"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_DEPENDENCY_COVERAGE"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_DEPENDENCY_COVERAGE"
+          ]
+        },
+        "depth": {
+          "type": "integer",
+          "enum": [
+            1
+          ],
+          "examples": [
+            1
+          ]
+        },
+        "directBlockers": {
+          "type": "string",
+          "enum": [
+            "COMPLETE"
+          ],
+          "examples": [
+            "COMPLETE"
+          ]
+        },
+        "hierarchy": {
+          "type": "string",
+          "enum": [
+            "UNSUPPORTED"
+          ],
+          "examples": [
+            "UNSUPPORTED"
+          ]
+        },
+        "transitive": {
+          "type": "string",
+          "enum": [
+            "UNSUPPORTED"
+          ],
+          "examples": [
+            "UNSUPPORTED"
+          ]
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_DEPENDENCY_COVERAGE",
+          "depth": 1,
+          "directBlockers": "COMPLETE",
+          "hierarchy": "UNSUPPORTED",
+          "transitive": "UNSUPPORTED"
+        }
+      ]
+    },
+    "dependencyMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "root",
+        "edges",
+        "coverage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_DEPENDENCY_MAP"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_DEPENDENCY_MAP"
+          ]
+        },
+        "root": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "KAST-42"
+          ]
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dependencyEdge"
+          },
+          "examples": [
+            []
+          ]
+        },
+        "coverage": {
+          "$ref": "#/$defs/dependencyCoverage"
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_DEPENDENCY_MAP",
+          "root": "KAST-42",
+          "edges": [],
+          "coverage": {
+            "type": "ISSUE_BACKEND_DEPENDENCY_COVERAGE",
+            "depth": 1,
+            "directBlockers": "COMPLETE",
+            "hierarchy": "UNSUPPORTED",
+            "transitive": "UNSUPPORTED"
+          }
+        }
+      ]
+    },
+    "commandEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "executable",
+        "arguments",
+        "exitCode"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_COMMAND_EVIDENCE"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_COMMAND_EVIDENCE"
+          ]
+        },
+        "executable": {
+          "type": "string",
+          "enum": [
+            "acli",
+            "gh"
+          ],
+          "examples": [
+            "acli"
+          ]
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "jira"
+            ]
+          },
+          "examples": [
+            [
+              "jira",
+              "workitem",
+              "view",
+              "KAST-42",
+              "--json"
+            ]
+          ]
+        },
+        "exitCode": {
+          "type": "integer",
+          "examples": [
+            0
+          ]
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_COMMAND_EVIDENCE",
+          "executable": "acli",
+          "arguments": [
+            "jira",
+            "workitem",
+            "view",
+            "KAST-42",
+            "--json"
+          ],
+          "exitCode": 0
+        }
+      ]
+    },
+    "evidenceList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/commandEvidence"
+      },
+      "examples": [
+        []
+      ]
+    },
+    "failureDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "message",
+        "mutationState",
+        "recoverability"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ISSUE_BACKEND_FAILURE_DETAIL"
+          ],
+          "examples": [
+            "ISSUE_BACKEND_FAILURE_DETAIL"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]+$",
+          "examples": [
+            "BACKEND_UNSUPPORTED"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "Select a supported backend."
+          ]
+        },
+        "mutationState": {
+          "type": "string",
+          "enum": [
+            "NOT_STARTED"
+          ],
+          "examples": [
+            "NOT_STARTED"
+          ]
+        },
+        "recoverability": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]+$",
+          "examples": [
+            "SELECT_SUPPORTED_BACKEND"
+          ]
+        }
+      },
+      "examples": [
+        {
+          "type": "ISSUE_BACKEND_FAILURE_DETAIL",
+          "id": "BACKEND_UNSUPPORTED",
+          "message": "Select a supported backend.",
+          "mutationState": "NOT_STARTED",
+          "recoverability": "SELECT_SUPPORTED_BACKEND"
+        }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "type": "ISSUE_BACKEND_RESULT",
+      "schemaVersion": 1,
+      "result": {
+        "type": "ISSUE_BACKEND_CAPABILITIES_RESULT",
+        "outcome": "COMPLETE",
+        "backend": "JIRA",
+        "operation": "CAPABILITIES",
+        "capabilities": [
+          {
+            "type": "ISSUE_BACKEND_CAPABILITY",
+            "name": "VIEW",
+            "support": "NATIVE"
+          }
+        ],
+        "evidence": []
+      }
+    }
+  ]
+}

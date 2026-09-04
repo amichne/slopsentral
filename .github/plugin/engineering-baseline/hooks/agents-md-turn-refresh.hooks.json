@@ -1,0 +1,40 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" record --repo .",
+            "statusMessage": "Recording AGENTS.md turn edits",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" stop --repo .",
+            "statusMessage": "Checking affected AGENTS.md files",
+            "timeout": 30,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" start --repo .",
+            "statusMessage": "Starting AGENTS.md turn tracking",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  }
+}

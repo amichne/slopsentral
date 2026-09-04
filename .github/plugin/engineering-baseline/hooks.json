@@ -1,0 +1,41 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "bash": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" record --repo .",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/required-skill-read.py\" check --repo .",
+        "matcher": "*",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
+    "SessionStart": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/required-skill-read.py\" init --repo .",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
+    "Stop": [
+      {
+        "bash": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" stop --repo .",
+        "timeoutSec": 30,
+        "type": "command"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "bash": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" start --repo .",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ]
+  },
+  "version": 1
+}

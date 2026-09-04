@@ -1,0 +1,75 @@
+---
+name: "kotlin-design-practices"
+description: "Use when Kotlin work needs type-driven modeling, parse-dont-validate boundaries, semantic package layout, explicit failures, API review, or package cohesion checks."
+---
+
+# Kotlin Design Practices
+
+Use this skill as the Kotlin design-practices router. Stable policy belongs in
+instruction concepts; detailed examples and heuristics live in references.
+
+Apply `concepts/type-safety/core.md` as the shared semantic-design authority
+when it is available. This skill owns Kotlin-specific realization through value
+classes, enums, sealed hierarchies, constrained visibility, capability-specific
+interfaces, and typed outcomes; it does not redefine the cross-language rules.
+
+## Operating Rules
+
+- Frame boundary input, trusted domain output, invariant owner, and expected
+  failure shape before editing.
+- Prefer Kotlin types over comments, conventions, nullable flags, primitive
+  tags, and repeated checks.
+- Parse untrusted input once at boundaries, then pass trusted domain models
+  inward.
+- Keep side effects at the edge; keep important rules pure, immutable, or
+  intentionally confined.
+- Follow the nearest established repository pattern before adding abstraction.
+- Test observable correctness, not implementation shape.
+- Treat `kotlin-horizontalization-check` and `gradle-check-green` hook output as
+  evidence.
+
+## Workflow
+
+1. Inspect the immediate package, tests, and existing abstractions.
+2. Load `kotlin-code-correctness` when the task needs stable code-level Kotlin
+   policy. Load `kotlin-repository-engineering` when module topology, task
+   evidence, repository guidance, generated ownership, or verification breadth
+   is in scope.
+3. Choose the narrowest semantic unit that owns the change.
+4. Add one tracer-bullet public-behavior test, then implement the smallest
+   vertical slice.
+5. Refactor only while green.
+6. Run the narrowest useful verification command before broadening scope.
+7. Re-score the change and fix any `Fail` before finishing.
+
+## Reference Map
+
+Load only the smallest reference that matches the task:
+
+- Layout: `layout-package-code-style.md`, `horizontalization-heuristic.md`
+- Types and boundaries: `type-safety-patterns.md`, `types-domain-modeling.md`,
+  `parse-dont-validate-examples.md`, `types-errors-and-testing.md`
+- API design: `api-dsl-choices.md`, `api-parameter-selection.md`,
+  `api-builders-and-configuration.md`, `api-extensions-and-factories.md`,
+  `api-surface-stability.md`, `api-review-guides.md`
+- Focused public API ownership, higher-order composition, value-class interop,
+  and multiplatform seams: `kotlin-api-surface-design` when installed
+- Idiom and smells: `idioms.md`, `kotlin-antipatterns.md`,
+  `types-dsls-and-generics.md`
+
+## Ownership Boundary
+
+- `kotlin-code-correctness` owns evergreen Kotlin acceptance policy.
+- `kotlin-repository-engineering` owns evergreen Kotlin repository structure
+  and proof policy.
+- `kotlin-agentic-correctness` owns file-backed implementation workflow.
+- `kotlin-api-surface-design` owns focused public and cross-module function
+  ownership, higher-order composition, value surfaces, and multiplatform seams.
+- `kotlin-observability-design` owns typed-outcome telemetry mapping and
+  OpenTelemetry semantic design at explicit effect boundaries.
+- `kotlin-application-stack` owns standard or established library selection and
+  focused bindings for serialization, HTTP, CLI, and optional native delivery.
+- `kotlin-gradle-validation` owns Gradle command execution and build evidence.
+- `kotlin-review` owns review orchestration and reviewer routing.
+- `negative-capability-proof` owns before/after proof that invalid Kotlin states
+  or operations are no longer representable.

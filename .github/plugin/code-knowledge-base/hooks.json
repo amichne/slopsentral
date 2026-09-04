@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/code-knowledge-drift.py\" --repo . --docs docs --advisory",
+        "timeoutSec": 60,
+        "type": "command"
+      }
+    ]
+  },
+  "version": 1
+}
