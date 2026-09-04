@@ -59,15 +59,14 @@
       },
       "prompt": "Refine marketplace skills, plugins, hooks, and evals so the team can share productive agent workflows.",
       "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "source-graph-consolidation"
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "Marketplace work can route to generated provider payloads or installed caches instead of the canonical source graph.",
         "risk": "The source of truth remains wrong while generated outputs or local caches receive unreviewable drift.",
         "loadedPrimitives": [
-          "primitive-quality-audit",
           "primitive-routing-evaluation"
         ]
       },
@@ -362,7 +361,7 @@
         "evidenceRefs": [
           "source/skills/github-ci-operations/references/actions-workflows.md",
           ".github/workflows/validate-source.yml",
-          ".github/workflows/materialize-marketplace.yml"
+          ".github/workflows/publish-harnesses.yml"
         ]
       },
       "prompt": "Design or revise CI so validation and publication jobs are reusable, least-privilege, and easy to run locally.",
@@ -491,15 +490,15 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
-          "source/skills/primitive-quality-audit/SKILL.md",
+          "source/plugins/agent-platform-authoring/plugin.json",
           "source/schemas/evals/routing-cases.schema.json",
-          "garden/manifests/promotions.json"
+          "source/tools/validate-source-graph.mjs"
         ]
       },
       "prompt": "Decide whether the new workflow additions are production-ready and safe to share with the team.",
       "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "primitive-quality-audit"
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -510,19 +509,19 @@
         ]
       },
       "allowedActions": [
-        "Audit the concrete primitive, plugin, or eval family against a baseline.",
+        "Review the concrete primitive, plugin, or eval family against a baseline.",
         "Record evidence for capability boundary, trigger clarity, independence, schema coverage, provenance, executable proof, and runtime safety.",
         "Defer production-sharing claims when evidence is thin or validation does not cover the changed surface."
       ],
       "forbiddenActions": [
         "Treat new eval cases alone as production readiness.",
         "Share primitives that are not independently usable outside a plugin composition.",
-        "Recommend cleanup or runtime activation without a durable manifest or approval boundary."
+        "Claim production readiness without reproducible validation and explicit residual risks."
       ],
       "recoveryExpectation": "A good readiness pass should narrow the claim to what current evidence proves and leave explicit residual risks for anything unproven.",
       "productiveOutcome": "Team-shared additions are promoted from evidence rather than optimism, reducing routing regressions and support load.",
       "verificationEvidence": [
-        "A quality audit names the target, baseline, findings, manifest needs, validation, and next action.",
+        "The review names the target, baseline, findings, validation, residual risks, and next action.",
         "Structured artifacts changed by the workflow pass the source graph and marketplace validation gates."
       ],
       "notes": "This is the explicit production-sharing gate for the broader goal."

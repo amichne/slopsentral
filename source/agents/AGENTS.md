@@ -26,5 +26,5 @@ This file applies to reusable agent profiles under `source/agents/`.
 
 ## Verify
 
-- Run both `intelligence project` harness projections after adding promoted
-  agents to a plugin or marketplace manifest.
+- Run both `projeKtor project` harness projections after adding agents to a
+  plugin or marketplace manifest.

@@ -132,7 +132,6 @@ class CiActionsObservationTests(unittest.TestCase):
                 removed_state_path,
                 "--",
                 "source",
-                "garden/manifests",
             ],
             cwd=repository_root,
             text=True,

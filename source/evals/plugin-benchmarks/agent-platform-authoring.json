@@ -91,14 +91,14 @@
         "placeholder-skills-are-quality-audit-not-marketplace-products"
       ],
       "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "primitive-quality-audit"
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
       },
-      "userInput": "Use Agent Platform Authoring to decide whether a plugin family is ready to share. Record capability boundary, schema coverage, provenance, validation, runtime safety, residual risks, and a next action in the audit manifest. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Agent Platform Authoring to decide whether a plugin family is ready to share. Record capability boundary, schema coverage, provenance, validation, runtime safety, residual risks, and a next action. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
-        "The audit names the target, baseline, decision, evidence, validation, residual risks, and next action.",
-        "The audit entry passes primitive_audit_record and source graph validation.",
-        "The result does not recommend runtime activation or cleanup without the appropriate manifest boundary."
+        "The review names the target, baseline, decision, evidence, validation, residual risks, and next action.",
+        "The reviewed source passes source graph validation.",
+        "The result limits readiness claims to the available evidence."
       ]
     },
     {

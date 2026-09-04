@@ -37,14 +37,14 @@ plugin payloads and runtime caches are not source-of-truth files.
 
 | Provider | Marketplace | Source | Entrypoint | Scope |
 |---|---|---|---|---|
-| Codex | amichne-intelligence | https://github.com/amichne/intelligence/tree/codex | .agents/plugins/marketplace.json | all configured plugins |
-| GitHub | amichne-intelligence | https://github.com/amichne/intelligence/tree/github | .github/plugin/marketplace.json | all configured plugins |
+| Codex | slopsentral | https://github.com/amichne/slopsentral/tree/harness/codex | .agents/plugins/marketplace.json | all configured plugins |
+| GitHub | slopsentral | https://github.com/amichne/slopsentral/tree/harness/github-copilot | .github/plugin/marketplace.json | all configured plugins |
 
 ## Expected Plugins
 
 | Plugin | Marketplace | Purpose | Status |
 |---|---|---|---|
-| engineering-baseline | amichne-intelligence | Semantic ratchets, type and schema design, TDD, onboarding, and hooks | installed |
+| engineering-baseline | slopsentral | Semantic ratchets, type and schema design, TDD, onboarding, and hooks | installed |
 
 ## Exclusions
 

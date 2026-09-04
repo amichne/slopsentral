@@ -40,9 +40,6 @@ jobs:
             source/tools/compile-kotlin-concepts
           node source/skills/manage-json-schemas/scripts/schema-contracts.js \
             policy \
-            --schema source/schemas/runtime/runtime-links.schema.json
-          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
-            policy \
             --schema source/schemas/evals/routing-field-observations.schema.json
           node source/skills/manage-json-schemas/scripts/schema-contracts.js \
             profile \
@@ -130,20 +127,19 @@ jobs:
 
       - name: Project Codex marketplace
         id: codex_projection
-        # ponytail: v0.2.9 has a broken skills/triage symlink; advance when a loadable action release exists.
-        uses: amichne/intelligence@v0.2.8
+        uses: amichne/projeKtor@3039852047dbc56f5b32d6d4963c71dcc674a317 # v1.1.0
         with:
           source: .
           harness: codex
-          version: v0.2.9
+          version: v1.1.0
 
       - name: Project GitHub Copilot marketplace
         id: github_copilot_projection
-        uses: amichne/intelligence@v0.2.8
+        uses: amichne/projeKtor@3039852047dbc56f5b32d6d4963c71dcc674a317 # v1.1.0
         with:
           source: .
           harness: github-copilot
-          version: v0.2.9
+          version: v1.1.0
 
       - name: Validate marketplace projections
         env:

@@ -29,7 +29,7 @@
         "loadedPrimitives": []
       },
       "allowedActions": [
-        "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and garden manifests.",
+        "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and source validation contracts.",
         "Use materialization only as proof after source quality checks pass.",
         "Add source-owned validation when overlap or routing quality is the failure mode."
       ],
@@ -67,9 +67,7 @@
         "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A plugin composition change can be implemented by copying skill payloads into the plugin folder or by relying only on broad source validation.",
         "risk": "Primitive ownership becomes hidden inside the plugin and manifest/catalog drift is not caught near the edited surface.",
-        "loadedPrimitives": [
-          "source-graph-consolidation"
-        ]
+        "loadedPrimitives": []
       },
       "allowedActions": [
         "Compose only existing independent primitives with LOCAL_SOURCE ./ references.",
@@ -110,9 +108,7 @@
         "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A routing miss can be handled as a one-off prompt tweak without adding a sanitized case or replay observation.",
         "risk": "The same miss regresses later because no corpus contract exercises the intended primitive route.",
-        "loadedPrimitives": [
-          "primitive-quality-audit"
-        ]
+        "loadedPrimitives": []
       },
       "allowedActions": [
         "Classify one primary routing miss type.",
@@ -401,15 +397,15 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-20",
         "evidenceRefs": [
-          "garden/manifests/cleanup-ledger.json",
+          "source/plugins/agent-platform-authoring/plugin.json",
           "source/adaptable.marketplace.json",
           "source/tools/validate-source-graph.mjs"
         ]
       },
       "prompt": "Audit marketplace-visible standalone skills for placeholder migration text and overlap with existing canonical skills.",
       "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "primitive-quality-audit"
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -419,7 +415,7 @@
       },
       "allowedActions": [
         "Quarantine placeholder-only skills from marketplace exposure.",
-        "Record deferred rewrite or removal decisions in the cleanup ledger.",
+        "Delete placeholder-only skills when a substantive rewrite is not justified.",
         "Fail validation if marketplace-visible skills expose placeholder migration descriptions."
       ],
       "forbiddenActions": [
@@ -427,12 +423,12 @@
         "Replace a real canonical skill with a placeholder duplicate.",
         "Treat syntactic validity as quality readiness."
       ],
-      "recoveryExpectation": "Primitive quality audit should either rewrite a placeholder into a real workflow or keep it out of marketplace exposure until it is ready.",
+      "recoveryExpectation": "Agent Platform Authoring should either rewrite a placeholder into a real workflow or keep it out of marketplace exposure until it is ready.",
       "notes": "This turns token-wasting placeholder exposure into a source validation failure.",
       "productiveOutcome": "Team-shared marketplace listings contain usable primitives, while unfinished migration placeholders stay out of daily-driver routing.",
       "verificationEvidence": [
         "Marketplace-visible skills have routeable descriptions rather than placeholder migration text.",
-        "Unfinished primitive candidates are handled through quality audit or consolidation manifests before promotion."
+        "Unfinished primitive candidates are rewritten or excluded from the source marketplace."
       ]
     }
   ]
