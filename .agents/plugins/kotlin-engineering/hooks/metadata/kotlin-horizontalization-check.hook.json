@@ -1,0 +1,38 @@
+{
+  "dependsOn": [
+    {
+      "name": "kotlin-code-correctness",
+      "path": "instructions/kotlin-code-correctness.md",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "INSTRUCTION"
+    },
+    {
+      "name": "kotlin-design-practices",
+      "path": "skills/kotlin-design-practices",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "SKILL"
+    },
+    {
+      "name": "kotlin-package-cohesion-reviewer",
+      "path": "agents/kotlin-package-cohesion-reviewer.agent.md",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "AGENT"
+    }
+  ],
+  "name": "kotlin-horizontalization-check",
+  "path": "hooks/kotlin-horizontalization-check.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

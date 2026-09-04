@@ -1,0 +1,30 @@
+{
+  "type": "ISSUE_BACKEND_RESULT",
+  "schemaVersion": 1,
+  "result": {
+    "type": "ISSUE_BACKEND_VIEW_RESULT",
+    "outcome": "COMPLETE",
+    "backend": "JIRA",
+    "operation": "VIEW",
+    "issue": {
+      "type": "ISSUE_BACKEND_ISSUE",
+      "id": "KAST-42",
+      "title": "Add issue backend facade",
+      "state": "In Progress"
+    },
+    "evidence": [
+      {
+        "type": "ISSUE_BACKEND_COMMAND_EVIDENCE",
+        "executable": "acli",
+        "arguments": [
+          "jira",
+          "workitem",
+          "view",
+          "KAST-42",
+          "--json"
+        ],
+        "exitCode": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "bash \"$PLUGIN_ROOT/hooks/gradle-wrapper-integrity.sh\" --repo .",
+            "statusMessage": "Checking Gradle wrapper integrity",
+            "timeout": 30,
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  }
+}

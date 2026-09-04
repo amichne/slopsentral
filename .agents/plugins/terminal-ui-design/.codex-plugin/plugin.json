@@ -1,0 +1,39 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Design workflow for distinctive, accessible, and resilient human-facing terminal interfaces.",
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Terminal Ui Design for this task.",
+      "Review this repo with Terminal Ui Design.",
+      "Show the Terminal Ui Design workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Terminal Ui Design",
+    "longDescription": "Design workflow for distinctive, accessible, and resilient human-facing terminal interfaces.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Design workflow for distinctive, accessible, and resilient human-faci...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "accessibility",
+    "cli",
+    "design",
+    "terminal",
+    "terminal-ui-design",
+    "tui",
+    "user-interface"
+  ],
+  "license": "UNLICENSED",
+  "name": "terminal-ui-design",
+  "skills": "./skills/",
+  "version": "0.1.0"
+}

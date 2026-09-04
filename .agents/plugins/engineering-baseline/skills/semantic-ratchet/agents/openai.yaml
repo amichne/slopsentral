@@ -1,0 +1,4 @@
+interface:
+  display_name: "Semantic Ratchet"
+  short_description: "Preserve proven facts in stronger representations"
+  default_prompt: "Use Semantic Ratchet to preserve established facts in proof-carrying values and contracts."

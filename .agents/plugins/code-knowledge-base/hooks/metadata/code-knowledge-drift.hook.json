@@ -1,0 +1,29 @@
+{
+  "dependsOn": [
+    {
+      "name": "code-knowledge-base",
+      "path": "skills/code-knowledge-base",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "SKILL"
+    },
+    {
+      "name": "repository-signature-indexing",
+      "path": "skills/repository-signature-indexing",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "SKILL"
+    }
+  ],
+  "name": "code-knowledge-drift",
+  "path": "hooks/code-knowledge-drift.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "bash \"$PLUGIN_ROOT/hooks/source-graph-valid.sh\" --repo .",
+            "statusMessage": "Validating the authored source graph",
+            "timeout": 60,
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  }
+}

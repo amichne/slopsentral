@@ -1,0 +1,68 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, compositional API surfaces, typed observability, scoped repository guidance, established library use, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+  "hooks": [
+    "./hooks/gradle-check-green.hooks.json",
+    "./hooks/gradle-wrapper-integrity.hooks.json",
+    "./hooks/kotlin-horizontalization-check.hooks.json"
+  ],
+  "interface": {
+    "brandColor": "#2563EB",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Coding",
+    "defaultPrompt": [
+      "Use Kotlin Engineering for this task.",
+      "Review this repo with Kotlin Engineering.",
+      "Show the Kotlin Engineering workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Kotlin Engineering",
+    "longDescription": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, compositional API surfaces, typed observability, scoped repository guidance, established library use, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Kotlin best-practices package for type-driven design, proof-carrying...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "agents",
+    "api-design",
+    "best-practices",
+    "cli",
+    "clikt",
+    "evidence",
+    "graalvm",
+    "gradle",
+    "higher-order-functions",
+    "hooks",
+    "kast",
+    "kotlin",
+    "kotlin-engineering",
+    "ktor",
+    "libraries",
+    "module-boundaries",
+    "observability",
+    "opentelemetry",
+    "package-cohesion",
+    "proof",
+    "repository-guidance",
+    "repository-topology",
+    "review",
+    "semantic-navigation",
+    "serialization",
+    "skills",
+    "task-evidence",
+    "telemetry",
+    "testing",
+    "type-safety",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "kotlin-engineering",
+  "skills": "./skills/",
+  "version": "0.1.0"
+}

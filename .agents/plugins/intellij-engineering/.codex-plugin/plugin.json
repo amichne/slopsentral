@@ -1,0 +1,45 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.",
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Intellij Engineering for this task.",
+      "Review this repo with Intellij Engineering.",
+      "Show the Intellij Engineering workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Intellij Engineering",
+    "longDescription": "IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "IntelliJ Platform engineering guidance for plugin delivery, live diag...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "ci",
+    "delivery",
+    "gradle",
+    "intellij",
+    "intellij-engineering",
+    "jetbrains",
+    "kotlin",
+    "plugin-development",
+    "psi",
+    "skills",
+    "testing",
+    "ui-testing",
+    "verification"
+  ],
+  "license": "UNLICENSED",
+  "name": "intellij-engineering",
+  "skills": "./skills/",
+  "version": "0.1.0"
+}

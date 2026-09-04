@@ -1,0 +1,41 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Git CI Operations for this task.",
+      "Review this repo with Git CI Operations.",
+      "Show the Git CI Operations workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Git CI Operations",
+    "longDescription": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Host-neutral Git operations for goal framing, safe local changes, and...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "automation",
+    "best-practices",
+    "git",
+    "git-ci-operations",
+    "operations",
+    "planning",
+    "shell",
+    "skills",
+    "version-control"
+  ],
+  "license": "UNLICENSED",
+  "name": "git-ci-operations",
+  "skills": "./skills/",
+  "version": "0.2.1"
+}
