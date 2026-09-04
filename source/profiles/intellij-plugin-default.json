@@ -8,7 +8,7 @@
       "type": "WORKFLOW_MARKETPLACE",
       "name": "slopsentral",
       "provider": "codex",
-      "source": "https://github.com/amichne/slopsentral",
+      "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
       "entrypoint": ".agents/plugins/marketplace.json",
       "scope": "plugins in this workflow profile"
     }
@@ -51,8 +51,8 @@
     "type": "WORKFLOW_VALIDATION",
     "commands": [
       "node source/tools/validate-source-graph.mjs",
-      "intelligence project --source . --harness codex --out /tmp/slopsentral-codex",
-      "intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+      "projeKtor project --source . --harness codex --out /tmp/slopsentral-codex",
+      "projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
     ]
   }
 }

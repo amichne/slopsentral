@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+fail() {
+  printf 'publish-harness-branch: %s\n' "$*" >&2
+  exit 1
+}
+
+if [[ $# -lt 4 || $# -gt 5 ]]; then
+  fail "usage: publish-harness-branch <projection-path> <target-branch> <source-branch> <source-sha> [remote]"
+fi
+
+projection_path=$1
+target_branch=$2
+source_branch=$3
+source_sha=$4
+remote=${5:-origin}
+
+case "$target_branch" in
+  harness/codex)
+    allowed_top=.agents
+    allowed_root=.agents/plugins
+    required_manifest=.agents/plugins/marketplace.json
+    ;;
+  harness/github-copilot)
+    allowed_top=.github
+    allowed_root=.github/plugin
+    required_manifest=.github/plugin/marketplace.json
+    ;;
+  *)
+    fail "unsupported target branch: ${target_branch}"
+    ;;
+esac
+
+[[ "$remote" =~ ^[A-Za-z0-9._-]+$ ]] || fail "invalid remote name: ${remote}"
+[[ "$source_branch" =~ ^[A-Za-z0-9][A-Za-z0-9._/-]*$ ]] || fail "invalid source branch: ${source_branch}"
+[[ ${#source_sha} -eq 40 && "$source_sha" != *[!0-9a-f]* ]] || fail "source SHA must be 40 lowercase hexadecimal characters"
+[[ -d "$projection_path" ]] || fail "projection path is not a directory: ${projection_path}"
+[[ -f "$projection_path/$required_manifest" && ! -L "$projection_path/$required_manifest" ]] || fail "projection is missing a regular ${required_manifest}"
+
+shopt -s dotglob nullglob
+projection_entries=("$projection_path"/*)
+[[ ${#projection_entries[@]} -eq 1 && "${projection_entries[0]}" == "$projection_path/$allowed_top" ]] || \
+  fail "projection must contain only ${allowed_root}"
+[[ -d "$projection_path/$allowed_top" && ! -L "$projection_path/$allowed_top" ]] || \
+  fail "projection must contain a regular ${allowed_top} directory"
+provider_entries=("$projection_path/$allowed_top"/*)
+[[ ${#provider_entries[@]} -eq 1 && "${provider_entries[0]}" == "$projection_path/$allowed_root" ]] || \
+  fail "projection must contain only ${allowed_root}"
+[[ -d "$projection_path/$allowed_root" && ! -L "$projection_path/$allowed_root" ]] || \
+  fail "projection must contain a regular ${allowed_root} directory"
+[[ -z "$(find "$projection_path" -name .git -print -quit)" ]] || fail "projection must not contain Git metadata"
+
+repo_root=$(git rev-parse --show-toplevel)
+source_ref="refs/remotes/${remote}/${source_branch}"
+target_ref="refs/remotes/${remote}/${target_branch}"
+
+source_is_current() {
+  git fetch --no-tags "$remote" \
+    "+refs/heads/${source_branch}:${source_ref}"
+
+  current_source_sha=$(git rev-parse "$source_ref")
+  if [[ "$current_source_sha" != "$source_sha" ]]; then
+    printf '::notice::%s advanced from %s to %s; a newer run will publish the harnesses.\n' \
+      "$source_branch" "$source_sha" "$current_source_sha"
+    return 1
+  fi
+}
+
+source_is_current || exit 0
+
+target_listing=$(git ls-remote --heads "$remote" "refs/heads/${target_branch}")
+temporary_root=$(mktemp -d)
+publish_dir="${temporary_root}/payload"
+
+cleanup() {
+  git -C "$repo_root" worktree remove --force "$publish_dir" >/dev/null 2>&1 || true
+  rm -rf "$temporary_root"
+}
+trap cleanup EXIT INT TERM
+
+if [[ -n "$target_listing" ]]; then
+  git fetch --no-tags "$remote" \
+    "+refs/heads/${target_branch}:${target_ref}"
+
+  # Refresh source after discovering the target, then prove the target was
+  # published from this source history before allowing a new descendant.
+  source_is_current || exit 0
+  target_source_sha=$(git log -1 --format='%(trailers:key=Source-Commit,valueonly)' "$target_ref")
+  [[ ${#target_source_sha} -eq 40 && "$target_source_sha" != *[!0-9a-f]* ]] || \
+    fail "${target_branch} has no valid Source-Commit provenance"
+  git cat-file -e "${target_source_sha}^{commit}" 2>/dev/null || \
+    fail "${target_branch} references an unavailable source commit: ${target_source_sha}"
+  git merge-base --is-ancestor "$target_source_sha" "$source_sha" || \
+    fail "refusing to move ${target_branch} backward from source ${target_source_sha} to ${source_sha}"
+
+  git -C "$repo_root" worktree add --detach "$publish_dir" "$target_ref"
+else
+  git -C "$repo_root" worktree add --detach "$publish_dir" "$source_sha"
+  git -C "$publish_dir" switch --orphan "$target_branch"
+fi
+
+git -C "$publish_dir" rm -rf --ignore-unmatch -- .
+mkdir -p "$publish_dir/$allowed_top"
+cp -R "$projection_path/$allowed_root" "$publish_dir/$allowed_top/"
+git -C "$publish_dir" add -A
+git -C "$publish_dir" diff --cached --check
+
+if git -C "$publish_dir" diff --cached --quiet; then
+  printf '%s is already current for source %s.\n' "$target_branch" "$source_sha"
+  exit 0
+fi
+
+git -C "$publish_dir" config user.name "github-actions[bot]"
+git -C "$publish_dir" config user.email "github-actions[bot]@users.noreply.github.com"
+git -C "$publish_dir" commit \
+  -m "chore: publish ${target_branch}" \
+  -m "Source-Commit: ${source_sha}"
+
+# Close the ordinary workflow race before pushing. Target provenance plus a
+# normal fast-forward push prevents any newer harness publication being
+# overwritten if another publisher wins after this check.
+source_is_current || exit 0
+git -C "$publish_dir" push "$remote" "HEAD:refs/heads/${target_branch}"
+
+printf 'Published %s from source %s.\n' "$target_branch" "$source_sha"

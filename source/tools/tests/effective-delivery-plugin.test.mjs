@@ -85,7 +85,7 @@ test("authored delivery surfaces do not require the removed GitHub adapter", () 
   );
   const tracked = execFileSync(
     "git",
-    ["ls-files", "-z", "--", "source", "garden/manifests"],
+    ["ls-files", "-z", "--", "source"],
     { cwd: repoRoot, encoding: "utf8" },
   )
     .split("\0")

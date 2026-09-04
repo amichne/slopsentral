@@ -831,15 +831,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/primitive-quality-audit",
-      "name": "primitive-quality-audit"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/primitive-routing-evaluation",
       "name": "primitive-routing-evaluation"
     },
@@ -867,26 +858,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/runtime-linking",
-      "name": "runtime-linking"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/skill-creator",
       "name": "skill-creator"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/source-graph-consolidation",
-      "name": "source-graph-consolidation"
     },
     {
       "type": "SKILL",

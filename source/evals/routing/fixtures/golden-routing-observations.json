@@ -55,8 +55,8 @@
       "type": "ROUTING_OBSERVATION",
       "caseId": "source-graph-edits-use-canonical-source-and-gates",
       "routedPrimitive": {
-        "type": "SKILL",
-        "name": "source-graph-consolidation"
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
       },
       "satisfiedAllowedActions": [
         "Edit source-owned primitives, plugin manifests, schemas, evals, or source validation tools.",
@@ -292,24 +292,24 @@
       "type": "ROUTING_OBSERVATION",
       "caseId": "production-sharing-requires-quality-audit-evidence",
       "routedPrimitive": {
-        "type": "SKILL",
-        "name": "primitive-quality-audit"
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
       },
       "satisfiedAllowedActions": [
-        "Audit the concrete primitive, plugin, or eval family against a baseline.",
+        "Review the concrete primitive, plugin, or eval family against a baseline.",
         "Record evidence for capability boundary, trigger clarity, independence, schema coverage, provenance, executable proof, and runtime safety.",
         "Defer production-sharing claims when evidence is thin or validation does not cover the changed surface."
       ],
       "satisfiedVerificationEvidence": [
-        "A quality audit names the target, baseline, findings, manifest needs, validation, and next action.",
+        "The review names the target, baseline, findings, validation, residual risks, and next action.",
         "Structured artifacts changed by the workflow pass the source graph and marketplace validation gates."
       ],
       "avoidedForbiddenActions": [
         "Treat new eval cases alone as production readiness.",
         "Share primitives that are not independently usable outside a plugin composition.",
-        "Recommend cleanup or runtime activation without a durable manifest or approval boundary."
+        "Claim production readiness without reproducible validation and explicit residual risks."
       ],
-      "notes": "A passing readiness run uses the audit manifest and keeps rollout claims bounded by evidence."
+      "notes": "A passing readiness run keeps rollout claims bounded by reproducible evidence."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -500,7 +500,7 @@
         "name": "agent-platform-authoring"
       },
       "satisfiedAllowedActions": [
-        "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and garden manifests.",
+        "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and source validation contracts.",
         "Use materialization only as proof after source quality checks pass.",
         "Add source-owned validation when overlap or routing quality is the failure mode."
       ],
@@ -707,17 +707,17 @@
       "type": "ROUTING_OBSERVATION",
       "caseId": "placeholder-skills-are-quality-audit-not-marketplace-products",
       "routedPrimitive": {
-        "type": "SKILL",
-        "name": "primitive-quality-audit"
+        "type": "PLUGIN",
+        "name": "agent-platform-authoring"
       },
       "satisfiedAllowedActions": [
         "Quarantine placeholder-only skills from marketplace exposure.",
-        "Record deferred rewrite or removal decisions in the cleanup ledger.",
+        "Delete placeholder-only skills when a substantive rewrite is not justified.",
         "Fail validation if marketplace-visible skills expose placeholder migration descriptions."
       ],
       "satisfiedVerificationEvidence": [
         "Marketplace-visible skills have routeable descriptions rather than placeholder migration text.",
-        "Unfinished primitive candidates are handled through quality audit or consolidation manifests before promotion."
+        "Unfinished primitive candidates are rewritten or excluded from the source marketplace."
       ],
       "avoidedForbiddenActions": [
         "Keep placeholder-only skills in the standalone marketplace catalog.",

@@ -43,24 +43,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/source-graph-consolidation",
-      "name": "source-graph-consolidation"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/primitive-quality-audit",
-      "name": "primitive-quality-audit"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/primitive-routing-evaluation",
       "name": "primitive-routing-evaluation"
     },
@@ -126,11 +108,11 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Use for maintaining the canonical source graph, referential plugin composition, provider marketplace projections, primitive promotion, and routing or quality proof.",
+    "dailyDriver": "Use for maintaining the canonical source graph, referential plugin composition, provider marketplace projections, and routing proof.",
     "notFor": "Product-code delivery, Kotlin implementation loops, general Git/CI delivery, standalone schema/API contract work, docs authoring, source-backed knowledge indexing, or shell automation outside hook primitive work.",
     "owner": "intelligence-source-graph-platform",
     "principle": "primitives-remain-independent",
     "role": "agent-platform-authoring",
-    "scope": "Author, audit, route-test, consolidate, and validate independent skills, agents, hooks, plugin manifests, repository instructions, and local navigation maps with source-backed evidence."
+    "scope": "Author, route-test, and validate independent skills, agents, hooks, plugin manifests, repository instructions, and local navigation maps with source-backed evidence."
   }
 }

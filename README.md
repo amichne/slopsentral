@@ -10,11 +10,23 @@ plugins, hooks, agents, concepts, and workflow profiles.
   source evidence, not generated marketplace output.
 - Keep source-graph schemas under `source/schemas/` and reusable validation
   utilities under `source/tools/`.
-- Treat `.agents/plugins/` and `.github/plugin/` as generated provider output.
+- Keep generated provider output off the source branch; consume it from the
+  dedicated harness branches below.
 - Prefer this repository over installed plugin caches such as
   `~/.codex/plugins/cache`.
 - Do not re-own first-party or system skills here. Reference upstream
   distributions or author local rewrites with non-colliding names.
+
+## Published Harnesses
+
+| Harness | Branch | Marketplace entrypoint |
+|---|---|---|
+| Codex | [`harness/codex`](https://github.com/amichne/slopsentral/tree/harness/codex) | `.agents/plugins/marketplace.json` |
+| GitHub Copilot | [`harness/github-copilot`](https://github.com/amichne/slopsentral/tree/harness/github-copilot) | `.github/plugin/marketplace.json` |
+
+The `Publish Harnesses` workflow projects validated source with projeKtor and
+replaces only the matching output branch. Each artifact commit records the
+canonical `main` commit it was generated from.
 
 ## Standalone Skills
 
@@ -54,8 +66,8 @@ node source/tools/validate-source-graph.mjs
 node source/tools/run-routing-evals.mjs
 node source/tools/run-routing-evals.mjs --require-all-observed
 source/tools/compile-kotlin-concepts
-intelligence project --source . --harness codex --out /tmp/slopsentral-codex
-intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+projeKtor project --source . --harness codex --out /tmp/slopsentral-codex
+projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check
 ```
 
@@ -84,14 +96,3 @@ remote-write authority.
 After an authorized run, pass only its generated token-usage JSONL to
 `plugin-eval analyze --observed-usage`. Chat-history demand counts are routing
 evidence, not observed token usage.
-
-## Provenance
-
-- `garden/manifests/promotions.json` records promoted source roots.
-- `garden/manifests/primitive-audits.json` records production-readiness and
-  quality decisions for primitive families.
-- `garden/manifests/runtime-links.json` records approval-gated runtime
-  activation plans; it is not an installer log and does not authorize writes by
-  itself.
-- `garden/manifests/cleanup-ledger.json` records skipped duplicates, upstream
-  exclusions, and deferred cleanup decisions.

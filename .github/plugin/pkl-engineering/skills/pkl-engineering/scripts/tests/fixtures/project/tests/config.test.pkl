@@ -1,7 +1,0 @@
-amends "pkl:test"
-
-facts {
-  ["port"] {
-    8080.isBetween(1, 65535)
-  }
-}

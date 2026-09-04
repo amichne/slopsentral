@@ -13,10 +13,9 @@ by hand when the authored source can be fixed instead.
 - `source/skills`, `source/agents`, `source/hooks`, `source/concepts`,
   `source/profiles`, `source/evals`, `source/schemas`, and `source/tools` are
   canonical authored roots.
-- `broker/` is the standalone Codex App Server broker package and release root;
-  it is not a marketplace primitive or generated provider output.
-- `.agents/plugins` and `.github/plugin` are generated output from
-  `intelligence project --source . --harness codex|github-copilot`.
+- Generated provider output is published only on `harness/codex` under
+  `.agents/plugins` and `harness/github-copilot` under `.github/plugin`.
+- Do not commit generated provider output to the source branch.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
 
 ## First-Party Material
@@ -31,7 +30,7 @@ composition edits, run:
 
 ```bash
 node source/tools/validate-source-graph.mjs
-intelligence project --source . --harness codex --out /tmp/slopsentral-codex
-intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+projeKtor project --source . --harness codex --out /tmp/slopsentral-codex
+projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check
 ```

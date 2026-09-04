@@ -1,0 +1,68 @@
+name: Publish Harnesses
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-harnesses-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate marketplace source
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate source marketplace
+        run: node source/tools/validate-source-graph.mjs
+
+  publish:
+    name: Publish ${{ matrix.harness }}
+    needs: validate
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - harness: codex
+            branch: harness/codex
+          - harness: github-copilot
+            branch: harness/github-copilot
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Project ${{ matrix.harness }} marketplace
+        id: projection
+        uses: amichne/projeKtor@3039852047dbc56f5b32d6d4963c71dcc674a317 # v1.1.0
+        with:
+          source: .
+          harness: ${{ matrix.harness }}
+          version: v1.1.0
+
+      - name: Publish ${{ matrix.branch }}
+        env:
+          PROJECTION_PATH: ${{ steps.projection.outputs.projection-path }}
+          TARGET_BRANCH: ${{ matrix.branch }}
+        run: |
+          set -euo pipefail
+          .github/scripts/publish-harness-branch \
+            "${PROJECTION_PATH}" \
+            "${TARGET_BRANCH}" \
+            main \
+            "${GITHUB_SHA}"

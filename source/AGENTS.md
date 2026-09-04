@@ -44,14 +44,15 @@ This file applies to authored marketplace source under `source/`.
 
 ## Generated Boundaries
 
-- Edit `source/` and `garden/manifests/` as authored source.
-- Do not hand-edit `.agents/plugins` or `.github/plugin`; materialize them from
-  source when provider output proof is needed.
+- Edit `source/` as authored source.
+- Do not hand-edit generated provider output. projeKtor publishes Codex output
+  to `harness/codex` and GitHub Copilot output to
+  `harness/github-copilot` from validated source.
 
 ## Verify
 
 - Run `node source/tools/validate-source-graph.mjs` after changing primitive
-  references, hook metadata, plugin manifests, promotion records, routing evals,
-  or source graph contracts.
+  references, hook metadata, plugin manifests, routing evals, or source graph
+  contracts.
 - For marketplace publication proof, run the full root `AGENTS.md` marketplace
   validation set.

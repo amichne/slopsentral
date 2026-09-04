@@ -8,8 +8,8 @@ after source validation passes:
 
 ```sh
 node source/tools/validate-source-graph.mjs
-intelligence project --source . --harness codex --out /tmp/slopsentral-codex
-intelligence project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+projeKtor project --source . --harness codex --out /tmp/slopsentral-codex
+projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 ```
 
 ## Catalog Duties
