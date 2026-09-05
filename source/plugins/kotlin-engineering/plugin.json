@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "kotlin-engineering",
-  "version": "0.1.0",
-  "description": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, compositional API surfaces, typed observability, scoped repository guidance, established library use, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+  "version": "1.0.0",
+  "description": "Kotlin implementation, API design, and compiler-backed review.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -81,6 +81,15 @@
       },
       "path": "skills/kotlin-gradle-validation",
       "name": "kotlin-gradle-validation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kotlin-branching",
+      "name": "kotlin-branching"
     }
   ],
   "agents": [
@@ -139,24 +148,6 @@
       },
       "path": "concepts/kotlin-repository-engineering/core.md",
       "name": "kotlin-repository-engineering"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/type-safety/core.md",
-      "name": "type-safety"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/schema-driven-design/core.md",
-      "name": "schema-driven-design"
     }
   ],
   "hooks": [
@@ -190,16 +181,13 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install in Kotlin/Gradle repositories where agents write or review Kotlin; compose through kotlin-repo-default with engineering-baseline, git-ci-operations, and effective-delivery for repository delivery.",
+    "dailyDriver": "Install for domain modeling, API ownership, branching, observability, library boundaries, Gradle evidence, and focused Kotlin review.",
     "companionProfile": "kotlin-repo-default",
     "deliveryCompanion": "effective-delivery",
-    "informationExchange": "filesystem-and-semantic-evidence",
-    "kast": "prefer-packaged-kast-skill-or-file-backed-rpc",
-    "notFor": "Non-Kotlin repositories, generic Git/CI delivery, release management, API-only contract governance, or platform marketplace authoring work.",
+    "notFor": "Hosted delivery, generic shell configuration, and IntelliJ-specific lifecycle or PSI mechanics.",
     "owner": "kotlin-engineering",
-    "packageBoundary": "Kotlin semantics, library bindings, and proof only; local Git work stays in git-ci-operations, while PR, CI, and release work stays in effective-delivery.",
-    "principle": "preserve-proof-in-kotlin-types-compose-total-api-surfaces-map-typed-outcomes-to-telemetry-at-effect-boundaries-keep-implementation-libraries-behind-swappable-bindings-and-prove-behavior-with-focused-evidence",
-    "role": "kotlin-best-practices",
-    "scope": "Kotlin implementation and review best practices: domain modeling, proof-carrying refinement, repository and Gradle topology, scoped AGENTS.md guidance, total higher-order API composition, public and multiplatform surface design, typed-outcome observability, OpenTelemetry semantic conventions, pure cross-module APIs, established library selection, package cohesion, Kast or file-backed semantic navigation, negative capability proof, widening Gradle validation, and Kotlin-specific hook checks."
+    "role": "kotlin-engineering",
+    "scope": "Domain modeling, API ownership, branching, observability, library boundaries, Gradle evidence, and focused Kotlin review.",
+    "workstream": "kotlin-engineering"
   }
 }

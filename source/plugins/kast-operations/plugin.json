@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "kast-operations",
-  "version": "0.2.0",
-  "description": "Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
+  "version": "1.0.0",
+  "description": "Kast runtime operation and semantic evidence.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -57,32 +57,14 @@
     }
   ],
   "agents": [],
-  "instructions": [
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/type-safety/core.md",
-      "name": "type-safety"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/schema-driven-design/core.md",
-      "name": "schema-driven-design"
-    }
-  ],
+  "instructions": [],
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for local Kast diagnosis, IDEA backend delivery, measured performance work, Kotlin structural analysis, or defensively read-only SQLite inspection.",
-    "notFor": "Kotlin source mutation, non-Kotlin graphs, GitHub Actions performance, database writes or repair, or replacement of product-owned public commands.",
+    "dailyDriver": "Install for installation diagnosis, IDEA backend delivery, performance, Kotlin structural reads, and read-only SQLite inspection.",
+    "notFor": "General Kotlin application implementation, generic IDE plugin design, and database mutation.",
     "role": "kast-operations",
-    "scope": "Live-install diagnosis and supported repair, IDEA backend lifecycle and distribution boundaries, representative performance measurement, compiler-backed Kotlin structure, and read-only SQLite navigation."
+    "scope": "Installation diagnosis, IDEA backend delivery, performance, Kotlin structural reads, and read-only SQLite inspection.",
+    "workstream": "kast-operations"
   }
 }

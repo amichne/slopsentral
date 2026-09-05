@@ -8,7 +8,7 @@
   "targetName": "kotlin-engineering",
   "runner": {
     "type": "codex-cli",
-    "model": "gpt-5.4",
+    "model": "gpt-6-astra",
     "sandbox": "workspace-write",
     "approvalPolicy": "never",
     "extraArgs": []
@@ -34,7 +34,8 @@
     "Run this benchmark from the slopsentral checkout after materializing the Kotlin Engineering best-practices package.",
     "The default workspace.sourcePath assumes a sibling Kotlin repository; teams should replace it with their own Kotlin/Gradle repository path before collecting baseline usage.",
     "The repository-guidance scenario is a portable rewrite of the current Kast AGENTS.md observed on 2026-08-23; it excludes Kast-specific module counts, platform versions, documentation tooling, and exact commands.",
-    "Feed the resulting benchmark-usage.jsonl back into plugin-eval analyze with --observed-usage before treating static budget warnings as production blockers."
+    "Feed the resulting benchmark-usage.jsonl back into plugin-eval analyze with --observed-usage before treating static budget warnings as production blockers.",
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
   "setupQuestions": [
     "Which Kotlin/Gradle repository should represent the daily-driver team workflow?",

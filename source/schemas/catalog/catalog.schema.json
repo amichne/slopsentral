@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/catalog/catalog.schema.json",
+  "title": "CATALOG_REPORT",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "schemaVersion",
+    "selection",
+    "measurement",
+    "plugins",
+    "totals",
+    "standaloneSkills"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "CATALOG_REPORT"
+      ],
+      "examples": [
+        "CATALOG_REPORT"
+      ]
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "enum": [
+        1
+      ],
+      "examples": [
+        1
+      ]
+    },
+    "selection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "ALL_PLUGINS"
+              ],
+              "examples": [
+                "ALL_PLUGINS"
+              ]
+            }
+          },
+          "examples": [
+            {
+              "type": "ALL_PLUGINS"
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "name"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "WORKFLOW_PROFILE"
+              ],
+              "examples": [
+                "WORKFLOW_PROFILE"
+              ]
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "examples": [
+                "documentation-default"
+              ]
+            }
+          },
+          "examples": [
+            {
+              "type": "WORKFLOW_PROFILE",
+              "name": "documentation-default"
+            }
+          ]
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "examples": [
+        {
+          "type": "ALL_PLUGINS"
+        },
+        {
+          "type": "WORKFLOW_PROFILE",
+          "name": "documentation-default"
+        }
+      ]
+    },
+    "measurement": {
+      "type": "string",
+      "minLength": 1,
+      "examples": [
+        "Source word counts and install closure; not model tokens, routing accuracy, or runtime load."
+      ]
+    },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "name",
+          "description",
+          "notFor",
+          "primitives",
+          "instructionWords"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "CATALOG_PLUGIN"
+            ],
+            "examples": [
+              "CATALOG_PLUGIN"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "writing"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "Source-grounded prose and technical documentation."
+            ]
+          },
+          "notFor": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "Code implementation."
+            ]
+          },
+          "primitives": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "examples": [
+                "SKILL/controlled-technical-writing"
+              ]
+            },
+            "examples": [
+              [
+                "SKILL/controlled-technical-writing"
+              ]
+            ]
+          },
+          "instructionWords": {
+            "type": "integer",
+            "minimum": 0,
+            "examples": [
+              0
+            ]
+          }
+        },
+        "examples": [
+          {
+            "type": "CATALOG_PLUGIN",
+            "name": "writing",
+            "description": "Source-grounded prose and technical documentation.",
+            "notFor": "Code implementation.",
+            "primitives": [
+              "SKILL/controlled-technical-writing"
+            ],
+            "instructionWords": 0
+          }
+        ]
+      },
+      "examples": [
+        [
+          {
+            "type": "CATALOG_PLUGIN",
+            "name": "writing",
+            "description": "Source-grounded prose and technical documentation.",
+            "notFor": "Code implementation.",
+            "primitives": [
+              "SKILL/controlled-technical-writing"
+            ],
+            "instructionWords": 0
+          }
+        ]
+      ]
+    },
+    "totals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "plugins",
+        "primitives",
+        "instructionWords"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "CATALOG_TOTALS"
+          ],
+          "examples": [
+            "CATALOG_TOTALS"
+          ]
+        },
+        "plugins": {
+          "type": "integer",
+          "minimum": 0,
+          "examples": [
+            1
+          ]
+        },
+        "primitives": {
+          "type": "integer",
+          "minimum": 0,
+          "examples": [
+            1
+          ]
+        },
+        "instructionWords": {
+          "type": "integer",
+          "minimum": 0,
+          "examples": [
+            0
+          ]
+        }
+      },
+      "examples": [
+        {
+          "type": "CATALOG_TOTALS",
+          "plugins": 1,
+          "primitives": 1,
+          "instructionWords": 0
+        }
+      ]
+    },
+    "standaloneSkills": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "examples": [
+          "grill-me-with-docs"
+        ]
+      },
+      "examples": [
+        [
+          "grill-me-with-docs"
+        ]
+      ]
+    }
+  },
+  "examples": [
+    {
+      "type": "CATALOG_REPORT",
+      "schemaVersion": 1,
+      "selection": {
+        "type": "ALL_PLUGINS"
+      },
+      "measurement": "Source word counts and install closure; not model tokens, routing accuracy, or runtime load.",
+      "plugins": [
+        {
+          "type": "CATALOG_PLUGIN",
+          "name": "writing",
+          "description": "Source-grounded prose and technical documentation.",
+          "notFor": "Code implementation.",
+          "primitives": [
+            "SKILL/controlled-technical-writing"
+          ],
+          "instructionWords": 0
+        }
+      ],
+      "totals": {
+        "type": "CATALOG_TOTALS",
+        "plugins": 1,
+        "primitives": 1,
+        "instructionWords": 0
+      },
+      "standaloneSkills": [
+        "grill-me-with-docs"
+      ]
+    }
+  ]
+}

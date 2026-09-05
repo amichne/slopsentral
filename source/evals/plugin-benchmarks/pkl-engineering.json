@@ -8,7 +8,7 @@
   "targetName": "pkl-engineering",
   "runner": {
     "type": "codex-cli",
-    "model": "gpt-5.4",
+    "model": "gpt-6-astra",
     "sandbox": "workspace-write",
     "approvalPolicy": "never",
     "extraArgs": []
@@ -33,7 +33,8 @@
   },
   "notes": [
     "Run in an isolated slopsentral worktree with the bundled safe Pkl facade.",
-    "The benchmark may change only local fixtures and must not publish or modify remote state."
+    "The benchmark may change only local fixtures and must not publish or modify remote state.",
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
   "setupQuestions": [
     "Which bounded Pkl module and consumer JSON are safe to revise in this disposable worktree?"

@@ -1,6 +1,6 @@
 ---
 name: "site-docs-authoring"
-description: "Create, revise, or restructure technical documentation sites that use MkDocs, Zensical, Material-style Markdown features, or similar docs-as-code navigation. Use when documentation work needs site config awareness, page structure, nav updates, generated-doc boundaries, or consistent prose across docs pages."
+description: "Create, revise, or restructure technical documentation sites that use Mintlify, MkDocs, Zensical, or similar docs-as-code navigation. Use when documentation work needs site config awareness, page structure, nav updates, generated-doc boundaries, or consistent prose across docs pages."
 ---
 
 # Site Docs Authoring
@@ -14,7 +14,7 @@ the rendered contract when layout or nav changes.
 
 - Treat the docs site as a source-of-truth surface, not a prose dump.
 - Read the local docs config before choosing structure: `zensical.toml`,
-  `mkdocs.yml`, `mkdocs.yaml`, `docs/AGENTS.md`, and nearby page patterns.
+  `mkdocs.yml`, `mkdocs.yaml`, `docs.json`, `docs/AGENTS.md`, and nearby page patterns.
 - Preserve the current site dialect unless the user explicitly asks to migrate.
 - Do not hand-edit generated reference pages; find and update the generator or
   record the generated boundary.
@@ -51,6 +51,11 @@ the rendered contract when layout or nav changes.
    generated pages changed. Prefer `zensical build --clean` for Zensical sites
    and `mkdocs build --strict` or the repo's wrapper for MkDocs sites. If a
    build cannot run, report the missing tool or dependency.
+
+For Mintlify, inspect the connected deployment's source and local `docs.json`
+before choosing an edit path. Repository PR changes and live deployment changes
+are separate effects. Use a connected editor only for the requested deployment;
+do not publish the site merely because documentation edits were authorized.
 
 ## Reference Routing
 

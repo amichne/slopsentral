@@ -1,0 +1,80 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "developer-tools",
+  "version": "1.0.0",
+  "description": "Local command-line tools and repository work.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/git-change-flow",
+      "name": "git-change-flow"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/shell-script-safety",
+      "name": "shell-script-safety"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/cli-data-pipelines",
+      "name": "cli-data-pipelines"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/shell-session-integration",
+      "name": "shell-session-integration"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/mise-project-tooling",
+      "name": "mise-project-tooling"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/cli-creator",
+      "name": "cli-creator"
+    }
+  ],
+  "agents": [],
+  "instructions": [],
+  "hooks": [],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Install for local Git changes, safe shell automation, structured CLI queries, shell integration, CLI design, and mise project tooling.",
+    "notFor": "Hosted PR lifecycle, CI/CD architecture, deployment, and human-facing terminal UI design.",
+    "owner": "developer-tools",
+    "role": "developer-tools",
+    "scope": "Local Git changes, safe shell automation, structured CLI queries, shell integration, CLI design, and mise project tooling.",
+    "workstream": "developer-tools"
+  }
+}

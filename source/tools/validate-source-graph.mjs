@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import { auditCatalog, loadCatalog } from "./catalog.mjs";
 import path from "node:path";
 import process from "node:process";
 
@@ -12,19 +13,7 @@ const repoRoot =
     : process.cwd();
 const sourceRoot = path.join(repoRoot, "source");
 
-const allowedSharedSkills = new Map([
-  ["git-change-flow", ["git-ci-operations", "intellij-engineering"]],
-  ["github-ci-operations", ["git-ci-operations", "intellij-engineering"]],
-  ["kotlin-agentic-correctness", ["intellij-engineering", "kotlin-engineering"]],
-  ["kotlin-gradle-validation", ["intellij-engineering", "kotlin-engineering"]],
-  ["manage-json-schemas", ["api-contracts"]],
-  ["pull-request-lifecycle", ["git-ci-operations", "intellij-engineering"]],
-  ["reference-doc-workflow", ["agent-platform-authoring", "code-knowledge-base"]],
-  ["repository-signature-indexing", ["agent-platform-authoring", "code-knowledge-base"]],
-  ["shell-script-safety", ["agent-platform-authoring", "git-ci-operations"]],
-  ["site-docs-authoring", ["agent-platform-authoring", "code-knowledge-base"]],
-  ["tdd", ["engineering-baseline", "intellij-engineering"]],
-]);
+
 
 const routingCaseTypes = new Set([
   "TRIGGER_MISS",
@@ -472,12 +461,12 @@ for (const [pluginName, manifest] of pluginManifests) {
   for (const ref of manifest.instructions ?? []) validatePrimitiveRef(ref, owner);
 }
 
-for (const [skillName, owners] of skillOwners) {
-  if (owners.length <= 1) continue;
-  const allowedOwners = allowedSharedSkills.get(skillName);
-  if (!allowedOwners || !sameSet(owners, allowedOwners)) {
-    fail(`skill ${skillName} is shared by plugins [${sorted(owners).join(", ")}] without an explicit allowed overlap`);
-  }
+// Catalog closure includes hook dependencies and instruction ownership.
+// Do not introduce per-plugin overlap exceptions.
+try {
+  for (const finding of auditCatalog(loadCatalog(repoRoot))) fail(finding);
+} catch (error) {
+  fail(`catalog: ${error.message}`);
 }
 
 for (const [agentName, owners] of agentOwners) {

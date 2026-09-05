@@ -26,7 +26,7 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
   assert.deepEqual([...selectedPlugins.keys()], [
     "engineering-baseline",
     "kotlin-engineering",
-    "git-ci-operations",
+    "developer-tools",
     "effective-delivery",
   ]);
 

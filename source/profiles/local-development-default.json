@@ -1,0 +1,35 @@
+{
+  "type": "WORKFLOW_PROFILE",
+  "schemaVersion": 1,
+  "name": "local-development-default",
+  "description": "Local implementation and tool use without hosted delivery or automatic CI observation.",
+  "marketplaces": [
+    {
+      "type": "WORKFLOW_MARKETPLACE",
+      "name": "slopsentral",
+      "provider": "codex",
+      "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+      "entrypoint": ".agents/plugins/marketplace.json",
+      "scope": "plugins in this workflow profile"
+    }
+  ],
+  "plugins": [
+    "engineering-baseline",
+    "developer-tools"
+  ],
+  "hooks": [
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "agents-md-turn-refresh",
+      "adapter": "codex"
+    }
+  ],
+  "validation": {
+    "type": "WORKFLOW_VALIDATION",
+    "commands": [
+      "node source/tools/validate-source-graph.mjs",
+      "projeKtor project --source . --harness codex --out /tmp/slopsentral-codex",
+      "projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+    ]
+  }
+}

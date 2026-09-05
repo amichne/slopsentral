@@ -56,7 +56,9 @@ resume files from this skill.
      verifiable outcome.
 
 5. Check active goal state before creating a goal.
-   - Call `get_goal`.
+   - Use `get_goal` only when that tool is available and goal-backed work was
+     requested. Otherwise retain the outcome in the current response and continue;
+     an unavailable goal tool is not a blocker.
    - If there is no active goal and the objective meets the quality bar, call
      `create_goal`.
    - If there is an active goal that still matches the user's intent, continue
@@ -65,7 +67,9 @@ resume files from this skill.
      to finish the current goal, mark it complete if done, or start a separate
      goal-backed thread.
 
-6. Create the goal only after it passes the quality bar.
+6. Create the goal only after it passes the quality bar and the host exposes
+   the requested goal tool. Without that tool, return the concrete objective
+   and continue any independently authorized work.
    - Use a single concise objective string.
    - Include the verification evidence in the objective itself.
    - Include scope bounds when they constrain the work.

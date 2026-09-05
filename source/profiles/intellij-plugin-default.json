@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 1,
   "name": "intellij-plugin-default",
-  "description": "IntelliJ Platform engineering workflow composed from baseline engineering, Kotlin and Gradle correctness, host-neutral Git operations, effective delivery, and focused IntelliJ skills.",
+  "description": "IntelliJ Platform engineering workflow composed from baseline engineering, Kotlin and Gradle correctness, local developer tools, effective delivery, and focused IntelliJ skills.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -16,7 +16,7 @@
   "plugins": [
     "engineering-baseline",
     "kotlin-engineering",
-    "git-ci-operations",
+    "developer-tools",
     "effective-delivery",
     "intellij-engineering"
   ],
@@ -24,11 +24,6 @@
     {
       "type": "WORKFLOW_HOOK",
       "name": "agents-md-turn-refresh",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "required-skill-read",
       "adapter": "codex"
     },
     {
