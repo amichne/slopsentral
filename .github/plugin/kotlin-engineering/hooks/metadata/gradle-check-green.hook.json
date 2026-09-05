@@ -17,15 +17,6 @@
         "type": "LOCAL_SOURCE"
       },
       "type": "SKILL"
-    },
-    {
-      "name": "tdd",
-      "path": "skills/tdd",
-      "source": {
-        "path": "./",
-        "type": "LOCAL_SOURCE"
-      },
-      "type": "SKILL"
     }
   ],
   "name": "gradle-check-green",

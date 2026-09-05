@@ -1,5 +1,20 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/required-skill-read.py\" check --repo .",
+        "matcher": "*",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
+    "SessionStart": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/required-skill-read.py\" init --repo .",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
     "Stop": [
       {
         "bash": "bash \"$PLUGIN_ROOT/hooks/source-graph-valid.sh\" --repo .",

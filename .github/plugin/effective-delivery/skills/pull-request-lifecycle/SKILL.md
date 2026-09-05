@@ -9,8 +9,8 @@ Use this skill to carry code work across the version-control boundary without
 losing evidence. It composes local Git hygiene, GitHub PR operations, and CI
 triage; it must remain useful even when a host-specific GitHub connector is not
 available. Use the connected GitHub app for supported PR operations. Use
-authenticated native `gh` only for GitHub Actions, logs, the local CI observer,
-or a connector gap. Use local `git` for local repository state.
+authenticated native `gh` for the local observer or an operation the connector
+cannot perform. Use local `git` for local repository state.
 
 Related primitives in this repository:
 
@@ -32,9 +32,8 @@ Related primitives in this repository:
 - Do not mark a PR ready for review until the branch has a focused diff,
   validation evidence, and no known deterministic failures.
 - Babysit checks by reading live check state, logs, and annotations. For
-  pending GitHub Actions runs, arm the observer from
-  `skills/github-ci-operations/scripts/ci_wait_for_actions`, then invoke one
-  bounded `await --json`. Fix the owning source instead of rerunning
+  pending GitHub Actions runs, use the observer when available, or available
+  structured connector reads at meaningful transitions. Fix the owning source instead of rerunning
   deterministic failures.
 - Never claim a PR is green until the typed required-check observation reports
   passing, skipped, or neutral terminal states for the current head.
@@ -84,11 +83,12 @@ Related primitives in this repository:
      --json bucket,link,name,state,workflow
    ```
 
-   When checks are pending, run `python3
+   When checks are pending and the local observer is available, run `python3
    "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions" --repo .
    arm --pr <pr-number> --required --until status-change --timeout auto
    --json`, then invoke the same script with `--repo . await --json`. For
-   failing Actions runs, use `gh run view <run-id> --log-failed`. Separate
+   failing Actions runs, use available connector logs or `gh run view <run-id>
+   --log-failed`. An unavailable local observer does not block the PR handoff. Separate
    product or test failures, generated drift, dependency setup, permissions,
    secrets, cache, and flaky behavior.
 

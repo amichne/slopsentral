@@ -1,0 +1,26 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Engineering",
+  "description": "Local command-line tools and repository work.",
+  "keywords": [
+    "cli",
+    "developer-tools",
+    "git",
+    "local-development",
+    "mise",
+    "shell"
+  ],
+  "license": "UNLICENSED",
+  "name": "developer-tools",
+  "skills": "./skills",
+  "tags": [
+    "cli",
+    "git",
+    "local-development",
+    "mise",
+    "shell"
+  ],
+  "version": "1.0.0"
+}

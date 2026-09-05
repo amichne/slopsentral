@@ -3,7 +3,7 @@
     "name": "Amichne"
   },
   "category": "Engineering",
-  "description": "Repository baseline for language-agnostic semantic design and test-driven work: constrained domain values, closed variants and failures, typestate, executable-check TDD, marketplace onboarding, and instruction hygiene.",
+  "description": "Engineering outcomes, semantic design, and verification.",
   "hooks": "./hooks.json",
   "keywords": [
     "core",
@@ -43,5 +43,5 @@
     "testing",
     "typestate"
   ],
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

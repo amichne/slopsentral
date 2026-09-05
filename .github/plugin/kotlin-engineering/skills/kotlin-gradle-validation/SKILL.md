@@ -78,9 +78,11 @@ the final answer can cite evidence files instead of terminal scrollback.
    Map each failure to source, tests, configuration, or infrastructure. Avoid
    broad refactors until the failing boundary is understood.
 
-6. Verify in widening rings.
-   Run the targeted task, then the owning module task, then the requested
-   aggregate task. Record exact commands and outcomes.
+6. Complete proportionate verification.
+   Run the required aggregate task when the repository or request requires it.
+   Otherwise widen beyond the targeted task only for affected dependencies, changed
+   public contracts, or a specific unresolved concern. Record commands and outcomes;
+   do not repeat an unchanged successful check merely to fill a sequence.
 
 ## Failure Handling
 

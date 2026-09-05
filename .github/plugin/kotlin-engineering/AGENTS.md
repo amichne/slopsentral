@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, compositional API surfaces, typed observability, scoped repository guidance, established library use, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.
+Kotlin implementation, API design, and compiler-backed review.
 
 ## Operating Rules
 
@@ -25,8 +25,6 @@ Kotlin best-practices package for type-driven design, proof-carrying validation,
 
 - `kotlin-code-correctness`: `instructions/kotlin-code-correctness.md` (source: `source/concepts/kotlin-code-correctness/core.md`)
 - `kotlin-repository-engineering`: `instructions/kotlin-repository-engineering.md` (source: `source/concepts/kotlin-repository-engineering/core.md`)
-- `schema-driven-design`: `instructions/schema-driven-design.md` (source: `source/concepts/schema-driven-design/core.md`)
-- `type-safety`: `instructions/type-safety.md` (source: `source/concepts/type-safety/core.md`)
 
 ## Agent Profile Primitives
 
@@ -40,6 +38,7 @@ Kotlin best-practices package for type-driven design, proof-carrying validation,
 - `kotlin-agentic-correctness`: `skills/kotlin-agentic-correctness` (source: `source/skills/kotlin-agentic-correctness`)
 - `kotlin-api-surface-design`: `skills/kotlin-api-surface-design` (source: `source/skills/kotlin-api-surface-design`)
 - `kotlin-application-stack`: `skills/kotlin-application-stack` (source: `source/skills/kotlin-application-stack`)
+- `kotlin-branching`: `skills/kotlin-branching` (source: `source/skills/kotlin-branching`)
 - `kotlin-design-practices`: `skills/kotlin-design-practices` (source: `source/skills/kotlin-design-practices`)
 - `kotlin-gradle-validation`: `skills/kotlin-gradle-validation` (source: `source/skills/kotlin-gradle-validation`)
 - `kotlin-observability-design`: `skills/kotlin-observability-design` (source: `source/skills/kotlin-observability-design`)

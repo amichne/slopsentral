@@ -3,7 +3,7 @@
     "name": "Amichne"
   },
   "category": "Engineering",
-  "description": "Pkl engineering package for typed specification, first-party source navigation, toolchain and LSP setup, practical and advanced patterns, safe evaluation, rendering, tests, packages, and repository proof hooks.",
+  "description": "Typed Pkl configuration and its toolchain.",
   "hooks": "./hooks.json",
   "keywords": [
     "configuration",
@@ -39,5 +39,5 @@
     "type-safety",
     "validation"
   ],
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

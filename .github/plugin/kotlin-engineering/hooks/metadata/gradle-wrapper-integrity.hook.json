@@ -17,15 +17,6 @@
         "type": "LOCAL_SOURCE"
       },
       "type": "SKILL"
-    },
-    {
-      "name": "shell-script-safety",
-      "path": "skills/shell-script-safety",
-      "source": {
-        "path": "./",
-        "type": "LOCAL_SOURCE"
-      },
-      "type": "SKILL"
     }
   ],
   "name": "gradle-wrapper-integrity",

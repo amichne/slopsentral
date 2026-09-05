@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-API contract workflow for JSON Schema and OpenAPI boundaries: schema modeling, operation authoring, typed errors, examples, and review.
+Machine-readable boundary contracts.
 
 ## Operating Rules
 
@@ -24,7 +24,6 @@ API contract workflow for JSON Schema and OpenAPI boundaries: schema modeling, o
 ## Instruction Primitives
 
 - `schema-driven-design`: `instructions/schema-driven-design.md` (source: `source/concepts/schema-driven-design/core.md`)
-- `type-safety`: `instructions/type-safety.md` (source: `source/concepts/type-safety/core.md`)
 
 ## Agent Profile Primitives
 

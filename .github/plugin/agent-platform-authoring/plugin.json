@@ -3,7 +3,7 @@
     "name": "Amichne"
   },
   "category": "Engineering",
-  "description": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
+  "description": "Reusable agent tooling and its publication contracts.",
   "hooks": "./hooks.json",
   "keywords": [
     "agent-platform-authoring",
@@ -35,5 +35,5 @@
     "skills",
     "workflow"
   ],
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

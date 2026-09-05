@@ -4,7 +4,7 @@
     "name": "Amichne"
   },
   "category": "Engineering",
-  "description": "API contract workflow for JSON Schema and OpenAPI boundaries: schema modeling, operation authoring, typed errors, examples, and review.",
+  "description": "Machine-readable boundary contracts.",
   "keywords": [
     "agents",
     "api",
@@ -31,5 +31,5 @@
     "skills",
     "validation"
   ],
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

@@ -3,7 +3,7 @@
     "name": "Amichne"
   },
   "category": "Engineering",
-  "description": "IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.",
+  "description": "IntelliJ Platform plugin behavior and lifecycle.",
   "keywords": [
     "ci",
     "delivery",
@@ -36,5 +36,5 @@
     "ui-testing",
     "verification"
   ],
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

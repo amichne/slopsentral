@@ -9,18 +9,31 @@ Write technical prose that uses direct language and stable terminology. Apply
 this skill to prose, not code, identifiers, command syntax, or creative and
 marketing copy.
 
+## Evidence and Voice
+
+For text the user will publish or send, establish audience, purpose, supplied
+facts, and the user's actual position. Never invent a first-person experience,
+result, preference, or commitment. Retrieve public facts only when research is
+part of the task. Complete supported passages and mark material gaps; ask only
+for missing personal information that changes the text.
+
+Preserve the requested shape, including a one-sentence review comment. Leave an
+already accurate, clear passage unchanged. Quoted text and attributed prose keep
+their original voice. Read [grounding](references/grounding.md) for evidence and
+no-change checks, and [provenance](references/provenance.md) for source lineage.
+
 ## Workflow
 
 1. Choose the mode.
    Use `strict` for procedures, safety text, and error messages. Use `plain` for
    general technical prose.
 2. Load the repository's nearby writing rules and source material.
-3. If prose contains an `ALL CAPS` word or phrase, search for the repository
-   glossary and load [glossary-contract.md](references/glossary-contract.md)
+3. If a repository glossary governs a term or prose contains an ambiguous
+   `ALL CAPS` domain phrase, consult the glossary and load [glossary-contract.md](references/glossary-contract.md)
    before drafting.
 4. Resolve known synonyms against the glossary. Migrate clear matches to the
-   canonical term. Ask for clarification when the intended meaning differs or
-   is uncertain.
+   canonical term. Preserve and flag an ambiguous term rather than inventing a
+   definition or blocking unrelated edits.
 5. Draft or revise only the requested text.
 6. Check every changed sentence and glossary reference before returning it.
 
@@ -44,7 +57,8 @@ marketing copy.
 - Each concept has one name.
 - Each sentence states one clear action or fact.
 - Every claim is supported by the source material.
-- Every `ALL CAPS` term was checked against the repository glossary.
+- Ambiguous domain terms follow the repository glossary when one exists;
+  code tokens, standard acronyms, and quoted text are not renamed by guesswork.
 - Every known synonym was migrated or returned for clarification.
 - No glossary registration shadows an existing term, synonym, or definition.
 - Glossary markers occur only inside the glossary.

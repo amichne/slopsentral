@@ -3,7 +3,7 @@
     "name": "Amichne"
   },
   "category": "Coding",
-  "description": "Provider-neutral workflow for OKF knowledge bundles: Kotlin/Gradle concepts, signature-backed routing, code_sources impact checks, and advisory drift hooks.",
+  "description": "Source-backed code knowledge and navigation.",
   "hooks": "./hooks.json",
   "keywords": [
     "code-knowledge-base",
@@ -39,5 +39,5 @@
     "source-backed",
     "validation"
   ],
-  "version": "0.1.0"
+  "version": "1.0.0"
 }
