@@ -1,0 +1,63 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "developer-tools",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-6-astra",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "node source/tools/validate-source-graph.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run in an isolated slopsentral worktree and preserve any unrelated local files.",
+    "The benchmark may change only local files and must not publish or modify remote state.",
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
+  ],
+  "setupQuestions": [
+    "Which requested paths may be staged while unrelated work remains untouched?",
+    "Which repository-owned check proves the scoped local change?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "dirty-worktree-scoped-staging",
+      "title": "Dirty worktree scoped staging",
+      "purpose": "Measure whether Git preparation preserves unrelated work and proves the exact staged change set.",
+      "routingCaseIds": [
+        "dirty-worktree-uses-scoped-git-change-flow"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "git-change-flow"
+      },
+      "userInput": "Use Developer Tools in this isolated dirty worktree. Inspect all changes, stage only the requested validated files, and prove the staged diff is clean. Do not commit, push, open a pull request, or modify remote state.",
+      "successChecklist": [
+        "The run records the initial dirty state before staging.",
+        "Only the requested paths enter the staged diff.",
+        "Unrelated tracked and untracked user work remains unchanged."
+      ]
+    }
+  ]
+}

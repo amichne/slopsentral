@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "code-knowledge-base",
-  "version": "0.1.0",
-  "description": "Provider-neutral workflow for OKF knowledge bundles: Kotlin/Gradle concepts, signature-backed routing, code_sources impact checks, and advisory drift hooks.",
+  "version": "1.0.0",
+  "description": "Source-backed code knowledge and navigation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -34,40 +34,12 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/reference-doc-workflow",
-      "name": "reference-doc-workflow"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/site-docs-authoring",
-      "name": "site-docs-authoring"
+      "path": "skills/local-repository-navigation",
+      "name": "local-repository-navigation"
     }
   ],
   "agents": [],
-  "instructions": [
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/type-safety/core.md",
-      "name": "type-safety"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/schema-driven-design/core.md",
-      "name": "schema-driven-design"
-    }
-  ],
+  "instructions": [],
   "hooks": [
     {
       "type": "HOOK",
@@ -81,12 +53,12 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Use when durable source-backed knowledge pages, signature indexes, or OKF drift checks are the task output.",
+    "dailyDriver": "Install for signature indexing, local repository navigation, OKF knowledge bundles, and source drift evidence.",
     "harness": "provider-neutral",
-    "notFor": "General documentation drafting, source-graph primitive authoring, or Kotlin implementation work unless the deliverable is a knowledge bundle or impact check.",
+    "notFor": "General document authoring, prose polishing, documentation site configuration, and agent plugin authoring.",
     "owner": "knowledge-base-platform",
-    "principle": "docs-derive-from-code",
-    "role": "source-backed-knowledge",
-    "scope": "Generate and maintain OKF Markdown concept bundles for Kotlin/Gradle codebases with impact-aware refresh guidance."
+    "role": "code-knowledge-base",
+    "scope": "Signature indexing, local repository navigation, OKF knowledge bundles, and source drift evidence.",
+    "workstream": "code-knowledge-base"
   }
 }

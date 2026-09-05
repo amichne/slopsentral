@@ -8,7 +8,7 @@
   "targetName": "kast-operations",
   "runner": {
     "type": "codex-cli",
-    "model": "gpt-5.4",
+    "model": "gpt-6-astra",
     "sandbox": "workspace-write",
     "approvalPolicy": "never",
     "extraArgs": []
@@ -31,7 +31,8 @@
   },
   "notes": [
     "Run against an isolated Kast worktree and diagnose through supported public or administrative commands.",
-    "The benchmark is read-only and must not repair, publish, or modify local installation or remote state."
+    "The benchmark is read-only and must not repair, publish, or modify local installation or remote state.",
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
   "setupQuestions": [
     "Which exact Kast workspace root and installed runtime should provide the diagnostic evidence?",
@@ -82,8 +83,13 @@
       "id": "idea-exact-root-readiness",
       "title": "IDEA exact-root readiness",
       "purpose": "Measure whether Kast IDEA delivery preserves typed exact-root blockers and separate build, install, and activation evidence.",
-      "routingCaseIds": ["kast-intellij-readiness-preserves-typed-blocker"],
-      "expectedPrimitive": { "type": "SKILL", "name": "kast-idea-backend-delivery" },
+      "routingCaseIds": [
+        "kast-intellij-readiness-preserves-typed-blocker"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-idea-backend-delivery"
+      },
       "userInput": "Use Kast Operations to inspect exact-root IDEA readiness and report the supported next step without bypassing the blocker or mutating the foreground IDE. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run uses the canonical root and current public Kast command contract.",
@@ -96,8 +102,13 @@
       "id": "idea-distribution-ownership",
       "title": "IDEA distribution ownership",
       "purpose": "Measure whether backend-idea's unsigned ZIP stays separate from repository release ownership.",
-      "routingCaseIds": ["kast-intellij-distribution-respects-module-ownership"],
-      "expectedPrimitive": { "type": "SKILL", "name": "kast-idea-backend-delivery" },
+      "routingCaseIds": [
+        "kast-intellij-distribution-respects-module-ownership"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kast-idea-backend-delivery"
+      },
       "userInput": "Use Kast Operations to build the backend-idea artifact and report which later stages belong to repository workflows without installing, signing, or publishing. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "buildPlugin produces and identifies the unsigned backend-idea ZIP.",

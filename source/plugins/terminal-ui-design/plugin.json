@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "terminal-ui-design",
-  "version": "0.1.0",
-  "description": "Design workflow for distinctive, accessible, and resilient human-facing terminal interfaces.",
+  "version": "1.0.0",
+  "description": "Human-facing terminal interaction.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -21,32 +21,14 @@
     }
   ],
   "agents": [],
-  "instructions": [
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/type-safety/core.md",
-      "name": "type-safety"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/schema-driven-design/core.md",
-      "name": "schema-driven-design"
-    }
-  ],
+  "instructions": [],
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install when agents design or refine interactive TUIs, terminal dashboards, wizards, prompts, progress displays, or styled CLI output.",
-    "notFor": "Agent-facing command contracts, non-terminal graphical interfaces, or general visual design without a terminal surface.",
+    "dailyDriver": "Install for terminal layout, interaction, accessibility, and rendering without changing machine-output contracts.",
+    "notFor": "Shell activation or completion, machine-readable data pipelines, and CLI protocol design.",
     "role": "terminal-ui-design",
-    "scope": "Human-facing terminal interaction design, visual hierarchy, degraded output modes, accessibility, responsive layouts, and terminal-state safety."
+    "scope": "Terminal layout, interaction, accessibility, and rendering without changing machine-output contracts.",
+    "workstream": "terminal-ui-design"
   }
 }

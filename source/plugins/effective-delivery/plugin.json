@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "effective-delivery",
-  "version": "0.4.0",
-  "description": "Effective software delivery through backend-neutral issue reads, direct dependency evidence, PR follow-through, optimized GitHub Actions workflow graphs, and structured CI observation.",
+  "version": "1.0.0",
+  "description": "Hosted delivery from issue to verified pull request and release evidence.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -36,37 +36,27 @@
       },
       "path": "skills/pull-request-lifecycle",
       "name": "pull-request-lifecycle"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/delivery-pipeline-design",
+      "name": "delivery-pipeline-design"
     }
   ],
   "agents": [],
-  "instructions": [
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/type-safety/core.md",
-      "name": "type-safety"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/schema-driven-design/core.md",
-      "name": "schema-driven-design"
-    }
-  ],
+  "instructions": [],
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install alongside git-ci-operations when agents must read GitHub or Jira issue dependencies, publish pull requests, repair GitHub Actions, and wait for delivery evidence.",
-    "notFor": "Local-only Git changes, generic implementation TDD, language-specific semantic review, issue mutation, or an issue backend outside the declared facade capabilities.",
+    "dailyDriver": "Install for issue dependencies, PR lifecycle, GitHub Actions authoring and diagnosis, CI observation, and delivery pipeline design.",
+    "notFor": "Local shell or Git mechanics, application design, and unrequested merge or deployment.",
     "owner": "effective-delivery",
-    "principle": "wait-on-structured-evidence",
     "role": "effective-delivery",
-    "scope": "Backend-neutral issue reads, direct blocker maps, pull-request lifecycle, GitHub Actions triage and optimization, workflow-graph proof, releases, structured CI evidence, and quiet event-driven waiting."
+    "scope": "Issue dependencies, PR lifecycle, GitHub Actions authoring and diagnosis, CI observation, and delivery pipeline design.",
+    "workstream": "effective-delivery"
   }
 }

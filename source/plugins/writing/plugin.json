@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "writing",
-  "version": "0.1.0",
-  "description": "Controlled technical writing for direct prose, stable terminology, and canonical repository glossary semantics.",
+  "version": "1.0.0",
+  "description": "Source-grounded prose and technical documentation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -18,35 +18,44 @@
       },
       "path": "skills/controlled-technical-writing",
       "name": "controlled-technical-writing"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/technical-documentation",
+      "name": "technical-documentation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/reference-doc-workflow",
+      "name": "reference-doc-workflow"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/site-docs-authoring",
+      "name": "site-docs-authoring"
     }
   ],
   "agents": [],
-  "instructions": [
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/type-safety/core.md",
-      "name": "type-safety"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/schema-driven-design/core.md",
-      "name": "schema-driven-design"
-    }
-  ],
+  "instructions": [],
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install when agents write or revise technical prose that needs plain language, stable terminology, or a repository glossary.",
-    "notFor": "Creative or marketing copy, code changes, identifier naming, or source-backed knowledge bundle generation.",
-    "role": "controlled-technical-writing",
-    "scope": "Technical documentation, READMEs, pull-request text, error messages, release notes, comments, and canonical marked glossary terms."
+    "dailyDriver": "Install for prose, terminology, READMEs, decisions, runbooks, generated-reference workflows, and documentation site structure.",
+    "notFor": "Code changes, signature-index construction, OKF knowledge bundles, and ungrounded first-person claims.",
+    "role": "writing",
+    "scope": "Prose, terminology, READMEs, decisions, runbooks, generated-reference workflows, and documentation site structure.",
+    "workstream": "writing"
   }
 }

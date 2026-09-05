@@ -137,7 +137,7 @@
         "evidenceRefs": [
           "source/plugins/engineering-baseline/plugin.json",
           "source/plugins/kotlin-engineering/plugin.json",
-          "source/plugins/git-ci-operations/plugin.json",
+          "source/plugins/developer-tools/plugin.json",
           "source/plugins/effective-delivery/plugin.json",
           "source/profiles/kotlin-repo-default.json"
         ]
@@ -153,7 +153,7 @@
         "risk": "Baseline and delivery workflows can load twice while the Kotlin trigger becomes too broad for non-Kotlin implementation or operational tasks.",
         "loadedPrimitives": [
           "engineering-baseline",
-          "git-ci-operations",
+          "developer-tools",
           "kotlin-engineering",
           "effective-delivery"
         ]
@@ -161,7 +161,7 @@
       "allowedActions": [
         "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
         "Use engineering-baseline for generic executable-check TDD, repository onboarding, and instruction hygiene.",
-        "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
+        "Use developer-tools for host-neutral Git hygiene and shell-safe automation.",
         "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
         "Use the kotlin-repo-default profile to compose all four plugins without duplicate skills, agents, or hooks."
       ],
@@ -176,7 +176,7 @@
       "verificationEvidence": [
         "engineering-baseline owns generic executable-check TDD and repository guardrails.",
         "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
-        "git-ci-operations owns host-neutral Git and shell automation primitives.",
+        "developer-tools owns host-neutral Git and shell automation primitives.",
         "effective-delivery owns issue reads, direct blocker maps, PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
       ]
     },

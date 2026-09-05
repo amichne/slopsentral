@@ -21,25 +21,21 @@ function primitiveByName(primitives, name) {
   return primitives.find((primitive) => primitive.name === name);
 }
 
-test("shared semantic instructions stay compact and source-owned", () => {
-  const expected = {
-    "type-safety": "concepts/type-safety/core.md",
-    "schema-driven-design": "concepts/schema-driven-design/core.md",
-  };
-  const pluginNames = fs
-    .readdirSync(path.join(repoRoot, "source/plugins"), { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name);
-
-  for (const pluginName of pluginNames) {
-    for (const [name, expectedPath] of Object.entries(expected)) {
-      const instruction = primitiveByName(plugin(pluginName).instructions, name);
-      assert.equal(instruction?.path, expectedPath, `${pluginName} must reuse ${name}`);
+test("semantic instructions have one install owner and a bounded baseline", () => {
+  const owners = new Map();
+  for (const entry of fs.readdirSync(path.join(repoRoot, "source/plugins"), { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    for (const instruction of plugin(entry.name).instructions) {
+      owners.set(instruction.name, [...(owners.get(instruction.name) ?? []), entry.name]);
     }
   }
-
-  const typeSafetyWords = read("source/concepts/type-safety/core.md").split(/\s+/u).length;
-  assert.ok(typeSafetyWords <= 1000, `type-safety must stay compact; found ${typeSafetyWords} words`);
+  assert.deepEqual(owners.get("type-safety"), ["engineering-baseline"]);
+  assert.deepEqual(owners.get("schema-driven-design"), ["api-contracts"]);
+  assert.deepEqual(owners.get("agent-execution"), ["engineering-baseline"]);
+  assert.ok([...owners.values()].every(values => values.length === 1));
+  const baselineWords = plugin("engineering-baseline").instructions.reduce((count, ref) =>
+    count + read(`source/${ref.path}`).trim().split(/\s+/u).length, 0);
+  assert.ok(baselineWords <= 1250, `baseline instructions grew to ${baselineWords} words`);
 });
 
 test("semantic ratchet detail is selectively routed through addressable references", () => {

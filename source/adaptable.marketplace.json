@@ -5,7 +5,7 @@
   "owner": {
     "name": "Amichne"
   },
-  "description": "Curated marketplace for reusable AI tooling primitives, composed agent workflows, and local engineering operating procedures.",
+  "description": "Outcome-focused engineering skills, composed once into provider-neutral plugins and workflow profiles.",
   "management": {
     "type": "MANAGEMENT_POLICY",
     "mode": "CURATED"
@@ -21,9 +21,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/engineering-baseline"
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
       },
-      "description": "Repository baseline for language-agnostic semantic design and test-driven work: constrained domain values, closed variants and failures, typestate, executable-check TDD, marketplace onboarding, and instruction hygiene.",
+      "description": "Engineering outcomes, semantic design, and verification.",
       "tags": [
         "core",
         "daily-driver",
@@ -52,9 +52,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/pkl-engineering"
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
       },
-      "description": "Pkl engineering package for typed specification, first-party source navigation, toolchain and LSP setup, practical and advanced patterns, safe evaluation, rendering, tests, packages, and repository proof hooks.",
+      "description": "Typed Pkl configuration and its toolchain.",
       "tags": [
         "configuration",
         "hooks",
@@ -81,9 +81,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/api-contracts"
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
       },
-      "description": "API contract workflow for JSON Schema and OpenAPI boundaries: schema modeling, operation authoring, typed errors, examples, and review.",
+      "description": "Machine-readable boundary contracts.",
       "tags": [
         "agents",
         "api",
@@ -106,9 +106,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
       },
-      "description": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, compositional API surfaces, typed observability, scoped repository guidance, established library use, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+      "description": "Kotlin implementation, API design, and compiler-backed review.",
       "tags": [
         "agents",
         "api-design",
@@ -144,26 +144,23 @@
     },
     {
       "type": "PLUGIN_ENTRY",
-      "name": "git-ci-operations",
+      "name": "developer-tools",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
-        "name": "git-ci-operations",
+        "name": "developer-tools",
         "source": {
           "type": "LOCAL_SOURCE",
-          "path": "./plugins/git-ci-operations"
+          "path": "./plugins/developer-tools"
         },
-        "version": "0.2.1"
+        "version": "1.0.0"
       },
-      "description": "Host-neutral Git operations for goal framing, safe local changes, and shell automation. Pair with effective-delivery for pull requests, GitHub Actions, releases, and CI observation.",
+      "description": "Local command-line tools and repository work.",
       "tags": [
-        "automation",
-        "best-practices",
+        "cli",
         "git",
-        "operations",
-        "planning",
-        "shell",
-        "skills",
-        "version-control"
+        "local-development",
+        "mise",
+        "shell"
       ]
     },
     {
@@ -176,9 +173,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/effective-delivery"
         },
-        "version": "0.4.0"
+        "version": "1.0.0"
       },
-      "description": "Effective software delivery through backend-neutral issue reads, direct dependency evidence, PR follow-through, optimized GitHub Actions workflow graphs, and structured CI observation.",
+      "description": "Hosted delivery from issue to verified pull request and release evidence.",
       "tags": [
         "actions",
         "automation",
@@ -207,9 +204,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/agent-platform-authoring"
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
       },
-      "description": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
+      "description": "Reusable agent tooling and its publication contracts.",
       "tags": [
         "agents",
         "authoring",
@@ -234,9 +231,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/code-knowledge-base"
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
       },
-      "description": "Provider-neutral workflow for OKF knowledge bundles: Kotlin/Gradle concepts, signature-backed routing, code_sources impact checks, and advisory drift hooks.",
+      "description": "Source-backed code knowledge and navigation.",
       "tags": [
         "docs",
         "generation",
@@ -263,9 +260,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/terminal-ui-design"
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
       },
-      "description": "Design workflow for distinctive, accessible, and resilient human-facing terminal interfaces.",
+      "description": "Human-facing terminal interaction.",
       "tags": [
         "accessibility",
         "cli",
@@ -285,9 +282,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/writing"
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
       },
-      "description": "Controlled technical writing for direct prose, stable terminology, and canonical repository glossary semantics.",
+      "description": "Source-grounded prose and technical documentation.",
       "tags": [
         "controlled-language",
         "docs",
@@ -308,9 +305,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/intellij-engineering"
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
       },
-      "description": "IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.",
+      "description": "IntelliJ Platform plugin behavior and lifecycle.",
       "tags": [
         "ci",
         "delivery",
@@ -336,9 +333,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kast-operations"
         },
-        "version": "0.2.0"
+        "version": "1.0.0"
       },
-      "description": "Operational diagnosis, IDEA backend delivery, performance measurement, Kotlin structural analysis, and read-only SQLite navigation for Kast.",
+      "description": "Kast runtime operation and semantic evidence.",
       "tags": [
         "diagnostics",
         "kast",
@@ -651,24 +648,6 @@
           },
           "path": "agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
           "name": "kotlin-package-cohesion-reviewer"
-        },
-        {
-          "type": "INSTRUCTION",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "concepts/type-safety/core.md",
-          "name": "type-safety"
-        },
-        {
-          "type": "INSTRUCTION",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "concepts/schema-driven-design/core.md",
-          "name": "schema-driven-design"
         }
       ]
     },
@@ -777,15 +756,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/doc-coauthoring",
-      "name": "doc-coauthoring"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/frontend-design",
       "name": "frontend-design"
     },
@@ -797,24 +767,6 @@
       },
       "path": "skills/terminal-ui-design",
       "name": "terminal-ui-design"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/gh-fix-ci",
-      "name": "gh-fix-ci"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/jira-resolve-ticket",
-      "name": "jira-resolve-ticket"
     },
     {
       "type": "SKILL",
@@ -851,15 +803,6 @@
       },
       "path": "skills/refactor",
       "name": "refactor"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/skill-creator",
-      "name": "skill-creator"
     },
     {
       "type": "SKILL",
@@ -986,6 +929,69 @@
       },
       "path": "skills/sqlite-readonly-navigation",
       "name": "sqlite-readonly-navigation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/kotlin-branching",
+      "name": "kotlin-branching"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/cli-data-pipelines",
+      "name": "cli-data-pipelines"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/shell-session-integration",
+      "name": "shell-session-integration"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/mise-project-tooling",
+      "name": "mise-project-tooling"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/delivery-pipeline-design",
+      "name": "delivery-pipeline-design"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/technical-documentation",
+      "name": "technical-documentation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/bounded-delegation",
+      "name": "bounded-delegation"
     }
   ],
   "agents": [
@@ -1080,6 +1086,15 @@
       },
       "path": "concepts/schema-driven-design/core.md",
       "name": "schema-driven-design"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "instructions/agent-execution.md",
+      "name": "agent-execution"
     }
   ],
   "hooks": [

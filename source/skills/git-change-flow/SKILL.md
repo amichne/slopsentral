@@ -14,8 +14,7 @@ useful in any Git repository.
 - Start with `git status --short --branch` and inspect relevant diffs before
   changing version-control state.
 - Treat uncommitted changes you did not make as user work. Do not revert,
-  overwrite, amend, rebase, or stash them unless the user asks or the action is
-  required and low risk.
+  overwrite, amend, rebase, or stash them without applicable authorization for those changes.
 - Branch before risky or publishable work when currently on a shared/default
   branch.
 - Keep commits intentional: focused diff, clear message, validation evidence,
@@ -48,7 +47,8 @@ useful in any Git repository.
    mixed worktree. Use `git add -A` only when the whole dirty tree is in scope.
 
 6. Commit or hand off.
-   If the user requested a commit, use the repo's commit convention. Otherwise
+   If the requested end state requires a commit, including a PR, use the repo's
+   commit convention without asking again. Otherwise
    summarize changed files and validation, leaving the worktree uncommitted.
 
 ## Reference Routing
@@ -66,3 +66,5 @@ useful in any Git repository.
 - Diff hygiene and relevant validation were run or residual gaps are stated.
 - Any published branch or PR handoff includes the branch name, commit, and
   validation evidence.
+
+Read [provenance](references/provenance.md) when updating this skill.

@@ -17,19 +17,23 @@ function names(manifest, field) {
 }
 
 test("effective delivery keeps explicit CI observation without automatic hooks", () => {
-  const git = readJson("source/plugins/git-ci-operations/plugin.json");
+  const git = readJson("source/plugins/developer-tools/plugin.json");
   const delivery = readJson("source/plugins/effective-delivery/plugin.json");
 
   assert.deepEqual(names(git, "skills"), [
-    "define-goal",
     "git-change-flow",
     "shell-script-safety",
+    "cli-data-pipelines",
+    "shell-session-integration",
+    "mise-project-tooling",
+    "cli-creator",
   ]);
   assert.deepEqual(names(git, "hooks"), []);
   assert.deepEqual(names(delivery, "skills"), [
     "github-ci-operations",
     "issue-tracker-operations",
     "pull-request-lifecycle",
+    "delivery-pipeline-design",
   ]);
   assert.deepEqual(names(delivery, "hooks"), []);
   assert.equal(
@@ -54,7 +58,7 @@ test("default delivery composition does not activate automatic CI hooks", () => 
   assert.deepEqual(profile.plugins, [
     "engineering-baseline",
     "kotlin-engineering",
-    "git-ci-operations",
+    "developer-tools",
     "effective-delivery",
   ]);
   assert.equal(profile.hooks.some((hook) => hook.name === "github-actions-await"), false);

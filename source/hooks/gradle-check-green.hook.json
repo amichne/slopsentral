@@ -24,15 +24,6 @@
       },
       "path": "skills/kotlin-gradle-validation",
       "name": "kotlin-gradle-validation"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/tdd",
-      "name": "tdd"
     }
   ]
 }

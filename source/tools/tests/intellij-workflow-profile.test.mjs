@@ -22,23 +22,19 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     "intellij-platform-testing",
     "intellij-platform-integrations",
   ]);
-  assert.deepEqual(intellij.instructions.map(({ name }) => name), [
-    "type-safety",
-    "schema-driven-design",
-  ]);
+  assert.deepEqual(intellij.instructions, []);
   assert.deepEqual(intellij.hooks, []);
 
   const profile = readJson("source/profiles/intellij-plugin-default.json");
   assert.deepEqual(profile.plugins, [
     "engineering-baseline",
     "kotlin-engineering",
-    "git-ci-operations",
+    "developer-tools",
     "effective-delivery",
     "intellij-engineering",
   ]);
   assert.deepEqual(profile.hooks.map(({ name }) => name), [
     "agents-md-turn-refresh",
-    "required-skill-read",
     "kotlin-horizontalization-check",
     "gradle-check-green",
     "gradle-wrapper-integrity",

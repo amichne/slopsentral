@@ -34,6 +34,9 @@ jobs:
           set -euo pipefail
 
           node source/tools/validate-source-graph.mjs
+          node source/tools/catalog.mjs --check
+          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
+            policy --schema source/schemas/catalog/catalog.schema.json
           node source/tools/run-routing-evals.mjs --require-all-observed
           node --test source/tools/tests/*.test.mjs
           source/skills/shell-script-safety/scripts/check_shell_safety \

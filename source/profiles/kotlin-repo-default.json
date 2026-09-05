@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 1,
   "name": "kotlin-repo-default",
-  "description": "Default Kotlin repository workflow that composes baseline executable-check TDD, Kotlin-specific engineering, host-neutral Git operations, effective delivery, and focused Codex hook adapters without duplicate primitive ownership.",
+  "description": "Default Kotlin repository workflow that composes baseline executable-check TDD, Kotlin-specific engineering, local developer tools, effective delivery, and focused Codex hook adapters without duplicate primitive ownership.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -16,18 +16,13 @@
   "plugins": [
     "engineering-baseline",
     "kotlin-engineering",
-    "git-ci-operations",
+    "developer-tools",
     "effective-delivery"
   ],
   "hooks": [
     {
       "type": "WORKFLOW_HOOK",
       "name": "agents-md-turn-refresh",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "required-skill-read",
       "adapter": "codex"
     },
     {

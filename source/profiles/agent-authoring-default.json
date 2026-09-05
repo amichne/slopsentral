@@ -1,0 +1,45 @@
+{
+  "type": "WORKFLOW_PROFILE",
+  "schemaVersion": 1,
+  "name": "agent-authoring-default",
+  "description": "Agent primitive authoring with explicit schema-read advice and source-graph validation.",
+  "marketplaces": [
+    {
+      "type": "WORKFLOW_MARKETPLACE",
+      "name": "slopsentral",
+      "provider": "codex",
+      "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+      "entrypoint": ".agents/plugins/marketplace.json",
+      "scope": "plugins in this workflow profile"
+    }
+  ],
+  "plugins": [
+    "engineering-baseline",
+    "agent-platform-authoring"
+  ],
+  "hooks": [
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "agents-md-turn-refresh",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "source-graph-valid",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "required-skill-read",
+      "adapter": "codex"
+    }
+  ],
+  "validation": {
+    "type": "WORKFLOW_VALIDATION",
+    "commands": [
+      "node source/tools/validate-source-graph.mjs",
+      "projeKtor project --source . --harness codex --out /tmp/slopsentral-codex",
+      "projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+    ]
+  }
+}
