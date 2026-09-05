@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Pkl engineering package for typed specification, first-party source navigation, toolchain and LSP setup, practical and advanced patterns, safe evaluation, rendering, tests, packages, and repository proof hooks.",
+  "description": "Typed Pkl configuration and its toolchain.",
   "hooks": [
     "./hooks/pkl-evaluate-check.hooks.json",
     "./hooks/pkl-format-check.hooks.json",
@@ -22,9 +22,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Pkl Engineering",
-    "longDescription": "Pkl engineering package for typed specification, first-party source navigation, toolchain and LSP setup, practical and advanced patterns, safe evaluation, rendering, tests, packages, and repository proof hooks.",
+    "longDescription": "Typed Pkl configuration and its toolchain.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Pkl engineering package for typed specification, first-party source n...",
+    "shortDescription": "Typed Pkl configuration and its toolchain.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -47,5 +47,5 @@
   "license": "UNLICENSED",
   "name": "pkl-engineering",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

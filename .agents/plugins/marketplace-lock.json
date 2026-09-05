@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-04T14:45:50-04:00",
+  "generatedAt": "2026-09-05T13:23:22-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -12,25 +12,32 @@
           "type": "HOOK"
         },
         {
-          "name": "required-skill-read",
-          "sha256": "sha256:b4efa31dfe23ef3bf94f850d599e2537f83a5737bcd825188fd9f740b1f2157b",
-          "sourcePath": "source/hooks/required-skill-read.hook.json",
-          "targetPath": "hooks/required-skill-read.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
           "name": "type-safety",
           "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
           "sourcePath": "source/concepts/type-safety/core.md",
           "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
+        },
+        {
+          "name": "agent-execution",
+          "sha256": "sha256:cc8110806cfc9e989a792ec6aab00fe9fdb11a98e155f55974691b5ec081beca",
+          "sourcePath": "source/instructions/agent-execution.md",
+          "targetPath": "instructions/agent-execution.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "bounded-delegation",
+          "sha256": "sha256:5fcef37905fb4f7b2460252a535761956804831805eb0f7314fb49d6a12c78f6",
+          "sourcePath": "source/skills/bounded-delegation",
+          "targetPath": "skills/bounded-delegation",
+          "type": "SKILL"
+        },
+        {
+          "name": "define-goal",
+          "sha256": "sha256:49f343b5602e7c23a343424c99638fc1d1e0e151936c60489019c09ddf4556e9",
+          "sourcePath": "source/skills/define-goal",
+          "targetPath": "skills/define-goal",
+          "type": "SKILL"
         },
         {
           "name": "repository-onboarding",
@@ -55,7 +62,7 @@
         }
       ],
       "sourceManifest": "source/plugins/engineering-baseline/plugin.json",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "pkl-engineering",
@@ -80,20 +87,6 @@
           "sourcePath": "source/hooks/pkl-test-check.hook.json",
           "targetPath": "hooks/pkl-test-check.hooks.json",
           "type": "HOOK"
-        },
-        {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
         },
         {
           "name": "pkl-engineering",
@@ -125,7 +118,7 @@
         }
       ],
       "sourceManifest": "source/plugins/pkl-engineering/plugin.json",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "api-contracts",
@@ -149,13 +142,6 @@
           "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
           "sourcePath": "source/concepts/schema-driven-design/core.md",
           "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
           "type": "INSTRUCTION"
         },
         {
@@ -188,35 +174,35 @@
         }
       ],
       "sourceManifest": "source/plugins/api-contracts/plugin.json",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "kotlin-engineering",
       "references": [
         {
           "name": "kotlin-boundary-contract-reviewer",
-          "sha256": "sha256:274c581d5267fc3ced330e82637589382aa671194df3e7535567a4946aa1ab1f",
+          "sha256": "sha256:8d31c07f4efc76a58a1593567d66c9510663200b1002f22bfbbf3685afb29bea",
           "sourcePath": "source/agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
           "targetPath": "agents/kotlin-boundary-contract-reviewer.agent.md",
           "type": "AGENT"
         },
         {
           "name": "kotlin-package-cohesion-reviewer",
-          "sha256": "sha256:0ade97ff63036325e2bf05fb48a6b453bb6ea93e9dc1d244f36ba951ace56fb5",
+          "sha256": "sha256:f115e7db9e1d8ca21412a7285ace0c13af5dcf73e5a24202aabe0f6acd1b45db",
           "sourcePath": "source/agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
           "targetPath": "agents/kotlin-package-cohesion-reviewer.agent.md",
           "type": "AGENT"
         },
         {
           "name": "kotlin-review-captain",
-          "sha256": "sha256:f9e4097fa42706e492c5540d474851cb1ff63f1b00f78c92ff47863fce1a6e81",
+          "sha256": "sha256:b9a54139670cdb273ae464fa96d2d89acc468fafd208baec89cabc1de8ca48f5",
           "sourcePath": "source/agents/kotlin-review/kotlin-review-captain.agent.md",
           "targetPath": "agents/kotlin-review-captain.agent.md",
           "type": "AGENT"
         },
         {
           "name": "kotlin-type-safety-reviewer",
-          "sha256": "sha256:5682b79b15917d7148437c09593bc52a1cdae4068c8f214ffa8fbfac0ed0b02b",
+          "sha256": "sha256:aeed182495b84ccef8dc80a81e2f8f7189579ff64e842deebf1cfebaeb777417",
           "sourcePath": "source/agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
           "targetPath": "agents/kotlin-type-safety-reviewer.agent.md",
           "type": "AGENT"
@@ -257,29 +243,15 @@
           "type": "INSTRUCTION"
         },
         {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
-        },
-        {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:6b9733a7f74dc733bdc7ab907540dd92a5fe0e7bfa75477ada38566542d87b5e",
+          "sha256": "sha256:eed791717bcca1683294a41395d3386cb5e5d433dd0a1505dff6570e417c8129",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
         },
         {
           "name": "kotlin-api-surface-design",
-          "sha256": "sha256:f2ef134f60c18f8c454890d4cc70aef75c4a31235b21f8a8ca1df712978fa2ce",
+          "sha256": "sha256:9d5b117023c84c96e86cb8db67574eac491fb1b8e2c13296f4f6f17bdce7f7c2",
           "sourcePath": "source/skills/kotlin-api-surface-design",
           "targetPath": "skills/kotlin-api-surface-design",
           "type": "SKILL"
@@ -292,15 +264,22 @@
           "type": "SKILL"
         },
         {
+          "name": "kotlin-branching",
+          "sha256": "sha256:50740bf647c89e21c2afa12932d174a3e99443911c77534d4b707bb45c677840",
+          "sourcePath": "source/skills/kotlin-branching",
+          "targetPath": "skills/kotlin-branching",
+          "type": "SKILL"
+        },
+        {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:edf9e1f788996f48b9fbf90733ca929100d1f2c84d2ce04e6cca8cf65840b879",
+          "sha256": "sha256:f285083f2401f404c392c4c90765307c1171babf40f98148b3288c7e4bf016e6",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:53e653f17954c6900d81398ea994911671a736c3d1cca1e6476cce655415bd83",
+          "sha256": "sha256:776c482225f62fceb63f90cff79d6c40b898962cd6a6d592af65b372607fcd03",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -328,37 +307,37 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     {
-      "name": "git-ci-operations",
+      "name": "developer-tools",
       "references": [
         {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
+          "name": "cli-creator",
+          "sha256": "sha256:1cd35b122d3348d5c98ec86acc7b70d5481071bb48929e67d92cd45cdf4f05f5",
+          "sourcePath": "source/skills/cli-creator",
+          "targetPath": "skills/cli-creator",
+          "type": "SKILL"
         },
         {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "define-goal",
-          "sha256": "sha256:347e9b3a7a5e6885510b6220f0e9ebd475d70df58da979b68564b2ca574203ae",
-          "sourcePath": "source/skills/define-goal",
-          "targetPath": "skills/define-goal",
+          "name": "cli-data-pipelines",
+          "sha256": "sha256:ab15d98a783c0428a919a6f876cbb99284ed4cea1b0dd9ad018e1b910f525dc4",
+          "sourcePath": "source/skills/cli-data-pipelines",
+          "targetPath": "skills/cli-data-pipelines",
           "type": "SKILL"
         },
         {
           "name": "git-change-flow",
-          "sha256": "sha256:52f7f5284eb99427409cd02dd0fb1686f6f798106a2514262deafa06053461c5",
+          "sha256": "sha256:b7f631ffa4ba931f3923ad1efbf1119a33c492f80119c94027fc0c1db4c9ee75",
           "sourcePath": "source/skills/git-change-flow",
           "targetPath": "skills/git-change-flow",
+          "type": "SKILL"
+        },
+        {
+          "name": "mise-project-tooling",
+          "sha256": "sha256:2b4bebea9d99f25eba0327f2098570f3a6c069829a45c5807cdc78b7fb45fc2d",
+          "sourcePath": "source/skills/mise-project-tooling",
+          "targetPath": "skills/mise-project-tooling",
           "type": "SKILL"
         },
         {
@@ -367,31 +346,31 @@
           "sourcePath": "source/skills/shell-script-safety",
           "targetPath": "skills/shell-script-safety",
           "type": "SKILL"
+        },
+        {
+          "name": "shell-session-integration",
+          "sha256": "sha256:24c0729c60d56b9ae5868f33bad929a5a0771d7785e4f45a041fd9362298c876",
+          "sourcePath": "source/skills/shell-session-integration",
+          "targetPath": "skills/shell-session-integration",
+          "type": "SKILL"
         }
       ],
-      "sourceManifest": "source/plugins/git-ci-operations/plugin.json",
-      "version": "0.2.1"
+      "sourceManifest": "source/plugins/developer-tools/plugin.json",
+      "version": "1.0.0"
     },
     {
       "name": "effective-delivery",
       "references": [
         {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
+          "name": "delivery-pipeline-design",
+          "sha256": "sha256:bd3cc723e1b4b8eccaab1b1357517d6c7eeb1f1bf715ba1dac75a41a42460f8b",
+          "sourcePath": "source/skills/delivery-pipeline-design",
+          "targetPath": "skills/delivery-pipeline-design",
+          "type": "SKILL"
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:1002864081c4b3fa7e15d49ca8b48c4a65835620ec098266f34acd053152f2e7",
+          "sha256": "sha256:32c39e511723a9a41b1c4900fe1c83d995e30b834fff0f9dd867fa52144b8d7f",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
@@ -405,38 +384,31 @@
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:0732b16062c6bfa7bc54d3d4c2e85eae619b8470190834f9c5e0684c38cbfc29",
+          "sha256": "sha256:97a3f5394ffab914f0139509cf2535a837a8d6b677799e73257a461fd06be47e",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/effective-delivery/plugin.json",
-      "version": "0.4.0"
+      "version": "1.0.0"
     },
     {
       "name": "agent-platform-authoring",
       "references": [
+        {
+          "name": "required-skill-read",
+          "sha256": "sha256:b4efa31dfe23ef3bf94f850d599e2537f83a5737bcd825188fd9f740b1f2157b",
+          "sourcePath": "source/hooks/required-skill-read.hook.json",
+          "targetPath": "hooks/required-skill-read.hooks.json",
+          "type": "HOOK"
+        },
         {
           "name": "source-graph-valid",
           "sha256": "sha256:9c5eaaee5958be6675371f9fb10c01b62a311ff6effda33eae5ac888811402ab",
           "sourcePath": "source/hooks/source-graph-valid.hook.json",
           "targetPath": "hooks/source-graph-valid.hooks.json",
           "type": "HOOK"
-        },
-        {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
         },
         {
           "name": "agent-profile-authoring",
@@ -450,13 +422,6 @@
           "sha256": "sha256:04bcb6757f1fd7341a6a8930aa7d4c3ac91aad48921ba230c41fa6174f25c64f",
           "sourcePath": "source/skills/hook-primitive-authoring",
           "targetPath": "skills/hook-primitive-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "local-repository-navigation",
-          "sha256": "sha256:fbe34fe8f6fd98c6c99a1865a013bcd73d3246dec82e520b0e86138767500d95",
-          "sourcePath": "source/skills/local-repository-navigation",
-          "targetPath": "skills/local-repository-navigation",
           "type": "SKILL"
         },
         {
@@ -489,7 +454,7 @@
         }
       ],
       "sourceManifest": "source/plugins/agent-platform-authoring/plugin.json",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "code-knowledge-base",
@@ -502,24 +467,52 @@
           "type": "HOOK"
         },
         {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
-        },
-        {
           "name": "code-knowledge-base",
           "sha256": "sha256:6abc9d6b91ba2f229723ddaf54f56c8aaf3680b4625befb9c7edc50d13c0b27c",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
+          "type": "SKILL"
+        },
+        {
+          "name": "local-repository-navigation",
+          "sha256": "sha256:fbe34fe8f6fd98c6c99a1865a013bcd73d3246dec82e520b0e86138767500d95",
+          "sourcePath": "source/skills/local-repository-navigation",
+          "targetPath": "skills/local-repository-navigation",
+          "type": "SKILL"
+        },
+        {
+          "name": "repository-signature-indexing",
+          "sha256": "sha256:926b7f851d89de3ec082c3f826ee9cca8b3ff5de9b48d545489d09e318fd2b1f",
+          "sourcePath": "source/skills/repository-signature-indexing",
+          "targetPath": "skills/repository-signature-indexing",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/code-knowledge-base/plugin.json",
+      "version": "1.0.0"
+    },
+    {
+      "name": "terminal-ui-design",
+      "references": [
+        {
+          "name": "terminal-ui-design",
+          "sha256": "sha256:f2160302c633420b557d9f6d5872267d35f4171d58c4a4fd6263d0f0a5474156",
+          "sourcePath": "source/skills/terminal-ui-design",
+          "targetPath": "skills/terminal-ui-design",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/terminal-ui-design/plugin.json",
+      "version": "1.0.0"
+    },
+    {
+      "name": "writing",
+      "references": [
+        {
+          "name": "controlled-technical-writing",
+          "sha256": "sha256:28be7ce79d261e4fe62a9b30a122848abed75596ea3cb0c4290fbb72a113dcc4",
+          "sourcePath": "source/skills/controlled-technical-writing",
+          "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
         },
         {
@@ -530,96 +523,26 @@
           "type": "SKILL"
         },
         {
-          "name": "repository-signature-indexing",
-          "sha256": "sha256:926b7f851d89de3ec082c3f826ee9cca8b3ff5de9b48d545489d09e318fd2b1f",
-          "sourcePath": "source/skills/repository-signature-indexing",
-          "targetPath": "skills/repository-signature-indexing",
-          "type": "SKILL"
-        },
-        {
           "name": "site-docs-authoring",
-          "sha256": "sha256:02256bdc784cadb464ed5a0bd6dc6d6e0c3f39595d6d1a9da48cd6aadc7f8ab1",
+          "sha256": "sha256:48b58d80ea204565540706a619f91977fd2f5aa66e3e6085c13c8b622c9d926f",
           "sourcePath": "source/skills/site-docs-authoring",
           "targetPath": "skills/site-docs-authoring",
           "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/code-knowledge-base/plugin.json",
-      "version": "0.1.0"
-    },
-    {
-      "name": "terminal-ui-design",
-      "references": [
-        {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
         },
         {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "terminal-ui-design",
-          "sha256": "sha256:f2160302c633420b557d9f6d5872267d35f4171d58c4a4fd6263d0f0a5474156",
-          "sourcePath": "source/skills/terminal-ui-design",
-          "targetPath": "skills/terminal-ui-design",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/terminal-ui-design/plugin.json",
-      "version": "0.1.0"
-    },
-    {
-      "name": "writing",
-      "references": [
-        {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "controlled-technical-writing",
-          "sha256": "sha256:42a7d8400d7abd01506bc18c598500d4c53ead12945324bbb90bfd7899c47a99",
-          "sourcePath": "source/skills/controlled-technical-writing",
-          "targetPath": "skills/controlled-technical-writing",
+          "name": "technical-documentation",
+          "sha256": "sha256:9b67751a51cb24662e4c5b81be54005c7c0c5dbf3ddb3606d0ec34c00d09b81f",
+          "sourcePath": "source/skills/technical-documentation",
+          "targetPath": "skills/technical-documentation",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/writing/plugin.json",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "intellij-engineering",
       "references": [
-        {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
-        },
         {
           "name": "ide-diagnostics-mcp",
           "sha256": "sha256:4d18e0df0a3f28e248cce1ef8cd10fad16dff4df570202adcec877e971713d29",
@@ -657,25 +580,11 @@
         }
       ],
       "sourceManifest": "source/plugins/intellij-engineering/plugin.json",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "kast-operations",
       "references": [
-        {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
-        },
         {
           "name": "kast-idea-backend-delivery",
           "sha256": "sha256:251eef3b5e124224e36afb925a2bb025ed225d7bdbabfb47f61207cb1c553278",
@@ -713,10 +622,10 @@
         }
       ],
       "sourceManifest": "source/plugins/kast-operations/plugin.json",
-      "version": "0.2.0"
+      "version": "1.0.0"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "910fa3f291d2962a737807fb88435f0f083dba77",
+  "sourceSha": "c1d860780c027bd49bdb6a3afa163c03898a504e",
   "type": "HYDRATED_MARKETPLACE"
 }

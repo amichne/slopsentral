@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Effective software delivery through backend-neutral issue reads, direct dependency evidence, PR follow-through, optimized GitHub Actions workflow graphs, and structured CI observation.",
+  "description": "Hosted delivery from issue to verified pull request and release evidence.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Effective Delivery",
-    "longDescription": "Effective software delivery through backend-neutral issue reads, direct dependency evidence, PR follow-through, optimized GitHub Actions workflow graphs, and structured CI observation.",
+    "longDescription": "Hosted delivery from issue to verified pull request and release evidence.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Effective software delivery through backend-neutral issue reads, dire...",
+    "shortDescription": "Hosted delivery from issue to verified pull request and release evide...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -44,5 +44,5 @@
   "license": "UNLICENSED",
   "name": "effective-delivery",
   "skills": "./skills/",
-  "version": "0.4.0"
+  "version": "1.0.0"
 }

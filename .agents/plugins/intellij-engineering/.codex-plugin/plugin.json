@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.",
+  "description": "IntelliJ Platform plugin behavior and lifecycle.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Intellij Engineering",
-    "longDescription": "IntelliJ Platform engineering guidance for plugin delivery, live diagnostics, PSI and indexing, testing, and platform integrations.",
+    "longDescription": "IntelliJ Platform plugin behavior and lifecycle.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "IntelliJ Platform engineering guidance for plugin delivery, live diag...",
+    "shortDescription": "IntelliJ Platform plugin behavior and lifecycle.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -41,5 +41,5 @@
   "license": "UNLICENSED",
   "name": "intellij-engineering",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

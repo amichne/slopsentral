@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Design workflow for distinctive, accessible, and resilient human-facing terminal interfaces.",
+  "description": "Human-facing terminal interaction.",
   "interface": {
     "brandColor": "#7C3AED",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Terminal Ui Design",
-    "longDescription": "Design workflow for distinctive, accessible, and resilient human-facing terminal interfaces.",
+    "longDescription": "Human-facing terminal interaction.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Design workflow for distinctive, accessible, and resilient human-faci...",
+    "shortDescription": "Human-facing terminal interaction.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -35,5 +35,5 @@
   "license": "UNLICENSED",
   "name": "terminal-ui-design",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

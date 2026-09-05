@@ -2,8 +2,9 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
+  "description": "Reusable agent tooling and its publication contracts.",
   "hooks": [
+    "./hooks/required-skill-read.hooks.json",
     "./hooks/source-graph-valid.hooks.json"
   ],
   "interface": {
@@ -20,9 +21,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Agent Platform Authoring",
-    "longDescription": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
+    "longDescription": "Reusable agent tooling and its publication contracts.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Agent platform authoring package for source-owned skills, agents, hoo...",
+    "shortDescription": "Reusable agent tooling and its publication contracts.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -43,5 +44,5 @@
   "license": "UNLICENSED",
   "name": "agent-platform-authoring",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

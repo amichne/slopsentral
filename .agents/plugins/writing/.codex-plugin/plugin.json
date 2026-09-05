@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Controlled technical writing for direct prose, stable terminology, and canonical repository glossary semantics.",
+  "description": "Source-grounded prose and technical documentation.",
   "interface": {
     "brandColor": "#7C3AED",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Writing",
-    "longDescription": "Controlled technical writing for direct prose, stable terminology, and canonical repository glossary semantics.",
+    "longDescription": "Source-grounded prose and technical documentation.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Controlled technical writing for direct prose, stable terminology, an...",
+    "shortDescription": "Source-grounded prose and technical documentation.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -36,5 +36,5 @@
   "license": "UNLICENSED",
   "name": "writing",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

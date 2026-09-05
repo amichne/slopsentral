@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "API contract workflow for JSON Schema and OpenAPI boundaries: schema modeling, operation authoring, typed errors, examples, and review.",
+  "description": "Machine-readable boundary contracts.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "API Contracts",
-    "longDescription": "API contract workflow for JSON Schema and OpenAPI boundaries: schema modeling, operation authoring, typed errors, examples, and review.",
+    "longDescription": "Machine-readable boundary contracts.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "API contract workflow for JSON Schema and OpenAPI boundaries: schema...",
+    "shortDescription": "Machine-readable boundary contracts.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -38,5 +38,5 @@
   "license": "UNLICENSED",
   "name": "api-contracts",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

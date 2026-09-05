@@ -54,13 +54,13 @@
     },
     {
       "category": "Engineering",
-      "name": "git-ci-operations",
+      "name": "developer-tools",
       "policy": {
         "authentication": "ON_INSTALL",
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/git-ci-operations",
+        "path": "./.agents/plugins/developer-tools",
         "source": "local"
       }
     },

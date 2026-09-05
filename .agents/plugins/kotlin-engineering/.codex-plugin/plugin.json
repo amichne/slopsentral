@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, compositional API surfaces, typed observability, scoped repository guidance, established library use, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+  "description": "Kotlin implementation, API design, and compiler-backed review.",
   "hooks": [
     "./hooks/gradle-check-green.hooks.json",
     "./hooks/gradle-wrapper-integrity.hooks.json",
@@ -22,9 +22,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Kotlin Engineering",
-    "longDescription": "Kotlin best-practices package for type-driven design, proof-carrying validation, pure module boundaries, compositional API surfaces, typed observability, scoped repository guidance, established library use, Kast-backed navigation, focused review, and Gradle proof. Use kotlin-repo-default when branch, PR, CI, or release delivery is also required.",
+    "longDescription": "Kotlin implementation, API design, and compiler-backed review.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Kotlin best-practices package for type-driven design, proof-carrying...",
+    "shortDescription": "Kotlin implementation, API design, and compiler-backed review.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -64,5 +64,5 @@
   "license": "UNLICENSED",
   "name": "kotlin-engineering",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }

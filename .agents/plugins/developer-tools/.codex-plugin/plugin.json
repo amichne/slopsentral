@@ -1,0 +1,38 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Local command-line tools and repository work.",
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Developer Tools for this task.",
+      "Review this repo with Developer Tools.",
+      "Show the Developer Tools workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Developer Tools",
+    "longDescription": "Local command-line tools and repository work.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Local command-line tools and repository work.",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "cli",
+    "developer-tools",
+    "git",
+    "local-development",
+    "mise",
+    "shell"
+  ],
+  "license": "UNLICENSED",
+  "name": "developer-tools",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

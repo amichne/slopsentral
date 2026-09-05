@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Repository baseline for language-agnostic semantic design and test-driven work: constrained domain values, closed variants and failures, typestate, executable-check TDD, marketplace onboarding, and instruction hygiene.
+Engineering outcomes, semantic design, and verification.
 
 ## Operating Rules
 
@@ -23,11 +23,13 @@ Repository baseline for language-agnostic semantic design and test-driven work: 
 
 ## Instruction Primitives
 
-- `schema-driven-design`: `instructions/schema-driven-design.md` (source: `source/concepts/schema-driven-design/core.md`)
 - `type-safety`: `instructions/type-safety.md` (source: `source/concepts/type-safety/core.md`)
+- `agent-execution`: `instructions/agent-execution.md` (source: `source/instructions/agent-execution.md`)
 
 ## Skill Primitives
 
+- `bounded-delegation`: `skills/bounded-delegation` (source: `source/skills/bounded-delegation`)
+- `define-goal`: `skills/define-goal` (source: `source/skills/define-goal`)
 - `repository-onboarding`: `skills/repository-onboarding` (source: `source/skills/repository-onboarding`)
 - `semantic-ratchet`: `skills/semantic-ratchet` (source: `source/skills/semantic-ratchet`)
 - `tdd`: `skills/tdd` (source: `source/skills/tdd`)
@@ -35,4 +37,3 @@ Repository baseline for language-agnostic semantic design and test-driven work: 
 ## Hook Primitives
 
 - `agents-md-turn-refresh`: `hooks/agents-md-turn-refresh.hooks.json` (source: `source/hooks/agents-md-turn-refresh.hook.json`)
-- `required-skill-read`: `hooks/required-skill-read.hooks.json` (source: `source/hooks/required-skill-read.hook.json`)
