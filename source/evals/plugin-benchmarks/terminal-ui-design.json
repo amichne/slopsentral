@@ -8,7 +8,7 @@
   "targetName": "terminal-ui-design",
   "runner": {
     "type": "codex-cli",
-    "model": "gpt-5.4",
+    "model": "gpt-6-astra",
     "sandbox": "workspace-write",
     "approvalPolicy": "never",
     "extraArgs": []
@@ -32,7 +32,8 @@
   },
   "notes": [
     "Run only in an isolated Intelligence worktree and respect the current projector-only product boundary.",
-    "The benchmark must not add a TUI when the repository excludes one or modify remote state."
+    "The benchmark must not add a TUI when the repository excludes one or modify remote state.",
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
   "setupQuestions": [
     "Which existing human-facing terminal state is in product scope and safe to refine locally?"

@@ -3,6 +3,19 @@
 Slopsentral is the canonical marketplace for reusable local AI tooling skills,
 plugins, hooks, agents, concepts, and workflow profiles.
 
+## Choose a Workstream
+
+Start with the [generated catalog](source/CATALOG.md). The
+[architecture](source/ARCHITECTURE.md) defines one owner per primitive, and the
+[migration guide](source/MIGRATION.md) records renamed and retired entrypoints.
+[Upstream provenance](source/UPSTREAM.md) records the Astra and skill reviews.
+
+Inspect a profile without installing or executing anything:
+
+```bash
+node source/tools/catalog.mjs --profile kotlin-repo-default --json
+```
+
 ## Source Of Truth
 
 - Edit authored primitives under `source/`.
@@ -63,6 +76,7 @@ evaluable modules one per line in `.intelligence/pkl-entrypoints`.
 
 ```bash
 node source/tools/validate-source-graph.mjs
+node source/tools/catalog.mjs --check
 node source/tools/run-routing-evals.mjs
 node source/tools/run-routing-evals.mjs --require-all-observed
 source/tools/compile-kotlin-concepts

@@ -1,7 +1,6 @@
 ---
 name: kotlin-package-cohesion-reviewer
 description: Use this review agent after Kotlin code changes when you need to prevent flat packages, prefix-heavy directories, multi-member files, or horizontal layer buckets. It reviews package and file layout and proposes subpackage boundaries using measurable heuristics.
-model: sonnet
 ---
 
 # Kotlin Package Cohesion Reviewer

@@ -1,7 +1,6 @@
 ---
 name: kotlin-type-safety-reviewer
 description: Use this review agent after Kotlin code changes when you need a focused type-safety audit. It reviews changed Kotlin APIs, domain models, parser boundaries, nullable state, primitive strings or ids, expected failures, and visibility choices.
-model: sonnet
 ---
 
 # Kotlin Type Safety Reviewer

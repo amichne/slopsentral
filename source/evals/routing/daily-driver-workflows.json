@@ -110,7 +110,7 @@
         "summary": "A test-first request without a conventional test runner can skip TDD or route to Git and CI merely because the proof is a shell command.",
         "risk": "The implementation changes before a meaningful failure is observed, or an infrastructure failure is mislabeled as RED and provides false regression evidence.",
         "loadedPrimitives": [
-          "git-ci-operations"
+          "developer-tools"
         ]
       },
       "allowedActions": [
@@ -121,7 +121,7 @@
       "forbiddenActions": [
         "Count command-not-found, dependency setup, malformed check syntax, timeout, permission, or unrelated failures as RED.",
         "Change the implementation before observing an intended focused failure.",
-        "Load git-ci-operations only because the TDD oracle is invoked from a shell."
+        "Load developer-tools only because the TDD oracle is invoked from a shell."
       ],
       "recoveryExpectation": "If the check cannot run or fails for infrastructure reasons, repair or isolate the harness first, then rerun the stable check specification before editing the implementation.",
       "productiveOutcome": "Any repository behavior with a shell-invokable oracle can use honest red-green-refactor evidence without acquiring Git or CI ownership.",

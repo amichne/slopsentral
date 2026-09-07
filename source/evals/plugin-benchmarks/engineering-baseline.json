@@ -8,7 +8,7 @@
   "targetName": "engineering-baseline",
   "runner": {
     "type": "codex-cli",
-    "model": "gpt-5.4",
+    "model": "gpt-6-astra",
     "sandbox": "workspace-write",
     "approvalPolicy": "never",
     "extraArgs": []
@@ -32,7 +32,8 @@
   },
   "notes": [
     "Run in an isolated slopsentral worktree with one stable shell-invokable check specification.",
-    "The benchmark may change only local files and must not publish or modify remote state."
+    "The benchmark may change only local files and must not publish or modify remote state.",
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
   "setupQuestions": [
     "Which small repository invariant has a deterministic shell-invokable oracle?"

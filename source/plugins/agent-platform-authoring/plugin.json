@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "agent-platform-authoring",
-  "version": "0.1.0",
-  "description": "Agent platform authoring package for source-owned skills, agents, hooks, plugin manifests, routing proof, and repository guidance.",
+  "version": "1.0.0",
+  "description": "Reusable agent tooling and its publication contracts.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -63,15 +63,6 @@
       },
       "path": "skills/repo-instruction-topology",
       "name": "repo-instruction-topology"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/local-repository-navigation",
-      "name": "local-repository-navigation"
     }
   ],
   "agents": [],
@@ -83,35 +74,26 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "hooks/type-safety-context.hook.json",
-      "name": "type-safety-context"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/schema-driven-design-context.hook.json",
-      "name": "schema-driven-design-context"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "hooks/source-graph-valid.hook.json",
       "name": "source-graph-valid"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/required-skill-read.hook.json",
+      "name": "required-skill-read"
     }
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Use for maintaining the canonical source graph, referential plugin composition, provider marketplace projections, and routing proof.",
-    "notFor": "Product-code delivery, Kotlin implementation loops, general Git/CI delivery, standalone schema/API contract work, docs authoring, source-backed knowledge indexing, or shell automation outside hook primitive work.",
+    "dailyDriver": "Install for skill and agent authoring, plugin composition, instruction topology, hooks, routing evaluation, and source-graph validation.",
+    "notFor": "General code navigation, user documentation, application implementation, and automatic marketplace publication.",
     "owner": "intelligence-source-graph-platform",
-    "principle": "primitives-remain-independent",
     "role": "agent-platform-authoring",
-    "scope": "Author, route-test, and validate independent skills, agents, hooks, plugin manifests, repository instructions, and local navigation maps with source-backed evidence."
+    "scope": "Skill and agent authoring, plugin composition, instruction topology, hooks, routing evaluation, and source-graph validation.",
+    "workstream": "agent-platform-authoring"
   }
 }

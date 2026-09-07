@@ -26,7 +26,7 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
   assert.deepEqual([...selectedPlugins.keys()], [
     "engineering-baseline",
     "kotlin-engineering",
-    "git-ci-operations",
+    "developer-tools",
     "effective-delivery",
   ]);
 
@@ -37,10 +37,7 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
   );
   assert.equal(profileHooks.get("agents-md-turn-refresh")?.adapter, "codex");
 
-  assert.deepEqual([...hookNames(selectedPlugins.get("effective-delivery"))], [
-    "type-safety-context",
-    "schema-driven-design-context",
-  ]);
+  assert.deepEqual([...hookNames(selectedPlugins.get("effective-delivery"))], []);
 
   const kotlinHooks = hookNames(selectedPlugins.get("kotlin-engineering"));
   for (const hookName of ["gradle-check-green", "gradle-wrapper-integrity"]) {
@@ -59,10 +56,6 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
     const owners = [...selectedPlugins.entries()]
       .filter(([, manifest]) => hookNames(manifest).has(hookName))
       .map(([name]) => name);
-    if (["type-safety-context", "schema-driven-design-context"].includes(hookName)) {
-      assert.deepEqual(owners, [...selectedPlugins.keys()]);
-    } else {
-      assert.equal(owners.length, 1, `profile hook ${hookName} should have exactly one selected plugin owner`);
-    }
+    assert.equal(owners.length, 1, `profile hook ${hookName} should have exactly one selected plugin owner`);
   }
 });

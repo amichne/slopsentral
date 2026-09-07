@@ -15,7 +15,7 @@
           "source/profiles/intellij-plugin-default.json",
           "source/plugins/engineering-baseline/plugin.json",
           "source/plugins/kotlin-engineering/plugin.json",
-          "source/plugins/git-ci-operations/plugin.json",
+          "source/plugins/developer-tools/plugin.json",
           "source/plugins/intellij-engineering/plugin.json"
         ]
       },
@@ -31,7 +31,7 @@
         "loadedPrimitives": [
           "engineering-baseline",
           "kotlin-engineering",
-          "git-ci-operations",
+          "developer-tools",
           "intellij-engineering"
         ]
       },

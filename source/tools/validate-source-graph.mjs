@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import { auditCatalog, loadCatalog } from "./catalog.mjs";
 import path from "node:path";
 import process from "node:process";
 
@@ -12,19 +13,7 @@ const repoRoot =
     : process.cwd();
 const sourceRoot = path.join(repoRoot, "source");
 
-const allowedSharedSkills = new Map([
-  ["git-change-flow", ["git-ci-operations", "intellij-engineering"]],
-  ["github-ci-operations", ["git-ci-operations", "intellij-engineering"]],
-  ["kotlin-agentic-correctness", ["intellij-engineering", "kotlin-engineering"]],
-  ["kotlin-gradle-validation", ["intellij-engineering", "kotlin-engineering"]],
-  ["manage-json-schemas", ["api-contracts"]],
-  ["pull-request-lifecycle", ["git-ci-operations", "intellij-engineering"]],
-  ["reference-doc-workflow", ["agent-platform-authoring", "code-knowledge-base"]],
-  ["repository-signature-indexing", ["agent-platform-authoring", "code-knowledge-base"]],
-  ["shell-script-safety", ["agent-platform-authoring", "git-ci-operations"]],
-  ["site-docs-authoring", ["agent-platform-authoring", "code-knowledge-base"]],
-  ["tdd", ["engineering-baseline", "intellij-engineering"]],
-]);
+
 
 const routingCaseTypes = new Set([
   "TRIGGER_MISS",
@@ -172,12 +161,6 @@ function parseFrontmatter(relativePath) {
 
 function sorted(values) {
   return [...values].sort();
-}
-
-function sameSet(left, right) {
-  const a = sorted(left);
-  const b = sorted(right);
-  return a.length === b.length && a.every((value, index) => value === b[index]);
 }
 
 function addOwner(index, name, owner) {
@@ -413,12 +396,6 @@ for (const pluginName of pluginDirs) {
   if (manifest) pluginManifests.set(pluginName, manifest);
 }
 
-const semanticContextPluginOwners = sorted(pluginManifests.keys());
-const allowedSharedHooks = new Map([
-  ["schema-driven-design-context", semanticContextPluginOwners],
-  ["type-safety-context", semanticContextPluginOwners],
-]);
-
 const catalogPlugins = new Map();
 for (const entry of marketplace.plugins ?? []) {
   catalogPlugins.set(entry.name, entry);
@@ -491,12 +468,12 @@ for (const [pluginName, manifest] of pluginManifests) {
   for (const ref of manifest.instructions ?? []) validatePrimitiveRef(ref, owner);
 }
 
-for (const [skillName, owners] of skillOwners) {
-  if (owners.length <= 1) continue;
-  const allowedOwners = allowedSharedSkills.get(skillName);
-  if (!allowedOwners || !sameSet(owners, allowedOwners)) {
-    fail(`skill ${skillName} is shared by plugins [${sorted(owners).join(", ")}] without an explicit allowed overlap`);
-  }
+// Catalog closure includes hook dependencies and instruction ownership.
+// Do not introduce per-plugin overlap exceptions.
+try {
+  for (const finding of auditCatalog(loadCatalog(repoRoot))) fail(finding);
+} catch (error) {
+  fail(`catalog: ${error.message}`);
 }
 
 for (const [agentName, owners] of agentOwners) {
@@ -510,8 +487,7 @@ for (const hookPath of listFiles("source/hooks", (file) => file.endsWith(".hook.
   const hook = readJson(relativePath);
   if (!hook?.name) continue;
   const owners = hookOwners.get(hook.name) ?? [];
-  const allowedOwners = allowedSharedHooks.get(hook.name);
-  if (allowedOwners ? !sameSet(owners, allowedOwners) : owners.length !== 1) {
+  if (owners.length !== 1) {
     fail(`${relativePath}: hook ${hook.name} must have exactly one plugin owner, found [${sorted(owners).join(", ")}]`);
   }
 }
@@ -547,15 +523,13 @@ for (const profilePath of listFiles("source/profiles", (file) => file.endsWith("
     }
   }
   for (const [hookName, owners] of profileHooks) {
-    const allowedOwners = allowedSharedHooks.get(hookName);
-    if (owners.length > 1 && (!allowedOwners || owners.some((owner) => !allowedOwners.includes(owner)))) {
+    if (owners.length > 1) {
       fail(`${relativePath}: selected plugins duplicate hook ${hookName} via [${sorted(owners).join(", ")}]`);
     }
   }
   for (const hook of profile.hooks ?? []) {
     const owners = profileHooks.get(hook.name) ?? [];
-    const allowedOwners = allowedSharedHooks.get(hook.name);
-    if (owners.length === 0 || (!allowedOwners && owners.length !== 1)) {
+    if (owners.length !== 1) {
       fail(`${relativePath}: profile hook ${hook.name} has invalid selected owners [${owners.join(", ")}]`);
     }
   }

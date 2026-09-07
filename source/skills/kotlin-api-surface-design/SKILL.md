@@ -15,8 +15,8 @@ goals when they weaken ownership or exhaustiveness.
 - Name the domain concept, semantic owner, callers, and proof carried across
   the boundary before choosing a function shape.
 - Put behavior on the smallest accurate owner. An extension changes call
-  syntax, not ownership, and must not hide parsing, policy, state, I/O, time,
-  randomness, or dependencies.
+  syntax, not ownership. Keep effects and dependencies explicit; a pure parser
+  or domain operation may use an extension when its receiver is the real owner.
 - Keep higher-order domain combinators pure and total. They must preserve or
   explicitly refine the closed outcome space rather than collapse failures
   into exceptions, nulls, booleans, strings, or an unconstrained catch-all.

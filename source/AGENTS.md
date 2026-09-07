@@ -56,3 +56,11 @@ This file applies to authored marketplace source under `source/`.
   contracts.
 - For marketplace publication proof, run the full root `AGENTS.md` marketplace
   validation set.
+
+## Workstream Ownership
+
+Each installed primitive has one plugin owner, including hook dependencies and
+instructions. Profiles compose plugins. Do not reintroduce overlap exceptions or
+copy payloads into plugin directories. Regenerate `source/CATALOG.md` with
+`node source/tools/catalog.mjs --write` after composition changes. See
+`source/ARCHITECTURE.md` for the primitive responsibilities and evidence limits.

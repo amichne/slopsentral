@@ -8,7 +8,7 @@
   "targetName": "intellij-engineering",
   "runner": {
     "type": "codex-cli",
-    "model": "gpt-5.4",
+    "model": "gpt-6-astra",
     "sandbox": "workspace-write",
     "approvalPolicy": "never",
     "extraArgs": []
@@ -33,7 +33,8 @@
   "notes": [
     "Run only in an isolated worktree; never mutate a dirty primary checkout or daily IDE profile.",
     "Repository instructions and pinned platform, Gradle, Kotlin, and JDK versions remain the live contract.",
-    "Feed benchmark-usage.jsonl into plugin-eval analyze with --observed-usage before treating static budget warnings as observed limits."
+    "Feed benchmark-usage.jsonl into plugin-eval analyze with --observed-usage before treating static budget warnings as observed limits.",
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
   "setupQuestions": [
     "Which clean revision and focused check should seed each scenario?",
@@ -46,8 +47,13 @@
       "id": "existing-plugin-maintenance",
       "title": "Existing plugin maintenance",
       "purpose": "Measure repository-first delivery without scaffolding or incidental upgrades.",
-      "routingCaseIds": ["intellij-existing-plugin-maintenance-discovers-repo-contract"],
-      "expectedPrimitive": { "type": "SKILL", "name": "intellij-plugin-delivery" },
+      "routingCaseIds": [
+        "intellij-existing-plugin-maintenance-discovers-repo-contract"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-plugin-delivery"
+      },
       "userInput": "Use IntelliJ Engineering in this isolated worktree. Make the requested existing-plugin maintenance change, run focused proof, and build the compatible plugin ZIP without unrelated upgrades. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run records repository instructions and checked-in build, descriptor, and test contracts.",
@@ -60,8 +66,13 @@
       "id": "mixed-language-psi-boundary",
       "title": "Mixed-language PSI boundary",
       "purpose": "Measure whether PSI and index work filters language-specific targets at the shared boundary.",
-      "routingCaseIds": ["intellij-mixed-language-psi-targets-filter-before-access"],
-      "expectedPrimitive": { "type": "SKILL", "name": "intellij-psi-indexing" },
+      "routingCaseIds": [
+        "intellij-mixed-language-psi-targets-filter-before-access"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-psi-indexing"
+      },
       "userInput": "Use IntelliJ Engineering in this isolated worktree. Fix reference indexing so Java or Scala PSI targets do not abort later Kotlin rows, and prove the focused behavior. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The scanner narrows the resolved PSI type before language-specific access.",
@@ -74,8 +85,13 @@
       "id": "live-ide-diagnostics",
       "title": "Live IDE diagnostics",
       "purpose": "Measure whether a live CPU symptom is sampled before targeted IDE Perf escalation.",
-      "routingCaseIds": ["intellij-live-freeze-uses-diagnostics-mcp-before-profiler"],
-      "expectedPrimitive": { "type": "SKILL", "name": "ide-diagnostics-mcp" },
+      "routingCaseIds": [
+        "intellij-live-freeze-uses-diagnostics-mcp-before-profiler"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "ide-diagnostics-mcp"
+      },
       "userInput": "Use IntelliJ Engineering read-only diagnostics to compare a running IDE before and during one completion slowdown, then emit one concrete method trace plan. Do not edit VM options, install software, or otherwise modify remote state.",
       "successChecklist": [
         "The run records bounded before/during diagnostics MCP samples.",
@@ -88,8 +104,13 @@
       "id": "programmatic-ui-automation",
       "title": "Programmatic UI automation",
       "purpose": "Measure semantic isolated Starter and Driver UI proof.",
-      "routingCaseIds": ["intellij-ui-testing-uses-starter-driver-contract"],
-      "expectedPrimitive": { "type": "SKILL", "name": "intellij-platform-testing" },
+      "routingCaseIds": [
+        "intellij-ui-testing-uses-starter-driver-contract"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-platform-testing"
+      },
       "userInput": "Use IntelliJ Engineering in this isolated worktree. Add one non-interactive UI integration test for a real plugin flow and retain failure artifacts without touching the daily IDE. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The repository-owned Starter and Driver task installs the exact built plugin into an isolated IDE.",
@@ -102,8 +123,13 @@
       "id": "external-system-integration",
       "title": "External System integration",
       "purpose": "Measure idempotent project-model reconciliation and external task execution.",
-      "routingCaseIds": ["intellij-external-system-import-routes-to-integrations"],
-      "expectedPrimitive": { "type": "SKILL", "name": "intellij-platform-integrations" },
+      "routingCaseIds": [
+        "intellij-external-system-import-routes-to-integrations"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-platform-integrations"
+      },
       "userInput": "Use IntelliJ Engineering in this isolated worktree. Implement idempotent External System import plus one external task execution and prove reimport, removal, cancellation, and failure boundaries. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "External identity, acquisition, translation, and task execution stay separate.",

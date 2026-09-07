@@ -8,7 +8,7 @@
   "targetName": "agent-platform-authoring",
   "runner": {
     "type": "codex-cli",
-    "model": "gpt-5.4",
+    "model": "gpt-6-astra",
     "sandbox": "workspace-write",
     "approvalPolicy": "never",
     "extraArgs": []
@@ -34,7 +34,8 @@
   "notes": [
     "Run this benchmark from a slopsentral checkout after materializing the Agent Platform Authoring package.",
     "The scenarios intentionally target source-owned primitives and should not edit generated provider output directly.",
-    "Feed benchmark usage back into plugin-eval analysis before treating static context-size warnings as production blockers."
+    "Feed benchmark usage back into plugin-eval analysis before treating static context-size warnings as production blockers.",
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
   "setupQuestions": [
     "Which source-graph workflow should represent the daily-driver platform-authoring path?",

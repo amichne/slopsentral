@@ -25,22 +25,13 @@ for (const pluginName of pluginNames) {
 }
 
 test("every authored hook has an explicit ownership policy", () => {
-  const sharedOwners = new Map([
-    ["schema-driven-design-context", [...pluginNames].sort()],
-    ["type-safety-context", [...pluginNames].sort()],
-  ]);
   const hookNames = fs.readdirSync(path.join(repoRoot, "source/hooks"))
     .filter((name) => name.endsWith(".hook.json"))
     .map((name) => name.slice(0, -".hook.json".length));
 
   for (const hookName of hookNames) {
     const actualOwners = [...(owners.get(hookName) ?? [])].sort();
-    const expectedSharedOwners = sharedOwners.get(hookName);
-    if (expectedSharedOwners) {
-      assert.deepEqual(actualOwners, expectedSharedOwners, `${hookName} must be shared by every plugin`);
-    } else {
-      assert.equal(actualOwners.length, 1, `${hookName} must have one plugin owner`);
-    }
+    assert.equal(actualOwners.length, 1, `${hookName} must have one plugin owner`);
   }
 });
 

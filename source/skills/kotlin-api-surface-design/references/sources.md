@@ -37,3 +37,8 @@ Exclude:
 - unchecked public domain constructors and type-alias advice that would weaken
   the local Kotlin correctness standard;
 - fixed framework choices or platform versions.
+
+## Current Review
+
+See [provenance.md](provenance.md) for the 2026-09-05 upstream review. The earlier
+synthesis above remains the record of the original local implementation.

@@ -93,7 +93,7 @@
       "avoidedForbiddenActions": [
         "Count command-not-found, dependency setup, malformed check syntax, timeout, permission, or unrelated failures as RED.",
         "Change the implementation before observing an intended focused failure.",
-        "Load git-ci-operations only because the TDD oracle is invoked from a shell."
+        "Load developer-tools only because the TDD oracle is invoked from a shell."
       ],
       "notes": "A passing run uses the generic tdd primitive for stable shell-check proof and leaves Git/CI unloaded when delivery is not requested."
     },
@@ -476,7 +476,7 @@
       "satisfiedAllowedActions": [
         "Use engineering-baseline for the generic executable-check red-green-refactor loop.",
         "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
-        "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
+        "Use developer-tools for host-neutral Git hygiene and shell-safe automation.",
         "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
         "Use the profile to compose all four without duplicate skills, agents, or hooks."
       ],
@@ -571,14 +571,14 @@
       "satisfiedAllowedActions": [
         "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
         "Use engineering-baseline for generic executable-check TDD, repository onboarding, and instruction hygiene.",
-        "Use git-ci-operations for host-neutral Git hygiene and shell-safe automation.",
+        "Use developer-tools for host-neutral Git hygiene and shell-safe automation.",
         "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
         "Use the kotlin-repo-default profile to compose all four plugins without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
         "engineering-baseline owns generic executable-check TDD and repository guardrails.",
         "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
-        "git-ci-operations owns host-neutral Git and shell automation primitives.",
+        "developer-tools owns host-neutral Git and shell automation primitives.",
         "effective-delivery owns issue reads, direct blocker maps, PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
       ],
       "avoidedForbiddenActions": [
