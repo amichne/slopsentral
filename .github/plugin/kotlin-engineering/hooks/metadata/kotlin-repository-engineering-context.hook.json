@@ -1,0 +1,20 @@
+{
+  "dependsOn": [
+    {
+      "name": "kotlin-repository-engineering",
+      "path": "instructions/kotlin-repository-engineering.md",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "INSTRUCTION"
+    }
+  ],
+  "name": "kotlin-repository-engineering-context",
+  "path": "hooks/kotlin-repository-engineering-context.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

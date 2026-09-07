@@ -8,10 +8,8 @@ description: "Use when authoring or revising OpenAPI specifications with schema-
 Use this skill when creating or revising an OpenAPI contract that should be a
 first-class boundary assertion, not a loose description of handler behavior.
 
-Use these local concept references when they are available:
-
-- `concepts/schema-driven-design/core.md`
-- `concepts/type-safety/core.md`
+Honor the `schema-driven-design` and `type-safety` semantic context when the
+host supplies it. Otherwise use the nearest repository-local equivalent.
 
 ## Operating Contract
 
@@ -66,9 +64,9 @@ Use these local concept references when they are available:
 - Load [component-ownership.md](references/component-ownership.md) when deciding
   what belongs in `components/schemas`, reusable parameters, responses, headers,
   examples, or generated models.
-- Use `skills/openapi-schema-modeling` when schema subtype, union, constraint,
+- Use the `openapi-schema-modeling` skill when schema subtype, union, constraint,
   or example modeling is the central work.
-- Use `skills/openapi-contract-rating` when the task is to score or review an
+- Use the `openapi-contract-rating` skill when the task is to score or review an
   existing specification.
 
 ## Completion Criteria

@@ -36,3 +36,7 @@ Machine-readable boundary contracts.
 - `openapi-contract-authoring`: `skills/openapi-contract-authoring` (source: `source/skills/openapi-contract-authoring`)
 - `openapi-contract-rating`: `skills/openapi-contract-rating` (source: `source/skills/openapi-contract-rating`)
 - `openapi-schema-modeling`: `skills/openapi-schema-modeling` (source: `source/skills/openapi-schema-modeling`)
+
+## Hook Primitives
+
+- `schema-driven-design-context`: `hooks/schema-driven-design-context.hooks.json` (source: `source/hooks/schema-driven-design-context.hook.json`)

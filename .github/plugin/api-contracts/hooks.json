@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/inject-concept-context.py\" --concept schema-driven-design",
+        "matcher": "^(startup|resume|clear|compact)$",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ]
+  },
+  "version": 1
+}

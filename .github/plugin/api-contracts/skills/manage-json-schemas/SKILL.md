@@ -7,10 +7,9 @@ description: "Use when JSON Schema assets need authoring, extraction, validation
 
 Use this skill as the authority for JSON Schema contracts. JSON Schema is the portable contract; Ajv is the default validation engine; repo policy checks catch the modeling rules that generic validators cannot express.
 
-Use these repo-level concepts when they are available:
-
-- `concepts/type-safety/core.md`
-- `concepts/schema-driven-design/core.md`
+Honor the `type-safety` and `schema-driven-design` semantic context when the
+host supplies it. When it does not, use the nearest repository-local equivalent
+before applying the schema-specific rules in this skill.
 
 ## Load Only What You Need
 
@@ -22,8 +21,8 @@ Use these repo-level concepts when they are available:
 
 ## Required First Steps
 
-1. Read `concepts/type-safety/core.md` or the nearest repo-local equivalent before changing code or schema contracts.
-2. Read `concepts/schema-driven-design/core.md` or the nearest repo-local equivalent before creating or changing boundary assertions, serialized data contracts, API payloads, messages, or persisted record shapes.
+1. Confirm the applicable type-safety policy before changing code or schema contracts.
+2. Confirm the applicable schema-design policy before creating or changing boundary assertions, serialized data contracts, API payloads, messages, or persisted record shapes.
 3. Locate existing schema assets before creating new ones.
 4. Confirm local schema tooling is installed with `npm install` when the repo provides a `package.json`.
 5. Keep schema assets in the owning module's durable schema path, usually `schemas/`, `schema/`, `contracts/`, or `api/schemas/`.

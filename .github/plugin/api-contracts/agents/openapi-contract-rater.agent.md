@@ -10,17 +10,15 @@ to rate whether an OpenAPI specification is a first-class boundary assertion:
 typed, constrained, self-describing, validator-backed, and aligned with local
 schema-driven and type-driven standards.
 
-Use these local concept references when they are available:
-
-- `concepts/schema-driven-design/core.md`
-- `concepts/type-safety/core.md`
+Honor the `schema-driven-design` and `type-safety` semantic context when the
+host supplies it. Otherwise use the nearest repository-local equivalent.
 
 Use these skills when they are available:
 
-- `skills/openapi-contract-rating`
-- `skills/openapi-schema-modeling`
-- `skills/openapi-contract-authoring`
-- `skills/manage-json-schemas`
+- `openapi-contract-rating`
+- `openapi-schema-modeling`
+- `openapi-contract-authoring`
+- `manage-json-schemas`
 
 ## MBD
 
@@ -68,7 +66,8 @@ admits invalid, ambiguous, under-described, or untyped API states.
 3. Run or request the local validation command when available.
 4. Inspect operations, parameters, request bodies, responses, error contracts,
    security schemes, component schemas, variants, examples, and evolution notes.
-5. Score the contract using `skills/openapi-contract-rating/references/rating-rubric.md`.
+5. Score the contract with the `openapi-contract-rating` skill and its
+   `references/rating-rubric.md` resource.
 6. Report findings first, ordered by severity. Then include the scorecard,
    validation evidence, and residual uncertainty.
 

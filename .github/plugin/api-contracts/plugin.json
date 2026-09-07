@@ -5,6 +5,7 @@
   },
   "category": "Engineering",
   "description": "Machine-readable boundary contracts.",
+  "hooks": "./hooks.json",
   "keywords": [
     "agents",
     "api",

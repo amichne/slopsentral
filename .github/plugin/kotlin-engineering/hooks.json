@@ -1,5 +1,19 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/inject-concept-context.py\" --concept kotlin-code-correctness",
+        "matcher": "^(startup|resume|clear|compact)$",
+        "timeoutSec": 10,
+        "type": "command"
+      },
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/inject-concept-context.py\" --concept kotlin-repository-engineering",
+        "matcher": "^(startup|resume|clear|compact)$",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
     "Stop": [
       {
         "bash": "bash \"$PLUGIN_ROOT/hooks/gradle-check-green.sh\" --repo .",

@@ -7,6 +7,14 @@
         "type": "command"
       }
     ],
+    "SessionStart": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/inject-concept-context.py\" --concept type-safety",
+        "matcher": "^(startup|resume|clear|compact)$",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
     "Stop": [
       {
         "bash": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" stop --repo .",

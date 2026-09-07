@@ -10,6 +10,10 @@ representation and package responsibility. Use kotlin-api-surface-design for a
 public function or platform seam, kotlin-branching for a decision expression,
 and kotlin-gradle-validation for build execution.
 
+Honor the `type-safety` semantic context when the host supplies it. Realize that
+policy through Kotlin value classes, enums, sealed hierarchies, constrained
+visibility, capability-specific interfaces, and typed outcomes.
+
 ## Workflow
 
 1. Inspect the relevant types, call sites, tests, and package boundaries. State
@@ -25,12 +29,13 @@ and kotlin-gradle-validation for build execution.
 
 ## Reference Routing
 
-Read `references/types-domain-modeling.md` for domain representation,
-`references/parse-dont-validate-examples.md` for ingress,
-`references/types-errors-and-testing.md` for closed failures,
-`references/layout-package-code-style.md` for package ownership, and
-`references/types-dsls-and-generics.md` for generic or DSL constraints.
-Other bundled references provide targeted examples; load only the relevant one.
+Read [types-domain-modeling.md](references/types-domain-modeling.md) for domain
+representation, [parse-dont-validate-examples.md](references/parse-dont-validate-examples.md)
+for ingress, [types-errors-and-testing.md](references/types-errors-and-testing.md)
+for closed failures, [layout-package-code-style.md](references/layout-package-code-style.md)
+for package ownership, and [types-dsls-and-generics.md](references/types-dsls-and-generics.md)
+for generic or DSL constraints. Other bundled references provide targeted
+examples; load only the relevant one.
 
 ## Completion Criteria
 

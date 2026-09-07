@@ -37,3 +37,4 @@ Engineering outcomes, semantic design, and verification.
 ## Hook Primitives
 
 - `agents-md-turn-refresh`: `hooks/agents-md-turn-refresh.hooks.json` (source: `source/hooks/agents-md-turn-refresh.hook.json`)
+- `type-safety-context`: `hooks/type-safety-context.hooks.json` (source: `source/hooks/type-safety-context.hook.json`)

@@ -1,0 +1,20 @@
+{
+  "dependsOn": [
+    {
+      "name": "type-safety",
+      "path": "instructions/type-safety.md",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "INSTRUCTION"
+    }
+  ],
+  "name": "type-safety-context",
+  "path": "hooks/type-safety-context.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}
