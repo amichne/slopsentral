@@ -121,45 +121,44 @@
       "name": "kotlin-package-cohesion-reviewer"
     }
   ],
-  "instructions": [
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/kotlin-code-correctness/core.md",
-      "name": "kotlin-code-correctness"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/kotlin-repository-engineering/core.md",
-      "name": "kotlin-repository-engineering"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/type-safety/core.md",
-      "name": "type-safety"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "concepts/schema-driven-design/core.md",
-      "name": "schema-driven-design"
-    }
-  ],
+  "instructions": [],
   "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/type-safety-context.hook.json",
+      "name": "type-safety-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/schema-driven-design-context.hook.json",
+      "name": "schema-driven-design-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/kotlin-code-correctness-context.hook.json",
+      "name": "kotlin-code-correctness-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/kotlin-repository-engineering-context.hook.json",
+      "name": "kotlin-repository-engineering-context"
+    },
     {
       "type": "HOOK",
       "source": {

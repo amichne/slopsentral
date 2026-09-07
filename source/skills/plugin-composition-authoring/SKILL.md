@@ -12,8 +12,11 @@ the primitive remains usable without the plugin.
 ## Operating Contract
 
 - Do not copy primitive payloads into a plugin folder.
-- Reference direct primitive roots such as `skills/*`, `agents/*`, `hooks/*`,
-  and `concepts/*` inside the repository `source/` graph.
+- Reference direct primitive roots such as `skills/*`, `agents/*`, and
+  `hooks/*` inside the repository `source/` graph. When Codex should receive a
+  concept as session context, compose the hook primitive that depends on the
+  canonical `concepts/*` instruction instead of composing the instruction
+  directly.
 - Keep plugin manifests small and declarative.
 - Treat plugin manifests and marketplace catalogs as structured data governed by
   repo-local schemas. Shape changes require schema changes or validation
@@ -31,7 +34,8 @@ the primitive remains usable without the plugin.
 
 2. Confirm primitive independence.
    Verify every skill, agent, hook, and concept exists under the canonical root
-   and makes sense without the plugin.
+   and makes sense without the plugin. Verify concept-injection hooks declare
+   the instruction in `dependsOn` so projection bundles the context file.
 
 3. Write `source/plugins/<name>/plugin.json`.
    Use local references to existing primitives. Keep metadata limited to

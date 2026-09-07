@@ -10,10 +10,9 @@ check. The check does not need to come from a test framework: a compiler, type
 checker, linter, schema validator, build task, repository script, or focused
 shell command can be the oracle when its exit status proves the target claim.
 
-Use these repo-level concepts when they are available and relevant:
-
-- `concepts/type-safety/core.md`
-- `concepts/schema-driven-design/core.md`
+Honor the `type-safety` and `schema-driven-design` semantic context when the
+host supplies it and it is relevant to the behavior under test. Otherwise use
+the nearest repository-local equivalent.
 
 ## Operating Contract
 

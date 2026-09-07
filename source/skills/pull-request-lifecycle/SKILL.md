@@ -14,8 +14,8 @@ or a connector gap. Use local `git` for local repository state.
 
 Related primitives in this repository:
 
-- `skills/git-change-flow`
-- `skills/github-ci-operations`
+- `git-change-flow`
+- `github-ci-operations`
 
 ## Operating Contract
 
@@ -32,9 +32,9 @@ Related primitives in this repository:
 - Do not mark a PR ready for review until the branch has a focused diff,
   validation evidence, and no known deterministic failures.
 - Babysit checks by reading live check state, logs, and annotations. For
-  pending GitHub Actions runs, arm the observer from
-  `skills/github-ci-operations/scripts/ci_wait_for_actions`, then invoke one
-  bounded `await --json`. Fix the owning source instead of rerunning
+  pending GitHub Actions runs, resolve the installed `github-ci-operations`
+  skill directory, arm its `scripts/ci_wait_for_actions` observer, then invoke
+  one bounded `await --json`. Fix the owning source instead of rerunning
   deterministic failures.
 - Never claim a PR is green until the typed required-check observation reports
   passing, skipped, or neutral terminal states for the current head.

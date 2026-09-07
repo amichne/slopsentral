@@ -50,10 +50,19 @@ source and then to the primitive path:
 Use the same shape for `AGENT`, `INSTRUCTION`, and `HOOK` references with the
 appropriate path and name.
 
+For Codex session-wide concepts, reference a `HOOK` from the plugin and keep
+the plugin's `instructions` array empty. The hook metadata owns an
+`INSTRUCTION` dependency on `concepts/<name>/core.md`; projection can then copy
+the concept into the installed plugin while the hook injects it at
+`SessionStart`.
+
 ## Rules
 
 - Do not place copied skill or agent directories inside the plugin.
 - Do not reference runtime caches or installed marketplace bundles.
 - Do not add unsupported schema fields to satisfy a UI wish.
+- Do not make installed skills resolve `concepts/*` or `skills/*` as
+  repository-relative paths; those roots are source-graph addresses, not skill
+  resource paths.
 - If a plugin needs non-primitive resources, keep them plugin-adjacent and do
   not confuse them with primitive ownership.

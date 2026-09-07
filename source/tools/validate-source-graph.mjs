@@ -50,7 +50,14 @@ const codexHookEvents = new Set([
 
 const codexHooksConfigKeys = new Set(["hooks"]);
 const codexHookGroupKeys = new Set(["matcher", "hooks"]);
-const codexCommandHookKeys = new Set(["type", "command", "commandWindows", "timeout", "statusMessage"]);
+const codexCommandHookKeys = new Set([
+  "type",
+  "command",
+  "commandWindows",
+  "timeout",
+  "statusMessage",
+  "additionalContextLimit",
+]);
 const pluginEvalBenchmarkKeys = new Set([
   "$schema",
   "type",
@@ -357,6 +364,12 @@ function validateCodexHookAdapterShape(hookName, relativePath, adapter) {
         if (handler.statusMessage !== undefined && typeof handler.statusMessage !== "string") {
           fail(`${handlerOwner}: statusMessage must be a string when present`);
         }
+        if (
+          handler.additionalContextLimit !== undefined &&
+          (!Number.isInteger(handler.additionalContextLimit) || handler.additionalContextLimit < 0)
+        ) {
+          fail(`${handlerOwner}: additionalContextLimit must be a non-negative integer when present`);
+        }
       }
     }
   }
@@ -399,6 +412,12 @@ for (const pluginName of pluginDirs) {
   const manifest = readJson(pluginManifestPath(pluginName));
   if (manifest) pluginManifests.set(pluginName, manifest);
 }
+
+const semanticContextPluginOwners = sorted(pluginManifests.keys());
+const allowedSharedHooks = new Map([
+  ["schema-driven-design-context", semanticContextPluginOwners],
+  ["type-safety-context", semanticContextPluginOwners],
+]);
 
 const catalogPlugins = new Map();
 for (const entry of marketplace.plugins ?? []) {
@@ -491,7 +510,8 @@ for (const hookPath of listFiles("source/hooks", (file) => file.endsWith(".hook.
   const hook = readJson(relativePath);
   if (!hook?.name) continue;
   const owners = hookOwners.get(hook.name) ?? [];
-  if (owners.length !== 1) {
+  const allowedOwners = allowedSharedHooks.get(hook.name);
+  if (allowedOwners ? !sameSet(owners, allowedOwners) : owners.length !== 1) {
     fail(`${relativePath}: hook ${hook.name} must have exactly one plugin owner, found [${sorted(owners).join(", ")}]`);
   }
 }
@@ -527,14 +547,16 @@ for (const profilePath of listFiles("source/profiles", (file) => file.endsWith("
     }
   }
   for (const [hookName, owners] of profileHooks) {
-    if (owners.length > 1) {
+    const allowedOwners = allowedSharedHooks.get(hookName);
+    if (owners.length > 1 && (!allowedOwners || owners.some((owner) => !allowedOwners.includes(owner)))) {
       fail(`${relativePath}: selected plugins duplicate hook ${hookName} via [${sorted(owners).join(", ")}]`);
     }
   }
   for (const hook of profile.hooks ?? []) {
     const owners = profileHooks.get(hook.name) ?? [];
-    if (owners.length !== 1) {
-      fail(`${relativePath}: profile hook ${hook.name} must be provided by exactly one selected plugin, found [${owners.join(", ")}]`);
+    const allowedOwners = allowedSharedHooks.get(hook.name);
+    if (owners.length === 0 || (!allowedOwners && owners.length !== 1)) {
+      fail(`${relativePath}: profile hook ${hook.name} has invalid selected owners [${owners.join(", ")}]`);
     }
   }
   if (!(profile.validation?.commands ?? []).includes("node source/tools/validate-source-graph.mjs")) {

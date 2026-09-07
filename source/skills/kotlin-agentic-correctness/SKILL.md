@@ -64,7 +64,8 @@ filesystem evidence, and Kast semantics.
 
 - Stable Kotlin policy: `kotlin-code-correctness`
 - Stable repository policy: `kotlin-repository-engineering`
-- Filesystem evidence: `references/filesystem-evidence-contract.md`
+- Filesystem evidence:
+  [filesystem-evidence-contract.md](references/filesystem-evidence-contract.md)
 - Kast structural queries: `kast-kotlin-structural-analysis` when installed
 - Scripts: `scripts/kotlin_workflow_state` and
   `scripts/kotlin_task_evidence`

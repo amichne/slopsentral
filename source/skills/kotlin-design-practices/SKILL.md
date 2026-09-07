@@ -8,8 +8,8 @@ description: "Use when Kotlin work needs type-driven modeling, parse-dont-valida
 Use this skill as the Kotlin design-practices router. Stable policy belongs in
 instruction concepts; detailed examples and heuristics live in references.
 
-Apply `concepts/type-safety/core.md` as the shared semantic-design authority
-when it is available. This skill owns Kotlin-specific realization through value
+Honor the `type-safety` semantic context when the host supplies it. This skill
+owns Kotlin-specific realization through value
 classes, enums, sealed hierarchies, constrained visibility, capability-specific
 interfaces, and typed outcomes; it does not redefine the cross-language rules.
 
@@ -46,16 +46,25 @@ interfaces, and typed outcomes; it does not redefine the cross-language rules.
 
 Load only the smallest reference that matches the task:
 
-- Layout: `layout-package-code-style.md`, `horizontalization-heuristic.md`
-- Types and boundaries: `type-safety-patterns.md`, `types-domain-modeling.md`,
-  `parse-dont-validate-examples.md`, `types-errors-and-testing.md`
-- API design: `api-dsl-choices.md`, `api-parameter-selection.md`,
-  `api-builders-and-configuration.md`, `api-extensions-and-factories.md`,
-  `api-surface-stability.md`, `api-review-guides.md`
+- Layout:
+  [layout-package-code-style.md](references/layout-package-code-style.md),
+  [horizontalization-heuristic.md](references/horizontalization-heuristic.md)
+- Types and boundaries:
+  [type-safety-patterns.md](references/type-safety-patterns.md),
+  [types-domain-modeling.md](references/types-domain-modeling.md),
+  [parse-dont-validate-examples.md](references/parse-dont-validate-examples.md),
+  [types-errors-and-testing.md](references/types-errors-and-testing.md)
+- API design: [api-dsl-choices.md](references/api-dsl-choices.md),
+  [api-parameter-selection.md](references/api-parameter-selection.md),
+  [api-builders-and-configuration.md](references/api-builders-and-configuration.md),
+  [api-extensions-and-factories.md](references/api-extensions-and-factories.md),
+  [api-surface-stability.md](references/api-surface-stability.md),
+  [api-review-guides.md](references/api-review-guides.md)
 - Focused public API ownership, higher-order composition, value-class interop,
   and multiplatform seams: `kotlin-api-surface-design` when installed
-- Idiom and smells: `idioms.md`, `kotlin-antipatterns.md`,
-  `types-dsls-and-generics.md`
+- Idiom and smells: [idioms.md](references/idioms.md),
+  [kotlin-antipatterns.md](references/kotlin-antipatterns.md),
+  [types-dsls-and-generics.md](references/types-dsls-and-generics.md)
 
 ## Ownership Boundary
 

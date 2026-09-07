@@ -25,13 +25,19 @@ test("effective delivery keeps explicit CI observation without automatic hooks",
     "git-change-flow",
     "shell-script-safety",
   ]);
-  assert.deepEqual(names(git, "hooks"), []);
+  assert.deepEqual(names(git, "hooks"), [
+    "type-safety-context",
+    "schema-driven-design-context",
+  ]);
   assert.deepEqual(names(delivery, "skills"), [
     "github-ci-operations",
     "issue-tracker-operations",
     "pull-request-lifecycle",
   ]);
-  assert.deepEqual(names(delivery, "hooks"), []);
+  assert.deepEqual(names(delivery, "hooks"), [
+    "type-safety-context",
+    "schema-driven-design-context",
+  ]);
   assert.equal(
     fs.existsSync(path.join(repoRoot, "source/skills/github-ci-operations/scripts/ci_wait_for_actions")),
     true,

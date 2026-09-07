@@ -1,0 +1,20 @@
+{
+  "type": "HOOK",
+  "source": {
+    "type": "LOCAL_SOURCE",
+    "path": "./"
+  },
+  "path": "hooks/codex/type-safety-context.hooks.json",
+  "name": "type-safety-context",
+  "dependsOn": [
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "concepts/type-safety/core.md",
+      "name": "type-safety"
+    }
+  ]
+}

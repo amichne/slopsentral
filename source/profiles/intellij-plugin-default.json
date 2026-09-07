@@ -23,6 +23,26 @@
   "hooks": [
     {
       "type": "WORKFLOW_HOOK",
+      "name": "type-safety-context",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "schema-driven-design-context",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "kotlin-code-correctness-context",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "kotlin-repository-engineering-context",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
       "name": "agents-md-turn-refresh",
       "adapter": "codex"
     },

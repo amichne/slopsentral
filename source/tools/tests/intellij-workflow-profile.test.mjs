@@ -22,11 +22,11 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     "intellij-platform-testing",
     "intellij-platform-integrations",
   ]);
-  assert.deepEqual(intellij.instructions.map(({ name }) => name), [
-    "type-safety",
-    "schema-driven-design",
+  assert.deepEqual(intellij.instructions, []);
+  assert.deepEqual(intellij.hooks.map(({ name }) => name), [
+    "type-safety-context",
+    "schema-driven-design-context",
   ]);
-  assert.deepEqual(intellij.hooks, []);
 
   const profile = readJson("source/profiles/intellij-plugin-default.json");
   assert.deepEqual(profile.plugins, [
@@ -37,6 +37,10 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     "intellij-engineering",
   ]);
   assert.deepEqual(profile.hooks.map(({ name }) => name), [
+    "type-safety-context",
+    "schema-driven-design-context",
+    "kotlin-code-correctness-context",
+    "kotlin-repository-engineering-context",
     "agents-md-turn-refresh",
     "required-skill-read",
     "kotlin-horizontalization-check",
@@ -62,6 +66,10 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
   );
   for (const { name, adapter } of profile.hooks) {
     assert.equal(adapter, "codex");
-    assert.equal(hookOwners.get(name)?.length, 1, `${name} must have one selected owner`);
+    if (["type-safety-context", "schema-driven-design-context"].includes(name)) {
+      assert.deepEqual(hookOwners.get(name), profile.plugins);
+    } else {
+      assert.equal(hookOwners.get(name)?.length, 1, `${name} must have one selected owner`);
+    }
   }
 });

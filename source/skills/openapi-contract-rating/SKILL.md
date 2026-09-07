@@ -9,10 +9,8 @@ Use this skill to review or rate an OpenAPI specification, generated OpenAPI
 artifact, API contract pull request, or documentation surface that claims to
 describe an API boundary.
 
-Use these local concept references when they are available:
-
-- `concepts/schema-driven-design/core.md`
-- `concepts/type-safety/core.md`
+Honor the `schema-driven-design` and `type-safety` semantic context when the
+host supplies it. Otherwise use the nearest repository-local equivalent.
 
 ## Operating Contract
 
@@ -56,9 +54,9 @@ Use these local concept references when they are available:
   deciding severity.
 - Load [evidence-and-output.md](references/evidence-and-output.md) when shaping
   the final review response.
-- Use `skills/openapi-schema-modeling` for concrete fixes to weak schema
+- Use the `openapi-schema-modeling` skill for concrete fixes to weak schema
   variants, primitive constraints, nullability, and examples.
-- Use `skills/openapi-contract-authoring` when the review turns into an
+- Use the `openapi-contract-authoring` skill when the review turns into an
   implementation pass.
 
 ## Completion Criteria

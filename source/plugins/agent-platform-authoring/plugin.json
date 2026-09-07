@@ -75,27 +75,26 @@
     }
   ],
   "agents": [],
-  "instructions": [
+  "instructions": [],
+  "hooks": [
     {
-      "type": "INSTRUCTION",
+      "type": "HOOK",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "concepts/type-safety/core.md",
-      "name": "type-safety"
+      "path": "hooks/type-safety-context.hook.json",
+      "name": "type-safety-context"
     },
     {
-      "type": "INSTRUCTION",
+      "type": "HOOK",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "concepts/schema-driven-design/core.md",
-      "name": "schema-driven-design"
-    }
-  ],
-  "hooks": [
+      "path": "hooks/schema-driven-design-context.hook.json",
+      "name": "schema-driven-design-context"
+    },
     {
       "type": "HOOK",
       "source": {

@@ -11,6 +11,9 @@ This file applies to `source/plugins/`.
 - Use `LOCAL_SOURCE` with path `"./"` and primitive paths such as
   `skills/<name>`, `agents/<file>`, `hooks/<name>.hook.json`, or
   `concepts/<name>/core.md`.
+- Compose session-wide concepts through a hook primitive whose `dependsOn`
+  references the canonical concept. Keep the plugin's direct `instructions`
+  empty when Codex must receive that concept as `SessionStart` context.
 - Do not copy primitive payloads, generated provider output, runtime caches, or
   installed plugin bundles into plugin directories.
 - Keep routing metadata such as `role`, `scope`, `dailyDriver`, and `notFor`

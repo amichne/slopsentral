@@ -21,10 +21,20 @@ function primitiveByName(primitives, name) {
   return primitives.find((primitive) => primitive.name === name);
 }
 
-test("shared semantic instructions stay compact and source-owned", () => {
+function withoutFencedCode(markdown) {
+  return markdown.replace(/^```[^\n]*\n[\s\S]*?^```\s*$/gmu, "");
+}
+
+test("shared semantic concepts stay source-owned and are injected by Codex hooks", () => {
   const expected = {
-    "type-safety": "concepts/type-safety/core.md",
-    "schema-driven-design": "concepts/schema-driven-design/core.md",
+    "type-safety-context": {
+      concept: "type-safety",
+      path: "concepts/type-safety/core.md",
+    },
+    "schema-driven-design-context": {
+      concept: "schema-driven-design",
+      path: "concepts/schema-driven-design/core.md",
+    },
   };
   const pluginNames = fs
     .readdirSync(path.join(repoRoot, "source/plugins"), { withFileTypes: true })
@@ -32,14 +42,72 @@ test("shared semantic instructions stay compact and source-owned", () => {
     .map((entry) => entry.name);
 
   for (const pluginName of pluginNames) {
-    for (const [name, expectedPath] of Object.entries(expected)) {
-      const instruction = primitiveByName(plugin(pluginName).instructions, name);
-      assert.equal(instruction?.path, expectedPath, `${pluginName} must reuse ${name}`);
+    const manifest = plugin(pluginName);
+    assert.deepEqual(manifest.instructions, [], `${pluginName} must not compose concepts as passive instructions`);
+    for (const [hookName] of Object.entries(expected)) {
+      assert.ok(
+        primitiveByName(manifest.hooks, hookName),
+        `${pluginName} must inject ${hookName} at session start`,
+      );
     }
+  }
+
+  for (const [hookName, concept] of Object.entries(expected)) {
+    const hook = readJson(`source/hooks/${hookName}.hook.json`);
+    const dependency = primitiveByName(hook.dependsOn, concept.concept);
+    assert.equal(dependency?.path, concept.path, `${hookName} must depend on ${concept.concept}`);
+  }
+
+  const kotlinContexts = {
+    "kotlin-code-correctness-context": "kotlin-code-correctness",
+    "kotlin-repository-engineering-context": "kotlin-repository-engineering",
+  };
+  const kotlin = plugin("kotlin-engineering");
+  for (const [hookName, conceptName] of Object.entries(kotlinContexts)) {
+    assert.ok(primitiveByName(kotlin.hooks, hookName), `kotlin-engineering must inject ${conceptName}`);
+    const hook = readJson(`source/hooks/${hookName}.hook.json`);
+    assert.equal(
+      primitiveByName(hook.dependsOn, conceptName)?.path,
+      `concepts/${conceptName}/core.md`,
+    );
   }
 
   const typeSafetyWords = read("source/concepts/type-safety/core.md").split(/\s+/u).length;
   assert.ok(typeSafetyWords <= 1000, `type-safety must stay compact; found ${typeSafetyWords} words`);
+});
+
+test("skill resources are skill-local and concepts arrive through plugin context", () => {
+  const skillFiles = fs
+    .readdirSync(path.join(repoRoot, "source/skills"), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => `source/skills/${entry.name}/SKILL.md`)
+    .filter((relativePath) => fs.existsSync(path.join(repoRoot, relativePath)));
+
+  for (const relativePath of skillFiles) {
+    const skillRoot = path.dirname(path.join(repoRoot, relativePath));
+    const markdown = withoutFencedCode(read(relativePath));
+    assert.doesNotMatch(
+      markdown,
+      /`concepts\/(?:type-safety|schema-driven-design|kotlin-code-correctness|kotlin-repository-engineering)\/core\.md`/u,
+      `${relativePath} must not resolve repository concepts relative to an installed skill`,
+    );
+    assert.doesNotMatch(
+      markdown,
+      /`skills\/(?!\*)[a-z0-9-]+(?:\/[^`]*)?`/u,
+      `${relativePath} must address another installed skill by name, not by a repository-relative path`,
+    );
+    for (const match of markdown.matchAll(/\[[^\]]*\]\(([^)]+)\)/gu)) {
+      const target = match[1].split("#", 1)[0];
+      if (!target || /^(?:[a-z][a-z0-9+.-]*:|\/)/iu.test(target)) continue;
+      if (!/^(?:agents|assets|references|scripts)\//u.test(target)) continue;
+      const resource = path.resolve(skillRoot, target);
+      assert.ok(
+        resource.startsWith(`${skillRoot}${path.sep}`),
+        `${relativePath} resource link must remain inside its skill: ${target}`,
+      );
+      assert.ok(fs.existsSync(resource), `${relativePath} resource link must exist: ${target}`);
+    }
+  }
 });
 
 test("semantic ratchet detail is selectively routed through addressable references", () => {

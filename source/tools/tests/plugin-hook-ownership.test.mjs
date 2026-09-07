@@ -10,7 +10,11 @@ function readJson(relativePath) {
 }
 
 const owners = new Map();
-for (const pluginName of fs.readdirSync(path.join(repoRoot, "source/plugins"))) {
+const pluginNames = fs
+  .readdirSync(path.join(repoRoot, "source/plugins"), { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name);
+for (const pluginName of pluginNames) {
   const manifestPath = `source/plugins/${pluginName}/plugin.json`;
   if (!fs.existsSync(path.join(repoRoot, manifestPath))) continue;
   for (const hook of readJson(manifestPath).hooks ?? []) {
@@ -20,13 +24,23 @@ for (const pluginName of fs.readdirSync(path.join(repoRoot, "source/plugins"))) 
   }
 }
 
-test("every authored hook has exactly one plugin owner", () => {
+test("every authored hook has an explicit ownership policy", () => {
+  const sharedOwners = new Map([
+    ["schema-driven-design-context", [...pluginNames].sort()],
+    ["type-safety-context", [...pluginNames].sort()],
+  ]);
   const hookNames = fs.readdirSync(path.join(repoRoot, "source/hooks"))
     .filter((name) => name.endsWith(".hook.json"))
     .map((name) => name.slice(0, -".hook.json".length));
 
   for (const hookName of hookNames) {
-    assert.equal((owners.get(hookName) ?? []).length, 1, `${hookName} must have one plugin owner`);
+    const actualOwners = [...(owners.get(hookName) ?? [])].sort();
+    const expectedSharedOwners = sharedOwners.get(hookName);
+    if (expectedSharedOwners) {
+      assert.deepEqual(actualOwners, expectedSharedOwners, `${hookName} must be shared by every plugin`);
+    } else {
+      assert.equal(actualOwners.length, 1, `${hookName} must have one plugin owner`);
+    }
   }
 });
 

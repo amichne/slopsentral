@@ -13,6 +13,9 @@ This file applies to reusable hook assets under `source/hooks/`.
 - Keep executable scripts at the hook root unless they are adapter-specific.
 - Reference related skills, agents, or concepts through `dependsOn` in the hook
   metadata rather than embedding their full guidance.
+- For Codex context injection, use a `SessionStart` adapter and emit
+  `hookSpecificOutput.additionalContext`. Read bundled dependencies through
+  `PLUGIN_ROOT`; do not assume the repository source tree is present at runtime.
 - Do not point hook metadata at runtime caches, installed plugin copies, or
   generated bundles as authority.
 - If a hook came from another source, keep public-safe provenance in the hook or
