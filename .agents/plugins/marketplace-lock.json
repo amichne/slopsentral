@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T13:23:22-04:00",
+  "generatedAt": "2026-09-07T10:55:56-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -9,6 +9,13 @@
           "sha256": "sha256:d8e2799bd79ac8939f5ba7cd0e4381dd194169532d1cdef56b674677a0397cd1",
           "sourcePath": "source/hooks/agents-md-turn-refresh.hook.json",
           "targetPath": "hooks/agents-md-turn-refresh.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "type-safety-context",
+          "sha256": "sha256:db411e3463e8a73e78330fbcd5ddaedb83633bd80c1244d9745b8af31ef95397",
+          "sourcePath": "source/hooks/type-safety-context.hook.json",
+          "targetPath": "hooks/type-safety-context.hooks.json",
           "type": "HOOK"
         },
         {
@@ -55,7 +62,7 @@
         },
         {
           "name": "tdd",
-          "sha256": "sha256:34150e1c6bbcfd938d4e445bb593f582eae8e92e3d20fd55b9f2f0f371e55e87",
+          "sha256": "sha256:abace65f08ffd1eb676907c501abb4743831281b4bb6cb76cee99ca8ab6b9581",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
@@ -90,7 +97,7 @@
         },
         {
           "name": "pkl-engineering",
-          "sha256": "sha256:51cc4a3eb3021174d22b6d37110ceb1f7e9588f9df98c577eb38ffc174d059ad",
+          "sha256": "sha256:ef8fc3c93ed63108e4034ab7aac9ef04ef88c00a3a95a2143068dd01559fb102",
           "sourcePath": "source/skills/pkl-engineering",
           "targetPath": "skills/pkl-engineering",
           "type": "SKILL"
@@ -125,17 +132,24 @@
       "references": [
         {
           "name": "openapi-contract-rater",
-          "sha256": "sha256:eed34ea78a4f36118a3702cd8a45a36948245f8f22013f09fa2899af38aa86c3",
+          "sha256": "sha256:d76915c178df3543e3a08fbf558c313236046290809becb311d9a81d99a91149",
           "sourcePath": "source/agents/openapi/openapi-contract-rater.agent.md",
           "targetPath": "agents/openapi-contract-rater.agent.md",
           "type": "AGENT"
         },
         {
           "name": "schema-type-enforcer",
-          "sha256": "sha256:d81ae547ba672e9eaaaa3ce8e19a974e9b9a646692dd626ff8229d33ca073c5b",
+          "sha256": "sha256:86a69e13d5fbcfec672402e135111a081bd5c39d88a7d474f612f2e7f190178e",
           "sourcePath": "source/agents/schema-type-enforcer.agent.md",
           "targetPath": "agents/schema-type-enforcer.agent.md",
           "type": "AGENT"
+        },
+        {
+          "name": "schema-driven-design-context",
+          "sha256": "sha256:487e0778917718995526840b50b3587ae167e95c52eff57a1488673481753188",
+          "sourcePath": "source/hooks/schema-driven-design-context.hook.json",
+          "targetPath": "hooks/schema-driven-design-context.hooks.json",
+          "type": "HOOK"
         },
         {
           "name": "schema-driven-design",
@@ -146,28 +160,28 @@
         },
         {
           "name": "manage-json-schemas",
-          "sha256": "sha256:d28c9e6191d4fd2b847992f32fc844870b21313caaaf87df84a339486d1c431f",
+          "sha256": "sha256:cde9acca20e509dd302341cbc539737e362600f65dd2b8bc1e64a94e4405297b",
           "sourcePath": "source/skills/manage-json-schemas",
           "targetPath": "skills/manage-json-schemas",
           "type": "SKILL"
         },
         {
           "name": "openapi-contract-authoring",
-          "sha256": "sha256:78480f0c947133c82123f313714d524c80ea357866bb316e07ed2f1e4266f0f4",
+          "sha256": "sha256:4311f36cd134d934d7fb9ee485f27dbab331b9e4e8c3d9254dfd1512cdeb6bb6",
           "sourcePath": "source/skills/openapi-contract-authoring",
           "targetPath": "skills/openapi-contract-authoring",
           "type": "SKILL"
         },
         {
           "name": "openapi-contract-rating",
-          "sha256": "sha256:300005cd2173b3be79b70a51df72a5b607a5156ba1f733a59f091d4ea7d163b0",
+          "sha256": "sha256:22e317038cfaa195abf1a50d0b5159dc459dc0078151c4ee0c9c1bb8569c9eb8",
           "sourcePath": "source/skills/openapi-contract-rating",
           "targetPath": "skills/openapi-contract-rating",
           "type": "SKILL"
         },
         {
           "name": "openapi-schema-modeling",
-          "sha256": "sha256:b1e94bfac4e51a55841b2ef1c3373105dba2bd19ba5711ad2206ff314330ce51",
+          "sha256": "sha256:66ccbf66260db974a3f402bee038f65b0576b890579486cdeeb2e908eecffd22",
           "sourcePath": "source/skills/openapi-schema-modeling",
           "targetPath": "skills/openapi-schema-modeling",
           "type": "SKILL"
@@ -222,10 +236,24 @@
           "type": "HOOK"
         },
         {
+          "name": "kotlin-code-correctness-context",
+          "sha256": "sha256:3354e7705844af750b2d0378d363d3d70acee1b3502abfed2a62f8cfcf2e9380",
+          "sourcePath": "source/hooks/kotlin-code-correctness-context.hook.json",
+          "targetPath": "hooks/kotlin-code-correctness-context.hooks.json",
+          "type": "HOOK"
+        },
+        {
           "name": "kotlin-horizontalization-check",
           "sha256": "sha256:a60eb031f55026ed63aca894245a5b4ce23da3797ff920aea30f13989e4f95bd",
           "sourcePath": "source/hooks/kotlin-horizontalization-check.hook.json",
           "targetPath": "hooks/kotlin-horizontalization-check.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "kotlin-repository-engineering-context",
+          "sha256": "sha256:b4733beb699beb0317fcbb8513c4062ddbbcf9c4123ffbc5cc78d4bb2bbe1824",
+          "sourcePath": "source/hooks/kotlin-repository-engineering-context.hook.json",
+          "targetPath": "hooks/kotlin-repository-engineering-context.hooks.json",
           "type": "HOOK"
         },
         {
@@ -244,7 +272,7 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:eed791717bcca1683294a41395d3386cb5e5d433dd0a1505dff6570e417c8129",
+          "sha256": "sha256:c7daeaa5ed58d280381138ed6b64427ef43100c792f8a27f0e2da82c2c2bb532",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
@@ -272,7 +300,7 @@
         },
         {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:f285083f2401f404c392c4c90765307c1171babf40f98148b3288c7e4bf016e6",
+          "sha256": "sha256:8c241af8936928ae71b03013ce789a4dff441895e7d13a55dfed4472645b0b61",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
@@ -384,7 +412,7 @@
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:97a3f5394ffab914f0139509cf2535a837a8d6b677799e73257a461fd06be47e",
+          "sha256": "sha256:ad1b7eb8363ae6e14b90467fd1d3309bcac18fa464033156786c5a8e564e731d",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
@@ -419,14 +447,14 @@
         },
         {
           "name": "hook-primitive-authoring",
-          "sha256": "sha256:04bcb6757f1fd7341a6a8930aa7d4c3ac91aad48921ba230c41fa6174f25c64f",
+          "sha256": "sha256:a14b8bcf32dec1b63c20ebf979fea419c42ad705dd82a37209300dbcc1062e32",
           "sourcePath": "source/skills/hook-primitive-authoring",
           "targetPath": "skills/hook-primitive-authoring",
           "type": "SKILL"
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:8529e0e15ad8e1d06ee75feb6ebec84bb6f4837b1bdc1c844353b30f88462294",
+          "sha256": "sha256:39f7dea4d6b97cfac6a014e9a052cccdd8c604b037063a3930a57a6a97608f4f",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
@@ -626,6 +654,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "c1d860780c027bd49bdb6a3afa163c03898a504e",
+  "sourceSha": "73eb42326f353642845867d339b00cdf76c06905",
   "type": "HYDRATED_MARKETPLACE"
 }

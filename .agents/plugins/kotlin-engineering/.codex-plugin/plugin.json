@@ -6,7 +6,9 @@
   "hooks": [
     "./hooks/gradle-check-green.hooks.json",
     "./hooks/gradle-wrapper-integrity.hooks.json",
-    "./hooks/kotlin-horizontalization-check.hooks.json"
+    "./hooks/kotlin-code-correctness-context.hooks.json",
+    "./hooks/kotlin-horizontalization-check.hooks.json",
+    "./hooks/kotlin-repository-engineering-context.hooks.json"
   ],
   "interface": {
     "brandColor": "#2563EB",
