@@ -36,7 +36,8 @@ metadata to these runtime adapter files. The authored adapter lives under
 - Use `statusMessage` to describe what is being checked.
 - Keep adapter JSON strict: the top-level object must only have `hooks`, matcher
   groups may only have `matcher` and `hooks`, and command handlers may only have
-  `type`, `command`, `commandWindows`, `timeout`, and `statusMessage`.
+  `type`, `command`, `commandWindows`, `timeout`, `statusMessage`, and a
+  non-negative `additionalContextLimit` when the command emits context.
 - Do not inline complex shell pipelines when a script would be clearer and more
   testable.
 - If the provider event payload matters, the implementation should tolerate
@@ -44,6 +45,10 @@ metadata to these runtime adapter files. The authored adapter lives under
 
 ## Common Events
 
+- `SessionStart`: add bounded developer context for `startup`, `resume`,
+  `clear`, or `compact`. Return JSON with
+  `hookSpecificOutput.hookEventName` set to `SessionStart` and the context in
+  `hookSpecificOutput.additionalContext`.
 - `UserPromptSubmit`: initialize turn or prompt-scoped state.
 - `PostToolUse`: record tool effects or changed paths.
 - `Stop`: enforce end-of-turn checks, summarize state, or add context.

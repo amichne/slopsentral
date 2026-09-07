@@ -1122,6 +1122,42 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "hooks/type-safety-context.hook.json",
+      "name": "type-safety-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/schema-driven-design-context.hook.json",
+      "name": "schema-driven-design-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/kotlin-code-correctness-context.hook.json",
+      "name": "kotlin-code-correctness-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/kotlin-repository-engineering-context.hook.json",
+      "name": "kotlin-repository-engineering-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "hooks/source-graph-valid.hook.json",
       "name": "source-graph-valid"
     },

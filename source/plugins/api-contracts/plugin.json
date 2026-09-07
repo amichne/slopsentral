@@ -67,18 +67,18 @@
       "name": "openapi-contract-rater"
     }
   ],
-  "instructions": [
+  "instructions": [],
+  "hooks": [
     {
-      "type": "INSTRUCTION",
+      "type": "HOOK",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "concepts/schema-driven-design/core.md",
-      "name": "schema-driven-design"
+      "path": "hooks/schema-driven-design-context.hook.json",
+      "name": "schema-driven-design-context"
     }
   ],
-  "hooks": [],
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Install for jSON Schema and OpenAPI modeling, authoring, compatibility, examples, and contract review.",

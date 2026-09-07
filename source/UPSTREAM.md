@@ -17,7 +17,7 @@ account setting, or live deployment setting is changed by this catalog.
 | --- | --- | --- |
 | chrisbanes/skills | `84c2c53a26614236e644b3ea9eaf891c44704417` | Kotlin API ownership, branching, and grounded writing |
 | oakoss/agent-skills | `85e3a3919d9e0ec7f7302a5143ec4b3e66f5f6ad` | CLI pipelines, shell integration, Git, Actions, CI/CD, mise, and technical docs |
-| amichne/projeKtor | `v1.1.0`, action commit `3039852047dbc56f5b32d6d4963c71dcc674a317` | Required provider projection contract |
+| amichne/projeKtor | `v1.2.0`, action commit `188fee849d42e6106abfe62ab6b6b33a9ec9c8dd` | Required provider projection contract |
 
 Chris Banes's distribution uses Apache-2.0; the relevant standalone skills
 include the license and modification notice. Oakoss skill frontmatter declares

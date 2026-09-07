@@ -66,18 +66,18 @@
       },
       "path": "instructions/agent-execution.md",
       "name": "agent-execution"
-    },
+    }
+  ],
+  "hooks": [
     {
-      "type": "INSTRUCTION",
+      "type": "HOOK",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "concepts/type-safety/core.md",
-      "name": "type-safety"
-    }
-  ],
-  "hooks": [
+      "path": "hooks/type-safety-context.hook.json",
+      "name": "type-safety-context"
+    },
     {
       "type": "HOOK",
       "source": {

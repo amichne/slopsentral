@@ -34,6 +34,9 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     "intellij-engineering",
   ]);
   assert.deepEqual(profile.hooks.map(({ name }) => name), [
+    "type-safety-context",
+    "kotlin-code-correctness-context",
+    "kotlin-repository-engineering-context",
     "agents-md-turn-refresh",
     "kotlin-horizontalization-check",
     "gradle-check-green",

@@ -31,6 +31,10 @@ This file applies to `source/skills/`.
   files inside a skill unless the skill's output explicitly requires that file.
 - Do not make a skill depend on being installed through a plugin; plugins may
   compose skills, but the skill must stand alone.
+- Do not address repository concepts or another installed skill through a
+  repository-relative path in `SKILL.md`. Refer to host-supplied semantic
+  context and other skills by stable name; link only this skill's own bundled
+  resources by relative path.
 - Do not raw-copy first-party skills into local canonical names. Preserve
   provenance or create a local rewrite with a non-colliding name.
 

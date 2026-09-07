@@ -130,27 +130,26 @@
       "name": "kotlin-package-cohesion-reviewer"
     }
   ],
-  "instructions": [
+  "instructions": [],
+  "hooks": [
     {
-      "type": "INSTRUCTION",
+      "type": "HOOK",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "concepts/kotlin-code-correctness/core.md",
-      "name": "kotlin-code-correctness"
+      "path": "hooks/kotlin-code-correctness-context.hook.json",
+      "name": "kotlin-code-correctness-context"
     },
     {
-      "type": "INSTRUCTION",
+      "type": "HOOK",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "concepts/kotlin-repository-engineering/core.md",
-      "name": "kotlin-repository-engineering"
-    }
-  ],
-  "hooks": [
+      "path": "hooks/kotlin-repository-engineering-context.hook.json",
+      "name": "kotlin-repository-engineering-context"
+    },
     {
       "type": "HOOK",
       "source": {

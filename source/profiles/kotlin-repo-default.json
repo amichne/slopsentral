@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 1,
   "name": "kotlin-repo-default",
-  "description": "Default Kotlin repository workflow that composes baseline executable-check TDD, Kotlin-specific engineering, local developer tools, effective delivery, and focused Codex hook adapters without duplicate primitive ownership.",
+  "description": "Default Kotlin repository workflow that composes baseline executable-check TDD, Kotlin-specific engineering, local developer tools, effective delivery, and shared semantic-context hooks for Codex without duplicate primitive ownership.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -20,6 +20,21 @@
     "effective-delivery"
   ],
   "hooks": [
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "type-safety-context",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "kotlin-code-correctness-context",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
+      "name": "kotlin-repository-engineering-context",
+      "adapter": "codex"
+    },
     {
       "type": "WORKFLOW_HOOK",
       "name": "agents-md-turn-refresh",

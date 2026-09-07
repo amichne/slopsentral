@@ -20,6 +20,11 @@
   "hooks": [
     {
       "type": "WORKFLOW_HOOK",
+      "name": "type-safety-context",
+      "adapter": "codex"
+    },
+    {
+      "type": "WORKFLOW_HOOK",
       "name": "agents-md-turn-refresh",
       "adapter": "codex"
     },

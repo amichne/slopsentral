@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const projeKtorAction =
-  "amichne/projeKtor@3039852047dbc56f5b32d6d4963c71dcc674a317";
+  "amichne/projeKtor@188fee849d42e6106abfe62ab6b6b33a9ec9c8dd";
 
 function read(relativePath) {
   return fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
@@ -17,7 +17,7 @@ const publicationWorkflow = read(".github/workflows/publish-harnesses.yml");
 
 test("source validation projects both harnesses through immutable projeKtor", () => {
   assert.equal(validateWorkflow.match(new RegExp(`uses: ${projeKtorAction}`, "g"))?.length, 2);
-  assert.equal(validateWorkflow.match(/version: v1\.1\.0/g)?.length, 2);
+  assert.equal(validateWorkflow.match(/version: v1\.2\.0/g)?.length, 2);
   assert.match(validateWorkflow, /harness: codex/);
   assert.match(validateWorkflow, /harness: github-copilot/);
   assert.doesNotMatch(validateWorkflow, /amichne\/intelligence|intelligence project/);
@@ -25,7 +25,7 @@ test("source validation projects both harnesses through immutable projeKtor", ()
 
 test("publication projects a harness matrix through immutable projeKtor", () => {
   assert.equal(publicationWorkflow.match(new RegExp(`uses: ${projeKtorAction}`, "g"))?.length, 1);
-  assert.equal(publicationWorkflow.match(/version: v1\.1\.0/g)?.length, 1);
+  assert.equal(publicationWorkflow.match(/version: v1\.2\.0/g)?.length, 1);
   assert.match(publicationWorkflow, /harness: \$\{\{ matrix\.harness \}\}/);
   assert.doesNotMatch(publicationWorkflow, /amichne\/intelligence|intelligence project/);
 });

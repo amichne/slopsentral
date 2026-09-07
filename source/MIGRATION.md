@@ -43,6 +43,6 @@ run. Benchmark definitions now select gpt-6-astra; this changes the next run's
 configuration, not the status of any previous observation. New scenarios in
 `evals/astra-workstreams.md` require live execution before route-quality claims.
 
-The required projeKtor v1.1.0 pins and both harness validation jobs are retained.
+The required projeKtor v1.2.0 pins and both harness validation jobs are retained.
 A passing source graph, replay fixture, or projection cannot establish measured
 Astra token savings or live behavior. Report those only after an authorized run.

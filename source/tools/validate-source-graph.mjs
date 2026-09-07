@@ -39,7 +39,14 @@ const codexHookEvents = new Set([
 
 const codexHooksConfigKeys = new Set(["hooks"]);
 const codexHookGroupKeys = new Set(["matcher", "hooks"]);
-const codexCommandHookKeys = new Set(["type", "command", "commandWindows", "timeout", "statusMessage"]);
+const codexCommandHookKeys = new Set([
+  "type",
+  "command",
+  "commandWindows",
+  "timeout",
+  "statusMessage",
+  "additionalContextLimit",
+]);
 const pluginEvalBenchmarkKeys = new Set([
   "$schema",
   "type",
@@ -154,12 +161,6 @@ function parseFrontmatter(relativePath) {
 
 function sorted(values) {
   return [...values].sort();
-}
-
-function sameSet(left, right) {
-  const a = sorted(left);
-  const b = sorted(right);
-  return a.length === b.length && a.every((value, index) => value === b[index]);
 }
 
 function addOwner(index, name, owner) {
@@ -346,6 +347,12 @@ function validateCodexHookAdapterShape(hookName, relativePath, adapter) {
         if (handler.statusMessage !== undefined && typeof handler.statusMessage !== "string") {
           fail(`${handlerOwner}: statusMessage must be a string when present`);
         }
+        if (
+          handler.additionalContextLimit !== undefined &&
+          (!Number.isInteger(handler.additionalContextLimit) || handler.additionalContextLimit < 0)
+        ) {
+          fail(`${handlerOwner}: additionalContextLimit must be a non-negative integer when present`);
+        }
       }
     }
   }
@@ -523,7 +530,7 @@ for (const profilePath of listFiles("source/profiles", (file) => file.endsWith("
   for (const hook of profile.hooks ?? []) {
     const owners = profileHooks.get(hook.name) ?? [];
     if (owners.length !== 1) {
-      fail(`${relativePath}: profile hook ${hook.name} must be provided by exactly one selected plugin, found [${owners.join(", ")}]`);
+      fail(`${relativePath}: profile hook ${hook.name} has invalid selected owners [${owners.join(", ")}]`);
     }
   }
   if (!(profile.validation?.commands ?? []).includes("node source/tools/validate-source-graph.mjs")) {

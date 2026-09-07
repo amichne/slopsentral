@@ -23,7 +23,7 @@ Run the migration in this order for each selected global or project source:
    - Validate generated `.codex/agents`
    - Report migrated artifacts and manual-review items
 
-2. Read `references/differences.md` (and refresh Codex docs if its `Docs last checked` date is old).
+2. Read [differences.md](references/differences.md) (and refresh Codex docs if its `Docs last checked` date is old).
 
 3. Scan and inspect before writing:
    - `--scan-only` lists active and inactive source surfaces.
@@ -111,4 +111,4 @@ Run the post-migration validator against each target after edits.
    $MIGRATE_TO_CODEX --validate-target ./.codex/
    ```
 
-Run `$MIGRATE_TO_CODEX --help` for flags (`--scan-only`, `--plan`, `--doctor`, `--validate-target`, defaults, and so on). Deep tables and more links are in `references/differences.md`.
+Run `$MIGRATE_TO_CODEX --help` for flags (`--scan-only`, `--plan`, `--doctor`, `--validate-target`, defaults, and so on). Deep tables and more links are in [differences.md](references/differences.md).

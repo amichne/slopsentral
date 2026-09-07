@@ -130,19 +130,19 @@ jobs:
 
       - name: Project Codex marketplace
         id: codex_projection
-        uses: amichne/projeKtor@3039852047dbc56f5b32d6d4963c71dcc674a317 # v1.1.0
+        uses: amichne/projeKtor@188fee849d42e6106abfe62ab6b6b33a9ec9c8dd # v1.2.0
         with:
           source: .
           harness: codex
-          version: v1.1.0
+          version: v1.2.0
 
       - name: Project GitHub Copilot marketplace
         id: github_copilot_projection
-        uses: amichne/projeKtor@3039852047dbc56f5b32d6d4963c71dcc674a317 # v1.1.0
+        uses: amichne/projeKtor@188fee849d42e6106abfe62ab6b6b33a9ec9c8dd # v1.2.0
         with:
           source: .
           harness: github-copilot
-          version: v1.1.0
+          version: v1.2.0
 
       - name: Validate marketplace projections
         env:

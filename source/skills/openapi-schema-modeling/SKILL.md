@@ -9,10 +9,8 @@ Use this skill when the hard part of an OpenAPI task is modeling the schema
 state space: subtypes, discriminators, constraints, nullability, examples,
 extension points, or reusable component ownership.
 
-Apply these local concept references when they are available:
-
-- `concepts/schema-driven-design/core.md`
-- `concepts/type-safety/core.md`
+Honor the `schema-driven-design` and `type-safety` semantic context when the
+host supplies it. Otherwise use the nearest repository-local equivalent.
 
 `type-safety` owns the shared semantic state-space rules.
 `schema-driven-design` owns their boundary realization. This skill owns only the
@@ -70,7 +68,7 @@ OpenAPI constructs that express and validate those rules.
 - Load [invariant-examples.md](references/invariant-examples.md) when you need
   concrete OpenAPI schema examples for discriminated variants, nested variants,
   constrained primitives, typed maps, typed errors, and invalid-state checks.
-- Use `skills/manage-json-schemas` when standalone JSON Schema policy,
+- Use the `manage-json-schemas` skill when standalone JSON Schema policy,
   hierarchical discriminator layout, or schema-tree validation is needed.
 
 ## Completion Criteria
