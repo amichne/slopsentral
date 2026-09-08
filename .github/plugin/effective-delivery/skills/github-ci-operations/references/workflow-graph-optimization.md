@@ -107,21 +107,3 @@ temperature, hosted image changes, and network variance belong in observation
 profiles. Refresh the model from comparable successful runs, review the changed
 sample set, and commit the stable summary only when the repository wants the
 performance budget shared.
-
-## Kast Evidence Behind These Rules
-
-Kast PR 359 moved Rust-backed runtime contracts out of the shared static gate,
-split Linux and macOS reusable workflow invocations so Linux consumers no
-longer joined on macOS, removed a no-op snapshot pull-request trigger, and
-limited Java/Gradle snapshot setup to manual publication. The static gate moved
-from a median of 111 seconds across eight prior successful runs to 7.5 seconds
-across the first two successful candidate runs. Overall successful-run duration
-was 1,200.5 seconds at the prior eight-run median and 904 seconds for the first
-two candidate runs.
-
-The bundled
-[kast-workflow-optimization-model.json](kast-workflow-optimization-model.json)
-preserves the observed samples and output inventory. Its candidate timing is
-explicitly provisional until at least five comparable successful runs exist;
-the executable tests use a five-sample stub to prove blocking behavior without
-hosted-runner variability.

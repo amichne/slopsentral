@@ -44,7 +44,7 @@ class IssueBackendCliTest(unittest.TestCase):
 
                 arguments = sys.argv[1:]
                 if Path(sys.argv[0]).name == "acli":
-                    if arguments[:4] == ["jira", "workitem", "view", "KAST-42"]:
+                    if arguments[:4] == ["jira", "workitem", "view", "TASK-42"]:
                         print(os.environ["ISSUE_BACKEND_TEST_ACLI_VIEW"])
                     elif arguments[:4] == ["jira", "workitem", "link", "list"]:
                         print(os.environ["ISSUE_BACKEND_TEST_ACLI_LINKS"])
@@ -145,11 +145,11 @@ class IssueBackendCliTest(unittest.TestCase):
     def test_toon_object_list_places_the_first_field_on_the_hyphen_line(self) -> None:
         completed = self.run_cli(
             "view",
-            "KAST-42",
+            "TASK-42",
             environment={
                 "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
                 "ISSUE_BACKEND_TEST_ACLI_VIEW": json.dumps(
-                    {"key": "KAST-42", "fields": {"summary": "Typed Jira adapter"}}
+                    {"key": "TASK-42", "fields": {"summary": "Typed Jira adapter"}}
                 ),
             },
         )
@@ -164,13 +164,13 @@ class IssueBackendCliTest(unittest.TestCase):
     def test_jira_view_invokes_official_acli_and_normalizes_the_issue(self) -> None:
         completed = self.run_cli(
             "view",
-            "KAST-42",
+            "TASK-42",
             "--json",
             environment={
                 "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
                 "ISSUE_BACKEND_TEST_ACLI_VIEW": json.dumps(
                     {
-                        "key": "KAST-42",
+                        "key": "TASK-42",
                         "fields": {
                             "summary": "Typed Jira adapter",
                             "status": {"name": "In Progress"},
@@ -187,7 +187,7 @@ class IssueBackendCliTest(unittest.TestCase):
             payload["issue"],
             {
                 "type": "ISSUE_BACKEND_ISSUE",
-                "id": "KAST-42",
+                "id": "TASK-42",
                 "state": "In Progress",
                 "title": "Typed Jira adapter",
             },
@@ -198,7 +198,7 @@ class IssueBackendCliTest(unittest.TestCase):
             [
                 {
                     "executable": "acli",
-                    "arguments": ["jira", "workitem", "view", "KAST-42", "--json"],
+                    "arguments": ["jira", "workitem", "view", "TASK-42", "--json"],
                 }
             ],
         )
@@ -245,7 +245,7 @@ class IssueBackendCliTest(unittest.TestCase):
     def test_jira_dependency_map_preserves_blocker_direction(self) -> None:
         completed = self.run_cli(
             "dependency-map",
-            "KAST-42",
+            "TASK-42",
             "--json",
             environment={
                 "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
@@ -255,14 +255,14 @@ class IssueBackendCliTest(unittest.TestCase):
                             {
                                 "type": {"name": "Blocks"},
                                 "inwardIssue": {
-                                    "key": "KAST-7",
+                                    "key": "TASK-7",
                                     "fields": {"summary": "Schema first"},
                                 },
                             },
                             {
                                 "type": {"name": "Blocks"},
                                 "outwardIssue": {
-                                    "key": "KAST-99",
+                                    "key": "TASK-99",
                                     "fields": {"summary": "Consumer"},
                                 },
                             },
@@ -277,21 +277,21 @@ class IssueBackendCliTest(unittest.TestCase):
         payload = result["result"]
         self.assertEqual(payload["type"], "ISSUE_BACKEND_DEPENDENCY_MAP_RESULT")
         self.assertEqual(payload["dependencyMap"]["type"], "ISSUE_BACKEND_DEPENDENCY_MAP")
-        self.assertEqual(payload["dependencyMap"]["root"], "KAST-42")
+        self.assertEqual(payload["dependencyMap"]["root"], "TASK-42")
         self.assertEqual(
             payload["dependencyMap"]["edges"],
             [
                 {
                     "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
                     "relation": "BLOCKS",
-                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "KAST-7", "title": "Schema first"},
-                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "KAST-42"},
+                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "TASK-7", "title": "Schema first"},
+                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "TASK-42"},
                 },
                 {
                     "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
                     "relation": "BLOCKS",
-                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "KAST-42"},
-                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "KAST-99", "title": "Consumer"},
+                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "TASK-42"},
+                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "TASK-99", "title": "Consumer"},
                 },
             ],
         )
@@ -306,7 +306,7 @@ class IssueBackendCliTest(unittest.TestCase):
             [
                 {
                     "executable": "acli",
-                    "arguments": ["jira", "workitem", "link", "list", "--key", "KAST-42", "--json"],
+                    "arguments": ["jira", "workitem", "link", "list", "--key", "TASK-42", "--json"],
                 }
             ],
         )
@@ -372,7 +372,7 @@ class IssueBackendCliTest(unittest.TestCase):
     def test_malformed_provider_result_retains_command_evidence(self) -> None:
         completed = self.run_cli(
             "view",
-            "KAST-42",
+            "TASK-42",
             "--json",
             environment={
                 "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
