@@ -22,7 +22,7 @@
       },
       "workspace": {
         "type": "PLUGIN_EVAL_WORKSPACE",
-        "sourcePath": "../kast",
+        "sourcePath": "../sample-kotlin-repository",
         "setupMode": "git-worktree",
         "preserve": "never"
       },
@@ -57,7 +57,7 @@
           },
           "userInput": "Use Kotlin Engineering for this Kotlin repository. Change a Kotlin API so an invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass.",
           "successChecklist": [
-            "The run records Kast semantic evidence for affected Kotlin symbols.",
+            "The run resolves affected Kotlin symbols without relying on ambiguous text matches.",
             "The implementation moves the invariant into Kotlin types rather than comments or caller discipline.",
             "The final answer includes the focused successful Gradle command."
           ]
@@ -268,7 +268,7 @@
           "type": "string",
           "pattern": "^(\\.|\\.\\./[A-Za-z0-9._-]+)$",
           "examples": [
-            "../kast"
+            "../sample-kotlin-repository"
           ]
         },
         "setupMode": {

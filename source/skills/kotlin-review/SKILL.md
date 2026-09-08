@@ -75,7 +75,7 @@ agent files.
 
 6. Verify review evidence.
    Use file paths, line numbers, type signatures, package counts, call sites,
-   tests, compiler output, or Gradle/Kast evidence. For pure review, do not run
+   tests, compiler output, or Gradle evidence. For pure review, do not run
    broad validation unless the user asks or the risk justifies it. If fixes are
    made, use `kotlin-gradle-validation` for the narrowest useful proof.
 

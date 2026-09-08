@@ -527,49 +527,6 @@
       "notes": "This is the explicit production-sharing gate for the broader goal."
     },
     {
-      "id": "kast-install-diagnosis-preserves-typed-state",
-      "type": "SETUP_FRICTION",
-      "source": {
-        "type": "CODEX_SESSION",
-        "capturedAt": "2026-07-29",
-        "evidenceRefs": [
-          "The user asked for diagnosis of a dysfunctional local Kast installation with conflicting runtime, readiness, and index state."
-        ],
-        "sessionIds": [
-          "019fb0c3-16a3-7f13-b672-c81574995464"
-        ]
-      },
-      "prompt": "Diagnose why this local Kast installation is dysfunctional and reconcile its CLI, runtime, plugin, exact-root readiness, and reference-index state.",
-      "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "kast-installation-diagnosis"
-      },
-      "observedRoute": {
-        "type": "ROUTING_ROUTE_OBSERVATION",
-        "summary": "Install diagnosis can collapse distinct Git, binary, plugin, runtime, workspace, and index states into one vague healthy or broken claim.",
-        "risk": "A partial repair can leave the selected workspace unusable while later work trusts stale or mismatched evidence.",
-        "loadedPrimitives": []
-      },
-      "allowedActions": [
-        "Resolve the supported public and administrative Kast commands before changing installation state.",
-        "Record Git, binary, plugin, runtime, exact-root readiness, and reference-index evidence as separate states.",
-        "Use the owning typed repair command and re-read every affected state after it completes."
-      ],
-      "forbiddenActions": [
-        "Rewrite installer-owned metadata or receipts by hand.",
-        "Treat a successful build, download, or process launch as exact-root semantic readiness.",
-        "Hide a typed blocker behind an unverified fallback or a generic success claim."
-      ],
-      "recoveryExpectation": "A good diagnosis should preserve each typed state, repair only through its owning command, and name any remaining mismatch exactly.",
-      "productiveOutcome": "Kast repair becomes a repeatable state reconciliation instead of an improvised sequence of shell changes.",
-      "verificationEvidence": [
-        "The run records the selected CLI and plugin versions plus the active backend.",
-        "The run records exact-root READY and reference-index readiness separately.",
-        "The final state comes from fresh supported-command output after repair."
-      ],
-      "notes": "This case comes from a real installation failure where version parity and semantic readiness diverged."
-    },
-    {
       "id": "terminal-ui-work-preserves-cli-contracts",
       "type": "WRONG_PRIMITIVE",
       "source": {

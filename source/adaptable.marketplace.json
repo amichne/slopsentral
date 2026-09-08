@@ -106,7 +106,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "1.1.0"
+        "version": "1.2.0"
       },
       "description": "Kotlin implementation, API design, and compiler-backed review.",
       "tags": [
@@ -120,7 +120,6 @@
         "gradle",
         "higher-order-functions",
         "hooks",
-        "kast",
         "kotlin",
         "ktor",
         "libraries",
@@ -173,7 +172,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/effective-delivery"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "description": "Hosted delivery from issue to verified pull request and release evidence.",
       "tags": [
@@ -305,7 +304,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/intellij-engineering"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "description": "IntelliJ Platform plugin behavior and lifecycle.",
       "tags": [
@@ -321,30 +320,6 @@
         "testing",
         "ui-testing",
         "verification"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "kast-operations",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "kast-operations",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/kast-operations"
-        },
-        "version": "1.0.0"
-      },
-      "description": "Kast runtime operation and semantic evidence.",
-      "tags": [
-        "diagnostics",
-        "kast",
-        "kotlin",
-        "observability",
-        "performance",
-        "skills",
-        "sqlite",
-        "structural-analysis"
       ]
     }
   ],
@@ -884,51 +859,6 @@
       },
       "path": "skills/intellij-platform-integrations",
       "name": "intellij-platform-integrations"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/kast-idea-backend-delivery",
-      "name": "kast-idea-backend-delivery"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/kast-installation-diagnosis",
-      "name": "kast-installation-diagnosis"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/kast-performance-assessment",
-      "name": "kast-performance-assessment"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/kast-kotlin-structural-analysis",
-      "name": "kast-kotlin-structural-analysis"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/sqlite-readonly-navigation",
-      "name": "sqlite-readonly-navigation"
     },
     {
       "type": "SKILL",

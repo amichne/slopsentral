@@ -15,7 +15,7 @@
   },
   "workspace": {
     "type": "PLUGIN_EVAL_WORKSPACE",
-    "sourcePath": "../kast",
+    "sourcePath": "../sample-kotlin-repository",
     "setupMode": "git-worktree",
     "preserve": "never"
   },
@@ -30,7 +30,7 @@
     ]
   },
   "notes": [
-    "Run only in an isolated Kast worktree and keep the primary checkout untouched.",
+    "Run only in an isolated Kotlin repository worktree and keep the primary checkout untouched.",
     "The benchmark may change only local documentation evidence and must not publish or modify remote state.",
     "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
@@ -50,7 +50,7 @@
         "type": "PLUGIN",
         "name": "code-knowledge-base"
       },
-      "userInput": "Use Code Knowledge Base in this isolated Kast worktree. Create or refresh one bounded source-backed Kotlin or Gradle OKF concept with signature evidence, code_sources impact checks, and drift proof. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Code Knowledge Base in this isolated Kotlin repository worktree. Create or refresh one bounded source-backed Kotlin or Gradle OKF concept with signature evidence, code_sources impact checks, and drift proof. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The knowledge artifact retains concrete code_sources or signature evidence.",
         "The focused code knowledge check and relevant documentation check pass.",

@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "effective-delivery",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Hosted delivery from issue to verified pull request and release evidence.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

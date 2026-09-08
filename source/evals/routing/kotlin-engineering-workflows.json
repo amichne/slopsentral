@@ -13,8 +13,7 @@
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
           "source/skills/kotlin-agentic-correctness/SKILL.md",
-          "source/skills/kotlin-design-practices/SKILL.md",
-          "source/skills/kast-kotlin-structural-analysis/SKILL.md"
+          "source/skills/kotlin-design-practices/SKILL.md"
         ]
       },
       "prompt": "Change a Kotlin API so invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass.",
@@ -33,7 +32,7 @@
       },
       "allowedActions": [
         "Frame the trusted domain shape before editing.",
-        "Use Kast semantic evidence for Kotlin identity, references, or diagnostics.",
+        "Use compiler-backed or environment-provided semantic evidence when Kotlin identity is ambiguous.",
         "Run the narrowest Gradle compile or test task that proves the affected module."
       ],
       "forbiddenActions": [
@@ -45,54 +44,9 @@
       "notes": "This case measures whether Kotlin Engineering changes the implementation path, not just whether it was mentioned.",
       "productiveOutcome": "Kotlin invariant changes are grounded in semantic evidence and type-level enforcement rather than search-and-replace edits.",
       "verificationEvidence": [
-        "The run records Kast semantic evidence for affected Kotlin symbols.",
+        "The run resolves affected Kotlin symbols without relying on ambiguous text matches.",
         "Focused Gradle proof covers the affected module or test target."
       ]
-    },
-    {
-      "id": "kotlin-structural-analysis-uses-kast-surface",
-      "type": "WRONG_PRIMITIVE",
-      "source": {
-        "type": "CODEX_SESSION",
-        "capturedAt": "2026-07-30",
-        "evidenceRefs": [
-          "A proposed Codex-session structural-analysis skill was rejected because the target structure was Kotlin code.",
-          "The corrected boundary required the public Kast 0.20.2 or later surface."
-        ],
-        "sessionIds": [
-          "019fb47a-f693-7ef1-a7cd-e8a2efcb5e5f"
-        ]
-      },
-      "prompt": "Analyze this Gradle repository's Kotlin call and type structure. Use compiler-backed Kast evidence for exact symbols and chained relationships; do not infer Kotlin structure from Codex session JSONL or generic text analysis.",
-      "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "kast-kotlin-structural-analysis"
-      },
-      "observedRoute": {
-        "type": "ROUTING_ROUTE_OBSERVATION",
-        "summary": "Kotlin structural analysis was routed to Codex-session analysis instead of the compiler-backed repository surface.",
-        "risk": "Conversation structure or text matches can be mistaken for code structure, producing ambiguous symbols and unverifiable relationships.",
-        "loadedPrimitives": [
-          "codex-session-structural-analysis"
-        ]
-      },
-      "allowedActions": [
-        "Confirm the exact Gradle workspace and Kast readiness before making semantic claims.",
-        "Anchor each chained query on an exact fully qualified symbol, signature, or selector handle.",
-        "Use public Kast relationship or topology commands and preserve coverage, qualification, and continuation state."
-      ],
-      "forbiddenActions": [
-        "Read Codex session JSONL as evidence of Kotlin code structure.",
-        "Use generic text analysis or a non-compiler graph as the semantic authority for Kotlin or Gradle.",
-        "Claim a complete negative or impact result while output is truncated, qualified, or has a continuation."
-      ],
-      "recoveryExpectation": "If Kast is unavailable or the exact workspace is not ready, route to Kast installation diagnosis and report the typed blocker instead of substituting generic analysis.",
-      "productiveOutcome": "Kotlin structural answers use exact compiler-backed identities and retain the limits needed for another agent to verify them.",
-      "verificationEvidence": [
-        "The run records the exact workspace plus READY runtime and reference-index state.",
-        "The answer cites exact symbol identity, the Kast command chain, coverage, qualification, and continuation state."
-      ],
-      "notes": "This sanitized session-derived case makes Kast the structural authority for Kotlin and Gradle while leaving session analysis to conversation-history work."
     },
     {
       "id": "gradle-failure-uses-structured-reports",
@@ -224,7 +178,7 @@
         "Patch generated output when an authored source exists or present staged build output as installed-product proof."
       ],
       "recoveryExpectation": "A good run should leave one comparable RED-to-GREEN check, preserved Kotlin refinements, mechanically defended dependency direction, accurate scoped guidance, and verification that widens only across changed contracts.",
-      "notes": "This portable case generalizes the current Kast root AGENTS.md observed on 2026-08-23. Kast-specific module counts, macOS indexer versions, documentation tooling, and exact commands are deliberately excluded.",
+      "notes": "This portable case generalizes Kotlin repository guidance observed on 2026-08-23. Repository-specific module counts, platform versions, documentation tooling, and exact commands are deliberately excluded.",
       "productiveOutcome": "Kotlin repository changes remain locally focused while carrying enough executable and structural evidence to trust the affected module graph and public artifact.",
       "verificationEvidence": [
         "One focused command with stable inputs fails for the intended missing behavior and passes after the narrow implementation.",

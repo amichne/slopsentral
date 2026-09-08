@@ -15,7 +15,7 @@
   },
   "workspace": {
     "type": "PLUGIN_EVAL_WORKSPACE",
-    "sourcePath": "../kast",
+    "sourcePath": "../sample-repository",
     "setupMode": "git-worktree",
     "preserve": "never"
   },
@@ -30,7 +30,7 @@
     ]
   },
   "notes": [
-    "Run only in an isolated Kast worktree and derive every technical claim from repository source.",
+    "Run only in an isolated repository worktree and derive every technical claim from repository source.",
     "The benchmark may change only local documentation and must not publish or modify remote state.",
     "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
@@ -50,7 +50,7 @@
         "type": "SKILL",
         "name": "controlled-technical-writing"
       },
-      "userInput": "Use Controlled Technical Writing in this isolated Kast worktree. Rewrite one bounded published technical document with direct language and stable repository terminology, then run the glossary checker and the smallest relevant documentation check. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Controlled Technical Writing in this isolated repository worktree. Rewrite one bounded published technical document with direct language and stable repository terminology, then run the glossary checker and the smallest relevant documentation check. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "Every material claim remains traceable to the source contract.",
         "One canonical term is used per concept and the repository glossary check passes when a glossary exists.",

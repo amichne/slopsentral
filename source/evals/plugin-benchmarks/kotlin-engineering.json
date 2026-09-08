@@ -15,7 +15,7 @@
   },
   "workspace": {
     "type": "PLUGIN_EVAL_WORKSPACE",
-    "sourcePath": "../kast",
+    "sourcePath": "../sample-kotlin-repository",
     "setupMode": "git-worktree",
     "preserve": "never"
   },
@@ -33,7 +33,7 @@
   "notes": [
     "Run this benchmark from the slopsentral checkout after materializing the Kotlin Engineering best-practices package.",
     "The default workspace.sourcePath assumes a sibling Kotlin repository; teams should replace it with their own Kotlin/Gradle repository path before collecting baseline usage.",
-    "The repository-guidance scenario is a portable rewrite of the current Kast AGENTS.md observed on 2026-08-23; it excludes Kast-specific module counts, platform versions, documentation tooling, and exact commands.",
+    "The repository-guidance scenario is a portable rewrite of Kotlin repository instructions observed on 2026-08-23; it excludes repository-specific module counts, platform versions, documentation tooling, and exact commands.",
     "Feed the resulting benchmark-usage.jsonl back into plugin-eval analyze with --observed-usage before treating static budget warnings as production blockers.",
     "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
   ],
@@ -58,7 +58,7 @@
       },
       "userInput": "Use Kotlin Engineering for this Kotlin repository. Change a Kotlin API so an invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
-        "The run records Kast semantic evidence for affected Kotlin symbols.",
+        "The run resolves affected Kotlin symbols without relying on ambiguous text matches.",
         "The implementation moves the invariant into Kotlin types rather than comments, nullable flags, or caller discipline.",
         "The final answer includes the focused successful Gradle command."
       ]

@@ -1,10 +1,9 @@
 # Clikt CLI design
 
 Use current [Clikt documentation](https://ajalt.github.io/clikt/) as the API
-authority. Treat Kast as a rough local precedent for one canonical command
-graph, noun-based command families, typed actions after parsing, local help that
-does not start runtime services, deterministic output, and command-contract
-tests. Kast is not a template or dependency.
+authority. Prefer one canonical command graph, noun-based command families,
+typed actions after parsing, local help that does not start runtime services,
+deterministic output, and command-contract tests.
 
 ## Design one unsurprising command language
 

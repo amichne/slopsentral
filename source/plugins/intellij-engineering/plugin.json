@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "intellij-engineering",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "IntelliJ Platform plugin behavior and lifecycle.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -62,7 +62,7 @@
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Install for pSI, indexing, live diagnostics, platform integrations, plugin testing, and distribution.",
-    "notFor": "General Kotlin design, local Git mechanics, hosted PR operations, and Kast-specific runtime diagnosis.",
+    "notFor": "General Kotlin design, local Git mechanics, hosted PR operations, and external semantic-tool runtime diagnosis.",
     "owner": "intellij-engineering",
     "role": "intellij-engineering",
     "scope": "PSI, indexing, live diagnostics, platform integrations, plugin testing, and distribution.",

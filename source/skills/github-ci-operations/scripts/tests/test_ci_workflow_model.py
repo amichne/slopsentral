@@ -225,24 +225,6 @@ class WorkflowModelTests(unittest.TestCase):
         with self.assertRaisesRegex(model.ModelError, "must be finite"):
             model.compare_document(document)
 
-    def test_kast_observations_are_valid_but_explicitly_provisional(self) -> None:
-        path = SKILL_ROOT / "references/kast-workflow-optimization-model.json"
-        document = json.loads(path.read_text(encoding="utf-8"))
-
-        result = model.compare_document(document)
-
-        self.assertEqual(result["status"], "provisional")
-        self.assertEqual(result["comparison"]["taskCountIncrease"], 1)
-        self.assertGreaterEqual(
-            result["comparison"]["criticalPathReductionSeconds"], 200
-        )
-        self.assertTrue(
-            any("candidate task timing is provisional" in item for item in result["warnings"])
-        )
-        self.assertTrue(
-            any("candidate workflow timing is provisional" in item for item in result["warnings"])
-        )
-
     def test_schema_document_is_parseable_json(self) -> None:
         schema = SKILL_ROOT / "references/workflow-graph-model.schema.json"
         parsed = json.loads(schema.read_text(encoding="utf-8"))

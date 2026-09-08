@@ -71,17 +71,9 @@ Outside this workstream: Language/tool-specific implementation, hosted delivery,
 
 IntelliJ Platform plugin behavior and lifecycle.
 
-Outside this workstream: General Kotlin design, local Git mechanics, hosted PR operations, and Kast-specific runtime diagnosis.
+Outside this workstream: General Kotlin design, local Git mechanics, hosted PR operations, and external semantic-tool runtime diagnosis.
 
 **Skills:** [ide-diagnostics-mcp](skills/ide-diagnostics-mcp/SKILL.md), [intellij-platform-integrations](skills/intellij-platform-integrations/SKILL.md), [intellij-platform-testing](skills/intellij-platform-testing/SKILL.md), [intellij-plugin-delivery](skills/intellij-plugin-delivery/SKILL.md), [intellij-psi-indexing](skills/intellij-psi-indexing/SKILL.md).
-
-### kast-operations
-
-Kast runtime operation and semantic evidence.
-
-Outside this workstream: General Kotlin application implementation, generic IDE plugin design, and database mutation.
-
-**Skills:** [kast-idea-backend-delivery](skills/kast-idea-backend-delivery/SKILL.md), [kast-installation-diagnosis](skills/kast-installation-diagnosis/SKILL.md), [kast-kotlin-structural-analysis](skills/kast-kotlin-structural-analysis/SKILL.md), [kast-performance-assessment](skills/kast-performance-assessment/SKILL.md), [sqlite-readonly-navigation](skills/sqlite-readonly-navigation/SKILL.md).
 
 ### kotlin-engineering
 

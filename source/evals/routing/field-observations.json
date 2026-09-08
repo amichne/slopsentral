@@ -68,28 +68,6 @@
         "This observation covers one repository and one mixed-worktree delivery.",
         "It does not test conflict recovery or stash operations."
       ]
-    },
-    {
-      "type": "ROUTING_FIELD_OBSERVATION",
-      "id": "kast-structural-boundary-correction-2026-07-30",
-      "caseId": "kotlin-structural-analysis-uses-kast-surface",
-      "capturedAt": "2026-07-30",
-      "sourceType": "LIVE_SESSION",
-      "outcome": "PASS",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "kast-kotlin-structural-analysis"
-      },
-      "evidenceRefs": [
-        "Root session 019fb47a-f693-7ef1-a7cd-e8a2efcb5e5f rejected Codex-session analysis for a Kotlin structural task.",
-        "The corrected source skill targets compiler-backed Kotlin analysis through the public Kast 0.20.2 or later surface."
-      ],
-      "productiveOutcomeObserved": "The structural-analysis boundary moved from conversation history to exact Kotlin symbols and relationships exposed by Kast.",
-      "followUpAction": "Replay Kotlin structural requests against a ready exact-root Kast workspace and retain coverage and continuation evidence.",
-      "limitations": [
-        "This observation proves the routing correction and materialized skill, not every future runtime route.",
-        "It does not benchmark structural-query latency."
-      ]
     }
   ]
 }

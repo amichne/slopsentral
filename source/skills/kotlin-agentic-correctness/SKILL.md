@@ -15,9 +15,9 @@ those policies as turn-local task files.
 - Refine boundary data into trusted Kotlin types and carry those types inward.
 - Use sealed variants, constrained construction, capability-specific APIs, and
   closed expected failures when they make an invalid state unreachable.
-- Use Kast for symbol identity, callers, hierarchy, diagnostics, or edit safety
-  when textual search would be ambiguous. Do not require semantic-tool output
-  for a local change that ordinary compiler or test evidence already proves.
+- Use repository-native compiler, test, and source-navigation evidence. When
+  textual caller discovery is ambiguous, fail closed and use the semantic
+  support available in the execution environment.
 - Use the generic `tdd` skill for behavior changes and
   `kotlin-gradle-validation` only when Gradle execution or report diagnosis is
   part of the task.
@@ -42,8 +42,8 @@ workflow filesystem.
 
 1. Identify the boundary input, stronger domain type, invariant, finite expected
    failures, owner, and smallest check that can disprove completion.
-2. Inspect only the topology and symbols needed for that boundary. Use Kast when
-   identity or caller relationships are genuinely uncertain.
+2. Inspect only the topology and symbols needed for that boundary. Resolve
+   identity or caller ambiguity through the environment's semantic support.
 3. For a behavior change, add or tighten one public-behavior check. Run the same
    working directory, command, fixtures, and meaningful environment RED and
    GREEN; infrastructure failure is not RED.
@@ -60,8 +60,6 @@ workflow filesystem.
 
 - Stable Kotlin policy: `kotlin-code-correctness`
 - Repository topology and widening: `kotlin-repository-engineering`
-- Chained compiler-backed relationships: `kast-kotlin-structural-analysis`
-  when ordinary Kast lookups cannot answer the question.
 - Executable-check discipline and isolation: `tdd`
 - Gradle failure diagnosis: `kotlin-gradle-validation`
 - Type-system before/after proof: `negative-capability-proof`

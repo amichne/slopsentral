@@ -14,16 +14,12 @@
     "ci-failure-triage-uses-remote-check-evidence",
     "plugin-install-recovery-proves-installed-state",
     "production-sharing-requires-quality-audit-evidence",
-    "kast-install-diagnosis-preserves-typed-state",
     "terminal-ui-work-preserves-cli-contracts",
     "technical-prose-uses-controlled-terms",
     "intellij-full-delivery-uses-default-profile",
     "intellij-existing-plugin-maintenance-discovers-repo-contract",
     "intellij-mixed-language-psi-targets-filter-before-access",
-    "kast-intellij-readiness-preserves-typed-blocker",
-    "kast-intellij-distribution-respects-module-ownership",
     "intellij-ui-testing-uses-starter-driver-contract",
-    "kotlin-structural-analysis-uses-kast-surface",
     "kotlin-repository-work-preserves-task-and-topology-proof",
     "kotlin-application-stack-keeps-library-bindings-private"
   ],
@@ -320,11 +316,11 @@
       },
       "satisfiedAllowedActions": [
         "Frame the trusted domain shape before editing.",
-        "Use Kast semantic evidence for Kotlin identity, references, or diagnostics.",
+        "Use compiler-backed or environment-provided semantic evidence when Kotlin identity is ambiguous.",
         "Run the narrowest Gradle compile or test task that proves the affected module."
       ],
       "satisfiedVerificationEvidence": [
-        "The run records Kast semantic evidence for affected Kotlin symbols.",
+        "The run resolves affected Kotlin symbols without relying on ambiguous text matches.",
         "Focused Gradle proof covers the affected module or test target."
       ],
       "avoidedForbiddenActions": [
@@ -333,29 +329,6 @@
         "Claim Gradle proof without a successful focused command."
       ],
       "notes": "A passing run proves this route by delivering: Kotlin invariant changes are grounded in semantic evidence and type-level enforcement rather than search-and-replace edits."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
-      "caseId": "kotlin-structural-analysis-uses-kast-surface",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "kast-kotlin-structural-analysis"
-      },
-      "satisfiedAllowedActions": [
-        "Confirm the exact Gradle workspace and Kast readiness before making semantic claims.",
-        "Anchor each chained query on an exact fully qualified symbol, signature, or selector handle.",
-        "Use public Kast relationship or topology commands and preserve coverage, qualification, and continuation state."
-      ],
-      "satisfiedVerificationEvidence": [
-        "The run records the exact workspace plus READY runtime and reference-index state.",
-        "The answer cites exact symbol identity, the Kast command chain, coverage, qualification, and continuation state."
-      ],
-      "avoidedForbiddenActions": [
-        "Read Codex session JSONL as evidence of Kotlin code structure.",
-        "Use generic text analysis or a non-compiler graph as the semantic authority for Kotlin or Gradle.",
-        "Claim a complete negative or impact result while output is truncated, qualified, or has a continuation."
-      ],
-      "notes": "A passing structural run uses Kast for Kotlin semantics and keeps session history or generic text analysis outside the code-evidence boundary."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -569,7 +542,7 @@
         "name": "kotlin-engineering"
       },
       "satisfiedAllowedActions": [
-        "Use kotlin-engineering for Kotlin invariants, package cohesion, Kast semantics, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
+        "Use kotlin-engineering for Kotlin invariants, package cohesion, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
         "Use engineering-baseline for generic executable-check TDD, repository onboarding, and instruction hygiene.",
         "Use developer-tools for host-neutral Git hygiene and shell-safe automation.",
         "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
@@ -925,52 +898,6 @@
     },
     {
       "type": "ROUTING_OBSERVATION",
-      "caseId": "kast-intellij-readiness-preserves-typed-blocker",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "kast-idea-backend-delivery"
-      },
-      "satisfiedAllowedActions": [
-        "Read Kast and backend-idea repository instructions and run context and readiness for the exact repository root.",
-        "Preserve the typed readiness blocker and use supported repository or direct Gradle validation that does not claim live IDEA semantic proof.",
-        "Distinguish built, installed, and active plugin states in the evidence."
-      ],
-      "satisfiedVerificationEvidence": [
-        "The run records exact-root context or readiness output.",
-        "The handoff names any unresolved IDEA blocker and does not overstate build, installation, or activation."
-      ],
-      "avoidedForbiddenActions": [
-        "Replace an IDEA backend blocker with an unsupported macOS headless fallback.",
-        "Repair global installations or consume stale fragments without repository authorization.",
-        "Claim the plugin is active because buildPlugin produced a ZIP."
-      ],
-      "notes": "A passing replay preserves exact-root authority and reports the unresolved lifecycle stage without unsupported fallback."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
-      "caseId": "kast-intellij-distribution-respects-module-ownership",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "kast-idea-backend-delivery"
-      },
-      "satisfiedAllowedActions": [
-        "Build and verify the unsigned plugin ZIP through backend-idea's existing Gradle contract.",
-        "Leave signing, update-feed generation, release publication, and channel policy to repository-level delivery workflows.",
-        "Report build, requested installation validation, and publication as separate proof stages."
-      ],
-      "satisfiedVerificationEvidence": [
-        "buildPlugin succeeds for backend-idea and identifies the produced ZIP.",
-        "The handoff separates unsigned build proof from installation, signing, feed, and publication evidence."
-      ],
-      "avoidedForbiddenActions": [
-        "Move signing credentials or release publication into backend-idea.",
-        "Treat a local development installation as release publication.",
-        "Claim a distributable release without repository-level signing and publication evidence when those stages are requested."
-      ],
-      "notes": "A passing replay keeps backend-idea on unsigned build ownership and leaves release stages to repository workflows."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
       "caseId": "intellij-ui-testing-uses-starter-driver-contract",
       "routedPrimitive": {
         "type": "SKILL",
@@ -994,30 +921,6 @@
         "Introduce legacy Remote Robot as the default when the repository has no existing Remote Robot contract."
       ],
       "notes": "A passing replay uses the integrated Starter and Driver path with semantic selectors, isolated lifecycle, and retained artifacts."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
-      "caseId": "kast-install-diagnosis-preserves-typed-state",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "kast-installation-diagnosis"
-      },
-      "satisfiedAllowedActions": [
-        "Resolve the supported public and administrative Kast commands before changing installation state.",
-        "Record Git, binary, plugin, runtime, exact-root readiness, and reference-index evidence as separate states.",
-        "Use the owning typed repair command and re-read every affected state after it completes."
-      ],
-      "satisfiedVerificationEvidence": [
-        "The run records the selected CLI and plugin versions plus the active backend.",
-        "The run records exact-root READY and reference-index readiness separately.",
-        "The final state comes from fresh supported-command output after repair."
-      ],
-      "avoidedForbiddenActions": [
-        "Rewrite installer-owned metadata or receipts by hand.",
-        "Treat a successful build, download, or process launch as exact-root semantic readiness.",
-        "Hide a typed blocker behind an unverified fallback or a generic success claim."
-      ],
-      "notes": "A passing replay keeps each Kast installation and semantic state separate and rechecks them after the owning repair."
     },
     {
       "type": "ROUTING_OBSERVATION",

@@ -15,7 +15,7 @@
   },
   "workspace": {
     "type": "PLUGIN_EVAL_WORKSPACE",
-    "sourcePath": "../kast",
+    "sourcePath": "../sample-intellij-plugin",
     "setupMode": "git-worktree",
     "preserve": "never"
   },
