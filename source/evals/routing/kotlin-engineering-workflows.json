@@ -41,7 +41,7 @@
         "Replace a raw string with another raw string plus comments or caller discipline.",
         "Claim Gradle proof without a successful focused command."
       ],
-      "recoveryExpectation": "A good run should leave filesystem evidence, a type-level invariant, and a focused Gradle result that can be compared across benchmark runs.",
+      "recoveryExpectation": "A good run should leave a type-level invariant and a focused Gradle result that can be compared across benchmark runs without extra workflow scaffolding.",
       "notes": "This case measures whether Kotlin Engineering changes the implementation path, not just whether it was mentioned.",
       "productiveOutcome": "Kotlin invariant changes are grounded in semantic evidence and type-level enforcement rather than search-and-replace edits.",
       "verificationEvidence": [
@@ -119,7 +119,7 @@
       },
       "allowedActions": [
         "Discover the Gradle module and choose a targeted task.",
-        "Use the kotlin-gradle-validation runner and report parsers when they are available.",
+        "Use native Gradle reports and the kotlin-gradle-validation parsers when they improve diagnosis.",
         "Read JUnit XML, Gradle problem reports, or Kotlin build reports when present.",
         "Report the exact successful Gradle command and relevant report path."
       ],
@@ -132,7 +132,7 @@
       "notes": "This case gives Kotlin Engineering an observable build-diagnosis behavior target.",
       "productiveOutcome": "Gradle failure repair gets faster and more reliable by using structured reports and focused reruns.",
       "verificationEvidence": [
-        "The run records runner JSON or parser JSON from kotlin-gradle-validation scripts when available.",
+        "The run uses native Gradle reports or parser output when console output is insufficient.",
         "The diagnosis cites JUnit XML, problem reports, Kotlin build reports, or their absence.",
         "The final result includes the smallest successful relevant Gradle command."
       ]
@@ -163,7 +163,7 @@
         ]
       },
       "allowedActions": [
-        "Create or update a negative-capability proof record when the helper is available.",
+        "Add one stable invariant check that fails while the misuse remains reachable and passes after the type change.",
         "Show the currently representable misuse before the fix.",
         "Move enforcement into Kotlin types, constructors, or sealed APIs.",
         "Show the post-change misuse is no longer reachable or no longer compiles."
@@ -177,8 +177,8 @@
       "notes": "This separates advanced Kotlin type-safety work from generic correctness testing.",
       "productiveOutcome": "Advanced type-safety work proves the invalid operation was removed, not merely that happy paths still pass.",
       "verificationEvidence": [
-        "The run records a proof JSON path or explains why the helper was unavailable.",
-        "The run records a before-state misuse or representable invalid state.",
+        "The run distinguishes a passing before-state characterization from the failing desired invariant check.",
+        "The same focused check specification is observed RED and GREEN.",
         "The after-state proof shows the misuse no longer compiles or is no longer constructible."
       ]
     },
@@ -192,42 +192,42 @@
           "source/concepts/kotlin-repository-engineering/core.md",
           "source/concepts/kotlin-code-correctness/core.md",
           "source/skills/kotlin-agentic-correctness/SKILL.md",
-          "source/skills/kotlin-agentic-correctness/scripts/kotlin_task_evidence"
+          "source/skills/tdd/references/isolation.md"
         ]
       },
-      "prompt": "Implement a behavior change in this multi-module Kotlin repository. Preserve proof-carrying validation across callers, keep implementation bindings out of pure modules, maintain scoped AGENTS.md guidance, and leave fresh executable red and green evidence before widening verification to affected consumers and the installed public artifact.",
+      "prompt": "Implement a behavior change in this multi-module Kotlin repository. Preserve proof-carrying validation across callers, keep implementation bindings out of pure modules, maintain scoped AGENTS.md guidance, and run one stable focused check RED and GREEN before widening verification to affected consumers and the installed public artifact. Do not create turn-local workflow files when repository-native tests and reports suffice.",
       "expectedPrimitive": {
         "type": "SKILL",
         "name": "kotlin-agentic-correctness"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
-        "summary": "Kotlin implementation can be locally correct while repository topology, task proof, child guidance, direct consumers, or the installed artifact remain stale.",
-        "risk": "The change can discard a validated representation across modules, couple pure APIs to one adapter, or claim completion from uncaptured tests and generated output that users never execute.",
+        "summary": "Kotlin implementation can be locally correct while repository topology, stable focused proof, child guidance, direct consumers, or the installed artifact remain stale.",
+        "risk": "The change can discard a validated representation across modules, couple pure APIs to one adapter, or spend effort manufacturing workflow artifacts instead of strengthening the executable check.",
         "loadedPrimitives": [
           "kotlin-agentic-correctness"
         ]
       },
       "allowedActions": [
         "Derive project membership and ownership from Gradle settings and current repository instructions.",
-        "Create five task definition files and capture current red and green proof outputs with the task authority scripts.",
+        "Run the same focused repository-native check specification RED and GREEN without duplicating it into task scripts.",
         "Carry each refined Kotlin value inward and document its transition, gained invariant, finite failure, and raw extraction boundary.",
         "Keep pure contracts inward, adapters outward, and the complete implementation selection in one minimal integration module.",
         "Update only scoped AGENTS.md files whose durable facts changed.",
         "Verify the focused behavior, owning module, direct consumers, generated boundaries, and installed public artifact when each ring is affected."
       ],
       "forbiddenActions": [
-        "Replace captured task proof with a prose summary or uncaptured command.",
+        "Create parallel task Markdown, red and green scripts, copied logs, or scorecards when repository-native evidence suffices.",
         "Return Boolean, Unit, null, the original primitive, or an arbitrary exception from a proof-carrying validation boundary.",
         "Expose adapter or framework types through a pure cross-module API.",
         "Copy repository-wide rules into every child AGENTS.md or create placeholder guides for grouping directories.",
         "Patch generated output when an authored source exists or present staged build output as installed-product proof."
       ],
-      "recoveryExpectation": "A good run should leave current task proof, preserved Kotlin refinements, mechanically defended dependency direction, accurate scoped guidance, and verification that widens only across changed contracts.",
+      "recoveryExpectation": "A good run should leave one comparable RED-to-GREEN check, preserved Kotlin refinements, mechanically defended dependency direction, accurate scoped guidance, and verification that widens only across changed contracts.",
       "notes": "This portable case generalizes the current Kast root AGENTS.md observed on 2026-08-23. Kast-specific module counts, macOS indexer versions, documentation tooling, and exact commands are deliberately excluded.",
       "productiveOutcome": "Kotlin repository changes remain locally focused while carrying enough executable and structural evidence to trust the affected module graph and public artifact.",
       "verificationEvidence": [
-        "kotlin_task_evidence check accepts current red-proof.out and green-proof.out for the numbered task.",
+        "One focused command with stable inputs fails for the intended missing behavior and passes after the narrow implementation.",
         "Changed parser and refiner callers consume stronger output types without primitive re-expansion.",
         "A dependency or public-API check rejects implementation leakage into pure modules.",
         "The root topology and nearest changed AGENTS.md files agree with current Gradle membership and ownership.",

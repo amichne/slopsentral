@@ -34,6 +34,8 @@ the nearest repository-local equivalent.
   evidence.
 - Do not refactor while red or add production behavior not demanded by the
   current check.
+- Do not create a workflow state directory merely to narrate the loop. The
+  check, test source, native reports, and concise handoff are the evidence.
 
 Read [executable-check-contract.md](references/executable-check-contract.md)
 when selecting or adapting a non-test command, qualifying a RED result, or
@@ -46,6 +48,8 @@ stabilizing the check specification.
    state from the desired state.
 3. Declare the check specification. Preflight the runner or dependencies
    separately when their readiness is uncertain.
+   Read [isolation.md](references/isolation.md) when the check mutates the
+   filesystem, depends on a service, or evaluates an agent in an untrusted task.
 4. Add or tighten the smallest check before changing the implementation.
 5. Run the declared command and inspect the failure. Accept RED only when it
    fails for the expected reason.
@@ -91,3 +95,6 @@ multi-agent handoffs, or work with several red-green cycles.
 - Read [deep-modules.md](references/deep-modules.md) when test friction suggests a shallow interface.
 - Read [refactoring.md](references/refactoring.md) only after GREEN when choosing cleanup moves.
 - Read [handoff.md](references/handoff.md) when evidence must survive interruption or transfer.
+- Read [isolation.md](references/isolation.md) when a temporary directory,
+  disposable worktree, service container, or containerized evaluation may be
+  needed.

@@ -11,7 +11,7 @@ instructions, and deduplicates the result into one actionable finding list.
 
 Use the `kotlin-code-correctness` instruction as the review acceptance
 standard. Copilot packages expose it as `instructions/kotlin-code-correctness.md`.
-Use `kotlin-repository-engineering` when module topology, task evidence,
+Use `kotlin-repository-engineering` when module topology, executable evidence,
 generated surfaces, repository guidance, or verification breadth changed.
 This skill owns review routing and finding synthesis, not the evergreen Kotlin
 policy itself.
@@ -31,7 +31,7 @@ Use these bundled primitives when they are available:
   shape, boundary parsing, package ownership, expected failures, state safety,
   and proof.
 - `kotlin-repository-engineering`: apply the stable instruction for Gradle
-  topology, module direction, session task proof, scoped `AGENTS.md`, generated
+  topology, module direction, focused change proof, scoped `AGENTS.md`, generated
   ownership, installed-artifact checks, and widening verification.
 - `type-safety` and `schema-driven-design`: use as normative instructions for
   invalid-state prevention and boundary assertions.

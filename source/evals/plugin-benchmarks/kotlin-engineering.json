@@ -77,7 +77,7 @@
       },
       "userInput": "Use Kotlin Engineering for this Kotlin repository. A Kotlin test fails in Gradle; diagnose the failure, fix it, and rerun the smallest useful Gradle task before saying it is green. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
-        "The run records kotlin-gradle-validation runner JSON or parser JSON when the bundled scripts are available.",
+        "The run uses native Gradle reports or parser output when console output is insufficient.",
         "The diagnosis cites JUnit XML, Gradle problem reports, Kotlin build reports, or explicitly records that they were absent.",
         "The fix is grounded in the failing test behavior, not only the first console line.",
         "The final answer includes the smallest successful relevant Gradle command."
@@ -97,8 +97,8 @@
       },
       "userInput": "Use Kotlin Engineering for this Kotlin repository. Prove that an invalid Kotlin operation used to be representable, then refactor the API so the same misuse no longer compiles. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
-        "The run records a negative-capability proof JSON path or explains why the helper was unavailable.",
-        "The run records a before-state misuse or representable invalid state.",
+        "The run distinguishes a passing before-state characterization from the failing desired invariant check.",
+        "The same focused check specification is observed RED and GREEN.",
         "The fix moves enforcement into Kotlin types, constructors, or sealed APIs.",
         "The after-state proof shows the misuse no longer compiles or is no longer constructible."
       ]
@@ -107,7 +107,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "kotlin-repository-task-and-topology-proof",
       "title": "Kotlin repository task and topology proof",
-      "purpose": "Measure whether Kotlin Engineering preserves task, refinement, module, instruction, consumer, and installed-artifact evidence across a multi-module behavior change.",
+      "purpose": "Measure whether Kotlin Engineering preserves comparable focused proof, refinement, module, instruction, consumer, and installed-artifact evidence without workflow-file churn.",
       "routingCaseIds": [
         "kotlin-repository-work-preserves-task-and-topology-proof"
       ],
@@ -115,9 +115,10 @@
         "type": "SKILL",
         "name": "kotlin-agentic-correctness"
       },
-      "userInput": "Use Kotlin Engineering to implement this multi-module behavior change. Preserve each validated Kotlin value as a stronger type across callers, keep concrete adapters out of pure module APIs, maintain only the AGENTS.md files whose durable facts changed, and leave fresh executable red and green task proof. Widen verification through the owning module, affected consumers, generated boundaries, and installed public artifact only where the changed contract requires it. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Kotlin Engineering to implement this multi-module behavior change. Preserve each validated Kotlin value as a stronger type across callers, keep concrete adapters out of pure module APIs, maintain only the AGENTS.md files whose durable facts changed, and run one stable focused command RED and GREEN. Widen verification through the owning module, affected consumers, generated boundaries, and installed public artifact only where the changed contract requires it. Do not create turn-local task files, commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
-        "The numbered task has five definition files and kotlin_task_evidence check accepts current red and green proof outputs.",
+        "One focused command with stable inputs fails for the intended missing behavior and passes after the narrow implementation.",
+        "The run does not create task Markdown, red and green scripts, copied logs, or scorecards solely to narrate the loop.",
         "Changed validation APIs document and return stronger types or closed typed failures, and callers consume those results.",
         "Pure modules expose domain-owned contracts while one minimal integration module selects concrete adapters.",
         "A mechanical dependency or public-API check rejects implementation leakage.",
