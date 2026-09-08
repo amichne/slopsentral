@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-07T10:55:56-04:00",
+  "generatedAt": "2026-09-08T14:34:28-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -62,14 +62,14 @@
         },
         {
           "name": "tdd",
-          "sha256": "sha256:abace65f08ffd1eb676907c501abb4743831281b4bb6cb76cee99ca8ab6b9581",
+          "sha256": "sha256:ff4c251f39e62d85489109b16152e66ebdc3349f7e5edb40f276b455bc8ffb5d",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/engineering-baseline/plugin.json",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "pkl-engineering",
@@ -265,14 +265,14 @@
         },
         {
           "name": "kotlin-repository-engineering",
-          "sha256": "sha256:0db005727404002c26bbd4422aa18dc2956ceda905f14cc6ae3dae2386613112",
+          "sha256": "sha256:bff1022898a9611adbe078318fd0062b07e6f4fc9d2c927908137bfa1de756a9",
           "sourcePath": "source/concepts/kotlin-repository-engineering/core.md",
           "targetPath": "instructions/kotlin-repository-engineering.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:c7daeaa5ed58d280381138ed6b64427ef43100c792f8a27f0e2da82c2c2bb532",
+          "sha256": "sha256:17c13b7236e36995cefd91b1f6c68dc2a41055aaefe7f5c2ceb061e2adc145e1",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
@@ -307,7 +307,7 @@
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:776c482225f62fceb63f90cff79d6c40b898962cd6a6d592af65b372607fcd03",
+          "sha256": "sha256:e268a0499774d52e7dde27c64b1cfe8addce2e49652936ef6ee8450f62b43f9c",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -321,21 +321,21 @@
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:9924bc804b99cfb0317bd7beeb3fbd7aab2209396bc8b28a5da734dde04cdbbe",
+          "sha256": "sha256:fc81cbb99721ce409b41fac1220ade58d7b04a071cb38314a3c69b414c49741a",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
           "type": "SKILL"
         },
         {
           "name": "negative-capability-proof",
-          "sha256": "sha256:aa2e6106758aafdcfd7c4830df759c810998c942c121bccfe79360da6f6f1414",
+          "sha256": "sha256:a0f8cd741badcf547ecbd8722a82067b96676eaa6ba678cb7b3929b7898ab71a",
           "sourcePath": "source/skills/negative-capability-proof",
           "targetPath": "skills/negative-capability-proof",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "developer-tools",
@@ -654,6 +654,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "73eb42326f353642845867d339b00cdf76c06905",
+  "sourceSha": "f0bbae7bdea2ca12e7ca842e6308794374bd675d",
   "type": "HYDRATED_MARKETPLACE"
 }

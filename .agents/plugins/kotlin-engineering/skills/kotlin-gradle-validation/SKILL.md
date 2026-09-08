@@ -1,127 +1,91 @@
 ---
 name: "kotlin-gradle-validation"
-description: "Iterate on Kotlin, JVM, and Gradle projects with structured build evidence. Use when running Gradle tasks, fixing failing tests, reading JUnit or JaCoCo reports, diagnosing Kotlin compilation or incremental-build problems, improving coverage, or getting a Kotlin/Gradle build green."
+description: "Diagnose and verify Kotlin or JVM Gradle builds with focused tasks and native reports. Use for failing tests, compiler diagnostics, build reports, coverage, or incremental-build problems."
 ---
 
 # Kotlin Gradle Validation
 
-Use this skill when Kotlin or JVM work needs a repeatable build/test loop. The
-workflow favors structured artifacts over raw console output: Gradle output is
-captured, test and coverage reports are parsed from files, and every fix is
-verified with the narrowest useful task before broad validation.
-
-Use the bundled scripts whenever they are available. They make the workflow
-observable: raw Gradle output goes to log files, report parsers emit JSON, and
-the final answer can cite evidence files instead of terminal scrollback.
+Use this skill for a repeatable Kotlin or JVM build/test loop. Prefer the
+repository's Gradle wrapper and native reports. Bundled parsers are optional
+projections over existing reports; the runner is optional when a long command
+needs a durable machine-readable handoff.
 
 ## Operating Contract
 
 - Discover the Gradle project before running broad tasks.
-- Prefer the Gradle wrapper in the target repo.
-- Capture command output to logs and summarize from structured artifacts when
-  possible.
+- Prefer the target repository's Gradle wrapper.
+- Let the invoking terminal or harness capture ordinary command output. Do not
+  create a second log merely to prove a short command ran.
 - Read JUnit XML, JaCoCo XML, Kotlin build reports, and Gradle problem reports
-  before interpreting console text.
-- Run targeted module or test tasks before rerunning full suites.
-- In CI, keep tasks that share the same JDK, Gradle user home, cache inputs,
-  daemon lifetime, permissions, and platform in one warm-state unit when their
-  outputs and failure policy align. Split only at a real artifact, platform,
-  permission, publication, or failure-domain boundary.
-- Route `needs`, matrix, OCI-consumer, and duration-budget changes through
-  `github-ci-operations`; local Gradle wall time is evidence, not a deterministic
-  workflow-performance gate.
-- Never claim the build is green until the relevant Gradle command exits
-  successfully.
-- Preserve schema-driven rules for generated or persisted build summaries.
-- Keep domain modeling, API shape, package cohesion, and expected-failure design
-  in the `kotlin-code-correctness` instruction and `kotlin-design-practices`; this
-  skill owns build evidence, report parsing, and Gradle iteration.
+  before interpreting incomplete console text.
+- Run targeted module or test tasks before full suites.
+- Never call a build green until the relevant Gradle command exits successfully.
+- Keep domain modeling and API shape in `kotlin-code-correctness`; keep CI
+  topology in `github-ci-operations`.
 
 ## Workflow
 
 1. Discover the build.
-   Read `settings.gradle(.kts)`, root build files, version catalogs, wrapper
-   properties, and module build files. Record modules, dependency edges, JDK,
-   Kotlin, Gradle, test frameworks, coverage tools, and notable plugins.
+   Read settings, root build files, wrapper properties, version catalogs, and
+   relevant module build files. Determine the JDK, Kotlin and Gradle versions,
+   test framework, plugins, and narrowest owning task.
 
-2. Establish the goal.
-   Make the acceptance criteria concrete: compile, specific test, full test
-   suite, coverage threshold, flaky test diagnosis, or incremental build
-   performance.
+2. Name the claim.
+   Choose one concrete target: compile, a specific test, module tests, coverage
+   threshold, flaky-test cause, or incremental-build behavior.
 
-3. Run the narrowest task.
-   Prefer `./gradlew :module:test --tests ...` or `:module:compileKotlin`
-   before full `test` or `build`. Use the runner so the command produces JSON
-   evidence and a log file:
+3. Run the narrowest command directly.
 
    ```bash
-   bash scripts/run_gradle_task.sh \
-     --repo . \
-     --task :module:test \
-     -- --tests 'com.example.FocusedTest'
+   ./gradlew :module:test --tests 'com.example.FocusedTest'
    ```
 
-   Use `--stacktrace` only when the structured report is insufficient.
+   Use `scripts/run_gradle_task.sh` only when the result must survive an
+   interruption or cross-process handoff. Use `--stacktrace` only when native
+   reports are insufficient.
 
-4. Parse artifacts.
-   Inspect:
+4. Read structured artifacts when diagnosis needs them.
 
-   - `python3 scripts/parse/junit_results .` for
-     `build/test-results/**/TEST-*.xml` failures;
-   - `python3 scripts/parse/jacoco_report .` for
-     `build/reports/jacoco/**/jacoco*.xml` coverage;
-   - `python3 scripts/parse/kotlin_build_report .` for Kotlin build reports
-     when incremental compilation matters;
-   - Gradle problem reports when configuration or deprecation issues appear.
+   - `scripts/parse/junit_results .` summarizes JUnit XML failures.
+   - `scripts/parse/jacoco_report .` summarizes JaCoCo XML.
+   - `scripts/parse/kotlin_build_report .` summarizes incremental compilation
+     causes.
+   - Gradle problem reports own configuration and deprecation details.
 
-5. Fix from evidence.
-   Map each failure to source, tests, configuration, or infrastructure. Avoid
-   broad refactors until the failing boundary is understood.
+   Parser stdout is enough for an uninterrupted turn; do not persist another
+   JSON file unless a caller requires one.
 
-6. Complete proportionate verification.
-   Run the required aggregate task when the repository or request requires it.
-   Otherwise widen beyond the targeted task only for affected dependencies, changed
-   public contracts, or a specific unresolved concern. Record commands and outcomes;
-   do not repeat an unchanged successful check merely to fill a sequence.
+5. Fix the narrow boundary.
+   Map evidence to source, test, configuration, or infrastructure. Do not hide a
+   focused failure behind a broad refactor or aggregate build.
+
+6. Verify proportionately.
+   Rerun the focused command. Widen to the owning module, direct consumers, or a
+   required aggregate task only when the changed contract reaches that ring. Do
+   not repeat an unchanged successful check merely to fill a sequence.
 
 ## Failure Handling
 
-- For compilation errors, inspect the first stable compiler diagnostic and the
-  referenced source before changing code.
-- For test failures, prefer assertion messages and stacktrace heads from JUnit
-  XML, then read the test and subject code.
-- For coverage gaps, start with the lowest covered classes or branches rather
-  than adding broad snapshot tests.
-- For configuration failures, check plugin versions, Gradle/JDK compatibility,
-  repository configuration, and generated sources.
-- For flaky tests, repeat the narrow task and look for time, randomness,
-  ordering, filesystem, network, or coroutine scheduler coupling.
+- Compilation: start with the first stable compiler diagnostic and source span.
+- Tests: start with JUnit assertion data and the relevant stacktrace head.
+- Coverage: inspect the lowest relevant class or branch; do not chase a number
+  with implementation-mirroring tests.
+- Configuration: check plugin, Gradle, and JDK compatibility plus generated
+  sources.
+- Flakiness: isolate time, randomness, ordering, filesystem, network, coroutine
+  scheduler, and shared-container coupling.
 
-## Evidence To Report
+## Completion
 
-Report:
-
-- discovery summary when it affected the command choice;
-- runner JSON, log files, commands run, and exit outcomes;
-- report parser JSON used for diagnosis;
-- failing tests or modules fixed;
-- remaining risk when full validation was not run.
-
-## Completion Criteria
-
-- The relevant Gradle task succeeds.
-- Test, coverage, or compile claims are backed by runner JSON, report parser
-  JSON, report files, or command output.
-- Fixes are scoped to the failure evidence.
-- Any generated summaries or persisted structured build data have a schema,
-  parser, or validation path.
+Report the exact commands and outcomes, native report paths or parser output
+used for diagnosis, the fixed boundary, and any wider validation not run. A
+claim is supported by the focused command result and relevant native artifact;
+runner JSON and copied logs are optional transport, not stronger proof.
 
 ## Script Map
 
-- `scripts/run_gradle_task.sh`: run one Gradle task with optional extra Gradle
-  arguments, capture raw output to a log, and emit structured JSON evidence.
-- `scripts/parse/junit_results`: summarize JUnit XML suites and failures.
-- `scripts/parse/jacoco_report`: summarize JaCoCo XML coverage and lowest
-  covered classes.
-- `scripts/parse/kotlin_build_report`: summarize Kotlin build reports and
-  non-incremental compilation causes.
+- `scripts/parse/junit_results`: JUnit XML failure summary.
+- `scripts/parse/jacoco_report`: JaCoCo XML coverage summary.
+- `scripts/parse/kotlin_build_report`: Kotlin build report summary.
+- `scripts/run_gradle_task.sh`: optional durable capture for a long-running or
+  transferred Gradle command.
