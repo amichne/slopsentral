@@ -90,8 +90,8 @@ and [`workitem link list`](https://developer.atlassian.com/cloud/acli/reference/
 | ID | Requirement | Acceptance evidence | Verification | Depends on |
 |---|---|---|---|---|
 | DEP-001 | Each edge MUST use one directional `BLOCKS` relation. | The source blocks the target in every edge. | CT, IT | G3 |
-| DEP-002 | Incoming blockers MUST become edges from the blocker to the root. | `KAST-7` to `KAST-42` is preserved. | CT | DEP-001 |
-| DEP-003 | Outgoing blockers MUST become edges from the root to the blocked issue. | `KAST-42` to `KAST-99` is preserved. | CT | DEP-001 |
+| DEP-002 | Incoming blockers MUST become edges from the blocker to the root. | `TASK-7` to `TASK-42` is preserved. | CT | DEP-001 |
+| DEP-003 | Outgoing blockers MUST become edges from the root to the blocked issue. | `TASK-42` to `TASK-99` is preserved. | CT | DEP-001 |
 | DEP-004 | Blocker links MUST remain distinct from containment. | Coverage marks hierarchy as `UNSUPPORTED`. | CT | DEP-001 |
 | DEP-005 | The map MUST declare a traversal depth of one. | Coverage contains `depth: 1`. | CT | DEP-001 |
 | DEP-006 | A direct map MUST NOT claim transitive completeness. | Coverage marks transitive traversal as `UNSUPPORTED`. | CT | DEP-005 |

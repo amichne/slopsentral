@@ -228,7 +228,7 @@
           "operation": "VIEW",
           "issue": {
             "type": "ISSUE_BACKEND_ISSUE",
-            "id": "KAST-42",
+            "id": "TASK-42",
             "title": "Add issue backend facade",
             "state": "In Progress"
           },
@@ -445,7 +445,7 @@
           "type": "string",
           "minLength": 1,
           "examples": [
-            "KAST-42"
+            "TASK-42"
           ]
         },
         "title": {
@@ -473,7 +473,7 @@
       "examples": [
         {
           "type": "ISSUE_BACKEND_ISSUE",
-          "id": "KAST-42",
+          "id": "TASK-42",
           "title": "Add issue backend facade",
           "state": "In Progress"
         }
@@ -500,7 +500,7 @@
           "type": "string",
           "minLength": 1,
           "examples": [
-            "KAST-7"
+            "TASK-7"
           ]
         },
         "title": {
@@ -514,7 +514,7 @@
       "examples": [
         {
           "type": "ISSUE_BACKEND_ISSUE_REFERENCE",
-          "id": "KAST-7",
+          "id": "TASK-7",
           "title": "Define the result schema"
         }
       ]
@@ -560,11 +560,11 @@
           "relation": "BLOCKS",
           "source": {
             "type": "ISSUE_BACKEND_ISSUE_REFERENCE",
-            "id": "KAST-7"
+            "id": "TASK-7"
           },
           "target": {
             "type": "ISSUE_BACKEND_ISSUE_REFERENCE",
-            "id": "KAST-42"
+            "id": "TASK-42"
           }
         }
       ]
@@ -659,7 +659,7 @@
           "type": "string",
           "minLength": 1,
           "examples": [
-            "KAST-42"
+            "TASK-42"
           ]
         },
         "edges": {
@@ -678,7 +678,7 @@
       "examples": [
         {
           "type": "ISSUE_BACKEND_DEPENDENCY_MAP",
-          "root": "KAST-42",
+          "root": "TASK-42",
           "edges": [],
           "coverage": {
             "type": "ISSUE_BACKEND_DEPENDENCY_COVERAGE",
@@ -733,7 +733,7 @@
               "jira",
               "workitem",
               "view",
-              "KAST-42",
+              "TASK-42",
               "--json"
             ]
           ]
@@ -753,7 +753,7 @@
             "jira",
             "workitem",
             "view",
-            "KAST-42",
+            "TASK-42",
             "--json"
           ],
           "exitCode": 0

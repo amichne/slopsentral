@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T14:34:28-04:00",
+  "generatedAt": "2026-09-08T18:38:04-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -272,7 +272,7 @@
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:17c13b7236e36995cefd91b1f6c68dc2a41055aaefe7f5c2ceb061e2adc145e1",
+          "sha256": "sha256:089ed916244e38f8a1954411c90bb1afb8ea6226df138d4a7d229cb77c03dde0",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
@@ -286,7 +286,7 @@
         },
         {
           "name": "kotlin-application-stack",
-          "sha256": "sha256:a1e6318cae4964edb1cf7238e97f413a46c46a05d2c0bf59c8772e436c9b419c",
+          "sha256": "sha256:9a95476ce69e222b1de9bf17ca7929c312c95160c3e21c70ac63e39d92fc67a4",
           "sourcePath": "source/skills/kotlin-application-stack",
           "targetPath": "skills/kotlin-application-stack",
           "type": "SKILL"
@@ -321,7 +321,7 @@
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:fc81cbb99721ce409b41fac1220ade58d7b04a071cb38314a3c69b414c49741a",
+          "sha256": "sha256:2eda77072b34b94d7df63de43fea9a9804fc8742b48bbe4b2dcc6eba22116ca0",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
           "type": "SKILL"
@@ -335,7 +335,7 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "1.1.0"
+      "version": "1.2.0"
     },
     {
       "name": "developer-tools",
@@ -398,14 +398,14 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:32c39e511723a9a41b1c4900fe1c83d995e30b834fff0f9dd867fa52144b8d7f",
+          "sha256": "sha256:b287f9fd7a6e679c03e5b778a8951ddbd559bd236691966fb4b82a42668f7ff3",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
         },
         {
           "name": "issue-tracker-operations",
-          "sha256": "sha256:3daa7ec476e7ed809a87baf8dce6c465e77799c05f74e10dc30c90f64f854624",
+          "sha256": "sha256:c14a8058471ad1449fc75ef719b5f6672f7e05331bc05359fd49099d1278616f",
           "sourcePath": "source/skills/issue-tracker-operations",
           "targetPath": "skills/issue-tracker-operations",
           "type": "SKILL"
@@ -419,7 +419,7 @@
         }
       ],
       "sourceManifest": "source/plugins/effective-delivery/plugin.json",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "name": "agent-platform-authoring",
@@ -608,52 +608,10 @@
         }
       ],
       "sourceManifest": "source/plugins/intellij-engineering/plugin.json",
-      "version": "1.0.0"
-    },
-    {
-      "name": "kast-operations",
-      "references": [
-        {
-          "name": "kast-idea-backend-delivery",
-          "sha256": "sha256:251eef3b5e124224e36afb925a2bb025ed225d7bdbabfb47f61207cb1c553278",
-          "sourcePath": "source/skills/kast-idea-backend-delivery",
-          "targetPath": "skills/kast-idea-backend-delivery",
-          "type": "SKILL"
-        },
-        {
-          "name": "kast-installation-diagnosis",
-          "sha256": "sha256:a828b8a3c617b283d436325e6169c766445c0e0f3bb52dc6956a69bcabd8ca5e",
-          "sourcePath": "source/skills/kast-installation-diagnosis",
-          "targetPath": "skills/kast-installation-diagnosis",
-          "type": "SKILL"
-        },
-        {
-          "name": "kast-kotlin-structural-analysis",
-          "sha256": "sha256:978c0c3b7df522707e74f511b095e46146266ac493398eda875f95efeb6fb187",
-          "sourcePath": "source/skills/kast-kotlin-structural-analysis",
-          "targetPath": "skills/kast-kotlin-structural-analysis",
-          "type": "SKILL"
-        },
-        {
-          "name": "kast-performance-assessment",
-          "sha256": "sha256:3aa5f2ffbaefabfe9f128af7bdded9db8dc48f8e699a97f763c91121c628e3d7",
-          "sourcePath": "source/skills/kast-performance-assessment",
-          "targetPath": "skills/kast-performance-assessment",
-          "type": "SKILL"
-        },
-        {
-          "name": "sqlite-readonly-navigation",
-          "sha256": "sha256:0ea44cd846e482a01b3e5db51cdec9f1390a3eba942c135eb7b7d59718c29354",
-          "sourcePath": "source/skills/sqlite-readonly-navigation",
-          "targetPath": "skills/sqlite-readonly-navigation",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/kast-operations/plugin.json",
-      "version": "1.0.0"
+      "version": "1.0.1"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "f0bbae7bdea2ca12e7ca842e6308794374bd675d",
+  "sourceSha": "661e4ad0723a0d3ad4516e1c97f98aa06be2c8fc",
   "type": "HYDRATED_MARKETPLACE"
 }
