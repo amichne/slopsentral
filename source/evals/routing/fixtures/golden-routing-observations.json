@@ -388,14 +388,14 @@
         "name": "negative-capability-proof"
       },
       "satisfiedAllowedActions": [
-        "Create or update a negative-capability proof record when the helper is available.",
+        "Add one stable invariant check that fails while the misuse remains reachable and passes after the type change.",
         "Show the currently representable misuse before the fix.",
         "Move enforcement into Kotlin types, constructors, or sealed APIs.",
         "Show the post-change misuse is no longer reachable or no longer compiles."
       ],
       "satisfiedVerificationEvidence": [
-        "The run records a proof JSON path or explains why the helper was unavailable.",
-        "The run records a before-state misuse or representable invalid state.",
+        "The run distinguishes a passing before-state characterization from the failing desired invariant check.",
+        "The same focused check specification is observed RED and GREEN.",
         "The after-state proof shows the misuse no longer compiles or is no longer constructible."
       ],
       "avoidedForbiddenActions": [
@@ -414,27 +414,27 @@
       },
       "satisfiedAllowedActions": [
         "Derive project membership and ownership from Gradle settings and current repository instructions.",
-        "Create five task definition files and capture current red and green proof outputs with the task authority scripts.",
+        "Run the same focused repository-native check specification RED and GREEN without duplicating it into task scripts.",
         "Carry each refined Kotlin value inward and document its transition, gained invariant, finite failure, and raw extraction boundary.",
         "Keep pure contracts inward, adapters outward, and the complete implementation selection in one minimal integration module.",
         "Update only scoped AGENTS.md files whose durable facts changed.",
         "Verify the focused behavior, owning module, direct consumers, generated boundaries, and installed public artifact when each ring is affected."
       ],
       "satisfiedVerificationEvidence": [
-        "kotlin_task_evidence check accepts current red-proof.out and green-proof.out for the numbered task.",
+        "One focused command with stable inputs fails for the intended missing behavior and passes after the narrow implementation.",
         "Changed parser and refiner callers consume stronger output types without primitive re-expansion.",
         "A dependency or public-API check rejects implementation leakage into pure modules.",
         "The root topology and nearest changed AGENTS.md files agree with current Gradle membership and ownership.",
         "Focused, owner, consumer, generated-boundary, and installed-artifact observations are recorded when their contracts changed."
       ],
       "avoidedForbiddenActions": [
-        "Replace captured task proof with a prose summary or uncaptured command.",
+        "Create parallel task Markdown, red and green scripts, copied logs, or scorecards when repository-native evidence suffices.",
         "Return Boolean, Unit, null, the original primitive, or an arbitrary exception from a proof-carrying validation boundary.",
         "Expose adapter or framework types through a pure cross-module API.",
         "Copy repository-wide rules into every child AGENTS.md or create placeholder guides for grouping directories.",
         "Patch generated output when an authored source exists or present staged build output as installed-product proof."
       ],
-      "notes": "A passing replay preserves task proof, Kotlin refinements, module direction, scoped instructions, and verification across each changed contract."
+      "notes": "A passing replay preserves comparable focused proof, Kotlin refinements, module direction, scoped instructions, and verification across each changed contract without workflow-file churn."
     },
     {
       "type": "ROUTING_OBSERVATION",
