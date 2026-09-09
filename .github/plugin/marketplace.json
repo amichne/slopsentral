@@ -140,7 +140,6 @@
       "category": "Coding",
       "description": "Kotlin implementation, API design, and compiler-backed review.",
       "keywords": [
-        "agents",
         "api-design",
         "best-practices",
         "cli",
@@ -176,7 +175,6 @@
       "source": "kotlin-engineering",
       "strict": true,
       "tags": [
-        "agents",
         "api-design",
         "best-practices",
         "cli",

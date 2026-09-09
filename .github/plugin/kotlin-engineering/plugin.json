@@ -1,5 +1,4 @@
 {
-  "agents": "./agents",
   "author": {
     "name": "Amichne"
   },
@@ -7,7 +6,6 @@
   "description": "Kotlin implementation, API design, and compiler-backed review.",
   "hooks": "./hooks.json",
   "keywords": [
-    "agents",
     "api-design",
     "best-practices",
     "cli",
@@ -42,7 +40,6 @@
   "name": "kotlin-engineering",
   "skills": "./skills",
   "tags": [
-    "agents",
     "api-design",
     "best-practices",
     "cli",

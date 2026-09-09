@@ -1,122 +1,108 @@
 ---
 name: kotlin-review
-description: Use when reviewing Kotlin diffs, PRs, or changed files for type safety, proof-carrying refinement, module boundaries, scoped repository guidance, package cohesion, duplication, primitive traps, or expected failures.
+description: Use when reviewing Kotlin diffs, PRs, or changed files for lost invariants, invalid states, branch correctness, typed failures, or boundary ownership; not for implementing fixes or routine Gradle diagnosis.
 ---
 
 # Kotlin Review
 
-Use this skill as the orchestration layer for Kotlin review. It routes a Kotlin
-change through focused review passes, applies the local type and schema
-instructions, and deduplicates the result into one actionable finding list.
+Review the change for Kotlin contracts that no longer retain what the program
+has already proved. Start from behavior and domain meaning, then use Kotlin's
+type and branch semantics to determine whether an issue is mechanically real.
 
-Use the `kotlin-engineering` instruction as the review acceptance standard.
-Copilot packages expose it as `instructions/kotlin-engineering.md`. It also
-owns module topology, executable evidence, generated surfaces, repository
-guidance, and verification breadth.
-This skill owns review routing and finding synthesis, not the evergreen Kotlin
-policy itself.
+## Operating Contract
 
-## Building Blocks
-
-Use these bundled primitives when they are available:
-
-- `kotlin-review-captain`: coordinate broad or end-of-turn Kotlin review.
-- `kotlin-type-safety-reviewer`: audit domain modeling, nullability, primitive
-  identifiers, expected failures, and visibility.
-- `kotlin-boundary-contract-reviewer`: audit public APIs, adapters, CLI,
-  serialization, persistence, HTTP, messaging, SDK, and interop boundaries.
-- `kotlin-package-cohesion-reviewer`: audit package topology, prefix-heavy
-  directories, multi-member files, and horizontal layer buckets.
-- `kotlin-engineering`: apply the stable instruction for Kotlin domain shape,
-  boundary parsing, package and Gradle ownership, expected failures, state
-  safety, focused proof, and widening verification.
-- `engineering-design` and `api-contract-design`: use as normative instructions
-  for invalid-state prevention and boundary assertions.
-- `kotlin-design-practices`: load for detailed Kotlin layout, API, idiom, and testing
-  references when the review needs more than the focused agent profiles.
-
-If multi-agent tools are available and the review is non-trivial, invoke only
-the focused reviewers whose triggers match the changed code. If those tools are
-not available, apply the corresponding agent profile manually from the bundled
-agent files.
+- Review the changed code and the smallest call paths needed to establish
+  behavior. Read repository instructions first and check the configured Kotlin
+  language version before relying on version-specific syntax.
+- Keep tiny, obvious, function-local facts local. Allow raw primitives, nullable
+  boundary values or true absence, DTOs, and external strings at trust
+  boundaries. Once parsing, validation, normalization, authorization, lookup,
+  or a state check succeeds, require any non-local fact to survive in the value
+  or function contract that crosses the boundary.
+- Prefer the smallest Kotlin proof carrier that prevents the named misuse:
+  constrained value class, enum, sealed hierarchy, private construction,
+  state-specific type, capability-specific interface, or typed outcome. Do not
+  prescribe generic wrappers or extra abstractions without a concrete invalid
+  state to exclude.
+- Treat expected failures as finite data. Reserve exceptions for defects,
+  violated internal assertions, platform contracts, and exceptional runtime
+  failures.
+- Keep pure domain decisions independent of filesystem, network, clock,
+  process, persistence, and framework effects. A package or naming heuristic is
+  supporting evidence, never proof of a defect.
+- Report only findings with a reachable impact and a proportionate fix. Do not
+  modify the code unless the user also asks for fixes.
 
 ## Workflow
 
-1. Scope the review.
-   Read the nearest repository instructions, identify changed Kotlin files with
-   `git diff` or the user-provided paths, and inspect only the smallest
-   surrounding context needed to understand public behavior.
+1. **Scope the change.** Inspect the diff or requested files, their public
+   contracts, direct callers, relevant tests, and owning package or module. Name
+   any generated or external boundary that limits the review.
 
-2. Load the `kotlin-engineering` instruction when the diff needs a stable Kotlin
-   standard beyond a narrow agent profile, including repository-level ownership,
-   proof, or verification contracts.
+2. **Trace established facts.** For each changed parse, check, lookup,
+   normalization, authorization, or transition, name the gained fact, where it
+   is discarded, the boundary it crosses, and the misuse that remains possible.
+   A check that returns `Boolean`, `Unit`, `null`, or the original primitive does
+   not carry its proof forward when later code depends on that success.
 
-3. Route review passes.
-   Use the captain for broad review or when multiple axes apply. Use focused
-   reviewers directly for narrow requests: type safety, boundary contracts, or
-   package cohesion.
+3. **Inspect the domain shape.** Ask whether distinct same-shaped values can be
+   exchanged, invalid instances can be constructed, nullable fields encode
+   multiple states, or flags and call order encode a lifecycle. Verify that one
+   type or package owns construction and that raw extraction is confined to an
+   explicit adapter.
 
-4. Run a duplication and generalization pass.
-   Look for repeated parser/validation logic, DTO-domain mapping, lifecycle
-   rules, parallel metadata catalogs, repeated leading filename prefixes,
-   duplicated tests, and multiple constructors or factories enforcing the same
-   invariant. Prefer one named owner only when the shared concept, lifecycle,
-   dependency direction, and verification surface are clear.
+4. **Audit branches as behavior.** Identify the classified value, all cases,
+   predicates, effects, evaluation order, and cleanup. Prefer a subject `when`
+   for one classified value; keep unrelated predicates in an `if` chain or
+   subjectless `when`. Closed Kotlin domains should be exhaustive without a
+   catch-all; open external input needs a deliberate unknown case before it is
+   translated into a closed local type. A guarded subtype branch must retain an
+   unguarded branch for its remainder. Early returns and rewrites must preserve
+   smart casts, exception behavior, `use` and `finally` cleanup, and transaction
+   boundaries without `!!`, unchecked casts, or mutable staging.
 
-5. Deduplicate findings.
-   If one package move, parser extraction, sealed type, value class, or boundary
-   assertion fixes several symptoms, report it as one finding with the combined
-   rationale. Do not split type, boundary, cohesion, and duplication findings
-   when the same change is the meaningful fix.
+5. **Follow the stronger value.** Check that callers consume the refined type or
+   closed outcome rather than unpacking it immediately, repeating guards, or
+   reconstructing primitive protocols across public APIs, modules,
+   serialization, persistence, or interop seams.
 
-6. Verify review evidence.
-   Use file paths, line numbers, type signatures, package counts, call sites,
-   tests, compiler output, or Gradle evidence. For pure review, do not run
-   broad validation unless the user asks or the risk justifies it. If fixes are
-   made, use `kotlin-gradle-validation` for the narrowest useful proof.
+6. **Establish evidence.** Support each finding with a type signature, reachable
+   call path, branch case, test, compiler diagnostic, or focused executable
+   check. Prefer a fix that makes the old misuse stop compiling or makes every
+   outcome require exhaustive handling. For review-only work, do not run broad
+   validation without a concrete need.
+
+7. **Synthesize by root cause.** Merge symptoms when one invariant owner,
+   parser, sealed outcome, state-specific type, or branch correction resolves
+   them. Order findings by impact; do not invent findings to fill a category.
 
 ## Finding Standard
 
-Lead with findings ordered by severity. Every finding must include:
+Lead with findings. Each finding includes:
 
-- severity;
-- file and line or package directory;
-- object under review;
-- criteria;
-- evidence;
-- baseline or nearest local pattern;
-- confidence;
-- proposed fix;
-- proof that would confirm the fix.
+- severity and `file:line`;
+- the reachable behavior or contract at risk;
+- the established fact that is lost, or the branch case whose behavior changes;
+- concrete source evidence and confidence;
+- the smallest Kotlin-shaped correction; and
+- the compiler check or focused test that would prove the correction.
 
-If no issue is justified, say that directly and name residual uncertainty such
-as missing call-site context, tests not run, generated code, or incomplete diff
-coverage.
+Use `P0` for reachable catastrophic loss or authority bypass, `P1` for a
+demonstrated correctness or public-contract defect, and `P2` for a concrete
+maintainability or verification gap. Omit preference-only style notes.
 
-## Severity
+If no finding is justified, say so directly. Report the files and behavior
+reviewed, evidence used, and residual uncertainty such as uninspected generated
+code, missing call sites, unsupported language-version assumptions, or tests not
+run.
 
-- `P0`: invalid domain state can be constructed, routine boundary failures are
-  invisible, or package shape hides an obvious subdomain behind 8 or more direct
-  peer Kotlin files.
-- `P1`: semantic nulls, primitive obsession, duplicated parser/invariant logic,
-  untyped expected failures, DTO leakage into core code, or a package root over
-  5 direct Kotlin files without a documented reason.
-- `P2`: repeated prefixes, duplicated mappers/tests, multi-member files, weak
-  visibility, or extraction candidates that create avoidable review risk but do
-  not immediately break behavior.
-- `P3`: local cleanup, naming, or layout polish that should not block the turn.
+## Completion Criteria
 
-## Review Output
-
-Use this shape:
-
-```markdown
-## Findings
-- [Severity] [file:line] [finding with criteria, evidence, baseline, confidence, fix, and proof]
-
-## Verification
-- [Commands, diffs, files, or reason verification was not run]
-
-## Residual Risk
-- [Only what remains uncertain]
-```
+- Every finding names a reachable misuse or behavior change, not merely a weak
+  representation in isolation.
+- Recommended fixes preserve established facts and existing effects while
+  reducing representable invalid states.
+- Closed branches remain exhaustive, open inputs retain an explicit fallback,
+  and guarded cases retain their remainder.
+- Evidence strength is stated accurately; review judgment is not presented as
+  compiler proof.
