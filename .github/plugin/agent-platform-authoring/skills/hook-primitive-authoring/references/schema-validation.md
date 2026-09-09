@@ -10,7 +10,7 @@ source graph validator checks hook references, executable paths, adapter command
 shape, dependency references, and schema-linked hook requirement sidecars:
 
 ```sh
-node source/tools/validate-source-graph.mjs
+node tools/validate-source-graph.mjs
 ```
 
 Adapter projections under `source/hooks/<adapter>/` must still parse as JSON and
@@ -25,7 +25,7 @@ owning schema before treating the artifact as accepted.
 ## Validation Checklist
 
 - `source/hooks/<name>.hook.json` parses as JSON.
-- Hook metadata is covered by `node source/tools/validate-source-graph.mjs`.
+- Hook metadata is covered by `node tools/validate-source-graph.mjs`.
 - Adapter projections under `source/hooks/codex/*.json` parse as JSON and call
   existing hook scripts through supported command runners.
 - Every local `path` exists.

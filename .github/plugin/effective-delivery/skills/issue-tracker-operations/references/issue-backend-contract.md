@@ -140,8 +140,8 @@ remains the validation authority.
 | `python3 -m unittest discover -s source/skills/issue-tracker-operations/scripts/tests -p 'test_*.py'` | CFG-001 through CFG-005, CAP-001, GH-001 through GH-003, JIR-001 through JIR-003, DEP-001 through DEP-006, OUT-001 through OUT-005, FLR-001, FLR-002, MUT-001, MUT-002, NGL-002 through NGL-004 |
 | `node source/skills/manage-json-schemas/scripts/schema-contracts.js policy --schema source/skills/issue-tracker-operations/references/issue-backend-result.schema.json` | OUT-001, OUT-002 |
 | `schema-contracts.js validate` against each file under `references/examples` | OUT-001 through OUT-005, FLR-001, FLR-002 |
-| `node --test source/tools/tests/effective-delivery-plugin.test.mjs` | JIR-004, CAP-002 |
-| `node source/tools/validate-source-graph.mjs` | CTL-003, JIR-004 |
+| `node --test tools/tests/effective-delivery-plugin.test.mjs` | JIR-004, CAP-002 |
+| `node tools/validate-source-graph.mjs` | CTL-003, JIR-004 |
 | `git diff --check` | CTL-003 |
 
 ## 11. Red-green acceptance
