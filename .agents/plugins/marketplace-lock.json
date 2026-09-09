@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-09T09:52:01-04:00",
+  "generatedAt": "2026-09-09T11:31:03-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -180,34 +180,6 @@
       "name": "kotlin-engineering",
       "references": [
         {
-          "name": "kotlin-boundary-contract-reviewer",
-          "sha256": "sha256:498f6e84ecc01b51337d19cbf76983f20d1df29dafea0e0e7b58a2e78befadc6",
-          "sourcePath": "source/agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
-          "targetPath": "agents/kotlin-boundary-contract-reviewer.agent.md",
-          "type": "AGENT"
-        },
-        {
-          "name": "kotlin-package-cohesion-reviewer",
-          "sha256": "sha256:f115e7db9e1d8ca21412a7285ace0c13af5dcf73e5a24202aabe0f6acd1b45db",
-          "sourcePath": "source/agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
-          "targetPath": "agents/kotlin-package-cohesion-reviewer.agent.md",
-          "type": "AGENT"
-        },
-        {
-          "name": "kotlin-review-captain",
-          "sha256": "sha256:4c1e19613eaa2afb66dbe37f675d476e3ddc2318e14feaa567a8ae4188945e47",
-          "sourcePath": "source/agents/kotlin-review/kotlin-review-captain.agent.md",
-          "targetPath": "agents/kotlin-review-captain.agent.md",
-          "type": "AGENT"
-        },
-        {
-          "name": "kotlin-type-safety-reviewer",
-          "sha256": "sha256:264eca3173664350a5168cc24b6939a694e64be1e869acd51530d4688228873f",
-          "sourcePath": "source/agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
-          "targetPath": "agents/kotlin-type-safety-reviewer.agent.md",
-          "type": "AGENT"
-        },
-        {
           "name": "gradle-check-green",
           "sha256": "sha256:147ea9c8c80776868fe4a933036f7edecd1d4718fc6a02869801af6a0bab4679",
           "sourcePath": "source/hooks/gradle-check-green.hook.json",
@@ -286,7 +258,7 @@
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:12a179b295b34e4f3393805cef1d176ea3e68a0057dcb030c76c6289745aa73d",
+          "sha256": "sha256:e3407a00eda2f499aa7787d55ea7d014fd060602b827201a0edb13c73216b69d",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
           "type": "SKILL"
@@ -584,6 +556,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "20e16082c24cb0cd51ea1a18aaedc6e465c3d311",
+  "sourceSha": "cf18597f4ffc72d795d394b1aee77605535c2890",
   "type": "HYDRATED_MARKETPLACE"
 }

@@ -17,15 +17,6 @@
         "type": "LOCAL_SOURCE"
       },
       "type": "SKILL"
-    },
-    {
-      "name": "kotlin-package-cohesion-reviewer",
-      "path": "agents/kotlin-package-cohesion-reviewer.agent.md",
-      "source": {
-        "path": "./",
-        "type": "LOCAL_SOURCE"
-      },
-      "type": "AGENT"
     }
   ],
   "name": "kotlin-horizontalization-check",

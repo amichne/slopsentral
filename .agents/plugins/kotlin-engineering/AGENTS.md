@@ -25,13 +25,6 @@ Kotlin implementation, API design, and compiler-backed review.
 
 - `kotlin-engineering`: `instructions/kotlin-engineering.md` (source: `source/instructions/kotlin-engineering.md`)
 
-## Agent Profile Primitives
-
-- `kotlin-boundary-contract-reviewer`: `agents/kotlin-boundary-contract-reviewer.agent.md` (source: `source/agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md`)
-- `kotlin-package-cohesion-reviewer`: `agents/kotlin-package-cohesion-reviewer.agent.md` (source: `source/agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md`)
-- `kotlin-review-captain`: `agents/kotlin-review-captain.agent.md` (source: `source/agents/kotlin-review/kotlin-review-captain.agent.md`)
-- `kotlin-type-safety-reviewer`: `agents/kotlin-type-safety-reviewer.agent.md` (source: `source/agents/kotlin-review/kotlin-type-safety-reviewer.agent.md`)
-
 ## Skill Primitives
 
 - `kotlin-agentic-correctness`: `skills/kotlin-agentic-correctness` (source: `source/skills/kotlin-agentic-correctness`)
