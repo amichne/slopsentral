@@ -24,15 +24,6 @@
       },
       "path": "skills/kotlin-design-practices",
       "name": "kotlin-design-practices"
-    },
-    {
-      "type": "AGENT",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
-      "name": "kotlin-package-cohesion-reviewer"
     }
   ]
 }

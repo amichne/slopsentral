@@ -110,7 +110,6 @@
       },
       "description": "Kotlin implementation, API design, and compiler-backed review.",
       "tags": [
-        "agents",
         "api-design",
         "best-practices",
         "cli",
@@ -589,63 +588,7 @@
         "path": "./"
       },
       "path": "skills/kotlin-review",
-      "name": "kotlin-review",
-      "dependsOn": [
-        {
-          "type": "SKILL",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "skills/kotlin-design-practices",
-          "name": "kotlin-design-practices"
-        },
-        {
-          "type": "SKILL",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "skills/kotlin-gradle-validation",
-          "name": "kotlin-gradle-validation"
-        },
-        {
-          "type": "AGENT",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "agents/kotlin-review/kotlin-review-captain.agent.md",
-          "name": "kotlin-review-captain"
-        },
-        {
-          "type": "AGENT",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
-          "name": "kotlin-type-safety-reviewer"
-        },
-        {
-          "type": "AGENT",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
-          "name": "kotlin-boundary-contract-reviewer"
-        },
-        {
-          "type": "AGENT",
-          "source": {
-            "type": "LOCAL_SOURCE",
-            "path": "./"
-          },
-          "path": "agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
-          "name": "kotlin-package-cohesion-reviewer"
-        }
-      ]
+      "name": "kotlin-review"
     },
     {
       "type": "SKILL",
@@ -946,42 +889,6 @@
     }
   ],
   "agents": [
-    {
-      "type": "AGENT",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "agents/kotlin-review/kotlin-review-captain.agent.md",
-      "name": "kotlin-review-captain"
-    },
-    {
-      "type": "AGENT",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
-      "name": "kotlin-type-safety-reviewer"
-    },
-    {
-      "type": "AGENT",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
-      "name": "kotlin-boundary-contract-reviewer"
-    },
-    {
-      "type": "AGENT",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
-      "name": "kotlin-package-cohesion-reviewer"
-    },
     {
       "type": "AGENT",
       "source": {

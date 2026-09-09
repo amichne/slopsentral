@@ -81,8 +81,6 @@ Outside this workstream: Hosted delivery, generic shell configuration, and Intel
 
 **Skills:** [kotlin-agentic-correctness](skills/kotlin-agentic-correctness/SKILL.md), [kotlin-api-surface-design](skills/kotlin-api-surface-design/SKILL.md), [kotlin-application-stack](skills/kotlin-application-stack/SKILL.md), [kotlin-branching](skills/kotlin-branching/SKILL.md), [kotlin-design-practices](skills/kotlin-design-practices/SKILL.md), [kotlin-gradle-validation](skills/kotlin-gradle-validation/SKILL.md), [kotlin-observability-design](skills/kotlin-observability-design/SKILL.md), [kotlin-review](skills/kotlin-review/SKILL.md), [negative-capability-proof](skills/negative-capability-proof/SKILL.md).
 
-**Agents:** [kotlin-boundary-contract-reviewer](agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md), [kotlin-package-cohesion-reviewer](agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md), [kotlin-review-captain](agents/kotlin-review/kotlin-review-captain.agent.md), [kotlin-type-safety-reviewer](agents/kotlin-review/kotlin-type-safety-reviewer.agent.md).
-
 **Hooks:** [gradle-check-green](hooks/gradle-check-green.hook.json), [gradle-wrapper-integrity](hooks/gradle-wrapper-integrity.hook.json), [kotlin-horizontalization-check](hooks/kotlin-horizontalization-check.hook.json).
 
 **Instructions:** [kotlin-engineering](instructions/kotlin-engineering.md).

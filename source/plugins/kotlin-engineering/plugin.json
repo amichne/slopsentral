@@ -92,44 +92,7 @@
       "name": "kotlin-branching"
     }
   ],
-  "agents": [
-    {
-      "type": "AGENT",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "agents/kotlin-review/kotlin-review-captain.agent.md",
-      "name": "kotlin-review-captain"
-    },
-    {
-      "type": "AGENT",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
-      "name": "kotlin-type-safety-reviewer"
-    },
-    {
-      "type": "AGENT",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
-      "name": "kotlin-boundary-contract-reviewer"
-    },
-    {
-      "type": "AGENT",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md",
-      "name": "kotlin-package-cohesion-reviewer"
-    }
-  ],
+  "agents": [],
   "instructions": [
     {
       "type": "INSTRUCTION",
