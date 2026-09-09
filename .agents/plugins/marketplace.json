@@ -101,6 +101,18 @@
       }
     },
     {
+      "category": "Engineering",
+      "name": "skill-read-policy",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/skill-read-policy",
+        "source": "local"
+      }
+    },
+    {
       "category": "Productivity",
       "name": "terminal-ui-design",
       "policy": {

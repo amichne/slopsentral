@@ -6,9 +6,9 @@ description: Use for Kotlin implementation or review where type-level invariants
 # Kotlin Agentic Correctness
 
 Coordinate the Kotlin-specific decisions that change implementation shape. Stable
-language policy lives in `kotlin-code-correctness`; repository topology and
-verification breadth live in `kotlin-repository-engineering`. Do not restate
-those policies as turn-local task files.
+language policy, repository topology, and verification breadth live in the
+`kotlin-engineering` instruction. Do not restate that policy as a turn-local
+task file.
 
 ## Operating Contract
 
@@ -58,8 +58,7 @@ workflow filesystem.
 
 ## Reference Map
 
-- Stable Kotlin policy: `kotlin-code-correctness`
-- Repository topology and widening: `kotlin-repository-engineering`
+- Stable Kotlin policy, repository topology, and widening: `kotlin-engineering`
 - Executable-check discipline and isolation: `tdd`
 - Gradle failure diagnosis: `kotlin-gradle-validation`
 - Type-system before/after proof: `negative-capability-proof`

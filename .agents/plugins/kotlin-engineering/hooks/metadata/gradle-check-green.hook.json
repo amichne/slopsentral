@@ -1,8 +1,8 @@
 {
   "dependsOn": [
     {
-      "name": "kotlin-code-correctness",
-      "path": "instructions/kotlin-code-correctness.md",
+      "name": "kotlin-engineering",
+      "path": "instructions/kotlin-engineering.md",
       "source": {
         "path": "./",
         "type": "LOCAL_SOURCE"

@@ -23,8 +23,8 @@ Engineering outcomes, semantic design, and verification.
 
 ## Instruction Primitives
 
-- `type-safety`: `instructions/type-safety.md` (source: `source/concepts/type-safety/core.md`)
 - `agent-execution`: `instructions/agent-execution.md` (source: `source/instructions/agent-execution.md`)
+- `engineering-design`: `instructions/engineering-design.md` (source: `source/instructions/engineering-design.md`)
 
 ## Skill Primitives
 
@@ -37,4 +37,3 @@ Engineering outcomes, semantic design, and verification.
 ## Hook Primitives
 
 - `agents-md-turn-refresh`: `hooks/agents-md-turn-refresh.hooks.json` (source: `source/hooks/agents-md-turn-refresh.hook.json`)
-- `type-safety-context`: `hooks/type-safety-context.hooks.json` (source: `source/hooks/type-safety-context.hook.json`)

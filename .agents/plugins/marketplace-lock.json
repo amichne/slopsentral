@@ -1,35 +1,28 @@
 {
-  "generatedAt": "2026-09-08T23:03:13-04:00",
+  "generatedAt": "2026-09-09T09:52:01-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
       "references": [
         {
           "name": "agents-md-turn-refresh",
-          "sha256": "sha256:d8e2799bd79ac8939f5ba7cd0e4381dd194169532d1cdef56b674677a0397cd1",
+          "sha256": "sha256:da0c2ef476c4965aa1a83926911db31bbe5ab0db159619816b066f51f37cf79a",
           "sourcePath": "source/hooks/agents-md-turn-refresh.hook.json",
           "targetPath": "hooks/agents-md-turn-refresh.hooks.json",
           "type": "HOOK"
-        },
-        {
-          "name": "type-safety-context",
-          "sha256": "sha256:db411e3463e8a73e78330fbcd5ddaedb83633bd80c1244d9745b8af31ef95397",
-          "sourcePath": "source/hooks/type-safety-context.hook.json",
-          "targetPath": "hooks/type-safety-context.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "type-safety",
-          "sha256": "sha256:78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b",
-          "sourcePath": "source/concepts/type-safety/core.md",
-          "targetPath": "instructions/type-safety.md",
-          "type": "INSTRUCTION"
         },
         {
           "name": "agent-execution",
           "sha256": "sha256:cc8110806cfc9e989a792ec6aab00fe9fdb11a98e155f55974691b5ec081beca",
           "sourcePath": "source/instructions/agent-execution.md",
           "targetPath": "instructions/agent-execution.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "engineering-design",
+          "sha256": "sha256:1673b7d1b51416e24c915ca45fabd191af3719adcbe273c193d227f6d518c5ba",
+          "sourcePath": "source/instructions/engineering-design.md",
+          "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
         },
         {
@@ -145,17 +138,10 @@
           "type": "AGENT"
         },
         {
-          "name": "schema-driven-design-context",
-          "sha256": "sha256:487e0778917718995526840b50b3587ae167e95c52eff57a1488673481753188",
-          "sourcePath": "source/hooks/schema-driven-design-context.hook.json",
-          "targetPath": "hooks/schema-driven-design-context.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "schema-driven-design",
-          "sha256": "sha256:ea05521177b686255532e4b8f84a106b6a8769f4ef330989728abf97b4539d83",
-          "sourcePath": "source/concepts/schema-driven-design/core.md",
-          "targetPath": "instructions/schema-driven-design.md",
+          "name": "api-contract-design",
+          "sha256": "sha256:bcbb30875be21f635e1ac40a13fa3ab1be17f5cbde6beaf9b850ae4cd4862a40",
+          "sourcePath": "source/instructions/api-contract-design.md",
+          "targetPath": "instructions/api-contract-design.md",
           "type": "INSTRUCTION"
         },
         {
@@ -195,7 +181,7 @@
       "references": [
         {
           "name": "kotlin-boundary-contract-reviewer",
-          "sha256": "sha256:8d31c07f4efc76a58a1593567d66c9510663200b1002f22bfbbf3685afb29bea",
+          "sha256": "sha256:498f6e84ecc01b51337d19cbf76983f20d1df29dafea0e0e7b58a2e78befadc6",
           "sourcePath": "source/agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md",
           "targetPath": "agents/kotlin-boundary-contract-reviewer.agent.md",
           "type": "AGENT"
@@ -209,14 +195,14 @@
         },
         {
           "name": "kotlin-review-captain",
-          "sha256": "sha256:b9a54139670cdb273ae464fa96d2d89acc468fafd208baec89cabc1de8ca48f5",
+          "sha256": "sha256:4c1e19613eaa2afb66dbe37f675d476e3ddc2318e14feaa567a8ae4188945e47",
           "sourcePath": "source/agents/kotlin-review/kotlin-review-captain.agent.md",
           "targetPath": "agents/kotlin-review-captain.agent.md",
           "type": "AGENT"
         },
         {
           "name": "kotlin-type-safety-reviewer",
-          "sha256": "sha256:aeed182495b84ccef8dc80a81e2f8f7189579ff64e842deebf1cfebaeb777417",
+          "sha256": "sha256:264eca3173664350a5168cc24b6939a694e64be1e869acd51530d4688228873f",
           "sourcePath": "source/agents/kotlin-review/kotlin-type-safety-reviewer.agent.md",
           "targetPath": "agents/kotlin-type-safety-reviewer.agent.md",
           "type": "AGENT"
@@ -236,13 +222,6 @@
           "type": "HOOK"
         },
         {
-          "name": "kotlin-code-correctness-context",
-          "sha256": "sha256:3354e7705844af750b2d0378d363d3d70acee1b3502abfed2a62f8cfcf2e9380",
-          "sourcePath": "source/hooks/kotlin-code-correctness-context.hook.json",
-          "targetPath": "hooks/kotlin-code-correctness-context.hooks.json",
-          "type": "HOOK"
-        },
-        {
           "name": "kotlin-horizontalization-check",
           "sha256": "sha256:a60eb031f55026ed63aca894245a5b4ce23da3797ff920aea30f13989e4f95bd",
           "sourcePath": "source/hooks/kotlin-horizontalization-check.hook.json",
@@ -250,29 +229,15 @@
           "type": "HOOK"
         },
         {
-          "name": "kotlin-repository-engineering-context",
-          "sha256": "sha256:b4733beb699beb0317fcbb8513c4062ddbbcf9c4123ffbc5cc78d4bb2bbe1824",
-          "sourcePath": "source/hooks/kotlin-repository-engineering-context.hook.json",
-          "targetPath": "hooks/kotlin-repository-engineering-context.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "kotlin-code-correctness",
-          "sha256": "sha256:8672c7a9936a12956b36f395f652ab6329aa31890783818b4e9443022cb15ab5",
-          "sourcePath": "source/concepts/kotlin-code-correctness/core.md",
-          "targetPath": "instructions/kotlin-code-correctness.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "kotlin-repository-engineering",
-          "sha256": "sha256:bff1022898a9611adbe078318fd0062b07e6f4fc9d2c927908137bfa1de756a9",
-          "sourcePath": "source/concepts/kotlin-repository-engineering/core.md",
-          "targetPath": "instructions/kotlin-repository-engineering.md",
+          "name": "kotlin-engineering",
+          "sha256": "sha256:5bb4b2ff459ccff7704b2c21a4a43a5dcf15d7da36ae682657391d049c4faa20",
+          "sourcePath": "source/instructions/kotlin-engineering.md",
+          "targetPath": "instructions/kotlin-engineering.md",
           "type": "INSTRUCTION"
         },
         {
           "name": "kotlin-agentic-correctness",
-          "sha256": "sha256:089ed916244e38f8a1954411c90bb1afb8ea6226df138d4a7d229cb77c03dde0",
+          "sha256": "sha256:8335c926117371f7d687820c2845190b9cb1293d7af9f55bacf56bc850b5c7f4",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
           "targetPath": "skills/kotlin-agentic-correctness",
           "type": "SKILL"
@@ -286,7 +251,7 @@
         },
         {
           "name": "kotlin-application-stack",
-          "sha256": "sha256:9a95476ce69e222b1de9bf17ca7929c312c95160c3e21c70ac63e39d92fc67a4",
+          "sha256": "sha256:dd2a7424dd47a71c525bda8f03cbe9e61e6b9ca0de73faef3233cfcfcc7c01f7",
           "sourcePath": "source/skills/kotlin-application-stack",
           "targetPath": "skills/kotlin-application-stack",
           "type": "SKILL"
@@ -307,7 +272,7 @@
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:e268a0499774d52e7dde27c64b1cfe8addce2e49652936ef6ee8450f62b43f9c",
+          "sha256": "sha256:c396ec123bce0f56e5f36ee33f962dc9a50f2f06142c5fc41381a66136d6d17f",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -321,14 +286,14 @@
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:2eda77072b34b94d7df63de43fea9a9804fc8742b48bbe4b2dcc6eba22116ca0",
+          "sha256": "sha256:12a179b295b34e4f3393805cef1d176ea3e68a0057dcb030c76c6289745aa73d",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
           "type": "SKILL"
         },
         {
           "name": "negative-capability-proof",
-          "sha256": "sha256:a0f8cd741badcf547ecbd8722a82067b96676eaa6ba678cb7b3929b7898ab71a",
+          "sha256": "sha256:80399dd21e598582813a30237f6ba094afae55f792d4248b92c65e7770a9e3d7",
           "sourcePath": "source/skills/negative-capability-proof",
           "targetPath": "skills/negative-capability-proof",
           "type": "SKILL"
@@ -425,13 +390,6 @@
       "name": "agent-platform-authoring",
       "references": [
         {
-          "name": "required-skill-read",
-          "sha256": "sha256:b4efa31dfe23ef3bf94f850d599e2537f83a5737bcd825188fd9f740b1f2157b",
-          "sourcePath": "source/hooks/required-skill-read.hook.json",
-          "targetPath": "hooks/required-skill-read.hooks.json",
-          "type": "HOOK"
-        },
-        {
           "name": "source-graph-valid",
           "sha256": "sha256:9c5eaaee5958be6675371f9fb10c01b62a311ff6effda33eae5ac888811402ab",
           "sourcePath": "source/hooks/source-graph-valid.hook.json",
@@ -517,6 +475,20 @@
         }
       ],
       "sourceManifest": "source/plugins/code-knowledge-base/plugin.json",
+      "version": "1.0.0"
+    },
+    {
+      "name": "skill-read-policy",
+      "references": [
+        {
+          "name": "required-skill-read",
+          "sha256": "sha256:b4efa31dfe23ef3bf94f850d599e2537f83a5737bcd825188fd9f740b1f2157b",
+          "sourcePath": "source/hooks/required-skill-read.hook.json",
+          "targetPath": "hooks/required-skill-read.hooks.json",
+          "type": "HOOK"
+        }
+      ],
+      "sourceManifest": "source/plugins/skill-read-policy/plugin.json",
       "version": "1.0.0"
     },
     {
@@ -612,6 +584,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "21c2301f810a230505a296db2a91f6f27ac81cb7",
+  "sourceSha": "20e16082c24cb0cd51ea1a18aaedc6e465c3d311",
   "type": "HYDRATED_MARKETPLACE"
 }

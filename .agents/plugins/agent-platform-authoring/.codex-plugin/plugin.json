@@ -4,7 +4,6 @@
   },
   "description": "Reusable agent tooling and its publication contracts.",
   "hooks": [
-    "./hooks/required-skill-read.hooks.json",
     "./hooks/source-graph-valid.hooks.json"
   ],
   "interface": {

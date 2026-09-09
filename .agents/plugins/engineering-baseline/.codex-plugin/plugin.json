@@ -4,8 +4,7 @@
   },
   "description": "Engineering outcomes, semantic design, and verification.",
   "hooks": [
-    "./hooks/agents-md-turn-refresh.hooks.json",
-    "./hooks/type-safety-context.hooks.json"
+    "./hooks/agents-md-turn-refresh.hooks.json"
   ],
   "interface": {
     "brandColor": "#0F766E",

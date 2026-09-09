@@ -1,0 +1,40 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Repository-opt-in enforcement for explicitly declared required skill reads.",
+  "hooks": [
+    "./hooks/required-skill-read.hooks.json"
+  ],
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Skill Read Policy for this task.",
+      "Review this repo with Skill Read Policy.",
+      "Show the Skill Read Policy workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Skill Read Policy",
+    "longDescription": "Repository-opt-in enforcement for explicitly declared required skill reads.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Repository-opt-in enforcement for explicitly declared required skill...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "governance",
+    "hooks",
+    "policy",
+    "repository",
+    "skill-read-policy",
+    "skills"
+  ],
+  "license": "UNLICENSED",
+  "name": "skill-read-policy",
+  "version": "1.0.0"
+}

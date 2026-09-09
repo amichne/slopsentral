@@ -9,7 +9,8 @@
             "timeout": 10,
             "type": "command"
           }
-        ]
+        ],
+        "matcher": "^(Bash|apply_patch)$"
       }
     ],
     "Stop": [
