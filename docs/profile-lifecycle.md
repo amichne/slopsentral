@@ -1,32 +1,38 @@
 # Codex Profile Lifecycle
 
-Use `tools/profile-lifecycle.mjs` to materialize one authored workflow
-profile as a named Codex user profile without changing the base user config.
+Use `slopsentral profile` to materialize one authored workflow profile as a
+named Codex user profile without changing the base user config.
 This first lifecycle slice owns only `${CODEX_HOME}/<profile>.config.toml`. It
 sets the enabled state of every `slopsentral` plugin: selected profile plugins
 are enabled and the other `slopsentral` plugins are disabled. Plugin
 installation, standalone skill state, user instructions, and hook trust are not
 mutated yet.
 
-Install the repository's schema validator before using the command:
+Install the CLI directly from GitHub. Node 20.11 or newer is required:
 
 ```bash
-npm install
+npm install --global github:amichne/slopsentral#main
 ```
+
+Pin an immutable release tag or full commit SHA instead of `#main` when the
+installation must be reproducible. Run `slopsentral doctor` to check the Node
+runtime, packaged profile assets, resolved Codex home, backup location, and
+optional Codex executable. The check is read-only, and a missing Codex
+executable is advisory.
 
 ## Plan And Apply
 
 `plan` and `status` are read-only:
 
 ```bash
-node tools/profile-lifecycle.mjs plan --profile local-development-default
-node tools/profile-lifecycle.mjs status --profile local-development-default
+slopsentral profile plan local-development-default
+slopsentral profile status local-development-default
 ```
 
 Apply a profile:
 
 ```bash
-node tools/profile-lifecycle.mjs apply --profile local-development-default
+slopsentral profile apply local-development-default
 ```
 
 The command refuses to replace a pre-existing file that does not carry the
@@ -34,8 +40,7 @@ matching Slopsentral ownership marker. Adopt such a file only when replacement
 is intentional; its original bytes and mode are backed up before the write:
 
 ```bash
-node tools/profile-lifecycle.mjs apply \
-  --profile local-development-default \
+slopsentral profile apply local-development-default \
   --replace-existing
 ```
 
@@ -83,8 +88,8 @@ before-image, rollback reports that it is already restored.
 Use the exact `manifestPath` returned by `apply`:
 
 ```bash
-node tools/profile-lifecycle.mjs rollback \
-  --transaction /absolute/backup/root/local-development-default/<transaction-id>/manifest.json \
+slopsentral profile rollback \
+  /absolute/backup/root/local-development-default/<transaction-id>/manifest.json \
   --backup-root /absolute/backup/root
 ```
 
@@ -96,10 +101,38 @@ Rollback is itself a new versioned transaction. It captures the file it is
 about to replace or remove, so passing that rollback transaction's
 `manifestPath` to `rollback` reapplies the prior state.
 
+## Paths, JSON, And Exit Codes
+
+Pass `--codex-home PATH` or `--backup-root PATH` to any profile operation. The
+environment variables `CODEX_HOME` and `SLOPSENTRAL_BACKUP_ROOT` remain the
+defaults when those flags are absent.
+
+All operational commands emit JSON. The exit status is part of the interface:
+
+- `0`: success, including a ready `doctor` report
+- `1`: runtime or I/O failure, including a failed required `doctor` check
+- `2`: invalid command, request, profile, or contract
+- `3`: a safe-write or rollback conflict
+
+Help and version output are human-readable. Removing the package does not
+delete profiles or transaction history:
+
+```bash
+npm uninstall --global slopsentral
+```
+
+Repository maintainers can continue using the direct lifecycle entrypoint with
+its existing option form, for example:
+
+```bash
+node tools/profile-lifecycle.mjs plan --profile local-development-default
+```
+
 ## Verify The Contracts
 
 ```bash
 npm run validate:profile-contracts
+node --test tools/tests/portable-cli.test.mjs
 node --test tools/tests/profile-lifecycle.test.mjs
 node tools/validate-source-graph.mjs
 ```

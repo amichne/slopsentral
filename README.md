@@ -20,6 +20,44 @@ Safely plan, apply, inspect, and reverse a named Codex user profile with the
 [profile lifecycle](docs/profile-lifecycle.md). Every target mutation records a
 verified preimage in a versioned transaction first.
 
+## Portable CLI
+
+Install the CLI directly from the public GitHub repository. Node 20.11 or newer
+is required:
+
+```bash
+npm install --global github:amichne/slopsentral#main
+```
+
+`#main` follows the branch. For a reproducible installation, replace it with an
+immutable release tag or full commit SHA.
+
+```bash
+slopsentral doctor
+slopsentral profile plan local-development-default
+slopsentral profile apply local-development-default
+slopsentral profile status local-development-default
+```
+
+Use the `manifestPath` returned by `apply` to reverse that transaction:
+
+```bash
+slopsentral profile rollback /absolute/path/to/manifest.json
+```
+
+Operational commands emit stable JSON. Exit status `0` means success, `1`
+means a runtime or I/O failure, `2` means an invalid request or contract, and
+`3` means a conflict. `doctor` is read-only; a missing Codex executable is a
+warning, while missing packaged assets or an unusable configuration root makes
+the check fail.
+
+Remove the global command without changing profiles or backups it previously
+created:
+
+```bash
+npm uninstall --global slopsentral
+```
+
 ## Source Of Truth
 
 - Edit authored primitives under `source/`.
