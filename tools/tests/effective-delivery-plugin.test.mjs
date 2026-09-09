@@ -4,7 +4,7 @@ import path from "node:path";
 import test from "node:test";
 import { execFileSync } from "node:child_process";
 
-const repoRoot = path.resolve(import.meta.dirname, "../../..");
+const repoRoot = path.resolve(import.meta.dirname, "../..");
 
 function readJson(relativePath) {
   const file = path.join(repoRoot, relativePath);

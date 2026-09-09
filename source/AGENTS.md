@@ -6,8 +6,8 @@ This file applies to authored marketplace source under `source/`.
 
 ## Primitive Contract
 
-- Treat every skill, agent, hook, instruction, concept, profile, eval, schema,
-  and tool as an atomic primitive with one clear responsibility.
+- Treat every source-owned skill, agent, hook, instruction, concept, profile,
+  eval, and schema as an atomic primitive with one clear responsibility.
 - Keep primitives independently useful before any plugin composes them.
 - Put primitive ownership in the canonical root for that primitive kind, not in
   a plugin payload or generated provider tree.
@@ -51,7 +51,7 @@ This file applies to authored marketplace source under `source/`.
 
 ## Verify
 
-- Run `node source/tools/validate-source-graph.mjs` after changing primitive
+- Run `node tools/validate-source-graph.mjs` after changing primitive
   references, hook metadata, plugin manifests, routing evals, or source graph
   contracts.
 - For marketplace publication proof, run the full root `AGENTS.md` marketplace
@@ -62,5 +62,5 @@ This file applies to authored marketplace source under `source/`.
 Each installed primitive has one plugin owner, including hook dependencies and
 instructions. Profiles compose plugins. Do not reintroduce overlap exceptions or
 copy payloads into plugin directories. Regenerate `source/CATALOG.md` with
-`node source/tools/catalog.mjs --write` after composition changes. See
+`node tools/catalog.mjs --write` after composition changes. See
 `source/ARCHITECTURE.md` for the primitive responsibilities and evidence limits.

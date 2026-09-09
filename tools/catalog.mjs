@@ -151,7 +151,7 @@ export function catalogReport(catalog, profileName) {
 export function renderCatalog(catalog) {
   const report = catalogReport(catalog);
   const lines = ['# Catalog', '',
-    'Generated from canonical manifests by `node source/tools/catalog.mjs --write`.',
+    'Generated from canonical manifests by `node tools/catalog.mjs --write`.',
     'Choose a workstream by its outcome. A profile composes workstreams; it does not copy them.', '',
     '## Workstreams', ''];
   for (const plugin of report.plugins) {
@@ -199,7 +199,7 @@ function main() {
   const output = path.join(root, 'source/CATALOG.md');
   if (args.includes('--write')) fs.writeFileSync(output, renderCatalog(catalog));
   else if (args.includes('--check')) {
-    if (!fs.existsSync(output) || fs.readFileSync(output, 'utf8') !== renderCatalog(catalog)) throw new Error('source/CATALOG.md is stale; run node source/tools/catalog.mjs --write');
+    if (!fs.existsSync(output) || fs.readFileSync(output, 'utf8') !== renderCatalog(catalog)) throw new Error('source/CATALOG.md is stale; run node tools/catalog.mjs --write');
     console.log('OK generated catalog');
   } else if (args.includes('--json') || args.includes('--profile')) console.log(JSON.stringify(catalogReport(catalog, value('--profile')), null, 2));
   else process.stdout.write(renderCatalog(catalog));

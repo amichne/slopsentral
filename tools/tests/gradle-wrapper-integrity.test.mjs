@@ -5,7 +5,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-const repoRoot = path.resolve(import.meta.dirname, "../../..");
+const repoRoot = path.resolve(import.meta.dirname, "../..");
 const hook = path.join(repoRoot, "source/hooks/gradle-wrapper-integrity.sh");
 
 function createWrapperRepo() {

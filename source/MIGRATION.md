@@ -33,7 +33,7 @@ unrelated hosted delivery or language-specific tooling.
 
 Profiles describe composition; do not assume the host installs them atomically.
 Use the generated catalog to inspect the selected plugins. Standalone skill
-installation remains supported through source/tools/install-skill.
+installation remains supported through tools/install-skill.
 
 ## Evaluation Interpretation
 

@@ -26,8 +26,8 @@
   "verifiers": {
     "type": "PLUGIN_EVAL_VERIFIERS",
     "commands": [
-      "node source/tools/validate-source-graph.mjs",
-      "node source/tools/run-routing-evals.mjs --require-all-observed",
+      "node tools/validate-source-graph.mjs",
+      "node tools/run-routing-evals.mjs --require-all-observed",
       "git diff --check"
     ]
   },
@@ -79,7 +79,7 @@
       "successChecklist": [
         "The plugin manifest references canonical source primitives with LOCAL_SOURCE ./ references.",
         "The plugin directory does not receive copied primitive payloads.",
-        "The run uses check_plugin_composition and source/tools/validate-source-graph.mjs as evidence."
+        "The run uses check_plugin_composition and tools/validate-source-graph.mjs as evidence."
       ]
     },
     {
@@ -118,7 +118,7 @@
       "successChecklist": [
         "The case is schema-backed, sanitized, and tied to an existing canonical primitive.",
         "The fix surface is limited to the primitive, plugin metadata, or adapter layer that explains the miss.",
-        "The run includes node source/tools/run-routing-evals.mjs --require-all-observed."
+        "The run includes node tools/run-routing-evals.mjs --require-all-observed."
       ]
     }
   ]

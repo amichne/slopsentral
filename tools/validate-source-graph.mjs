@@ -4,6 +4,7 @@ import fs from "node:fs";
 import { auditCatalog, loadCatalog } from "./catalog.mjs";
 import path from "node:path";
 import process from "node:process";
+import { validateWorkflowProfile } from "./validate-profile-contracts.mjs";
 
 const args = process.argv.slice(2);
 const repoArgIndex = args.indexOf("--repo");
@@ -71,6 +72,7 @@ const pluginEvalLocalVerifierPrefixes = [
   "./gradlew ",
   "git diff --check",
   "node source/",
+  "node tools/",
   "python3 -m unittest source/",
   "python3 source/",
 ];
@@ -496,6 +498,15 @@ for (const profilePath of listFiles("source/profiles", (file) => file.endsWith("
   const relativePath = relativeToRepo(profilePath);
   const profile = readJson(relativePath);
   if (!profile) continue;
+  try {
+    validateWorkflowProfile(profile, relativePath);
+  } catch (error) {
+    fail(error.message);
+    continue;
+  }
+  if (profile.name !== path.basename(profilePath, ".json")) {
+    fail(`${relativePath}: profile name must match its filename`);
+  }
   const selectedPlugins = profile.plugins ?? [];
   for (const pluginName of selectedPlugins) {
     if (!pluginManifests.has(pluginName)) {
@@ -533,8 +544,8 @@ for (const profilePath of listFiles("source/profiles", (file) => file.endsWith("
       fail(`${relativePath}: profile hook ${hook.name} has invalid selected owners [${owners.join(", ")}]`);
     }
   }
-  if (!(profile.validation?.commands ?? []).includes("node source/tools/validate-source-graph.mjs")) {
-    fail(`${relativePath}: validation.commands must include node source/tools/validate-source-graph.mjs`);
+  if (!(profile.validation?.commands ?? []).includes("node tools/validate-source-graph.mjs")) {
+    fail(`${relativePath}: validation.commands must include node tools/validate-source-graph.mjs`);
   }
 }
 

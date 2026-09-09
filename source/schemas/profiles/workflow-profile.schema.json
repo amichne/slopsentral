@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/profiles/workflow-profile.schema.json",
+  "title": "WORKFLOW_PROFILE",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "schemaVersion",
+    "name",
+    "description",
+    "marketplaces",
+    "plugins",
+    "hooks",
+    "validation"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["WORKFLOW_PROFILE"],
+      "examples": ["WORKFLOW_PROFILE"]
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "enum": [1],
+      "examples": [1]
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "examples": ["local-development-default"]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "examples": ["Local implementation and tool use without hosted delivery."]
+    },
+    "marketplaces": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/WorkflowMarketplace"},
+      "examples": [[{
+        "type": "WORKFLOW_MARKETPLACE",
+        "name": "slopsentral",
+        "provider": "codex",
+        "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+        "entrypoint": ".agents/plugins/marketplace.json",
+        "scope": "plugins in this workflow profile"
+      }]]
+    },
+    "plugins": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "examples": ["engineering-baseline"]
+      },
+      "examples": [["engineering-baseline", "developer-tools"]]
+    },
+    "hooks": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/WorkflowHook"},
+      "examples": [[{
+        "type": "WORKFLOW_HOOK",
+        "name": "type-safety-context",
+        "adapter": "codex"
+      }]]
+    },
+    "validation": {"$ref": "#/$defs/WorkflowValidation"}
+  },
+  "$defs": {
+    "WorkflowMarketplace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "name", "provider", "source", "entrypoint", "scope"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["WORKFLOW_MARKETPLACE"],
+          "examples": ["WORKFLOW_MARKETPLACE"]
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "examples": ["slopsentral"]
+        },
+        "provider": {
+          "type": "string",
+          "enum": ["codex"],
+          "examples": ["codex"]
+        },
+        "source": {
+          "type": "string",
+          "format": "uri",
+          "examples": ["https://github.com/amichne/slopsentral/tree/harness/codex"]
+        },
+        "entrypoint": {
+          "type": "string",
+          "pattern": "^\\.agents/plugins/[^/]+\\.json$",
+          "examples": [".agents/plugins/marketplace.json"]
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "examples": ["plugins in this workflow profile"]
+        }
+      },
+      "examples": [{
+        "type": "WORKFLOW_MARKETPLACE",
+        "name": "slopsentral",
+        "provider": "codex",
+        "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+        "entrypoint": ".agents/plugins/marketplace.json",
+        "scope": "plugins in this workflow profile"
+      }]
+    },
+    "WorkflowHook": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "name", "adapter"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["WORKFLOW_HOOK"],
+          "examples": ["WORKFLOW_HOOK"]
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "examples": ["type-safety-context"]
+        },
+        "adapter": {
+          "type": "string",
+          "enum": ["codex"],
+          "examples": ["codex"]
+        }
+      },
+      "examples": [{
+        "type": "WORKFLOW_HOOK",
+        "name": "type-safety-context",
+        "adapter": "codex"
+      }]
+    },
+    "WorkflowValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "commands"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["WORKFLOW_VALIDATION"],
+          "examples": ["WORKFLOW_VALIDATION"]
+        },
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "examples": ["node tools/validate-source-graph.mjs"]
+          },
+          "examples": [["node tools/validate-source-graph.mjs"]]
+        }
+      },
+      "examples": [{
+        "type": "WORKFLOW_VALIDATION",
+        "commands": ["node tools/validate-source-graph.mjs"]
+      }]
+    }
+  },
+  "examples": [{
+    "type": "WORKFLOW_PROFILE",
+    "schemaVersion": 1,
+    "name": "local-development-default",
+    "description": "Local implementation and tool use without hosted delivery.",
+    "marketplaces": [{
+      "type": "WORKFLOW_MARKETPLACE",
+      "name": "slopsentral",
+      "provider": "codex",
+      "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+      "entrypoint": ".agents/plugins/marketplace.json",
+      "scope": "plugins in this workflow profile"
+    }],
+    "plugins": ["engineering-baseline", "developer-tools"],
+    "hooks": [{
+      "type": "WORKFLOW_HOOK",
+      "name": "type-safety-context",
+      "adapter": "codex"
+    }],
+    "validation": {
+      "type": "WORKFLOW_VALIDATION",
+      "commands": ["node tools/validate-source-graph.mjs"]
+    }
+  }]
+}

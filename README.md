@@ -13,8 +13,12 @@ Start with the [generated catalog](source/CATALOG.md). The
 Inspect a profile without installing or executing anything:
 
 ```bash
-node source/tools/catalog.mjs --profile kotlin-repo-default --json
+node tools/catalog.mjs --profile kotlin-repo-default --json
 ```
+
+Safely plan, apply, inspect, and reverse a named Codex user profile with the
+[profile lifecycle](docs/profile-lifecycle.md). Every target mutation records a
+verified preimage in a versioned transaction first.
 
 ## Source Of Truth
 
@@ -22,7 +26,7 @@ node source/tools/catalog.mjs --profile kotlin-repo-default --json
 - Keep routing and quality evaluation cases under `source/evals/`; they are
   source evidence, not generated marketplace output.
 - Keep source-graph schemas under `source/schemas/` and reusable validation
-  utilities under `source/tools/`.
+  utilities under `tools/`.
 - Keep generated provider output off the source branch; consume it from the
   dedicated harness branches below.
 - Prefer this repository over installed plugin caches such as
@@ -47,10 +51,10 @@ Install one marketplace-listed skill into `${CODEX_HOME:-$HOME/.codex}/skills`
 without installing a plugin:
 
 ```bash
-source/tools/install-skill pkl-engineering
-source/tools/install-skill pkl-tooling-setup
-source/tools/install-skill pkl-specification
-source/tools/install-skill pkl-pattern-catalogs
+tools/install-skill pkl-engineering
+tools/install-skill pkl-tooling-setup
+tools/install-skill pkl-specification
+tools/install-skill pkl-pattern-catalogs
 ```
 
 The command copies a real skill directory and is an idempotent no-op when the
@@ -75,11 +79,11 @@ evaluable modules one per line in `.intelligence/pkl-entrypoints`.
 ## Validation
 
 ```bash
-node source/tools/validate-source-graph.mjs
-node source/tools/catalog.mjs --check
-node source/tools/run-routing-evals.mjs
-node source/tools/run-routing-evals.mjs --require-all-observed
-source/tools/compile-kotlin-concepts
+node tools/validate-source-graph.mjs
+node tools/catalog.mjs --check
+node tools/run-routing-evals.mjs
+node tools/run-routing-evals.mjs --require-all-observed
+tools/compile-kotlin-concepts
 projeKtor project --source . --harness codex --out /tmp/slopsentral-codex
 projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check

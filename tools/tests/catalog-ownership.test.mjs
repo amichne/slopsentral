@@ -5,7 +5,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 
-const root = path.resolve(import.meta.dirname, '../../..');
+const root = path.resolve(import.meta.dirname, '../..');
 function rejects(t, mutate, expected) {
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'catalog-contract-'));
   t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
@@ -17,7 +17,7 @@ function rejects(t, mutate, expected) {
     fs.writeFileSync(file, JSON.stringify(value));
   };
   mutate(edit, fixture);
-  const result = spawnSync(process.execPath, [path.join(root, 'source/tools/validate-source-graph.mjs'), '--repo', fixture], { encoding: 'utf8' });
+  const result = spawnSync(process.execPath, [path.join(root, 'tools/validate-source-graph.mjs'), '--repo', fixture], { encoding: 'utf8' });
   assert.equal(result.status, 1, result.stdout + result.stderr);
   assert.match(result.stdout + result.stderr, expected);
 }

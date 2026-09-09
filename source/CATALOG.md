@@ -1,6 +1,6 @@
 # Catalog
 
-Generated from canonical manifests by `node source/tools/catalog.mjs --write`.
+Generated from canonical manifests by `node tools/catalog.mjs --write`.
 Choose a workstream by its outcome. A profile composes workstreams; it does not copy them.
 
 ## Workstreams

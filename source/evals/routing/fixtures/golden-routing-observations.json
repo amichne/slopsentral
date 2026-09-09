@@ -502,7 +502,7 @@
       ],
       "satisfiedVerificationEvidence": [
         "The run uses check_plugin_composition for the edited plugin.",
-        "The run uses node source/tools/validate-source-graph.mjs after source edits."
+        "The run uses node tools/validate-source-graph.mjs after source edits."
       ],
       "avoidedForbiddenActions": [
         "Copy skills, agents, hooks, or concepts into a plugin directory as payload.",
@@ -525,7 +525,7 @@
       ],
       "satisfiedVerificationEvidence": [
         "The routing case is schema-backed, sanitized, and points at an existing primitive.",
-        "The run includes node source/tools/run-routing-evals.mjs --require-all-observed."
+        "The run includes node tools/run-routing-evals.mjs --require-all-observed."
       ],
       "avoidedForbiddenActions": [
         "Store raw private transcripts or local absolute paths in routing cases.",

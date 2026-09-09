@@ -3,11 +3,11 @@
 Use this reference for `source/plugins/<name>/plugin.json` in this repository.
 
 The manifest shape is governed by the source graph contract checked by
-`source/tools/validate-source-graph.mjs`. Validate plugin references with the
+`tools/validate-source-graph.mjs`. Validate plugin references with the
 repository gate and the focused composition helper:
 
 ```sh
-node source/tools/validate-source-graph.mjs
+node tools/validate-source-graph.mjs
 python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>
 ```
 

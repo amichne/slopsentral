@@ -27,7 +27,7 @@
     "type": "PLUGIN_EVAL_VERIFIERS",
     "commands": [
       "python3 -m unittest source/skills/pkl-engineering/scripts/tests/test_pkl_agent.py",
-      "node source/tools/validate-source-graph.mjs",
+      "node tools/validate-source-graph.mjs",
       "git diff --check"
     ]
   },

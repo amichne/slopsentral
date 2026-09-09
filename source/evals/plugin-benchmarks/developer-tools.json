@@ -26,7 +26,7 @@
   "verifiers": {
     "type": "PLUGIN_EVAL_VERIFIERS",
     "commands": [
-      "node source/tools/validate-source-graph.mjs",
+      "node tools/validate-source-graph.mjs",
       "git diff --check"
     ]
   },

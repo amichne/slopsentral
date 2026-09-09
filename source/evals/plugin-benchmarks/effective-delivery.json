@@ -26,8 +26,8 @@
   "verifiers": {
     "type": "PLUGIN_EVAL_VERIFIERS",
     "commands": [
-      "node source/tools/validate-source-graph.mjs",
-      "node source/tools/run-routing-evals.mjs --require-all-observed",
+      "node tools/validate-source-graph.mjs",
+      "node tools/run-routing-evals.mjs --require-all-observed",
       "git diff --check"
     ]
   },

@@ -55,7 +55,7 @@
         "evidenceRefs": [
           "source/skills/plugin-composition-authoring/SKILL.md",
           "source/skills/plugin-composition-authoring/scripts/check_plugin_composition",
-          "source/tools/validate-source-graph.mjs"
+          "tools/validate-source-graph.mjs"
         ]
       },
       "prompt": "Add or revise a plugin composition from canonical primitives, keep the plugin referential, update the marketplace entry, and prove the package validates.",
@@ -84,7 +84,7 @@
       "productiveOutcome": "Referential plugin work remains reviewable and mechanically checked at the composition boundary.",
       "verificationEvidence": [
         "The run uses check_plugin_composition for the edited plugin.",
-        "The run uses node source/tools/validate-source-graph.mjs after source edits."
+        "The run uses node tools/validate-source-graph.mjs after source edits."
       ]
     },
     {
@@ -96,7 +96,7 @@
         "evidenceRefs": [
           "source/skills/primitive-routing-evaluation/SKILL.md",
           "source/evals/routing/fixtures/golden-routing-observations.json",
-          "source/tools/run-routing-evals.mjs"
+          "tools/run-routing-evals.mjs"
         ]
       },
       "prompt": "Turn a marketplace routing miss into a durable eval case and prove the routing corpus still passes.",
@@ -125,7 +125,7 @@
       "productiveOutcome": "Routing fixes become reproducible corpus improvements with full-corpus coverage evidence.",
       "verificationEvidence": [
         "The routing case is schema-backed, sanitized, and points at an existing primitive.",
-        "The run includes node source/tools/run-routing-evals.mjs --require-all-observed."
+        "The run includes node tools/run-routing-evals.mjs --require-all-observed."
       ]
     },
     {
@@ -356,7 +356,7 @@
         "evidenceRefs": [
           "source/hooks/required-skill-read.requirements.json",
           "source/schemas/hooks/skill-requirements.schema.json",
-          "source/tools/validate-source-graph.mjs"
+          "tools/validate-source-graph.mjs"
         ]
       },
       "prompt": "Add a hook requirement file that tells the required-skill-read hook which skills must be read.",
@@ -399,7 +399,7 @@
         "evidenceRefs": [
           "source/plugins/agent-platform-authoring/plugin.json",
           "source/adaptable.marketplace.json",
-          "source/tools/validate-source-graph.mjs"
+          "tools/validate-source-graph.mjs"
         ]
       },
       "prompt": "Audit marketplace-visible standalone skills for placeholder migration text and overlap with existing canonical skills.",

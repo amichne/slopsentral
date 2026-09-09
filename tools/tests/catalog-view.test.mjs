@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { auditCatalog, catalogReport, loadCatalog, pluginClosure, renderCatalog } from '../catalog.mjs';
-const root = path.resolve(import.meta.dirname, '../../..');
+const root = path.resolve(import.meta.dirname, '../..');
 const catalog = loadCatalog(root);
 
 test('current catalog has no ownership or closure failures', () => {

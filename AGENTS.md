@@ -11,7 +11,7 @@ by hand when the authored source can be fixed instead.
 - `source/plugins/*/plugin.json` composes primitives by reference. Do not copy
   primitive payloads into plugin folders.
 - `source/skills`, `source/agents`, `source/hooks`, `source/concepts`,
-  `source/profiles`, `source/evals`, `source/schemas`, and `source/tools` are
+  `source/profiles`, `source/evals`, `source/schemas`, and `tools` are
   canonical authored roots.
 - Generated provider output is published only on `harness/codex` under
   `.agents/plugins` and `harness/github-copilot` under `.github/plugin`.
@@ -29,7 +29,7 @@ Run the smallest check that proves the edited surface. For marketplace or plugin
 composition edits, run:
 
 ```bash
-node source/tools/validate-source-graph.mjs
+node tools/validate-source-graph.mjs
 projeKtor project --source . --harness codex --out /tmp/slopsentral-codex
 projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check

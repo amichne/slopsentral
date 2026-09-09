@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/profiles/profile-transaction.schema.json",
+  "title": "PROFILE_TRANSACTION",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "schemaVersion", "id", "createdAt", "operation", "lifecycle", "changes"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["PROFILE_TRANSACTION"],
+      "examples": ["PROFILE_TRANSACTION"]
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "enum": [1],
+      "examples": [1]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9]{8}T[0-9]{6}[0-9]{3}Z-[0-9a-f-]{36}$",
+      "examples": ["20260908T142530123Z-6ba7b810-9dad-11d1-80b4-00c04fd430c8"]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "examples": ["2026-09-08T14:25:30.123Z"]
+    },
+    "operation": {
+      "oneOf": [
+        {"$ref": "#/$defs/ApplyProfile"},
+        {"$ref": "#/$defs/RollbackProfile"}
+      ],
+      "discriminator": {"propertyName": "type"},
+      "examples": [
+        {"type": "APPLY_PROFILE", "profileName": "local-development-default"},
+        {
+          "type": "ROLLBACK_PROFILE",
+          "profileName": "local-development-default",
+          "reversesTransactionId": "20260908T142530123Z-6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+        }
+      ]
+    },
+    "lifecycle": {
+      "oneOf": [
+        {"$ref": "#/$defs/PreparedTransaction"},
+        {"$ref": "#/$defs/CommittedTransaction"}
+      ],
+      "discriminator": {"propertyName": "type"},
+      "examples": [
+        {"type": "PREPARED_TRANSACTION"},
+        {"type": "COMMITTED_TRANSACTION", "committedAt": "2026-09-08T14:25:31.123Z"}
+      ]
+    },
+    "changes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "oneOf": [
+          {"$ref": "#/$defs/FileCreated"},
+          {"$ref": "#/$defs/FileReplaced"},
+          {"$ref": "#/$defs/FileRemoved"}
+        ],
+        "discriminator": {"propertyName": "type"},
+        "examples": [{
+          "type": "FILE_CREATED",
+          "target": "/Users/example/.codex/local-development-default.config.toml",
+          "before": {"type": "FILE_ABSENT"},
+          "after": {
+            "type": "FILE_CONTENT",
+            "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "sizeBytes": 512,
+            "mode": 384
+          }
+        }]
+      },
+      "examples": [[{
+        "type": "FILE_CREATED",
+        "target": "/Users/example/.codex/local-development-default.config.toml",
+        "before": {"type": "FILE_ABSENT"},
+        "after": {
+          "type": "FILE_CONTENT",
+          "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sizeBytes": 512,
+          "mode": 384
+        }
+      }]]
+    }
+  },
+  "$defs": {
+    "ApplyProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "profileName"],
+      "properties": {
+        "type": {"type": "string", "enum": ["APPLY_PROFILE"], "examples": ["APPLY_PROFILE"]},
+        "profileName": {"$ref": "#/$defs/ProfileName"}
+      },
+      "examples": [{"type": "APPLY_PROFILE", "profileName": "local-development-default"}]
+    },
+    "RollbackProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "profileName", "reversesTransactionId"],
+      "properties": {
+        "type": {"type": "string", "enum": ["ROLLBACK_PROFILE"], "examples": ["ROLLBACK_PROFILE"]},
+        "profileName": {"$ref": "#/$defs/ProfileName"},
+        "reversesTransactionId": {"$ref": "#/$defs/TransactionId"}
+      },
+      "examples": [{
+        "type": "ROLLBACK_PROFILE",
+        "profileName": "local-development-default",
+        "reversesTransactionId": "20260908T142530123Z-6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+      }]
+    },
+    "PreparedTransaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {"type": "string", "enum": ["PREPARED_TRANSACTION"], "examples": ["PREPARED_TRANSACTION"]}
+      },
+      "examples": [{"type": "PREPARED_TRANSACTION"}]
+    },
+    "CommittedTransaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "committedAt"],
+      "properties": {
+        "type": {"type": "string", "enum": ["COMMITTED_TRANSACTION"], "examples": ["COMMITTED_TRANSACTION"]},
+        "committedAt": {"type": "string", "format": "date-time", "examples": ["2026-09-08T14:25:31.123Z"]}
+      },
+      "examples": [{"type": "COMMITTED_TRANSACTION", "committedAt": "2026-09-08T14:25:31.123Z"}]
+    },
+    "FileCreated": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "target", "before", "after"],
+      "properties": {
+        "type": {"type": "string", "enum": ["FILE_CREATED"], "examples": ["FILE_CREATED"]},
+        "target": {"$ref": "#/$defs/AbsolutePath"},
+        "before": {"$ref": "#/$defs/FileAbsent"},
+        "after": {"$ref": "#/$defs/FileContent"}
+      },
+      "examples": [{
+        "type": "FILE_CREATED",
+        "target": "/Users/example/.codex/local-development-default.config.toml",
+        "before": {"type": "FILE_ABSENT"},
+        "after": {
+          "type": "FILE_CONTENT",
+          "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sizeBytes": 512,
+          "mode": 384
+        }
+      }]
+    },
+    "FileReplaced": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "target", "before", "after"],
+      "properties": {
+        "type": {"type": "string", "enum": ["FILE_REPLACED"], "examples": ["FILE_REPLACED"]},
+        "target": {"$ref": "#/$defs/AbsolutePath"},
+        "before": {"$ref": "#/$defs/StoredFileContent"},
+        "after": {"$ref": "#/$defs/FileContent"}
+      },
+      "examples": [{
+        "type": "FILE_REPLACED",
+        "target": "/Users/example/.codex/local-development-default.config.toml",
+        "before": {
+          "type": "STORED_FILE_CONTENT",
+          "sha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "sizeBytes": 64,
+          "mode": 384,
+          "backupPath": "files/000-before"
+        },
+        "after": {
+          "type": "FILE_CONTENT",
+          "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sizeBytes": 512,
+          "mode": 384
+        }
+      }]
+    },
+    "FileRemoved": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "target", "before", "after"],
+      "properties": {
+        "type": {"type": "string", "enum": ["FILE_REMOVED"], "examples": ["FILE_REMOVED"]},
+        "target": {"$ref": "#/$defs/AbsolutePath"},
+        "before": {"$ref": "#/$defs/StoredFileContent"},
+        "after": {"$ref": "#/$defs/FileAbsent"}
+      },
+      "examples": [{
+        "type": "FILE_REMOVED",
+        "target": "/Users/example/.codex/local-development-default.config.toml",
+        "before": {
+          "type": "STORED_FILE_CONTENT",
+          "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sizeBytes": 512,
+          "mode": 384,
+          "backupPath": "files/000-before"
+        },
+        "after": {"type": "FILE_ABSENT"}
+      }]
+    },
+    "FileAbsent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {"type": "string", "enum": ["FILE_ABSENT"], "examples": ["FILE_ABSENT"]}
+      },
+      "examples": [{"type": "FILE_ABSENT"}]
+    },
+    "FileContent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "sha256", "sizeBytes", "mode"],
+      "properties": {
+        "type": {"type": "string", "enum": ["FILE_CONTENT"], "examples": ["FILE_CONTENT"]},
+        "sha256": {"$ref": "#/$defs/Sha256"},
+        "sizeBytes": {"type": "integer", "minimum": 0, "examples": [512]},
+        "mode": {"type": "integer", "minimum": 0, "maximum": 511, "examples": [384]}
+      },
+      "examples": [{
+        "type": "FILE_CONTENT",
+        "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sizeBytes": 512,
+        "mode": 384
+      }]
+    },
+    "StoredFileContent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "sha256", "sizeBytes", "mode", "backupPath"],
+      "properties": {
+        "type": {"type": "string", "enum": ["STORED_FILE_CONTENT"], "examples": ["STORED_FILE_CONTENT"]},
+        "sha256": {"$ref": "#/$defs/Sha256"},
+        "sizeBytes": {"type": "integer", "minimum": 0, "examples": [64]},
+        "mode": {"type": "integer", "minimum": 0, "maximum": 511, "examples": [384]},
+        "backupPath": {"type": "string", "pattern": "^files/[0-9]{3}-before$", "examples": ["files/000-before"]}
+      },
+      "examples": [{
+        "type": "STORED_FILE_CONTENT",
+        "sha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "sizeBytes": 64,
+        "mode": 384,
+        "backupPath": "files/000-before"
+      }]
+    },
+    "ProfileName": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "examples": ["local-development-default"]
+    },
+    "TransactionId": {
+      "type": "string",
+      "pattern": "^[0-9]{8}T[0-9]{6}[0-9]{3}Z-[0-9a-f-]{36}$",
+      "examples": ["20260908T142530123Z-6ba7b810-9dad-11d1-80b4-00c04fd430c8"]
+    },
+    "AbsolutePath": {
+      "type": "string",
+      "pattern": "^/",
+      "examples": ["/Users/example/.codex/local-development-default.config.toml"]
+    },
+    "Sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "examples": ["sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+    }
+  },
+  "examples": [{
+    "type": "PROFILE_TRANSACTION",
+    "schemaVersion": 1,
+    "id": "20260908T142530123Z-6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+    "createdAt": "2026-09-08T14:25:30.123Z",
+    "operation": {"type": "APPLY_PROFILE", "profileName": "local-development-default"},
+    "lifecycle": {"type": "COMMITTED_TRANSACTION", "committedAt": "2026-09-08T14:25:31.123Z"},
+    "changes": [{
+      "type": "FILE_CREATED",
+      "target": "/Users/example/.codex/local-development-default.config.toml",
+      "before": {"type": "FILE_ABSENT"},
+      "after": {
+        "type": "FILE_CONTENT",
+        "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sizeBytes": 512,
+        "mode": 384
+      }
+    }]
+  }]
+}

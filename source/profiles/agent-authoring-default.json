@@ -42,7 +42,7 @@
   "validation": {
     "type": "WORKFLOW_VALIDATION",
     "commands": [
-      "node source/tools/validate-source-graph.mjs",
+      "node tools/validate-source-graph.mjs",
       "projeKtor project --source . --harness codex --out /tmp/slopsentral-codex",
       "projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
     ]

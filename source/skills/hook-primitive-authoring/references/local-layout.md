@@ -25,7 +25,7 @@ Neutral metadata is the canonical hook primitive. It should include:
 The metadata shape is covered by the source graph validator:
 
 ```sh
-node source/tools/validate-source-graph.mjs
+node tools/validate-source-graph.mjs
 ```
 
 Keep dependency references local and canonical:

@@ -3,11 +3,11 @@
 Use this reference when editing `source/adaptable.marketplace.json`.
 
 The catalog shape is governed by the source graph contract checked by
-`source/tools/validate-source-graph.mjs`. Use harness projection only as proof
+`tools/validate-source-graph.mjs`. Use harness projection only as proof
 after source validation passes:
 
 ```sh
-node source/tools/validate-source-graph.mjs
+node tools/validate-source-graph.mjs
 projeKtor project --source . --harness codex --out /tmp/slopsentral-codex
 projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 ```
@@ -41,4 +41,4 @@ plugin also composes it.
 - New skills are listed once under `skills`.
 - New agents are listed once under `agents`.
 - Tags are consistent with neighboring entries.
-- The catalog validates with `node source/tools/validate-source-graph.mjs`.
+- The catalog validates with `node tools/validate-source-graph.mjs`.

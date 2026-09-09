@@ -12,7 +12,7 @@ compiler=$(command -v "$compiler_name") || {
     exit 2
 }
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
-repo_root=$(cd "$script_dir/../.." && pwd -P)
+repo_root=$(cd "$script_dir/.." && pwd -P)
 artifact_root=$(mktemp -d)
 trap 'rm -rf -- "$artifact_root"' EXIT
 
@@ -27,7 +27,7 @@ if [[ $compiled -eq 0 ]]; then
     exit 1
 fi
 
-failure_fixture="$repo_root/source/tools/fixtures/kotlin-concepts/non-exhaustive-sealed-when.fail.kt"
+failure_fixture="$repo_root/tools/fixtures/kotlin-concepts/non-exhaustive-sealed-when.fail.kt"
 diagnostics="$artifact_root/expected-failure.txt"
 if "$compiler" "$failure_fixture" -d "$artifact_root/unexpected.jar" 2>"$diagnostics"; then
     echo "compile-kotlin-concepts: expected sealed-when fixture to fail" >&2

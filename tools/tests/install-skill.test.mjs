@@ -5,8 +5,8 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-const repoRoot = path.resolve(import.meta.dirname, "../../..");
-const installer = path.join(repoRoot, "source/tools/install-skill");
+const repoRoot = path.resolve(import.meta.dirname, "../..");
+const installer = path.join(repoRoot, "tools/install-skill");
 const sourceSkill = path.join(repoRoot, "source/skills/pkl-engineering");
 
 function run(codexHome, ...args) {

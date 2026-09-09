@@ -27,7 +27,7 @@
     "type": "PLUGIN_EVAL_VERIFIERS",
     "commands": [
       "python3 source/skills/openapi-schema-modeling/scripts/validate-yaml-examples.py",
-      "node source/tools/validate-source-graph.mjs",
+      "node tools/validate-source-graph.mjs",
       "git diff --check"
     ]
   },

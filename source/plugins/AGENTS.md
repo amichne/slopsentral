@@ -22,6 +22,6 @@ This file applies to `source/plugins/`.
 
 ## Verify
 
-- Run `node source/tools/validate-source-graph.mjs`.
+- Run `node tools/validate-source-graph.mjs`.
 - For focused composition checks, run
   `python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>`.

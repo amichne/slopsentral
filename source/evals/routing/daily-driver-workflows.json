@@ -54,7 +54,7 @@
         "evidenceRefs": [
           "AGENTS.md marketplace ownership",
           "source/adaptable.marketplace.json",
-          "source/tools/validate-source-graph.mjs"
+          "tools/validate-source-graph.mjs"
         ]
       },
       "prompt": "Refine marketplace skills, plugins, hooks, and evals so the team can share productive agent workflows.",
@@ -492,7 +492,7 @@
         "evidenceRefs": [
           "source/plugins/agent-platform-authoring/plugin.json",
           "source/schemas/evals/routing-cases.schema.json",
-          "source/tools/validate-source-graph.mjs"
+          "tools/validate-source-graph.mjs"
         ]
       },
       "prompt": "Decide whether the new workflow additions are production-ready and safe to share with the team.",

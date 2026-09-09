@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 
-const repoRoot = path.resolve(import.meta.dirname, "../../..");
+const repoRoot = path.resolve(import.meta.dirname, "../..");
 
 function readJson(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(repoRoot, relativePath), "utf8"));
@@ -70,6 +70,6 @@ test("CI validates benchmark definitions without executing agents", () => {
     .map((name) => fs.readFileSync(path.join(workflowRoot, name), "utf8"))
     .join("\n");
 
-  assert.match(workflows, /node source\/tools\/validate-source-graph\.mjs/u);
+  assert.match(workflows, /node tools\/validate-source-graph\.mjs/u);
   assert.doesNotMatch(workflows, /plugin-eval\s+benchmark/u);
 });

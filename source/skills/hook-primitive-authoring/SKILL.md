@@ -18,7 +18,7 @@ repo-owned primitive before any plugin composes it.
 - Reference related skills, agents, hooks, or concepts through metadata instead
   of copying their guidance into hook files.
 - Validate hook metadata against the repo-local source graph contract through
-  `node source/tools/validate-source-graph.mjs`.
+  `node tools/validate-source-graph.mjs`.
 - Treat every hook metadata file and runtime adapter as structured data with a
   mandatory schema-backed validation path.
 - Run syntax checks for every touched executable hook implementation.
@@ -36,7 +36,7 @@ repo-owned primitive before any plugin composes it.
 
 3. Identify validation coverage.
    For neutral metadata and runtime adapters, use
-   `node source/tools/validate-source-graph.mjs`. For hook-specific sidecars
+   `node tools/validate-source-graph.mjs`. For hook-specific sidecars
    such as skill requirements, keep the `$schema` pointer under `source/schemas`
    and still parse JSON locally.
 
