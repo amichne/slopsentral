@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T18:38:04-04:00",
+  "generatedAt": "2026-09-08T22:25:23-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -405,7 +405,7 @@
         },
         {
           "name": "issue-tracker-operations",
-          "sha256": "sha256:c14a8058471ad1449fc75ef719b5f6672f7e05331bc05359fd49099d1278616f",
+          "sha256": "sha256:011305b74230ec9f44f63984dfc1445b7f7fe307656667d269de69f42b63f52c",
           "sourcePath": "source/skills/issue-tracker-operations",
           "targetPath": "skills/issue-tracker-operations",
           "type": "SKILL"
@@ -447,21 +447,21 @@
         },
         {
           "name": "hook-primitive-authoring",
-          "sha256": "sha256:a14b8bcf32dec1b63c20ebf979fea419c42ad705dd82a37209300dbcc1062e32",
+          "sha256": "sha256:4f12e380caeaa6ac5bc4f4dd38f5d95814b974f57c8fd9bbaf3b291a416b165e",
           "sourcePath": "source/skills/hook-primitive-authoring",
           "targetPath": "skills/hook-primitive-authoring",
           "type": "SKILL"
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:39f7dea4d6b97cfac6a014e9a052cccdd8c604b037063a3930a57a6a97608f4f",
+          "sha256": "sha256:ad301f1fbfed79e58f0e1f317751858712e1f5fba9c9406e90e1d7559e6df0ec",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
         },
         {
           "name": "primitive-routing-evaluation",
-          "sha256": "sha256:fafbf88226a6b23914307e77f428373f490d962a80bc78ca0d6de8ec8e1fde94",
+          "sha256": "sha256:4cb7b69119c307c79628e2d1f7810d0406c10aabcb7906de18e0d78402a93e30",
           "sourcePath": "source/skills/primitive-routing-evaluation",
           "targetPath": "skills/primitive-routing-evaluation",
           "type": "SKILL"
@@ -612,6 +612,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "661e4ad0723a0d3ad4516e1c97f98aa06be2c8fc",
+  "sourceSha": "21c2301f810a230505a296db2a91f6f27ac81cb7",
   "type": "HYDRATED_MARKETPLACE"
 }

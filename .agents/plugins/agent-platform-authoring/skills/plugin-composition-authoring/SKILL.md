@@ -50,7 +50,7 @@ the primitive remains usable without the plugin.
    checker:
 
    ```sh
-   node source/tools/validate-source-graph.mjs
+   node tools/validate-source-graph.mjs
    python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>
    ```
 

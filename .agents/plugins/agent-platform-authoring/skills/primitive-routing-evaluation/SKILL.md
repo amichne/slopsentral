@@ -98,8 +98,8 @@ checks that cases are sanitized, schema-linked, and point at existing canonical
 primitives. The replay runner checks observed routing coverage:
 
 ```bash
-node source/tools/validate-source-graph.mjs
-node source/tools/run-routing-evals.mjs --require-all-observed
+node tools/validate-source-graph.mjs
+node tools/run-routing-evals.mjs --require-all-observed
 ```
 
 ## Source Promotion Guidance
