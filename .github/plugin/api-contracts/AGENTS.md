@@ -23,7 +23,7 @@ Machine-readable boundary contracts.
 
 ## Instruction Primitives
 
-- `schema-driven-design`: `instructions/schema-driven-design.md` (source: `source/concepts/schema-driven-design/core.md`)
+- `api-contract-design`: `instructions/api-contract-design.md` (source: `source/instructions/api-contract-design.md`)
 
 ## Agent Profile Primitives
 
@@ -36,7 +36,3 @@ Machine-readable boundary contracts.
 - `openapi-contract-authoring`: `skills/openapi-contract-authoring` (source: `source/skills/openapi-contract-authoring`)
 - `openapi-contract-rating`: `skills/openapi-contract-rating` (source: `source/skills/openapi-contract-rating`)
 - `openapi-schema-modeling`: `skills/openapi-schema-modeling` (source: `source/skills/openapi-schema-modeling`)
-
-## Hook Primitives
-
-- `schema-driven-design-context`: `hooks/schema-driven-design-context.hooks.json` (source: `source/hooks/schema-driven-design-context.hook.json`)

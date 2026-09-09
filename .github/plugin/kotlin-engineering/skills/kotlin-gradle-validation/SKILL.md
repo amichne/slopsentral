@@ -20,7 +20,7 @@ needs a durable machine-readable handoff.
   before interpreting incomplete console text.
 - Run targeted module or test tasks before full suites.
 - Never call a build green until the relevant Gradle command exits successfully.
-- Keep domain modeling and API shape in `kotlin-code-correctness`; keep CI
+- Keep domain modeling and API shape in `kotlin-engineering`; keep CI
   topology in `github-ci-operations`.
 
 ## Workflow

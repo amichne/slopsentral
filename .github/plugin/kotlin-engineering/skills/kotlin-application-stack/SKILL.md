@@ -6,7 +6,7 @@ description: "Use when Kotlin application work selects or integrates kotlinx.ser
 # Kotlin application stack
 
 Use this skill for Kotlin library choices and their application bindings. Apply
-`kotlin-code-correctness` for the domain model and acceptance standard. This
+`kotlin-engineering` for the domain model and acceptance standard. This
 skill owns the dependency decision, adapter shape, and stack-specific proof.
 
 ## Operating contract

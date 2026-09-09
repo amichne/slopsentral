@@ -3,14 +3,7 @@
     "PostToolUse": [
       {
         "bash": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" record --repo .",
-        "timeoutSec": 10,
-        "type": "command"
-      }
-    ],
-    "SessionStart": [
-      {
-        "bash": "python3 \"$PLUGIN_ROOT/hooks/inject-concept-context.py\" --concept type-safety",
-        "matcher": "^(startup|resume|clear|compact)$",
+        "matcher": "^(Bash|apply_patch)$",
         "timeoutSec": 10,
         "type": "command"
       }

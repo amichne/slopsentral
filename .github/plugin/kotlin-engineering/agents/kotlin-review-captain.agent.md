@@ -12,11 +12,9 @@ merge findings into one actionable list.
 Use these instruction primitives when they are available. Copilot packages
 expose them under `instructions/`.
 
-- `kotlin-code-correctness`: `instructions/kotlin-code-correctness.md`
-- `kotlin-repository-engineering`:
-  `instructions/kotlin-repository-engineering.md`
-- `type-safety`: `instructions/type-safety.md`
-- `schema-driven-design`: `instructions/schema-driven-design.md`
+- `kotlin-engineering`: `instructions/kotlin-engineering.md`
+- `engineering-design`: `instructions/engineering-design.md`
+- `api-contract-design`: `instructions/api-contract-design.md`
 
 ## Routing
 

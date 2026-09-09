@@ -1,0 +1,26 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Engineering",
+  "description": "Repository-opt-in enforcement for explicitly declared required skill reads.",
+  "hooks": "./hooks.json",
+  "keywords": [
+    "governance",
+    "hooks",
+    "policy",
+    "repository",
+    "skill-read-policy",
+    "skills"
+  ],
+  "license": "UNLICENSED",
+  "name": "skill-read-policy",
+  "tags": [
+    "governance",
+    "hooks",
+    "policy",
+    "repository",
+    "skills"
+  ],
+  "version": "1.0.0"
+}

@@ -23,8 +23,7 @@ Kotlin implementation, API design, and compiler-backed review.
 
 ## Instruction Primitives
 
-- `kotlin-code-correctness`: `instructions/kotlin-code-correctness.md` (source: `source/concepts/kotlin-code-correctness/core.md`)
-- `kotlin-repository-engineering`: `instructions/kotlin-repository-engineering.md` (source: `source/concepts/kotlin-repository-engineering/core.md`)
+- `kotlin-engineering`: `instructions/kotlin-engineering.md` (source: `source/instructions/kotlin-engineering.md`)
 
 ## Agent Profile Primitives
 
@@ -49,6 +48,4 @@ Kotlin implementation, API design, and compiler-backed review.
 
 - `gradle-check-green`: `hooks/gradle-check-green.hooks.json` (source: `source/hooks/gradle-check-green.hook.json`)
 - `gradle-wrapper-integrity`: `hooks/gradle-wrapper-integrity.hooks.json` (source: `source/hooks/gradle-wrapper-integrity.hook.json`)
-- `kotlin-code-correctness-context`: `hooks/kotlin-code-correctness-context.hooks.json` (source: `source/hooks/kotlin-code-correctness-context.hook.json`)
 - `kotlin-horizontalization-check`: `hooks/kotlin-horizontalization-check.hooks.json` (source: `source/hooks/kotlin-horizontalization-check.hook.json`)
-- `kotlin-repository-engineering-context`: `hooks/kotlin-repository-engineering-context.hooks.json` (source: `source/hooks/kotlin-repository-engineering-context.hook.json`)
