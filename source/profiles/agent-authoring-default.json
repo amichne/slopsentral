@@ -1,6 +1,6 @@
 {
   "type": "WORKFLOW_PROFILE",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "name": "agent-authoring-default",
   "description": "Agent primitive authoring with explicit schema-read advice and source-graph validation.",
   "marketplaces": [
@@ -17,28 +17,15 @@
     "engineering-baseline",
     "agent-platform-authoring"
   ],
-  "hooks": [
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "type-safety-context",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "agents-md-turn-refresh",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "source-graph-valid",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "required-skill-read",
-      "adapter": "codex"
-    }
-  ],
+  "standaloneSkills": [],
+  "hookPolicy": {
+    "type": "HOOK_POLICY",
+    "mode": "ADVISORY"
+  },
+  "reconciliation": {
+    "type": "PLUGIN_RECONCILIATION",
+    "unselected": "DISABLE_UNSELECTED"
+  },
   "validation": {
     "type": "WORKFLOW_VALIDATION",
     "commands": [

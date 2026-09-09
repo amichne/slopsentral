@@ -17,8 +17,11 @@ node tools/catalog.mjs --profile kotlin-repo-default --json
 ```
 
 Safely plan, apply, inspect, and reverse a named Codex user profile with the
-[profile lifecycle](docs/profile-lifecycle.md). Every target mutation records a
-verified preimage in a versioned transaction first.
+[profile lifecycle](docs/profile-lifecycle.md). It ensures the Slopsentral
+marketplace, installs selected plugins, writes a named overlay, and reports
+plugin-owned hooks for manual trust review. Declared standalone skills are
+installed at stable user paths and enabled or disabled in that overlay. Every
+overlay mutation records a verified preimage in a versioned transaction first.
 
 ## Portable CLI
 
@@ -50,6 +53,11 @@ means a runtime or I/O failure, `2` means an invalid request or contract, and
 `3` means a conflict. `doctor` is read-only; a missing Codex executable is a
 warning, while missing packaged assets or an unusable configuration root makes
 the check fail.
+
+Profile operations require Codex CLI 0.134.0 or newer. They leave the base user
+config, foreign plugins, and Codex's runtime-owned hook trust state untouched.
+Rollback reverses the generated profile overlay, not marketplace, plugin, or
+standalone-skill installations.
 
 Remove the global command without changing profiles or backups it previously
 created:

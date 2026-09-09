@@ -1,0 +1,62 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "skill-read-policy",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-6-astra",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "node tools/validate-source-graph.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run only in a repository fixture with an explicit non-empty requirements contract.",
+    "Do not treat the hook as a global default or as proof that a skill was understood.",
+    "Astra-targeted definition; static validation is not a live model benchmark result."
+  ],
+  "setupQuestions": [
+    "Which required skill and tool call provide a safe deterministic enforcement fixture?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "explicit-skill-read-policy",
+      "title": "Explicit skill-read policy",
+      "purpose": "Measure whether required-skill enforcement stays repository-opt-in and schema-backed.",
+      "routingCaseIds": [
+        "hook-skill-requirements-need-schema-coverage"
+      ],
+      "expectedPrimitive": {
+        "type": "HOOK",
+        "name": "required-skill-read"
+      },
+      "userInput": "Use Skill Read Policy in this isolated workspace. Declare one required skill through the schema-backed requirements contract and prove an unread tool call receives advisory guidance. Do not commit, push, publish, or modify remote state.",
+      "successChecklist": [
+        "The policy is activated explicitly rather than through a default engineering profile.",
+        "The requirements payload validates and names a marketplace-visible skill.",
+        "The check covers both read and unread outcomes without recording private prompt content."
+      ]
+    }
+  ]
+}

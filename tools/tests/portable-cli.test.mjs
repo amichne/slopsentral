@@ -14,6 +14,46 @@ function temporaryRoot(t) {
   return root;
 }
 
+function fakeCodex(root) {
+  const bin = path.join(root, "bin");
+  fs.mkdirSync(bin, { recursive: true });
+  const executable = path.join(bin, "codex");
+  fs.writeFileSync(executable, `#!/usr/bin/env node
+const plugins = ${JSON.stringify([
+    "agent-platform-authoring",
+    "api-contracts",
+    "code-knowledge-base",
+    "developer-tools",
+    "effective-delivery",
+    "engineering-baseline",
+    "intellij-engineering",
+    "kotlin-engineering",
+    "pkl-engineering",
+    "skill-read-policy",
+    "terminal-ui-design",
+    "writing",
+  ])};
+const args = process.argv.slice(2);
+if (args.length === 1 && args[0] === "--version") {
+  process.stdout.write("codex-cli 0.153.4\\n");
+} else if (args.join(" ") === "plugin marketplace list --json") {
+  process.stdout.write(JSON.stringify({ marketplaces: [{
+    name: "slopsentral",
+    marketplaceSource: { sourceType: "git", source: "https://github.com/amichne/slopsentral.git" },
+  }] }));
+} else if (args.join(" ") === "plugin list --available --json") {
+  process.stdout.write(JSON.stringify({ installed: plugins.map(name => ({
+    pluginId: name + "@slopsentral", name, marketplaceName: "slopsentral", installed: true, enabled: true,
+  })), available: [] }));
+} else {
+  process.stderr.write("unsupported fake Codex command: " + args.join(" ") + "\\n");
+  process.exitCode = 2;
+}
+`);
+  fs.chmodSync(executable, 0o755);
+  return bin;
+}
+
 function run(executable, args, options = {}) {
   return spawnSync(executable, args, {
     cwd: options.cwd ?? repoRoot,
@@ -54,6 +94,7 @@ test("profile commands translate positional identities without changing lifecycl
   const root = temporaryRoot(t);
   const codexHome = path.join(root, "codex");
   const backupRoot = path.join(root, "backups");
+  const bin = fakeCodex(root);
   fs.mkdirSync(codexHome);
 
   const planned = runSource([
@@ -64,7 +105,7 @@ test("profile commands translate positional identities without changing lifecycl
     codexHome,
     "--backup-root",
     backupRoot,
-  ]);
+  ], { env: { ...process.env, CODEX_HOME: codexHome, PATH: `${bin}${path.delimiter}${process.env.PATH ?? ""}` } });
 
   assert.equal(planned.status, 0, diagnostic(planned));
   const output = jsonOutput(planned);
@@ -114,16 +155,29 @@ test("doctor represents missing package assets as a typed failure", async (t) =>
   assert.equal(fs.readdirSync(root).length, 0);
 });
 
-test("npm package contains only the portable CLI runtime", () => {
+test("npm package contains the portable lifecycle and standalone skill assets", () => {
   const packed = run("npm", ["pack", "--dry-run", "--json"]);
   assert.equal(packed.status, 0, diagnostic(packed));
   const files = JSON.parse(packed.stdout)[0].files.map((file) => file.path).sort();
+  const nonSkillFiles = files.filter((file) => !file.startsWith("source/skills/"));
 
-  assert.deepEqual(files, [
+  assert.deepEqual(nonSkillFiles, [
     "README.md",
     "docs/profile-lifecycle.md",
     "package.json",
     "source/adaptable.marketplace.json",
+    "source/plugins/agent-platform-authoring/plugin.json",
+    "source/plugins/api-contracts/plugin.json",
+    "source/plugins/code-knowledge-base/plugin.json",
+    "source/plugins/developer-tools/plugin.json",
+    "source/plugins/effective-delivery/plugin.json",
+    "source/plugins/engineering-baseline/plugin.json",
+    "source/plugins/intellij-engineering/plugin.json",
+    "source/plugins/kotlin-engineering/plugin.json",
+    "source/plugins/pkl-engineering/plugin.json",
+    "source/plugins/skill-read-policy/plugin.json",
+    "source/plugins/terminal-ui-design/plugin.json",
+    "source/plugins/writing/plugin.json",
     "source/profiles/agent-authoring-default.json",
     "source/profiles/documentation-default.json",
     "source/profiles/intellij-plugin-default.json",
@@ -131,10 +185,19 @@ test("npm package contains only the portable CLI runtime", () => {
     "source/profiles/local-development-default.json",
     "source/schemas/profiles/profile-transaction.schema.json",
     "source/schemas/profiles/workflow-profile.schema.json",
+    "tools/install-skill",
     "tools/profile-lifecycle.mjs",
     "tools/slopsentral.mjs",
     "tools/validate-profile-contracts.mjs",
   ]);
+  const marketplace = JSON.parse(fs.readFileSync(path.join(repoRoot, "source/adaptable.marketplace.json"), "utf8"));
+  const packagedSkillRoots = marketplace.skills.map(({ path: skillPath }) => `source/${skillPath}/`);
+  for (const root of packagedSkillRoots) {
+    assert.ok(files.includes(`${root}SKILL.md`), `${root}SKILL.md must be packaged`);
+  }
+  for (const file of files.filter((candidate) => candidate.startsWith("source/skills/"))) {
+    assert.doesNotMatch(file, /(?:__pycache__|\.pyc$)/u);
+  }
 });
 
 test("installed tarball manages a profile outside the repository checkout", (t) => {
@@ -144,6 +207,8 @@ test("installed tarball manages a profile outside the repository checkout", (t) 
   const workingDirectory = path.join(root, "elsewhere");
   const codexHome = path.join(root, "codex");
   const backupRoot = path.join(root, "backups");
+  const bin = fakeCodex(root);
+  const environment = { ...process.env, CODEX_HOME: codexHome, PATH: `${bin}${path.delimiter}${process.env.PATH ?? ""}` };
   fs.mkdirSync(packDirectory);
   fs.mkdirSync(workingDirectory);
   fs.mkdirSync(codexHome);
@@ -163,8 +228,17 @@ test("installed tarball manages a profile outside the repository checkout", (t) 
   ]);
   assert.equal(installed.status, 0, diagnostic(installed));
   const installedCli = path.join(prefix, "bin/slopsentral");
+  const installedPackage = path.join(prefix, "lib/node_modules/slopsentral");
+  const installedProfilePath = path.join(installedPackage, "source/profiles/local-development-default.json");
+  const installedProfile = JSON.parse(fs.readFileSync(installedProfilePath, "utf8"));
+  installedProfile.standaloneSkills = [{
+    type: "STANDALONE_SKILL_STATE",
+    name: "reference-doc-workflow",
+    state: "PRESENT",
+  }];
+  fs.writeFileSync(installedProfilePath, `${JSON.stringify(installedProfile, null, 2)}\n`);
 
-  const doctor = run(installedCli, ["doctor"], { cwd: workingDirectory });
+  const doctor = run(installedCli, ["doctor"], { cwd: workingDirectory, env: environment });
   assert.equal(doctor.status, 0, diagnostic(doctor));
   assert.equal(jsonOutput(doctor).type, "SLOPSENTRAL_DOCTOR");
 
@@ -176,11 +250,12 @@ test("installed tarball manages a profile outside the repository checkout", (t) 
     codexHome,
     "--backup-root",
     backupRoot,
-  ], { cwd: workingDirectory });
+  ], { cwd: workingDirectory, env: environment });
   assert.equal(applied.status, 0, diagnostic(applied));
   const applyOutput = jsonOutput(applied);
   assert.equal(applyOutput.type, "PROFILE_APPLIED");
   assert.equal(fs.existsSync(path.join(codexHome, "local-development-default.config.toml")), true);
+  assert.equal(fs.existsSync(path.join(codexHome, "skills/reference-doc-workflow/SKILL.md")), true);
 
   const rolledBack = run(installedCli, [
     "profile",
@@ -190,8 +265,9 @@ test("installed tarball manages a profile outside the repository checkout", (t) 
     codexHome,
     "--backup-root",
     backupRoot,
-  ], { cwd: workingDirectory });
+  ], { cwd: workingDirectory, env: environment });
   assert.equal(rolledBack.status, 0, diagnostic(rolledBack));
   assert.equal(jsonOutput(rolledBack).type, "PROFILE_ROLLED_BACK");
   assert.equal(fs.existsSync(path.join(codexHome, "local-development-default.config.toml")), false);
+  assert.equal(fs.existsSync(path.join(codexHome, "skills/reference-doc-workflow/SKILL.md")), true);
 });

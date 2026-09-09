@@ -24,8 +24,8 @@ function rejects(t, mutate, expected) {
 
 test('rejects duplicate instruction ownership across plugins', t => {
   rejects(t, edit => edit('source/plugins/writing/plugin.json', plugin => {
-    plugin.instructions.push({ type: 'INSTRUCTION', name: 'type-safety', path: 'concepts/type-safety/core.md', source: { type: 'LOCAL_SOURCE', path: './' } });
-  }), /instruction type-safety.*multiple plugin owners/i);
+    plugin.instructions.push({ type: 'INSTRUCTION', name: 'engineering-design', path: 'instructions/engineering-design.md', source: { type: 'LOCAL_SOURCE', path: './' } });
+  }), /instruction engineering-design.*multiple plugin owners/i);
 });
 
 test('rejects duplicate identities in the standalone marketplace', t => {

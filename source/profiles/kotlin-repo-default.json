@@ -1,6 +1,6 @@
 {
   "type": "WORKFLOW_PROFILE",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "name": "kotlin-repo-default",
   "description": "Default Kotlin repository workflow that composes baseline executable-check TDD, Kotlin-specific engineering, local developer tools, effective delivery, and shared semantic-context hooks for Codex without duplicate primitive ownership.",
   "marketplaces": [
@@ -19,43 +19,15 @@
     "developer-tools",
     "effective-delivery"
   ],
-  "hooks": [
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "type-safety-context",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "kotlin-code-correctness-context",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "kotlin-repository-engineering-context",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "agents-md-turn-refresh",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "kotlin-horizontalization-check",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "gradle-check-green",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "gradle-wrapper-integrity",
-      "adapter": "codex"
-    }
-  ],
+  "standaloneSkills": [],
+  "hookPolicy": {
+    "type": "HOOK_POLICY",
+    "mode": "ADVISORY"
+  },
+  "reconciliation": {
+    "type": "PLUGIN_RECONCILIATION",
+    "unselected": "DISABLE_UNSELECTED"
+  },
   "validation": {
     "type": "WORKFLOW_VALIDATION",
     "commands": [

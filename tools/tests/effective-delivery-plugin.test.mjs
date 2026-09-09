@@ -61,7 +61,8 @@ test("default delivery composition does not activate automatic CI hooks", () => 
     "developer-tools",
     "effective-delivery",
   ]);
-  assert.equal(profile.hooks.some((hook) => hook.name === "github-actions-await"), false);
+  assert.equal(profile.hookPolicy.mode, "ADVISORY");
+  assert.equal(profile.plugins.includes("skill-read-policy"), false);
   assert.equal(benchmark.targetName, "effective-delivery");
 });
 

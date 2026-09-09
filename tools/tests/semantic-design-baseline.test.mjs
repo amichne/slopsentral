@@ -25,29 +25,13 @@ function withoutFencedCode(markdown) {
   return markdown.replace(/^```[^\n]*\n[\s\S]*?^```\s*$/gmu, "");
 }
 
-test("semantic concepts stay source-owned and are injected by single-owner Codex hooks", () => {
-  const expected = {
-    "type-safety-context": {
-      concept: "type-safety",
-      owner: "engineering-baseline",
-      path: "concepts/type-safety/core.md",
-    },
-    "schema-driven-design-context": {
-      concept: "schema-driven-design",
-      owner: "api-contracts",
-      path: "concepts/schema-driven-design/core.md",
-    },
-    "kotlin-code-correctness-context": {
-      concept: "kotlin-code-correctness",
-      owner: "kotlin-engineering",
-      path: "concepts/kotlin-code-correctness/core.md",
-    },
-    "kotlin-repository-engineering-context": {
-      concept: "kotlin-repository-engineering",
-      owner: "kotlin-engineering",
-      path: "concepts/kotlin-repository-engineering/core.md",
-    },
-  };
+test("semantic concepts stay source-owned while plugins load concise instructions once", () => {
+  const retiredContextHooks = [
+    "type-safety-context",
+    "schema-driven-design-context",
+    "kotlin-code-correctness-context",
+    "kotlin-repository-engineering-context",
+  ];
   const pluginNames = fs
     .readdirSync(path.join(repoRoot, "source/plugins"), { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
@@ -65,15 +49,17 @@ test("semantic concepts stay source-owned and are injected by single-owner Codex
     );
   }
 
-  for (const [hookName, concept] of Object.entries(expected)) {
-    const owners = pluginNames.filter((pluginName) =>
-      primitiveByName(plugin(pluginName).hooks, hookName),
-    );
-    assert.deepEqual(owners, [concept.owner], `${hookName} must have one install owner`);
-    const hook = readJson(`source/hooks/${hookName}.hook.json`);
-    const dependency = primitiveByName(hook.dependsOn, concept.concept);
-    assert.equal(dependency?.path, concept.path, `${hookName} must depend on ${concept.concept}`);
+  for (const hookName of retiredContextHooks) {
+    assert.equal(fs.existsSync(path.join(repoRoot, `source/hooks/${hookName}.hook.json`)), false);
+    assert.equal(fs.existsSync(path.join(repoRoot, `source/hooks/codex/${hookName}.hooks.json`)), false);
   }
+
+  assert.deepEqual(plugin("engineering-baseline").instructions.map(({ name }) => name), [
+    "agent-execution",
+    "engineering-design",
+  ]);
+  assert.deepEqual(plugin("kotlin-engineering").instructions.map(({ name }) => name), ["kotlin-engineering"]);
+  assert.deepEqual(plugin("api-contracts").instructions.map(({ name }) => name), ["api-contract-design"]);
 
   const typeSafetyWords = read("source/concepts/type-safety/core.md").split(/\s+/u).length;
   assert.ok(typeSafetyWords <= 1000, `type-safety must stay compact; found ${typeSafetyWords} words`);
@@ -92,13 +78,16 @@ test("non-concept instructions have one install owner and a bounded baseline", (
   assert.equal(owners.has("kotlin-code-correctness"), false);
   assert.equal(owners.has("kotlin-repository-engineering"), false);
   assert.deepEqual(owners.get("agent-execution"), ["engineering-baseline"]);
+  assert.deepEqual(owners.get("engineering-design"), ["engineering-baseline"]);
+  assert.deepEqual(owners.get("kotlin-engineering"), ["kotlin-engineering"]);
+  assert.deepEqual(owners.get("api-contract-design"), ["api-contracts"]);
   assert.ok([...owners.values()].every(values => values.length === 1));
   const baselineWords = plugin("engineering-baseline").instructions.reduce((count, ref) =>
     count + read(`source/${ref.path}`).trim().split(/\s+/u).length, 0);
   assert.ok(baselineWords <= 1250, `baseline instructions grew to ${baselineWords} words`);
 });
 
-test("skill resources are skill-local and concepts arrive through plugin context", () => {
+test("skill resources are skill-local and concepts stay deferred", () => {
   const skillFiles = fs
     .readdirSync(path.join(repoRoot, "source/skills"), { withFileTypes: true })
     .filter((entry) => entry.isDirectory())

@@ -13,7 +13,7 @@ Outside this workstream: General code navigation, user documentation, applicatio
 
 **Skills:** [agent-profile-authoring](skills/agent-profile-authoring/SKILL.md), [hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md), [repo-instruction-topology](skills/repo-instruction-topology/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md).
 
-**Hooks:** [required-skill-read](hooks/required-skill-read.hook.json), [source-graph-valid](hooks/source-graph-valid.hook.json).
+**Hooks:** [source-graph-valid](hooks/source-graph-valid.hook.json).
 
 ### api-contracts
 
@@ -25,9 +25,7 @@ Outside this workstream: Application implementation, source knowledge indexing, 
 
 **Agents:** [openapi-contract-rater](agents/openapi/openapi-contract-rater.agent.md), [schema-type-enforcer](agents/schema-type-enforcer.agent.md).
 
-**Hooks:** [schema-driven-design-context](hooks/schema-driven-design-context.hook.json).
-
-**Instructions:** [schema-driven-design](concepts/schema-driven-design/core.md).
+**Instructions:** [api-contract-design](instructions/api-contract-design.md).
 
 ### code-knowledge-base
 
@@ -63,9 +61,9 @@ Outside this workstream: Language/tool-specific implementation, hosted delivery,
 
 **Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [tdd](skills/tdd/SKILL.md).
 
-**Hooks:** [agents-md-turn-refresh](hooks/agents-md-turn-refresh.hook.json), [type-safety-context](hooks/type-safety-context.hook.json).
+**Hooks:** [agents-md-turn-refresh](hooks/agents-md-turn-refresh.hook.json).
 
-**Instructions:** [agent-execution](instructions/agent-execution.md), [type-safety](concepts/type-safety/core.md).
+**Instructions:** [agent-execution](instructions/agent-execution.md), [engineering-design](instructions/engineering-design.md).
 
 ### intellij-engineering
 
@@ -85,9 +83,9 @@ Outside this workstream: Hosted delivery, generic shell configuration, and Intel
 
 **Agents:** [kotlin-boundary-contract-reviewer](agents/kotlin-review/kotlin-boundary-contract-reviewer.agent.md), [kotlin-package-cohesion-reviewer](agents/kotlin-review/kotlin-package-cohesion-reviewer.agent.md), [kotlin-review-captain](agents/kotlin-review/kotlin-review-captain.agent.md), [kotlin-type-safety-reviewer](agents/kotlin-review/kotlin-type-safety-reviewer.agent.md).
 
-**Hooks:** [gradle-check-green](hooks/gradle-check-green.hook.json), [gradle-wrapper-integrity](hooks/gradle-wrapper-integrity.hook.json), [kotlin-code-correctness-context](hooks/kotlin-code-correctness-context.hook.json), [kotlin-horizontalization-check](hooks/kotlin-horizontalization-check.hook.json), [kotlin-repository-engineering-context](hooks/kotlin-repository-engineering-context.hook.json).
+**Hooks:** [gradle-check-green](hooks/gradle-check-green.hook.json), [gradle-wrapper-integrity](hooks/gradle-wrapper-integrity.hook.json), [kotlin-horizontalization-check](hooks/kotlin-horizontalization-check.hook.json).
 
-**Instructions:** [kotlin-code-correctness](concepts/kotlin-code-correctness/core.md), [kotlin-repository-engineering](concepts/kotlin-repository-engineering/core.md).
+**Instructions:** [kotlin-engineering](instructions/kotlin-engineering.md).
 
 ### pkl-engineering
 
@@ -98,6 +96,14 @@ Outside this workstream: General CI/CD architecture, arbitrary shell automation,
 **Skills:** [pkl-engineering](skills/pkl-engineering/SKILL.md), [pkl-pattern-catalogs](skills/pkl-pattern-catalogs/SKILL.md), [pkl-specification](skills/pkl-specification/SKILL.md), [pkl-tooling-setup](skills/pkl-tooling-setup/SKILL.md).
 
 **Hooks:** [pkl-evaluate-check](hooks/pkl-evaluate-check.hook.json), [pkl-format-check](hooks/pkl-format-check.hook.json), [pkl-test-check](hooks/pkl-test-check.hook.json).
+
+### skill-read-policy
+
+Repository-opt-in enforcement for explicitly declared required skill reads.
+
+Outside this workstream: Default engineering, agent authoring without required reads, or global always-on policy.
+
+**Hooks:** [required-skill-read](hooks/required-skill-read.hook.json).
 
 ### terminal-ui-design
 
@@ -117,15 +123,15 @@ Outside this workstream: Code changes, signature-index construction, OKF knowled
 
 ## Profiles
 
-- [agent-authoring-default](profiles/agent-authoring-default.json): engineering-baseline + agent-platform-authoring. 1022 instruction words.
+- [agent-authoring-default](profiles/agent-authoring-default.json): engineering-baseline + agent-platform-authoring. 351 instruction words.
 
-- [documentation-default](profiles/documentation-default.json): engineering-baseline + writing. 1022 instruction words.
+- [documentation-default](profiles/documentation-default.json): engineering-baseline + writing. 351 instruction words.
 
-- [intellij-plugin-default](profiles/intellij-plugin-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + intellij-engineering. 4383 instruction words.
+- [intellij-plugin-default](profiles/intellij-plugin-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + intellij-engineering. 487 instruction words.
 
-- [kotlin-repo-default](profiles/kotlin-repo-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery. 4383 instruction words.
+- [kotlin-repo-default](profiles/kotlin-repo-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery. 487 instruction words.
 
-- [local-development-default](profiles/local-development-default.json): engineering-baseline + developer-tools. 1022 instruction words.
+- [local-development-default](profiles/local-development-default.json): engineering-baseline + developer-tools. 351 instruction words.
 
 ## Standalone skills
 

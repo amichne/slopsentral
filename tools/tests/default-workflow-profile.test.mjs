@@ -21,7 +21,6 @@ function hookNames(manifest) {
 test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
   const profile = readJson("source/profiles/kotlin-repo-default.json");
   const selectedPlugins = new Map(profile.plugins.map((name) => [name, plugin(name)]));
-  const profileHooks = new Map(profile.hooks.map((hook) => [hook.name, hook]));
 
   assert.deepEqual([...selectedPlugins.keys()], [
     "engineering-baseline",
@@ -31,31 +30,30 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
   ]);
 
   const baselineHooks = hookNames(selectedPlugins.get("engineering-baseline"));
-  assert.ok(
-    baselineHooks.has("agents-md-turn-refresh"),
-    "engineering-baseline must provide the AGENTS.md refresh hook used by default installs",
-  );
-  assert.equal(profileHooks.get("agents-md-turn-refresh")?.adapter, "codex");
+  assert.deepEqual([...baselineHooks], ["agents-md-turn-refresh"]);
+  assert.deepEqual(selectedPlugins.get("engineering-baseline").instructions.map(({ name }) => name), [
+    "agent-execution",
+    "engineering-design",
+  ]);
 
   assert.deepEqual([...hookNames(selectedPlugins.get("effective-delivery"))], []);
 
   const kotlinHooks = hookNames(selectedPlugins.get("kotlin-engineering"));
-  for (const hookName of ["gradle-check-green", "gradle-wrapper-integrity"]) {
+  assert.deepEqual(selectedPlugins.get("kotlin-engineering").instructions.map(({ name }) => name), [
+    "kotlin-engineering",
+  ]);
+  for (const hookName of ["kotlin-horizontalization-check", "gradle-check-green", "gradle-wrapper-integrity"]) {
     assert.ok(
       kotlinHooks.has(hookName),
       `kotlin-engineering must provide ${hookName} for default Gradle hook configuration`,
     );
-    assert.equal(profileHooks.get(hookName)?.adapter, "codex");
     assert.ok(
       fs.existsSync(path.join(sourceRoot, "hooks", `${hookName}.hook.json`)),
       `${hookName} metadata must be authored as a hook primitive`,
     );
   }
 
-  for (const [hookName] of profileHooks) {
-    const owners = [...selectedPlugins.entries()]
-      .filter(([, manifest]) => hookNames(manifest).has(hookName))
-      .map(([name]) => name);
-    assert.equal(owners.length, 1, `profile hook ${hookName} should have exactly one selected plugin owner`);
-  }
+  const adapter = readJson("source/hooks/codex/agents-md-turn-refresh.hooks.json");
+  assert.equal(adapter.hooks.PostToolUse[0].matcher, "^(Bash|apply_patch)$");
+  assert.equal(profile.hookPolicy.mode, "ADVISORY");
 });

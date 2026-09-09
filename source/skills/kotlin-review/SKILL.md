@@ -9,10 +9,10 @@ Use this skill as the orchestration layer for Kotlin review. It routes a Kotlin
 change through focused review passes, applies the local type and schema
 instructions, and deduplicates the result into one actionable finding list.
 
-Use the `kotlin-code-correctness` instruction as the review acceptance
-standard. Copilot packages expose it as `instructions/kotlin-code-correctness.md`.
-Use `kotlin-repository-engineering` when module topology, executable evidence,
-generated surfaces, repository guidance, or verification breadth changed.
+Use the `kotlin-engineering` instruction as the review acceptance standard.
+Copilot packages expose it as `instructions/kotlin-engineering.md`. It also
+owns module topology, executable evidence, generated surfaces, repository
+guidance, and verification breadth.
 This skill owns review routing and finding synthesis, not the evergreen Kotlin
 policy itself.
 
@@ -27,14 +27,11 @@ Use these bundled primitives when they are available:
   serialization, persistence, HTTP, messaging, SDK, and interop boundaries.
 - `kotlin-package-cohesion-reviewer`: audit package topology, prefix-heavy
   directories, multi-member files, and horizontal layer buckets.
-- `kotlin-code-correctness`: apply the stable instruction for Kotlin domain
-  shape, boundary parsing, package ownership, expected failures, state safety,
-  and proof.
-- `kotlin-repository-engineering`: apply the stable instruction for Gradle
-  topology, module direction, focused change proof, scoped `AGENTS.md`, generated
-  ownership, installed-artifact checks, and widening verification.
-- `type-safety` and `schema-driven-design`: use as normative instructions for
-  invalid-state prevention and boundary assertions.
+- `kotlin-engineering`: apply the stable instruction for Kotlin domain shape,
+  boundary parsing, package and Gradle ownership, expected failures, state
+  safety, focused proof, and widening verification.
+- `engineering-design` and `api-contract-design`: use as normative instructions
+  for invalid-state prevention and boundary assertions.
 - `kotlin-design-practices`: load for detailed Kotlin layout, API, idiom, and testing
   references when the review needs more than the focused agent profiles.
 
@@ -50,10 +47,9 @@ agent files.
    `git diff` or the user-provided paths, and inspect only the smallest
    surrounding context needed to understand public behavior.
 
-2. Load the `kotlin-code-correctness` instruction when the diff needs a stable
-   Kotlin standard beyond a narrow agent profile.
-   Load `kotlin-repository-engineering` when the diff changes repository-level
-   ownership, proof, or verification contracts.
+2. Load the `kotlin-engineering` instruction when the diff needs a stable Kotlin
+   standard beyond a narrow agent profile, including repository-level ownership,
+   proof, or verification contracts.
 
 3. Route review passes.
    Use the captain for broad review or when multiple axes apply. Use focused

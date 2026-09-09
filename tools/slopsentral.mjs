@@ -41,14 +41,31 @@ const packagedProfiles = [
   "local-development-default",
 ];
 
+const packagedPlugins = [
+  "agent-platform-authoring",
+  "api-contracts",
+  "code-knowledge-base",
+  "developer-tools",
+  "effective-delivery",
+  "engineering-baseline",
+  "intellij-engineering",
+  "kotlin-engineering",
+  "pkl-engineering",
+  "skill-read-policy",
+  "terminal-ui-design",
+  "writing",
+];
+
 const requiredAssets = [
   "package.json",
   "source/adaptable.marketplace.json",
   "source/schemas/profiles/profile-transaction.schema.json",
   "source/schemas/profiles/workflow-profile.schema.json",
+  "tools/install-skill",
   "tools/profile-lifecycle.mjs",
   "tools/validate-profile-contracts.mjs",
   ...packagedProfiles.map((profile) => `source/profiles/${profile}.json`),
+  ...packagedPlugins.map((plugin) => `source/plugins/${plugin}/plugin.json`),
 ];
 
 class CliUsageError extends Error {}
@@ -129,17 +146,37 @@ function checkPackageAssets(root) {
     return { type: "CHECK_FAILED", name: "PACKAGE_ASSETS", packageRoot: root, missing };
   }
   try {
-    JSON.parse(fs.readFileSync(path.join(root, "source/adaptable.marketplace.json"), "utf8"));
+    const marketplace = JSON.parse(fs.readFileSync(path.join(root, "source/adaptable.marketplace.json"), "utf8"));
     JSON.parse(fs.readFileSync(path.join(root, "source/schemas/profiles/profile-transaction.schema.json"), "utf8"));
     JSON.parse(fs.readFileSync(path.join(root, "source/schemas/profiles/workflow-profile.schema.json"), "utf8"));
     for (const profile of packagedProfiles) {
       const relativePath = `source/profiles/${profile}.json`;
       const value = JSON.parse(fs.readFileSync(path.join(root, relativePath), "utf8"));
-      if (value.type !== "WORKFLOW_PROFILE" || value.schemaVersion !== 1 || value.name !== profile) {
+      if (value.type !== "WORKFLOW_PROFILE" || value.schemaVersion !== 2 || value.name !== profile) {
         throw new Error(`${relativePath} has an invalid profile identity`);
       }
     }
-    return { type: "CHECK_PASSED", name: "PACKAGE_ASSETS", packageRoot: root, profileCount: packagedProfiles.length };
+    for (const plugin of packagedPlugins) {
+      const relativePath = `source/plugins/${plugin}/plugin.json`;
+      const value = JSON.parse(fs.readFileSync(path.join(root, relativePath), "utf8"));
+      if (value.type !== "PLUGIN" || value.name !== plugin) {
+        throw new Error(`${relativePath} has an invalid plugin identity`);
+      }
+    }
+    for (const skill of marketplace.skills ?? []) {
+      const relativePath = `source/${skill.path}/SKILL.md`;
+      if (!fs.existsSync(path.join(root, relativePath))) {
+        throw new Error(`${relativePath} is missing from the portable package`);
+      }
+    }
+    return {
+      type: "CHECK_PASSED",
+      name: "PACKAGE_ASSETS",
+      packageRoot: root,
+      profileCount: packagedProfiles.length,
+      pluginCount: packagedPlugins.length,
+      standaloneSkillCount: (marketplace.skills ?? []).length,
+    };
   } catch (error) {
     return { type: "CHECK_FAILED", name: "PACKAGE_ASSETS", packageRoot: root, message: error.message };
   }
@@ -183,7 +220,7 @@ function codexCheck(probe) {
     type: "CHECK_WARNING",
     name: "CODEX_CLI",
     reason: probe.type,
-    message: probe.message ?? "Codex CLI was not found; profile file management remains available",
+    message: probe.message ?? "Codex CLI was not found; profile plan, apply, and status are unavailable",
   };
 }
 

@@ -6,7 +6,7 @@ description: "Use for a scoped Kotlin API change that must demonstrate a current
 # Negative Capability Proof
 
 Prove one reduction in the Kotlin API's reachable state space. Apply
-`kotlin-code-correctness` for general design and `tdd` for the executable loop.
+`kotlin-engineering` for general design and `tdd` for the executable loop.
 
 ## Contract
 

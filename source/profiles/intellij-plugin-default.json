@@ -1,6 +1,6 @@
 {
   "type": "WORKFLOW_PROFILE",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "name": "intellij-plugin-default",
   "description": "IntelliJ Platform engineering workflow composed from baseline engineering, Kotlin and Gradle correctness, local developer tools, effective delivery, and focused IntelliJ skills.",
   "marketplaces": [
@@ -20,43 +20,15 @@
     "effective-delivery",
     "intellij-engineering"
   ],
-  "hooks": [
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "type-safety-context",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "kotlin-code-correctness-context",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "kotlin-repository-engineering-context",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "agents-md-turn-refresh",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "kotlin-horizontalization-check",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "gradle-check-green",
-      "adapter": "codex"
-    },
-    {
-      "type": "WORKFLOW_HOOK",
-      "name": "gradle-wrapper-integrity",
-      "adapter": "codex"
-    }
-  ],
+  "standaloneSkills": [],
+  "hookPolicy": {
+    "type": "HOOK_POLICY",
+    "mode": "ADVISORY"
+  },
+  "reconciliation": {
+    "type": "PLUGIN_RECONCILIATION",
+    "unselected": "DISABLE_UNSELECTED"
+  },
   "validation": {
     "type": "WORKFLOW_VALIDATION",
     "commands": [

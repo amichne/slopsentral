@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "Portable lifecycle management for Slopsentral Codex profiles",
   "private": true,
-  "type": "module",
   "engines": {
     "node": ">=20.11"
   },
@@ -14,8 +13,14 @@
     "README.md",
     "docs/profile-lifecycle.md",
     "source/adaptable.marketplace.json",
+    "source/plugins/*/plugin.json",
     "source/profiles/*.json",
     "source/schemas/profiles/*.json",
+    "source/skills",
+    "!source/skills/AGENTS.md",
+    "!source/skills/**/__pycache__",
+    "!source/skills/**/*.pyc",
+    "tools/install-skill",
     "tools/profile-lifecycle.mjs",
     "tools/slopsentral.mjs",
     "tools/validate-profile-contracts.mjs"

@@ -33,15 +33,7 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     "effective-delivery",
     "intellij-engineering",
   ]);
-  assert.deepEqual(profile.hooks.map(({ name }) => name), [
-    "type-safety-context",
-    "kotlin-code-correctness-context",
-    "kotlin-repository-engineering-context",
-    "agents-md-turn-refresh",
-    "kotlin-horizontalization-check",
-    "gradle-check-green",
-    "gradle-wrapper-integrity",
-  ]);
+  assert.equal(profile.hookPolicy.mode, "ADVISORY");
 
   const skillOwners = new Map();
   const hookOwners = new Map();
@@ -59,8 +51,10 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     [...skillOwners].filter(([, owners]) => owners.length > 1),
     [],
   );
-  for (const { name, adapter } of profile.hooks) {
-    assert.equal(adapter, "codex");
-    assert.equal(hookOwners.get(name)?.length, 1, `${name} must have one selected owner`);
-  }
+  assert.deepEqual([...hookOwners.keys()].sort(), [
+    "agents-md-turn-refresh",
+    "gradle-check-green",
+    "gradle-wrapper-integrity",
+    "kotlin-horizontalization-check",
+  ]);
 });

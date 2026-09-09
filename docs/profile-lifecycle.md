@@ -2,11 +2,11 @@
 
 Use `slopsentral profile` to materialize one authored workflow profile as a
 named Codex user profile without changing the base user config.
-This first lifecycle slice owns only `${CODEX_HOME}/<profile>.config.toml`. It
-sets the enabled state of every `slopsentral` plugin: selected profile plugins
-are enabled and the other `slopsentral` plugins are disabled. Plugin
-installation, standalone skill state, user instructions, and hook trust are not
-mutated yet.
+The lifecycle ensures the declared marketplace, installs selected plugins, and
+owns `${CODEX_HOME}/<profile>.config.toml`. The overlay enables selected
+`slopsentral` plugins and disables unselected ones under the default
+`DISABLE_UNSELECTED` reconciliation policy. Foreign marketplaces and plugins
+are preserved.
 
 Install the CLI directly from GitHub. Node 20.11 or newer is required:
 
@@ -18,7 +18,8 @@ Pin an immutable release tag or full commit SHA instead of `#main` when the
 installation must be reproducible. Run `slopsentral doctor` to check the Node
 runtime, packaged profile assets, resolved Codex home, backup location, and
 optional Codex executable. The check is read-only, and a missing Codex
-executable is advisory.
+executable is advisory for `doctor`; profile operations require Codex CLI
+0.134.0 or newer.
 
 ## Plan And Apply
 
@@ -28,6 +29,12 @@ executable is advisory.
 slopsentral profile plan local-development-default
 slopsentral profile status local-development-default
 ```
+
+They inspect the Codex version, configured marketplaces, installed plugins, and
+the target overlay. `plan` returns an ordered operation list such as
+`MARKETPLACE_ADD_PLANNED`, `PLUGIN_INSTALL_PLANNED`, and
+`FILE_CREATE_PLANNED`. `status` returns `PROFILE_CHANGES_REQUIRED` until those
+operations have been applied.
 
 Apply a profile:
 
@@ -45,6 +52,37 @@ slopsentral profile apply local-development-default \
 ```
 
 An unchanged managed profile is a no-op and does not create a transaction.
+Apply checks for an unmanaged target before adding a marketplace or plugin, so
+a profile-file conflict cannot leave those external changes half-applied.
+
+## Hook Review
+
+Profiles no longer duplicate a list of plugin-owned hooks. The lifecycle derives
+that list from the selected plugin manifests and returns `HOOK_REVIEW_REQUIRED`
+with the configured `OFF`, `ADVISORY`, or `ENFORCING` policy. It never writes
+Codex's runtime-owned hook trust state. Review and trust non-managed hooks in
+Codex with `/hooks`. When Codex appends `[hooks.state]` to a managed profile
+overlay, later lifecycle operations preserve that section byte-for-byte.
+
+`required-skill-read` is packaged only by the opt-in `skill-read-policy` plugin.
+No authored default profile selects that plugin. The default engineering and
+Kotlin plugins install concise instruction files once instead of launching
+concept-injection processes at session lifecycle events.
+
+## Profile Contract
+
+Workflow profile schema version 2 owns these policies:
+
+- `plugins` names the enabled Slopsentral plugin set.
+- `reconciliation.unselected` is `PRESERVE`, `DISABLE_UNSELECTED`, or
+  `REMOVE_UNSELECTED`; authored defaults use `DISABLE_UNSELECTED` and never
+  uninstall plugins.
+- `hookPolicy.mode` is `OFF`, `ADVISORY`, or `ENFORCING`.
+- `standaloneSkills` uses typed `PRESENT`, `ABSENT`, and `PRESERVE` states.
+  `PRESENT` installs a missing marketplace skill at the stable
+  `${CODEX_HOME}/skills/<name>` path and enables it in the overlay. `ABSENT`
+  disables that path without deleting it, and `PRESERVE` omits the override.
+  A different pre-existing skill directory is a conflict and is never replaced.
 
 ## Backup Location
 
@@ -100,6 +138,12 @@ If the target changed later, it returns `PROFILE_CONFLICT` and writes nothing.
 Rollback is itself a new versioned transaction. It captures the file it is
 about to replace or remove, so passing that rollback transaction's
 `manifestPath` to `rollback` reapplies the prior state.
+
+Transactions cover the generated TOML overlay. Marketplace and plugin changes
+are delegated to Codex, and newly installed standalone skills are preserved;
+these effects are not reversed by profile rollback. The default reconciliation
+policy does not uninstall plugins or delete skills. It disables unselected
+Slopsentral plugins only in the named overlay.
 
 ## Paths, JSON, And Exit Codes
 

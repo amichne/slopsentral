@@ -42,10 +42,12 @@ manifests, follows hook dependencies, rejects duplicate owners and conflicting
 identities, and renders CATALOG.md. It has no provider-specific projection rules.
 projeKtor v1.2.0 remains the owner of Codex and GitHub Copilot projection.
 
-Marketplace-listed standalone specialties can have no plugin owner. They are
-not implicitly installed by a profile. A selected plugin cannot smuggle another
-plugin's skill into its package through a hook dependency. Repeated references
-inside one plugin closure are idempotent.
+Marketplace-listed standalone specialties can have no plugin owner. A v2 profile
+installs one only when it explicitly declares the skill `PRESENT`; `ABSENT`
+disables its stable user path without deleting it, and `PRESERVE` leaves it out
+of the overlay. A selected plugin cannot smuggle another plugin's skill into its
+package through a hook dependency. Repeated references inside one plugin closure
+are idempotent.
 
 The generated catalog and `--profile <name> --json` expose instruction word counts
 and install closure. They do not measure prompt loading, tokens, or route quality.
@@ -67,11 +69,18 @@ win over generic skill guidance within higher-priority policy.
 
 ## Hook Policy
 
-The required-skill-read adapter belongs to agent-platform-authoring, not general
-engineering or Kotlin defaults. Its default requirements are empty and advisory.
-A consuming repository must explicitly name any required skills; missing optional
-configuration does not become a reason to block all tools. Schema-read tracking
-is not proof that the model understood or applied a schema.
+The required-skill-read adapter belongs to the opt-in skill-read-policy plugin,
+not general engineering, agent authoring, or Kotlin defaults. Its default
+requirements are empty and advisory. A consuming repository must explicitly
+name required skills and select the policy plugin; missing optional configuration
+does not become a reason to start a hook for every tool. Schema-read tracking is
+not proof that the model understood or applied a schema.
+
+General engineering, API-contract, and Kotlin plugins install concise normative
+instructions once. The full semantic concepts remain source-owned references;
+they are not injected repeatedly at session start, resume, clear, or compact.
+The AGENTS.md refresh adapter observes only `Bash` and `apply_patch`, the current
+Codex tool names capable of changing repository files.
 
 The Gradle and wrapper hooks retain their executable checks and Kotlin-specific
 dependencies. Their old TDD and shell-safety dependencies were reading guidance,

@@ -13,8 +13,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "concepts/kotlin-code-correctness/core.md",
-      "name": "kotlin-code-correctness"
+      "path": "instructions/kotlin-engineering.md",
+      "name": "kotlin-engineering"
     },
     {
       "type": "SKILL",

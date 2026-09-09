@@ -41,7 +41,8 @@ test('a dependency cycle is rejected, not silently truncated', () => {
 test('Astra defaults do not require unrelated skill reads', () => {
   for (const name of ['kotlin-repo-default', 'intellij-plugin-default', 'local-development-default', 'documentation-default']) {
     const profile = catalog.profiles.find(p => p.name === name);
-    assert.ok(!profile.hooks.some(h => h.name === 'required-skill-read'));
+    assert.ok(!profile.plugins.includes('skill-read-policy'));
+    assert.equal(profile.hookPolicy.mode, 'ADVISORY');
   }
   const config = JSON.parse(fs.readFileSync(path.join(root, 'source/hooks/required-skill-read.requirements.json'), 'utf8'));
   assert.equal(config.mode, 'ADVISORY');
