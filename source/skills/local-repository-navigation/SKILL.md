@@ -1,32 +1,35 @@
 ---
 name: "local-repository-navigation"
-description: "Use when explicitly asked to create or refresh local repo maps such as AGENTS.local.md, OUTDATED.local.md, or generated navigation summaries."
+description: "Use when explicitly asked to create or refresh checked-in AGENTS.md navigation summaries or OUTDATED.local.md markers."
 ---
 
 # Local Repository Navigation
 
-Use this skill to create local, generated navigation maps that help agents choose
+Use this skill to create checked-in, generated navigation maps that help agents choose
 where to read next. These maps are routing aids, not source-of-truth docs.
 
 ## Operating Contract
 
-- Keep durable repo instructions in `AGENTS.md`; keep local navigation summaries
-  in git-excluded files such as `AGENTS.local.md`.
-- Do not commit local summaries unless the repository explicitly makes them a
-  checked-in generated artifact with a drift check.
+- Keep durable repo instructions and generated navigation in checked-in
+  `AGENTS.md` files; generated files carry an explicit marker.
+- Never overwrite an authored `AGENTS.md`; refresh only files carrying the
+  generated navigation marker.
 - Make generated summaries deterministic enough to skip unchanged directories.
 - Read just enough source to orient the summary. Do not turn navigation refresh
   into full documentation authoring.
 - Keep any staleness marker append-only for hooks and truncate-only for the
   refresh workflow.
 - Never mutate source files as part of navigation refresh.
+- Route through `knowledge/index.md` when present; Code Knowledge Base owns
+  source-bound concept docs and impact checks. Engineering Baseline owns durable
+  invariant rules. Generated maps add navigation, never replace either authority.
 
 ## Workflow
 
 1. Choose the local artifact.
-   Name the summary file, where it lives, and how it is excluded from version
-   control. Use [summary-contract.md](references/summary-contract.md) for the
-   default `AGENTS.local.md` contract.
+   Name the summary file and where it lives. Use
+   [summary-contract.md](references/summary-contract.md) for the default
+   `AGENTS.md` contract.
 
 2. Define exclusions.
    Exclude VCS metadata, dependency caches, build outputs, virtual
@@ -37,7 +40,8 @@ where to read next. These maps are routing aids, not source-of-truth docs.
    record key files and subdirectories, and write a compact map.
 
 4. Detect staleness cheaply.
-   Use a deterministic directory fingerprint from file names, sizes, or mtimes.
+   Use sorted immediate child names and regular-file sizes, excluding mtimes
+   and directory sizes. Source-change markers still require review when the hash matches.
    Prefer a stable hash over re-reading every file.
 
 5. Refresh only what changed.
@@ -47,7 +51,7 @@ where to read next. These maps are routing aids, not source-of-truth docs.
 
 ## Completion Criteria
 
-- Local navigation files are ignored or explicitly generated.
+- Generated navigation files are explicitly generated and checked in.
 - The summary contract states required sections, exclusions, and hash behavior.
 - Refresh work is bounded to changed or requested directories.
 - Hooks or scripts never edit source files while maintaining navigation.
