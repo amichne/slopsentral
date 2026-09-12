@@ -28,8 +28,8 @@ Refresh behavior:
 
 - Treat hook output as a request for refresh, not as proof that a summary is
   stale.
-- Keep all generated local files out of commits unless the repo has a checked-in
-  generated-summary policy.
+- Check in generated `AGENTS.md` summaries with their source changes. Keep only
+  `OUTDATED.local.md` and runtime caches local.
 - Do not follow symlinks into external source trees unless the user explicitly
   chose that scope.
 - If a directory no longer exists, report it and remove it from the marker after
@@ -40,7 +40,8 @@ Refresh behavior:
 
 Before relying on the workflow, verify:
 
-- generated files are ignored;
+- generated `AGENTS.md` files are not ignored and are staged with the change;
+- only the staleness marker remains ignored;
 - repeated refreshes are stable when source state does not change;
 - marker processing handles blank lines, duplicates, missing directories, and
   paths with spaces;

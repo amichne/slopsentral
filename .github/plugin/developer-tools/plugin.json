@@ -4,6 +4,7 @@
   },
   "category": "Engineering",
   "description": "Local command-line tools and repository work.",
+  "hooks": "./hooks.json",
   "keywords": [
     "cli",
     "developer-tools",
@@ -22,5 +23,5 @@
     "mise",
     "shell"
   ],
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

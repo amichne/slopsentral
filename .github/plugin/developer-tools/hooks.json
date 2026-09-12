@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/repository-profile.py\"",
+        "matcher": "^(startup|resume)$",
+        "timeoutSec": 50,
+        "type": "command"
+      }
+    ]
+  },
+  "version": 1
+}
