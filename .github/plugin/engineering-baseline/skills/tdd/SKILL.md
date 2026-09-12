@@ -1,6 +1,6 @@
 ---
 name: "tdd"
-description: "Use when a behavior, invariant, bug fix, contract, or refactor should be developed red-green-refactor and any shell-invokable check can provide focused executable proof."
+description: "Use for behavior changes, bug fixes, contract changes, or tracer bullets that need a current-codebase preflight and focused executable proof; also for characterization before a refactor."
 ---
 
 # Executable-Check TDD
@@ -18,10 +18,14 @@ the nearest repository-local equivalent.
 
 - Read the nearest repository instructions, existing checks, and build metadata
   before choosing a command.
+- Check the proposed concept against current owners, callers, contracts, and
+  tests before adding it. Choose reuse, extend, add, or investigate from that
+  evidence; a plan or incident report is a hypothesis until checked.
 - State one acceptance behavior and one check specification before changing the
   implementation.
 - A check specification is its working directory, exact command, controlled
-  inputs and environment, expected RED failure, and GREEN success criterion.
+  inputs and environment, assertion source, expected RED failure, and GREEN
+  success criterion.
 - Run the same check specification for RED and GREEN. Only the intentional
   implementation change should explain the transition.
 - Commit and push each validated RED and passing GREEN checkpoint before continuing; if no publishable Git remote exists, record that limitation.
@@ -30,11 +34,21 @@ the nearest repository-local equivalent.
 - Infrastructure failures are not RED: command-not-found, dependency setup,
   syntax errors in the check, timeouts, permission failures, and unrelated
   failures must be repaired or isolated first.
-- If the new check passes before the implementation change, strengthen the check
-  until it proves the missing behavior. An already-green check is not regression
-  evidence.
+- If the check starts green, inspect what it actually covers. Existing behavior
+  is a reuse result; a refactor may use it as characterization. Tighten a weak
+  check only for a demonstrated uncovered requirement. Never invent a failure
+  or broaden the requirement merely to obtain RED.
 - Do not refactor while red or add production behavior not demanded by the
   current check.
+- Use a retained tracer bullet for the smallest real path across an uncertain
+  boundary. Use a disposable spike for an unanswered feasibility question;
+  label its limits before treating any result as production evidence.
+- Do not add tests that mirror low-impact prose or formatting edits. Run the
+  existing relevant validators instead.
+- Choose required checks and a stopping condition before implementation. After
+  they pass, repeat or widen only for changed inputs, a failure, or a named
+  unresolved risk. Test friction calls for a smaller seam, not a new framework
+  by default.
 - Do not create a workflow state directory merely to narrate the loop. The
   check, test source, native reports, and concise handoff are the evidence.
 
@@ -44,22 +58,34 @@ stabilizing the check specification.
 
 ## Workflow
 
-1. Frame one observable behavior, invariant, or failure and its owning boundary.
-2. Discover the narrowest shell-invokable check that can distinguish the current
-   state from the desired state.
-3. Declare the check specification. Preflight the runner or dependencies
+1. Frame one observable behavior, invariant, or failure. Identify its current
+   owner and affected consumer. Use [codebase-preflight.md](references/codebase-preflight.md)
+   before implementing a proposed concept or acting on an inherited plan.
+2. Choose reuse, characterization, a behavior change, or a bounded investigation.
+   Reuse may complete the task without production edits. For a behavior change,
+   discover the narrowest check that distinguishes current and desired behavior.
+   Continue through the RED/GREEN steps below only for a demonstrated gap;
+   otherwise use the selected mode's evidence and completion criteria.
+3. Declare the check specification and verification boundary. Preflight dependencies
    separately when their readiness is uncertain.
    Read [isolation.md](references/isolation.md) when the check mutates the
    filesystem, depends on a service, or evaluates an agent in an untrusted task.
 4. Add or tighten the smallest check before changing the implementation.
 5. Run the declared command and inspect the failure. Accept RED only when it
    fails for the expected reason.
-6. Implement the narrowest vertical slice that can satisfy that check.
+6. Implement the narrowest vertical slice that can satisfy that check. Use
+   [tracer-bullets.md](references/tracer-bullets.md) when integration or feasibility
+   is uncertain; do not build every layer before exercising one path.
 7. Run the same check specification and accept GREEN only when it exits zero and
-   its output supports the intended claim.
+   its output proves the intended assertion ran. Explain cached evidence and
+   skips; a green aggregate alone is insufficient.
 8. Refactor while green, rerunning the focused check after each meaningful move.
-9. Repeat for the next behavior. Widen to broader verification only after the
-   focused loop is green.
+9. Repeat for the next required behavior. Widen across affected contracts after
+   GREEN, run mandatory repository checks, then stop when acceptance is proved.
+
+For a behavior-preserving refactor, establish passing characterization first,
+make the structural change, then rerun that same check. Report characterization,
+not an invented RED. If a defect emerges, start a separate behavior-change loop.
 
 Ask for clarification only when the acceptance boundary, critical behavior, or
 risk tolerance cannot be inferred from the task and local evidence.
@@ -69,26 +95,35 @@ risk tolerance cannot be inferred from the task and local evidence.
 Prefer a repository-native workflow record when one exists. Otherwise preserve:
 
 - goal and acceptance behavior;
-- check specification: working directory, exact command, controlled inputs, and
-  success criterion;
-- phase: `RED`, `GREEN`, `REFACTOR`, `VERIFY`, or `DONE`;
+- current owner, evidence, reuse/extend/add/investigate decision, and unmet delta;
+- check specification: working directory, exact command, assertion source,
+  controlled inputs, and success criterion;
+- mode: reuse, characterization, behavior change, or investigation;
+- phase: `BASELINE`, `RED`, `GREEN`, `REFACTOR`, `VERIFY`, or `DONE`;
 - RED evidence: exit code and the expected failure signal;
 - GREEN evidence: exit code and the success signal from the same check;
 - RED and GREEN checkpoint commit SHAs and push state;
 - changed scope, broader verification, next behavior, and blockers.
+
+During the loop, report only meaningful transitions: what failed and why, what
+now passes, and which boundary remains unproved. Keep command results, selected
+assertion counts, skips, and durations bounded; use native reports for details.
 
 Load [handoff.md](references/handoff.md) for long-running work, interruptions,
 multi-agent handoffs, or work with several red-green cycles.
 
 ## Completion Criteria
 
-- The focused check was observed failing for the intended reason before the
-  implementation change.
-- The same check specification passes after the narrow implementation.
+- The implementation decision follows current source and consumer evidence.
+- For a behavior change, the focused check failed for the intended reason before
+  implementation and the same specification now passes. For reuse or refactoring,
+  passing baseline evidence is labeled accurately.
 - Every validated RED and passing GREEN checkpoint was committed and pushed, or
   the missing publishable Git remote is reported.
 - Refactoring, if any, happened while the focused check remained green.
 - Relevant broader checks pass, or their exact residual failures are reported.
+- Remaining required work prevents `DONE`; optional future work has an explicit
+  trigger and does not expand the current slice.
 - The handoff names exact commands and results rather than claiming confidence.
 
 ## Reference Routing

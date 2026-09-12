@@ -18,3 +18,11 @@ evidence, runtime observation, text, and finally heuristic inference.
 Completion needs a focused executable check that proves the changed invariant.
 When an opaque effect boundary causes investigation, add bounded structured
 outcome evidence there without recording secrets or unbounded payloads.
+
+Before implementing a proposed concept, check current owners, contracts, callers,
+and tests. Treat plans and incident explanations as hypotheses. Choose reuse,
+extend, add, or investigate from source evidence; an unknown state does not
+justify a duplicate owner. Use the `tdd` codebase preflight for behavior work.
+Build only the unmet requirement. Preserve flexibility through small cohesive
+boundaries; add abstractions for current invariants or consumers, not imagined
+future variants. Verified reuse is a successful outcome.

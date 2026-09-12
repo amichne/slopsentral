@@ -18,13 +18,16 @@ parallel task descriptions, command scripts, or proof logs.
 Do not add Docker to a fast deterministic unit or compile check. A container
 controls environment and effects; it does not improve a vague acceptance test.
 
-## Stable Tracer Bullet
+## Stable Isolated Check
 
-One tracer-bullet cycle has one check specification:
+One behavior-change cycle has one check specification. A tracer bullet must
+also exercise its named integration boundary; isolation must not replace that
+boundary with a fake and then claim integration was proved.
 
 1. Add the smallest check that expresses the desired public behavior.
 2. Run it in the isolated fixture and observe the intended non-zero failure.
-3. Change production code without changing the check specification.
+3. Change production code without changing the assertion, fixture, or check
+   specification.
 4. Run the same check and observe zero.
 5. Refactor while it remains green, then widen only across affected contracts.
 
