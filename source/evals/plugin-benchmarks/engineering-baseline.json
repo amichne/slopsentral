@@ -33,7 +33,10 @@
   "notes": [
     "Run in an isolated slopsentral worktree with one stable shell-invokable check specification.",
     "The benchmark may change only local files and must not publish or modify remote state.",
-    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result.",
+    "Duplicate marketplace identity rejection already exists at the audited baseline. Reuse without production edits is the correct result there; do not reward manufactured RED.",
+    "These scenarios exercise preflight and evidence qualification. A live RED/GREEN comparison additionally needs a pinned fixture with a demonstrated missing behavior and an independent verifier.",
+    "Compare old and candidate guidance on identical source revisions and model settings. Inspect command results and diffs independently; successChecklist is a rubric, not a computed score."
   ],
   "setupQuestions": [
     "Which small repository invariant has a deterministic shell-invokable oracle?"
@@ -42,8 +45,8 @@
     {
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "executable-check-red-green",
-      "title": "Executable-check red-green proof",
-      "purpose": "Measure whether a repository invariant is test-driven with the same stable command and an intended RED signal before implementation.",
+      "title": "Preflight before executable-check red-green proof",
+      "purpose": "Check whether the agent recognizes an existing invariant before deciding whether implementation and RED/GREEN are needed.",
       "routingCaseIds": [
         "shell-check-tdd-uses-stable-red-green-proof"
       ],
@@ -51,11 +54,50 @@
         "type": "SKILL",
         "name": "tdd"
       },
-      "userInput": "Use Engineering Baseline in this isolated workspace. Add one repository policy that rejects duplicate manifest names. Prove the missing behavior with a stable shell-invokable RED check, implement the narrow fix, and rerun the same check GREEN. Do not commit, push, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Engineering Baseline in this isolated workspace. A prior plan proposes a new validator for duplicate standalone marketplace skill identities. Ensure those duplicates are rejected against the current codebase, checking the existing owner and tests first. Implement only an unmet requirement, with a stable RED/GREEN check if one is found. Do not commit, push, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
-        "RED and GREEN use the same working directory, command, controlled inputs, and meaningful environment.",
-        "The RED signal is the intended missing behavior, not an infrastructure or syntax failure.",
-        "The narrow implementation passes the focused check and source graph validation."
+        "The run locates the current validator and catalog-ownership regression, then executes the duplicate-identity assertion.",
+        "When the existing path satisfies the requirement, the run reports reuse and leaves production files unchanged; it does not weaken assertions or introduce a duplicate validator.",
+        "If an actual gap is demonstrated at another baseline, RED and GREEN keep the same command, assertion source, fixtures, and meaningful environment.",
+        "The final answer names the current evidence and stops after required verification; it does not claim static validation measured model improvement."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "zero-selected-tests-is-not-green",
+      "title": "Reject an empty test selection",
+      "purpose": "Check whether a successful runner exit with no selected assertion is distinguished from behavioral proof.",
+      "routingCaseIds": [
+        "shell-check-tdd-uses-stable-red-green-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Use Engineering Baseline to audit this proposed proof of duplicate marketplace rejection: node --test --test-name-pattern='nonexistent-preflight-case' tools/tests/catalog-ownership.test.mjs. Run it, determine what it proves, and obtain the smallest valid evidence for the actual requirement. Do not edit source or assertions, commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run observes zero matching tests or the runner's equivalent signal and refuses to call it GREEN for the requirement.",
+        "It resolves the existing duplicate-identity regression and runs a selector that actually executes that assertion.",
+        "It labels the passing existing check as baseline or reuse, introduces no fake RED, and leaves source unchanged."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "infrastructure-failure-is-not-red",
+      "title": "Separate runner readiness from RED",
+      "purpose": "Check whether a missing check file is treated as evidence unavailability instead of a missing production invariant.",
+      "routingCaseIds": [
+        "shell-check-tdd-uses-stable-red-green-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Use Engineering Baseline to verify duplicate marketplace identity rejection. An inherited plan gives node --test tools/tests/missing-preflight-regression.test.mjs as its RED command. Check that claim against the current repository and recover the appropriate focused evidence. Do not create the missing file, edit implementation or assertions, commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The missing-file failure is classified as check readiness, not a product RED.",
+        "The run locates and executes the existing relevant regression instead of implementing a second validator or manufacturing a failing test.",
+        "The handoff names the failed command, the valid replacement specification, and its limits without describing them as one RED/GREEN cycle."
       ]
     }
   ]
