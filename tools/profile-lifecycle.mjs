@@ -49,6 +49,7 @@ function parseWorkflowProfile(value, expectedName) {
       "hookPolicy",
       "reconciliation",
       "validation",
+      "activation",
     ],
     `profile ${expectedName}`,
   );
@@ -104,13 +105,18 @@ function codexEnvironment(options) {
   return { ...process.env, CODEX_HOME: options.codexHome };
 }
 
-function runCodex(options, args, { json = false } = {}) {
-  const result = spawnSync(options.codexBin ?? "codex", args, {
+function invokeCodex(options, args) {
+  return spawnSync(options.codexBin ?? "codex", args, {
     cwd: repoRoot,
     encoding: "utf8",
     env: codexEnvironment(options),
     maxBuffer: codexOutputLimitBytes,
+    timeout: options.commandTimeoutMs,
   });
+}
+
+function runCodex(options, args, { json = false } = {}) {
+  const result = invokeCodex(options, args);
   if (result.error) throw new Error(`could not run Codex CLI: ${result.error.message}`);
   if (result.status !== 0) {
     const detail = result.stderr.trim() || result.stdout.trim() || `exit ${result.status}`;
@@ -122,6 +128,31 @@ function runCodex(options, args, { json = false } = {}) {
   } catch (error) {
     throw new Error(`Codex CLI ${args.join(" ")} returned invalid JSON: ${error.message}`);
   }
+}
+
+function observePluginInventory(options, marketplaceName) {
+  const evidence = { stage: "PLUGIN_INVENTORY", marketplaceName };
+  const failed = (reason) => Object.freeze({ type: "PLUGIN_INVENTORY_FAILED", ...evidence, reason });
+  const result = invokeCodex(options, ["plugin", "list", "--marketplace", marketplaceName, "--json"]);
+  if (result.error) return failed(result.error.code === "ETIMEDOUT" ? "TIMED_OUT" : "SPAWN_FAILED");
+  if (result.status !== 0) return failed("COMMAND_FAILED");
+  let value;
+  try {
+    value = JSON.parse(result.stdout);
+  } catch {
+    return failed("INVALID_JSON");
+  }
+  if (!value || !Array.isArray(value.installed) || value.installed.some(plugin =>
+    !plugin || typeof plugin.name !== "string" || !plugin.name ||
+    typeof plugin.marketplaceName !== "string" || plugin.installed !== true)) {
+    return failed("INVALID_RESPONSE");
+  }
+  if (value.installed.some(plugin => plugin.marketplaceName !== marketplaceName)) return failed("SCOPE_MISMATCH");
+  const names = Object.freeze(ordered(new Set(value.installed.map(plugin => plugin.name))));
+  return Object.freeze({
+    type: "VALIDATED_PLUGIN_INVENTORY", names,
+    observation: Object.freeze({ type: "PLUGIN_INVENTORY_OBSERVED", ...evidence, installedCount: names.length }),
+  });
 }
 
 function assertSupportedCodex(options) {
@@ -153,14 +184,17 @@ function observeCodex(options, profile) {
       actual: marketplace.marketplaceSource?.source ?? null,
     });
   }
-  const installed = new Set();
+  let inventoryObservation = Object.freeze({
+    type: "PLUGIN_INVENTORY_NOT_CONFIGURED", stage: "PLUGIN_INVENTORY", marketplaceName: declaredMarketplace.name,
+  });
+  let installed = new Set();
   if (marketplace) {
-    const pluginResult = runCodex(options, ["plugin", "list", "--available", "--json"], { json: true });
-    for (const plugin of pluginResult.installed ?? []) {
-      if (plugin.marketplaceName === declaredMarketplace.name && plugin.installed === true) installed.add(plugin.name);
-    }
+    const inventory = observePluginInventory(options, declaredMarketplace.name);
+    if (inventory.type === "PLUGIN_INVENTORY_FAILED") return inventory;
+    installed = new Set(inventory.names);
+    inventoryObservation = inventory.observation;
   }
-  return Object.freeze({ version, marketplace: Boolean(marketplace), installed, source });
+  return Object.freeze({ version, marketplace: Boolean(marketplace), installed, source, inventoryObservation });
 }
 
 function quoteTomlKey(value) {
@@ -467,6 +501,7 @@ function plannedOperations(context, observation) {
 function plan(options) {
   const context = profileContext(options);
   const observation = observeCodex(options, context.profile);
+  if (observation.type === "PLUGIN_INVENTORY_FAILED") return observation;
   const mutation = fileOperation(context);
   return {
     type: "PROFILE_PLAN",
@@ -476,6 +511,7 @@ function plan(options) {
     mutation,
     operations: plannedOperations(context, observation),
     hookReview: hookReview(context),
+    inventoryObservation: observation.inventoryObservation,
   };
 }
 
@@ -486,6 +522,7 @@ function apply(options) {
     throw new ConflictError(context.target, { type: "UNMANAGED_TARGET" });
   }
   const observation = observeCodex(options, context.profile);
+  if (observation.type === "PLUGIN_INVENTORY_FAILED") return observation;
   const operations = plannedOperations(context, observation);
   if (!observation.marketplace) {
     runCodex(options, [
@@ -511,6 +548,7 @@ function apply(options) {
         target: context.target,
         operations,
         hookReview: hookReview(context),
+        inventoryObservation: observation.inventoryObservation,
       };
     }
     return {
@@ -519,6 +557,7 @@ function apply(options) {
       profileName: context.profile.name,
       target: context.target,
       hookReview: hookReview(context),
+      inventoryObservation: observation.inventoryObservation,
     };
   }
   const transaction = commitMutation({
@@ -535,6 +574,7 @@ function apply(options) {
     target: context.target,
     operations,
     hookReview: hookReview(context),
+    inventoryObservation: observation.inventoryObservation,
     transaction,
   };
 }
@@ -627,6 +667,7 @@ function rollback(options) {
 function status(options) {
   const context = profileContext(options);
   const observation = observeCodex(options, context.profile);
+  if (observation.type === "PLUGIN_INVENTORY_FAILED") return observation;
   const operations = plannedOperations(context, observation);
   const changesRequired = operations.some(({ type }) => type !== "FILE_UNCHANGED");
   return !changesRequired
@@ -636,6 +677,7 @@ function status(options) {
         profileName: context.profile.name,
         target: context.target,
         hookReview: hookReview(context),
+        inventoryObservation: observation.inventoryObservation,
       }
     : {
         type: "PROFILE_CHANGES_REQUIRED",
@@ -646,6 +688,7 @@ function status(options) {
         desired: publicImage(context.desired),
         operations,
         hookReview: hookReview(context),
+        inventoryObservation: observation.inventoryObservation,
       };
 }
 
@@ -733,6 +776,7 @@ function main() {
       : options.command === "status" ? status(options)
       : rollback(options);
     emit(result);
+    if (result.type === "PLUGIN_INVENTORY_FAILED") process.exitCode = 1;
   } catch (error) {
     if (error instanceof UnsupportedCodexError) {
       emit({
@@ -761,4 +805,5 @@ function main() {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
 
-export { apply, installSkill, parseArgs, plan, plannedSkillInstalls, renderProfile, rollback, status };
+export { apply, installSkill, parseArgs, plan, plannedSkillInstalls, renderProfile, rollback, status,
+  commitMutation, fileImage, desiredImage, sameImage };

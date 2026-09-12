@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# setup-local-nav.sh — Install AGENTS.local.md gitexclude patterns, post-commit hook,
+# setup-local-nav.sh — Install AGENTS.md navigation post-commit hook,
 #                      and optionally the Copilot adapter files.
 #
 # Usage:
@@ -7,7 +7,7 @@
 #
 # Options:
 #   --repo-root <path>   Repo root to configure (default: git rev-parse --show-toplevel)
-#   --hook-mode auto     Hook regenerates AGENTS.local.md immediately on commit
+#   --hook-mode auto     Hook regenerates generated AGENTS.md immediately on commit
 #   --hook-mode collect  Hook appends to OUTDATED.local.md; agent updates on demand (default)
 #   --copilot            Install Copilot chat mode + prompt files into .github/
 #   --copilot-only       Run only the Copilot install step (skip gitexclude + hook)
@@ -38,87 +38,21 @@ AGENT_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENT_ROOT="$(dirname "$AGENT_SCRIPT_DIR")"   # agents/codebase-navigator/
 COPILOT_SRC="$AGENT_ROOT/copilot"
 GEN_SCRIPT="$AGENT_SCRIPT_DIR/gen-agents-local.py"
-GIT_DIR="$REPO_ROOT/.git"
-EXCLUDE_FILE="$GIT_DIR/info/exclude"
-HOOKS_DIR="$GIT_DIR/hooks"
+case "$HOOK_MODE" in
+  auto|collect) ;;
+  *) echo "ERROR: --hook-mode must be auto or collect" >&2; exit 1 ;;
+esac
+REPO_ROOT="$(git -C "$REPO_ROOT" rev-parse --show-toplevel)"
+EXCLUDE_FILE="$(git -C "$REPO_ROOT" rev-parse --path-format=absolute --git-path info/exclude)"
+HOOKS_DIR="$(git -C "$REPO_ROOT" rev-parse --path-format=absolute --git-path hooks)"
 POST_COMMIT="$HOOKS_DIR/post-commit"
 
 # ── 1. Gitexclude ─────────────────────────────────────────────────────────────
 
 if [[ "$COPILOT_ONLY" != true ]]; then
-  mkdir -p "$GIT_DIR/info"
-  touch "$EXCLUDE_FILE"
+  python3 "$AGENT_SCRIPT_DIR/navigation-hook.py" install \
+    --exclude "$EXCLUDE_FILE" --hook "$POST_COMMIT" --mode "$HOOK_MODE"
 
-  add_exclude() {
-    local pattern="$1"
-    if ! grep -qxF "$pattern" "$EXCLUDE_FILE"; then
-      echo "$pattern" >> "$EXCLUDE_FILE"
-      echo "  added exclude: $pattern"
-    else
-      echo "  already excluded: $pattern"
-    fi
-  }
-
-  echo "── gitexclude ($EXCLUDE_FILE)"
-  add_exclude "AGENTS.local.md"
-  add_exclude "**/AGENTS.local.md"
-  add_exclude "OUTDATED.local.md"
-
-  # ── 2. Post-commit hook ────────────────────────────────────────────────────
-
-  echo ""
-  echo "── post-commit hook ($POST_COMMIT) [mode=$HOOK_MODE]"
-
-  if [[ "$HOOK_MODE" == "auto" ]]; then
-    HOOK_FRAGMENT=$(cat <<FRAGMENT
-# codebase-navigator: regenerate AGENTS.local.md for changed directories
-_nav_changed_dirs() {
-  git diff-tree --no-commit-id -r --name-only HEAD \
-    | xargs -I{} dirname {} \
-    | sort -u \
-    | grep -v '^\.' \
-    | grep -v '^\$'
-}
-if command -v python3 &>/dev/null && [ -f "$GEN_SCRIPT" ]; then
-  while IFS= read -r dir; do
-    [ -d "\$dir" ] && python3 "$GEN_SCRIPT" "\$dir" --force 2>/dev/null || true
-  done < <(_nav_changed_dirs)
-fi
-FRAGMENT
-)
-  else
-    HOOK_FRAGMENT=$(cat <<FRAGMENT
-# codebase-navigator: mark changed directories as outdated
-_nav_mark_outdated() {
-  local outdated="$REPO_ROOT/OUTDATED.local.md"
-  git diff-tree --no-commit-id -r --name-only HEAD \
-    | xargs -I{} dirname {} \
-    | sort -u \
-    | grep -v '^\.' \
-    | grep -v '^\$' \
-    | while IFS= read -r dir; do
-        [ -d "\$dir" ] && echo "\$dir" >> "\$outdated" || true
-      done
-}
-_nav_mark_outdated
-FRAGMENT
-)
-  fi
-
-  MARKER="# codebase-navigator:"
-
-  if [[ -f "$POST_COMMIT" ]]; then
-    if grep -qF "$MARKER" "$POST_COMMIT"; then
-      echo "  hook already installed"
-    else
-      { echo ""; echo "$HOOK_FRAGMENT"; } >> "$POST_COMMIT"
-      echo "  appended to existing post-commit hook"
-    fi
-  else
-    { echo "#!/usr/bin/env bash"; echo "set -euo pipefail"; echo ""; echo "$HOOK_FRAGMENT"; } > "$POST_COMMIT"
-    chmod +x "$POST_COMMIT"
-    echo "  created new post-commit hook"
-  fi
 fi
 
 # ── 3. Copilot adapter ────────────────────────────────────────────────────────
@@ -168,7 +102,7 @@ if [[ "$INSTALL_COPILOT" == true ]]; then
   echo "    Update a dir:     #update-dir (from prompt files)"
   echo ""
   echo "  Commit .github/chatmodes/ and .github/prompts/ to share with your team."
-  echo "  Do NOT commit AGENTS.local.md or OUTDATED.local.md (git-excluded)."
+  echo "  Commit generated AGENTS.md files; keep OUTDATED.local.md local."
 fi
 
 # ── 4. Summary ────────────────────────────────────────────────────────────────
@@ -178,7 +112,7 @@ echo "── setup complete"
 echo "   repo:    $REPO_ROOT"
 if [[ "$COPILOT_ONLY" != true ]]; then
   echo "   hook:    $HOOK_MODE mode"
-  echo "   exclude: AGENTS.local.md, **/AGENTS.local.md, OUTDATED.local.md"
+  echo "   exclude: OUTDATED.local.md"
 fi
 if [[ "$INSTALL_COPILOT" == true ]]; then
   echo "   copilot: chat mode + prompts installed"

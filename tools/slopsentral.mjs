@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { runContextCommand, contextExitCode } from "./repository-context.mjs";
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -28,6 +29,11 @@ Usage:
   slopsentral profile status <profile> [--codex-home PATH] [--backup-root PATH]
   slopsentral profile apply <profile> [--codex-home PATH] [--backup-root PATH] [--replace-existing]
   slopsentral profile rollback <manifest> [--codex-home PATH] [--backup-root PATH]
+  slopsentral context plan [--repo PATH]
+  slopsentral context status [--repo PATH]
+  slopsentral context apply [--repo PATH] [--codex-home PATH] [--backup-root PATH]
+  slopsentral context launch [--repo PATH] -- [CODEX ARGS...]
+  slopsentral context hook
 
 Operational commands emit JSON. Exit codes: 0 success, 1 runtime or I/O
 failure, 2 invalid request or contract, and 3 conflict.
@@ -63,6 +69,7 @@ const requiredAssets = [
   "source/schemas/profiles/workflow-profile.schema.json",
   "tools/install-skill",
   "tools/profile-lifecycle.mjs",
+  "tools/repository-context.mjs",
   "tools/validate-profile-contracts.mjs",
   ...packagedProfiles.map((profile) => `source/profiles/${profile}.json`),
   ...packagedPlugins.map((plugin) => `source/plugins/${plugin}/plugin.json`),
@@ -285,6 +292,12 @@ function main() {
     return report.readiness.type === "DOCTOR_READY" ? 0 : 1;
   }
   if (argv[0] === "profile") return runProfile(parseProfileCommand(argv.slice(1)));
+  if (argv[0] === "context") {
+    const result = runContextCommand(argv.slice(1));
+    if (result.type === "CONTEXT_LAUNCH_EXIT") return result.exitCode;
+    emit(result);
+    return contextExitCode(result);
+  }
   throw new CliUsageError(argv.length === 0 ? "a command is required; run slopsentral --help" : `unknown command: ${argv[0]}`);
 }
 

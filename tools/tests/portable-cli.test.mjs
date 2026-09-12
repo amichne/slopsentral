@@ -41,7 +41,7 @@ if (args.length === 1 && args[0] === "--version") {
     name: "slopsentral",
     marketplaceSource: { sourceType: "git", source: "https://github.com/amichne/slopsentral.git" },
   }] }));
-} else if (args.join(" ") === "plugin list --available --json") {
+} else if (args.join(" ") === "plugin list --marketplace slopsentral --json") {
   process.stdout.write(JSON.stringify({ installed: plugins.map(name => ({
     pluginId: name + "@slopsentral", name, marketplaceName: "slopsentral", installed: true, enabled: true,
   })), available: [] }));
@@ -83,7 +83,7 @@ test("top-level help, version, and invalid requests have stable behavior", () =>
 
   const version = runSource(["--version"]);
   assert.equal(version.status, 0, diagnostic(version));
-  assert.equal(version.stdout, "slopsentral 0.1.0\n");
+  assert.equal(version.stdout, "slopsentral 0.2.0\n");
 
   const invalid = runSource(["profile", "apply"]);
   assert.equal(invalid.status, 2, diagnostic(invalid));
@@ -187,6 +187,7 @@ test("npm package contains the portable lifecycle and standalone skill assets", 
     "source/schemas/profiles/workflow-profile.schema.json",
     "tools/install-skill",
     "tools/profile-lifecycle.mjs",
+    "tools/repository-context.mjs",
     "tools/slopsentral.mjs",
     "tools/validate-profile-contracts.mjs",
   ]);

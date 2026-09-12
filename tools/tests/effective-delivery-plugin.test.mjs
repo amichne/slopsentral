@@ -28,7 +28,7 @@ test("effective delivery keeps explicit CI observation without automatic hooks",
     "mise-project-tooling",
     "cli-creator",
   ]);
-  assert.deepEqual(names(git, "hooks"), []);
+  assert.deepEqual(names(git, "hooks"), ["repository-profile"]);
   assert.deepEqual(names(delivery, "skills"), [
     "github-ci-operations",
     "issue-tracker-operations",
@@ -60,6 +60,7 @@ test("default delivery composition does not activate automatic CI hooks", () => 
     "kotlin-engineering",
     "developer-tools",
     "effective-delivery",
+    "code-knowledge-base",
   ]);
   assert.equal(profile.hookPolicy.mode, "ADVISORY");
   assert.equal(profile.plugins.includes("skill-read-policy"), false);

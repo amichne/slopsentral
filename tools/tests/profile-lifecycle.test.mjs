@@ -57,7 +57,11 @@ if (args.length === 1 && args[0] === "--version") {
   state.marketplace = true;
   writeState(state);
   process.stdout.write(JSON.stringify({ name: "slopsentral" }));
-} else if (args.join(" ") === "plugin list --available --json") {
+} else if (args[0] === "plugin" && args[1] === "list") {
+  if (process.env.FAKE_INVENTORY_FAILURE) {
+    process.stdout.write("private-invalid-response");
+    process.exit(0);
+  }
   const state = readState();
   const item = name => ({ pluginId: name + "@slopsentral", name, marketplaceName: "slopsentral",
     installed: state.installed.includes(name), enabled: state.installed.includes(name) });
@@ -94,6 +98,7 @@ function run(context, ...args) {
         CODEX_HOME: codexHome,
         PATH: `${bin}${path.delimiter}${process.env.PATH ?? ""}`,
         ...(context.codexVersion ? { FAKE_CODEX_VERSION: `${context.codexVersion}\n` } : {}),
+        ...(context.inventoryFailure ? { FAKE_INVENTORY_FAILURE: "1" } : {}),
       },
     },
   );
@@ -203,7 +208,7 @@ test("plan and apply reconcile the marketplace and selected plugins", (t) => {
   assert.equal(applied.status, 0, diagnostic(applied));
   assert.equal(applied.output.type, "PROFILE_APPLIED");
   assert.equal(applied.output.hookReview.type, "HOOK_REVIEW_REQUIRED");
-  assert.deepEqual(applied.output.hookReview.hooks, ["agents-md-turn-refresh"]);
+  assert.deepEqual(applied.output.hookReview.hooks, ["agents-md-turn-refresh", "repository-profile"]);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(context.codexHome, "fake-codex-state.json"), "utf8")), {
     marketplace: true,
     installed: ["developer-tools", "engineering-baseline"],
@@ -229,6 +234,31 @@ test("profile operations fail closed on unsupported Codex versions", (t) => {
     required: ">=0.134.0",
   });
   assert.deepEqual(codexCalls(context), [["--version"]]);
+});
+
+test("installed inventory is scoped to Slopsentral and preserves structured observation evidence", (t) => {
+  const context = fixture(t);
+  fs.writeFileSync(path.join(context.codexHome, "fake-codex-state.json"), JSON.stringify({
+    marketplace: true, installed: ["engineering-baseline", "developer-tools"],
+  }));
+  const planned = run(context, "plan", "--profile", "local-development-default");
+  assert.equal(planned.status, 0, diagnostic(planned));
+  assert.deepEqual(codexCalls(context).at(-1), ["plugin", "list", "--marketplace", "slopsentral", "--json"]);
+  assert.deepEqual(planned.output.inventoryObservation, {
+    type: "PLUGIN_INVENTORY_OBSERVED", stage: "PLUGIN_INVENTORY", marketplaceName: "slopsentral", installedCount: 2,
+  });
+});
+
+test("malformed inventory fails with bounded stage evidence before profile writes", (t) => {
+  const context = { ...fixture(t), inventoryFailure: true };
+  fs.writeFileSync(path.join(context.codexHome, "fake-codex-state.json"), JSON.stringify({ marketplace: true, installed: [] }));
+  const applied = run(context, "apply", "--profile", "local-development-default");
+  assert.equal(applied.status, 1, diagnostic(applied));
+  assert.deepEqual(applied.output, {
+    type: "PLUGIN_INVENTORY_FAILED", stage: "PLUGIN_INVENTORY", marketplaceName: "slopsentral", reason: "INVALID_JSON",
+  });
+  assert.doesNotMatch(applied.stdout, /private-invalid-response/u);
+  assert.equal(fs.existsSync(path.join(context.codexHome, "local-development-default.config.toml")), false);
 });
 
 function diagnostic(result) {

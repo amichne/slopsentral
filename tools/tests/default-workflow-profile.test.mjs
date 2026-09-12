@@ -27,6 +27,7 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
     "kotlin-engineering",
     "developer-tools",
     "effective-delivery",
+    "code-knowledge-base",
   ]);
 
   const baselineHooks = hookNames(selectedPlugins.get("engineering-baseline"));

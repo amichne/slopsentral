@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "developer-tools",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Local command-line tools and repository work.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -67,7 +67,17 @@
   ],
   "agents": [],
   "instructions": [],
-  "hooks": [],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/repository-profile.hook.json",
+      "name": "repository-profile"
+    }
+  ],
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Install for local Git changes, safe shell automation, structured CLI queries, shell integration, CLI design, and mise project tooling.",
