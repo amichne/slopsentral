@@ -73,13 +73,13 @@ export function selectRepositoryProfile(root, profiles) {
     if (!entry.stat.isFile() || entry.stat.isSymbolicLink()) {
       return failure("MATCH_PROFILE", "ANCHOR_NOT_REGULAR_FILE");
     }
-    matches.push({
+    matches.push(Object.freeze({
       type: "REPOSITORY_PROFILE_SELECTED",
       profileName: profile.name,
       repositoryRoot: root.repositoryRoot,
       anchor,
-      plugins: [...profile.plugins],
-    });
+      plugins: Object.freeze([...profile.plugins]),
+    }));
   }
   if (matches.length > 1) return failure("MATCH_PROFILE", "AMBIGUOUS_PROFILES");
   return matches.length === 1 ? matches[0] : {

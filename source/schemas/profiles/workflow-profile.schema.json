@@ -16,6 +16,13 @@
     "reconciliation",
     "validation"
   ],
+  "allOf": [{
+    "if": {
+      "properties": {"activation": {"$ref": "#/$defs/RepositoryRootFile"}},
+      "required": ["activation"]
+    },
+    "then": {"properties": {"standaloneSkills": {"type": "array", "maxItems": 0}}}
+  }],
   "properties": {
     "type": {
       "type": "string",

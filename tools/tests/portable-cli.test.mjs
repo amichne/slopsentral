@@ -83,7 +83,7 @@ test("top-level help, version, and invalid requests have stable behavior", () =>
 
   const version = runSource(["--version"]);
   assert.equal(version.status, 0, diagnostic(version));
-  assert.equal(version.stdout, "slopsentral 0.1.0\n");
+  assert.equal(version.stdout, "slopsentral 0.2.0\n");
 
   const invalid = runSource(["profile", "apply"]);
   assert.equal(invalid.status, 2, diagnostic(invalid));

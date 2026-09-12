@@ -1,6 +1,6 @@
 {
   "name": "slopsentral",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Portable lifecycle management for Slopsentral Codex profiles",
   "private": true,
   "engines": {
