@@ -278,7 +278,7 @@
         "skills",
         "workflow-graph"
       ],
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "author": {
@@ -360,7 +360,7 @@
         "source-backed",
         "validation"
       ],
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "author": {
