@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "code-knowledge-base",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Source-backed code knowledge and navigation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

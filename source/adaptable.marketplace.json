@@ -171,7 +171,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/effective-delivery"
         },
-        "version": "1.0.1"
+        "version": "1.0.2"
       },
       "description": "Hosted delivery from issue to verified pull request and release evidence.",
       "tags": [
@@ -229,7 +229,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/code-knowledge-base"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "description": "Source-backed code knowledge and navigation.",
       "tags": [
