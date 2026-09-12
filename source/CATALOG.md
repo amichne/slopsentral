@@ -123,15 +123,15 @@ Outside this workstream: Code changes, signature-index construction, OKF knowled
 
 ## Profiles
 
-- [agent-authoring-default](profiles/agent-authoring-default.json): engineering-baseline + agent-platform-authoring. 394 instruction words.
+- [agent-authoring-default](profiles/agent-authoring-default.json): engineering-baseline + agent-platform-authoring. 467 instruction words.
 
-- [documentation-default](profiles/documentation-default.json): engineering-baseline + writing. 394 instruction words.
+- [documentation-default](profiles/documentation-default.json): engineering-baseline + writing. 467 instruction words.
 
-- [intellij-plugin-default](profiles/intellij-plugin-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + intellij-engineering. 530 instruction words.
+- [intellij-plugin-default](profiles/intellij-plugin-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + intellij-engineering. 603 instruction words.
 
-- [kotlin-repo-default](profiles/kotlin-repo-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + code-knowledge-base. 530 instruction words.
+- [kotlin-repo-default](profiles/kotlin-repo-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + code-knowledge-base. 603 instruction words.
 
-- [local-development-default](profiles/local-development-default.json): engineering-baseline + developer-tools. 394 instruction words.
+- [local-development-default](profiles/local-development-default.json): engineering-baseline + developer-tools. 467 instruction words.
 
 ## Standalone skills
 

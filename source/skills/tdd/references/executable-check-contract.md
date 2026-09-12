@@ -11,6 +11,7 @@ Treat a check as one value with these fields:
 Working directory:
 Command:
 Controlled inputs and environment:
+Assertion source and fixture revision:
 Expected RED failure:
 GREEN success criterion:
 ```
@@ -18,6 +19,8 @@ GREEN success criterion:
 The command alone is not its identity. Changing the working directory,
 fixtures, meaningful environment variables, or arguments creates a different
 check specification and breaks the direct RED-to-GREEN comparison.
+Changing an assertion or expected result does too. A command string that stays
+the same while its tests change does not preserve the original evidence.
 
 Do not record secrets or an indiscriminate environment dump. Name only the
 inputs that can affect the result.
@@ -55,6 +58,27 @@ Invalid RED proves only that the check cannot yet be trusted. Examples include:
 Repair or isolate an invalid RED, then rerun before touching the implementation.
 Never weaken the check merely to obtain GREEN.
 
+## Qualifying GREEN And Reuse
+
+Inspect the result for the selected assertion, test count, and relevant skips.
+Exit zero with no selected tests, a disabled assertion, or `NO-SOURCE` does not
+prove the behavior. Use native machine-readable reports when the console omits
+that distinction.
+
+A cache hit may reuse prior verification only when the runner's input tracking
+covers the changed implementation and the relevant assertion/fixture. For the
+initial RED/GREEN demonstration, force only the focused check to execute if
+the report cannot establish that relationship. Do not disable caching globally.
+
+If an unchanged current-code check already passes, classify it as baseline or
+reuse evidence. Investigate weak coverage against the requested requirement;
+do not demand failure as a prerequisite to recognizing existing capability.
+
+When new edge cases are added after GREEN, report their own baseline and result.
+If recovering an earlier RED is necessary, use an isolated checkout with the
+same check source against the earlier implementation; never reset shared user
+work to manufacture a retrospective failure.
+
 ## Shell Boundaries
 
 - Prefer checked-in wrappers and argument arrays over shell interpolation.
@@ -77,6 +101,12 @@ not substitutes for the missing focused failure:
 3. repository-wide build, lint, or validation;
 4. remote CI or deployment proof when the requested scope requires it.
 
+Name the intended rings and why each is needed before implementation. Complete
+mandatory repository checks even when they are broader than the focused loop.
 Stop widening at the smallest ring that proves the affected surface. If a wider
 ring fails for an unrelated reason, report it separately without erasing the
 focused GREEN evidence.
+
+Report completed checks once. Rerun after changed inputs, a failure, or a named
+unresolved risk, not because another agent or phase has started. Wall time is
+useful for choosing a cheaper equivalent check; it is not correctness evidence.
