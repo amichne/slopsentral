@@ -36,6 +36,11 @@ the target overlay. `plan` returns an ordered operation list such as
 `FILE_CREATE_PLANNED`. `status` returns `PROFILE_CHANGES_REQUIRED` until those
 operations have been applied.
 
+Plugin inventory reads are restricted to installed Slopsentral plugins. Reports
+include `inventoryObservation` with the marketplace and observed count. A failed
+inventory returns a closed `PLUGIN_INVENTORY_FAILED` outcome identifying the
+stage and reason, without recording command output or proceeding with writes.
+
 Apply a profile:
 
 ```bash

@@ -245,6 +245,7 @@ export function applyRepositoryContext(options) {
     if (prepared.selection.type === "REPOSITORY_PROFILE_SELECTED") {
       try {
         tooling = apply({ ...options, profile: prepared.profileName, replaceExisting: false, commandTimeoutMs: 10000 });
+        if (tooling.type === "PLUGIN_INVENTORY_FAILED") return failure(tooling.stage, tooling.reason);
       } catch (error) {
         return error.reason ? conflict("PROFILE_OVERLAY_CONFLICT") : failure("PREPARE_TOOLS", "PROFILE_SETUP_FAILED");
       }

@@ -26,7 +26,7 @@ const args = process.argv.slice(2);
 fs.appendFileSync(path.join(process.env.CODEX_HOME, "calls.jsonl"), JSON.stringify(args) + "\\n");
 if (args.join(" ") === "--version") console.log("codex-cli 0.154.0");
 else if (args.join(" ") === "plugin marketplace list --json") console.log(JSON.stringify({marketplaces: [{name: "slopsentral", marketplaceSource: {source: "https://github.com/amichne/slopsentral.git"}}]}));
-else if (args.join(" ") === "plugin list --available --json") console.log(JSON.stringify({installed: ["engineering-baseline", "kotlin-engineering", "developer-tools", "effective-delivery", "code-knowledge-base"].map(name => ({name, marketplaceName: "slopsentral", installed: true}))}));
+else if (args.join(" ") === "plugin list --marketplace slopsentral --json") console.log(JSON.stringify({installed: ["engineering-baseline", "kotlin-engineering", "developer-tools", "effective-delivery", "code-knowledge-base"].map(name => ({name, marketplaceName: "slopsentral", installed: true}))}));
 else console.log(JSON.stringify({args, cwd: process.cwd(), configured: fs.existsSync(path.join(process.cwd(), ".codex/config.toml"))}));
 `, { mode: 0o755 });
   const initialized = spawnSync("git", ["init", "--quiet", repo], { encoding: "utf8" });
