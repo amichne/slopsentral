@@ -42,13 +42,29 @@ slopsentral profile apply local-development-default
 slopsentral profile status local-development-default
 ```
 
+For automatic Kotlin tooling, keep `settings.gradle.kts` at the repository root
+and launch Codex through the context command:
+
+```bash
+slopsentral context launch --repo /path/to/repository
+```
+
+This selects `kotlin-repo-default`, including Kotlin engineering, code knowledge
+base, and the existing development and delivery tools. It preserves other
+configured plugins and applies the repository configuration before Codex starts.
+The Developer Tools plugin also supplies a startup hook for desktop sessions;
+configuration first written by that hook takes effect in the next session.
+See [automatic repository activation](docs/profile-lifecycle.md#automatic-repository-activation)
+for setup, read-only inspection, and rollback.
+
 Use the `manifestPath` returned by `apply` to reverse that transaction:
 
 ```bash
 slopsentral profile rollback /absolute/path/to/manifest.json
 ```
 
-Operational commands emit stable JSON. Exit status `0` means success, `1`
+Operational commands emit stable JSON; `context launch` passes through Codex's
+terminal output and exit status. Exit status `0` means success, `1`
 means a runtime or I/O failure, `2` means an invalid request or contract, and
 `3` means a conflict. `doctor` is read-only; a missing Codex executable is a
 warning, while missing packaged assets or an unusable configuration root makes

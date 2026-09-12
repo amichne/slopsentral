@@ -84,6 +84,90 @@ Workflow profile schema version 2 owns these policies:
   disables that path without deleting it, and `PRESERVE` omits the override.
   A different pre-existing skill directory is a conflict and is never replaced.
 
+## Automatic Repository Activation
+
+`kotlin-repo-default` declares its repository anchor:
+
+```json
+"activation": {
+  "type": "REPOSITORY_ROOT_FILE",
+  "path": "settings.gradle.kts"
+}
+```
+
+The rule selects Engineering Baseline, Kotlin Engineering, Developer Tools,
+Effective Delivery, and Code Knowledge Base. The profile remains the owner of
+that plugin list; hooks do not duplicate it. Automatic rules select plugins;
+profiles with standalone skill overrides use the explicit named-profile commands.
+
+Within a Git repository, detection uses the worktree root, including when called
+from a subdirectory. A nested `build-logic/settings.gradle.kts` alone does not
+match. Outside Git, `--repo` names the root directly. The detector checks a
+regular file and never reads or executes Gradle source. Symlinks and ambiguous
+matches produce a failure.
+
+Inspect or apply the current repository:
+
+```bash
+slopsentral context plan --repo /path/to/repository
+slopsentral context status --repo /path/to/repository
+slopsentral context apply --repo /path/to/repository
+```
+
+`plan` and `status` inspect repository configuration without invoking Codex or
+installing anything. Their evidence is configuration state, not proof that a
+running session loaded the tools. `apply` provisions the selected plugins through
+the existing profile lifecycle and adds enabled plugin entries to a managed block
+in `<repo>/.codex/config.toml`. Automatic activation preserves unselected plugins,
+models, reasoning settings, and other user configuration. It does not apply the
+named profile's `DISABLE_UNSELECTED` policy to the project file.
+
+Each changed project file gets a versioned preimage using the same transaction
+store as named profiles. Use `slopsentral profile rollback <manifestPath>` with
+the returned project transaction to restore it. Named-overlay and project-file
+transactions are separate, and plugin installations remain installed after
+rollback. Removing the anchor removes only the intact managed block on the next
+activation. A manually edited block, explicitly disabled selected plugin, invalid
+TOML, or symlinked configuration is a conflict; the command does not overwrite it.
+Concurrent activation reports `ACTIVATION_IN_PROGRESS`. If a process was killed,
+confirm it has ended before removing its `.codex/.slopsentral-context.lock` file.
+
+For activation before a terminal session starts:
+
+```bash
+slopsentral context launch --repo /path/to/repository
+slopsentral context launch --repo /path/to/repository -- exec "Inspect the build"
+```
+
+The command forwards Codex arguments and exit status. Use `--repo` for the working
+directory; forwarded `--cd` and remote-server options are rejected because they
+would change the context that was proven. In nonmatching repositories it launches
+Codex with the existing configuration.
+
+For desktop sessions, install the Slopsentral CLI above, update the Slopsentral
+marketplace, and install or update `developer-tools@slopsentral`. Review its
+`repository-profile` hook through Codex's normal `/hooks` interface. The adapter
+runs at startup and resume and delegates to `slopsentral context hook`. Codex
+loads configuration before `SessionStart`, so changes made at that point are
+available in the next session. Use `context apply` before opening the first
+desktop session when those tools must be available immediately. Normal Codex
+project trust still applies. This code never writes hook trust or bypasses it.
+See the official [profile configuration](https://learn.chatgpt.com/docs/config-file/config-advanced)
+and [SessionStart contract](https://learn.chatgpt.com/docs/hooks).
+
+### GPT-6 Astra Context Budget
+
+This integration follows the repository's Astra execution guidance and the
+official [GPT-6 Astra prompting guidance](https://developers.openai.com/api/docs/guides/latest-model).
+Repository detection is deterministic. Successful unchanged hooks emit no
+context and skip plugin commands; hooks do not run at compaction or on every
+tool call. Changed or failed activation emits one bounded status message.
+Skills remain available for task-specific loading. A root marker does not ask
+the agent to read all Kotlin skills, regenerate knowledge, run Gradle, or delegate
+a review. Explicit model and reasoning settings remain under the user's control.
+The tests prove these configuration and output contracts; they are not a live
+Astra performance benchmark.
+
 ## Backup Location
 
 The default transaction root is

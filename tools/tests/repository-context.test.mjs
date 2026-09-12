@@ -4,6 +4,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { validateWorkflowProfile } from "../validate-profile-contracts.mjs";
+import { selectRepositoryProfile } from "../repository-context.mjs";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
 const cli = path.join(repoRoot, "tools/slopsentral.mjs");
@@ -154,13 +156,75 @@ test("the session hook applies repository config and reports activation timing w
   assert.equal(first.status, 0, first.stderr || first.stdout);
   assert.match(first.output.systemMessage, /next session/u);
   assert.equal(fs.existsSync(path.join(context.repo, ".codex/config.toml")), true);
+  const callsBefore = fs.readFileSync(path.join(context.codexHome, "calls.jsonl"), "utf8");
   const second = run(context, "hook", { input });
   assert.equal(second.status, 0);
   assert.deepEqual(second.output, {});
+  assert.equal(fs.readFileSync(path.join(context.codexHome, "calls.jsonl"), "utf8"), callsBefore);
   const malformed = run(context, "hook", { input: "secret-source-payload" });
   assert.equal(malformed.status, 0);
   assert.match(malformed.output.systemMessage, /INVALID_HOOK_INPUT/u);
   assert.doesNotMatch(malformed.stdout, /secret-source-payload/u);
+});
+
+test("automatic profile contracts reject traversal and unsupported standalone skill overrides", () => {
+  const profile = JSON.parse(fs.readFileSync(path.join(repoRoot, "source/profiles/kotlin-repo-default.json"), "utf8"));
+  const traversal = structuredClone(profile);
+  traversal.activation.path = "../settings.gradle.kts";
+  assert.throws(() => validateWorkflowProfile(traversal));
+  const standalone = structuredClone(profile);
+  standalone.standaloneSkills = [{ type: "STANDALONE_SKILL_STATE", name: "example", state: "PRESENT" }];
+  assert.throws(() => validateWorkflowProfile(standalone));
+});
+
+test("simultaneous root matches fail instead of choosing a profile by order", (t) => {
+  const context = fixture(t);
+  fs.writeFileSync(path.join(context.repo, "settings.gradle.kts"), "");
+  const profile = JSON.parse(fs.readFileSync(path.join(repoRoot, "source/profiles/kotlin-repo-default.json"), "utf8"));
+  const result = selectRepositoryProfile({ type: "REPOSITORY_ROOT", repositoryRoot: context.repo }, [profile, { ...profile, name: "another-profile" }]);
+  assert.equal(result.type, "CONTEXT_FAILURE");
+  assert.equal(result.reason, "AMBIGUOUS_PROFILES");
+});
+
+test("project transactions can be rolled back and do not delete subsequently modified config", (t) => {
+  const context = fixture(t);
+  fs.writeFileSync(path.join(context.repo, "settings.gradle.kts"), "");
+  const applied = run(context, "apply");
+  assert.equal(applied.status, 0, applied.stdout);
+  const target = path.join(context.repo, ".codex/config.toml");
+  const args = [cli, "profile", "rollback", applied.output.transaction.manifestPath, "--codex-home", context.codexHome];
+  const original = fs.readFileSync(target, "utf8");
+  fs.appendFileSync(target, "# user edit\n");
+  const conflict = spawnSync(process.execPath, args, { encoding: "utf8", env: { ...process.env, ...context.env } });
+  assert.equal(conflict.status, 3, conflict.stdout);
+  fs.writeFileSync(target, original);
+  const restored = spawnSync(process.execPath, args, { encoding: "utf8", env: { ...process.env, ...context.env } });
+  assert.equal(restored.status, 0, restored.stdout);
+  assert.equal(fs.existsSync(target), false);
+});
+
+test("managed markers inside a TOML string cannot authorize overwriting user content", (t) => {
+  const context = fixture(t);
+  fs.writeFileSync(path.join(context.repo, "settings.gradle.kts"), "");
+  assert.equal(run(context, "apply").status, 0);
+  const target = path.join(context.repo, ".codex/config.toml");
+  const embedded = `note = """${fs.readFileSync(target, "utf8")}"""\n`;
+  fs.writeFileSync(target, embedded);
+  const result = run(context, "apply");
+  assert.equal(result.status, 3, result.stdout);
+  assert.equal(fs.readFileSync(target, "utf8"), embedded);
+});
+
+test("compaction and clear hooks do not run configuration work", (t) => {
+  const context = fixture(t);
+  fs.writeFileSync(path.join(context.repo, "settings.gradle.kts"), "");
+  for (const source of ["compact", "clear"]) {
+    const result = run(context, "hook", { input: JSON.stringify({ hook_event_name: "SessionStart", source, cwd: context.repo }) });
+    assert.equal(result.status, 0);
+    assert.deepEqual(result.output, {});
+  }
+  assert.deepEqual(fs.readdirSync(context.codexHome), []);
+  assert.equal(fs.existsSync(path.join(context.repo, ".codex")), false);
 });
 
 test("launch configures matching repositories before Codex starts and preserves the forwarded arguments", (t) => {
