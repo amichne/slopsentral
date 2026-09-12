@@ -23,7 +23,8 @@
     "tools/install-skill",
     "tools/profile-lifecycle.mjs",
     "tools/slopsentral.mjs",
-    "tools/validate-profile-contracts.mjs"
+    "tools/validate-profile-contracts.mjs",
+    "tools/repository-context.mjs"
   ],
   "scripts": {
     "test": "node --test tools/tests/*.test.mjs",

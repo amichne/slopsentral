@@ -127,7 +127,7 @@ Outside this workstream: Code changes, signature-index construction, OKF knowled
 
 - [intellij-plugin-default](profiles/intellij-plugin-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + intellij-engineering. 487 instruction words.
 
-- [kotlin-repo-default](profiles/kotlin-repo-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery. 487 instruction words.
+- [kotlin-repo-default](profiles/kotlin-repo-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + code-knowledge-base. 487 instruction words.
 
 - [local-development-default](profiles/local-development-default.json): engineering-baseline + developer-tools. 351 instruction words.
 

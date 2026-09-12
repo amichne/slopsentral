@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { runContextCommand } from "./repository-context.mjs";
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -285,6 +286,11 @@ function main() {
     return report.readiness.type === "DOCTOR_READY" ? 0 : 1;
   }
   if (argv[0] === "profile") return runProfile(parseProfileCommand(argv.slice(1)));
+  if (argv[0] === "context") {
+    const result = runContextCommand(argv.slice(1));
+    emit(result);
+    return result.type === "CONTEXT_FAILURE" ? 2 : 0;
+  }
   throw new CliUsageError(argv.length === 0 ? "a command is required; run slopsentral --help" : `unknown command: ${argv[0]}`);
 }
 

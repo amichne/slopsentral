@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "kotlin-repo-default",
-  "description": "Default Kotlin repository workflow that composes baseline executable-check TDD, Kotlin-specific engineering, local developer tools, effective delivery, and shared semantic-context hooks for Codex without duplicate primitive ownership.",
+  "description": "Kotlin repository workflow with engineering guidance, source-backed knowledge and navigation, local developer tools, and delivery. Automatically selected by a repository-root settings.gradle.kts.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -17,7 +17,8 @@
     "engineering-baseline",
     "kotlin-engineering",
     "developer-tools",
-    "effective-delivery"
+    "effective-delivery",
+    "code-knowledge-base"
   ],
   "standaloneSkills": [],
   "hookPolicy": {
@@ -35,5 +36,9 @@
       "projeKtor project --source . --harness codex --out /tmp/slopsentral-codex",
       "projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
     ]
+  },
+  "activation": {
+    "type": "REPOSITORY_ROOT_FILE",
+    "path": "settings.gradle.kts"
   }
 }
