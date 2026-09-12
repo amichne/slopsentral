@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T01:45:09-04:00",
+  "generatedAt": "2026-09-12T15:42:55-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -20,7 +20,7 @@
         },
         {
           "name": "engineering-design",
-          "sha256": "sha256:1673b7d1b51416e24c915ca45fabd191af3719adcbe273c193d227f6d518c5ba",
+          "sha256": "sha256:e69c14aaf1cc0deb86b247c179f1d4e0ef330d1fb60bd68ac421ae6be975102b",
           "sourcePath": "source/instructions/engineering-design.md",
           "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
@@ -55,14 +55,14 @@
         },
         {
           "name": "tdd",
-          "sha256": "sha256:bb704acb96d42ee7cafa1a41eef5f3030258958b2f0a1c5e203cf551c37425bd",
+          "sha256": "sha256:e99eb8a797a22e7daeb6040f51f4a1cf6faab03e4cdd60a8b960e029d60d0b7b",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/engineering-baseline/plugin.json",
-      "version": "1.1.1"
+      "version": "1.1.2"
     },
     {
       "name": "pkl-engineering",
@@ -563,6 +563,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "ff71fc06ad409b04aebbaa9891fefdff32426641",
+  "sourceSha": "dcf06b505e5d789cf92a58797340d5b61e8e1f91",
   "type": "HYDRATED_MARKETPLACE"
 }

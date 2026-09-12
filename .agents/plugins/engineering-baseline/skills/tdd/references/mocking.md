@@ -7,11 +7,16 @@ Mock at **system boundaries** only:
 - Time/randomness
 - File system (sometimes)
 
-Don't mock:
+Prefer real implementations for:
 
 - Your own classes/modules
 - Internal collaborators
-- Anything you control
+- Deterministic pure behavior you control
+
+A fake may implement a capability interface owned by this repository when it
+controls an external effect. The boundary being replaced, not who authored the
+interface, determines whether the double is useful. Never use that fake as
+evidence that the external host or service actually works.
 
 ## Designing for Mockability
 
