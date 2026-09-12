@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T01:41:08-04:00",
+  "generatedAt": "2026-09-12T01:45:09-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -363,7 +363,7 @@
         }
       ],
       "sourceManifest": "source/plugins/effective-delivery/plugin.json",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "name": "agent-platform-authoring",
@@ -454,7 +454,7 @@
         }
       ],
       "sourceManifest": "source/plugins/code-knowledge-base/plugin.json",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "name": "skill-read-policy",
@@ -563,6 +563,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "25f59d4dffdfa9ff5feb2d7601881cf5f9d616e0",
+  "sourceSha": "ff71fc06ad409b04aebbaa9891fefdff32426641",
   "type": "HYDRATED_MARKETPLACE"
 }
