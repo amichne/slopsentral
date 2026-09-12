@@ -29,6 +29,7 @@
     "operation": {
       "oneOf": [
         {"$ref": "#/$defs/ApplyProfile"},
+        {"$ref": "#/$defs/ApplyRepositoryProfile"},
         {"$ref": "#/$defs/RollbackProfile"}
       ],
       "discriminator": {"propertyName": "type"},
@@ -89,6 +90,17 @@
     }
   },
   "$defs": {
+    "ApplyRepositoryProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "profileName", "repositoryRoot"],
+      "properties": {
+        "type": {"type": "string", "enum": ["APPLY_REPOSITORY_PROFILE"], "examples": ["APPLY_REPOSITORY_PROFILE"]},
+        "profileName": {"$ref": "#/$defs/ProfileName"},
+        "repositoryRoot": {"$ref": "#/$defs/AbsolutePath"}
+      },
+      "examples": [{"type": "APPLY_REPOSITORY_PROFILE", "profileName": "kotlin-repo-default", "repositoryRoot": "/workspace/example"}]
+    },
     "ApplyProfile": {
       "type": "object",
       "additionalProperties": false,

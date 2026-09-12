@@ -187,6 +187,7 @@ test("npm package contains the portable lifecycle and standalone skill assets", 
     "source/schemas/profiles/workflow-profile.schema.json",
     "tools/install-skill",
     "tools/profile-lifecycle.mjs",
+    "tools/repository-context.mjs",
     "tools/slopsentral.mjs",
     "tools/validate-profile-contracts.mjs",
   ]);

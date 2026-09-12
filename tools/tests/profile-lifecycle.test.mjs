@@ -203,7 +203,7 @@ test("plan and apply reconcile the marketplace and selected plugins", (t) => {
   assert.equal(applied.status, 0, diagnostic(applied));
   assert.equal(applied.output.type, "PROFILE_APPLIED");
   assert.equal(applied.output.hookReview.type, "HOOK_REVIEW_REQUIRED");
-  assert.deepEqual(applied.output.hookReview.hooks, ["agents-md-turn-refresh"]);
+  assert.deepEqual(applied.output.hookReview.hooks, ["agents-md-turn-refresh", "repository-profile"]);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(context.codexHome, "fake-codex-state.json"), "utf8")), {
     marketplace: true,
     installed: ["developer-tools", "engineering-baseline"],

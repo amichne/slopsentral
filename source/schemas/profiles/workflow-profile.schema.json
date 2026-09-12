@@ -19,56 +19,38 @@
   "properties": {
     "type": {
       "type": "string",
-      "enum": [
-        "WORKFLOW_PROFILE"
-      ],
-      "examples": [
-        "WORKFLOW_PROFILE"
-      ]
+      "enum": ["WORKFLOW_PROFILE"],
+      "examples": ["WORKFLOW_PROFILE"]
     },
     "schemaVersion": {
       "type": "integer",
-      "enum": [
-        2
-      ],
-      "examples": [
-        2
-      ]
+      "enum": [2],
+      "examples": [2]
     },
     "name": {
       "type": "string",
       "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-      "examples": [
-        "local-development-default"
-      ]
+      "examples": ["local-development-default"]
     },
     "description": {
       "type": "string",
       "minLength": 1,
-      "examples": [
-        "Local implementation and tool use without hosted delivery."
-      ]
+      "examples": ["Local implementation and tool use without hosted delivery."]
     },
     "marketplaces": {
       "type": "array",
       "minItems": 1,
       "maxItems": 1,
       "uniqueItems": true,
-      "items": {
-        "$ref": "#/$defs/WorkflowMarketplace"
-      },
-      "examples": [
-        [
-          {
-            "type": "WORKFLOW_MARKETPLACE",
-            "name": "slopsentral",
-            "provider": "codex",
-            "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
-            "entrypoint": ".agents/plugins/marketplace.json",
-            "scope": "plugins in this workflow profile"
-          }
-        ]
-      ]
+      "items": {"$ref": "#/$defs/WorkflowMarketplace"},
+      "examples": [[{
+        "type": "WORKFLOW_MARKETPLACE",
+        "name": "slopsentral",
+        "provider": "codex",
+        "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+        "entrypoint": ".agents/plugins/marketplace.json",
+        "scope": "plugins in this workflow profile"
+      }]]
     },
     "plugins": {
       "type": "array",
@@ -77,280 +59,27 @@
       "items": {
         "type": "string",
         "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-        "examples": [
-          "engineering-baseline"
-        ]
+        "examples": ["engineering-baseline"]
       },
-      "examples": [
-        [
-          "engineering-baseline",
-          "developer-tools"
-        ]
-      ]
+      "examples": [["engineering-baseline", "developer-tools"]]
     },
     "standaloneSkills": {
       "type": "array",
       "description": "Profile-local state for marketplace skills installed at stable user paths.",
       "uniqueItems": true,
-      "items": {
-        "$ref": "#/$defs/StandaloneSkillState"
-      },
-      "examples": [
-        [
-          {
-            "type": "STANDALONE_SKILL_STATE",
-            "name": "frontend-design",
-            "state": "PRESERVE"
-          }
-        ]
-      ]
+      "items": {"$ref": "#/$defs/StandaloneSkillState"},
+      "examples": [[{
+        "type": "STANDALONE_SKILL_STATE",
+        "name": "frontend-design",
+        "state": "PRESERVE"
+      }]]
     },
-    "hookPolicy": {
-      "$ref": "#/$defs/HookPolicy"
-    },
-    "reconciliation": {
-      "$ref": "#/$defs/PluginReconciliation"
-    },
-    "validation": {
-      "$ref": "#/$defs/WorkflowValidation"
-    },
-    "activation": {
-      "$ref": "#/$defs/RepositoryRootFile"
-    }
+    "hookPolicy": {"$ref": "#/$defs/HookPolicy"},
+    "reconciliation": {"$ref": "#/$defs/PluginReconciliation"},
+    "validation": {"$ref": "#/$defs/WorkflowValidation"},
+    "activation": {"$ref": "#/$defs/RepositoryRootFile"}
   },
   "$defs": {
-    "WorkflowMarketplace": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "name",
-        "provider",
-        "source",
-        "entrypoint",
-        "scope"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "WORKFLOW_MARKETPLACE"
-          ],
-          "examples": [
-            "WORKFLOW_MARKETPLACE"
-          ]
-        },
-        "name": {
-          "type": "string",
-          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-          "examples": [
-            "slopsentral"
-          ]
-        },
-        "provider": {
-          "type": "string",
-          "enum": [
-            "codex"
-          ],
-          "examples": [
-            "codex"
-          ]
-        },
-        "source": {
-          "type": "string",
-          "format": "uri",
-          "examples": [
-            "https://github.com/amichne/slopsentral/tree/harness/codex"
-          ]
-        },
-        "entrypoint": {
-          "type": "string",
-          "pattern": "^\\.agents/plugins/[^/]+\\.json$",
-          "examples": [
-            ".agents/plugins/marketplace.json"
-          ]
-        },
-        "scope": {
-          "type": "string",
-          "minLength": 1,
-          "examples": [
-            "plugins in this workflow profile"
-          ]
-        }
-      },
-      "examples": [
-        {
-          "type": "WORKFLOW_MARKETPLACE",
-          "name": "slopsentral",
-          "provider": "codex",
-          "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
-          "entrypoint": ".agents/plugins/marketplace.json",
-          "scope": "plugins in this workflow profile"
-        }
-      ]
-    },
-    "StandaloneSkillState": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "name",
-        "state"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "STANDALONE_SKILL_STATE"
-          ],
-          "examples": [
-            "STANDALONE_SKILL_STATE"
-          ]
-        },
-        "name": {
-          "type": "string",
-          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-          "examples": [
-            "frontend-design"
-          ]
-        },
-        "state": {
-          "type": "string",
-          "description": "PRESENT installs if missing and enables; ABSENT disables without deletion; PRESERVE emits no override.",
-          "enum": [
-            "PRESENT",
-            "ABSENT",
-            "PRESERVE"
-          ],
-          "examples": [
-            "PRESERVE"
-          ]
-        }
-      },
-      "examples": [
-        {
-          "type": "STANDALONE_SKILL_STATE",
-          "name": "frontend-design",
-          "state": "PRESERVE"
-        }
-      ]
-    },
-    "HookPolicy": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "mode"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "HOOK_POLICY"
-          ],
-          "examples": [
-            "HOOK_POLICY"
-          ]
-        },
-        "mode": {
-          "type": "string",
-          "enum": [
-            "OFF",
-            "ADVISORY",
-            "ENFORCING"
-          ],
-          "examples": [
-            "ADVISORY"
-          ]
-        }
-      },
-      "examples": [
-        {
-          "type": "HOOK_POLICY",
-          "mode": "ADVISORY"
-        }
-      ]
-    },
-    "PluginReconciliation": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "unselected"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "PLUGIN_RECONCILIATION"
-          ],
-          "examples": [
-            "PLUGIN_RECONCILIATION"
-          ]
-        },
-        "unselected": {
-          "type": "string",
-          "enum": [
-            "PRESERVE",
-            "DISABLE_UNSELECTED",
-            "REMOVE_UNSELECTED"
-          ],
-          "examples": [
-            "DISABLE_UNSELECTED"
-          ]
-        }
-      },
-      "examples": [
-        {
-          "type": "PLUGIN_RECONCILIATION",
-          "unselected": "DISABLE_UNSELECTED"
-        }
-      ]
-    },
-    "WorkflowValidation": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "commands"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "WORKFLOW_VALIDATION"
-          ],
-          "examples": [
-            "WORKFLOW_VALIDATION"
-          ]
-        },
-        "commands": {
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "examples": [
-              "node tools/validate-source-graph.mjs"
-            ]
-          },
-          "examples": [
-            [
-              "node tools/validate-source-graph.mjs"
-            ]
-          ]
-        }
-      },
-      "examples": [
-        {
-          "type": "WORKFLOW_VALIDATION",
-          "commands": [
-            "node tools/validate-source-graph.mjs"
-          ]
-        }
-      ]
-    },
     "RepositoryRootFile": {
       "type": "object",
       "additionalProperties": false,
@@ -383,43 +112,160 @@
           "path": "settings.gradle.kts"
         }
       ]
+    },
+    "WorkflowMarketplace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "name", "provider", "source", "entrypoint", "scope"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["WORKFLOW_MARKETPLACE"],
+          "examples": ["WORKFLOW_MARKETPLACE"]
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "examples": ["slopsentral"]
+        },
+        "provider": {
+          "type": "string",
+          "enum": ["codex"],
+          "examples": ["codex"]
+        },
+        "source": {
+          "type": "string",
+          "format": "uri",
+          "examples": ["https://github.com/amichne/slopsentral/tree/harness/codex"]
+        },
+        "entrypoint": {
+          "type": "string",
+          "pattern": "^\\.agents/plugins/[^/]+\\.json$",
+          "examples": [".agents/plugins/marketplace.json"]
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "examples": ["plugins in this workflow profile"]
+        }
+      },
+      "examples": [{
+        "type": "WORKFLOW_MARKETPLACE",
+        "name": "slopsentral",
+        "provider": "codex",
+        "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+        "entrypoint": ".agents/plugins/marketplace.json",
+        "scope": "plugins in this workflow profile"
+      }]
+    },
+    "StandaloneSkillState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "name", "state"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["STANDALONE_SKILL_STATE"],
+          "examples": ["STANDALONE_SKILL_STATE"]
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "examples": ["frontend-design"]
+        },
+        "state": {
+          "type": "string",
+          "description": "PRESENT installs if missing and enables; ABSENT disables without deletion; PRESERVE emits no override.",
+          "enum": ["PRESENT", "ABSENT", "PRESERVE"],
+          "examples": ["PRESERVE"]
+        }
+      },
+      "examples": [{
+        "type": "STANDALONE_SKILL_STATE",
+        "name": "frontend-design",
+        "state": "PRESERVE"
+      }]
+    },
+    "HookPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "mode"],
+      "properties": {
+        "type": {"type": "string", "enum": ["HOOK_POLICY"], "examples": ["HOOK_POLICY"]},
+        "mode": {
+          "type": "string",
+          "enum": ["OFF", "ADVISORY", "ENFORCING"],
+          "examples": ["ADVISORY"]
+        }
+      },
+      "examples": [{"type": "HOOK_POLICY", "mode": "ADVISORY"}]
+    },
+    "PluginReconciliation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "unselected"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["PLUGIN_RECONCILIATION"],
+          "examples": ["PLUGIN_RECONCILIATION"]
+        },
+        "unselected": {
+          "type": "string",
+          "enum": ["PRESERVE", "DISABLE_UNSELECTED", "REMOVE_UNSELECTED"],
+          "examples": ["DISABLE_UNSELECTED"]
+        }
+      },
+      "examples": [{"type": "PLUGIN_RECONCILIATION", "unselected": "DISABLE_UNSELECTED"}]
+    },
+    "WorkflowValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "commands"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["WORKFLOW_VALIDATION"],
+          "examples": ["WORKFLOW_VALIDATION"]
+        },
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "examples": ["node tools/validate-source-graph.mjs"]
+          },
+          "examples": [["node tools/validate-source-graph.mjs"]]
+        }
+      },
+      "examples": [{
+        "type": "WORKFLOW_VALIDATION",
+        "commands": ["node tools/validate-source-graph.mjs"]
+      }]
     }
   },
-  "examples": [
-    {
-      "type": "WORKFLOW_PROFILE",
-      "schemaVersion": 2,
-      "name": "local-development-default",
-      "description": "Local implementation and tool use without hosted delivery.",
-      "marketplaces": [
-        {
-          "type": "WORKFLOW_MARKETPLACE",
-          "name": "slopsentral",
-          "provider": "codex",
-          "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
-          "entrypoint": ".agents/plugins/marketplace.json",
-          "scope": "plugins in this workflow profile"
-        }
-      ],
-      "plugins": [
-        "engineering-baseline",
-        "developer-tools"
-      ],
-      "standaloneSkills": [],
-      "hookPolicy": {
-        "type": "HOOK_POLICY",
-        "mode": "ADVISORY"
-      },
-      "reconciliation": {
-        "type": "PLUGIN_RECONCILIATION",
-        "unselected": "DISABLE_UNSELECTED"
-      },
-      "validation": {
-        "type": "WORKFLOW_VALIDATION",
-        "commands": [
-          "node tools/validate-source-graph.mjs"
-        ]
-      }
+  "examples": [{
+    "type": "WORKFLOW_PROFILE",
+    "schemaVersion": 2,
+    "name": "local-development-default",
+    "description": "Local implementation and tool use without hosted delivery.",
+    "marketplaces": [{
+      "type": "WORKFLOW_MARKETPLACE",
+      "name": "slopsentral",
+      "provider": "codex",
+      "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+      "entrypoint": ".agents/plugins/marketplace.json",
+      "scope": "plugins in this workflow profile"
+    }],
+    "plugins": ["engineering-baseline", "developer-tools"],
+    "standaloneSkills": [],
+    "hookPolicy": {"type": "HOOK_POLICY", "mode": "ADVISORY"},
+    "reconciliation": {"type": "PLUGIN_RECONCILIATION", "unselected": "DISABLE_UNSELECTED"},
+    "validation": {
+      "type": "WORKFLOW_VALIDATION",
+      "commands": ["node tools/validate-source-graph.mjs"]
     }
-  ]
+  }]
 }

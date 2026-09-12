@@ -111,6 +111,7 @@ function runCodex(options, args, { json = false } = {}) {
     encoding: "utf8",
     env: codexEnvironment(options),
     maxBuffer: codexOutputLimitBytes,
+    timeout: options.commandTimeoutMs,
   });
   if (result.error) throw new Error(`could not run Codex CLI: ${result.error.message}`);
   if (result.status !== 0) {
@@ -762,4 +763,5 @@ function main() {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
 
-export { apply, installSkill, parseArgs, plan, plannedSkillInstalls, renderProfile, rollback, status };
+export { apply, installSkill, parseArgs, plan, plannedSkillInstalls, renderProfile, rollback, status,
+  commitMutation, fileImage, desiredImage, sameImage };

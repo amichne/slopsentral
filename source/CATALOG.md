@@ -45,6 +45,8 @@ Outside this workstream: Hosted PR lifecycle, CI/CD architecture, deployment, an
 
 **Skills:** [cli-creator](skills/cli-creator/SKILL.md), [cli-data-pipelines](skills/cli-data-pipelines/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [shell-session-integration](skills/shell-session-integration/SKILL.md).
 
+**Hooks:** [repository-profile](hooks/repository-profile.hook.json).
+
 ### effective-delivery
 
 Hosted delivery from issue to verified pull request and release evidence.
@@ -121,15 +123,15 @@ Outside this workstream: Code changes, signature-index construction, OKF knowled
 
 ## Profiles
 
-- [agent-authoring-default](profiles/agent-authoring-default.json): engineering-baseline + agent-platform-authoring. 351 instruction words.
+- [agent-authoring-default](profiles/agent-authoring-default.json): engineering-baseline + agent-platform-authoring. 394 instruction words.
 
-- [documentation-default](profiles/documentation-default.json): engineering-baseline + writing. 351 instruction words.
+- [documentation-default](profiles/documentation-default.json): engineering-baseline + writing. 394 instruction words.
 
-- [intellij-plugin-default](profiles/intellij-plugin-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + intellij-engineering. 487 instruction words.
+- [intellij-plugin-default](profiles/intellij-plugin-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + intellij-engineering. 530 instruction words.
 
-- [kotlin-repo-default](profiles/kotlin-repo-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + code-knowledge-base. 487 instruction words.
+- [kotlin-repo-default](profiles/kotlin-repo-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + code-knowledge-base. 530 instruction words.
 
-- [local-development-default](profiles/local-development-default.json): engineering-baseline + developer-tools. 351 instruction words.
+- [local-development-default](profiles/local-development-default.json): engineering-baseline + developer-tools. 394 instruction words.
 
 ## Standalone skills
 
