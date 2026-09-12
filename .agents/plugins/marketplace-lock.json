@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-09T11:31:03-04:00",
+  "generatedAt": "2026-09-12T01:41:08-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -13,7 +13,7 @@
         },
         {
           "name": "agent-execution",
-          "sha256": "sha256:cc8110806cfc9e989a792ec6aab00fe9fdb11a98e155f55974691b5ec081beca",
+          "sha256": "sha256:99e185d8b6671fd396af8cba02ca3c1ddd183e545e8d6019add93f12e8dd0577",
           "sourcePath": "source/instructions/agent-execution.md",
           "targetPath": "instructions/agent-execution.md",
           "type": "INSTRUCTION"
@@ -55,14 +55,14 @@
         },
         {
           "name": "tdd",
-          "sha256": "sha256:ff4c251f39e62d85489109b16152e66ebdc3349f7e5edb40f276b455bc8ffb5d",
+          "sha256": "sha256:bb704acb96d42ee7cafa1a41eef5f3030258958b2f0a1c5e203cf551c37425bd",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/engineering-baseline/plugin.json",
-      "version": "1.1.0"
+      "version": "1.1.1"
     },
     {
       "name": "pkl-engineering",
@@ -278,6 +278,13 @@
       "name": "developer-tools",
       "references": [
         {
+          "name": "repository-profile",
+          "sha256": "sha256:42397562133df38704f4b50755acfc370206109621aa6897dc884e16a61c3bec",
+          "sourcePath": "source/hooks/repository-profile.hook.json",
+          "targetPath": "hooks/repository-profile.hooks.json",
+          "type": "HOOK"
+        },
+        {
           "name": "cli-creator",
           "sha256": "sha256:1cd35b122d3348d5c98ec86acc7b70d5481071bb48929e67d92cd45cdf4f05f5",
           "sourcePath": "source/skills/cli-creator",
@@ -293,7 +300,7 @@
         },
         {
           "name": "git-change-flow",
-          "sha256": "sha256:b7f631ffa4ba931f3923ad1efbf1119a33c492f80119c94027fc0c1db4c9ee75",
+          "sha256": "sha256:5f5edde3d5fbc7b7160aeedf27926853d98adb612a10ea8d40f0e1611056c816",
           "sourcePath": "source/skills/git-change-flow",
           "targetPath": "skills/git-change-flow",
           "type": "SKILL"
@@ -321,7 +328,7 @@
         }
       ],
       "sourceManifest": "source/plugins/developer-tools/plugin.json",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "effective-delivery",
@@ -349,7 +356,7 @@
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:ad1b7eb8363ae6e14b90467fd1d3309bcac18fa464033156786c5a8e564e731d",
+          "sha256": "sha256:5b86b84d1894570608834716775cfbe1828a9b48459feb03c407259da2a0dd7d",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
@@ -433,7 +440,7 @@
         },
         {
           "name": "local-repository-navigation",
-          "sha256": "sha256:fbe34fe8f6fd98c6c99a1865a013bcd73d3246dec82e520b0e86138767500d95",
+          "sha256": "sha256:5caad19220ab26b20246e3a33b1924c8725440b0b71c34262414da66fce47c80",
           "sourcePath": "source/skills/local-repository-navigation",
           "targetPath": "skills/local-repository-navigation",
           "type": "SKILL"
@@ -556,6 +563,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "cf18597f4ffc72d795d394b1aee77605535c2890",
+  "sourceSha": "25f59d4dffdfa9ff5feb2d7601881cf5f9d616e0",
   "type": "HYDRATED_MARKETPLACE"
 }

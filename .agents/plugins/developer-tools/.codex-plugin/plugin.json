@@ -3,6 +3,9 @@
     "name": "Amichne"
   },
   "description": "Local command-line tools and repository work.",
+  "hooks": [
+    "./hooks/repository-profile.hooks.json"
+  ],
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -34,5 +37,5 @@
   "license": "UNLICENSED",
   "name": "developer-tools",
   "skills": "./skills/",
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

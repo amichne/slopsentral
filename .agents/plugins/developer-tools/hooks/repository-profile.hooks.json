@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "python3 \"$PLUGIN_ROOT/hooks/repository-profile.py\"",
+            "statusMessage": "Applying repository tooling profile",
+            "timeout": 50,
+            "type": "command"
+          }
+        ],
+        "matcher": "^(startup|resume)$"
+      }
+    ]
+  }
+}

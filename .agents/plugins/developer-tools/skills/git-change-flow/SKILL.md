@@ -1,6 +1,6 @@
 ---
 name: "git-change-flow"
-description: "Use when local Git work needs status inspection, user-work protection, safe branching, diff review, staging, commits, recovery, or publication prep."
+description: "Use when local Git work needs status inspection, user-work protection, safe branching, diff review, staging, commits, recovery, publication prep, or a defined or linked deliverable requires pull-request delivery."
 ---
 
 # Git Change Flow
@@ -17,6 +17,7 @@ useful in any Git repository.
   overwrite, amend, rebase, or stash them without applicable authorization for those changes.
 - Branch before risky or publishable work when currently on a shared/default
   branch.
+- A task, ticket, subtask, or direct message that defines a deliverable or links a file containing the deliverable is a publication request: use pull-request-lifecycle to raise or update the pull request and follow its latest head until green.
 - Keep commits intentional: focused diff, clear message, validation evidence,
   and generated files only when they are part of the contract.
 - Avoid destructive commands unless the user explicitly asked for that exact
@@ -28,7 +29,8 @@ useful in any Git repository.
 
 1. Orient.
    Check branch, remote, upstream, dirty files, ignored generated outputs, and
-   whether the user asked for a commit, push, PR, or only local edits.
+   whether the user asked for a commit, push, PR, only local edits, or supplied
+   a deliverable that makes pull-request delivery implicit.
 
 2. Isolate the work.
    Create or reuse an appropriate branch. Keep unrelated dirty files out of the
