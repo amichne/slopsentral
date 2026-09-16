@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T15:42:55-04:00",
+  "generatedAt": "2026-09-16T01:10:49-04:00",
   "plugins": [
     {
       "name": "engineering-baseline",
@@ -208,6 +208,13 @@
           "type": "INSTRUCTION"
         },
         {
+          "name": "gradle-performance-engineering",
+          "sha256": "sha256:5bc1b5b6f07ddcc23c7bef038ffde37c5e61e58502ce5974123d5f12c5a3a942",
+          "sourcePath": "source/skills/gradle-performance-engineering",
+          "targetPath": "skills/gradle-performance-engineering",
+          "type": "SKILL"
+        },
+        {
           "name": "kotlin-agentic-correctness",
           "sha256": "sha256:8335c926117371f7d687820c2845190b9cb1293d7af9f55bacf56bc850b5c7f4",
           "sourcePath": "source/skills/kotlin-agentic-correctness",
@@ -244,7 +251,7 @@
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:c396ec123bce0f56e5f36ee33f962dc9a50f2f06142c5fc41381a66136d6d17f",
+          "sha256": "sha256:89ad6f71c51e452738fbbe4c24b17a52bc6b7d85dc1d9957ebd3d26e331eeb71",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -272,7 +279,7 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "1.2.0"
+      "version": "1.3.0"
     },
     {
       "name": "developer-tools",
@@ -342,7 +349,7 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:b287f9fd7a6e679c03e5b778a8951ddbd559bd236691966fb4b82a42668f7ff3",
+          "sha256": "sha256:49c40d4295ff38b10a7bfab3467a00c978b912bd25a0cb06374dc04bbfa82cb2",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
@@ -363,7 +370,7 @@
         }
       ],
       "sourceManifest": "source/plugins/effective-delivery/plugin.json",
-      "version": "1.0.2"
+      "version": "1.1.0"
     },
     {
       "name": "agent-platform-authoring",
@@ -563,6 +570,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "dcf06b505e5d789cf92a58797340d5b61e8e1f91",
+  "sourceSha": "06f83ce36a9be50c2b4290d2ed6548d0bcc36f24",
   "type": "HYDRATED_MARKETPLACE"
 }

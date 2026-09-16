@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Kotlin implementation, API design, and compiler-backed review.",
+  "description": "Kotlin implementation, API design, compiler-backed review, and measured Gradle performance.",
   "hooks": [
     "./hooks/gradle-check-green.hooks.json",
     "./hooks/gradle-wrapper-integrity.hooks.json",
@@ -22,9 +22,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Kotlin Engineering",
-    "longDescription": "Kotlin implementation, API design, and compiler-backed review.",
+    "longDescription": "Kotlin implementation, API design, compiler-backed review, and measured Gradle performance.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Kotlin implementation, API design, and compiler-backed review.",
+    "shortDescription": "Kotlin implementation, API design, compiler-backed review, and measur...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -62,5 +62,5 @@
   "license": "UNLICENSED",
   "name": "kotlin-engineering",
   "skills": "./skills/",
-  "version": "1.2.0"
+  "version": "1.3.0"
 }

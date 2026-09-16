@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Kotlin implementation, API design, and compiler-backed review.
+Kotlin implementation, API design, compiler-backed review, and measured Gradle performance.
 
 ## Operating Rules
 
@@ -27,6 +27,7 @@ Kotlin implementation, API design, and compiler-backed review.
 
 ## Skill Primitives
 
+- `gradle-performance-engineering`: `skills/gradle-performance-engineering` (source: `source/skills/gradle-performance-engineering`)
 - `kotlin-agentic-correctness`: `skills/kotlin-agentic-correctness` (source: `source/skills/kotlin-agentic-correctness`)
 - `kotlin-api-surface-design`: `skills/kotlin-api-surface-design` (source: `source/skills/kotlin-api-surface-design`)
 - `kotlin-application-stack`: `skills/kotlin-application-stack` (source: `source/skills/kotlin-application-stack`)
