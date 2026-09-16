@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "documentation-default",
-  "description": "Evidence-grounded prose, technical documents, reference generation, and site authoring.",
+  "description": "Technical writing and documentation sites, without engineering hooks or delivery workflows.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -14,8 +14,7 @@
     }
   ],
   "plugins": [
-    "engineering-baseline",
-    "writing"
+    "technical-writing"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

@@ -9,20 +9,22 @@ function read(relativePath) {
   return fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
 }
 
-test("red-green work publishes every validated checkpoint", () => {
+test("local red-green work does not require publication", () => {
   const skill = read("source/skills/tdd/SKILL.md");
 
-  assert.match(skill, /commit and push each validated RED and passing GREEN checkpoint before continuing/i);
+  assert.match(skill, /local TDD loop does not require a remote/i);
+  assert.doesNotMatch(skill, /commit and push each validated RED/i);
 });
 
-test("defined or linked deliverables route through a green pull request", () => {
+test("task context alone does not manufacture publication authority", () => {
   const gitFlow = read("source/skills/git-change-flow/SKILL.md");
   const prLifecycle = read("source/skills/pull-request-lifecycle/SKILL.md");
 
   for (const guidance of [gitFlow, prLifecycle]) {
-    assert.match(guidance, /task, ticket, subtask, or direct message/i);
-    assert.match(guidance, /defines a deliverable or links a file containing the deliverable/i);
+    assert.match(guidance, /requested end state/i);
+    assert.match(guidance, /local-only scope/i);
+    assert.doesNotMatch(guidance, /deliverable defaults the end\s+state to a green PR|is a publication request/i);
   }
 
-  assert.match(prLifecycle, /raise or update a pull request and follow its latest head until green/i);
+  assert.match(prLifecycle, /linked deliverable alone does not authorize publication/i);
 });

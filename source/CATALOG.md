@@ -1,15 +1,38 @@
 # Catalog
 
 Generated from canonical manifests by `node tools/catalog.mjs --write`.
-Choose a workstream by its outcome. A profile composes workstreams; it does not copy them.
+For code work, start with Software Engineering and add only the specialties your task needs.
+Keep that selection for the repository. Describe the outcome; the agent selects relevant skills within the installed plugins.
+Installing a plugin makes its capabilities available; it does not require every skill to run or authorize publication.
 
-## Workstreams
+For documentation alone, choose Technical Writing. Repository Knowledge is optional artifact generation.
+Profiles provide repeatable setup selections. See [migration](MIGRATION.md) before replacing older installations.
 
-### agent-platform-authoring
+## Start here
 
-Reusable agent tooling and its publication contracts.
+### software-engineering
 
-Outside this workstream: General code navigation, user documentation, application implementation, and automatic marketplace publication.
+Implement, test, review, and deliver code with Git, PR, and CI workflows.
+
+Start here for everyday code changes, debugging, tests, Git, issues, pull requests, and CI. Publication follows the requested end state.
+
+Outside this plugin: Language-specific design, building CLI products, knowledge generation, and documentation production.
+
+**Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [cli-data-pipelines](skills/cli-data-pipelines/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [delivery-pipeline-design](skills/delivery-pipeline-design/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [tdd](skills/tdd/SKILL.md).
+
+**Hooks:** [agents-md-turn-refresh](hooks/agents-md-turn-refresh.hook.json), [repository-profile](hooks/repository-profile.hook.json).
+
+**Instructions:** [agent-execution](instructions/agent-execution.md), [engineering-design](instructions/engineering-design.md).
+
+## Specialties
+
+### agent-tooling
+
+Create and improve skills, agents, hooks, plugins, and repository instructions.
+
+Choose when authoring reusable agent tooling, plugin compositions, routing evaluations, or repository instruction topology.
+
+Outside this plugin: Application implementation, user documentation, and automatic marketplace publication.
 
 **Skills:** [agent-profile-authoring](skills/agent-profile-authoring/SKILL.md), [hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md), [repo-instruction-topology](skills/repo-instruction-topology/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md).
 
@@ -17,9 +40,11 @@ Outside this workstream: General code navigation, user documentation, applicatio
 
 ### api-contracts
 
-Machine-readable boundary contracts.
+Author and review OpenAPI specifications and JSON Schema contracts.
 
-Outside this workstream: Application implementation, source knowledge indexing, and general technical prose.
+Choose for OpenAPI and JSON Schema models, operations, examples, compatibility, and contract review.
+
+Outside this plugin: Application implementation, repository indexes, and general technical prose.
 
 **Skills:** [manage-json-schemas](skills/manage-json-schemas/SKILL.md), [openapi-contract-authoring](skills/openapi-contract-authoring/SKILL.md), [openapi-contract-rating](skills/openapi-contract-rating/SKILL.md), [openapi-schema-modeling](skills/openapi-schema-modeling/SKILL.md).
 
@@ -27,59 +52,33 @@ Outside this workstream: Application implementation, source knowledge indexing, 
 
 **Instructions:** [api-contract-design](instructions/api-contract-design.md).
 
-### code-knowledge-base
+### cli-development
 
-Source-backed code knowledge and navigation.
+Build command-line tools, shell completions, and terminal interfaces.
 
-Outside this workstream: General document authoring, prose polishing, documentation site configuration, and agent plugin authoring.
+Choose when building a CLI, shell integration, completion, or interactive terminal UI.
 
-**Skills:** [code-knowledge-base](skills/code-knowledge-base/SKILL.md), [local-repository-navigation](skills/local-repository-navigation/SKILL.md), [repository-signature-indexing](skills/repository-signature-indexing/SKILL.md).
+Outside this plugin: Everyday Git and shell use, repository data queries, and CI operations.
 
-**Hooks:** [code-knowledge-drift](hooks/code-knowledge-drift.hook.json).
+**Skills:** [cli-creator](skills/cli-creator/SKILL.md), [shell-session-integration](skills/shell-session-integration/SKILL.md), [terminal-ui-design](skills/terminal-ui-design/SKILL.md).
 
-### developer-tools
+### intellij-plugin-development
 
-Local command-line tools and repository work.
+Build, test, package, and diagnose IntelliJ Platform plugins.
 
-Outside this workstream: Hosted PR lifecycle, CI/CD architecture, deployment, and human-facing terminal UI design.
+Choose for IntelliJ plugin lifecycle, PSI, indexing, integrations, tests, and IDE diagnostics; add Kotlin Engineering for Kotlin-specific work.
 
-**Skills:** [cli-creator](skills/cli-creator/SKILL.md), [cli-data-pipelines](skills/cli-data-pipelines/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [shell-session-integration](skills/shell-session-integration/SKILL.md).
-
-**Hooks:** [repository-profile](hooks/repository-profile.hook.json).
-
-### effective-delivery
-
-Hosted delivery from issue to verified pull request and release evidence.
-
-Outside this workstream: Local shell or Git mechanics, application design, and unrequested merge or deployment.
-
-**Skills:** [delivery-pipeline-design](skills/delivery-pipeline-design/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md).
-
-### engineering-baseline
-
-Engineering outcomes, semantic design, and verification.
-
-Outside this workstream: Language/tool-specific implementation, hosted delivery, and documentation production.
-
-**Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [tdd](skills/tdd/SKILL.md).
-
-**Hooks:** [agents-md-turn-refresh](hooks/agents-md-turn-refresh.hook.json).
-
-**Instructions:** [agent-execution](instructions/agent-execution.md), [engineering-design](instructions/engineering-design.md).
-
-### intellij-engineering
-
-IntelliJ Platform plugin behavior and lifecycle.
-
-Outside this workstream: General Kotlin design, local Git mechanics, hosted PR operations, and external semantic-tool runtime diagnosis.
+Outside this plugin: General Kotlin design and everyday Git, PR, or CI workflows.
 
 **Skills:** [ide-diagnostics-mcp](skills/ide-diagnostics-mcp/SKILL.md), [intellij-platform-integrations](skills/intellij-platform-integrations/SKILL.md), [intellij-platform-testing](skills/intellij-platform-testing/SKILL.md), [intellij-plugin-delivery](skills/intellij-plugin-delivery/SKILL.md), [intellij-psi-indexing](skills/intellij-psi-indexing/SKILL.md).
 
 ### kotlin-engineering
 
-Kotlin implementation, API design, compiler-backed review, and measured Gradle performance.
+Design, verify, review, and optimize Kotlin and Gradle changes.
 
-Outside this workstream: Hosted delivery, generic shell configuration, and IntelliJ-specific lifecycle or PSI mechanics.
+Choose for Kotlin invariants, API design, libraries, observability, review, Gradle verification, and measured build performance.
+
+Outside this plugin: Everyday Git and hosted delivery, shell integration, and IntelliJ-specific plugin mechanics.
 
 **Skills:** [gradle-performance-engineering](skills/gradle-performance-engineering/SKILL.md), [kotlin-agentic-correctness](skills/kotlin-agentic-correctness/SKILL.md), [kotlin-api-surface-design](skills/kotlin-api-surface-design/SKILL.md), [kotlin-application-stack](skills/kotlin-application-stack/SKILL.md), [kotlin-branching](skills/kotlin-branching/SKILL.md), [kotlin-design-practices](skills/kotlin-design-practices/SKILL.md), [kotlin-gradle-validation](skills/kotlin-gradle-validation/SKILL.md), [kotlin-observability-design](skills/kotlin-observability-design/SKILL.md), [kotlin-review](skills/kotlin-review/SKILL.md), [negative-capability-proof](skills/negative-capability-proof/SKILL.md).
 
@@ -87,55 +86,67 @@ Outside this workstream: Hosted delivery, generic shell configuration, and Intel
 
 **Instructions:** [kotlin-engineering](instructions/kotlin-engineering.md).
 
-### pkl-engineering
+### pkl-configuration
 
-Typed Pkl configuration and its toolchain.
+Model, validate, format, and maintain Pkl configuration and tooling.
 
-Outside this workstream: General CI/CD architecture, arbitrary shell automation, and application domain modeling.
+Choose for Pkl schemas, configuration modules, packages, evaluation, formatting, tests, and toolchain setup.
+
+Outside this plugin: General delivery pipelines, arbitrary shell automation, and application implementation.
 
 **Skills:** [pkl-engineering](skills/pkl-engineering/SKILL.md), [pkl-pattern-catalogs](skills/pkl-pattern-catalogs/SKILL.md), [pkl-specification](skills/pkl-specification/SKILL.md), [pkl-tooling-setup](skills/pkl-tooling-setup/SKILL.md).
 
 **Hooks:** [pkl-evaluate-check](hooks/pkl-evaluate-check.hook.json), [pkl-format-check](hooks/pkl-format-check.hook.json), [pkl-test-check](hooks/pkl-test-check.hook.json).
 
-### skill-read-policy
+### repository-knowledge
 
-Repository-opt-in enforcement for explicitly declared required skill reads.
+Generate and maintain code indexes, knowledge documents, and navigation maps.
 
-Outside this workstream: Default engineering, agent authoring without required reads, or global always-on policy.
+Choose when producing or refreshing repository knowledge artifacts and checking their source drift.
 
-**Hooks:** [required-skill-read](hooks/required-skill-read.hook.json).
+Outside this plugin: Routine source reading, ordinary code changes, and general documentation authoring.
 
-### terminal-ui-design
+**Skills:** [code-knowledge-base](skills/code-knowledge-base/SKILL.md), [local-repository-navigation](skills/local-repository-navigation/SKILL.md), [repository-signature-indexing](skills/repository-signature-indexing/SKILL.md).
 
-Human-facing terminal interaction.
+**Hooks:** [code-knowledge-drift](hooks/code-knowledge-drift.hook.json).
 
-Outside this workstream: Shell activation or completion, machine-readable data pipelines, and CLI protocol design.
+### technical-writing
 
-**Skills:** [terminal-ui-design](skills/terminal-ui-design/SKILL.md).
+Write and revise technical docs, proposals, runbooks, and documentation sites.
 
-### writing
+Choose for technical prose, READMEs, runbooks, ADRs, proposals, and documentation site structure.
 
-Source-grounded prose and technical documentation.
-
-Outside this workstream: Code changes, signature-index construction, OKF knowledge bundles, and ungrounded first-person claims.
+Outside this plugin: Code implementation and generated repository indexes or knowledge bundles.
 
 **Skills:** [controlled-technical-writing](skills/controlled-technical-writing/SKILL.md), [reference-doc-workflow](skills/reference-doc-workflow/SKILL.md), [site-docs-authoring](skills/site-docs-authoring/SKILL.md), [technical-documentation](skills/technical-documentation/SKILL.md).
 
+## Advanced repository policy
+
+### skill-read-policy
+
+Advanced: enforce repository-declared required skill reads.
+
+Opt in only when a repository explicitly requires skill-read policy enforcement.
+
+Outside this plugin: Everyday engineering, default setup, and general skill discovery.
+
+**Hooks:** [required-skill-read](hooks/required-skill-read.hook.json).
+
 ## Profiles
 
-- [agent-authoring-default](profiles/agent-authoring-default.json): engineering-baseline + agent-platform-authoring. 467 instruction words.
+- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + agent-tooling. 467 instruction words.
 
-- [documentation-default](profiles/documentation-default.json): engineering-baseline + writing. 467 instruction words.
+- [documentation-default](profiles/documentation-default.json): technical-writing. 0 instruction words.
 
-- [intellij-plugin-default](profiles/intellij-plugin-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + intellij-engineering. 603 instruction words.
+- [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 603 instruction words.
 
-- [kotlin-repo-default](profiles/kotlin-repo-default.json): engineering-baseline + kotlin-engineering + developer-tools + effective-delivery + code-knowledge-base. 603 instruction words.
+- [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 603 instruction words.
 
-- [local-development-default](profiles/local-development-default.json): engineering-baseline + developer-tools. 467 instruction words.
+- [local-development-default](profiles/local-development-default.json): software-engineering. 467 instruction words.
 
 ## Standalone skills
 
-These optional specialties are outside the default workstreams. They remain independently installable.
+Advanced alternatives outside the plugin chooser. They require explicit standalone setup; normal plugin selection does not depend on installing individual skills.
 
 [agents-sdk](skills/agents-sdk/SKILL.md), [frontend-design](skills/frontend-design/SKILL.md), [grill-me-with-docs](skills/grill-me-with-docs/SKILL.md), [migrate-to-codex](skills/migrate-to-codex/SKILL.md), [react-best-practices](skills/react-best-practices/SKILL.md), [refactor](skills/refactor/SKILL.md), [stripe-best-practices](skills/stripe-best-practices/SKILL.md), [web-artifacts-builder](skills/web-artifacts-builder/SKILL.md), [workflow](skills/workflow/SKILL.md).
 

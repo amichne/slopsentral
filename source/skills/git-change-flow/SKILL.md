@@ -1,6 +1,6 @@
 ---
 name: "git-change-flow"
-description: "Use when local Git work needs status inspection, user-work protection, safe branching, diff review, staging, commits, recovery, publication prep, or a defined or linked deliverable requires pull-request delivery."
+description: "Use when local Git work needs status inspection, user-work protection, safe branching, diff review, staging, commits, or recovery. Use pull-request-lifecycle for a requested push, pull request, or hosted delivery."
 ---
 
 # Git Change Flow
@@ -17,7 +17,7 @@ useful in any Git repository.
   overwrite, amend, rebase, or stash them without applicable authorization for those changes.
 - Branch before risky or publishable work when currently on a shared/default
   branch.
-- A task, ticket, subtask, or direct message that defines a deliverable or links a file containing the deliverable is a publication request: use pull-request-lifecycle to raise or update the pull request and follow its latest head until green.
+- A task description, ticket, or linked deliverable supplies context, not publication authority. Use pull-request-lifecycle when the requested end state includes a push or pull request, or an applicable repository policy establishes that workflow. Honor explicit local-only scope.
 - Keep commits intentional: focused diff, clear message, validation evidence,
   and generated files only when they are part of the contract.
 - Avoid destructive commands unless the user explicitly asked for that exact
@@ -29,8 +29,8 @@ useful in any Git repository.
 
 1. Orient.
    Check branch, remote, upstream, dirty files, ignored generated outputs, and
-   whether the user asked for a commit, push, PR, only local edits, or supplied
-   a deliverable that makes pull-request delivery implicit.
+   whether the requested end state is local edits, a commit, a push, or a PR.
+   Keep local implementation local unless applicable authorization includes publication.
 
 2. Isolate the work.
    Create or reuse an appropriate branch. Keep unrelated dirty files out of the

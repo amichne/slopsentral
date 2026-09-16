@@ -12,3 +12,9 @@ verification, and reference-driven detail. Removed assumptions: named host agent
 automatic installation or trust, universal vendor preferences, fixed branching
 rules, and unsupported speed claims. Verify tool-version details with official
 documentation before changing commands.
+
+Reviewed 2026-09-16: [OpenAI best practices](https://learn.chatgpt.com/guides/best-practices)
+and [iterating development workflows](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex).
+Applied through original wording: task-specific scope, relevant verification,
+and separation of local work from authorized publication. A linked deliverable
+supplies context; publication follows the requested end state or repository policy.

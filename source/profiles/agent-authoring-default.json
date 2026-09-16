@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "agent-authoring-default",
-  "description": "Agent primitive authoring with explicit schema-read advice and source-graph validation.",
+  "description": "Reusable agent tooling with everyday engineering checks and source-graph validation.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -14,8 +14,8 @@
     }
   ],
   "plugins": [
-    "engineering-baseline",
-    "agent-platform-authoring"
+    "software-engineering",
+    "agent-tooling"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

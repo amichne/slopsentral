@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://slopsentral.dev/schemas/effective-delivery/issue-backend-result.schema.json",
+  "$id": "https://slopsentral.dev/schemas/issue-tracker-operations/issue-backend-result.schema.json",
   "title": "Issue backend result",
-  "description": "Canonical result envelope for Effective Delivery issue backend reads.",
+  "description": "Canonical result envelope for Software Engineering issue backend reads.",
   "type": "object",
   "additionalProperties": false,
   "required": [

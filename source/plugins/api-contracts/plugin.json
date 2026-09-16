@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "api-contracts",
-  "version": "1.0.0",
-  "description": "Machine-readable boundary contracts.",
+  "version": "1.0.1",
+  "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -81,11 +81,11 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for jSON Schema and OpenAPI modeling, authoring, compatibility, examples, and contract review.",
-    "notFor": "Application implementation, source knowledge indexing, and general technical prose.",
-    "owner": "api-contract-platform",
-    "role": "api-contracts",
-    "scope": "JSON Schema and OpenAPI modeling, authoring, compatibility, examples, and contract review.",
+    "dailyDriver": "Choose for OpenAPI and JSON Schema models, operations, examples, compatibility, and contract review.",
+    "notFor": "Application implementation, repository indexes, and general technical prose.",
+    "owner": "api-contracts",
+    "role": "specialty",
+    "scope": "Author and review OpenAPI specifications and JSON Schema contracts.",
     "workstream": "api-contracts"
   }
 }

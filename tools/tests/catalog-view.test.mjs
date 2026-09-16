@@ -18,7 +18,7 @@ test('a profile includes exactly its selected plugins and rejects unknown profil
   const profile = catalog.profiles.find(p => p.name === 'documentation-default');
   const report = catalogReport(catalog, profile.name);
   assert.deepEqual(report.plugins.map(p => p.name).sort(), [...profile.plugins].sort());
-  assert.ok(!report.plugins.some(p => p.name === 'effective-delivery'));
+  assert.ok(!report.plugins.some(p => p.name === 'software-engineering'));
   assert.throws(() => catalogReport(catalog, 'unknown-profile'), /unknown profile/);
 });
 
@@ -70,7 +70,7 @@ test('canonical dependencies are traversed even when the plugin reference omits 
 });
 
 test('a repeated dependency identity cannot hide a conflicting source location', () => {
-  const plugin = catalog.plugins.find(p => p.name === 'developer-tools');
+  const plugin = catalog.plugins.find(p => p.name === 'software-engineering');
   const ref = plugin.skills[0];
   const closure = pluginClosure(catalog, { ...plugin, skills: [ref, { ...ref, path: 'skills/not-canonical' }] });
   assert.ok(closure.findings.some(f => /conflicting dependency locations/.test(f)));
@@ -86,8 +86,8 @@ test('catalog reports distinguish all-plugin and profile selections', () => {
 });
 
 test('a repeated identity cannot hide additional dependency edges', () => {
-  const plugin = catalog.plugins.find(p => p.name === 'developer-tools');
-  const repeated = plugin.skills.find(ref => ref.name === 'cli-creator');
+  const plugin = catalog.plugins.find(p => p.name === 'software-engineering');
+  const repeated = plugin.skills.find(ref => ref.name === 'cli-data-pipelines');
   const foreign = catalog.marketplace.skills.find(ref => ref.name === 'manage-json-schemas');
   const modified = { ...catalog, plugins: catalog.plugins.map(p => p !== plugin ? p : {
     ...p, skills: [repeated, ...p.skills.filter(ref => ref !== repeated).map(ref => ref.name !== 'mise-project-tooling' ? ref : {

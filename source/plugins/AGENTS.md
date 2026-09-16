@@ -16,9 +16,11 @@ This file applies to `source/plugins/`.
   empty when Codex must receive that concept as `SessionStart` context.
 - Do not copy primitive payloads, generated provider output, runtime caches, or
   installed plugin bundles into plugin directories.
-- Keep routing metadata such as `role`, `scope`, `dailyDriver`, and `notFor`
-  specific enough to distinguish the plugin from neighboring capability
-  families.
+- Set `metadata.role` to `default`, `specialty`, or `advanced`; the catalog
+  requires exactly one default. Keep `scope`, `dailyDriver`, and `notFor`
+  specific enough to explain the task that makes this plugin useful.
+- Package recognizable user jobs. Preserve focused skills inside each plugin;
+  installing a bundle does not require every skill to run.
 
 ## Verify
 

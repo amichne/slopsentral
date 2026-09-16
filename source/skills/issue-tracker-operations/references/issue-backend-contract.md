@@ -77,7 +77,7 @@ prerequisite gate passes.
 | JIR-001 | Jira work item reads MUST execute through Atlassian `acli`. | The command evidence names `acli`. | IT | G1 |
 | JIR-002 | Jira reads MUST use the `jira workitem` command family. | View and link-list tests preserve the command path. | IT | JIR-001 |
 | JIR-003 | The facade MUST NOT invoke the legacy `jira` executable. | Provider doubles expose only `acli` and `gh`. | INS, CT | JIR-001 |
-| JIR-004 | The facade MUST NOT wrap `jira-resolve-ticket`. | Effective Delivery composes this independent primitive. | INS | JIR-003 |
+| JIR-004 | The facade MUST NOT wrap `jira-resolve-ticket`. | Software Engineering composes this independent primitive. | INS | JIR-003 |
 
 The GitHub dependency endpoints are defined by the
 [GitHub issue dependency API](https://docs.github.com/en/rest/issues/issue-dependencies?apiVersion=2026-03-10).
@@ -140,7 +140,7 @@ remains the validation authority.
 | `python3 -m unittest discover -s source/skills/issue-tracker-operations/scripts/tests -p 'test_*.py'` | CFG-001 through CFG-005, CAP-001, GH-001 through GH-003, JIR-001 through JIR-003, DEP-001 through DEP-006, OUT-001 through OUT-005, FLR-001, FLR-002, MUT-001, MUT-002, NGL-002 through NGL-004 |
 | `node source/skills/manage-json-schemas/scripts/schema-contracts.js policy --schema source/skills/issue-tracker-operations/references/issue-backend-result.schema.json` | OUT-001, OUT-002 |
 | `schema-contracts.js validate` against each file under `references/examples` | OUT-001 through OUT-005, FLR-001, FLR-002 |
-| `node --test tools/tests/effective-delivery-plugin.test.mjs` | JIR-004, CAP-002 |
+| `node --test tools/tests/software-engineering-plugin.test.mjs` | JIR-004, CAP-002 |
 | `node tools/validate-source-graph.mjs` | CTL-003, JIR-004 |
 | `git diff --check` | CTL-003 |
 
@@ -148,7 +148,7 @@ remains the validation authority.
 
 | Phase | Required evidence |
 |---|---|
-| `BASELINE` | Existing Effective Delivery tests and source-graph checks pass. |
+| `BASELINE` | Existing Software Engineering tests and source-graph checks pass. |
 | `RED` | Facade tests fail because the executable and plugin composition are absent. |
 | `GREEN` | The same tests pass with the new facade and composed primitive. |
 

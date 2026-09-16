@@ -23,7 +23,7 @@ function rejects(t, mutate, expected) {
 }
 
 test('rejects duplicate instruction ownership across plugins', t => {
-  rejects(t, edit => edit('source/plugins/writing/plugin.json', plugin => {
+  rejects(t, edit => edit('source/plugins/technical-writing/plugin.json', plugin => {
     plugin.instructions.push({ type: 'INSTRUCTION', name: 'engineering-design', path: 'instructions/engineering-design.md', source: { type: 'LOCAL_SOURCE', path: './' } });
   }), /instruction engineering-design.*multiple plugin owners/i);
 });
@@ -42,7 +42,19 @@ test('rejects hidden cross-plugin ownership through a hook dependency', t => {
 
 test('rejects payload copies under a composition-only plugin', t => {
   rejects(t, (_edit, fixture) => {
-    const file = path.join(fixture, 'source/plugins/writing/SKILL.md');
+    const file = path.join(fixture, 'source/plugins/technical-writing/SKILL.md');
     fs.writeFileSync(file, '# Competing payload\n');
   }, /composition-only/i);
+});
+
+test('rejects an unknown chooser role instead of hiding a plugin', t => {
+  rejects(t, edit => edit('source/plugins/technical-writing/plugin.json', plugin => {
+    plugin.metadata.role = 'miscellaneous';
+  }), /metadata.role must be default, specialty, or advanced/);
+});
+
+test('rejects competing default choices', t => {
+  rejects(t, edit => edit('source/plugins/technical-writing/plugin.json', plugin => {
+    plugin.metadata.role = 'default';
+  }), /exactly one default plugin/);
 });

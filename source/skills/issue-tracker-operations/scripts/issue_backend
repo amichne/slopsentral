@@ -21,7 +21,7 @@ from issue_backend_types import (
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="issue_backend",
-        description="Read issue data through the configured Effective Delivery backend.",
+        description="Read issue data through the configured issue backend.",
     )
     parser.add_argument(
         "--backend",

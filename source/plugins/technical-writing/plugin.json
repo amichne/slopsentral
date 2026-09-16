@@ -1,9 +1,9 @@
 {
   "type": "PLUGIN",
   "schemaVersion": 1,
-  "name": "writing",
+  "name": "technical-writing",
   "version": "1.0.0",
-  "description": "Source-grounded prose and technical documentation.",
+  "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -52,10 +52,11 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for prose, terminology, READMEs, decisions, runbooks, generated-reference workflows, and documentation site structure.",
-    "notFor": "Code changes, signature-index construction, OKF knowledge bundles, and ungrounded first-person claims.",
-    "role": "writing",
-    "scope": "Prose, terminology, READMEs, decisions, runbooks, generated-reference workflows, and documentation site structure.",
-    "workstream": "writing"
+    "dailyDriver": "Choose for technical prose, READMEs, runbooks, ADRs, proposals, and documentation site structure.",
+    "notFor": "Code implementation and generated repository indexes or knowledge bundles.",
+    "role": "specialty",
+    "scope": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
+    "workstream": "technical-writing",
+    "owner": "technical-writing"
   }
 }

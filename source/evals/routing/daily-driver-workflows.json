@@ -60,7 +60,7 @@
       "prompt": "Refine marketplace skills, plugins, hooks, and evals so the team can share productive agent workflows.",
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-platform-authoring"
+        "name": "agent-tooling"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -97,7 +97,7 @@
         "evidenceRefs": [
           "source/skills/tdd/SKILL.md",
           "source/skills/tdd/references/executable-check-contract.md",
-          "source/plugins/engineering-baseline/plugin.json"
+          "source/plugins/software-engineering/plugin.json"
         ]
       },
       "prompt": "Add a repository policy that rejects duplicate manifest names. There is no project test framework, so test-drive the change with the narrowest shell-invokable check. Do not commit or open a pull request.",
@@ -110,18 +110,18 @@
         "summary": "A test-first request without a conventional test runner can skip TDD or route to Git and CI merely because the proof is a shell command.",
         "risk": "The implementation changes before a meaningful failure is observed, or an infrastructure failure is mislabeled as RED and provides false regression evidence.",
         "loadedPrimitives": [
-          "developer-tools"
+          "software-engineering"
         ]
       },
       "allowedActions": [
         "Declare one check specification with working directory, exact command, controlled inputs, expected RED failure, and GREEN criterion.",
         "Observe the focused check fail for the intended missing behavior, then pass the same check specification after the narrow implementation.",
-        "Use the standalone tdd primitive from engineering-baseline without loading Git or CI delivery workflows that were not requested."
+        "Use the standalone tdd primitive from software-engineering without loading Git or CI delivery workflows that were not requested."
       ],
       "forbiddenActions": [
         "Count command-not-found, dependency setup, malformed check syntax, timeout, permission, or unrelated failures as RED.",
         "Change the implementation before observing an intended focused failure.",
-        "Load developer-tools only because the TDD oracle is invoked from a shell."
+        "Load software-engineering only because the TDD oracle is invoked from a shell."
       ],
       "recoveryExpectation": "If the check cannot run or fails for infrastructure reasons, repair or isolate the harness first, then rerun the stable check specification before editing the implementation.",
       "productiveOutcome": "Any repository behavior with a shell-invokable oracle can use honest red-green-refactor evidence without acquiring Git or CI ownership.",
@@ -183,10 +183,10 @@
           "source/skills/issue-tracker-operations/SKILL.md",
           "source/skills/issue-tracker-operations/references/issue-backend-contract.md",
           "source/skills/issue-tracker-operations/scripts/issue_backend",
-          "source/plugins/effective-delivery/plugin.json"
+          "source/plugins/software-engineering/plugin.json"
         ]
       },
-      "prompt": "Use Effective Delivery to inspect the configured issue backend and show the direct blockers for item 42. Jira must use Atlassian acli. Do not change any issue or infer dependencies from body text.",
+      "prompt": "Use Software Engineering to inspect the configured issue backend and show the direct blockers for item 42. Jira must use Atlassian acli. Do not change any issue or infer dependencies from body text.",
       "expectedPrimitive": {
         "type": "SKILL",
         "name": "issue-tracker-operations"
@@ -490,7 +490,7 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
-          "source/plugins/agent-platform-authoring/plugin.json",
+          "source/plugins/agent-tooling/plugin.json",
           "source/schemas/evals/routing-cases.schema.json",
           "tools/validate-source-graph.mjs"
         ]
@@ -498,7 +498,7 @@
       "prompt": "Decide whether the new workflow additions are production-ready and safe to share with the team.",
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-platform-authoring"
+        "name": "agent-tooling"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

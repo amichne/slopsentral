@@ -8,6 +8,11 @@ and unnecessary pauses before drawing conclusions about behavior or token use.
 
 | Prompt | Primary skill | Required behavior | Failure to reject |
 | --- | --- | --- | --- |
+| Fix this bug and leave the change local. | git-change-flow | Use Software Engineering, preserve local scope, run the relevant check. | Load PR lifecycle or publish merely because a deliverable exists. |
+| Push this validated branch, open a PR, and follow its checks. | pull-request-lifecycle | Use the same Software Engineering installation and follow the authorized publication workflow. | Require a second delivery plugin or ask again for already-authorized publication. |
+| Run a local RED/GREEN loop for this regression. | tdd | Record executable evidence without requiring a remote. | Push a failing checkpoint without applicable publication authority. |
+| Build a JSON-output CLI for this API. | cli-creator | Use CLI Development for the command contract and machine-facing outputs. | Confuse everyday shell use with CLI product design. |
+| Create repository navigation maps from these source directories. | local-repository-navigation | Use the optional Repository Knowledge plugin and preserve authored instructions. | Generate knowledge artifacts merely because this is a Kotlin repository. |
 | Flatten this Kotlin decision without changing effects. | kotlin-branching | Check language support, cover remaining guarded cases, preserve evaluation order. | Add `else` to silence a closed-domain compile error. |
 | Decide whether this operation belongs on the receiver or a service. | kotlin-api-surface-design | Inspect real callers and choose a semantic owner. | Create a generic helper solely for fluent syntax. |
 | Replace these request flags with a constrained domain model. | kotlin-design-practices | Name the invariant and eliminate invalid combinations at ingress. | Treat branch formatting as domain modeling. |

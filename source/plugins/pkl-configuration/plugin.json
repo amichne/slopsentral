@@ -1,9 +1,9 @@
 {
   "type": "PLUGIN",
   "schemaVersion": 1,
-  "name": "pkl-engineering",
+  "name": "pkl-configuration",
   "version": "1.0.0",
-  "description": "Typed Pkl configuration and its toolchain.",
+  "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -80,11 +80,11 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for pkl specification, patterns, evaluation, tests, packages, and tooling.",
-    "notFor": "General CI/CD architecture, arbitrary shell automation, and application domain modeling.",
-    "owner": "pkl-engineering",
-    "role": "pkl-engineering",
-    "scope": "Pkl specification, patterns, evaluation, tests, packages, and tooling.",
-    "workstream": "pkl-engineering"
+    "dailyDriver": "Choose for Pkl schemas, configuration modules, packages, evaluation, formatting, tests, and toolchain setup.",
+    "notFor": "General delivery pipelines, arbitrary shell automation, and application implementation.",
+    "owner": "pkl-configuration",
+    "role": "specialty",
+    "scope": "Model, validate, format, and maintain Pkl configuration and tooling.",
+    "workstream": "pkl-configuration"
   }
 }

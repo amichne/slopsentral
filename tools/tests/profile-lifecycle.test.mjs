@@ -25,19 +25,17 @@ const home = process.env.CODEX_HOME;
 const statePath = path.join(home, "fake-codex-state.json");
 const callsPath = path.join(path.dirname(home), "fake-codex-calls.jsonl");
 const plugins = ${JSON.stringify([
-    "agent-platform-authoring",
-    "api-contracts",
-    "code-knowledge-base",
-    "developer-tools",
-    "effective-delivery",
-    "engineering-baseline",
-    "intellij-engineering",
-    "kotlin-engineering",
-    "pkl-engineering",
-    "skill-read-policy",
-    "terminal-ui-design",
-    "writing",
-  ])};
+  "agent-tooling",
+  "api-contracts",
+  "cli-development",
+  "intellij-plugin-development",
+  "kotlin-engineering",
+  "pkl-configuration",
+  "repository-knowledge",
+  "skill-read-policy",
+  "software-engineering",
+  "technical-writing"
+])};
 const readState = () => fs.existsSync(statePath)
   ? JSON.parse(fs.readFileSync(statePath, "utf8"))
   : { marketplace: false, installed: [] };
@@ -191,12 +189,10 @@ test("plan and apply reconcile the marketplace and selected plugins", (t) => {
   assert.deepEqual(planned.output.operations.map(({ type }) => type), [
     "MARKETPLACE_ADD_PLANNED",
     "PLUGIN_INSTALL_PLANNED",
-    "PLUGIN_INSTALL_PLANNED",
     "FILE_CREATE_PLANNED",
   ]);
-  assert.deepEqual(planned.output.operations.slice(1, 3).map(({ pluginId }) => pluginId), [
-    "developer-tools@slopsentral",
-    "engineering-baseline@slopsentral",
+  assert.deepEqual(planned.output.operations.slice(1, 2).map(({ pluginId }) => pluginId), [
+    "software-engineering@slopsentral",
   ]);
   assert.deepEqual(codexCalls(context), [
     ["--version"],
@@ -211,14 +207,14 @@ test("plan and apply reconcile the marketplace and selected plugins", (t) => {
   assert.deepEqual(applied.output.hookReview.hooks, ["agents-md-turn-refresh", "repository-profile"]);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(context.codexHome, "fake-codex-state.json"), "utf8")), {
     marketplace: true,
-    installed: ["developer-tools", "engineering-baseline"],
+    installed: ["software-engineering"],
   });
   const generated = fs.readFileSync(
     path.join(context.codexHome, "local-development-default.config.toml"),
     "utf8",
   );
-  assert.match(generated, /\[plugins\."developer-tools@slopsentral"\]\nenabled = true/);
-  assert.match(generated, /\[plugins\."pkl-engineering@slopsentral"\]\nenabled = false/);
+  assert.match(generated, /\[plugins\."software-engineering@slopsentral"\]\nenabled = true/);
+  assert.match(generated, /\[plugins\."pkl-configuration@slopsentral"\]\nenabled = false/);
 });
 
 test("profile operations fail closed on unsupported Codex versions", (t) => {
@@ -239,13 +235,13 @@ test("profile operations fail closed on unsupported Codex versions", (t) => {
 test("installed inventory is scoped to Slopsentral and preserves structured observation evidence", (t) => {
   const context = fixture(t);
   fs.writeFileSync(path.join(context.codexHome, "fake-codex-state.json"), JSON.stringify({
-    marketplace: true, installed: ["engineering-baseline", "developer-tools"],
+    marketplace: true, installed: ["software-engineering"],
   }));
   const planned = run(context, "plan", "--profile", "local-development-default");
   assert.equal(planned.status, 0, diagnostic(planned));
   assert.deepEqual(codexCalls(context).at(-1), ["plugin", "list", "--marketplace", "slopsentral", "--json"]);
   assert.deepEqual(planned.output.inventoryObservation, {
-    type: "PLUGIN_INVENTORY_OBSERVED", stage: "PLUGIN_INVENTORY", marketplaceName: "slopsentral", installedCount: 2,
+    type: "PLUGIN_INVENTORY_OBSERVED", stage: "PLUGIN_INVENTORY", marketplaceName: "slopsentral", installedCount: 1,
   });
 });
 
@@ -347,7 +343,7 @@ test("apply reports repaired external drift even when the overlay is unchanged",
   assert.equal(first.status, 0, diagnostic(first));
   const statePath = path.join(context.codexHome, "fake-codex-state.json");
   const state = JSON.parse(fs.readFileSync(statePath, "utf8"));
-  state.installed = state.installed.filter((name) => name !== "developer-tools");
+  state.installed = state.installed.filter((name) => name !== "software-engineering");
   fs.writeFileSync(statePath, JSON.stringify(state));
 
   const repaired = run(context, "apply", "--profile", "local-development-default");
@@ -359,7 +355,7 @@ test("apply reports repaired external drift even when the overlay is unchanged",
     "PLUGIN_INSTALL_PLANNED",
     "FILE_UNCHANGED",
   ]);
-  assert.ok(JSON.parse(fs.readFileSync(statePath, "utf8")).installed.includes("developer-tools"));
+  assert.ok(JSON.parse(fs.readFileSync(statePath, "utf8")).installed.includes("software-engineering"));
 });
 
 test("Codex-owned hook trust remains stable across status and apply", (t) => {

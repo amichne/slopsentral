@@ -1,6 +1,6 @@
 # Catalog Architecture
 
-A workstream owns one outcome family. Its plugin composes canonical primitives;
+A plugin packages a recognizable job and composes canonical primitives;
 a profile selects several plugins for a broader workflow. Every installed
 primitive has one plugin owner, including dependencies introduced by hooks.
 
@@ -17,6 +17,20 @@ primitive has one plugin owner, including dependencies introduced by hooks.
 | Profile | Selection of plugin owners | Duplicated primitives or a second implementation |
 | Evaluation | A test contract or an observed result, labeled distinctly | An invented behavioral measurement |
 
+## Selection
+
+Software Engineering is the single code-work default. Add language, platform,
+or output specialties as needed; writing-only work can select Technical Writing
+alone. Repository Knowledge generates maintained artifacts and is optional.
+Plugin installation makes skills available; task intent selects procedures.
+A skill or ticket cannot manufacture publication authority.
+
+Manifest `metadata.role` is one of `default`, `specialty`, or `advanced`.
+The catalog validator rejects unknown roles and requires exactly one default.
+The generated chooser groups by this field. The provider projector derives its
+plugin display name from the plugin ID and description from the manifest;
+advanced-policy wording therefore remains explicit in the projected description.
+
 ## Routing
 
 Select the narrowest skill whose output matches the request. A pure prose edit
@@ -30,8 +44,9 @@ platform ownership uses kotlin-api-surface-design. Branch shape uses
 kotlin-branching. Build evidence uses kotlin-gradle-validation. Do not load all
 Kotlin references merely because a file ends in `.kt`.
 
-Local Git, CLI pipelines, shell integration, and mise belong to developer-tools.
-Hosted issues, PRs, Actions, and pipeline architecture belong to effective-delivery.
+Software Engineering packages everyday design, tests, local Git, shell safety,
+CLI data queries, mise, hosted issues, PRs, Actions, and delivery pipeline design.
+CLI Development packages CLI authoring, shell integration, and terminal UI design.
 A pipeline design establishes stage and artifact boundaries; github-ci-operations
 implements and diagnoses the GitHub-specific workflow.
 
@@ -58,7 +73,7 @@ Astra runs. New behavioral scenarios are explicitly unobserved until executed.
 ## Model Guidance
 
 The Astra adaptation is in `instructions/agent-execution.md`, installed once by
-engineering-baseline. It addresses follow-through, genuine approval boundaries,
+software-engineering. It addresses follow-through, genuine approval boundaries,
 skill precedence, bounded delegation, proportionate verification, and direct prose.
 It changes task guidance, not the host's policy or the user's authority.
 

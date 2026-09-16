@@ -26,7 +26,7 @@ const args = process.argv.slice(2);
 fs.appendFileSync(path.join(process.env.CODEX_HOME, "calls.jsonl"), JSON.stringify(args) + "\\n");
 if (args.join(" ") === "--version") console.log("codex-cli 0.154.0");
 else if (args.join(" ") === "plugin marketplace list --json") console.log(JSON.stringify({marketplaces: [{name: "slopsentral", marketplaceSource: {source: "https://github.com/amichne/slopsentral.git"}}]}));
-else if (args.join(" ") === "plugin list --marketplace slopsentral --json") console.log(JSON.stringify({installed: ["engineering-baseline", "kotlin-engineering", "developer-tools", "effective-delivery", "code-knowledge-base"].map(name => ({name, marketplaceName: "slopsentral", installed: true}))}));
+else if (args.join(" ") === "plugin list --marketplace slopsentral --json") console.log(JSON.stringify({installed: ["software-engineering", "kotlin-engineering"].map(name => ({name, marketplaceName: "slopsentral", installed: true}))}));
 else console.log(JSON.stringify({args, cwd: process.cwd(), configured: fs.existsSync(path.join(process.cwd(), ".codex/config.toml"))}));
 `, { mode: 0o755 });
   const initialized = spawnSync("git", ["init", "--quiet", repo], { encoding: "utf8" });
@@ -49,7 +49,7 @@ function run(context, action, options = {}) {
   return { ...result, output: result.stdout.trim() ? JSON.parse(result.stdout) : undefined };
 }
 
-test("context plan selects Kotlin and knowledge tooling only from the repository root anchor", (t) => {
+test("context plan selects Kotlin and everyday engineering only from the repository root anchor", (t) => {
   const context = fixture(t);
   const nested = path.join(context.repo, "build-logic");
   fs.mkdirSync(nested);
@@ -64,8 +64,7 @@ test("context plan selects Kotlin and knowledge tooling only from the repository
   assert.equal(matched.output.selection.profileName, "kotlin-repo-default");
   assert.equal(matched.output.selection.repositoryRoot, fs.realpathSync(context.repo));
   assert.deepEqual(matched.output.selection.plugins, [
-    "engineering-baseline", "kotlin-engineering", "developer-tools",
-    "effective-delivery", "code-knowledge-base",
+    "software-engineering", "kotlin-engineering",
   ]);
   assert.equal(fs.existsSync(path.join(context.repo, ".codex")), false);
   assert.deepEqual(fs.readdirSync(context.codexHome), []);
@@ -84,7 +83,7 @@ test("context apply adds the selected tooling while preserving user configuratio
   const after = fs.readFileSync(target, "utf8");
   assert.ok(after.startsWith(original));
   assert.match(after, /\[plugins\."kotlin-engineering@slopsentral"\]\nenabled = true/u);
-  assert.match(after, /\[plugins\."code-knowledge-base@slopsentral"\]\nenabled = true/u);
+  assert.match(after, /\[plugins\."software-engineering@slopsentral"\]\nenabled = true/u);
   assert.doesNotMatch(after, /enabled = false/u);
   assert.equal(fs.statSync(target).mode & 0o777, 0o640);
   const manifest = JSON.parse(fs.readFileSync(first.output.transaction.manifestPath, "utf8"));

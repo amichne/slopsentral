@@ -100,8 +100,8 @@ Workflow profile schema version 2 owns these policies:
 }
 ```
 
-The rule selects Engineering Baseline, Kotlin Engineering, Developer Tools,
-Effective Delivery, and Code Knowledge Base. The profile remains the owner of
+The rule selects Software Engineering and Kotlin Engineering. Repository
+Knowledge is an optional addition. The profile remains the owner of
 that plugin list; hooks do not duplicate it. Automatic rules select plugins;
 profiles with standalone skill overrides use the explicit named-profile commands.
 
@@ -150,7 +150,7 @@ would change the context that was proven. In nonmatching repositories it launche
 Codex with the existing configuration.
 
 For desktop sessions, install the Slopsentral CLI above, update the Slopsentral
-marketplace, and install or update `developer-tools@slopsentral`. Review its
+marketplace, and install or update `software-engineering@slopsentral`. Review its
 `repository-profile` hook through Codex's normal `/hooks` interface. The adapter
 runs at startup and resume and delegates to `slopsentral context hook`. Codex
 loads configuration before `SessionStart`, so changes made at that point are
