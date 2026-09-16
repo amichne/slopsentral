@@ -5,10 +5,6 @@
 .AppleDouble
 .LSOverride
 
-# Harness projections are published on dedicated branches.
-/.agents/plugins/
-/.github/plugin/
-
 ### Python cache and test artifacts
 __pycache__/
 *.py[cod]

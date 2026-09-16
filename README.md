@@ -107,8 +107,8 @@ npm uninstall --global slopsentral
   source evidence, not generated marketplace output.
 - Keep source-graph schemas under `source/schemas/` and reusable validation
   utilities under `tools/`.
-- Keep generated provider output off the source branch; consume it from the
-  dedicated harness branches below.
+- Regenerate provider output with projeKtor from authored source. Both
+  marketplaces are published on `main` and the dedicated harness branches.
 - Prefer this repository over installed plugin caches such as
   `~/.codex/plugins/cache`.
 - Do not re-own first-party or system skills here. Reference upstream
@@ -118,12 +118,15 @@ npm uninstall --global slopsentral
 
 | Harness | Branch | Marketplace entrypoint |
 |---|---|---|
-| Codex | [`harness/codex`](https://github.com/amichne/slopsentral/tree/harness/codex) | `.agents/plugins/marketplace.json` |
-| GitHub Copilot | [`harness/github-copilot`](https://github.com/amichne/slopsentral/tree/harness/github-copilot) | `.github/plugin/marketplace.json` |
+| Codex | `main` and [`harness/codex`](https://github.com/amichne/slopsentral/tree/harness/codex) | `.agents/plugins/marketplace.json` |
+| GitHub Copilot | `main` and [`harness/github-copilot`](https://github.com/amichne/slopsentral/tree/harness/github-copilot) | `.github/plugin/marketplace.json` |
 
 The `Publish Harnesses` workflow projects validated source with projeKtor and
-replaces only the matching output branch. Each artifact commit records the
-canonical `main` commit it was generated from.
+publishes each dedicated output branch, then commits both generated trees to
+`main` together. Authored files are preserved. Each publication commit records
+the source commit in a `Source-Commit` trailer. Stale runs skip publication;
+normal fast-forward pushes prevent overwriting concurrent source changes.
+Generated-only pushes do not trigger another publication run.
 
 ## Standalone Skills
 

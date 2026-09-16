@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '.agents/plugins/**'
+      - '.github/plugin/**'
   workflow_dispatch:
 
 permissions:
@@ -53,7 +56,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: main
+          ref: ${{ github.sha }}
 
       - name: Project ${{ matrix.harness }} marketplace
         id: projection
@@ -74,3 +77,48 @@ jobs:
             "${TARGET_BRANCH}" \
             main \
             "${GITHUB_SHA}"
+
+      - name: Archive projection with executable permissions
+        env:
+          PROJECTION_PATH: ${{ steps.projection.outputs.projection-path }}
+          HARNESS: ${{ matrix.harness }}
+        run: tar -cf "$RUNNER_TEMP/marketplace-$HARNESS.tar" -C "$PROJECTION_PATH" .
+
+      - name: Upload projection for main
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketplace-${{ matrix.harness }}
+          path: ${{ runner.temp }}/marketplace-${{ matrix.harness }}.tar
+          if-no-files-found: error
+          retention-days: 1
+
+  publish-main:
+    name: Publish both marketplaces to main
+    needs: publish
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+
+      - name: Download this run's projections
+        uses: actions/download-artifact@v4
+        with:
+          pattern: marketplace-*
+          path: ${{ runner.temp }}/marketplace-archives
+          merge-multiple: true
+
+      - name: Extract both projections
+        run: |
+          mkdir -p "$RUNNER_TEMP/marketplaces"
+          tar -xf "$RUNNER_TEMP/marketplace-archives/marketplace-codex.tar" -C "$RUNNER_TEMP/marketplaces"
+          tar -xf "$RUNNER_TEMP/marketplace-archives/marketplace-github-copilot.tar" -C "$RUNNER_TEMP/marketplaces"
+
+      - name: Publish generated trees to main
+        env:
+          PROJECTION_PATH: ${{ runner.temp }}/marketplaces
+        run: .github/scripts/publish-marketplaces-main "$PROJECTION_PATH" "$GITHUB_SHA"

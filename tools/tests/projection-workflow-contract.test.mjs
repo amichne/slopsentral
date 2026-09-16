@@ -37,9 +37,13 @@ test("publication maps each projection to its dedicated harness branch", () => {
   assert.doesNotMatch(publicationWorkflow, /git push origin "HEAD:\$\{GITHUB_REF_NAME\}"/);
 });
 
-test("the source branch contains no generated harness payloads", () => {
-  assert.equal(fs.existsSync(path.join(repoRoot, ".agents/plugins")), false);
-  assert.equal(fs.existsSync(path.join(repoRoot, ".github/plugin")), false);
+test("main publication joins both projections without triggering itself", () => {
+  assert.match(publicationWorkflow, /publish-main:[\s\S]*needs: publish/);
+  assert.match(publicationWorkflow, /tar -cf/);
+  assert.match(publicationWorkflow, /tar -xf/);
+  assert.match(publicationWorkflow, /merge-multiple: true/);
+  assert.match(publicationWorkflow, /publish-marketplaces-main/);
+  assert.match(publicationWorkflow, /paths-ignore:\s+- '\.agents\/plugins\/\*\*'\s+- '\.github\/plugin\/\*\*'/);
 });
 
 test("retired broker and garden surfaces are absent", () => {
