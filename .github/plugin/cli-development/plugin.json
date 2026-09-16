@@ -1,0 +1,32 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Productivity",
+  "description": "Build command-line tools, shell completions, and terminal interfaces.",
+  "keywords": [
+    "accessibility",
+    "cli",
+    "cli-development",
+    "completion",
+    "design",
+    "shell",
+    "terminal",
+    "tui",
+    "user-interface"
+  ],
+  "license": "UNLICENSED",
+  "name": "cli-development",
+  "skills": "./skills",
+  "tags": [
+    "accessibility",
+    "cli",
+    "completion",
+    "design",
+    "shell",
+    "terminal",
+    "tui",
+    "user-interface"
+  ],
+  "version": "1.0.0"
+}

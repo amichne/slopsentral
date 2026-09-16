@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "description": "Outcome-focused engineering skills, composed once into provider-neutral plugins and workflow profiles.",
+    "description": "Start with Software Engineering, then add task-specific plugins for your language, platform, or deliverable.",
     "pluginRoot": ".github/plugin"
   },
   "name": "slopsentral",
@@ -13,123 +13,83 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Engineering outcomes, semantic design, and verification.",
+      "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
       "keywords": [
+        "actions",
+        "automation",
+        "backend",
+        "ci",
+        "cli",
         "core",
         "daily-driver",
+        "dependencies",
         "design",
-        "engineering-baseline",
+        "duration",
+        "evidence",
         "failures",
+        "git",
+        "github",
         "governance",
         "hooks",
         "instructions",
+        "issues",
+        "jira",
+        "local-development",
+        "mise",
         "onboarding",
+        "optimization",
         "proof",
+        "pull-requests",
+        "release",
         "schemas",
         "semantic-design",
+        "shell",
         "skills",
+        "software-engineering",
         "tdd",
         "testing",
-        "typestate"
+        "typestate",
+        "workflow-graph"
       ],
       "license": "UNLICENSED",
-      "name": "engineering-baseline",
-      "source": "engineering-baseline",
+      "name": "software-engineering",
+      "source": "software-engineering",
       "strict": true,
       "tags": [
+        "actions",
+        "automation",
+        "backend",
+        "ci",
+        "cli",
         "core",
         "daily-driver",
+        "dependencies",
         "design",
+        "duration",
+        "evidence",
         "failures",
+        "git",
+        "github",
         "governance",
         "hooks",
         "instructions",
+        "issues",
+        "jira",
+        "local-development",
+        "mise",
         "onboarding",
+        "optimization",
         "proof",
+        "pull-requests",
+        "release",
         "schemas",
         "semantic-design",
+        "shell",
         "skills",
         "tdd",
         "testing",
-        "typestate"
-      ],
-      "version": "1.1.2"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Typed Pkl configuration and its toolchain.",
-      "keywords": [
-        "configuration",
-        "hooks",
-        "lsp",
-        "patterns",
-        "pkl",
-        "pkl-engineering",
-        "rendering",
-        "resources",
-        "schemas",
-        "skills",
-        "testing",
-        "tooling",
-        "type-safety",
-        "validation"
-      ],
-      "license": "UNLICENSED",
-      "name": "pkl-engineering",
-      "source": "pkl-engineering",
-      "strict": true,
-      "tags": [
-        "configuration",
-        "hooks",
-        "lsp",
-        "patterns",
-        "pkl",
-        "rendering",
-        "resources",
-        "schemas",
-        "skills",
-        "testing",
-        "tooling",
-        "type-safety",
-        "validation"
-      ],
-      "version": "1.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Machine-readable boundary contracts.",
-      "keywords": [
-        "agents",
-        "api",
-        "api-contracts",
-        "boundary",
-        "contracts",
-        "governance",
-        "openapi",
-        "schemas",
-        "skills",
-        "validation"
-      ],
-      "license": "UNLICENSED",
-      "name": "api-contracts",
-      "source": "api-contracts",
-      "strict": true,
-      "tags": [
-        "agents",
-        "api",
-        "boundary",
-        "contracts",
-        "governance",
-        "openapi",
-        "schemas",
-        "skills",
-        "validation"
+        "typestate",
+        "workflow-graph"
       ],
       "version": "1.0.0"
     },
@@ -138,7 +98,7 @@
         "name": "Amichne"
       },
       "category": "Coding",
-      "description": "Kotlin implementation, API design, compiler-backed review, and measured Gradle performance.",
+      "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "keywords": [
         "api-design",
         "best-practices",
@@ -204,90 +164,208 @@
         "type-safety",
         "validation"
       ],
-      "version": "1.3.0"
+      "version": "1.3.1"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Local command-line tools and repository work.",
+      "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
       "keywords": [
-        "cli",
-        "developer-tools",
-        "git",
-        "local-development",
-        "mise",
-        "shell"
+        "ci",
+        "delivery",
+        "gradle",
+        "intellij",
+        "intellij-plugin-development",
+        "jetbrains",
+        "kotlin",
+        "plugin-development",
+        "psi",
+        "skills",
+        "testing",
+        "ui-testing",
+        "verification"
       ],
       "license": "UNLICENSED",
-      "name": "developer-tools",
-      "source": "developer-tools",
+      "name": "intellij-plugin-development",
+      "source": "intellij-plugin-development",
       "strict": true,
       "tags": [
-        "cli",
-        "git",
-        "local-development",
-        "mise",
-        "shell"
+        "ci",
+        "delivery",
+        "gradle",
+        "intellij",
+        "jetbrains",
+        "kotlin",
+        "plugin-development",
+        "psi",
+        "skills",
+        "testing",
+        "ui-testing",
+        "verification"
       ],
-      "version": "1.1.0"
+      "version": "1.0.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Hosted delivery from issue to verified pull request and release evidence.",
+      "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
       "keywords": [
-        "actions",
-        "automation",
-        "backend",
-        "ci",
-        "dependencies",
-        "duration",
-        "effective-delivery",
-        "evidence",
-        "github",
-        "issues",
-        "jira",
-        "optimization",
-        "pull-requests",
-        "release",
+        "configuration",
+        "hooks",
+        "lsp",
+        "patterns",
+        "pkl",
+        "pkl-configuration",
+        "rendering",
+        "resources",
+        "schemas",
         "skills",
-        "workflow-graph"
+        "testing",
+        "tooling",
+        "type-safety",
+        "validation"
       ],
       "license": "UNLICENSED",
-      "name": "effective-delivery",
-      "source": "effective-delivery",
+      "name": "pkl-configuration",
+      "source": "pkl-configuration",
       "strict": true,
       "tags": [
-        "actions",
-        "automation",
-        "backend",
-        "ci",
-        "dependencies",
-        "duration",
-        "evidence",
-        "github",
-        "issues",
-        "jira",
-        "optimization",
-        "pull-requests",
-        "release",
+        "configuration",
+        "hooks",
+        "lsp",
+        "patterns",
+        "pkl",
+        "rendering",
+        "resources",
+        "schemas",
         "skills",
-        "workflow-graph"
+        "testing",
+        "tooling",
+        "type-safety",
+        "validation"
       ],
-      "version": "1.1.0"
+      "version": "1.0.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Reusable agent tooling and its publication contracts.",
+      "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
       "keywords": [
-        "agent-platform-authoring",
+        "agents",
+        "api",
+        "api-contracts",
+        "boundary",
+        "contracts",
+        "governance",
+        "openapi",
+        "schemas",
+        "skills",
+        "validation"
+      ],
+      "license": "UNLICENSED",
+      "name": "api-contracts",
+      "source": "api-contracts",
+      "strict": true,
+      "tags": [
+        "agents",
+        "api",
+        "boundary",
+        "contracts",
+        "governance",
+        "openapi",
+        "schemas",
+        "skills",
+        "validation"
+      ],
+      "version": "1.0.1"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
+      "keywords": [
+        "controlled-language",
+        "docs",
+        "glossary",
+        "prose",
+        "semantics",
+        "technical-writing",
+        "terminology"
+      ],
+      "license": "UNLICENSED",
+      "name": "technical-writing",
+      "source": "technical-writing",
+      "strict": true,
+      "tags": [
+        "controlled-language",
+        "docs",
+        "glossary",
+        "prose",
+        "semantics",
+        "technical-writing",
+        "terminology"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Coding",
+      "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+      "keywords": [
+        "docs",
+        "generation",
+        "gradle",
+        "hooks",
+        "impact",
+        "knowledge-base",
+        "kotlin",
+        "okf",
+        "repository",
+        "repository-knowledge",
+        "signatures",
+        "skills",
+        "source-backed",
+        "validation"
+      ],
+      "license": "UNLICENSED",
+      "name": "repository-knowledge",
+      "source": "repository-knowledge",
+      "strict": true,
+      "tags": [
+        "docs",
+        "generation",
+        "gradle",
+        "hooks",
+        "impact",
+        "knowledge-base",
+        "kotlin",
+        "okf",
+        "repository",
+        "signatures",
+        "skills",
+        "source-backed",
+        "validation"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Engineering",
+      "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
+      "keywords": [
+        "agent-tooling",
         "agents",
         "authoring",
         "governance",
@@ -301,8 +379,8 @@
         "workflow"
       ],
       "license": "UNLICENSED",
-      "name": "agent-platform-authoring",
-      "source": "agent-platform-authoring",
+      "name": "agent-tooling",
+      "source": "agent-tooling",
       "strict": true,
       "tags": [
         "agents",
@@ -323,51 +401,41 @@
       "author": {
         "name": "Amichne"
       },
-      "category": "Coding",
-      "description": "Source-backed code knowledge and navigation.",
+      "category": "Productivity",
+      "description": "Build command-line tools, shell completions, and terminal interfaces.",
       "keywords": [
-        "code-knowledge-base",
-        "docs",
-        "generation",
-        "gradle",
-        "hooks",
-        "impact",
-        "knowledge-base",
-        "kotlin",
-        "okf",
-        "repository",
-        "signatures",
-        "skills",
-        "source-backed",
-        "validation"
+        "accessibility",
+        "cli",
+        "cli-development",
+        "completion",
+        "design",
+        "shell",
+        "terminal",
+        "tui",
+        "user-interface"
       ],
       "license": "UNLICENSED",
-      "name": "code-knowledge-base",
-      "source": "code-knowledge-base",
+      "name": "cli-development",
+      "source": "cli-development",
       "strict": true,
       "tags": [
-        "docs",
-        "generation",
-        "hooks",
-        "impact",
-        "kotlin",
-        "gradle",
-        "knowledge-base",
-        "okf",
-        "repository",
-        "signatures",
-        "skills",
-        "source-backed",
-        "validation"
+        "accessibility",
+        "cli",
+        "completion",
+        "design",
+        "shell",
+        "terminal",
+        "tui",
+        "user-interface"
       ],
-      "version": "1.0.1"
+      "version": "1.0.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Repository-opt-in enforcement for explicitly declared required skill reads.",
+      "description": "Advanced: enforce repository-declared required skill reads.",
       "keywords": [
         "governance",
         "hooks",
@@ -386,107 +454,6 @@
         "policy",
         "repository",
         "skills"
-      ],
-      "version": "1.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Productivity",
-      "description": "Human-facing terminal interaction.",
-      "keywords": [
-        "accessibility",
-        "cli",
-        "design",
-        "terminal",
-        "terminal-ui-design",
-        "tui",
-        "user-interface"
-      ],
-      "license": "UNLICENSED",
-      "name": "terminal-ui-design",
-      "source": "terminal-ui-design",
-      "strict": true,
-      "tags": [
-        "accessibility",
-        "cli",
-        "design",
-        "terminal",
-        "tui",
-        "user-interface"
-      ],
-      "version": "1.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Productivity",
-      "description": "Source-grounded prose and technical documentation.",
-      "keywords": [
-        "controlled-language",
-        "docs",
-        "glossary",
-        "prose",
-        "semantics",
-        "technical-writing",
-        "terminology",
-        "writing"
-      ],
-      "license": "UNLICENSED",
-      "name": "writing",
-      "source": "writing",
-      "strict": true,
-      "tags": [
-        "controlled-language",
-        "docs",
-        "glossary",
-        "prose",
-        "semantics",
-        "technical-writing",
-        "terminology"
-      ],
-      "version": "1.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "IntelliJ Platform plugin behavior and lifecycle.",
-      "keywords": [
-        "ci",
-        "delivery",
-        "gradle",
-        "intellij",
-        "intellij-engineering",
-        "jetbrains",
-        "kotlin",
-        "plugin-development",
-        "psi",
-        "skills",
-        "testing",
-        "ui-testing",
-        "verification"
-      ],
-      "license": "UNLICENSED",
-      "name": "intellij-engineering",
-      "source": "intellij-engineering",
-      "strict": true,
-      "tags": [
-        "ci",
-        "delivery",
-        "gradle",
-        "intellij",
-        "jetbrains",
-        "kotlin",
-        "plugin-development",
-        "psi",
-        "skills",
-        "testing",
-        "ui-testing",
-        "verification"
       ],
       "version": "1.0.1"
     }

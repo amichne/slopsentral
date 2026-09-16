@@ -1,0 +1,35 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "bash": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" record --repo .",
+        "matcher": "^(Bash|apply_patch)$",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
+    "SessionStart": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/repository-profile.py\"",
+        "matcher": "^(startup|resume)$",
+        "timeoutSec": 50,
+        "type": "command"
+      }
+    ],
+    "Stop": [
+      {
+        "bash": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" stop --repo .",
+        "timeoutSec": 30,
+        "type": "command"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "bash": "bash \"$PLUGIN_ROOT/hooks/agents-md-turn-refresh.sh\" start --repo .",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ]
+  },
+  "version": 1
+}

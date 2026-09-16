@@ -4,7 +4,7 @@
     "name": "Amichne"
   },
   "category": "Engineering",
-  "description": "Machine-readable boundary contracts.",
+  "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
   "keywords": [
     "agents",
     "api",
@@ -31,5 +31,5 @@
     "skills",
     "validation"
   ],
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
