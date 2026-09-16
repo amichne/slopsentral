@@ -1,0 +1,29 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Productivity",
+  "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
+  "keywords": [
+    "controlled-language",
+    "docs",
+    "glossary",
+    "prose",
+    "semantics",
+    "technical-writing",
+    "terminology"
+  ],
+  "license": "UNLICENSED",
+  "name": "technical-writing",
+  "skills": "./skills",
+  "tags": [
+    "controlled-language",
+    "docs",
+    "glossary",
+    "prose",
+    "semantics",
+    "technical-writing",
+    "terminology"
+  ],
+  "version": "1.0.0"
+}

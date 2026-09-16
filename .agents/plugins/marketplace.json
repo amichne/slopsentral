@@ -1,0 +1,128 @@
+{
+  "interface": {
+    "displayName": "Slopsentral"
+  },
+  "name": "slopsentral",
+  "plugins": [
+    {
+      "category": "Engineering",
+      "name": "software-engineering",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/software-engineering",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Coding",
+      "name": "kotlin-engineering",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/kotlin-engineering",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
+      "name": "intellij-plugin-development",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/intellij-plugin-development",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
+      "name": "pkl-configuration",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/pkl-configuration",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
+      "name": "api-contracts",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/api-contracts",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "technical-writing",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/technical-writing",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Coding",
+      "name": "repository-knowledge",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/repository-knowledge",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
+      "name": "agent-tooling",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/agent-tooling",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "cli-development",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/cli-development",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
+      "name": "skill-read-policy",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/skill-read-policy",
+        "source": "local"
+      }
+    }
+  ]
+}

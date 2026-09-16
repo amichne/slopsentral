@@ -1,0 +1,43 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Coding",
+  "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+  "hooks": "./hooks.json",
+  "keywords": [
+    "docs",
+    "generation",
+    "gradle",
+    "hooks",
+    "impact",
+    "knowledge-base",
+    "kotlin",
+    "okf",
+    "repository",
+    "repository-knowledge",
+    "signatures",
+    "skills",
+    "source-backed",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "repository-knowledge",
+  "skills": "./skills",
+  "tags": [
+    "docs",
+    "generation",
+    "gradle",
+    "hooks",
+    "impact",
+    "knowledge-base",
+    "kotlin",
+    "okf",
+    "repository",
+    "signatures",
+    "skills",
+    "source-backed",
+    "validation"
+  ],
+  "version": "1.0.0"
+}

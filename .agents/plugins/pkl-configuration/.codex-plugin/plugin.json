@@ -1,0 +1,51 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
+  "hooks": [
+    "./hooks/pkl-evaluate-check.hooks.json",
+    "./hooks/pkl-format-check.hooks.json",
+    "./hooks/pkl-test-check.hooks.json"
+  ],
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Pkl Configuration for this task.",
+      "Review this repo with Pkl Configuration.",
+      "Show the Pkl Configuration workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Pkl Configuration",
+    "longDescription": "Model, validate, format, and maintain Pkl configuration and tooling.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Model, validate, format, and maintain Pkl configuration and tooling.",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "configuration",
+    "hooks",
+    "lsp",
+    "patterns",
+    "pkl",
+    "pkl-configuration",
+    "rendering",
+    "resources",
+    "schemas",
+    "skills",
+    "testing",
+    "tooling",
+    "type-safety",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "pkl-configuration",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

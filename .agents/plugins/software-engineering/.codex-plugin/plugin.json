@@ -1,0 +1,71 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+  "hooks": [
+    "./hooks/agents-md-turn-refresh.hooks.json",
+    "./hooks/repository-profile.hooks.json"
+  ],
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Software Engineering for this task.",
+      "Review this repo with Software Engineering.",
+      "Show the Software Engineering workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Software Engineering",
+    "longDescription": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Implement, test, review, and deliver code with Git, PR, and CI workfl...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "actions",
+    "automation",
+    "backend",
+    "ci",
+    "cli",
+    "core",
+    "daily-driver",
+    "dependencies",
+    "design",
+    "duration",
+    "evidence",
+    "failures",
+    "git",
+    "github",
+    "governance",
+    "hooks",
+    "instructions",
+    "issues",
+    "jira",
+    "local-development",
+    "mise",
+    "onboarding",
+    "optimization",
+    "proof",
+    "pull-requests",
+    "release",
+    "schemas",
+    "semantic-design",
+    "shell",
+    "skills",
+    "software-engineering",
+    "tdd",
+    "testing",
+    "typestate",
+    "workflow-graph"
+  ],
+  "license": "UNLICENSED",
+  "name": "software-engineering",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

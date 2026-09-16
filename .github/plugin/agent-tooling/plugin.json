@@ -1,0 +1,39 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Engineering",
+  "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
+  "hooks": "./hooks.json",
+  "keywords": [
+    "agent-tooling",
+    "agents",
+    "authoring",
+    "governance",
+    "hooks",
+    "marketplace",
+    "plugins",
+    "proof",
+    "repository",
+    "routing",
+    "skills",
+    "workflow"
+  ],
+  "license": "UNLICENSED",
+  "name": "agent-tooling",
+  "skills": "./skills",
+  "tags": [
+    "agents",
+    "authoring",
+    "governance",
+    "hooks",
+    "marketplace",
+    "plugins",
+    "proof",
+    "repository",
+    "routing",
+    "skills",
+    "workflow"
+  ],
+  "version": "1.0.0"
+}

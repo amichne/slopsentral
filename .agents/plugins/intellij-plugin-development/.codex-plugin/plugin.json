@@ -1,0 +1,45 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Intellij Plugin Development for this task.",
+      "Review this repo with Intellij Plugin Development.",
+      "Show the Intellij Plugin Development workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Intellij Plugin Development",
+    "longDescription": "Build, test, package, and diagnose IntelliJ Platform plugins.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Build, test, package, and diagnose IntelliJ Platform plugins.",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "ci",
+    "delivery",
+    "gradle",
+    "intellij",
+    "intellij-plugin-development",
+    "jetbrains",
+    "kotlin",
+    "plugin-development",
+    "psi",
+    "skills",
+    "testing",
+    "ui-testing",
+    "verification"
+  ],
+  "license": "UNLICENSED",
+  "name": "intellij-plugin-development",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

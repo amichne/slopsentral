@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "bash": "bash \"$PLUGIN_ROOT/hooks/source-graph-valid.sh\" --repo .",
+        "timeoutSec": 60,
+        "type": "command"
+      }
+    ]
+  },
+  "version": 1
+}

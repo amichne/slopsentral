@@ -1,0 +1,39 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Technical Writing for this task.",
+      "Review this repo with Technical Writing.",
+      "Show the Technical Writing workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Technical Writing",
+    "longDescription": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Write and revise technical docs, proposals, runbooks, and documentati...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "controlled-language",
+    "docs",
+    "glossary",
+    "prose",
+    "semantics",
+    "technical-writing",
+    "terminology"
+  ],
+  "license": "UNLICENSED",
+  "name": "technical-writing",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

@@ -1,0 +1,40 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Engineering",
+  "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
+  "keywords": [
+    "ci",
+    "delivery",
+    "gradle",
+    "intellij",
+    "intellij-plugin-development",
+    "jetbrains",
+    "kotlin",
+    "plugin-development",
+    "psi",
+    "skills",
+    "testing",
+    "ui-testing",
+    "verification"
+  ],
+  "license": "UNLICENSED",
+  "name": "intellij-plugin-development",
+  "skills": "./skills",
+  "tags": [
+    "ci",
+    "delivery",
+    "gradle",
+    "intellij",
+    "jetbrains",
+    "kotlin",
+    "plugin-development",
+    "psi",
+    "skills",
+    "testing",
+    "ui-testing",
+    "verification"
+  ],
+  "version": "1.0.0"
+}

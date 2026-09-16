@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "pkl",
+      "repository": "https://github.com/apple/pkl",
+      "branch": "main",
+      "role": "Language, CLI, standard library, tests, and core documentation sources",
+      "include": [
+        "README.adoc",
+        "docs/**/*.adoc",
+        "stdlib/**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-lang-org",
+      "repository": "https://github.com/apple/pkl-lang.org",
+      "branch": "main",
+      "role": "Source for the official Pkl documentation website",
+      "include": [
+        "README.md",
+        "src/**/*.md",
+        "src/**/*.adoc"
+      ]
+    },
+    {
+      "id": "pkl-evolution",
+      "repository": "https://github.com/apple/pkl-evolution",
+      "branch": "main",
+      "role": "Accepted and proposed language evolution documents",
+      "include": [
+        "README.md",
+        "spices/**/*.md"
+      ]
+    },
+    {
+      "id": "pkl-lsp",
+      "repository": "https://github.com/apple/pkl-lsp",
+      "branch": "main",
+      "role": "Language server implementation and editor integration protocol",
+      "include": [
+        "README.adoc",
+        "docs/**/*.adoc",
+        "docs/**/*.md"
+      ]
+    },
+    {
+      "id": "pkl-vscode",
+      "repository": "https://github.com/apple/pkl-vscode",
+      "branch": "main",
+      "role": "Official Visual Studio Code extension",
+      "include": [
+        "README.md",
+        "docs/**/*.md"
+      ]
+    },
+    {
+      "id": "pkl-intellij",
+      "repository": "https://github.com/apple/pkl-intellij",
+      "branch": "main",
+      "role": "Official IntelliJ Platform plugin",
+      "include": [
+        "README.md",
+        "docs/**/*.md"
+      ]
+    },
+    {
+      "id": "pkl-neovim",
+      "repository": "https://github.com/apple/pkl-neovim",
+      "branch": "main",
+      "role": "Official Neovim plugin and LSP client setup",
+      "include": [
+        "README.md",
+        "docs/**/*.md"
+      ]
+    },
+    {
+      "id": "pkl-package-docs",
+      "repository": "https://github.com/apple/pkl-package-docs",
+      "branch": "main",
+      "role": "Generator and publication source for first-party package documentation",
+      "include": [
+        "README.adoc",
+        "docs/**/*.adoc",
+        "docs/**/*.md"
+      ]
+    },
+    {
+      "id": "pkl-pantry",
+      "repository": "https://github.com/apple/pkl-pantry",
+      "branch": "main",
+      "role": "Shared first-party packages and practical configuration models",
+      "include": [
+        "README.adoc",
+        "packages/**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-k8s",
+      "repository": "https://github.com/apple/pkl-k8s",
+      "branch": "main",
+      "role": "Typed Kubernetes resource definitions and generation patterns",
+      "include": [
+        "README.adoc",
+        "package/**/*.pkl",
+        "src/**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-readers",
+      "repository": "https://github.com/apple/pkl-readers",
+      "branch": "main",
+      "role": "First-party external resource readers",
+      "include": [
+        "README.md",
+        "docs/**/*.md",
+        "**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-go",
+      "repository": "https://github.com/apple/pkl-go",
+      "branch": "main",
+      "role": "Official Go bindings and code generation",
+      "include": [
+        "README.md",
+        "docs/**/*.md",
+        "**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-swift",
+      "repository": "https://github.com/apple/pkl-swift",
+      "branch": "main",
+      "role": "Official Swift bindings and code generation",
+      "include": [
+        "README.md",
+        "Documentation/**/*.md",
+        "**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-spring",
+      "repository": "https://github.com/apple/pkl-spring",
+      "branch": "main",
+      "role": "Official Spring Boot configuration integration",
+      "include": [
+        "README.adoc",
+        "docs/**/*.adoc",
+        "**/*.pkl"
+      ]
+    },
+    {
+      "id": "rules-pkl",
+      "repository": "https://github.com/apple/rules_pkl",
+      "branch": "main",
+      "role": "Official Bazel rules for evaluation, tests, docs, and code generation",
+      "include": [
+        "README.md",
+        "docs/**/*.md",
+        "examples/**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-go-examples",
+      "repository": "https://github.com/apple/pkl-go-examples",
+      "branch": "main",
+      "role": "First-party Go binding examples",
+      "include": [
+        "README.md",
+        "**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-jvm-examples",
+      "repository": "https://github.com/apple/pkl-jvm-examples",
+      "branch": "main",
+      "role": "First-party JVM binding examples",
+      "include": [
+        "README.adoc",
+        "**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-swift-examples",
+      "repository": "https://github.com/apple/pkl-swift-examples",
+      "branch": "main",
+      "role": "First-party Swift binding examples",
+      "include": [
+        "README.md",
+        "**/*.pkl"
+      ]
+    },
+    {
+      "id": "pkl-k8s-examples",
+      "repository": "https://github.com/apple/pkl-k8s-examples",
+      "branch": "main",
+      "role": "First-party Kubernetes modeling examples",
+      "include": [
+        "README.adoc",
+        "**/*.pkl"
+      ]
+    }
+  ]
+}

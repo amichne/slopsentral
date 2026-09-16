@@ -1,0 +1,9 @@
+{
+  "name": "required-skill-read",
+  "path": "hooks/required-skill-read.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

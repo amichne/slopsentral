@@ -1,0 +1,35 @@
+{
+  "agents": "./agents",
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Engineering",
+  "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
+  "keywords": [
+    "agents",
+    "api",
+    "api-contracts",
+    "boundary",
+    "contracts",
+    "governance",
+    "openapi",
+    "schemas",
+    "skills",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "api-contracts",
+  "skills": "./skills",
+  "tags": [
+    "agents",
+    "api",
+    "boundary",
+    "contracts",
+    "governance",
+    "openapi",
+    "schemas",
+    "skills",
+    "validation"
+  ],
+  "version": "1.0.1"
+}

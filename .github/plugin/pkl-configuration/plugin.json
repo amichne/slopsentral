@@ -1,0 +1,43 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Engineering",
+  "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
+  "hooks": "./hooks.json",
+  "keywords": [
+    "configuration",
+    "hooks",
+    "lsp",
+    "patterns",
+    "pkl",
+    "pkl-configuration",
+    "rendering",
+    "resources",
+    "schemas",
+    "skills",
+    "testing",
+    "tooling",
+    "type-safety",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "pkl-configuration",
+  "skills": "./skills",
+  "tags": [
+    "configuration",
+    "hooks",
+    "lsp",
+    "patterns",
+    "pkl",
+    "rendering",
+    "resources",
+    "schemas",
+    "skills",
+    "testing",
+    "tooling",
+    "type-safety",
+    "validation"
+  ],
+  "version": "1.0.0"
+}
