@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+fail() { printf 'publish-marketplaces-main: %s\n' "$*" >&2; exit 1; }
+[[ $# -eq 2 ]] || fail 'usage: publish-marketplaces-main <combined-projection-path> <source-sha>'
+projection_path=$(cd "$1" && pwd)
+source_sha=$2
+[[ "$source_sha" =~ ^[0-9a-f]{40}$ ]] || fail 'invalid source SHA'
+
+# The artifact contains exactly two provider trees, never authored files.
+shopt -s dotglob nullglob
+entries=("$projection_path"/*)
+[[ ${#entries[@]} -eq 2 ]] || fail 'expected exactly two provider directories'
+for root in .agents/plugins .github/plugin; do
+  top=${root%%/*}
+  [[ -d "$projection_path/$root" && ! -L "$projection_path/$top" && ! -L "$projection_path/$root" ]] || fail "invalid $root directory"
+  entries=("$projection_path/$top"/*)
+  [[ ${#entries[@]} -eq 1 ]] || fail "unexpected content in $top"
+  [[ -f "$projection_path/$root/marketplace.json" ]] || fail "missing $root/marketplace.json"
+done
+[[ -z "$(find "$projection_path" -type l -print -quit)" ]] || fail 'projection contains symlinks'
+[[ -z "$(find "$projection_path" -name .git -print -quit)" ]] || fail 'projection contains Git metadata'
+
+repo_root=$(git rev-parse --show-toplevel)
+source_is_current() {
+  git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
+  if [[ $(git rev-parse refs/remotes/origin/main) != "$source_sha" ]]; then
+    printf '::notice::main advanced; skipping stale marketplace publication.\n'
+    return 1
+  fi
+}
+source_is_current || exit 0
+temporary_root=$(mktemp -d)
+publish_dir="$temporary_root/payload"
+cleanup() {
+  git -C "$repo_root" worktree remove --force "$publish_dir" >/dev/null 2>&1 || true
+  rm -rf "$temporary_root"
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+git worktree add --detach "$publish_dir" "$source_sha"
+for root in .agents/plugins .github/plugin; do
+  top=${root%%/*}
+  [[ ! -L "$publish_dir/$top" && ! -L "$publish_dir/$root" ]] || fail "unsafe destination $root"
+  rm -rf "$publish_dir/$root"
+  mkdir -p "$publish_dir/$top"
+  cp -R "$projection_path/$root" "$publish_dir/$top/"
+  git -C "$publish_dir" add -f -A -- "$root"
+done
+git -C "$publish_dir" diff --cached --check
+if git -C "$publish_dir" diff --cached --quiet; then
+  printf 'Both marketplaces are already current.\n'
+  exit 0
+fi
+git -C "$publish_dir" -c user.name='github-actions[bot]' \
+  -c user.email='github-actions[bot]@users.noreply.github.com' \
+  commit -m 'chore: publish marketplaces on main' -m "Source-Commit: $source_sha"
+source_is_current || exit 0
+# A concurrent source push after the check causes a non-fast-forward rejection.
+git -C "$publish_dir" push origin HEAD:refs/heads/main

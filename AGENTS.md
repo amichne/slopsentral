@@ -13,9 +13,12 @@ by hand when the authored source can be fixed instead.
 - `source/skills`, `source/agents`, `source/hooks`, `source/concepts`,
   `source/profiles`, `source/evals`, `source/schemas`, and `tools` are
   canonical authored roots.
-- Generated provider output is published only on `harness/codex` under
-  `.agents/plugins` and `harness/github-copilot` under `.github/plugin`.
-- Do not commit generated provider output to the source branch.
+- Generated provider output is published on `main` under `.agents/plugins`
+  (Codex) and `.github/plugin` (GitHub Copilot), and on the corresponding
+  `harness/codex` and `harness/github-copilot` branches.
+- Regenerate these trees from validated authored source with projeKtor; never
+  hand-edit them. Publication updates both trees on `main` in one commit and
+  preserves all authored files.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
 
 ## First-Party Material

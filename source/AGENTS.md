@@ -46,8 +46,8 @@ This file applies to authored marketplace source under `source/`.
 
 - Edit `source/` as authored source.
 - Do not hand-edit generated provider output. projeKtor publishes Codex output
-  to `harness/codex` and GitHub Copilot output to
-  `harness/github-copilot` from validated source.
+  to `.agents/plugins` and GitHub Copilot output to `.github/plugin` on `main`,
+  as well as `harness/codex` and `harness/github-copilot`, from validated source.
 
 ## Verify
 
