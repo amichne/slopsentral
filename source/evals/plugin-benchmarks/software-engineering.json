@@ -1,0 +1,250 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "software-engineering",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-6-astra",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "node tools/validate-source-graph.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Run in an isolated slopsentral worktree with one stable shell-invokable check specification.",
+    "The benchmark may change only local files and must not publish or modify remote state.",
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result.",
+    "Duplicate marketplace identity rejection already exists at the audited baseline. Reuse without production edits is the correct result there; do not reward manufactured RED.",
+    "These scenarios exercise preflight and evidence qualification. A live RED/GREEN comparison additionally needs a pinned fixture with a demonstrated missing behavior and an independent verifier.",
+    "Compare old and candidate guidance on identical source revisions and model settings. Inspect command results and diffs independently; successChecklist is a rubric, not a computed score.",
+    "Run this benchmark from a repository with GitHub Actions checks and a safe disposable branch.",
+    "Scenarios should preserve unrelated work and leave structured CI evidence when remote checks are involved.",
+    "Feed observed benchmark usage into plugin-eval analysis before turning static budget warnings into blockers.",
+    "Run in an isolated slopsentral worktree and preserve any unrelated local files."
+  ],
+  "setupQuestions": [
+    "Which small repository invariant has a deterministic shell-invokable oracle?",
+    "Which repository and branch should represent the daily-driver delivery workflow?",
+    "Which PR or workflow run can be used safely for live CI evidence?",
+    "Which CI script or workflow can be changed without affecting production deployment?",
+    "What remote-check waiting budget is acceptable before the run should hand off pending state?",
+    "Which requested paths may be staged while unrelated work remains untouched?",
+    "Which repository-owned check proves the scoped local change?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "executable-check-red-green",
+      "title": "Preflight before executable-check red-green proof",
+      "purpose": "Check whether the agent recognizes an existing invariant before deciding whether implementation and RED/GREEN are needed.",
+      "routingCaseIds": [
+        "shell-check-tdd-uses-stable-red-green-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Use Software Engineering in this isolated workspace. A prior plan proposes a new validator for duplicate standalone marketplace skill identities. Ensure those duplicates are rejected against the current codebase, checking the existing owner and tests first. Implement only an unmet requirement, with a stable RED/GREEN check if one is found. Do not commit, push, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run locates the current validator and catalog-ownership regression, then executes the duplicate-identity assertion.",
+        "When the existing path satisfies the requirement, the run reports reuse and leaves production files unchanged; it does not weaken assertions or introduce a duplicate validator.",
+        "If an actual gap is demonstrated at another baseline, RED and GREEN keep the same command, assertion source, fixtures, and meaningful environment.",
+        "The final answer names the current evidence and stops after required verification; it does not claim static validation measured model improvement."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "zero-selected-tests-is-not-green",
+      "title": "Reject an empty test selection",
+      "purpose": "Check whether a successful runner exit with no selected assertion is distinguished from behavioral proof.",
+      "routingCaseIds": [
+        "shell-check-tdd-uses-stable-red-green-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Use Software Engineering to audit this proposed proof of duplicate marketplace rejection: node --test --test-name-pattern='nonexistent-preflight-case' tools/tests/catalog-ownership.test.mjs. Run it, determine what it proves, and obtain the smallest valid evidence for the actual requirement. Do not edit source or assertions, commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run observes zero matching tests or the runner's equivalent signal and refuses to call it GREEN for the requirement.",
+        "It resolves the existing duplicate-identity regression and runs a selector that actually executes that assertion.",
+        "It labels the passing existing check as baseline or reuse, introduces no fake RED, and leaves source unchanged."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "infrastructure-failure-is-not-red",
+      "title": "Separate runner readiness from RED",
+      "purpose": "Check whether a missing check file is treated as evidence unavailability instead of a missing production invariant.",
+      "routingCaseIds": [
+        "shell-check-tdd-uses-stable-red-green-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Use Software Engineering to verify duplicate marketplace identity rejection. An inherited plan gives node --test tools/tests/missing-preflight-regression.test.mjs as its RED command. Check that claim against the current repository and recover the appropriate focused evidence. Do not create the missing file, edit implementation or assertions, commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The missing-file failure is classified as check readiness, not a product RED.",
+        "The run locates and executes the existing relevant regression instead of implementing a second validator or manufacturing a failing test.",
+        "The handoff names the failed command, the valid replacement specification, and its limits without describing them as one RED/GREEN cycle."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "issue-backend-direct-dependency-evidence",
+      "title": "Configured issue backend dependency evidence",
+      "purpose": "Measure whether Software Engineering selects the configured issue host, uses the native provider CLI, and keeps direct blocker evidence distinct from hierarchy and transitive claims.",
+      "routingCaseIds": [
+        "issue-backend-selection-preserves-native-dependencies"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "issue-tracker-operations"
+      },
+      "userInput": "Use Software Engineering to inspect item 42 through the configured issue backend and report its direct blockers. If Jira is selected, use Atlassian acli. Do not create, edit, comment on, link, transition, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run resolves GITHUB or JIRA before provider execution and inspects capability support.",
+        "GitHub reads use gh and Jira reads use acli jira workitem commands.",
+        "Each BLOCKS edge preserves source-to-target direction from native relationship data.",
+        "The result declares depth one and does not claim hierarchy or transitive completeness."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "ci-triage-current-run-evidence",
+      "title": "CI triage from current run evidence",
+      "purpose": "Measure whether CI failure work starts from live GitHub check/run evidence and fixes the owning source rather than guessing from stale local state.",
+      "routingCaseIds": [
+        "ci-failure-triage-uses-remote-check-evidence"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "userInput": "Use Software Engineering to triage a failing GitHub Actions check. Identify the current failing job and run URL, prepare the owning source or workflow repair locally, and run the closest local proof. Do not push, rerun, dispatch, comment on, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run cites current PR metadata from the GitHub app when available, uses native gh only for a connector gap and Actions evidence, and pins the evidence to the head SHA.",
+        "The fix targets the owning source, test, script, or workflow instead of disabling the check.",
+        "The final evidence includes local validation and the current remote check state without changing it."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "ci-status-structured-green-claim",
+      "title": "Event-driven structured green claim",
+      "purpose": "Measure whether PR readiness claims use structured current-head evidence, await meaningful events without model-driven polling, and refuse to collapse pending or unknown states into green.",
+      "routingCaseIds": [
+        "ci-status-claims-use-structured-check-evidence"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "userInput": "Use Software Engineering to tell me whether PR 42 is green. Use the connected GitHub app first for supported PR metadata, native gh only for a connector gap, and the native gh-backed observer for CI state. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you. Do not push, rerun, dispatch, comment on, or otherwise modify remote state.",
+      "successChecklist": [
+        "Supported PR metadata comes from the connected GitHub app when available; native gh fills only a connector gap, and the observer classifies the current head.",
+        "The run arms ci_wait_for_actions with an explicit predicate and reports the resolved timeout source.",
+        "The model invokes one bounded await instead of unchanged status checks; a still-pending event is processed once and re-armed.",
+        "The final answer does not claim green while checks are pending, failing, or unknown."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "composable-workflow-authoring",
+      "title": "Composable workflow authoring",
+      "purpose": "Measure whether workflow authoring favors reusable scripts, least-privilege permissions, concurrency, and local proof.",
+      "routingCaseIds": [
+        "ci-workflow-authoring-favors-composable-reusable-jobs"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "userInput": "Use Software Engineering to revise a GitHub Actions workflow so repeated setup or validation logic becomes reusable and the jobs keep explicit permissions, concurrency, and local validation commands. Do not commit, push, dispatch, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "Shared logic is moved to workflow_call or a versioned repo script when reuse is needed.",
+        "Workflow permissions and concurrency are explicit and narrow.",
+        "The run validates the local command or script that corresponds to the changed job."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "workflow-graph-optimization-preserves-proof",
+      "title": "Workflow graph optimization preserves proof",
+      "purpose": "Measure whether CI optimization removes false dependencies and repeated setup while preserving proof outputs and using deterministic median-timed graph evidence.",
+      "routingCaseIds": [
+        "ci-workflow-authoring-favors-composable-reusable-jobs"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "userInput": "Use Software Engineering to optimize this workflow's dependency graph. Expand matrix cells, keep only causal needs edges, preserve Gradle- and OCI-backed proof outputs, budget task cardinality, and prove the critical-path change with a deterministic median-timed model instead of runner wall-clock assertions. Do not commit, push, dispatch, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run models each matrix cell or reusable invocation as an execution node and removes dependencies on unrelated required jobs.",
+        "The candidate preserves the baseline proof-output set, including immutable artifacts, Gradle-backed checks, and OCI environment proofs.",
+        "The deterministic model checks cycles, missing dependencies, output equivalence, task-count growth, fan-out gate duration, critical-path reduction, and drift from observed workflow medians.",
+        "Means and live runner times remain report evidence; blocking duration checks use medians from at least five comparable samples or are labeled provisional."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "pr-green-loop-composes-git-and-ci",
+      "title": "PR green loop composes Git and CI",
+      "purpose": "Measure whether branch, commit, push, PR, and event-driven CI observation remain one composed delivery workflow without losing scoped staging or check evidence.",
+      "routingCaseIds": [
+        "push-request-means-branch-commit-push-pr"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pull-request-lifecycle"
+      },
+      "userInput": "Use Software Engineering with Software Engineering to prepare a focused local change, audit scoped staging, and produce a PR and CI handoff plan. Do not commit, push, open or update a PR, arm remote events, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run preserves unrelated work and stages only the requested change set.",
+        "The proposed PR handoff includes branch, base, prospective validation commands, and residual risks.",
+        "Any remote check facts are read-only, current-head observations and are not changed by the run."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "dirty-worktree-scoped-staging",
+      "title": "Dirty worktree scoped staging",
+      "purpose": "Measure whether Git preparation preserves unrelated work and proves the exact staged change set.",
+      "routingCaseIds": [
+        "dirty-worktree-uses-scoped-git-change-flow"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "git-change-flow"
+      },
+      "userInput": "Use Software Engineering in this isolated dirty worktree. Inspect all changes, stage only the requested validated files, and prove the staged diff is clean. Do not commit, push, open a pull request, or modify remote state.",
+      "successChecklist": [
+        "The run records the initial dirty state before staging.",
+        "Only the requested paths enter the staged diff.",
+        "Unrelated tracked and untracked user work remains unchanged."
+      ]
+    }
+  ]
+}

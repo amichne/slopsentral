@@ -5,7 +5,7 @@
   "schemaVersion": 2,
   "version": 2,
   "targetKind": "plugin",
-  "targetName": "agent-platform-authoring",
+  "targetName": "agent-tooling",
   "runner": {
     "type": "codex-cli",
     "model": "gpt-6-astra",
@@ -32,7 +32,7 @@
     ]
   },
   "notes": [
-    "Run this benchmark from a slopsentral checkout after materializing the Agent Platform Authoring package.",
+    "Run this benchmark from a slopsentral checkout after materializing the Agent Tooling package.",
     "The scenarios intentionally target source-owned primitives and should not edit generated provider output directly.",
     "Feed benchmark usage back into plugin-eval analysis before treating static context-size warnings as production blockers.",
     "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
@@ -54,9 +54,9 @@
       ],
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-platform-authoring"
+        "name": "agent-tooling"
       },
-      "userInput": "Use Agent Platform Authoring to improve one marketplace plugin from source. Keep generated provider output untouched, run the source graph gate, and use materialization only as proof. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Agent Tooling to improve one marketplace plugin from source. Keep generated provider output untouched, run the source graph gate, and use materialization only as proof. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run edits source-owned primitives, plugin manifests, schemas, evals, or source validation tooling.",
         "Generated provider output is not patched by hand.",
@@ -75,7 +75,7 @@
         "type": "SKILL",
         "name": "plugin-composition-authoring"
       },
-      "userInput": "Use Agent Platform Authoring to add or revise a referential plugin composition. Keep primitives independent, update the marketplace entry, and prove the composition with the focused helper plus source graph validation. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Agent Tooling to add or revise a referential plugin composition. Keep primitives independent, update the marketplace entry, and prove the composition with the focused helper plus source graph validation. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The plugin manifest references canonical source primitives with LOCAL_SOURCE ./ references.",
         "The plugin directory does not receive copied primitive payloads.",
@@ -93,9 +93,9 @@
       ],
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-platform-authoring"
+        "name": "agent-tooling"
       },
-      "userInput": "Use Agent Platform Authoring to decide whether a plugin family is ready to share. Record capability boundary, schema coverage, provenance, validation, runtime safety, residual risks, and a next action. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Agent Tooling to decide whether a plugin family is ready to share. Record capability boundary, schema coverage, provenance, validation, runtime safety, residual risks, and a next action. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The review names the target, baseline, decision, evidence, validation, residual risks, and next action.",
         "The reviewed source passes source graph validation.",
@@ -114,7 +114,7 @@
         "type": "SKILL",
         "name": "primitive-routing-evaluation"
       },
-      "userInput": "Use Agent Platform Authoring to turn a marketplace routing miss into a sanitized eval case, update the narrowest primitive surface, and run full-corpus routing replay. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Agent Tooling to turn a marketplace routing miss into a sanitized eval case, update the narrowest primitive surface, and run full-corpus routing replay. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The case is schema-backed, sanitized, and tied to an existing canonical primitive.",
         "The fix surface is limited to the primitive, plugin metadata, or adapter layer that explains the miss.",

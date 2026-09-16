@@ -36,6 +36,6 @@ test("every authored hook has an explicit ownership policy", () => {
 });
 
 test("agent platform authoring owns source graph validation", () => {
-  assert.deepEqual(owners.get("source-graph-valid"), ["agent-platform-authoring"]);
+  assert.deepEqual(owners.get("source-graph-valid"), ["agent-tooling"]);
   assert.deepEqual(owners.get("required-skill-read"), ["skill-read-policy"]);
 });

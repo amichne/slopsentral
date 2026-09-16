@@ -5,7 +5,7 @@
   "schemaVersion": 2,
   "version": 2,
   "targetKind": "plugin",
-  "targetName": "terminal-ui-design",
+  "targetName": "cli-development",
   "runner": {
     "type": "codex-cli",
     "model": "gpt-6-astra",
@@ -51,7 +51,7 @@
         "type": "SKILL",
         "name": "terminal-ui-design"
       },
-      "userInput": "Use Terminal UI Design to audit one existing human-facing terminal flow in this isolated Intelligence worktree. Preserve its projector-only product scope, command contracts, no-color and redirected-output behavior, and terminal cleanup. If the current product excludes a TUI, record that boundary and make no UI change. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use CLI Development to audit one existing human-facing terminal flow in this isolated Intelligence worktree. Preserve its projector-only product scope, command contracts, no-color and redirected-output behavior, and terminal cleanup. If the current product excludes a TUI, record that boundary and make no UI change. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run names the current terminal stack, explicit product scope, and reachable states.",
         "No TUI or UI dependency is added when the product boundary excludes it.",

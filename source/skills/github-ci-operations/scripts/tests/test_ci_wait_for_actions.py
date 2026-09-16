@@ -35,7 +35,7 @@ GITHUB_SURFACES = (
     SOURCE_ROOT / "skills/github-ci-operations/references/release-flow.md",
     SOURCE_ROOT / "skills/pull-request-lifecycle/SKILL.md",
     SOURCE_ROOT / "skills/define-goal/SKILL.md",
-    SOURCE_ROOT / "evals/plugin-benchmarks/effective-delivery.json",
+    SOURCE_ROOT / "evals/plugin-benchmarks/software-engineering.json",
     SOURCE_ROOT / "evals/routing/daily-driver-workflows.json",
     SOURCE_ROOT / "evals/routing/fixtures/golden-routing-observations.json",
 )

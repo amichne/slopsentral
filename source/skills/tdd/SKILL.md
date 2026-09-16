@@ -1,6 +1,6 @@
 ---
 name: "tdd"
-description: "Use for behavior changes, bug fixes, contract changes, or tracer bullets that need a current-codebase preflight and focused executable proof; also for characterization before a refactor."
+description: "Use when behavior changes, bug fixes, contract changes, or tracer bullets need current-codebase preflight and focused executable proof; also for characterization before a refactor."
 ---
 
 # Executable-Check TDD
@@ -28,7 +28,7 @@ the nearest repository-local equivalent.
   success criterion.
 - Run the same check specification for RED and GREEN. Only the intentional
   implementation change should explain the transition.
-- Commit and push each validated RED and passing GREEN checkpoint before continuing; if no publishable Git remote exists, record that limitation.
+- Keep RED and GREEN evidence in the check results. Commit or push checkpoints only when the requested workflow or applicable repository policy authorizes publication; a local TDD loop does not require a remote.
 - RED is valid only when the check ran and failed because the target behavior or
   invariant is absent.
 - Infrastructure failures are not RED: command-not-found, dependency setup,
@@ -102,7 +102,7 @@ Prefer a repository-native workflow record when one exists. Otherwise preserve:
 - phase: `BASELINE`, `RED`, `GREEN`, `REFACTOR`, `VERIFY`, or `DONE`;
 - RED evidence: exit code and the expected failure signal;
 - GREEN evidence: exit code and the success signal from the same check;
-- RED and GREEN checkpoint commit SHAs and push state;
+- checkpoint commit SHAs and push state when publication is part of the requested workflow;
 - changed scope, broader verification, next behavior, and blockers.
 
 During the loop, report only meaningful transitions: what failed and why, what

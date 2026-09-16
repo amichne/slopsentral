@@ -1,9 +1,9 @@
 {
   "type": "PLUGIN",
   "schemaVersion": 1,
-  "name": "intellij-engineering",
-  "version": "1.0.1",
-  "description": "IntelliJ Platform plugin behavior and lifecycle.",
+  "name": "intellij-plugin-development",
+  "version": "1.0.0",
+  "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -61,11 +61,11 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for pSI, indexing, live diagnostics, platform integrations, plugin testing, and distribution.",
-    "notFor": "General Kotlin design, local Git mechanics, hosted PR operations, and external semantic-tool runtime diagnosis.",
-    "owner": "intellij-engineering",
-    "role": "intellij-engineering",
-    "scope": "PSI, indexing, live diagnostics, platform integrations, plugin testing, and distribution.",
-    "workstream": "intellij-engineering"
+    "dailyDriver": "Choose for IntelliJ plugin lifecycle, PSI, indexing, integrations, tests, and IDE diagnostics; add Kotlin Engineering for Kotlin-specific work.",
+    "notFor": "General Kotlin design and everyday Git, PR, or CI workflows.",
+    "owner": "intellij-plugin-development",
+    "role": "specialty",
+    "scope": "Build, test, package, and diagnose IntelliJ Platform plugins.",
+    "workstream": "intellij-plugin-development"
   }
 }

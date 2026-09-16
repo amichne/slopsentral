@@ -20,8 +20,8 @@ where to read next. These maps are routing aids, not source-of-truth docs.
 - Keep any staleness marker append-only for hooks and truncate-only for the
   refresh workflow.
 - Never mutate source files as part of navigation refresh.
-- Route through `knowledge/index.md` when present; Code Knowledge Base owns
-  source-bound concept docs and impact checks. Engineering Baseline owns durable
+- Route through `knowledge/index.md` when present; The code-knowledge-base skill owns
+  source-bound concept docs and impact checks. Repository instructions own durable
   invariant rules. Generated maps add navigation, never replace either authority.
 
 ## Workflow

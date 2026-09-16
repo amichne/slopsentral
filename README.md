@@ -3,12 +3,30 @@
 Slopsentral is the canonical marketplace for reusable local AI tooling skills,
 plugins, hooks, agents, concepts, and workflow profiles.
 
-## Choose a Workstream
+## Choose a Plugin
 
-Start with the [generated catalog](source/CATALOG.md). The
-[architecture](source/ARCHITECTURE.md) defines one owner per primitive, and the
-[migration guide](source/MIGRATION.md) records renamed and retired entrypoints.
-[Upstream provenance](source/UPSTREAM.md) records the Astra and skill reviews.
+Start with **Software Engineering** for code changes, tests, Git, PRs, and CI.
+Keep it selected for your repository and add a specialty when the task needs one:
+
+| Task | Add or choose |
+| --- | --- |
+| Kotlin and Gradle | Kotlin Engineering |
+| IntelliJ Platform plugins | IntelliJ Plugin Development, plus Kotlin Engineering for Kotlin code |
+| Pkl configuration | Pkl Configuration |
+| OpenAPI or JSON Schema | API Contracts |
+| Docs, proposals, runbooks, or documentation sites | Technical Writing; sufficient on its own for writing tasks |
+| Generated code indexes and knowledge documents | Repository Knowledge; optional for ordinary coding |
+| Skills, agents, hooks, and plugins | Agent Tooling |
+| CLI products, shell completions, and TUIs | CLI Development |
+
+Describe the result you want. The agent selects the relevant skills from those
+plugins; you do not need to name each skill. Installation does not authorize a
+push, PR, or deployment. Required Skill Read Policy is an advanced opt-in.
+
+See the [generated catalog](source/CATALOG.md) for exact plugin IDs and contents,
+the [migration guide](source/MIGRATION.md) before replacing older installations,
+and the [architecture](source/ARCHITECTURE.md) for ownership contracts.
+[Upstream provenance](source/UPSTREAM.md) records the guidance behind the design.
 
 Inspect a profile without installing or executing anything:
 
@@ -49,10 +67,10 @@ and launch Codex through the context command:
 slopsentral context launch --repo /path/to/repository
 ```
 
-This selects `kotlin-repo-default`, including Kotlin engineering, code knowledge
-base, and the existing development and delivery tools. It preserves other
+This selects `kotlin-repo-default`: Software Engineering and Kotlin Engineering.
+Repository Knowledge remains an optional addition. It preserves other
 configured plugins and applies the repository configuration before Codex starts.
-The Developer Tools plugin also supplies a startup hook for desktop sessions;
+The Software Engineering plugin also supplies a startup hook for desktop sessions;
 configuration first written by that hook takes effect in the next session.
 See [automatic repository activation](docs/profile-lifecycle.md#automatic-repository-activation)
 for setup, read-only inspection, and rollback.
@@ -129,7 +147,7 @@ Install the complete Pkl workflow from the configured `slopsentral`
 marketplace:
 
 ```bash
-codex plugin add pkl-engineering@slopsentral
+codex plugin add pkl-configuration@slopsentral
 ```
 
 The plugin composes independently installable skills for engineering,

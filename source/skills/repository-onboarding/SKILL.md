@@ -12,8 +12,8 @@ or local cache copies.
 ## Operating Contract
 
 - Prefer remote marketplace sources over copying plugin payloads into the repo.
-- Default to every marketplace already configured in the active runtime unless
-  the user or repository policy narrows the set.
+- Discover configured marketplaces, then select only capabilities needed by the
+  repository. A configured marketplace does not imply installing all its plugins.
 - Keep setup evidence in a checked-in reference file. Use
   `.agents/marketplaces.md` unless the repo already has a documented equivalent.
 - Treat installed plugin directories and local caches as observations, not
@@ -35,8 +35,9 @@ or local cache copies.
    ref when available, and whether the source is remote or local-only.
 
 3. Choose the default setup scope.
-   Include the full configured marketplace set by default. Narrow the set only
-   when the user, repo instructions, or security policy gives a concrete reason.
+   For code work, start with Software Engineering and add the language, platform,
+   or output specialties needed by the repository. Writing-only setup can use
+   Technical Writing alone. Keep knowledge generation and skill-read policy opt-in.
 
 4. Write the checked-in reference.
    Create or update the repo's marketplace reference with the configured
@@ -58,8 +59,8 @@ or local cache copies.
 ## Completion Criteria
 
 - The repo has a checked-in marketplace reference.
-- The reference covers every configured marketplace unless an exclusion is
-  explicitly justified.
+- The reference distinguishes discovered marketplaces from selected plugins
+  and explains how each selection supports the repository.
 - Core plugins and hooks are enabled from marketplace sources, not vendored
   payloads.
 - Structured setup data has an owning schema, parser, generator, or validation

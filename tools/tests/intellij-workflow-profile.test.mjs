@@ -14,7 +14,7 @@ function plugin(name) {
 }
 
 test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () => {
-  const intellij = plugin("intellij-engineering");
+  const intellij = plugin("intellij-plugin-development");
   assert.deepEqual(intellij.skills.map(({ name }) => name), [
     "intellij-plugin-delivery",
     "ide-diagnostics-mcp",
@@ -27,11 +27,9 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
 
   const profile = readJson("source/profiles/intellij-plugin-default.json");
   assert.deepEqual(profile.plugins, [
-    "engineering-baseline",
+    "software-engineering",
     "kotlin-engineering",
-    "developer-tools",
-    "effective-delivery",
-    "intellij-engineering",
+    "intellij-plugin-development",
   ]);
   assert.equal(profile.hookPolicy.mode, "ADVISORY");
 

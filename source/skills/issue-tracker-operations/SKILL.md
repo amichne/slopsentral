@@ -1,11 +1,11 @@
 ---
 name: "issue-tracker-operations"
-description: "Use when Effective Delivery must select GitHub or Jira as an issue backend, read an issue, inspect direct blockers, or report exact backend capabilities."
+description: "Use when asked to read GitHub or Jira issues, inspect direct blockers, select an issue backend, or report exact backend capabilities."
 ---
 
 # Issue Tracker Operations
 
-Use this skill for backend-neutral issue reads in Effective Delivery. Use the
+Use this skill for backend-neutral issue reads. Use the
 facade instead of branching on provider commands in the model.
 
 ## Operating Contract

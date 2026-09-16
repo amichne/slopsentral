@@ -41,3 +41,21 @@ commands use mise exec or mise run without requiring prompt-driven activation.
 [FAQ](https://mise.jdx.dev/faq.html) and
 [troubleshooting](https://mise.jdx.dev/troubleshooting.html) resolve conflicting
 activation advice in the upstream skill. The installed version remains decisive.
+
+## Task-Oriented Plugin Review
+
+Reviewed 2026-09-16:
+
+- [OpenAI best practices](https://learn.chatgpt.com/guides/best-practices):
+  focused skill triggers, relevant context, durable repository guidance, and
+  verification matched to the task.
+- [Iterating development workflows with Codex](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex):
+  adapt workflow artifacts to the project, improve existing owners, and separate
+  authored plans from observed evidence.
+
+Local application: one everyday engineering installation, optional specialties,
+focused existing skills, and no automatic publication from task descriptions.
+The catalog consolidation is our design decision, not an OpenAI-mandated plugin
+layout. The example harness files and approval ceremonies are optional; this
+marketplace does not create them for every task. Existing authorization remains
+valid. No upstream skill or example prompt is copied into canonical source.

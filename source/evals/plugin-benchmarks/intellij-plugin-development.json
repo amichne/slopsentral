@@ -5,7 +5,7 @@
   "schemaVersion": 2,
   "version": 2,
   "targetKind": "plugin",
-  "targetName": "intellij-engineering",
+  "targetName": "intellij-plugin-development",
   "runner": {
     "type": "codex-cli",
     "model": "gpt-6-astra",
@@ -54,7 +54,7 @@
         "type": "SKILL",
         "name": "intellij-plugin-delivery"
       },
-      "userInput": "Use IntelliJ Engineering in this isolated worktree. Make the requested existing-plugin maintenance change, run focused proof, and build the compatible plugin ZIP without unrelated upgrades. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use IntelliJ Plugin Development in this isolated worktree. Make the requested existing-plugin maintenance change, run focused proof, and build the compatible plugin ZIP without unrelated upgrades. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run records repository instructions and checked-in build, descriptor, and test contracts.",
         "No scaffold or incidental version migration replaces the project.",
@@ -73,7 +73,7 @@
         "type": "SKILL",
         "name": "intellij-psi-indexing"
       },
-      "userInput": "Use IntelliJ Engineering in this isolated worktree. Fix reference indexing so Java or Scala PSI targets do not abort later Kotlin rows, and prove the focused behavior. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use IntelliJ Plugin Development in this isolated worktree. Fix reference indexing so Java or Scala PSI targets do not abort later Kotlin rows, and prove the focused behavior. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The scanner narrows the resolved PSI type before language-specific access.",
         "Unsupported languages do not terminate the batch.",
@@ -92,7 +92,7 @@
         "type": "SKILL",
         "name": "ide-diagnostics-mcp"
       },
-      "userInput": "Use IntelliJ Engineering read-only diagnostics to compare a running IDE before and during one completion slowdown, then emit one concrete method trace plan. Do not edit VM options, install software, or otherwise modify remote state.",
+      "userInput": "Use IntelliJ Plugin Development read-only diagnostics to compare a running IDE before and during one completion slowdown, then emit one concrete method trace plan. Do not edit VM options, install software, or otherwise modify remote state.",
       "successChecklist": [
         "The run records bounded before/during diagnostics MCP samples.",
         "CPU, thread-state, blocked/waited, native, and truncation evidence remain explicit.",
@@ -111,7 +111,7 @@
         "type": "SKILL",
         "name": "intellij-platform-testing"
       },
-      "userInput": "Use IntelliJ Engineering in this isolated worktree. Add one non-interactive UI integration test for a real plugin flow and retain failure artifacts without touching the daily IDE. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use IntelliJ Plugin Development in this isolated worktree. Add one non-interactive UI integration test for a real plugin flow and retain failure artifacts without touching the daily IDE. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The repository-owned Starter and Driver task installs the exact built plugin into an isolated IDE.",
         "The test uses semantic selectors and asserts the visible result.",
@@ -130,7 +130,7 @@
         "type": "SKILL",
         "name": "intellij-platform-integrations"
       },
-      "userInput": "Use IntelliJ Engineering in this isolated worktree. Implement idempotent External System import plus one external task execution and prove reimport, removal, cancellation, and failure boundaries. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use IntelliJ Plugin Development in this isolated worktree. Implement idempotent External System import plus one external task execution and prove reimport, removal, cancellation, and failure boundaries. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "External identity, acquisition, translation, and task execution stay separate.",
         "Unchanged, changed, and removal reimports reconcile only owned state.",

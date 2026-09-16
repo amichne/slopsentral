@@ -48,18 +48,16 @@ const packagedProfiles = [
 ];
 
 const packagedPlugins = [
-  "agent-platform-authoring",
+  "agent-tooling",
   "api-contracts",
-  "code-knowledge-base",
-  "developer-tools",
-  "effective-delivery",
-  "engineering-baseline",
-  "intellij-engineering",
+  "cli-development",
+  "intellij-plugin-development",
   "kotlin-engineering",
-  "pkl-engineering",
+  "pkl-configuration",
+  "repository-knowledge",
   "skill-read-policy",
-  "terminal-ui-design",
-  "writing",
+  "software-engineering",
+  "technical-writing"
 ];
 
 const requiredAssets = [

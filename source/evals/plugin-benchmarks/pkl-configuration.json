@@ -5,7 +5,7 @@
   "schemaVersion": 2,
   "version": 2,
   "targetKind": "plugin",
-  "targetName": "pkl-engineering",
+  "targetName": "pkl-configuration",
   "runner": {
     "type": "codex-cli",
     "model": "gpt-6-astra",

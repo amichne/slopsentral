@@ -5,7 +5,7 @@
   "schemaVersion": 2,
   "version": 2,
   "targetKind": "plugin",
-  "targetName": "code-knowledge-base",
+  "targetName": "repository-knowledge",
   "runner": {
     "type": "codex-cli",
     "model": "gpt-6-astra",
@@ -48,13 +48,13 @@
       ],
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "code-knowledge-base"
+        "name": "repository-knowledge"
       },
-      "userInput": "Use Code Knowledge Base in this isolated Kotlin repository worktree. Create or refresh one bounded source-backed Kotlin or Gradle OKF concept with signature evidence, code_sources impact checks, and drift proof. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Repository Knowledge in this isolated Kotlin repository worktree. Create or refresh one bounded source-backed Kotlin or Gradle OKF concept with signature evidence, code_sources impact checks, and drift proof. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The knowledge artifact retains concrete code_sources or signature evidence.",
         "The focused code knowledge check and relevant documentation check pass.",
-        "The result stays inside the Code Knowledge Base boundary and does not become generic prose."
+        "The result stays inside the Repository Knowledge boundary and does not become generic prose."
       ]
     }
   ]

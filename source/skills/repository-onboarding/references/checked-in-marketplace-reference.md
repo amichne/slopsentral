@@ -15,8 +15,8 @@ The reference should include:
 - Purpose: why the repo uses marketplace-driven tooling.
 - Marketplace sources: every configured marketplace, its provider, source URL or
   local path, branch or ref when known, and provider entrypoint.
-- Default scope: state that setup applies to the full configured marketplace set
-  unless listed exclusions narrow it.
+- Default scope: name the selected plugins and the repository tasks they support.
+  Marketplace discovery does not imply installing every available plugin.
 - Expected plugins: plugin names, marketplace names, and why each is needed for
   this repo.
 - Local setup notes: repo-specific instruction files, hook configs, or runtime
@@ -37,18 +37,19 @@ plugin payloads and runtime caches are not source-of-truth files.
 
 | Provider | Marketplace | Source | Entrypoint | Scope |
 |---|---|---|---|---|
-| Codex | slopsentral | https://github.com/amichne/slopsentral/tree/harness/codex | .agents/plugins/marketplace.json | all configured plugins |
-| GitHub | slopsentral | https://github.com/amichne/slopsentral/tree/harness/github-copilot | .github/plugin/marketplace.json | all configured plugins |
+| Codex | slopsentral | https://github.com/amichne/slopsentral/tree/harness/codex | .agents/plugins/marketplace.json | selected plugins only |
+| GitHub | slopsentral | https://github.com/amichne/slopsentral/tree/harness/github-copilot | .github/plugin/marketplace.json | selected plugins only |
 
 ## Expected Plugins
 
 | Plugin | Marketplace | Purpose | Status |
 |---|---|---|---|
-| engineering-baseline | slopsentral | Semantic ratchets, type and schema design, TDD, onboarding, and hooks | installed |
+| software-engineering | slopsentral | Everyday implementation, testing, Git, PRs, and CI | pending verification |
 
 ## Exclusions
 
-No configured marketplaces are excluded by default.
+Add only specialties this repository needs. Repository Knowledge and required
+skill-read policy are optional. Record installation state from observation.
 
 ## Refresh
 

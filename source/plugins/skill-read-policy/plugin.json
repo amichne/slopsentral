@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "skill-read-policy",
-  "version": "1.0.0",
-  "description": "Repository-opt-in enforcement for explicitly declared required skill reads.",
+  "version": "1.0.1",
+  "description": "Advanced: enforce repository-declared required skill reads.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -25,11 +25,11 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install only in repositories that declare a non-empty required-skill-read requirements contract.",
-    "notFor": "Default engineering, agent authoring without required reads, or global always-on policy.",
-    "owner": "intelligence-source-graph-platform",
-    "role": "skill-read-policy",
-    "scope": "Explicit repository policy requiring named skills to be read before tool use.",
+    "dailyDriver": "Opt in only when a repository explicitly requires skill-read policy enforcement.",
+    "notFor": "Everyday engineering, default setup, and general skill discovery.",
+    "owner": "skill-read-policy",
+    "role": "advanced",
+    "scope": "Advanced: enforce repository-declared required skill reads.",
     "workstream": "skill-read-policy"
   }
 }

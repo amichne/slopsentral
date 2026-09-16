@@ -94,6 +94,9 @@ export function auditCatalog(catalog) {
   }
   for (const plugin of catalog.plugins) {
     if (plugin.metadata?.workstream !== plugin.name) findings.push(`${plugin.name}: metadata.workstream must equal its plugin name`);
+    if (!['default', 'specialty', 'advanced'].includes(plugin.metadata?.role)) {
+      findings.push(`${plugin.name}: metadata.role must be default, specialty, or advanced`);
+    }
     if (plugin.files.some(file => file !== 'plugin.json')) findings.push(`${plugin.name}: plugin directories are composition-only`);
     const closure = pluginClosure(catalog, plugin);
     findings.push(...closure.findings);
@@ -107,6 +110,9 @@ export function auditCatalog(catalog) {
       installedBy.push(plugin.name);
       owners.set(id, installedBy);
     }
+  }
+  if (catalog.plugins.filter(plugin => plugin.metadata?.role === 'default').length !== 1) {
+    findings.push('catalog must expose exactly one default plugin');
   }
   for (const [id, installedBy] of owners) {
     if (installedBy.length > 1) {
@@ -152,17 +158,24 @@ export function renderCatalog(catalog) {
   const report = catalogReport(catalog);
   const lines = ['# Catalog', '',
     'Generated from canonical manifests by `node tools/catalog.mjs --write`.',
-    'Choose a workstream by its outcome. A profile composes workstreams; it does not copy them.', '',
-    '## Workstreams', ''];
-  for (const plugin of report.plugins) {
-    lines.push(`### ${plugin.name}`, '', plugin.description, '', `Outside this workstream: ${plugin.notFor}`, '');
-    for (const field of fields) {
-      const refs = plugin.primitives.filter(id => id.startsWith({skills:'SKILL/', agents:'AGENT/',hooks:'HOOK/',instructions:'INSTRUCTION/'}[field]));
-      if (refs.length) lines.push(`**${field[0].toUpperCase() + field.slice(1)}:** ${refs.map(id => {
-        const [type, name] = id.split('/');
-        const ref = catalog.marketplace[field].find(r => r.type === type && r.name === name);
-        return `[${name}](${ref.path}${type === 'SKILL' ? '/SKILL.md' : ''})`;
-      }).join(', ')}.`, '');
+    'For code work, start with Software Engineering and add only the specialties your task needs.',
+    'Keep that selection for the repository. Describe the outcome; the agent selects relevant skills within the installed plugins.',
+    'Installing a plugin makes its capabilities available; it does not require every skill to run or authorize publication.', '',
+    'For documentation alone, choose Technical Writing. Repository Knowledge is optional artifact generation.',
+    'Profiles provide repeatable setup selections. See [migration](MIGRATION.md) before replacing older installations.', ''];
+  for (const [role, heading] of [['default', 'Start here'], ['specialty', 'Specialties'], ['advanced', 'Advanced repository policy']]) {
+    lines.push(`## ${heading}`, '');
+    for (const plugin of report.plugins.filter(p => catalog.plugins.find(source => source.name === p.name).metadata.role === role)) {
+      const manifest = catalog.plugins.find(source => source.name === plugin.name);
+      lines.push(`### ${plugin.name}`, '', plugin.description, '', manifest.metadata.dailyDriver, '', `Outside this plugin: ${plugin.notFor}`, '');
+      for (const field of fields) {
+        const refs = plugin.primitives.filter(id => id.startsWith({skills:'SKILL/', agents:'AGENT/',hooks:'HOOK/',instructions:'INSTRUCTION/'}[field]));
+        if (refs.length) lines.push(`**${field[0].toUpperCase() + field.slice(1)}:** ${refs.map(id => {
+          const [type, name] = id.split('/');
+          const ref = catalog.marketplace[field].find(r => r.type === type && r.name === name);
+          return `[${name}](${ref.path}${type === 'SKILL' ? '/SKILL.md' : ''})`;
+        }).join(', ')}.`, '');
+      }
     }
   }
   lines.push('## Profiles', '');
@@ -171,7 +184,7 @@ export function renderCatalog(catalog) {
     lines.push(`- [${profile.name}](profiles/${profile.name}.json): ${profile.plugins.join(' + ')}. ${view.totals.instructionWords} instruction words.`, '');
   }
   lines.push('## Standalone skills', '',
-    'These optional specialties are outside the default workstreams. They remain independently installable.', '',
+    'Advanced alternatives outside the plugin chooser. They require explicit standalone setup; normal plugin selection does not depend on installing individual skills.', '',
     report.standaloneSkills.map(name => `[${name}](skills/${name}/SKILL.md)`).join(', ') + '.', '',
     '## Evidence', '',
     'Counts describe source instruction text, not actual prompt loading or token use.',

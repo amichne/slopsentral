@@ -1,0 +1,53 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "cli-development",
+  "version": "1.0.0",
+  "description": "Build command-line tools, shell completions, and terminal interfaces.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/shell-session-integration",
+      "name": "shell-session-integration"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/cli-creator",
+      "name": "cli-creator"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/terminal-ui-design",
+      "name": "terminal-ui-design"
+    }
+  ],
+  "agents": [],
+  "instructions": [],
+  "hooks": [],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Choose when building a CLI, shell integration, completion, or interactive terminal UI.",
+    "notFor": "Everyday Git and shell use, repository data queries, and CI operations.",
+    "role": "specialty",
+    "scope": "Build command-line tools, shell completions, and terminal interfaces.",
+    "workstream": "cli-development",
+    "owner": "cli-development"
+  }
+}

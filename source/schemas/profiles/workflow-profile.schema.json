@@ -66,9 +66,9 @@
       "items": {
         "type": "string",
         "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-        "examples": ["engineering-baseline"]
+        "examples": ["software-engineering"]
       },
-      "examples": [["engineering-baseline", "developer-tools"]]
+      "examples": [["software-engineering"]]
     },
     "standaloneSkills": {
       "type": "array",
@@ -266,7 +266,7 @@
       "entrypoint": ".agents/plugins/marketplace.json",
       "scope": "plugins in this workflow profile"
     }],
-    "plugins": ["engineering-baseline", "developer-tools"],
+    "plugins": ["software-engineering"],
     "standaloneSkills": [],
     "hookPolicy": {"type": "HOOK_POLICY", "mode": "ADVISORY"},
     "reconciliation": {"type": "PLUGIN_RECONCILIATION", "unselected": "DISABLE_UNSELECTED"},

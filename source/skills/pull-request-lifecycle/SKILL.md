@@ -1,6 +1,6 @@
 ---
 name: "pull-request-lifecycle"
-description: "Use when work needs a branch, commit, push, PR, check babysitting, CI repair, or when a task, ticket, subtask, or direct message defines or links a deliverable that must be delivered through a green PR."
+description: "Use when asked to push a branch, open or update a pull request, or follow PR checks to completion; also when an applicable repository policy requires PR delivery. Local edits and commits use git-change-flow; standalone CI repair uses github-ci-operations."
 ---
 
 # Pull Request Lifecycle
@@ -25,7 +25,7 @@ Related primitives in this repository:
   or overwrite them unless the user asks for that exact operation.
 - Branch before commit-worthy work when currently on `main`, `master`, `trunk`,
   or another shared branch.
-- When a task, ticket, subtask, or direct message defines a deliverable or links a file containing the deliverable, raise or update a pull request and follow its latest head until green.
+- Derive publication authority from the requested end state or applicable repository policy. A task description, ticket, or linked deliverable alone does not authorize publication. Preserve explicit local-only scope; do not request permission again for publication already authorized.
 - Run the narrowest local validation that corresponds to the changed surface
   before pushing.
 - Open PRs from the actual head branch and target the nearest intended base, not
@@ -45,8 +45,8 @@ Related primitives in this repository:
 1. Orient.
    Identify the current branch, upstream, base branch, changed files, existing
    PR number if any, and requested end state: local branch, pushed branch, draft
-   PR, ready PR, or green PR. A defined or linked deliverable defaults the end
-   state to a green PR.
+   PR, ready PR, or green PR. Read linked material as context and acceptance
+   criteria; do not infer a publication request from the existence of a deliverable.
 
 2. Isolate the branch.
    If the task is publishable and the checkout is on a shared branch, create a
@@ -132,5 +132,5 @@ Report:
 - Local validation was run or the missing tool/environment is named.
 - Remote checks were read after the latest push, and green claims are backed by
   structured check state rather than expectation.
-- Work with a defined or linked deliverable has a pull request whose latest head
-  is green.
+- The requested publication scope is satisfied. When green checks are requested,
+  evidence refers to the latest PR head; otherwise report pending checks accurately.

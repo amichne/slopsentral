@@ -5,7 +5,7 @@
   "owner": {
     "name": "Amichne"
   },
-  "description": "Outcome-focused engineering skills, composed once into provider-neutral plugins and workflow profiles.",
+  "description": "Start with Software Engineering, then add task-specific plugins for your language, platform, or deliverable.",
   "management": {
     "type": "MANAGEMENT_POLICY",
     "mode": "CURATED"
@@ -13,87 +13,52 @@
   "plugins": [
     {
       "type": "PLUGIN_ENTRY",
-      "name": "engineering-baseline",
+      "name": "software-engineering",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
-        "name": "engineering-baseline",
+        "name": "software-engineering",
         "source": {
           "type": "LOCAL_SOURCE",
-          "path": "./plugins/engineering-baseline"
+          "path": "./plugins/software-engineering"
         },
-        "version": "1.1.2"
+        "version": "1.0.0"
       },
-      "description": "Engineering outcomes, semantic design, and verification.",
+      "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
       "tags": [
+        "actions",
+        "automation",
+        "backend",
+        "ci",
+        "cli",
         "core",
         "daily-driver",
+        "dependencies",
         "design",
+        "duration",
+        "evidence",
         "failures",
+        "git",
+        "github",
         "governance",
         "hooks",
         "instructions",
+        "issues",
+        "jira",
+        "local-development",
+        "mise",
         "onboarding",
+        "optimization",
         "proof",
+        "pull-requests",
+        "release",
         "schemas",
         "semantic-design",
+        "shell",
         "skills",
         "tdd",
         "testing",
-        "typestate"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "pkl-engineering",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "pkl-engineering",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/pkl-engineering"
-        },
-        "version": "1.0.0"
-      },
-      "description": "Typed Pkl configuration and its toolchain.",
-      "tags": [
-        "configuration",
-        "hooks",
-        "lsp",
-        "patterns",
-        "pkl",
-        "rendering",
-        "resources",
-        "schemas",
-        "skills",
-        "testing",
-        "tooling",
-        "type-safety",
-        "validation"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "api-contracts",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "api-contracts",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/api-contracts"
-        },
-        "version": "1.0.0"
-      },
-      "description": "Machine-readable boundary contracts.",
-      "tags": [
-        "agents",
-        "api",
-        "boundary",
-        "contracts",
-        "governance",
-        "openapi",
-        "schemas",
-        "skills",
-        "validation"
+        "typestate",
+        "workflow-graph"
       ]
     },
     {
@@ -106,9 +71,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "1.2.0"
+        "version": "1.2.1"
       },
-      "description": "Kotlin implementation, API design, and compiler-backed review.",
+      "description": "Design, implement, verify, and review Kotlin and Gradle changes.",
       "tags": [
         "api-design",
         "best-practices",
@@ -142,69 +107,151 @@
     },
     {
       "type": "PLUGIN_ENTRY",
-      "name": "developer-tools",
+      "name": "intellij-plugin-development",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
-        "name": "developer-tools",
+        "name": "intellij-plugin-development",
         "source": {
           "type": "LOCAL_SOURCE",
-          "path": "./plugins/developer-tools"
-        },
-        "version": "1.1.0"
-      },
-      "description": "Local command-line tools and repository work.",
-      "tags": [
-        "cli",
-        "git",
-        "local-development",
-        "mise",
-        "shell"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "effective-delivery",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "effective-delivery",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/effective-delivery"
-        },
-        "version": "1.0.2"
-      },
-      "description": "Hosted delivery from issue to verified pull request and release evidence.",
-      "tags": [
-        "actions",
-        "automation",
-        "backend",
-        "ci",
-        "dependencies",
-        "duration",
-        "evidence",
-        "github",
-        "issues",
-        "jira",
-        "optimization",
-        "pull-requests",
-        "release",
-        "skills",
-        "workflow-graph"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "agent-platform-authoring",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "agent-platform-authoring",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/agent-platform-authoring"
+          "path": "./plugins/intellij-plugin-development"
         },
         "version": "1.0.0"
       },
-      "description": "Reusable agent tooling and its publication contracts.",
+      "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
+      "tags": [
+        "ci",
+        "delivery",
+        "gradle",
+        "intellij",
+        "jetbrains",
+        "kotlin",
+        "plugin-development",
+        "psi",
+        "skills",
+        "testing",
+        "ui-testing",
+        "verification"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "pkl-configuration",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "pkl-configuration",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/pkl-configuration"
+        },
+        "version": "1.0.0"
+      },
+      "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
+      "tags": [
+        "configuration",
+        "hooks",
+        "lsp",
+        "patterns",
+        "pkl",
+        "rendering",
+        "resources",
+        "schemas",
+        "skills",
+        "testing",
+        "tooling",
+        "type-safety",
+        "validation"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "api-contracts",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "api-contracts",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/api-contracts"
+        },
+        "version": "1.0.1"
+      },
+      "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
+      "tags": [
+        "agents",
+        "api",
+        "boundary",
+        "contracts",
+        "governance",
+        "openapi",
+        "schemas",
+        "skills",
+        "validation"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "technical-writing",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "technical-writing",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/technical-writing"
+        },
+        "version": "1.0.0"
+      },
+      "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
+      "tags": [
+        "controlled-language",
+        "docs",
+        "glossary",
+        "prose",
+        "semantics",
+        "technical-writing",
+        "terminology"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "repository-knowledge",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "repository-knowledge",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/repository-knowledge"
+        },
+        "version": "1.0.0"
+      },
+      "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+      "tags": [
+        "docs",
+        "generation",
+        "gradle",
+        "hooks",
+        "impact",
+        "knowledge-base",
+        "kotlin",
+        "okf",
+        "repository",
+        "signatures",
+        "skills",
+        "source-backed",
+        "validation"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "agent-tooling",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "agent-tooling",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/agent-tooling"
+        },
+        "version": "1.0.0"
+      },
+      "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
       "tags": [
         "agents",
         "authoring",
@@ -221,31 +268,26 @@
     },
     {
       "type": "PLUGIN_ENTRY",
-      "name": "code-knowledge-base",
+      "name": "cli-development",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
-        "name": "code-knowledge-base",
+        "name": "cli-development",
         "source": {
           "type": "LOCAL_SOURCE",
-          "path": "./plugins/code-knowledge-base"
+          "path": "./plugins/cli-development"
         },
-        "version": "1.0.1"
+        "version": "1.0.0"
       },
-      "description": "Source-backed code knowledge and navigation.",
+      "description": "Build command-line tools, shell completions, and terminal interfaces.",
       "tags": [
-        "docs",
-        "generation",
-        "hooks",
-        "impact",
-        "kotlin",
-        "gradle",
-        "knowledge-base",
-        "okf",
-        "repository",
-        "signatures",
-        "skills",
-        "source-backed",
-        "validation"
+        "accessibility",
+        "cli",
+        "completion",
+        "design",
+        "shell",
+        "terminal",
+        "tui",
+        "user-interface"
       ]
     },
     {
@@ -258,88 +300,15 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/skill-read-policy"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
-      "description": "Repository-opt-in enforcement for explicitly declared required skill reads.",
+      "description": "Advanced: enforce repository-declared required skill reads.",
       "tags": [
         "governance",
         "hooks",
         "policy",
         "repository",
         "skills"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "terminal-ui-design",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "terminal-ui-design",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/terminal-ui-design"
-        },
-        "version": "1.0.0"
-      },
-      "description": "Human-facing terminal interaction.",
-      "tags": [
-        "accessibility",
-        "cli",
-        "design",
-        "terminal",
-        "tui",
-        "user-interface"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "writing",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "writing",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/writing"
-        },
-        "version": "1.0.0"
-      },
-      "description": "Source-grounded prose and technical documentation.",
-      "tags": [
-        "controlled-language",
-        "docs",
-        "glossary",
-        "prose",
-        "semantics",
-        "technical-writing",
-        "terminology"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "intellij-engineering",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "intellij-engineering",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/intellij-engineering"
-        },
-        "version": "1.0.1"
-      },
-      "description": "IntelliJ Platform plugin behavior and lifecycle.",
-      "tags": [
-        "ci",
-        "delivery",
-        "gradle",
-        "intellij",
-        "jetbrains",
-        "kotlin",
-        "plugin-development",
-        "psi",
-        "skills",
-        "testing",
-        "ui-testing",
-        "verification"
       ]
     }
   ],

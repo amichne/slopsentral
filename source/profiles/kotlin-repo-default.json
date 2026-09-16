@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "kotlin-repo-default",
-  "description": "Kotlin repository workflow with engineering guidance, source-backed knowledge and navigation, local developer tools, and delivery. Automatically selected by a repository-root settings.gradle.kts.",
+  "description": "Everyday engineering plus Kotlin and Gradle. Selected by a repository-root settings.gradle.kts; repository knowledge generation is optional.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -14,11 +14,8 @@
     }
   ],
   "plugins": [
-    "engineering-baseline",
-    "kotlin-engineering",
-    "developer-tools",
-    "effective-delivery",
-    "code-knowledge-base"
+    "software-engineering",
+    "kotlin-engineering"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

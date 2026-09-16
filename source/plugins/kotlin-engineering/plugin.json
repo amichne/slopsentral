@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "kotlin-engineering",
-  "version": "1.2.0",
-  "description": "Kotlin implementation, API design, and compiler-backed review.",
+  "version": "1.2.1",
+  "description": "Design, implement, verify, and review Kotlin and Gradle changes.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -135,13 +135,13 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for domain modeling, API ownership, branching, observability, library boundaries, Gradle evidence, and focused Kotlin review.",
+    "dailyDriver": "Choose for Kotlin invariants, API design, application libraries, observability, review, and Gradle verification.",
     "companionProfile": "kotlin-repo-default",
-    "deliveryCompanion": "effective-delivery",
-    "notFor": "Hosted delivery, generic shell configuration, and IntelliJ-specific lifecycle or PSI mechanics.",
+    "deliveryCompanion": "software-engineering",
+    "notFor": "Everyday Git and hosted delivery, shell integration, and IntelliJ-specific plugin mechanics.",
     "owner": "kotlin-engineering",
-    "role": "kotlin-engineering",
-    "scope": "Domain modeling, API ownership, branching, observability, library boundaries, Gradle evidence, and focused Kotlin review.",
+    "role": "specialty",
+    "scope": "Design, implement, verify, and review Kotlin and Gradle changes.",
     "workstream": "kotlin-engineering"
   }
 }

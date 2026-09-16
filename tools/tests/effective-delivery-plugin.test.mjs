@@ -16,26 +16,13 @@ function names(manifest, field) {
   return (manifest[field] ?? []).map((entry) => entry.name);
 }
 
-test("effective delivery keeps explicit CI observation without automatic hooks", () => {
-  const git = readJson("source/plugins/developer-tools/plugin.json");
-  const delivery = readJson("source/plugins/effective-delivery/plugin.json");
-
-  assert.deepEqual(names(git, "skills"), [
-    "git-change-flow",
-    "shell-script-safety",
-    "cli-data-pipelines",
-    "shell-session-integration",
-    "mise-project-tooling",
-    "cli-creator",
-  ]);
-  assert.deepEqual(names(git, "hooks"), ["repository-profile"]);
-  assert.deepEqual(names(delivery, "skills"), [
-    "github-ci-operations",
-    "issue-tracker-operations",
-    "pull-request-lifecycle",
-    "delivery-pipeline-design",
-  ]);
-  assert.deepEqual(names(delivery, "hooks"), []);
+test("software engineering keeps explicit CI observation without automatic hooks", () => {
+  const engineering = readJson("source/plugins/software-engineering/plugin.json");
+  for (const skill of ["git-change-flow", "github-ci-operations", "issue-tracker-operations",
+    "pull-request-lifecycle", "delivery-pipeline-design"]) {
+    assert.ok(names(engineering, "skills").includes(skill));
+  }
+  assert.deepEqual(names(engineering, "hooks"), ["agents-md-turn-refresh", "repository-profile"]);
   assert.equal(
     fs.existsSync(path.join(repoRoot, "source/skills/github-ci-operations/scripts/ci_wait_for_actions")),
     true,
@@ -52,19 +39,16 @@ test("effective delivery keeps explicit CI observation without automatic hooks",
 test("default delivery composition does not activate automatic CI hooks", () => {
   const marketplace = readJson("source/adaptable.marketplace.json");
   const profile = readJson("source/profiles/kotlin-repo-default.json");
-  const benchmark = readJson("source/evals/plugin-benchmarks/effective-delivery.json");
+  const benchmark = readJson("source/evals/plugin-benchmarks/software-engineering.json");
 
-  assert.ok(marketplace.plugins.some((entry) => entry.name === "effective-delivery"));
+  assert.ok(marketplace.plugins.some((entry) => entry.name === "software-engineering"));
   assert.deepEqual(profile.plugins, [
-    "engineering-baseline",
+    "software-engineering",
     "kotlin-engineering",
-    "developer-tools",
-    "effective-delivery",
-    "code-knowledge-base",
   ]);
   assert.equal(profile.hookPolicy.mode, "ADVISORY");
   assert.equal(profile.plugins.includes("skill-read-policy"), false);
-  assert.equal(benchmark.targetName, "effective-delivery");
+  assert.equal(benchmark.targetName, "software-engineering");
 });
 
 test("source validation executes the issue backend contracts", () => {

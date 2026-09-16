@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "intellij-plugin-default",
-  "description": "IntelliJ Platform engineering workflow composed from baseline engineering, Kotlin and Gradle correctness, local developer tools, effective delivery, and focused IntelliJ skills.",
+  "description": "Everyday engineering, Kotlin and Gradle, and IntelliJ Platform plugin development.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -14,11 +14,9 @@
     }
   ],
   "plugins": [
-    "engineering-baseline",
+    "software-engineering",
     "kotlin-engineering",
-    "developer-tools",
-    "effective-delivery",
-    "intellij-engineering"
+    "intellij-plugin-development"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

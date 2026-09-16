@@ -52,7 +52,7 @@
       "caseId": "source-graph-edits-use-canonical-source-and-gates",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-platform-authoring"
+        "name": "agent-tooling"
       },
       "satisfiedAllowedActions": [
         "Edit source-owned primitives, plugin manifests, schemas, evals, or source validation tools.",
@@ -80,7 +80,7 @@
       "satisfiedAllowedActions": [
         "Declare one check specification with working directory, exact command, controlled inputs, expected RED failure, and GREEN criterion.",
         "Observe the focused check fail for the intended missing behavior, then pass the same check specification after the narrow implementation.",
-        "Use the standalone tdd primitive from engineering-baseline without loading Git or CI delivery workflows that were not requested."
+        "Use the standalone tdd primitive from software-engineering without loading Git or CI delivery workflows that were not requested."
       ],
       "satisfiedVerificationEvidence": [
         "RED and GREEN cite the same working directory, command, controlled inputs, and meaningful environment.",
@@ -89,7 +89,7 @@
       "avoidedForbiddenActions": [
         "Count command-not-found, dependency setup, malformed check syntax, timeout, permission, or unrelated failures as RED.",
         "Change the implementation before observing an intended focused failure.",
-        "Load developer-tools only because the TDD oracle is invoked from a shell."
+        "Load software-engineering only because the TDD oracle is invoked from a shell."
       ],
       "notes": "A passing run uses the generic tdd primitive for stable shell-check proof and leaves Git/CI unloaded when delivery is not requested."
     },
@@ -289,7 +289,7 @@
       "caseId": "production-sharing-requires-quality-audit-evidence",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-platform-authoring"
+        "name": "agent-tooling"
       },
       "satisfiedAllowedActions": [
         "Review the concrete primitive, plugin, or eval family against a baseline.",
@@ -447,11 +447,11 @@
         "name": "kotlin-repo-default"
       },
       "satisfiedAllowedActions": [
-        "Use engineering-baseline for the generic executable-check red-green-refactor loop.",
+        "Use software-engineering for the generic executable-check red-green-refactor loop.",
         "Use Kotlin Engineering for Kotlin semantics, package cohesion, review, and Gradle proof.",
-        "Use developer-tools for host-neutral Git hygiene and shell-safe automation.",
-        "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
-        "Use the profile to compose all four without duplicate skills, agents, or hooks."
+        "Use software-engineering for host-neutral Git hygiene and shell-safe automation.",
+        "Use software-engineering for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use the profile to select Software Engineering and Kotlin Engineering without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
         "The focused Gradle or repository check records a valid RED and GREEN with one stable check specification.",
@@ -463,14 +463,14 @@
         "Handle a Kotlin code change with only delivery primitives and no semantic Kotlin evidence.",
         "Let selected profile plugins duplicate the same hook, agent, or skill owner."
       ],
-      "notes": "A passing run proves this route by delivering: Engineering Baseline owns red-green workflow, Kotlin Engineering owns semantic proof, Git Operations owns local repository mechanics, and Effective Delivery owns publication."
+      "notes": "A passing run proves this route by delivering: Software Engineering owns red-green workflow, Kotlin Engineering owns semantic proof, Software Engineering owns local repository mechanics, and Software Engineering owns publication."
     },
     {
       "type": "ROUTING_OBSERVATION",
       "caseId": "source-over-generated-provider-output",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-platform-authoring"
+        "name": "agent-tooling"
       },
       "satisfiedAllowedActions": [
         "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and source validation contracts.",
@@ -543,23 +543,23 @@
       },
       "satisfiedAllowedActions": [
         "Use kotlin-engineering for Kotlin invariants, package cohesion, Kotlin review, Gradle validation, and Kotlin-specific hooks.",
-        "Use engineering-baseline for generic executable-check TDD, repository onboarding, and instruction hygiene.",
-        "Use developer-tools for host-neutral Git hygiene and shell-safe automation.",
-        "Use effective-delivery for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
-        "Use the kotlin-repo-default profile to compose all four plugins without duplicate skills, agents, or hooks."
+        "Use software-engineering for generic executable-check TDD, repository onboarding, and instruction hygiene.",
+        "Use software-engineering for host-neutral Git hygiene and shell-safe automation.",
+        "Use software-engineering for issue backend reads, pull requests, GitHub Actions, releases, and duration-aware CI observation.",
+        "Use kotlin-repo-default to select Software Engineering and Kotlin Engineering without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
-        "engineering-baseline owns generic executable-check TDD and repository guardrails.",
+        "software-engineering owns generic executable-check TDD and repository guardrails.",
         "kotlin-engineering owns Kotlin semantic and Gradle primitives only.",
-        "developer-tools owns host-neutral Git and shell automation primitives.",
-        "effective-delivery owns issue reads, direct blocker maps, PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
+        "software-engineering owns host-neutral Git and shell automation primitives.",
+        "software-engineering owns issue reads, direct blocker maps, PR, GitHub Actions, release, workflow-graph, and CI observation primitives."
       ],
       "avoidedForbiddenActions": [
         "Put generic TDD, Git, CI, PR, or shell automation skills inside kotlin-engineering.",
         "Route Kotlin type-safety review through generic Git/CI primitives.",
         "Let two selected plugins provide the same hook or agent in a profile."
       ],
-      "notes": "A passing run proves this route by delivering: Baseline TDD, Kotlin semantic work, local Git mechanics, and Effective Delivery compose cleanly without duplicate owners or bloated plugin prompts."
+      "notes": "A passing run proves this route by delivering: Baseline TDD, Kotlin semantic work, local Git mechanics, and Software Engineering compose cleanly without duplicate owners or bloated plugin prompts."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -612,7 +612,7 @@
       "caseId": "okf-knowledge-work-is-not-generic-doc-authoring",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "code-knowledge-base"
+        "name": "repository-knowledge"
       },
       "satisfiedAllowedActions": [
         "Use code-knowledge-base when the deliverable is an OKF bundle, signature index, code_sources impact check, or drift hook.",
@@ -621,7 +621,7 @@
       ],
       "satisfiedVerificationEvidence": [
         "Generated or updated knowledge artifacts retain code_sources or signature evidence.",
-        "The code-knowledge-base plugin boundary remains the primary route."
+        "The repository-knowledge plugin boundary remains the primary route."
       ],
       "avoidedForbiddenActions": [
         "Treat OKF generation as generic prose editing.",
@@ -681,7 +681,7 @@
       "caseId": "placeholder-skills-are-quality-audit-not-marketplace-products",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-platform-authoring"
+        "name": "agent-tooling"
       },
       "satisfiedAllowedActions": [
         "Quarantine placeholder-only skills from marketplace exposure.",
@@ -832,11 +832,11 @@
         "name": "intellij-plugin-default"
       },
       "satisfiedAllowedActions": [
-        "Use engineering-baseline for the stable red-green-refactor check.",
+        "Use software-engineering for the stable red-green-refactor check.",
         "Use Kotlin Engineering for Kotlin semantics and Gradle proof.",
-        "Use IntelliJ Engineering for plugin lifecycle, compatibility, and ZIP verification.",
-        "Use Git and CI Operations for scoped staging, commit, push, PR, and CI follow-through.",
-        "Use the profile to compose all four plugins without duplicate skills, agents, or hooks."
+        "Use IntelliJ Plugin Development for plugin lifecycle, compatibility, and ZIP verification.",
+        "Use Software Engineering for scoped staging, commit, push, PR, and CI follow-through.",
+        "Use the profile to select Software Engineering, Kotlin Engineering, and IntelliJ Plugin Development without duplicate skills, agents, or hooks."
       ],
       "satisfiedVerificationEvidence": [
         "The focused repository check records a valid RED and GREEN with one stable check specification.",
@@ -845,7 +845,7 @@
       ],
       "avoidedForbiddenActions": [
         "Handle the full workflow with only intellij-plugin-delivery.",
-        "Move generic TDD, Kotlin semantics, Git, PR, or CI ownership into IntelliJ Engineering.",
+        "Move generic TDD, Kotlin semantics, Git, PR, or CI ownership into IntelliJ Plugin Development.",
         "Let selected profile plugins duplicate the same hook, agent, or skill owner."
       ],
       "notes": "A passing replay routes end-to-end IntelliJ plugin delivery through the four-plugin default profile while preserving primitive ownership."

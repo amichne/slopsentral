@@ -5,7 +5,7 @@
   "schemaVersion": 2,
   "version": 2,
   "targetKind": "plugin",
-  "targetName": "writing",
+  "targetName": "technical-writing",
   "runner": {
     "type": "codex-cli",
     "model": "gpt-6-astra",

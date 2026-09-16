@@ -1,0 +1,181 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "software-engineering",
+  "version": "1.0.0",
+  "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/repository-onboarding",
+      "name": "repository-onboarding"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/semantic-ratchet",
+      "name": "semantic-ratchet"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/tdd",
+      "name": "tdd"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/bounded-delegation",
+      "name": "bounded-delegation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/define-goal",
+      "name": "define-goal"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/git-change-flow",
+      "name": "git-change-flow"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/shell-script-safety",
+      "name": "shell-script-safety"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/cli-data-pipelines",
+      "name": "cli-data-pipelines"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/mise-project-tooling",
+      "name": "mise-project-tooling"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/github-ci-operations",
+      "name": "github-ci-operations"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/issue-tracker-operations",
+      "name": "issue-tracker-operations"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pull-request-lifecycle",
+      "name": "pull-request-lifecycle"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/delivery-pipeline-design",
+      "name": "delivery-pipeline-design"
+    }
+  ],
+  "agents": [],
+  "instructions": [
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "instructions/agent-execution.md",
+      "name": "agent-execution"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "instructions/engineering-design.md",
+      "name": "engineering-design"
+    }
+  ],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/agents-md-turn-refresh.hook.json",
+      "name": "agents-md-turn-refresh"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/repository-profile.hook.json",
+      "name": "repository-profile"
+    }
+  ],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Start here for everyday code changes, debugging, tests, Git, issues, pull requests, and CI. Publication follows the requested end state.",
+    "notFor": "Language-specific design, building CLI products, knowledge generation, and documentation production.",
+    "owner": "software-engineering",
+    "role": "default",
+    "scope": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+    "workstream": "software-engineering"
+  }
+}

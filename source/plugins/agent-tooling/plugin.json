@@ -1,9 +1,9 @@
 {
   "type": "PLUGIN",
   "schemaVersion": 1,
-  "name": "agent-platform-authoring",
+  "name": "agent-tooling",
   "version": "1.0.0",
-  "description": "Reusable agent tooling and its publication contracts.",
+  "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -80,11 +80,11 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for skill and agent authoring, plugin composition, instruction topology, hooks, routing evaluation, and source-graph validation.",
-    "notFor": "General code navigation, user documentation, application implementation, and automatic marketplace publication.",
-    "owner": "intelligence-source-graph-platform",
-    "role": "agent-platform-authoring",
-    "scope": "Skill and agent authoring, plugin composition, instruction topology, hooks, routing evaluation, and source-graph validation.",
-    "workstream": "agent-platform-authoring"
+    "dailyDriver": "Choose when authoring reusable agent tooling, plugin compositions, routing evaluations, or repository instruction topology.",
+    "notFor": "Application implementation, user documentation, and automatic marketplace publication.",
+    "owner": "agent-tooling",
+    "role": "specialty",
+    "scope": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
+    "workstream": "agent-tooling"
   }
 }
