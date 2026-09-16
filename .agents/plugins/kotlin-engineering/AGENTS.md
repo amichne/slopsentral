@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Kotlin implementation, API design, compiler-backed review, and measured Gradle performance.
+Design, verify, review, and optimize Kotlin and Gradle changes.
 
 ## Operating Rules
 

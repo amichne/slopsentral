@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Machine-readable boundary contracts.",
+  "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "API Contracts",
-    "longDescription": "Machine-readable boundary contracts.",
+    "longDescription": "Author and review OpenAPI specifications and JSON Schema contracts.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Machine-readable boundary contracts.",
+    "shortDescription": "Author and review OpenAPI specifications and JSON Schema contracts.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -38,5 +38,5 @@
   "license": "UNLICENSED",
   "name": "api-contracts",
   "skills": "./skills/",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

@@ -1,0 +1,49 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+  "hooks": [
+    "./hooks/code-knowledge-drift.hooks.json"
+  ],
+  "interface": {
+    "brandColor": "#2563EB",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Coding",
+    "defaultPrompt": [
+      "Use Repository Knowledge for this task.",
+      "Review this repo with Repository Knowledge.",
+      "Show the Repository Knowledge workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Repository Knowledge",
+    "longDescription": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Generate and maintain code indexes, knowledge documents, and navigati...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "docs",
+    "generation",
+    "gradle",
+    "hooks",
+    "impact",
+    "knowledge-base",
+    "kotlin",
+    "okf",
+    "repository",
+    "repository-knowledge",
+    "signatures",
+    "skills",
+    "source-backed",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "repository-knowledge",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

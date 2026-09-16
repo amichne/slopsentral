@@ -6,37 +6,13 @@
   "plugins": [
     {
       "category": "Engineering",
-      "name": "engineering-baseline",
+      "name": "software-engineering",
       "policy": {
         "authentication": "ON_INSTALL",
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/engineering-baseline",
-        "source": "local"
-      }
-    },
-    {
-      "category": "Engineering",
-      "name": "pkl-engineering",
-      "policy": {
-        "authentication": "ON_INSTALL",
-        "installation": "AVAILABLE"
-      },
-      "source": {
-        "path": "./.agents/plugins/pkl-engineering",
-        "source": "local"
-      }
-    },
-    {
-      "category": "Engineering",
-      "name": "api-contracts",
-      "policy": {
-        "authentication": "ON_INSTALL",
-        "installation": "AVAILABLE"
-      },
-      "source": {
-        "path": "./.agents/plugins/api-contracts",
+        "path": "./.agents/plugins/software-engineering",
         "source": "local"
       }
     },
@@ -54,49 +30,85 @@
     },
     {
       "category": "Engineering",
-      "name": "developer-tools",
+      "name": "intellij-plugin-development",
       "policy": {
         "authentication": "ON_INSTALL",
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/developer-tools",
+        "path": "./.agents/plugins/intellij-plugin-development",
         "source": "local"
       }
     },
     {
       "category": "Engineering",
-      "name": "effective-delivery",
+      "name": "pkl-configuration",
       "policy": {
         "authentication": "ON_INSTALL",
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/effective-delivery",
+        "path": "./.agents/plugins/pkl-configuration",
         "source": "local"
       }
     },
     {
       "category": "Engineering",
-      "name": "agent-platform-authoring",
+      "name": "api-contracts",
       "policy": {
         "authentication": "ON_INSTALL",
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/agent-platform-authoring",
+        "path": "./.agents/plugins/api-contracts",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "technical-writing",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/technical-writing",
         "source": "local"
       }
     },
     {
       "category": "Coding",
-      "name": "code-knowledge-base",
+      "name": "repository-knowledge",
       "policy": {
         "authentication": "ON_INSTALL",
         "installation": "AVAILABLE"
       },
       "source": {
-        "path": "./.agents/plugins/code-knowledge-base",
+        "path": "./.agents/plugins/repository-knowledge",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
+      "name": "agent-tooling",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/agent-tooling",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "cli-development",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/cli-development",
         "source": "local"
       }
     },
@@ -109,42 +121,6 @@
       },
       "source": {
         "path": "./.agents/plugins/skill-read-policy",
-        "source": "local"
-      }
-    },
-    {
-      "category": "Productivity",
-      "name": "terminal-ui-design",
-      "policy": {
-        "authentication": "ON_INSTALL",
-        "installation": "AVAILABLE"
-      },
-      "source": {
-        "path": "./.agents/plugins/terminal-ui-design",
-        "source": "local"
-      }
-    },
-    {
-      "category": "Productivity",
-      "name": "writing",
-      "policy": {
-        "authentication": "ON_INSTALL",
-        "installation": "AVAILABLE"
-      },
-      "source": {
-        "path": "./.agents/plugins/writing",
-        "source": "local"
-      }
-    },
-    {
-      "category": "Engineering",
-      "name": "intellij-engineering",
-      "policy": {
-        "authentication": "ON_INSTALL",
-        "installation": "AVAILABLE"
-      },
-      "source": {
-        "path": "./.agents/plugins/intellij-engineering",
         "source": "local"
       }
     }

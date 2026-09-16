@@ -1,0 +1,41 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Build command-line tools, shell completions, and terminal interfaces.",
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use CLI Development for this task.",
+      "Review this repo with CLI Development.",
+      "Show the CLI Development workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "CLI Development",
+    "longDescription": "Build command-line tools, shell completions, and terminal interfaces.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Build command-line tools, shell completions, and terminal interfaces.",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "accessibility",
+    "cli",
+    "cli-development",
+    "completion",
+    "design",
+    "shell",
+    "terminal",
+    "tui",
+    "user-interface"
+  ],
+  "license": "UNLICENSED",
+  "name": "cli-development",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

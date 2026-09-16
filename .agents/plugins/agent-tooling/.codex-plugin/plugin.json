@@ -1,0 +1,47 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
+  "hooks": [
+    "./hooks/source-graph-valid.hooks.json"
+  ],
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Agent Tooling for this task.",
+      "Review this repo with Agent Tooling.",
+      "Show the Agent Tooling workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Agent Tooling",
+    "longDescription": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Create and improve skills, agents, hooks, plugins, and repository ins...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "agent-tooling",
+    "agents",
+    "authoring",
+    "governance",
+    "hooks",
+    "marketplace",
+    "plugins",
+    "proof",
+    "repository",
+    "routing",
+    "skills",
+    "workflow"
+  ],
+  "license": "UNLICENSED",
+  "name": "agent-tooling",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

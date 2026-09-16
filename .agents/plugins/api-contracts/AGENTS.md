@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Machine-readable boundary contracts.
+Author and review OpenAPI specifications and JSON Schema contracts.
 
 ## Operating Rules
 

@@ -1,14 +1,21 @@
 {
-  "generatedAt": "2026-09-16T01:10:49-04:00",
+  "generatedAt": "2026-09-16T09:38:51-04:00",
   "plugins": [
     {
-      "name": "engineering-baseline",
+      "name": "software-engineering",
       "references": [
         {
           "name": "agents-md-turn-refresh",
           "sha256": "sha256:da0c2ef476c4965aa1a83926911db31bbe5ab0db159619816b066f51f37cf79a",
           "sourcePath": "source/hooks/agents-md-turn-refresh.hook.json",
           "targetPath": "hooks/agents-md-turn-refresh.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "repository-profile",
+          "sha256": "sha256:42397562133df38704f4b50755acfc370206109621aa6897dc884e16a61c3bec",
+          "sourcePath": "source/hooks/repository-profile.hook.json",
+          "targetPath": "hooks/repository-profile.hooks.json",
           "type": "HOOK"
         },
         {
@@ -33,6 +40,13 @@
           "type": "SKILL"
         },
         {
+          "name": "cli-data-pipelines",
+          "sha256": "sha256:ab15d98a783c0428a919a6f876cbb99284ed4cea1b0dd9ad018e1b910f525dc4",
+          "sourcePath": "source/skills/cli-data-pipelines",
+          "targetPath": "skills/cli-data-pipelines",
+          "type": "SKILL"
+        },
+        {
           "name": "define-goal",
           "sha256": "sha256:49f343b5602e7c23a343424c99638fc1d1e0e151936c60489019c09ddf4556e9",
           "sourcePath": "source/skills/define-goal",
@@ -40,8 +54,50 @@
           "type": "SKILL"
         },
         {
+          "name": "delivery-pipeline-design",
+          "sha256": "sha256:bd3cc723e1b4b8eccaab1b1357517d6c7eeb1f1bf715ba1dac75a41a42460f8b",
+          "sourcePath": "source/skills/delivery-pipeline-design",
+          "targetPath": "skills/delivery-pipeline-design",
+          "type": "SKILL"
+        },
+        {
+          "name": "git-change-flow",
+          "sha256": "sha256:3f3b6ac70d1bcaed9fc4b0ca3fa5cefa44c28086ad67437c73d591008d5ade3f",
+          "sourcePath": "source/skills/git-change-flow",
+          "targetPath": "skills/git-change-flow",
+          "type": "SKILL"
+        },
+        {
+          "name": "github-ci-operations",
+          "sha256": "sha256:9518e6e6508c7f9af81db0b4691e52779b39a1b1af7ef2a77dc1b9c4128b4192",
+          "sourcePath": "source/skills/github-ci-operations",
+          "targetPath": "skills/github-ci-operations",
+          "type": "SKILL"
+        },
+        {
+          "name": "issue-tracker-operations",
+          "sha256": "sha256:8c173b2a57c7298f9b06c168404ace207b5b7cacd32b256547bf0b2df0a319ec",
+          "sourcePath": "source/skills/issue-tracker-operations",
+          "targetPath": "skills/issue-tracker-operations",
+          "type": "SKILL"
+        },
+        {
+          "name": "mise-project-tooling",
+          "sha256": "sha256:2b4bebea9d99f25eba0327f2098570f3a6c069829a45c5807cdc78b7fb45fc2d",
+          "sourcePath": "source/skills/mise-project-tooling",
+          "targetPath": "skills/mise-project-tooling",
+          "type": "SKILL"
+        },
+        {
+          "name": "pull-request-lifecycle",
+          "sha256": "sha256:27e3866e6e5b6d61c8db26718707c93cec3cc21ef0e71125652bf0bf2e22908b",
+          "sourcePath": "source/skills/pull-request-lifecycle",
+          "targetPath": "skills/pull-request-lifecycle",
+          "type": "SKILL"
+        },
+        {
           "name": "repository-onboarding",
-          "sha256": "sha256:0bb6951d32dd6356e5b2278de08d20c9f6511b7b193fa5d2136a7b0b9e656cb7",
+          "sha256": "sha256:8d537841187705c51cbe21bb8043b79883e39c2fd11e7d75afe3f361be06c562",
           "sourcePath": "source/skills/repository-onboarding",
           "targetPath": "skills/repository-onboarding",
           "type": "SKILL"
@@ -54,126 +110,21 @@
           "type": "SKILL"
         },
         {
+          "name": "shell-script-safety",
+          "sha256": "sha256:a824aec1e91aa4910d73981e54bb8e59df8b2ac913bc90670936cc7de5545dbd",
+          "sourcePath": "source/skills/shell-script-safety",
+          "targetPath": "skills/shell-script-safety",
+          "type": "SKILL"
+        },
+        {
           "name": "tdd",
-          "sha256": "sha256:e99eb8a797a22e7daeb6040f51f4a1cf6faab03e4cdd60a8b960e029d60d0b7b",
+          "sha256": "sha256:6524e2fc6010802c7d943621c7f5ba1add4ae904f78b19c670da6302393ad41a",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
         }
       ],
-      "sourceManifest": "source/plugins/engineering-baseline/plugin.json",
-      "version": "1.1.2"
-    },
-    {
-      "name": "pkl-engineering",
-      "references": [
-        {
-          "name": "pkl-evaluate-check",
-          "sha256": "sha256:0783f1d5724f6604b28460ca45693e8f78113cddd8da39d5fd31a3ec2e2c1db5",
-          "sourcePath": "source/hooks/pkl-evaluate-check.hook.json",
-          "targetPath": "hooks/pkl-evaluate-check.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "pkl-format-check",
-          "sha256": "sha256:b444f9ee1a17505904cdc0244b90ef845d820389b4d57ce5d0286afbe0a5b558",
-          "sourcePath": "source/hooks/pkl-format-check.hook.json",
-          "targetPath": "hooks/pkl-format-check.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "pkl-test-check",
-          "sha256": "sha256:cd9568f9723e552a9c04c51f15fbcd2d7db888c1387cc8ed698eac3133a68570",
-          "sourcePath": "source/hooks/pkl-test-check.hook.json",
-          "targetPath": "hooks/pkl-test-check.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "pkl-engineering",
-          "sha256": "sha256:ef8fc3c93ed63108e4034ab7aac9ef04ef88c00a3a95a2143068dd01559fb102",
-          "sourcePath": "source/skills/pkl-engineering",
-          "targetPath": "skills/pkl-engineering",
-          "type": "SKILL"
-        },
-        {
-          "name": "pkl-pattern-catalogs",
-          "sha256": "sha256:3231b903143f790b8a192a70ddd1b4a77d37d02af0cdcbd74850d3a45c0768a0",
-          "sourcePath": "source/skills/pkl-pattern-catalogs",
-          "targetPath": "skills/pkl-pattern-catalogs",
-          "type": "SKILL"
-        },
-        {
-          "name": "pkl-specification",
-          "sha256": "sha256:e7e47a7899d8709e89466ce14122bcd1e139414563bf174cd5aa36cedc84632a",
-          "sourcePath": "source/skills/pkl-specification",
-          "targetPath": "skills/pkl-specification",
-          "type": "SKILL"
-        },
-        {
-          "name": "pkl-tooling-setup",
-          "sha256": "sha256:1e68781196855272d4ecaec03d7a4128c8af1e64c4d4d589603835957f8109ad",
-          "sourcePath": "source/skills/pkl-tooling-setup",
-          "targetPath": "skills/pkl-tooling-setup",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/pkl-engineering/plugin.json",
-      "version": "1.0.0"
-    },
-    {
-      "name": "api-contracts",
-      "references": [
-        {
-          "name": "openapi-contract-rater",
-          "sha256": "sha256:d76915c178df3543e3a08fbf558c313236046290809becb311d9a81d99a91149",
-          "sourcePath": "source/agents/openapi/openapi-contract-rater.agent.md",
-          "targetPath": "agents/openapi-contract-rater.agent.md",
-          "type": "AGENT"
-        },
-        {
-          "name": "schema-type-enforcer",
-          "sha256": "sha256:86a69e13d5fbcfec672402e135111a081bd5c39d88a7d474f612f2e7f190178e",
-          "sourcePath": "source/agents/schema-type-enforcer.agent.md",
-          "targetPath": "agents/schema-type-enforcer.agent.md",
-          "type": "AGENT"
-        },
-        {
-          "name": "api-contract-design",
-          "sha256": "sha256:bcbb30875be21f635e1ac40a13fa3ab1be17f5cbde6beaf9b850ae4cd4862a40",
-          "sourcePath": "source/instructions/api-contract-design.md",
-          "targetPath": "instructions/api-contract-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "manage-json-schemas",
-          "sha256": "sha256:cde9acca20e509dd302341cbc539737e362600f65dd2b8bc1e64a94e4405297b",
-          "sourcePath": "source/skills/manage-json-schemas",
-          "targetPath": "skills/manage-json-schemas",
-          "type": "SKILL"
-        },
-        {
-          "name": "openapi-contract-authoring",
-          "sha256": "sha256:4311f36cd134d934d7fb9ee485f27dbab331b9e4e8c3d9254dfd1512cdeb6bb6",
-          "sourcePath": "source/skills/openapi-contract-authoring",
-          "targetPath": "skills/openapi-contract-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "openapi-contract-rating",
-          "sha256": "sha256:22e317038cfaa195abf1a50d0b5159dc459dc0078151c4ee0c9c1bb8569c9eb8",
-          "sourcePath": "source/skills/openapi-contract-rating",
-          "targetPath": "skills/openapi-contract-rating",
-          "type": "SKILL"
-        },
-        {
-          "name": "openapi-schema-modeling",
-          "sha256": "sha256:66ccbf66260db974a3f402bee038f65b0576b890579486cdeeb2e908eecffd22",
-          "sourcePath": "source/skills/openapi-schema-modeling",
-          "targetPath": "skills/openapi-schema-modeling",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/api-contracts/plugin.json",
+      "sourceManifest": "source/plugins/software-engineering/plugin.json",
       "version": "1.0.0"
     },
     {
@@ -279,101 +230,234 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "1.3.0"
+      "version": "1.3.1"
     },
     {
-      "name": "developer-tools",
+      "name": "intellij-plugin-development",
       "references": [
         {
-          "name": "repository-profile",
-          "sha256": "sha256:42397562133df38704f4b50755acfc370206109621aa6897dc884e16a61c3bec",
-          "sourcePath": "source/hooks/repository-profile.hook.json",
-          "targetPath": "hooks/repository-profile.hooks.json",
+          "name": "ide-diagnostics-mcp",
+          "sha256": "sha256:4d18e0df0a3f28e248cce1ef8cd10fad16dff4df570202adcec877e971713d29",
+          "sourcePath": "source/skills/ide-diagnostics-mcp",
+          "targetPath": "skills/ide-diagnostics-mcp",
+          "type": "SKILL"
+        },
+        {
+          "name": "intellij-platform-integrations",
+          "sha256": "sha256:64094f36ad10c11ae2fc72f62c87ecb66343346c59b1f61244771d32c16627c7",
+          "sourcePath": "source/skills/intellij-platform-integrations",
+          "targetPath": "skills/intellij-platform-integrations",
+          "type": "SKILL"
+        },
+        {
+          "name": "intellij-platform-testing",
+          "sha256": "sha256:c59984edc2458fcb60b496dd3f88e71a29476c1df9c0ae6f86334b43e0643693",
+          "sourcePath": "source/skills/intellij-platform-testing",
+          "targetPath": "skills/intellij-platform-testing",
+          "type": "SKILL"
+        },
+        {
+          "name": "intellij-plugin-delivery",
+          "sha256": "sha256:ce30899a37779143d0b27039c3c32d48376a8f1c9bedc2f0041f09914a92eebb",
+          "sourcePath": "source/skills/intellij-plugin-delivery",
+          "targetPath": "skills/intellij-plugin-delivery",
+          "type": "SKILL"
+        },
+        {
+          "name": "intellij-psi-indexing",
+          "sha256": "sha256:a4ed5b9a184ad064d178562f506462a76d7454195c05ba1441331628064955c1",
+          "sourcePath": "source/skills/intellij-psi-indexing",
+          "targetPath": "skills/intellij-psi-indexing",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/intellij-plugin-development/plugin.json",
+      "version": "1.0.0"
+    },
+    {
+      "name": "pkl-configuration",
+      "references": [
+        {
+          "name": "pkl-evaluate-check",
+          "sha256": "sha256:0783f1d5724f6604b28460ca45693e8f78113cddd8da39d5fd31a3ec2e2c1db5",
+          "sourcePath": "source/hooks/pkl-evaluate-check.hook.json",
+          "targetPath": "hooks/pkl-evaluate-check.hooks.json",
           "type": "HOOK"
         },
         {
-          "name": "cli-creator",
-          "sha256": "sha256:1cd35b122d3348d5c98ec86acc7b70d5481071bb48929e67d92cd45cdf4f05f5",
-          "sourcePath": "source/skills/cli-creator",
-          "targetPath": "skills/cli-creator",
+          "name": "pkl-format-check",
+          "sha256": "sha256:b444f9ee1a17505904cdc0244b90ef845d820389b4d57ce5d0286afbe0a5b558",
+          "sourcePath": "source/hooks/pkl-format-check.hook.json",
+          "targetPath": "hooks/pkl-format-check.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "pkl-test-check",
+          "sha256": "sha256:cd9568f9723e552a9c04c51f15fbcd2d7db888c1387cc8ed698eac3133a68570",
+          "sourcePath": "source/hooks/pkl-test-check.hook.json",
+          "targetPath": "hooks/pkl-test-check.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "pkl-engineering",
+          "sha256": "sha256:ef8fc3c93ed63108e4034ab7aac9ef04ef88c00a3a95a2143068dd01559fb102",
+          "sourcePath": "source/skills/pkl-engineering",
+          "targetPath": "skills/pkl-engineering",
           "type": "SKILL"
         },
         {
-          "name": "cli-data-pipelines",
-          "sha256": "sha256:ab15d98a783c0428a919a6f876cbb99284ed4cea1b0dd9ad018e1b910f525dc4",
-          "sourcePath": "source/skills/cli-data-pipelines",
-          "targetPath": "skills/cli-data-pipelines",
+          "name": "pkl-pattern-catalogs",
+          "sha256": "sha256:3231b903143f790b8a192a70ddd1b4a77d37d02af0cdcbd74850d3a45c0768a0",
+          "sourcePath": "source/skills/pkl-pattern-catalogs",
+          "targetPath": "skills/pkl-pattern-catalogs",
           "type": "SKILL"
         },
         {
-          "name": "git-change-flow",
-          "sha256": "sha256:5f5edde3d5fbc7b7160aeedf27926853d98adb612a10ea8d40f0e1611056c816",
-          "sourcePath": "source/skills/git-change-flow",
-          "targetPath": "skills/git-change-flow",
+          "name": "pkl-specification",
+          "sha256": "sha256:e7e47a7899d8709e89466ce14122bcd1e139414563bf174cd5aa36cedc84632a",
+          "sourcePath": "source/skills/pkl-specification",
+          "targetPath": "skills/pkl-specification",
           "type": "SKILL"
         },
         {
-          "name": "mise-project-tooling",
-          "sha256": "sha256:2b4bebea9d99f25eba0327f2098570f3a6c069829a45c5807cdc78b7fb45fc2d",
-          "sourcePath": "source/skills/mise-project-tooling",
-          "targetPath": "skills/mise-project-tooling",
-          "type": "SKILL"
-        },
-        {
-          "name": "shell-script-safety",
-          "sha256": "sha256:a824aec1e91aa4910d73981e54bb8e59df8b2ac913bc90670936cc7de5545dbd",
-          "sourcePath": "source/skills/shell-script-safety",
-          "targetPath": "skills/shell-script-safety",
-          "type": "SKILL"
-        },
-        {
-          "name": "shell-session-integration",
-          "sha256": "sha256:24c0729c60d56b9ae5868f33bad929a5a0771d7785e4f45a041fd9362298c876",
-          "sourcePath": "source/skills/shell-session-integration",
-          "targetPath": "skills/shell-session-integration",
+          "name": "pkl-tooling-setup",
+          "sha256": "sha256:1e68781196855272d4ecaec03d7a4128c8af1e64c4d4d589603835957f8109ad",
+          "sourcePath": "source/skills/pkl-tooling-setup",
+          "targetPath": "skills/pkl-tooling-setup",
           "type": "SKILL"
         }
       ],
-      "sourceManifest": "source/plugins/developer-tools/plugin.json",
-      "version": "1.1.0"
+      "sourceManifest": "source/plugins/pkl-configuration/plugin.json",
+      "version": "1.0.0"
     },
     {
-      "name": "effective-delivery",
+      "name": "api-contracts",
       "references": [
         {
-          "name": "delivery-pipeline-design",
-          "sha256": "sha256:bd3cc723e1b4b8eccaab1b1357517d6c7eeb1f1bf715ba1dac75a41a42460f8b",
-          "sourcePath": "source/skills/delivery-pipeline-design",
-          "targetPath": "skills/delivery-pipeline-design",
+          "name": "openapi-contract-rater",
+          "sha256": "sha256:d76915c178df3543e3a08fbf558c313236046290809becb311d9a81d99a91149",
+          "sourcePath": "source/agents/openapi/openapi-contract-rater.agent.md",
+          "targetPath": "agents/openapi-contract-rater.agent.md",
+          "type": "AGENT"
+        },
+        {
+          "name": "schema-type-enforcer",
+          "sha256": "sha256:86a69e13d5fbcfec672402e135111a081bd5c39d88a7d474f612f2e7f190178e",
+          "sourcePath": "source/agents/schema-type-enforcer.agent.md",
+          "targetPath": "agents/schema-type-enforcer.agent.md",
+          "type": "AGENT"
+        },
+        {
+          "name": "api-contract-design",
+          "sha256": "sha256:bcbb30875be21f635e1ac40a13fa3ab1be17f5cbde6beaf9b850ae4cd4862a40",
+          "sourcePath": "source/instructions/api-contract-design.md",
+          "targetPath": "instructions/api-contract-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "manage-json-schemas",
+          "sha256": "sha256:cde9acca20e509dd302341cbc539737e362600f65dd2b8bc1e64a94e4405297b",
+          "sourcePath": "source/skills/manage-json-schemas",
+          "targetPath": "skills/manage-json-schemas",
           "type": "SKILL"
         },
         {
-          "name": "github-ci-operations",
-          "sha256": "sha256:49c40d4295ff38b10a7bfab3467a00c978b912bd25a0cb06374dc04bbfa82cb2",
-          "sourcePath": "source/skills/github-ci-operations",
-          "targetPath": "skills/github-ci-operations",
+          "name": "openapi-contract-authoring",
+          "sha256": "sha256:4311f36cd134d934d7fb9ee485f27dbab331b9e4e8c3d9254dfd1512cdeb6bb6",
+          "sourcePath": "source/skills/openapi-contract-authoring",
+          "targetPath": "skills/openapi-contract-authoring",
           "type": "SKILL"
         },
         {
-          "name": "issue-tracker-operations",
-          "sha256": "sha256:011305b74230ec9f44f63984dfc1445b7f7fe307656667d269de69f42b63f52c",
-          "sourcePath": "source/skills/issue-tracker-operations",
-          "targetPath": "skills/issue-tracker-operations",
+          "name": "openapi-contract-rating",
+          "sha256": "sha256:22e317038cfaa195abf1a50d0b5159dc459dc0078151c4ee0c9c1bb8569c9eb8",
+          "sourcePath": "source/skills/openapi-contract-rating",
+          "targetPath": "skills/openapi-contract-rating",
           "type": "SKILL"
         },
         {
-          "name": "pull-request-lifecycle",
-          "sha256": "sha256:5b86b84d1894570608834716775cfbe1828a9b48459feb03c407259da2a0dd7d",
-          "sourcePath": "source/skills/pull-request-lifecycle",
-          "targetPath": "skills/pull-request-lifecycle",
+          "name": "openapi-schema-modeling",
+          "sha256": "sha256:66ccbf66260db974a3f402bee038f65b0576b890579486cdeeb2e908eecffd22",
+          "sourcePath": "source/skills/openapi-schema-modeling",
+          "targetPath": "skills/openapi-schema-modeling",
           "type": "SKILL"
         }
       ],
-      "sourceManifest": "source/plugins/effective-delivery/plugin.json",
-      "version": "1.1.0"
+      "sourceManifest": "source/plugins/api-contracts/plugin.json",
+      "version": "1.0.1"
     },
     {
-      "name": "agent-platform-authoring",
+      "name": "technical-writing",
+      "references": [
+        {
+          "name": "controlled-technical-writing",
+          "sha256": "sha256:28be7ce79d261e4fe62a9b30a122848abed75596ea3cb0c4290fbb72a113dcc4",
+          "sourcePath": "source/skills/controlled-technical-writing",
+          "targetPath": "skills/controlled-technical-writing",
+          "type": "SKILL"
+        },
+        {
+          "name": "reference-doc-workflow",
+          "sha256": "sha256:ceb1ae27634f8036acdb46ae7e3fabeab6ace315c6bda6f1a4587d7d0edba20d",
+          "sourcePath": "source/skills/reference-doc-workflow",
+          "targetPath": "skills/reference-doc-workflow",
+          "type": "SKILL"
+        },
+        {
+          "name": "site-docs-authoring",
+          "sha256": "sha256:48b58d80ea204565540706a619f91977fd2f5aa66e3e6085c13c8b622c9d926f",
+          "sourcePath": "source/skills/site-docs-authoring",
+          "targetPath": "skills/site-docs-authoring",
+          "type": "SKILL"
+        },
+        {
+          "name": "technical-documentation",
+          "sha256": "sha256:9b67751a51cb24662e4c5b81be54005c7c0c5dbf3ddb3606d0ec34c00d09b81f",
+          "sourcePath": "source/skills/technical-documentation",
+          "targetPath": "skills/technical-documentation",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/technical-writing/plugin.json",
+      "version": "1.0.0"
+    },
+    {
+      "name": "repository-knowledge",
+      "references": [
+        {
+          "name": "code-knowledge-drift",
+          "sha256": "sha256:b3aad623bf2d05d44643246c50c320e1d70080ec77b725f827bb6a7902931146",
+          "sourcePath": "source/hooks/code-knowledge-drift.hook.json",
+          "targetPath": "hooks/code-knowledge-drift.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "code-knowledge-base",
+          "sha256": "sha256:6abc9d6b91ba2f229723ddaf54f56c8aaf3680b4625befb9c7edc50d13c0b27c",
+          "sourcePath": "source/skills/code-knowledge-base",
+          "targetPath": "skills/code-knowledge-base",
+          "type": "SKILL"
+        },
+        {
+          "name": "local-repository-navigation",
+          "sha256": "sha256:9ec3ae0d38de1ef157cee190d15c4b623380e7ea735ffad1e9ec2ad140b7d6a0",
+          "sourcePath": "source/skills/local-repository-navigation",
+          "targetPath": "skills/local-repository-navigation",
+          "type": "SKILL"
+        },
+        {
+          "name": "repository-signature-indexing",
+          "sha256": "sha256:926b7f851d89de3ec082c3f826ee9cca8b3ff5de9b48d545489d09e318fd2b1f",
+          "sourcePath": "source/skills/repository-signature-indexing",
+          "targetPath": "skills/repository-signature-indexing",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/repository-knowledge/plugin.json",
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-tooling",
       "references": [
         {
           "name": "source-graph-valid",
@@ -425,43 +509,36 @@
           "type": "SKILL"
         }
       ],
-      "sourceManifest": "source/plugins/agent-platform-authoring/plugin.json",
+      "sourceManifest": "source/plugins/agent-tooling/plugin.json",
       "version": "1.0.0"
     },
     {
-      "name": "code-knowledge-base",
+      "name": "cli-development",
       "references": [
         {
-          "name": "code-knowledge-drift",
-          "sha256": "sha256:b3aad623bf2d05d44643246c50c320e1d70080ec77b725f827bb6a7902931146",
-          "sourcePath": "source/hooks/code-knowledge-drift.hook.json",
-          "targetPath": "hooks/code-knowledge-drift.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "code-knowledge-base",
-          "sha256": "sha256:6abc9d6b91ba2f229723ddaf54f56c8aaf3680b4625befb9c7edc50d13c0b27c",
-          "sourcePath": "source/skills/code-knowledge-base",
-          "targetPath": "skills/code-knowledge-base",
+          "name": "cli-creator",
+          "sha256": "sha256:1cd35b122d3348d5c98ec86acc7b70d5481071bb48929e67d92cd45cdf4f05f5",
+          "sourcePath": "source/skills/cli-creator",
+          "targetPath": "skills/cli-creator",
           "type": "SKILL"
         },
         {
-          "name": "local-repository-navigation",
-          "sha256": "sha256:5caad19220ab26b20246e3a33b1924c8725440b0b71c34262414da66fce47c80",
-          "sourcePath": "source/skills/local-repository-navigation",
-          "targetPath": "skills/local-repository-navigation",
+          "name": "shell-session-integration",
+          "sha256": "sha256:24c0729c60d56b9ae5868f33bad929a5a0771d7785e4f45a041fd9362298c876",
+          "sourcePath": "source/skills/shell-session-integration",
+          "targetPath": "skills/shell-session-integration",
           "type": "SKILL"
         },
         {
-          "name": "repository-signature-indexing",
-          "sha256": "sha256:926b7f851d89de3ec082c3f826ee9cca8b3ff5de9b48d545489d09e318fd2b1f",
-          "sourcePath": "source/skills/repository-signature-indexing",
-          "targetPath": "skills/repository-signature-indexing",
+          "name": "terminal-ui-design",
+          "sha256": "sha256:f2160302c633420b557d9f6d5872267d35f4171d58c4a4fd6263d0f0a5474156",
+          "sourcePath": "source/skills/terminal-ui-design",
+          "targetPath": "skills/terminal-ui-design",
           "type": "SKILL"
         }
       ],
-      "sourceManifest": "source/plugins/code-knowledge-base/plugin.json",
-      "version": "1.0.1"
+      "sourceManifest": "source/plugins/cli-development/plugin.json",
+      "version": "1.0.0"
     },
     {
       "name": "skill-read-policy",
@@ -475,101 +552,10 @@
         }
       ],
       "sourceManifest": "source/plugins/skill-read-policy/plugin.json",
-      "version": "1.0.0"
-    },
-    {
-      "name": "terminal-ui-design",
-      "references": [
-        {
-          "name": "terminal-ui-design",
-          "sha256": "sha256:f2160302c633420b557d9f6d5872267d35f4171d58c4a4fd6263d0f0a5474156",
-          "sourcePath": "source/skills/terminal-ui-design",
-          "targetPath": "skills/terminal-ui-design",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/terminal-ui-design/plugin.json",
-      "version": "1.0.0"
-    },
-    {
-      "name": "writing",
-      "references": [
-        {
-          "name": "controlled-technical-writing",
-          "sha256": "sha256:28be7ce79d261e4fe62a9b30a122848abed75596ea3cb0c4290fbb72a113dcc4",
-          "sourcePath": "source/skills/controlled-technical-writing",
-          "targetPath": "skills/controlled-technical-writing",
-          "type": "SKILL"
-        },
-        {
-          "name": "reference-doc-workflow",
-          "sha256": "sha256:ceb1ae27634f8036acdb46ae7e3fabeab6ace315c6bda6f1a4587d7d0edba20d",
-          "sourcePath": "source/skills/reference-doc-workflow",
-          "targetPath": "skills/reference-doc-workflow",
-          "type": "SKILL"
-        },
-        {
-          "name": "site-docs-authoring",
-          "sha256": "sha256:48b58d80ea204565540706a619f91977fd2f5aa66e3e6085c13c8b622c9d926f",
-          "sourcePath": "source/skills/site-docs-authoring",
-          "targetPath": "skills/site-docs-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "technical-documentation",
-          "sha256": "sha256:9b67751a51cb24662e4c5b81be54005c7c0c5dbf3ddb3606d0ec34c00d09b81f",
-          "sourcePath": "source/skills/technical-documentation",
-          "targetPath": "skills/technical-documentation",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/writing/plugin.json",
-      "version": "1.0.0"
-    },
-    {
-      "name": "intellij-engineering",
-      "references": [
-        {
-          "name": "ide-diagnostics-mcp",
-          "sha256": "sha256:4d18e0df0a3f28e248cce1ef8cd10fad16dff4df570202adcec877e971713d29",
-          "sourcePath": "source/skills/ide-diagnostics-mcp",
-          "targetPath": "skills/ide-diagnostics-mcp",
-          "type": "SKILL"
-        },
-        {
-          "name": "intellij-platform-integrations",
-          "sha256": "sha256:64094f36ad10c11ae2fc72f62c87ecb66343346c59b1f61244771d32c16627c7",
-          "sourcePath": "source/skills/intellij-platform-integrations",
-          "targetPath": "skills/intellij-platform-integrations",
-          "type": "SKILL"
-        },
-        {
-          "name": "intellij-platform-testing",
-          "sha256": "sha256:c59984edc2458fcb60b496dd3f88e71a29476c1df9c0ae6f86334b43e0643693",
-          "sourcePath": "source/skills/intellij-platform-testing",
-          "targetPath": "skills/intellij-platform-testing",
-          "type": "SKILL"
-        },
-        {
-          "name": "intellij-plugin-delivery",
-          "sha256": "sha256:ce30899a37779143d0b27039c3c32d48376a8f1c9bedc2f0041f09914a92eebb",
-          "sourcePath": "source/skills/intellij-plugin-delivery",
-          "targetPath": "skills/intellij-plugin-delivery",
-          "type": "SKILL"
-        },
-        {
-          "name": "intellij-psi-indexing",
-          "sha256": "sha256:a4ed5b9a184ad064d178562f506462a76d7454195c05ba1441331628064955c1",
-          "sourcePath": "source/skills/intellij-psi-indexing",
-          "targetPath": "skills/intellij-psi-indexing",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/intellij-engineering/plugin.json",
       "version": "1.0.1"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "06f83ce36a9be50c2b4290d2ed6548d0bcc36f24",
+  "sourceSha": "c0806d4aa74bd5383ffc43e22b475ab9d8ba14f2",
   "type": "HYDRATED_MARKETPLACE"
 }

@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Repository-opt-in enforcement for explicitly declared required skill reads.",
+  "description": "Advanced: enforce repository-declared required skill reads.",
   "hooks": [
     "./hooks/required-skill-read.hooks.json"
   ],
@@ -20,9 +20,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Skill Read Policy",
-    "longDescription": "Repository-opt-in enforcement for explicitly declared required skill reads.",
+    "longDescription": "Advanced: enforce repository-declared required skill reads.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Repository-opt-in enforcement for explicitly declared required skill...",
+    "shortDescription": "Advanced: enforce repository-declared required skill reads.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -36,5 +36,5 @@
   ],
   "license": "UNLICENSED",
   "name": "skill-read-policy",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
