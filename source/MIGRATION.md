@@ -63,7 +63,7 @@ skill-read-policy plugin. Placeholder migration skills stay retired.
 
 ## Evidence
 
-The composition preserves all 68 direct primitive references from the previous
+The composition preserves all 69 direct primitive references including the newly integrated Gradle performance skill from the previous
 12 plugins in 10 plugins: one default, eight specialties, and one advanced policy.
 Regression checks cover the task selections, unique ownership, profile lifecycle,
 and provider inputs. Renamed routing fixtures remain expected contracts, not

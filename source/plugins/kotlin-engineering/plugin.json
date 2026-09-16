@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "kotlin-engineering",
-  "version": "1.2.1",
-  "description": "Design, implement, verify, and review Kotlin and Gradle changes.",
+  "version": "1.3.1",
+  "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -90,6 +90,15 @@
       },
       "path": "skills/kotlin-branching",
       "name": "kotlin-branching"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/gradle-performance-engineering",
+      "name": "gradle-performance-engineering"
     }
   ],
   "agents": [],
@@ -135,13 +144,13 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Choose for Kotlin invariants, API design, application libraries, observability, review, and Gradle verification.",
+    "dailyDriver": "Choose for Kotlin invariants, API design, libraries, observability, review, Gradle verification, and measured build performance.",
     "companionProfile": "kotlin-repo-default",
     "deliveryCompanion": "software-engineering",
     "notFor": "Everyday Git and hosted delivery, shell integration, and IntelliJ-specific plugin mechanics.",
     "owner": "kotlin-engineering",
     "role": "specialty",
-    "scope": "Design, implement, verify, and review Kotlin and Gradle changes.",
+    "scope": "Design, verify, review, and optimize Kotlin and Gradle changes.",
     "workstream": "kotlin-engineering"
   }
 }
