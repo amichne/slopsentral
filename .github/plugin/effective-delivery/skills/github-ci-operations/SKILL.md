@@ -1,6 +1,6 @@
 ---
 name: "github-ci-operations"
-description: "Use when GitHub Actions, PR checks, workflow YAML, dispatches, caches, artifacts, secrets, permissions, release pipelines, or CI logs need repair."
+description: "Use when GitHub Actions, PR checks, workflow YAML, dispatches, caches, artifacts, secrets, permissions, release pipelines, CI performance measurement, or CI logs need authoring or repair."
 ---
 
 # GitHub CI Operations
@@ -91,6 +91,10 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 - Load [workflow-graph-optimization.md](references/workflow-graph-optimization.md)
   when changing `needs`, matrices, fan-out gates, Gradle/cache grouping, OCI
   image validation, or workflow/task cardinality.
+- Load [gradle-ci-performance.md](references/gradle-ci-performance.md) for
+  Gradle on GitHub Actions, Develocity correlation, cache ownership, affected-task
+  selection, measured latency/runner consumption, and CI/CD handoff. Use
+  `gradle-performance-engineering` for build-internal diagnosis and experiments.
 - Load [release-flow.md](references/release-flow.md) for GitHub releases, tags,
   generated notes, artifacts, or release automation.
 

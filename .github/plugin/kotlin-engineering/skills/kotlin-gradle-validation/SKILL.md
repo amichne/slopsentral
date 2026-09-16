@@ -21,7 +21,9 @@ needs a durable machine-readable handoff.
 - Run targeted module or test tasks before full suites.
 - Never call a build green until the relevant Gradle command exits successfully.
 - Keep domain modeling and API shape in `kotlin-engineering`; keep CI
-  topology in `github-ci-operations`.
+  topology in `github-ci-operations`. Use `gradle-performance-engineering` for
+  performance baselines, Develocity API analysis, and cache/compilation experiments;
+  this skill owns correctness and native report diagnosis.
 
 ## Workflow
 

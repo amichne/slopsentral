@@ -12,3 +12,24 @@ verification, and reference-driven detail. Removed assumptions: named host agent
 automatic installation or trust, universal vendor preferences, fixed branching
 rules, and unsupported speed claims. Verify tool-version details with official
 documentation before changing commands.
+
+
+## Gradle and CI Performance Extension
+
+Reviewed 2026-09-16:
+[agents-inc/skills: infra-ci-cd-github-actions](https://github.com/agents-inc/skills/blob/3a51ef571e996b18294bf776d53dbdad26de0617/src/skills/infra-ci-cd-github-actions/SKILL.md),
+from the user-supplied
+[Skills listing](https://skills.sh/agents-inc/skills/infra-ci-cd-github-actions).
+This is an independent adaptation into the existing Actions owner, not an imported
+skill or copied template. Preserve actual license/notices before future literal
+imports.
+
+Retained: affected work, deliberate cache layers, required quality gates, bounded
+parallelism, reusable workflows, explicit versions, scoped OIDC, artifact
+promotion, rollback, and CI monitoring. Adapted to Gradle consumer closures,
+Develocity scan correlation, and Actions runner/transport costs. Rejected:
+unconditional full-suite bans, fixed five-minute/80% targets, unsupported savings
+percentages, mandatory install-job barriers, and mutable version examples as
+security proof. Targets follow measured workloads; uncertain impact widens checks.
+The existing workflow graph and trust references remain authoritative local
+contracts. Official Gradle Actions and GitHub documentation govern implementation.

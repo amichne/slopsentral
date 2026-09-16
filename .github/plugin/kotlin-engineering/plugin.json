@@ -3,7 +3,7 @@
     "name": "Amichne"
   },
   "category": "Coding",
-  "description": "Kotlin implementation, API design, and compiler-backed review.",
+  "description": "Kotlin implementation, API design, compiler-backed review, and measured Gradle performance.",
   "hooks": "./hooks.json",
   "keywords": [
     "api-design",
@@ -69,5 +69,5 @@
     "type-safety",
     "validation"
   ],
-  "version": "1.2.0"
+  "version": "1.3.0"
 }
