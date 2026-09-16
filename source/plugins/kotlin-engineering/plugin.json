@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "kotlin-engineering",
-  "version": "1.2.0",
-  "description": "Kotlin implementation, API design, and compiler-backed review.",
+  "version": "1.3.0",
+  "description": "Kotlin implementation, API design, compiler-backed review, and measured Gradle performance.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -90,6 +90,15 @@
       },
       "path": "skills/kotlin-branching",
       "name": "kotlin-branching"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/gradle-performance-engineering",
+      "name": "gradle-performance-engineering"
     }
   ],
   "agents": [],
@@ -135,13 +144,13 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Install for domain modeling, API ownership, branching, observability, library boundaries, Gradle evidence, and focused Kotlin review.",
+    "dailyDriver": "Install for domain modeling, API ownership, branching, observability, library boundaries, Gradle validation and Develocity-backed performance, and focused Kotlin review.",
     "companionProfile": "kotlin-repo-default",
     "deliveryCompanion": "effective-delivery",
     "notFor": "Hosted delivery, generic shell configuration, and IntelliJ-specific lifecycle or PSI mechanics.",
     "owner": "kotlin-engineering",
     "role": "kotlin-engineering",
-    "scope": "Domain modeling, API ownership, branching, observability, library boundaries, Gradle evidence, and focused Kotlin review.",
+    "scope": "Domain modeling, API ownership, branching, observability, library boundaries, Gradle validation and Develocity-backed performance, and focused Kotlin review.",
     "workstream": "kotlin-engineering"
   }
 }

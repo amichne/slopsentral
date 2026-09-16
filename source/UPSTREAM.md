@@ -41,3 +41,14 @@ commands use mise exec or mise run without requiring prompt-driven activation.
 [FAQ](https://mise.jdx.dev/faq.html) and
 [troubleshooting](https://mise.jdx.dev/troubleshooting.html) resolve conflicting
 activation advice in the upstream skill. The installed version remains decisive.
+
+
+## Gradle and GitHub Actions Performance Review
+
+Reviewed 2026-09-16. `gradle-performance-engineering` independently adapts
+[new-silvermoon/awesome-android-agent-skills](https://github.com/new-silvermoon/awesome-android-agent-skills/tree/82900eacc8dbe13de93c6310af27b9df4b2bd2f6)
+with Develocity API evidence and controlled measurement. `github-ci-operations`
+extends its existing workflow guidance using
+[agents-inc/skills](https://github.com/agents-inc/skills/tree/3a51ef571e996b18294bf776d53dbdad26de0617).
+Per-skill provenance records retained ideas and rejected blanket speed, cache,
+and work-skipping claims. No upstream code or templates were imported.
