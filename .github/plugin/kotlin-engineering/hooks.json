@@ -2,17 +2,17 @@
   "hooks": {
     "Stop": [
       {
-        "bash": "bash \"$PLUGIN_ROOT/hooks/gradle-check-green.sh\" --repo .",
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- bash \"$PLUGIN_ROOT/hooks/gradle-check-green.sh\" --repo .",
         "timeoutSec": 1800,
         "type": "command"
       },
       {
-        "bash": "bash \"$PLUGIN_ROOT/hooks/gradle-wrapper-integrity.sh\" --repo .",
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- bash \"$PLUGIN_ROOT/hooks/gradle-wrapper-integrity.sh\" --repo .",
         "timeoutSec": 30,
         "type": "command"
       },
       {
-        "bash": "python3 \"$PLUGIN_ROOT/hooks/kotlin-horizontalization-check\" --repo .",
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" --advisory -- python3 \"$PLUGIN_ROOT/hooks/kotlin-horizontalization-check\" --repo . --summary",
         "timeoutSec": 30,
         "type": "command"
       }

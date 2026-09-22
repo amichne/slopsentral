@@ -1,8 +1,8 @@
 # Kotlin Horizontalization Heuristic
 
 Use this at the end of a Kotlin turn to decide whether package/file layout is
-becoming too flat. The heuristic is a review gate, not a substitute for
-semantic judgment.
+becoming too flat. The automated check is advisory. File counts and names do
+not prove a semantic defect or justify blocking completion.
 
 ## Terms
 
@@ -12,8 +12,8 @@ semantic judgment.
   recursive descendants.
 - **Primary top-level member**: a top-level class, interface, object, enum,
   value class, data class, abstract class, or sealed root.
-- **Prefix cluster**: three or more peer files whose file names or primary type
-  names share the same leading PascalCase token, such as `StandaloneRunner`,
+- **Prefix cluster**: three or more peer files whose file names share the same
+  leading PascalCase token, such as `StandaloneRunner`,
   `StandaloneEnvironment`, and `StandalonePlan`.
 
 ## Directory Limits
@@ -25,8 +25,8 @@ Treat package depth as a visible API design choice.
 | 1 to 3 direct Kotlin files | Usually pass |
 | 4 to 5 direct Kotlin files | Pass only when the package owns one semantic unit |
 | 6 to 7 direct Kotlin files | Concern; require a named reason to stay flat |
-| 8 or more direct Kotlin files | Fail unless generated or compatibility-owned |
-| Module or feature root with more than 5 direct Kotlin files | Fail unless documented |
+| 8 or more direct Kotlin files | Concern; inspect generated or compatibility ownership |
+| Module or feature root with more than 5 direct Kotlin files | Concern; inspect the documented ownership |
 
 The root rule is stricter because root files become the visible vocabulary of a
 module. A root should expose only the few concepts a reader must understand
@@ -36,13 +36,13 @@ first; implementation detail belongs under named subpackages.
 
 For each package directory:
 
-1. Split direct Kotlin file stems and primary type names into PascalCase tokens.
+1. Split direct Kotlin file stems into PascalCase tokens.
 2. Ignore generic tokens that only describe implementation roles:
    `Default`, `Base`, `Abstract`, `Internal`, `Impl`, `Test`, `Spec`.
 3. Group files by their first meaningful token and first two meaningful tokens.
 4. If a group has 3 or more files, mark it as an extraction candidate.
-5. If the group also represents 50 percent or more of the directory, block the
-   turn until the package shape is justified or changed.
+5. If the group represents at least half the directory, prioritize semantic
+   inspection. Keep a coherent package intact when its ownership is justified.
 
 Example:
 
@@ -92,14 +92,13 @@ public owners, or a mix of domain model and transport/adapter code.
 ## Hook Decision
 
 At turn end, inspect changed Kotlin files plus their package directories and
-ancestors. Emit:
+ancestors. The checker reports file-count and filename-prefix concerns and
+exits 0 when inspection completes. Its JSON output has `status: advisory`;
+`--summary` emits only the bounded finding count for the runtime adapter.
+Operational errors remain failures, not successful inspections.
 
-- `pass`: no measured concern.
-- `concern`: direct file count is 6 to 7, a prefix cluster exists, or a file has
-  multiple primary members with a plausible exception.
-- `fail`: root file count exceeds 5, direct file count is 8 or more, a prefix
-  cluster owns at least half the directory, or a file has unrelated primary
-  public members.
-
-The hook should fail only on `fail`. It should print concerns so the reviewing
-agent can decide whether to reorganize now or record a deliberate exception.
+The checker does not infer top-level declarations from source text. Nested
+classes, comments, string literals, sealed variants, and small library-owned
+implementations cannot establish unrelated public owners through line regexes.
+Inspect syntax and semantic ownership before suggesting a split. A real defect
+requires a reachable behavior or contract problem beyond the layout heuristic.
