@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T19:02:45-04:00",
+  "generatedAt": "2026-09-22T19:10:55-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -111,21 +111,21 @@
         },
         {
           "name": "shell-script-safety",
-          "sha256": "sha256:a824aec1e91aa4910d73981e54bb8e59df8b2ac913bc90670936cc7de5545dbd",
+          "sha256": "sha256:82b471aac5dfddcf7b16237392cd7093b5867ac684f65c9bd3a09b2ba6745514",
           "sourcePath": "source/skills/shell-script-safety",
           "targetPath": "skills/shell-script-safety",
           "type": "SKILL"
         },
         {
           "name": "tdd",
-          "sha256": "sha256:6524e2fc6010802c7d943621c7f5ba1add4ae904f78b19c670da6302393ad41a",
+          "sha256": "sha256:0e0f4ee81bcdb8fc2fa1a20fa0b3b4502f169c42ef66eb473b93deb3ab94334d",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "name": "kotlin-engineering",
@@ -556,6 +556,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "b7a718280fb1ac4b465d6f83f2847dd8942d2949",
+  "sourceSha": "1d299c192a05f02dc69abe5d0cda2cab6b37c359",
   "type": "HYDRATED_MARKETPLACE"
 }
