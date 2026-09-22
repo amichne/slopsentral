@@ -21,7 +21,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
       "tags": [
