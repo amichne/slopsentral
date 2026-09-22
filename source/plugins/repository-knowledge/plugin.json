@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "repository-knowledge",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
