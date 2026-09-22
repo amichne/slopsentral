@@ -28,7 +28,9 @@ the nearest repository-local equivalent.
   success criterion.
 - Run the same check specification for RED and GREEN. Only the intentional
   implementation change should explain the transition.
-- Keep RED and GREEN evidence in the check results. Commit or push checkpoints only when the requested workflow or applicable repository policy authorizes publication; a local TDD loop does not require a remote.
+- Keep RED and GREEN evidence in the check results. Commit or push only when the
+  requested end state or applicable repository policy authorizes publication; a
+  local TDD loop does not require a remote.
 - RED is valid only when the check ran and failed because the target behavior or
   invariant is absent.
 - Infrastructure failures are not RED: command-not-found, dependency setup,
@@ -92,25 +94,10 @@ risk tolerance cannot be inferred from the task and local evidence.
 
 ## Evidence And Handoff
 
-Prefer a repository-native workflow record when one exists. Otherwise preserve:
-
-- goal and acceptance behavior;
-- current owner, evidence, reuse/extend/add/investigate decision, and unmet delta;
-- check specification: working directory, exact command, assertion source,
-  controlled inputs, and success criterion;
-- mode: reuse, characterization, behavior change, or investigation;
-- phase: `BASELINE`, `RED`, `GREEN`, `REFACTOR`, `VERIFY`, or `DONE`;
-- RED evidence: exit code and the expected failure signal;
-- GREEN evidence: exit code and the success signal from the same check;
-- checkpoint commit SHAs and push state when publication is part of the requested workflow;
-- changed scope, broader verification, next behavior, and blockers.
-
-During the loop, report only meaningful transitions: what failed and why, what
-now passes, and which boundary remains unproved. Keep command results, selected
-assertion counts, skips, and durations bounded; use native reports for details.
-
-Load [handoff.md](references/handoff.md) for long-running work, interruptions,
-multi-agent handoffs, or work with several red-green cycles.
+Report the acceptance behavior, check specification, RED and GREEN signals, and
+remaining limits. Read [handoff.md](references/handoff.md) when work spans
+sessions or needs a durable handoff; ordinary updates need only the current
+transition and its evidence.
 
 ## Completion Criteria
 
@@ -118,8 +105,8 @@ multi-agent handoffs, or work with several red-green cycles.
 - For a behavior change, the focused check failed for the intended reason before
   implementation and the same specification now passes. For reuse or refactoring,
   passing baseline evidence is labeled accurately.
-- Every validated RED and passing GREEN checkpoint was committed and pushed, or
-  the missing publishable Git remote is reported.
+- Commit and push state match the requested end state or applicable repository
+  policy; local-only work requires neither.
 - Refactoring, if any, happened while the focused check remained green.
 - Relevant broader checks pass, or their exact residual failures are reported.
 - Remaining required work prevents `DONE`; optional future work has an explicit
@@ -133,7 +120,6 @@ multi-agent handoffs, or work with several red-green cycles.
 - Read [interface-design.md](references/interface-design.md) when a public code seam is hard to exercise.
 - Read [deep-modules.md](references/deep-modules.md) when test friction suggests a shallow interface.
 - Read [refactoring.md](references/refactoring.md) only after GREEN when choosing cleanup moves.
-- Read [handoff.md](references/handoff.md) when evidence must survive interruption or transfer.
 - Read [isolation.md](references/isolation.md) when a temporary directory,
   disposable worktree, service container, or containerized evaluation may be
   needed.
