@@ -12,8 +12,9 @@ introducing new dependencies or raw ANSI control sequences.
 ## Operating Contract
 
 - Start from the user's primary task, audience, workflow, and existing code.
-- Choose one aesthetic thesis and one memorable motif. Restraint is a valid
-  direction; distinctiveness does not require maximal decoration.
+- Preserve an existing visual language when refining a terminal flow. For a
+  new surface, choose a coherent direction that supports the task; a motif is
+  optional.
 - Preserve existing exit codes, stdout/stderr separation, machine-readable
   modes, quiet modes, and redirected output.
 - Never encode meaning through color, glyph shape, or motion alone.
@@ -29,12 +30,11 @@ introducing new dependencies or raw ANSI control sequences.
    states that apply. Finish when the primary task and every reachable state
    are accounted for.
 
-2. Choose the visual thesis.
-   Define the tone, density, palette roles, border and glyph family, motion
-   posture, and one signature motif in a single coherent direction. Read
-   [design-language.md](references/design-language.md) when choosing or revising
-   that direction. Finish when every visual choice reinforces the interface's
-   purpose rather than a generic terminal aesthetic.
+2. Set the visual direction.
+   Follow the product's current style when one exists. For a new interface,
+   choose tone, density, palette roles, glyphs, and motion to support the task.
+   Read [design-language.md](references/design-language.md) when choosing or
+   revising that direction. Keep decorative motifs optional.
 
 3. Build hierarchy before decoration.
    Place the primary action and information first, then navigation, context,
@@ -65,6 +65,6 @@ introducing new dependencies or raw ANSI control sequences.
 ## Completion Criteria
 
 - The implemented interface completes the user's primary workflow.
-- Its visual thesis is recognizable and consistently applied.
+- Visual choices are consistent with the product and support the task.
 - Every reachable state and degraded mode remains legible and operable.
 - Existing CLI output contracts and terminal cleanup behavior still pass.
