@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "cli-development",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Build command-line tools, shell completions, and terminal interfaces.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

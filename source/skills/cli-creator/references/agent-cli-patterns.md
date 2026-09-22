@@ -70,7 +70,7 @@ Only implement filtering or templating if the user will actually need it. Stable
 
 ## Discovery, resolve, read, context
 
-Design first-pass commands in this order:
+When the service supports these operations, design first-pass commands in this order:
 
 1. **Discover** broad containers: workspaces, accounts, social sets, repos, projects, channels, queues.
 2. **Resolve** human input into IDs: user names, channel names, permalinks, PR URLs, build URLs, customer slugs.
@@ -78,6 +78,9 @@ Design first-pass commands in this order:
 4. **Context** around an anchor when useful: nearby messages, parent thread, surrounding logs, audit history.
 
 Do not force Codex to repeatedly search when it already has a stable ID.
+Do not add a `resolve` command to a service that exposes no human-readable names
+or a `read` command for an action-only endpoint. Validate such a command through
+its available preview, input-check, or setup path before sending a live write.
 
 ## Text, JSON, files, exit codes
 
@@ -88,6 +91,10 @@ For `--json`:
 - Emit JSON to stdout only.
 - Send progress and diagnostics to stderr.
 - Keep success and error shapes documented.
+- Give expected errors a closed code vocabulary, such as `auth_required`,
+  `invalid_input`, `not_found`, `rate_limited`, or `upstream_unavailable` when
+  those conditions apply. Preserve the provider's details only in bounded,
+  redacted diagnostic fields. Never return a success-shaped object on failure.
 - Redact tokens, cookies, customer secrets, private headers, and unrelated payloads.
 
 For downloads and exports:
