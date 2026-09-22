@@ -94,8 +94,22 @@ Do not require consumers to understand `code_sources` to read the OKF bundle.
 Run:
 
 ```sh
-python3 source/skills/code-knowledge-base/scripts/code_kb.py check --repo . --docs docs
+python3 "<skill-root>/scripts/code_kb.py" check --repo . --docs docs --strict
 ```
 
-Use `--strict` when missing frontmatter, empty `type`, invalid logs, or invalid
-`code_sources` should fail the check.
+Resolve `<skill-root>` to this skill's installed directory. Use `--strict` for
+verification; without it, page findings are advisory. `impact --from-git` reads
+staged, unstaged, and untracked changes, including both sides of renames.
+Explicit `--changed-file` paths are normalized before matching.
+
+JSON reports distinguish `ok`, `invalid` page metadata, and `error` at an effect
+boundary. Missing or empty bundles, unreadable pages, invalid changed paths, and
+unavailable or malformed Git status fail with a bounded `error.stage` and
+`error.code`; they never emit a successful empty impact list. The advisory hook
+uses the same checker, preserves the reported status, and only relaxes its exit
+code. A deleted source remains in the impact result alongside its missing-path
+finding.
+
+The standard-library frontmatter reader supports the simple scalars, inline
+lists, and block lists shown here; it is not a general YAML validator. Use the
+repository's YAML/OKF tooling for richer syntax.

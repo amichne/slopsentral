@@ -1,6 +1,6 @@
 ---
 name: "code-knowledge-base"
-description: "Create, refresh, and impact-check OKF knowledge bundles for Kotlin/Gradle codebases with source-backed Markdown concept documents. Use when docs should be generated from concrete repository facts, linked to code evidence, and kept current without a provider-specific data store."
+description: "Create, refresh, or impact-check source-backed OKF concept documents for Kotlin/Gradle repositories. Use when knowledge pages need code citations and drift evidence."
 ---
 
 # Code Knowledge Base
@@ -42,8 +42,11 @@ than a provider-specific cache or database.
    Use `code_sources` to identify concepts affected by changed files.
 
 6. Validate.
-   Run `scripts/code_kb.py check` or `impact`, plus the repository's docs or
-   contract checks when available.
+   Run the bundled `scripts/code_kb.py check --strict --repo <repo> --docs <bundle>`
+   to validate pages, then `impact --repo <repo> --docs <bundle> --from-git`
+   for working-tree changes. Impact lookup does not replace page validation.
+   Missing documents or unavailable Git are failures, never evidence of no drift.
+   Run the repository's docs or contract checks when available.
 
 ## Reference Routing
 

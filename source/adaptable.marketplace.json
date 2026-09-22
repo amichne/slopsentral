@@ -220,7 +220,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/repository-knowledge"
         },
-        "version": "1.0.0"
+        "version": "1.1.0"
       },
       "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
       "tags": [
