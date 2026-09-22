@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T15:03:38-04:00",
+  "generatedAt": "2026-09-22T19:02:45-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -433,7 +433,7 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:6abc9d6b91ba2f229723ddaf54f56c8aaf3680b4625befb9c7edc50d13c0b27c",
+          "sha256": "sha256:d09dbc12ec2d8c0d1f442538932158f7c50660b07197be7e57476dfaeef4bb01",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
@@ -447,14 +447,14 @@
         },
         {
           "name": "repository-signature-indexing",
-          "sha256": "sha256:926b7f851d89de3ec082c3f826ee9cca8b3ff5de9b48d545489d09e318fd2b1f",
+          "sha256": "sha256:d03750c7916e0174f95bb9c057b0b895339634134e68ed65ee1b46c8a93b068a",
           "sourcePath": "source/skills/repository-signature-indexing",
           "targetPath": "skills/repository-signature-indexing",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/repository-knowledge/plugin.json",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "agent-tooling",
@@ -556,6 +556,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "ac2eb68bde254a6a3b926f2d7b7a505c37575a17",
+  "sourceSha": "b7a718280fb1ac4b465d6f83f2847dd8942d2949",
   "type": "HYDRATED_MARKETPLACE"
 }
