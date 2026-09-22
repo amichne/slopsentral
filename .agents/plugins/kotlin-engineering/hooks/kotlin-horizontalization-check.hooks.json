@@ -4,7 +4,7 @@
       {
         "hooks": [
           {
-            "command": "python3 \"$PLUGIN_ROOT/hooks/kotlin-horizontalization-check\" --repo .",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" --advisory -- python3 \"$PLUGIN_ROOT/hooks/kotlin-horizontalization-check\" --repo . --summary",
             "statusMessage": "Checking Kotlin package layout",
             "timeout": 30,
             "type": "command"

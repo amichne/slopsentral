@@ -15,9 +15,9 @@ expression-style decisions.
   Shared code should earn its place by serving multiple stable owners.
 - Prefer vertical feature/domain grouping over cross-cutting slices such as
   `validators`, `mappers`, or `extensions`.
-- Use `horizontalization-heuristic.md` for turn-end review gates: 6 direct
-  Kotlin files in one package is a concern, 8 is a failure, and 3 peer files
-  sharing the same domain prefix is an extraction candidate.
+- Use `horizontalization-heuristic.md` for advisory layout review: 6 or more
+  direct Kotlin files or 3 peer filenames sharing a domain prefix invite
+  inspection. Counts and names alone do not prove a defect or block completion.
 
 ## File Layout
 

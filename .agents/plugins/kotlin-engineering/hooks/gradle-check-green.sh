@@ -5,22 +5,21 @@ usage() {
   cat >&2 <<'USAGE'
 Usage: gradle-check-green.sh [--repo PATH]
 
-Runs a Gradle green check when Kotlin, Java, Gradle, or build-logic files changed.
+Runs an explicitly configured Gradle check when build-owned files changed.
 
 Environment:
   INTELLIGENCE_CHANGED_FILES     Optional changed-file list, separated by newlines or commas.
   INTELLIGENCE_GRADLE_CHECK      Gradle args to run. Overrides repo config. Set to "off" to skip.
   INTELLIGENCE_GRADLE_CHECK_COMMAND_FILE
                                   Repo config file. Defaults to .intelligence/gradle-check-command.
-  INTELLIGENCE_GRADLE_LOG_DIR    Log directory. Defaults to .agent-turn/gradle-check-green.
+  INTELLIGENCE_GRADLE_LOG_DIR    Optional durable log directory; unset streams output only.
 
 Default command:
-  Runs build and test for each changed Gradle module, or root build test when
-  root build logic changed.
+  No automatic build. Choose focused repository tasks explicitly.
 
 Repo command file:
   Put one shell-style command line in .intelligence/gradle-check-command.
-  Use {changedTasks} to expand the default changed-module task list.
+  Use explicit task paths; {changedTasks} inference is no longer supported.
 USAGE
 }
 
@@ -62,11 +61,9 @@ if [[ ! -x "$repo_root/gradlew" ]]; then
 fi
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-runner="$script_dir/../skills/kotlin-gradle-validation/scripts/run_gradle_task.sh"
-[[ -x "$runner" ]] || die "missing executable Gradle validation runner: $runner"
 
 changed_files() {
-  if [[ -n "${INTELLIGENCE_CHANGED_FILES:-}" ]]; then
+  if [[ "${INTELLIGENCE_CHANGED_FILES+x}" == "x" ]]; then
     printf '%s\n' "$INTELLIGENCE_CHANGED_FILES" | tr ',' '\n' | sed '/^$/d'
     return
   fi
@@ -144,53 +141,6 @@ def is_gradle_owned(relative: str) -> bool:
     )
 
 
-def root_affecting(relative: str) -> bool:
-    path = relative.replace("\\", "/")
-    return (
-        "/" not in path
-        and path in ROOT_GRADLE_FILES
-    ) or path.startswith(("gradle/", "build-logic/", "buildSrc/"))
-
-
-def module_for(relative: str) -> str | None:
-    if root_affecting(relative):
-        return ""
-    candidate = (repo / relative).resolve()
-    directory = candidate if candidate.is_dir() else candidate.parent
-    while True:
-        if (directory / "build.gradle.kts").exists() or (directory / "build.gradle").exists():
-            if directory == repo:
-                return ""
-            try:
-                module_parts = directory.relative_to(repo).parts
-            except ValueError:
-                return ""
-            return ":" + ":".join(module_parts)
-        if directory == repo or repo not in directory.parents:
-            return ""
-        directory = directory.parent
-
-
-def default_changed_tasks(files: list[str]) -> list[str]:
-    modules: set[str] = set()
-    root_changed = False
-    for relative in files:
-        if not is_gradle_owned(relative):
-            continue
-        module = module_for(relative)
-        if module == "":
-            root_changed = True
-        elif module is not None:
-            modules.add(module)
-
-    if root_changed:
-        return ["build", "test"]
-    tasks: list[str] = []
-    for module in sorted(modules):
-        tasks.extend([f"{module}:build", f"{module}:test"])
-    return tasks
-
-
 def repo_command_spec() -> str:
     if env_spec:
         return env_spec.strip()
@@ -199,13 +149,16 @@ def repo_command_spec() -> str:
             line = raw_line.strip()
             if line and not line.startswith("#"):
                 return line
-    return "{changedTasks}"
+    return ""
 
 
 files = changed_files()
 owned_files = [relative for relative in files if is_gradle_owned(relative)]
-tasks = default_changed_tasks(owned_files)
 spec = repo_command_spec()
+
+if not spec:
+    write_message("gradle-check-green: not configured; run focused verification directly or configure explicit repository tasks; no verification claimed")
+    raise SystemExit(0)
 
 if spec in {"off", "skip"}:
     write_message(f"gradle-check-green: skipped by configured command {spec}")
@@ -223,18 +176,10 @@ except ValueError as error:
 if not tokens:
     fail("Gradle command configuration produced no Gradle task")
 
-args: list[str] = []
-for token in tokens:
-    if token == "{changedTasks}":
-        args.extend(tasks)
-    else:
-        args.append(token)
+if "{changedTasks}" in tokens:
+    fail("configure explicit Gradle tasks; {changedTasks} inference is unsupported")
 
-if not args:
-    write_message("gradle-check-green: no changed-module Gradle tasks to run")
-    raise SystemExit(0)
-
-print("\n".join(args))
+print("\n".join(tokens))
 PY
 
 if [[ ! -s "$args_file" ]]; then
@@ -256,38 +201,13 @@ if [[ "${#gradle_args[@]}" -eq 0 ]]; then
   exit 2
 fi
 
-log_dir="${INTELLIGENCE_GRADLE_LOG_DIR:-$repo_root/.agent-turn/gradle-check-green}"
-mkdir -p "$log_dir"
-
-timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
-safe_spec="$(printf '%s_' "${gradle_args[@]}" | tr -c 'A-Za-z0-9_.-' '_')"
-evidence_file="$log_dir/${timestamp}-${safe_spec}.json"
-task_name="${gradle_args[0]}"
-extra_args=("${gradle_args[@]:1}")
-
-set +e
-"$runner" --repo "$repo_root" --task "$task_name" --log-dir "$log_dir" -- "${extra_args[@]}" >"$evidence_file"
-status=$?
-set -e
-
-if [[ "$status" -ne 0 ]]; then
-  log_file="$(
-    python3 - "$evidence_file" <<'PY'
-import json
-import sys
-
-try:
-    with open(sys.argv[1], encoding="utf-8") as handle:
-        print(json.load(handle).get("logFile", ""))
-except Exception:
-    print("")
-PY
-  )"
-  echo "gradle-check-green: ./gradlew --no-daemon ${gradle_args[*]} failed; evidence: $evidence_file; log: $log_file" >&2
-  if [[ -n "$log_file" && -f "$log_file" ]]; then
-    tail -n 80 "$log_file" >&2 || true
-  fi
-  exit "$status"
+# Durable evidence is opt-in. Ordinary checks stream to the invoking harness.
+if [[ -z "${INTELLIGENCE_GRADLE_LOG_DIR:-}" ]]; then
+  (cd "$repo_root" && ./gradlew --console=plain "${gradle_args[@]}")
+  exit 0
 fi
 
-echo "gradle-check-green: ./gradlew --no-daemon ${gradle_args[*]} passed; evidence: $evidence_file"
+runner="$script_dir/../skills/kotlin-gradle-validation/scripts/run_gradle_task.sh"
+[[ -x "$runner" ]] || die "missing executable Gradle validation runner"
+"$runner" --repo "$repo_root" --task "${gradle_args[0]}" \
+  --log-dir "$INTELLIGENCE_GRADLE_LOG_DIR" -- "${gradle_args[@]:1}"
