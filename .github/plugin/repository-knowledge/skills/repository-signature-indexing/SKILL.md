@@ -1,6 +1,6 @@
 ---
 name: "repository-signature-indexing"
-description: "Create or maintain compact repository signature indexes that help agents route source reads, back OKF concept documents, and understand documentation impact without opening every file. Use when a codebase needs generated type or symbol summaries, JVM fully qualified names, deterministic source maps, knowledge-base backing, or drift checks for signature-level documentation."
+description: "Create or refresh deterministic type and symbol indexes for source navigation, OKF citations, and API drift checks. Use when generating or checking signature artifacts."
 ---
 
 # Repository Signature Indexing
@@ -60,26 +60,10 @@ regenerated from source.
    details. OKF concepts may cite signatures for discovery, but final claims
    still need concrete source files, symbols, schemas, or generated contracts.
 
-## Recommended Text Contract
+## Reference Routing
 
-For a line-oriented `.sig` format, keep entries stable and machine-readable:
-
-```text
-file=<relative source path>
-package=<package or default>
-imports=<comma-separated imports>
-type=<fqcn>|kind=<class|interface|object|enum|...>|decl=<normalized declaration>
-fields:
-- <normalized field signature>
-methods:
-- <normalized method signature>
-contracts:
-- <generated route/schema/command/catalog identifier>
-```
-
-Use an `INDEX.sig` file containing one sorted relative path per generated
-signature file. If a repo chooses JSON instead, model the same facts with a
-closed schema before writing the files.
+Read [signature-contract.md](references/signature-contract.md) when choosing a
+line-oriented `.sig` representation or its JSON equivalent.
 
 ## Completion Criteria
 
