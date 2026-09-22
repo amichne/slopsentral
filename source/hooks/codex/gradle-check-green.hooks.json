@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash hooks/gradle-check-green.sh --repo .",
+            "command": "python3 hooks/codex-stop.py -- bash hooks/gradle-check-green.sh --repo .",
             "timeout": 1800,
             "statusMessage": "Checking Gradle green state"
           }

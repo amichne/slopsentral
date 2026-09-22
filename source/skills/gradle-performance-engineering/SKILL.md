@@ -5,11 +5,14 @@ description: "Measure and improve Gradle build performance using Develocity Buil
 
 # Gradle Performance Engineering
 
-Own the measured Gradle optimization loop. Assume full authenticated access to
-Develocity Build Scan APIs; use structured scan evidence before console text or
-UI inspection. API access does not guarantee that every build published every
-metric. This skill works for JVM, Android, and multiplatform builds; discover the
-actual targets instead of assuming `assembleDebug`.
+Own the measured Gradle optimization loop. Discover the available Develocity
+instance, authenticated client, and project permissions before requesting scans.
+Use structured scan evidence before console text or UI inspection when access
+is available. Missing access is an explicit evidence-unavailable outcome; do
+not invent credentials or assume authentication. API access does not guarantee
+that every build published every metric. This skill works for JVM, Android, and
+multiplatform builds; discover the actual targets instead of assuming
+`assembleDebug`.
 
 ## Operating Contract
 
@@ -50,7 +53,7 @@ actual targets instead of assuming `assembleDebug`.
    Read [optimization-playbook.md](references/optimization-playbook.md) for
    evidence-triggered interventions. Write the predicted metric change and
    disconfirming signal. For Actions setup, topology, cache transport, or CI/CD,
-   use `github-ci-operations` from `effective-delivery`; its Gradle reference
+   use `github-ci-operations` from `software-engineering`; its Gradle reference
    defines the CI handoff. Keep Gradle correctness diagnosis in
    `kotlin-gradle-validation`. If companions are unavailable, state that limit
    and use the official sources linked in this skill.

@@ -86,8 +86,33 @@ runner JSON and copied logs are optional transport, not stronger proof.
 
 ## Script Map
 
-- `scripts/parse/junit_results`: JUnit XML failure summary.
+- `scripts/parse/junit_results`: JUnit XML failure summary. `status: parsed`
+  and exit 0 prove parsing completed, not passing tests; inspect `failed`.
+  Missing reports return `unavailable`; malformed, unsupported, unreadable, or
+  invalid reports return `incomplete` when files were found. Both exit 1 with
+  typed error kinds. Valid evidence from a mixed set stays under `partial` and
+  must not be treated as a complete aggregate.
 - `scripts/parse/jacoco_report`: JaCoCo XML coverage summary.
 - `scripts/parse/kotlin_build_report`: Kotlin build report summary.
 - `scripts/run_gradle_task.sh`: optional durable capture for a long-running or
   transferred Gradle command.
+
+## Optional Automatic Checks
+
+The `gradle-check-green` hook is opt-in. Without an explicit command it skips
+and claims no verification. To require a focused command at Stop, configure
+`INTELLIGENCE_GRADLE_CHECK` or a single argument line in
+`.intelligence/gradle-check-command`, for example
+`:app:test --tests com.example.FocusedTest`. Use explicit tasks;
+`{changedTasks}` inference is unsupported. `off` disables the check.
+
+An opted-in command runs when build-owned files changed, even if a manual
+check already passed. Choose this extra repository gate deliberately; the hook
+does not reuse a previous success without proof of identical inputs. The Codex
+adapter does not rerun on a Stop continuation; report unresolved failures and
+rerun the focused command directly when needed.
+
+Ordinary invocation streams output without evidence files. Set
+`INTELLIGENCE_GRADLE_LOG_DIR` only when durable capture is required. The Codex
+adapter reports bounded outcomes without copying build output into model
+context; use native reports or invoke the check directly for diagnosis.

@@ -33,36 +33,30 @@ class KotlinHorizontalizationCheckTest(unittest.TestCase):
 
             self.assertTrue(
                 any(
-                    finding.severity == "fail"
+                    finding.severity == "concern"
                     and finding.path == "src/main/kotlin/com/acme/orders"
                     and finding.evidence["directKotlinFiles"] == 8
                     for finding in findings
                 )
             )
 
-    def test_file_member_findings_allow_sealed_hierarchy_concern(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            repo = Path(directory)
-            package = repo / "src/main/kotlin/com/acme/result"
-            package.mkdir(parents=True)
-            result_file = package / "Outcome.kt"
-            result_file.write_text(
-                "\n".join(
-                    [
-                        "sealed interface Outcome",
-                        "data class Success(val value: String) : Outcome",
-                        "data class Failure(val reason: String) : Outcome",
-                    ]
-                )
-                + "\n",
-                encoding="utf-8",
-            )
-
-            findings = kotlin_horizontalization_check.file_member_findings(repo, [result_file])
-
-            self.assertEqual(1, len(findings))
-            self.assertEqual("concern", findings[0].severity)
-            self.assertTrue(findings[0].evidence["sealedHierarchyExceptionPossible"])
+    def test_declaration_text_cannot_establish_unrelated_top_level_owners(self) -> None:
+        examples = [
+            "class Outer {\n    class Nested\n}\n",
+            "/*\nclass Mentioned\nclass Another\n*/\nclass Owner\n",
+            'val example = """\nclass Mentioned\nclass Another\n"""\n',
+            "sealed interface Outcome\ndata class Success(val value: String) : Outcome\n",
+            "interface Capability\nclass Implementation : Capability\n",
+        ]
+        for example in examples:
+            with self.subTest(example=example), tempfile.TemporaryDirectory() as directory:
+                repo = Path(directory)
+                package = repo / "src/main/kotlin/com/acme"
+                package.mkdir(parents=True)
+                source = package / "Owner.kt"
+                source.write_text(example, encoding="utf-8")
+                findings = kotlin_horizontalization_check.collect_findings(repo, [source])
+                self.assertEqual([], findings)
 
 
 if __name__ == "__main__":

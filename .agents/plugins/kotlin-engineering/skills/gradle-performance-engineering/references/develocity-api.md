@@ -1,9 +1,13 @@
 # Develocity API Evidence
 
-Assume full API access to the organization's Develocity instance. Discover the
-instance URL, server version, project identity, existing client/connector, and
-credential capability from repository configuration and the execution environment.
-Do not ask for scan screenshots when an API model can answer the question.
+Discover the instance URL, server version, project identity, existing
+client/connector, and credential capability from repository configuration and
+the execution environment. Verify authentication and project authorization
+through the supported client before collecting scans. Missing access produces
+evidence unavailable; distinguish absent configuration from authentication or
+authorization failure. Use native reports for a clearly stated diagnostic gap
+without claiming scan-backed performance acceptance. Do not ask for scan
+screenshots when an available API model can answer the question.
 
 ## Collection Procedure
 
@@ -37,7 +41,7 @@ Do not ask for scan screenshots when an API model can answer the question.
 
 ## Finite Evidence Outcomes
 
-At any collector boundary distinguish: complete, authentication-failed,
+At any collector boundary distinguish: complete, access-unconfigured, authentication-failed,
 authorization-failed, rate-limited, transport-failed, schema-unsupported,
 model-unavailable, processing-pending, query-truncated, and identity-unresolved.
 Only complete evidence can enter an acceptance cohort. Keep build failure as an
