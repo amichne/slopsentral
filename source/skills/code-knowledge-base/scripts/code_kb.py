@@ -8,13 +8,33 @@ import json
 import re
 import subprocess
 import sys
+from enum import Enum
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, NamedTuple
 
 
 RESERVED_FILENAMES = {"index.md", "log.md"}
 ISO_DATE_HEADING_RE = re.compile(r"^## \d{4}-\d{2}-\d{2}(?:\s|$)")
 GITHUB_BLOB_PATH_RE = re.compile(r"/blob/[^/]+/(?P<path>[^#)]+)")
+
+
+class Failure(Enum):
+    MISSING_DOCS = ("documents", "missing-docs")
+    EMPTY_DOCS = ("documents", "empty-docs")
+    UNREADABLE_DOCS = ("documents", "unreadable-docs")
+    INVALID_CHANGED_PATH = ("changed-paths", "invalid-changed-path")
+    GIT_UNAVAILABLE = ("git-status", "git-unavailable")
+    GIT_STATUS_FAILED = ("git-status", "git-status-failed")
+    INVALID_GIT_STATUS = ("git-status", "invalid-git-status")
+
+
+class ChangedFiles(NamedTuple):
+    paths: tuple[str, ...]
+
+
+def failure_payload(command: str, failure: Failure) -> dict[str, Any]:
+    stage, code = failure.value
+    return {"command": command, "status": "error", "error": {"stage": stage, "code": code}}
 
 
 def repo_relative(path: Path, repo: Path) -> str:
@@ -37,7 +57,7 @@ def normalize_relative(value: str) -> str | None:
             return None
         value = match.group("path")
     pure = PurePosixPath(value)
-    if pure.is_absolute() or ".." in pure.parts:
+    if pure.is_absolute() or ".." in pure.parts or not pure.parts or "\0" in value:
         return None
     return pure.as_posix()
 
@@ -224,37 +244,73 @@ def parse_page(path: Path, repo: Path, docs: Path) -> dict[str, Any]:
     }
 
 
-def collect_pages(repo: Path, docs: Path) -> list[dict[str, Any]]:
-    return [parse_page(path, repo, docs) for path in markdown_files(docs)]
+def collect_pages(repo: Path, docs: Path) -> list[dict[str, Any]] | Failure:
+    try:
+        if not docs.is_dir():
+            return Failure.MISSING_DOCS
+        files = markdown_files(docs)
+        if not files:
+            return Failure.EMPTY_DOCS
+        return [parse_page(path, repo, docs) for path in files]
+    except (OSError, UnicodeError):
+        return Failure.UNREADABLE_DOCS
 
 
-def changed_files_from_git(repo: Path) -> list[str]:
-    result = subprocess.run(
-        ["git", "-C", str(repo), "status", "--porcelain=v1", "-z", "--untracked-files=all"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        check=False,
-    )
+def changed_files_from_git(repo: Path) -> ChangedFiles | Failure:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(repo), "status", "--porcelain=v1", "-z", "--untracked-files=all"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    except OSError:
+        return Failure.GIT_UNAVAILABLE
     if result.returncode != 0:
-        return []
-    values = result.stdout.decode("utf-8", errors="replace").split("\0")
+        return Failure.GIT_STATUS_FAILED
+    try:
+        output = result.stdout.decode("utf-8")
+    except UnicodeError:
+        return Failure.INVALID_GIT_STATUS
+    if output and not output.endswith("\0"):
+        return Failure.INVALID_GIT_STATUS
+    values = output.split("\0")[:-1]
     changed: set[str] = set()
     index = 0
     while index < len(values):
         entry = values[index]
         index += 1
-        if not entry or len(entry) < 4:
-            continue
+        if len(entry) < 4 or entry[2] != " " or any(char not in " MADRCU?!T" for char in entry[:2]):
+            return Failure.INVALID_GIT_STATUS
         status = entry[:2]
         path = normalize_relative(entry[3:])
-        if path:
-            changed.add(path)
-        if ("R" in status or "C" in status) and index < len(values):
+        if path is None:
+            return Failure.INVALID_GIT_STATUS
+        changed.add(path)
+        if "R" in status or "C" in status:
+            if index >= len(values):
+                return Failure.INVALID_GIT_STATUS
             original = normalize_relative(values[index])
             index += 1
-            if original:
-                changed.add(original)
-    return sorted(changed)
+            if original is None:
+                return Failure.INVALID_GIT_STATUS
+            changed.add(original)
+    return ChangedFiles(tuple(sorted(changed)))
+
+
+def resolve_changes(repo: Path, paths: list[str], from_git: bool) -> ChangedFiles | Failure:
+    changed: set[str] = set()
+    for path in paths:
+        normalized = normalize_relative(path)
+        if normalized is None:
+            return Failure.INVALID_CHANGED_PATH
+        changed.add(normalized)
+    if from_git:
+        result = changed_files_from_git(repo)
+        if isinstance(result, Failure):
+            return result
+        changed.update(result.paths)
+    return ChangedFiles(tuple(sorted(changed)))
 
 
 def impacted_pages(pages: list[dict[str, Any]], changed: list[str]) -> list[dict[str, Any]]:
@@ -278,6 +334,9 @@ def write_output(payload: dict[str, Any], output_format: str) -> None:
     if output_format == "json":
         print(json.dumps(payload, indent=2, sort_keys=True))
         return
+    if payload["status"] == "error":
+        print(f"okf {payload['command']}: unavailable ({payload['error']['code']})")
+        return
     command = payload.get("command")
     if command == "check":
         print(
@@ -294,12 +353,17 @@ def write_output(payload: dict[str, Any], output_format: str) -> None:
         for page in payload["impactedPages"]:
             sources = ", ".join(page["matchedSources"]) or "concept changed"
             print(f"- {page['path']}: {sources}")
+        for issue in payload["issues"]:
+            print(f"- {issue['path']}: {issue['message']}")
 
 
 def command_check(args: argparse.Namespace) -> int:
     repo = args.repo.resolve()
     docs = (repo / args.docs).resolve()
     pages = collect_pages(repo, docs)
+    if isinstance(pages, Failure):
+        write_output(failure_payload("check", pages), args.format)
+        return 1
     issues = [
         {"path": page["path"], "message": issue}
         for page in pages
@@ -307,6 +371,7 @@ def command_check(args: argparse.Namespace) -> int:
     ]
     payload = {
         "command": "check",
+        "status": "invalid" if issues else "ok",
         "repo": str(repo),
         "docs": repo_relative(docs, repo),
         "pages": len(pages),
@@ -319,23 +384,31 @@ def command_check(args: argparse.Namespace) -> int:
     return 1 if args.strict and issues else 0
 
 
-def command_impact(args: argparse.Namespace) -> int:
-    repo = args.repo.resolve()
-    docs = (repo / args.docs).resolve()
+def build_impact(repo: Path, docs: Path, paths: list[str], from_git: bool) -> dict[str, Any] | Failure:
     pages = collect_pages(repo, docs)
-    changed = [path for path in args.changed_file if normalize_relative(path)]
-    if args.from_git:
-        changed.extend(changed_files_from_git(repo))
-    changed = sorted(set(changed))
-    payload = {
+    if isinstance(pages, Failure):
+        return pages
+    changed = resolve_changes(repo, paths, from_git)
+    if isinstance(changed, Failure):
+        return changed
+    issues = [{"path": page["path"], "message": issue} for page in pages for issue in page["issues"]]
+    return {
         "command": "impact",
+        "status": "invalid" if issues else "ok",
         "repo": str(repo),
         "docs": repo_relative(docs, repo),
-        "changedFiles": changed,
-        "impactedPages": impacted_pages(pages, changed),
+        "changedFiles": list(changed.paths),
+        "impactedPages": impacted_pages(pages, list(changed.paths)),
+        "issues": issues,
     }
+
+
+def command_impact(args: argparse.Namespace) -> int:
+    repo = args.repo.resolve()
+    result = build_impact(repo, (repo / args.docs).resolve(), args.changed_file, args.from_git)
+    payload = failure_payload("impact", result) if isinstance(result, Failure) else result
     write_output(payload, args.format)
-    return 0
+    return 0 if payload["status"] == "ok" else 1
 
 
 def parser() -> argparse.ArgumentParser:
