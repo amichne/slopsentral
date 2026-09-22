@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T19:10:55-04:00",
+  "generatedAt": "2026-09-22T19:13:04-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -517,7 +517,7 @@
       "references": [
         {
           "name": "cli-creator",
-          "sha256": "sha256:1cd35b122d3348d5c98ec86acc7b70d5481071bb48929e67d92cd45cdf4f05f5",
+          "sha256": "sha256:8d3d4997c61045a806b987be9e837d9d76d229ac3480915dc6ce3f599394fe85",
           "sourcePath": "source/skills/cli-creator",
           "targetPath": "skills/cli-creator",
           "type": "SKILL"
@@ -531,14 +531,14 @@
         },
         {
           "name": "terminal-ui-design",
-          "sha256": "sha256:f2160302c633420b557d9f6d5872267d35f4171d58c4a4fd6263d0f0a5474156",
+          "sha256": "sha256:74be38329038516eb1036fb4b058d6ab11c945a4f8da4f4ff51fb1f877593eb2",
           "sourcePath": "source/skills/terminal-ui-design",
           "targetPath": "skills/terminal-ui-design",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/cli-development/plugin.json",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "name": "skill-read-policy",
@@ -556,6 +556,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "1d299c192a05f02dc69abe5d0cda2cab6b37c359",
+  "sourceSha": "53f2f2a5c5012e4e7d7e95549dcc22f176f9b5cf",
   "type": "HYDRATED_MARKETPLACE"
 }
