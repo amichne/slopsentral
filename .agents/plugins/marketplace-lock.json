@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T19:13:04-04:00",
+  "generatedAt": "2026-09-25T11:54:04-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -159,6 +159,12 @@
           "type": "INSTRUCTION"
         },
         {
+          "sha256": "sha256:77133a3da5561acba6754bcfcc7d025dd0013687ad44c88e6f43e3e3a838502a",
+          "sourcePath": "source/plugins/kotlin-engineering/.mcp.json",
+          "targetPath": ".mcp.json",
+          "type": "MCP_CONFIGURATION"
+        },
+        {
           "name": "gradle-performance-engineering",
           "sha256": "sha256:c60fa4914a83661d45bee766f653ccb3b3e4ce11114abed8d41b48fcbf031d9b",
           "sourcePath": "source/skills/gradle-performance-engineering",
@@ -230,7 +236,7 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "1.4.0"
+      "version": "1.4.1"
     },
     {
       "name": "intellij-plugin-development",
@@ -556,6 +562,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "53f2f2a5c5012e4e7d7e95549dcc22f176f9b5cf",
+  "sourceSha": "ced1863d043a98970968051e90fcc2ff08442bd1",
   "type": "HYDRATED_MARKETPLACE"
 }
