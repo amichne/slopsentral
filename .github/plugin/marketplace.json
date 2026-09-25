@@ -109,10 +109,12 @@
         "gradle",
         "higher-order-functions",
         "hooks",
+        "kast",
         "kotlin",
         "kotlin-engineering",
         "ktor",
         "libraries",
+        "mcp",
         "module-boundaries",
         "observability",
         "opentelemetry",
@@ -145,9 +147,11 @@
         "higher-order-functions",
         "hooks",
         "kotlin",
+        "kast",
         "ktor",
         "libraries",
         "module-boundaries",
+        "mcp",
         "observability",
         "opentelemetry",
         "package-cohesion",
@@ -164,7 +168,7 @@
         "type-safety",
         "validation"
       ],
-      "version": "1.4.0"
+      "version": "1.4.1"
     },
     {
       "author": {
