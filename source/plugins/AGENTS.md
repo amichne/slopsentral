@@ -16,6 +16,9 @@ This file applies to `source/plugins/`.
   empty when Codex must receive that concept as `SessionStart` context.
 - Do not copy primitive payloads, generated provider output, runtime caches, or
   installed plugin bundles into plugin directories.
+- A plugin may keep an authored `.mcp.json` beside `plugin.json` when
+  `codexMcpServers` references it. The projector validates and copies this
+  Codex-only packaging file; server implementation remains external.
 - Set `metadata.role` to `default`, `specialty`, or `advanced`; the catalog
   requires exactly one default. Keep `scope`, `dailyDriver`, and `notFor`
   specific enough to explain the task that makes this plugin useful.

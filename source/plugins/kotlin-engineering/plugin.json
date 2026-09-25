@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "kotlin-engineering",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -142,6 +142,7 @@
       "name": "gradle-wrapper-integrity"
     }
   ],
+  "codexMcpServers": "./.mcp.json",
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Choose for Kotlin invariants, API design, libraries, observability, review, Gradle verification, and measured build performance.",

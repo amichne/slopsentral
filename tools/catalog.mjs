@@ -97,7 +97,13 @@ export function auditCatalog(catalog) {
     if (!['default', 'specialty', 'advanced'].includes(plugin.metadata?.role)) {
       findings.push(`${plugin.name}: metadata.role must be default, specialty, or advanced`);
     }
-    if (plugin.files.some(file => file !== 'plugin.json')) findings.push(`${plugin.name}: plugin directories are composition-only`);
+    const packagingFiles = plugin.codexMcpServers === './.mcp.json' ? ['.mcp.json'] : [];
+    if (plugin.files.some(file => file !== 'plugin.json' && !packagingFiles.includes(file))) {
+      findings.push(`${plugin.name}: plugin directories are composition-only except declared packaging files`);
+    }
+    if (packagingFiles.some(file => !plugin.files.includes(file))) {
+      findings.push(`${plugin.name}: declared Codex MCP packaging file is missing`);
+    }
     const closure = pluginClosure(catalog, plugin);
     findings.push(...closure.findings);
     for (const [id, ref] of closure.refs) {

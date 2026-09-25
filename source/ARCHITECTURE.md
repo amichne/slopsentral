@@ -55,7 +55,12 @@ implements and diagnoses the GitHub-specific workflow.
 `plugin.json` is the only composition authority. `catalog.mjs` reads those
 manifests, follows hook dependencies, rejects duplicate owners and conflicting
 identities, and renders CATALOG.md. It has no provider-specific projection rules.
-projeKtor v1.2.0 remains the owner of Codex and GitHub Copilot projection.
+projeKtor remains the owner of Codex and GitHub Copilot projection.
+
+An optional `codexMcpServers` declaration references a plugin-adjacent
+`.mcp.json` packaging file. The projector copies it into the Codex plugin and
+records its digest. The server executable and its installation remain owned by
+the server's project.
 
 Marketplace-listed standalone specialties can have no plugin owner. A v2 profile
 installs one only when it explicitly declares the skill `PRESENT`; `ABSENT`

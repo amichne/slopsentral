@@ -14,6 +14,7 @@
     "docs/profile-lifecycle.md",
     "source/adaptable.marketplace.json",
     "source/plugins/*/plugin.json",
+    "source/plugins/*/.mcp.json",
     "source/profiles/*.json",
     "source/schemas/profiles/*.json",
     "source/skills",

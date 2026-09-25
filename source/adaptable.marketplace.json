@@ -71,7 +71,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "1.4.0"
+        "version": "1.4.1"
       },
       "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "tags": [
@@ -85,9 +85,11 @@
         "higher-order-functions",
         "hooks",
         "kotlin",
+        "kast",
         "ktor",
         "libraries",
         "module-boundaries",
+        "mcp",
         "observability",
         "opentelemetry",
         "package-cohesion",

@@ -159,6 +159,25 @@ catalogs. It also provides Pkl format, explicit-entrypoint evaluation, and
 sandboxed test hooks. Repositories using the evaluation hook declare directly
 evaluable modules one per line in `.intelligence/pkl-entrypoints`.
 
+## Kast MCP in Kotlin Engineering
+
+Kotlin Engineering includes a Codex MCP connection to the locally installed
+Kast runtime. Install Kast first using its [installation guide](https://kast.michne.com/start/),
+then refresh and install `kotlin-engineering@slopsentral`. The plugin launches
+`kast-mcp-complete` from Kast's selected user installation. The sidecar leaves
+`cwd` unset so terminal Codex can pass its session directory to Kast for
+Gradle-root discovery; desktop working-directory behavior still needs a native
+test. A missing Kast installation causes server startup to fail; plugin
+installation does not install Kast.
+
+Kast's current installer also registers a global server named `kast`. Codex
+selects that global entry when both are configured. To test the plugin-owned
+connection, first inspect `codex mcp list --json` and confirm the global `kast`
+command points to your Kast installation. Remove that entry with
+`codex mcp remove kast`, start a fresh Codex session in a Kotlin Gradle
+repository, and ask Kast to find a known class. Re-running the Kast installer
+restores its global registration if needed.
+
 ## Validation
 
 ```bash

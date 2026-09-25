@@ -60,11 +60,11 @@ jobs:
 
       - name: Project ${{ matrix.harness }} marketplace
         id: projection
-        uses: amichne/projeKtor@188fee849d42e6106abfe62ab6b6b33a9ec9c8dd # v1.2.0
+        uses: amichne/projeKtor@eb3799c2bc60b4803c84fded0b6f4cd587bd0702 # v1.2.1
         with:
           source: .
           harness: ${{ matrix.harness }}
-          version: v1.2.0
+          version: v1.2.1
 
       - name: Publish ${{ matrix.branch }}
         env:
