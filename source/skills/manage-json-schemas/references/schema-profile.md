@@ -20,8 +20,7 @@ The bundled profile constrains schema-document syntax:
 - top-level schemas are object schemas
 - schema documents have `$id` and `title`
 - object schemas close with `additionalProperties: false`
-- object schemas define `properties.type`
-- object schemas include `type` in `required`
+- discriminated object schemas define `properties.type` and include `type` in `required`; fixed records need neither
 - discriminator fields are named `type`
 - `oneOf` and `anyOf` union schemas declare `discriminator.propertyName: "type"`
 - discriminator schemas use `enum`, not `const`

@@ -65,7 +65,7 @@ The `policy-tree` check rejects:
 - unsupported schema keywords
 - schema documents that do not use a `$schema` value accepted by the bundled profile
 - object schemas that do not close with `additionalProperties: false`
-- object schemas that do not define and require `properties.type`
+- discriminated object schemas that do not require their supplied `properties.type`
 - `oneOf` or `anyOf` union schemas without `discriminator.propertyName: "type"`
 - missing granular examples enforced by the node-level policy
 - discriminator schemas that use `const` instead of `enum`
