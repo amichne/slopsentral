@@ -31,7 +31,7 @@ before applying the schema-specific rules in this skill.
 
 - Model finite JSON shapes as discriminated unions, not loose objects plus prose.
 - Use `type` as the discriminator field on every discriminated object.
-- Require every object schema to define and require `properties.type`.
+- Require `properties.type` only on discriminated objects; every supplied `type` discriminator must be required.
 - Put `discriminator: { "propertyName": "type" }` on every `oneOf` or `anyOf` union schema.
 - Define discriminator values with `enum`, not `const`.
 - Write discriminator values in CAPS_CASE.
