@@ -303,11 +303,9 @@ function visitProfileNode(schema, pointer, allowedKeywords, errors) {
   if (schema.type === "object" && schema.additionalProperties !== false) {
     errors.push(`${pointer}: object schemas must set additionalProperties to false`);
   }
-  if (schema.type === "object") {
-    if (!schema.properties || typeof schema.properties !== "object" || Array.isArray(schema.properties)) {
-      errors.push(`${pointer}: object schemas must define properties.type`);
-    } else if (!schema.properties.type || typeof schema.properties.type !== "object" || Array.isArray(schema.properties.type)) {
-      errors.push(`${pointer}/properties: object schemas must define discriminator property "type"`);
+  if (schema.type === "object" && schema.properties && Object.prototype.hasOwnProperty.call(schema.properties, "type")) {
+    if (!schema.properties.type || typeof schema.properties.type !== "object" || Array.isArray(schema.properties.type)) {
+      errors.push(`${pointer}/properties/type: discriminator property must be a schema object`);
     } else {
       const typeSchema = schema.properties.type;
       if (typeSchema.type !== "string") {

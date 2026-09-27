@@ -31,8 +31,8 @@ For every discriminated object:
 Rules:
 
 - Use `type` as the discriminator field.
-- Every object schema defines `properties.type`.
-- Every object schema includes `type` in `required`.
+- Every discriminated object schema defines `properties.type`.
+- Every object schema with a `type` discriminator includes `type` in `required`; fixed records need no discriminator.
 - Every `oneOf` or `anyOf` union schema declares `discriminator: { "propertyName": "type" }`.
 - Define discriminator values with `enum`, not `const`.
 - Write discriminator values in CAPS_CASE.

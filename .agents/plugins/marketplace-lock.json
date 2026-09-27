@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T11:54:04-04:00",
+  "generatedAt": "2026-09-27T19:21:20-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -362,7 +362,7 @@
         },
         {
           "name": "manage-json-schemas",
-          "sha256": "sha256:cde9acca20e509dd302341cbc539737e362600f65dd2b8bc1e64a94e4405297b",
+          "sha256": "sha256:af7438411e17b47bc060284893f82b9d2a3e913404d9987157706775d9018901",
           "sourcePath": "source/skills/manage-json-schemas",
           "targetPath": "skills/manage-json-schemas",
           "type": "SKILL"
@@ -562,6 +562,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "ced1863d043a98970968051e90fcc2ff08442bd1",
+  "sourceSha": "29f5268be87e09e8db0f6ce34f760f4b293a3e81",
   "type": "HYDRATED_MARKETPLACE"
 }
