@@ -136,6 +136,9 @@
   "additionalProperties": false,
   "allOf": [
     {
+      "$ref": "#/$defs/closedObjectNode"
+    },
+    {
       "$ref": "#/$defs/discriminatedObjectNode"
     },
     {
@@ -248,6 +251,9 @@
       "additionalProperties": false,
       "allOf": [
         {
+          "$ref": "#/$defs/closedObjectNode"
+        },
+        {
           "$ref": "#/$defs/discriminatedObjectNode"
         },
         {
@@ -300,7 +306,7 @@
         }
       }
     },
-    "discriminatedObjectNode": {
+    "closedObjectNode": {
       "if": {
         "properties": {
           "type": {
@@ -315,16 +321,28 @@
       },
       "then": {
         "required": [
-          "additionalProperties",
-          "properties",
-          "required"
+          "additionalProperties"
         ],
         "properties": {
           "additionalProperties": {
             "enum": [
               false
             ]
-          },
+          }
+        }
+      }
+    },
+    "discriminatedObjectNode": {
+      "if": {
+        "properties": {
+          "type": { "enum": ["object"] },
+          "properties": { "required": ["type"] }
+        },
+        "required": ["type", "properties"]
+      },
+      "then": {
+        "required": ["properties", "required"],
+        "properties": {
           "properties": {
             "required": [
               "type"
