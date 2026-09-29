@@ -44,13 +44,44 @@ After the new provider marketplace is published, refresh it and install the
 replacement IDs. Disable retired IDs in every applicable user, project, and
 named-profile configuration, then re-apply the desired profile and review its
 hooks. The profile lifecycle reconciles the current catalog; it does not migrate
-retired IDs in unrelated configuration layers. Repository context activation
-preserves unselected plugins and therefore does not retire old installations.
+retired IDs in unrelated configuration layers.
 Old and replacement plugins should not remain enabled together.
 
 No installed cache, user configuration, hook trust state, or remote marketplace
 is changed by this source migration. Standalone skill installation remains an
 advanced alternative, not a prerequisite for the normal plugin chooser.
+
+## Retiring The Global CLI
+
+Software Engineering 1.1.0 removes the `repository-profile` startup hook.
+The `slopsentral` npm binary and `context` launcher are retired. Select plugins
+through the host marketplace; their canonical instructions are delivered passively
+and their remaining hooks own executable checks. No global Slopsentral process
+is required to inject guidance.
+
+After publication, refresh the marketplace and update Software Engineering to
+remove the old installed hook. An already-installed global CLI is not removed by
+this source change. Once the plugin is updated, remove that package with:
+
+```bash
+npm uninstall --global slopsentral
+```
+
+Uninstallation preserves existing profiles, repository configuration, and backups.
+The optional checkout-local [profile lifecycle](../docs/profile-lifecycle.md)
+retains explicit plan/apply/status operations and verified rollback. To reverse a
+saved CLI transaction, run from a checkout with `npm ci` completed:
+
+```bash
+node tools/profile-lifecycle.mjs rollback \
+  --transaction /absolute/path/to/manifest.json \
+  --backup-root /absolute/path/to/backups/slopsentral
+```
+
+Use the original backup root and exact saved manifest. Rollback refuses to change
+a target that no longer matches its recorded after-image. New workflow profiles
+reject the retired `activation` field; saved repository-profile transactions
+remain supported by the transaction schema.
 
 ## Earlier primitive migrations
 
@@ -63,8 +94,9 @@ skill-read-policy plugin. Placeholder migration skills stay retired.
 
 ## Evidence
 
-The composition preserves all 69 direct primitive references including the newly integrated Gradle performance skill from the previous
-12 plugins in 10 plugins: one default, eight specialties, and one advanced policy.
+The catalog has 10 plugins: one default, eight specialties, and one advanced
+policy. Removing automatic repository activation preserves the skill and
+instruction owners; the retired startup hook is no longer in the install closure.
 Regression checks cover the task selections, unique ownership, profile lifecycle,
 and provider inputs. Renamed routing fixtures remain expected contracts, not
 fresh model observations. Benchmark scenarios are retained under their new

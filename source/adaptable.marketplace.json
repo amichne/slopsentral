@@ -21,7 +21,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "1.0.1"
+        "version": "1.1.0"
       },
       "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
       "tags": [
@@ -1016,15 +1016,6 @@
       },
       "path": "hooks/pkl-test-check.hook.json",
       "name": "pkl-test-check"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/repository-profile.hook.json",
-      "name": "repository-profile"
     }
   ],
   "metadata": {

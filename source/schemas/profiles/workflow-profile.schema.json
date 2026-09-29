@@ -16,13 +16,6 @@
     "reconciliation",
     "validation"
   ],
-  "allOf": [{
-    "if": {
-      "properties": {"activation": {"$ref": "#/$defs/RepositoryRootFile"}},
-      "required": ["activation"]
-    },
-    "then": {"properties": {"standaloneSkills": {"type": "array", "maxItems": 0}}}
-  }],
   "properties": {
     "type": {
       "type": "string",
@@ -83,43 +76,9 @@
     },
     "hookPolicy": {"$ref": "#/$defs/HookPolicy"},
     "reconciliation": {"$ref": "#/$defs/PluginReconciliation"},
-    "validation": {"$ref": "#/$defs/WorkflowValidation"},
-    "activation": {"$ref": "#/$defs/RepositoryRootFile"}
+    "validation": {"$ref": "#/$defs/WorkflowValidation"}
   },
   "$defs": {
-    "RepositoryRootFile": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "path"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "REPOSITORY_ROOT_FILE"
-          ],
-          "examples": [
-            "REPOSITORY_ROOT_FILE"
-          ]
-        },
-        "path": {
-          "type": "string",
-          "pattern": "^(?!\\.{1,2}$)[A-Za-z0-9_.-]+$",
-          "description": "A regular file directly at the repository root. Subdirectories and symlinks do not match.",
-          "examples": [
-            "settings.gradle.kts"
-          ]
-        }
-      },
-      "examples": [
-        {
-          "type": "REPOSITORY_ROOT_FILE",
-          "path": "settings.gradle.kts"
-        }
-      ]
-    },
     "WorkflowMarketplace": {
       "type": "object",
       "additionalProperties": false,

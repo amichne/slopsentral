@@ -1,39 +1,17 @@
 {
   "name": "slopsentral",
   "version": "3.0.0",
-  "description": "Portable lifecycle management for Slopsentral Codex profiles",
+  "description": "Source contracts and validation tooling for the Slopsentral plugin marketplace",
   "private": true,
   "engines": {
     "node": ">=20.11"
   },
-  "bin": {
-    "slopsentral": "tools/slopsentral.mjs"
-  },
-  "files": [
-    "README.md",
-    "docs/profile-lifecycle.md",
-    "source/adaptable.marketplace.json",
-    "source/plugins/*/plugin.json",
-    "source/plugins/*/.mcp.json",
-    "source/profiles/*.json",
-    "source/schemas/profiles/*.json",
-    "source/skills",
-    "!source/skills/AGENTS.md",
-    "!source/skills/**/__pycache__",
-    "!source/skills/**/*.pyc",
-    "tools/install-skill",
-    "tools/profile-lifecycle.mjs",
-    "tools/slopsentral.mjs",
-    "tools/validate-profile-contracts.mjs",
-    "tools/repository-context.mjs"
-  ],
   "scripts": {
     "test": "node --test tools/tests/*.test.mjs",
     "validate:profile-contracts": "node tools/validate-profile-contracts.mjs"
   },
   "dependencies": {
     "ajv": "^8.20.0",
-    "ajv-formats": "^3.0.1",
-    "smol-toml": "1.8.0"
+    "ajv-formats": "^3.0.1"
   }
 }

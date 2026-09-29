@@ -49,7 +49,6 @@ function parseWorkflowProfile(value, expectedName) {
       "hookPolicy",
       "reconciliation",
       "validation",
-      "activation",
     ],
     `profile ${expectedName}`,
   );

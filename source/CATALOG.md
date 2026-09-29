@@ -20,7 +20,7 @@ Outside this plugin: Language-specific design, building CLI products, knowledge 
 
 **Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [cli-data-pipelines](skills/cli-data-pipelines/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [delivery-pipeline-design](skills/delivery-pipeline-design/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [tdd](skills/tdd/SKILL.md).
 
-**Hooks:** [agents-md-turn-refresh](hooks/agents-md-turn-refresh.hook.json), [repository-profile](hooks/repository-profile.hook.json).
+**Hooks:** [agents-md-turn-refresh](hooks/agents-md-turn-refresh.hook.json).
 
 **Instructions:** [agent-execution](instructions/agent-execution.md), [engineering-design](instructions/engineering-design.md).
 
@@ -134,15 +134,15 @@ Outside this plugin: Everyday engineering, default setup, and general skill disc
 
 ## Profiles
 
-- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + agent-tooling. 467 instruction words.
+- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + agent-tooling. 468 instruction words.
 
 - [documentation-default](profiles/documentation-default.json): technical-writing. 0 instruction words.
 
-- [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 603 instruction words.
+- [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 604 instruction words.
 
-- [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 603 instruction words.
+- [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 604 instruction words.
 
-- [local-development-default](profiles/local-development-default.json): software-engineering. 467 instruction words.
+- [local-development-default](profiles/local-development-default.json): software-engineering. 468 instruction words.
 
 ## Standalone skills
 

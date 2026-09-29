@@ -4,11 +4,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { ProfileContractError, validateWorkflowProfile } from "../validate-profile-contracts.mjs";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
 const lifecycle = path.join(repoRoot, "tools/profile-lifecycle.mjs");
 
-const { installSkill, plannedSkillInstalls, renderProfile } = await import("../profile-lifecycle.mjs");
+const { commitMutation, desiredImage, fileImage, installSkill, plannedSkillInstalls, renderProfile } = await import("../profile-lifecycle.mjs");
 
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "profile-lifecycle-test-"));
@@ -127,6 +128,54 @@ test("authored profiles use executable v2 desired-state policies", () => {
   }
 });
 
+test("retired automatic activation is rejected instead of silently ignored", () => {
+  const profile = JSON.parse(fs.readFileSync(
+    path.join(repoRoot, "source/profiles/kotlin-repo-default.json"), "utf8",
+  ));
+  validateWorkflowProfile(profile);
+  assert.throws(() => validateWorkflowProfile({
+    ...profile,
+    activation: { type: "REPOSITORY_ROOT_FILE", path: "settings.gradle.kts" },
+  }), (error) => error instanceof ProfileContractError && error.validationErrors.some(
+    ({ keyword, params }) => keyword === "additionalProperties" && params.additionalProperty === "activation",
+  ));
+});
+
+for (const existed of [false, true]) {
+  test(`saved repository-profile transactions remain reversible (existing config: ${existed})`, (t) => {
+    const context = fixture(t);
+    const repositoryRoot = path.join(path.dirname(context.codexHome), "repository with spaces");
+    const target = path.join(repositoryRoot, ".codex/config.toml");
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    const original = '# User configuration\nmodel = "example"\n';
+    if (existed) fs.writeFileSync(target, original, { mode: 0o640 });
+    const after = `${existed ? original : ""}\n[plugins."kotlin-engineering@slopsentral"]\nenabled = true\n`;
+    const transaction = commitMutation({
+      backupRoot: context.backupRoot,
+      operation: { type: "APPLY_REPOSITORY_PROFILE", profileName: "kotlin-repo-default", repositoryRoot },
+      target,
+      before: fileImage(target),
+      desired: desiredImage(Buffer.from(after), 0o640),
+    });
+
+    fs.appendFileSync(target, "# Subsequent user edit\n");
+    const conflict = run(context, "rollback", "--transaction", transaction.manifestPath);
+    assert.equal(conflict.status, 3, conflict.stderr || conflict.stdout);
+    assert.equal(fs.readFileSync(target, "utf8"), `${after}# Subsequent user edit\n`);
+
+    fs.writeFileSync(target, after);
+    const restored = run(context, "rollback", "--transaction", transaction.manifestPath);
+    assert.equal(restored.status, 0, restored.stderr || restored.stdout);
+    assert.equal(restored.output.type, "PROFILE_ROLLED_BACK");
+    assert.equal(fs.existsSync(target), existed);
+    if (existed) {
+      assert.equal(fs.readFileSync(target, "utf8"), original);
+      assert.equal(fs.statSync(target).mode & 0o777, 0o640);
+    }
+    assert.deepEqual(codexCalls(context), []);
+  });
+}
+
 test("standalone skill states render stable profile-local activation", () => {
   const profile = {
     name: "skill-state-fixture",
@@ -204,7 +253,7 @@ test("plan and apply reconcile the marketplace and selected plugins", (t) => {
   assert.equal(applied.status, 0, diagnostic(applied));
   assert.equal(applied.output.type, "PROFILE_APPLIED");
   assert.equal(applied.output.hookReview.type, "HOOK_REVIEW_REQUIRED");
-  assert.deepEqual(applied.output.hookReview.hooks, ["agents-md-turn-refresh", "repository-profile"]);
+  assert.deepEqual(applied.output.hookReview.hooks, ["agents-md-turn-refresh"]);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(context.codexHome, "fake-codex-state.json"), "utf8")), {
     marketplace: true,
     installed: ["software-engineering"],

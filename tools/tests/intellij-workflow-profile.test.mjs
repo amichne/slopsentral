@@ -54,6 +54,5 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     "gradle-check-green",
     "gradle-wrapper-integrity",
     "kotlin-horizontalization-check",
-    "repository-profile",
   ]);
 });

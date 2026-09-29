@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "software-engineering",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -158,15 +158,6 @@
       },
       "path": "hooks/agents-md-turn-refresh.hook.json",
       "name": "agents-md-turn-refresh"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/repository-profile.hook.json",
-      "name": "repository-profile"
     }
   ],
   "metadata": {

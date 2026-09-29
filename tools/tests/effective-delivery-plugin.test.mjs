@@ -22,7 +22,7 @@ test("software engineering keeps explicit CI observation without automatic hooks
     "pull-request-lifecycle", "delivery-pipeline-design"]) {
     assert.ok(names(engineering, "skills").includes(skill));
   }
-  assert.deepEqual(names(engineering, "hooks"), ["agents-md-turn-refresh", "repository-profile"]);
+  assert.deepEqual(names(engineering, "hooks"), ["agents-md-turn-refresh"]);
   assert.equal(
     fs.existsSync(path.join(repoRoot, "source/skills/github-ci-operations/scripts/ci_wait_for_actions")),
     true,

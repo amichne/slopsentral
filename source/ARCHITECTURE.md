@@ -102,6 +102,12 @@ they are not injected repeatedly at session start, resume, clear, or compact.
 The AGENTS.md refresh adapter observes only `Bash` and `apply_patch`, the current
 Codex tool names capable of changing repository files.
 
+The host owns plugin selection and passive instruction delivery. No Slopsentral
+binary or repository-profile startup hook installs plugins, launches the host,
+or rewrites repository configuration. Profiles describe explicit selections;
+the checkout-local lifecycle tool remains available for maintenance and rollback
+of saved transactions.
+
 The Gradle and wrapper hooks retain their executable checks and Kotlin-specific
 dependencies. Their old TDD and shell-safety dependencies were reading guidance,
 not runtime dependencies, and no longer duplicate those skills into Kotlin.
