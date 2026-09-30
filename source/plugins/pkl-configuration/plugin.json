@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "pkl-configuration",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

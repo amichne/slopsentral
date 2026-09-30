@@ -71,7 +71,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "1.5.0"
+        "version": "1.5.1"
       },
       "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "tags": [
@@ -145,7 +145,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/pkl-configuration"
         },
-        "version": "1.0.1"
+        "version": "1.0.2"
       },
       "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
       "tags": [
@@ -222,7 +222,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/repository-knowledge"
         },
-        "version": "1.1.0"
+        "version": "1.1.1"
       },
       "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
       "tags": [
@@ -251,7 +251,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/agent-tooling"
         },
-        "version": "1.0.1"
+        "version": "1.0.2"
       },
       "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
       "tags": [

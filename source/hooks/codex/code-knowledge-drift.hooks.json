@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/code-knowledge-drift.py --repo . --docs docs --advisory",
+            "command": "python3 hooks/code-knowledge-drift.py --repo . --docs docs --format codex-stop --advisory",
             "timeout": 60,
             "statusMessage": "Checking OKF knowledge drift"
           }
