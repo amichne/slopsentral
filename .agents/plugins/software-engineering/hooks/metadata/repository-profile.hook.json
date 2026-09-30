@@ -1,9 +1,0 @@
-{
-  "name": "repository-profile",
-  "path": "hooks/repository-profile.hooks.json",
-  "source": {
-    "path": "./",
-    "type": "LOCAL_SOURCE"
-  },
-  "type": "HOOK"
-}

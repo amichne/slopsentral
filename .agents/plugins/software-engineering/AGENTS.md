@@ -44,5 +44,4 @@ Implement, test, review, and deliver code with Git, PR, and CI workflows.
 
 ## Hook Primitives
 
-- `agents-md-turn-refresh`: `hooks/agents-md-turn-refresh.hooks.json` (source: `source/hooks/agents-md-turn-refresh.hook.json`)
-- `repository-profile`: `hooks/repository-profile.hooks.json` (source: `source/hooks/repository-profile.hook.json`)
+- `software-engineering-context`: `hooks/software-engineering-context.hooks.json` (source: `source/hooks/software-engineering-context.hook.json`)

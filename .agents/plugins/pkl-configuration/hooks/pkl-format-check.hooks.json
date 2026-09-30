@@ -4,7 +4,7 @@
       {
         "hooks": [
           {
-            "command": "python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check format",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check format",
             "statusMessage": "Checking Pkl formatting",
             "timeout": 300,
             "type": "command"

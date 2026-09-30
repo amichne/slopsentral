@@ -9,8 +9,8 @@ Use this skill to review or rate an OpenAPI specification, generated OpenAPI
 artifact, API contract pull request, or documentation surface that claims to
 describe an API boundary.
 
-Honor the `schema-driven-design` and `type-safety` semantic context when the
-host supplies it. Otherwise use the nearest repository-local equivalent.
+Read the nearest repository policy. Apply the review criteria and bundled
+references below independently of plugin-level context delivery.
 
 ## Operating Contract
 

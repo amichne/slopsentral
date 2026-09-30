@@ -10,7 +10,11 @@ Use this reference when writing hook scripts.
 - Read provider event payloads from stdin only at the edge.
 - Prefer structured JSON output for machine-read checks.
 - Make failure messages actionable.
-- Keep state under a predictable repo-local directory when state is needed.
+- Add persistent state only when the event contract requires it. A passive
+  context hook should read its bundled policy without writing to the repository
+  or claiming that previously emitted output was loaded.
+- For plugin-owned state, use the host's writable `PLUGIN_DATA` capability;
+  use repository-local state only when the consuming repository opts into it.
 - Avoid destructive writes unless the hook's contract explicitly requires them.
 
 ## Portability
@@ -35,5 +39,6 @@ Run the hook script directly with a minimal representative command. Examples:
 
 ```sh
 python3 hooks/kotlin-horizontalization-check --repo . --format json
-bash hooks/agents-md-turn-refresh.sh status
+printf '%s' '{"hook_event_name":"SessionStart","source":"startup","session_id":"fixture"}' \
+  | PLUGIN_ROOT="$(pwd)" python3 hooks/inject-instruction-context.py --instruction kotlin-engineering
 ```

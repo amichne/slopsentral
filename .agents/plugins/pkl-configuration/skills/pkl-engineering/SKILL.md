@@ -1,6 +1,6 @@
 ---
 name: pkl-engineering
-description: Pkl engineering for typed configuration contracts, expressions, amendments, evaluation, formatting, tests, projects, dependencies, rendering, and packages. Use when a repository contains `.pkl` modules or `PklProject`, or when configuration behavior should be modeled and enforced with Apple Pkl.
+description: Implement or repair Apple Pkl configuration behavior, typed contracts, expressions, amendments, evaluation, tests, and packages. Use for requested Pkl changes; a repository containing Pkl files alone does not trigger this workflow.
 ---
 
 # Pkl Engineering
