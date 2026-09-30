@@ -9,8 +9,8 @@ Use this skill when the hard part of an OpenAPI task is modeling the schema
 state space: subtypes, discriminators, constraints, nullability, examples,
 extension points, or reusable component ownership.
 
-Honor the `schema-driven-design` and `type-safety` semantic context when the
-host supplies it. Otherwise use the nearest repository-local equivalent.
+Read the nearest repository policy. Use the contract rules and bundled
+references below without assuming plugin-level context was loaded.
 
 `type-safety` owns the shared semantic state-space rules.
 `schema-driven-design` owns their boundary realization. This skill owns only the

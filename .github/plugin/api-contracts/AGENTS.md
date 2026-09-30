@@ -36,3 +36,7 @@ Author and review OpenAPI specifications and JSON Schema contracts.
 - `openapi-contract-authoring`: `skills/openapi-contract-authoring` (source: `source/skills/openapi-contract-authoring`)
 - `openapi-contract-rating`: `skills/openapi-contract-rating` (source: `source/skills/openapi-contract-rating`)
 - `openapi-schema-modeling`: `skills/openapi-schema-modeling` (source: `source/skills/openapi-schema-modeling`)
+
+## Hook Primitives
+
+- `api-contracts-context`: `hooks/api-contracts-context.hooks.json` (source: `source/hooks/api-contracts-context.hook.json`)

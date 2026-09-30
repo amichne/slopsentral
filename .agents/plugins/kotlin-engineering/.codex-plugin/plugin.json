@@ -6,6 +6,7 @@
   "hooks": [
     "./hooks/gradle-check-green.hooks.json",
     "./hooks/gradle-wrapper-integrity.hooks.json",
+    "./hooks/kotlin-engineering-context.hooks.json",
     "./hooks/kotlin-horizontalization-check.hooks.json"
   ],
   "interface": {
@@ -65,5 +66,5 @@
   "mcpServers": "./.mcp.json",
   "name": "kotlin-engineering",
   "skills": "./skills/",
-  "version": "1.4.1"
+  "version": "1.5.1"
 }

@@ -102,6 +102,14 @@ node tools/validate-source-graph.mjs
 node tools/run-routing-evals.mjs --require-all-observed
 ```
 
+Actual runs belong in `field-observations.json`, validated by the v2 field
+observation schema. Record `route` as `PRIMITIVE_ROUTE` with the primitive
+actually selected, or `NO_PRIMITIVE_ROUTE` when none was selected. A `PASS`
+requires the expected primitive; `DRIFT` preserves a missing or incorrect route.
+Do not fill a routing miss with the expected skill to make validation pass.
+Keep runtime delivery, skill reads, useful output, workspace mutations, and token
+usage as separate observations. A correct answer does not erase a trigger miss.
+
 ## Source Promotion Guidance
 
 When consolidating from repo-specific routing playbooks:

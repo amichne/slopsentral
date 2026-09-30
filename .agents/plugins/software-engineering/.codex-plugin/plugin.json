@@ -4,8 +4,7 @@
   },
   "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
   "hooks": [
-    "./hooks/agents-md-turn-refresh.hooks.json",
-    "./hooks/repository-profile.hooks.json"
+    "./hooks/software-engineering-context.hooks.json"
   ],
   "interface": {
     "brandColor": "#0F766E",
@@ -67,5 +66,5 @@
   "license": "UNLICENSED",
   "name": "software-engineering",
   "skills": "./skills/",
-  "version": "1.0.1"
+  "version": "1.2.0"
 }

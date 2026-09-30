@@ -1,6 +1,6 @@
 ---
 name: "openapi-contract-authoring"
-description: "Use when authoring or revising OpenAPI specifications with schema-driven operations, invariant-filled schemas, typed errors, examples, and validation evidence."
+description: "Create or revise OpenAPI operations, requests, responses, errors, and security contracts. Use openapi-schema-modeling for component-only changes and openapi-contract-rating for review without edits."
 ---
 
 # OpenAPI Contract Authoring
@@ -8,8 +8,8 @@ description: "Use when authoring or revising OpenAPI specifications with schema-
 Use this skill when creating or revising an OpenAPI contract that should be a
 first-class boundary assertion, not a loose description of handler behavior.
 
-Honor the `schema-driven-design` and `type-safety` semantic context when the
-host supplies it. Otherwise use the nearest repository-local equivalent.
+Read the nearest repository policy. The contract rules and bundled references
+below apply independently of plugin-level context delivery.
 
 ## Operating Contract
 

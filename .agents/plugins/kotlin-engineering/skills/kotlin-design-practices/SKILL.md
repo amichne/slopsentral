@@ -10,9 +10,9 @@ representation and package responsibility. Use kotlin-api-surface-design for a
 public function or platform seam, kotlin-branching for a decision expression,
 and kotlin-gradle-validation for build execution.
 
-Honor the `type-safety` semantic context when the host supplies it. Realize that
-policy through Kotlin value classes, enums, sealed hierarchies, constrained
-visibility, capability-specific interfaces, and typed outcomes.
+Retain domain proofs through Kotlin value classes, enums, sealed hierarchies,
+constrained visibility, capability-specific interfaces, and typed outcomes.
+Read the relevant bundled reference below for the implementation details.
 
 ## Workflow
 

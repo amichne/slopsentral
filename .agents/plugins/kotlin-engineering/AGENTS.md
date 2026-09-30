@@ -42,4 +42,5 @@ Design, verify, review, and optimize Kotlin and Gradle changes.
 
 - `gradle-check-green`: `hooks/gradle-check-green.hooks.json` (source: `source/hooks/gradle-check-green.hook.json`)
 - `gradle-wrapper-integrity`: `hooks/gradle-wrapper-integrity.hooks.json` (source: `source/hooks/gradle-wrapper-integrity.hook.json`)
+- `kotlin-engineering-context`: `hooks/kotlin-engineering-context.hooks.json` (source: `source/hooks/kotlin-engineering-context.hook.json`)
 - `kotlin-horizontalization-check`: `hooks/kotlin-horizontalization-check.hooks.json` (source: `source/hooks/kotlin-horizontalization-check.hook.json`)

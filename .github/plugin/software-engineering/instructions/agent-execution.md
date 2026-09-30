@@ -20,10 +20,10 @@ Run required, change-appropriate checks; repeat or broaden them only for changed
 code, a failure, or a specific unresolved concern. Never present fixtures or
 static checks as observed model behavior.
 
-Repository profiles make capabilities available. Select skills and references
+Selected plugins make capabilities available. Select skills and references
 for the current task; a matching repository marker alone does not call for
-knowledge generation, review, delegation, or a build. Reuse the verified profile
-selection instead of rediscovering it or loading every installed skill.
+knowledge generation, review, delegation, or a build. Use the host-provided plugin
+selection without launching a profile manager or loading every installed skill.
 
 Lead with the result. Use concrete paragraphs, stable terms, supporting evidence,
 and material limits. Omit repeated conclusions and unrequested process narration.

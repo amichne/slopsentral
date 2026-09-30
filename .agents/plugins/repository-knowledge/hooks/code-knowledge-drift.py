@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from enum import Enum
 import json
 import sys
 from pathlib import Path
@@ -13,19 +14,58 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "skills/code-knowle
 from code_kb import Failure, build_impact, failure_payload, write_output
 
 
+class OutputFormat(str, Enum):
+    HUMAN = "human"
+    JSON = "json"
+    CODEX_STOP = "codex-stop"
+
+
+class ImpactOutcome(str, Enum):
+    OK = "ok"
+    INVALID = "invalid"
+
+
+def emit_stop(result: dict | Failure) -> None:
+    """Keep native hook feedback bounded; the ordinary CLI owns full reports."""
+    if isinstance(result, Failure):
+        stage, code = result.value
+        evidence = {"type": "KNOWLEDGE_DRIFT_STOP", "stage": stage, "outcome": "error", "code": code}
+        message = f"knowledge-drift: stage={stage} outcome=error code={code}; drift is unverified. Inspect the knowledge checker when relevant."
+    else:
+        outcome = ImpactOutcome(result["status"])
+        evidence = {
+            "type": "KNOWLEDGE_DRIFT_STOP", "stage": "impact", "outcome": outcome.value,
+            "changedFiles": len(result["changedFiles"]),
+            "impactedConcepts": len(result["impactedPages"]),
+            "metadataIssues": len(result["issues"]),
+        }
+        message = (
+            f"knowledge-drift: stage=impact outcome={outcome.value} "
+            f"changed-files={evidence['changedFiles']} impacted-concepts={evidence['impactedConcepts']} "
+            f"metadata-issues={evidence['metadataIssues']}; advisory only."
+        )
+        if outcome is ImpactOutcome.INVALID:
+            message += " Metadata is invalid; drift is unverified."
+    print(json.dumps({"systemMessage": message}))
+    print(json.dumps(evidence), file=sys.stderr)
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path("."))
     parser.add_argument("--docs", default="docs")
     parser.add_argument("--changed-file", action="append", default=[])
-    parser.add_argument("--format", choices=["human", "json"], default="human")
+    parser.add_argument("--format", choices=[value.value for value in OutputFormat], default=OutputFormat.HUMAN.value)
     parser.add_argument("--advisory", action="store_true")
     args = parser.parse_args(argv)
     repo = args.repo.resolve()
     result = build_impact(repo, (repo / args.docs).resolve(), args.changed_file, from_git=True)
     payload = failure_payload("impact", result) if isinstance(result, Failure) else result
 
-    if args.format == "json":
+    output_format = OutputFormat(args.format)
+    if output_format is OutputFormat.CODEX_STOP:
+        emit_stop(result)
+    elif output_format is OutputFormat.JSON:
         # Preserve the hook's public field names while sharing parsing and validation.
         hook_payload = dict(payload)
         if "impactedPages" in hook_payload:

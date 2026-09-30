@@ -2,7 +2,7 @@
   "hooks": {
     "Stop": [
       {
-        "bash": "bash \"$PLUGIN_ROOT/hooks/source-graph-valid.sh\" --repo .",
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- bash \"$PLUGIN_ROOT/hooks/source-graph-valid.sh\" --repo .",
         "timeoutSec": 60,
         "type": "command"
       }

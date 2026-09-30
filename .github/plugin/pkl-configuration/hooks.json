@@ -2,17 +2,17 @@
   "hooks": {
     "Stop": [
       {
-        "bash": "python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check evaluate",
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check evaluate",
         "timeoutSec": 600,
         "type": "command"
       },
       {
-        "bash": "python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check format",
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check format",
         "timeoutSec": 300,
         "type": "command"
       },
       {
-        "bash": "python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check test",
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- python3 \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check test",
         "timeoutSec": 900,
         "type": "command"
       }
