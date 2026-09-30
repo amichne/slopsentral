@@ -1,6 +1,6 @@
 ---
 name: "reference-doc-workflow"
-description: "Guide users through a structured workflow for shaping documentation, proposals, technical specs, decision docs, RFCs, and other agent-readable reference material. Use when the user wants to write, revise, organize, or reader-test a substantial document with a local non-first-party skill name."
+description: "Shape a substantial proposal, technical specification, RFC, or decision document when audience, structure, or reader comprehension needs development. Use technical-documentation for a defined repository document and controlled-technical-writing for prose-only edits."
 ---
 
 # Reference Doc Workflow
@@ -43,10 +43,11 @@ small sections, then test whether a fresh reader can use it.
    section set that can carry the reader's job. Put summaries and introductions
    last when the core decision or technical approach is still moving.
 
-4. Draft section by section.
-   For each section, ask targeted questions, propose candidate points, let the
-   user choose what belongs, then write the section. Make surgical edits instead
-   of rewriting the whole document unless the structure is wrong.
+4. Draft the authorized document.
+   Use the supplied context and agreed structure to write a reviewable draft.
+   Ask a targeted question only when a missing fact changes the reader's
+   decision. Use a section-by-section collaboration loop when the user requests
+   it; do not require approval for each paragraph or section.
 
 5. Tighten the document.
    Re-read the full draft for flow, contradictions, duplicated claims, missing
@@ -73,17 +74,6 @@ the agent can load only what is needed:
 - Do not duplicate large policy blocks across files; link to the owning source.
 
 For deeper checks, load [reader-testing.md](references/reader-testing.md).
-
-## Section Loop
-
-For each important section:
-
-1. Name the reader task this section must support.
-2. List candidate points to include.
-3. Ask the user what to keep, remove, combine, or sharpen.
-4. Draft only that section.
-5. Verify the section has enough evidence for its claims.
-6. Ask whether anything can be removed without losing meaning.
 
 ## Completion Criteria
 

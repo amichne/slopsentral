@@ -1,0 +1,20 @@
+{
+  "dependsOn": [
+    {
+      "name": "api-contract-design",
+      "path": "instructions/api-contract-design.md",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "INSTRUCTION"
+    }
+  ],
+  "name": "api-contracts-context",
+  "path": "hooks/api-contracts-context.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

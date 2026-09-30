@@ -4,7 +4,7 @@
       {
         "hooks": [
           {
-            "command": "bash \"$PLUGIN_ROOT/hooks/source-graph-valid.sh\" --repo .",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- bash \"$PLUGIN_ROOT/hooks/source-graph-valid.sh\" --repo .",
             "statusMessage": "Validating the authored source graph",
             "timeout": 60,
             "type": "command"
