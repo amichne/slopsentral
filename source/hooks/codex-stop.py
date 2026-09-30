@@ -33,8 +33,8 @@ class Advisory:
 
 def response(outcome: Outcome | Advisory) -> dict[str, str]:
     if isinstance(outcome, Advisory):
-        return {"systemMessage": f"kotlin-stop: stage=check outcome=completed advisory-findings={outcome.count}; review layout with the checker only when relevant. These heuristics do not prove a semantic defect."}
-    evidence = f"kotlin-stop: stage=check outcome={outcome.value}"
+        return {"systemMessage": f"codex-stop: stage=check outcome=completed advisory-findings={outcome.count}; review layout with the checker only when relevant. These heuristics do not prove a semantic defect."}
+    evidence = f"codex-stop: stage=check outcome={outcome.value}"
     match outcome:
         case Outcome.COMPLETED:
             return {"systemMessage": evidence + "; command completed (may have skipped); no additional build proof claimed."}

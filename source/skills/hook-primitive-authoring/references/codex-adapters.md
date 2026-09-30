@@ -42,6 +42,13 @@ metadata to these runtime adapter files. The authored adapter lives under
   testable.
 - If the provider event payload matters, the implementation should tolerate
   missing or malformed input and fail with an actionable message.
+- A successful `Stop` command must emit one Codex response object on stdout.
+  Human reports, TOON, and a check's domain JSON are separate CLI formats. Adapt
+  check outcomes to `systemMessage` or `decision: "block"` with a bounded
+  `reason`; retain CLI exit codes and full reports outside the hook response.
+  Test the configured command, including skipped checks and failures, from a
+  directory outside the plugin root. Parsing the adapter file alone is not
+  runtime output validation.
 
 ## Common Events
 

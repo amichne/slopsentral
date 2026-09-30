@@ -50,10 +50,10 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     [],
   );
   assert.deepEqual([...hookOwners.keys()].sort(), [
-    "agents-md-turn-refresh",
     "gradle-check-green",
     "gradle-wrapper-integrity",
+    "kotlin-engineering-context",
     "kotlin-horizontalization-check",
-    "repository-profile",
+    "software-engineering-context",
   ]);
 });

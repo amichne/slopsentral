@@ -8,7 +8,7 @@
     {
       "$schema": "../../schemas/evals/routing-field-observations.schema.json",
       "type": "ROUTING_FIELD_OBSERVATION_SET",
-      "schemaVersion": 1,
+      "schemaVersion": 2,
       "name": "post-readiness-field-observations",
       "description": "Sanitized observations from real workflow execution after routing readiness work.",
       "observations": [
@@ -19,10 +19,6 @@
           "capturedAt": "2026-06-22",
           "sourceType": "PR_VALIDATION",
           "outcome": "PASS",
-          "routedPrimitive": {
-            "type": "SKILL",
-            "name": "github-ci-operations"
-          },
           "evidenceRefs": [
             "PR 5 Validate Source run 27964536885 completed successfully."
           ],
@@ -30,7 +26,14 @@
           "followUpAction": "Keep PR checks green after future pushes.",
           "limitations": [
             "This observation proves remote check handling, not Kotlin code execution."
-          ]
+          ],
+          "route": {
+            "type": "PRIMITIVE_ROUTE",
+            "primitive": {
+              "type": "SKILL",
+              "name": "github-ci-operations"
+            }
+          }
         }
       ]
     }
@@ -63,10 +66,10 @@
     "schemaVersion": {
       "type": "integer",
       "enum": [
-        1
+        2
       ],
       "examples": [
-        1
+        2
       ]
     },
     "name": {
@@ -95,10 +98,6 @@
             "capturedAt": "2026-06-22",
             "sourceType": "PR_VALIDATION",
             "outcome": "PASS",
-            "routedPrimitive": {
-              "type": "SKILL",
-              "name": "github-ci-operations"
-            },
             "evidenceRefs": [
               "PR 5 Validate Source run 27964536885 completed successfully."
             ],
@@ -106,7 +105,14 @@
             "followUpAction": "Keep PR checks green after future pushes.",
             "limitations": [
               "This observation proves remote check handling, not Kotlin code execution."
-            ]
+            ],
+            "route": {
+              "type": "PRIMITIVE_ROUTE",
+              "primitive": {
+                "type": "SKILL",
+                "name": "github-ci-operations"
+              }
+            }
           }
         ]
       ],
@@ -127,10 +133,6 @@
           "capturedAt": "2026-06-22",
           "sourceType": "RUNTIME_VERIFICATION",
           "outcome": "PASS",
-          "routedPrimitive": {
-            "type": "SKILL",
-            "name": "repository-onboarding"
-          },
           "evidenceRefs": [
             "codex plugin list reported kotlin-engineering@slopsentral installed and enabled."
           ],
@@ -138,7 +140,14 @@
           "followUpAction": "Repeat the installed-state check in each target team environment.",
           "limitations": [
             "This does not prove the installed cache contains this branch head."
-          ]
+          ],
+          "route": {
+            "type": "PRIMITIVE_ROUTE",
+            "primitive": {
+              "type": "SKILL",
+              "name": "repository-onboarding"
+            }
+          }
         }
       ],
       "required": [
@@ -148,7 +157,7 @@
         "capturedAt",
         "sourceType",
         "outcome",
-        "routedPrimitive",
+        "route",
         "evidenceRefs",
         "productiveOutcomeObserved",
         "followUpAction",
@@ -209,9 +218,6 @@
             "PASS"
           ]
         },
-        "routedPrimitive": {
-          "$ref": "#/$defs/primitive"
-        },
         "evidenceRefs": {
           "$ref": "#/$defs/nonEmptyStrings"
         },
@@ -231,6 +237,9 @@
         },
         "limitations": {
           "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "route": {
+          "$ref": "#/$defs/route"
         }
       }
     },
@@ -285,6 +294,79 @@
           "codex plugin list reported kotlin-engineering@slopsentral installed and enabled."
         ]
       }
+    },
+    "route": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "primitive"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "PRIMITIVE_ROUTE"
+              ],
+              "examples": [
+                "PRIMITIVE_ROUTE"
+              ]
+            },
+            "primitive": {
+              "$ref": "#/$defs/primitive"
+            }
+          },
+          "examples": [
+            {
+              "type": "PRIMITIVE_ROUTE",
+              "primitive": {
+                "type": "SKILL",
+                "name": "tdd"
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "NO_PRIMITIVE_ROUTE"
+              ],
+              "examples": [
+                "NO_PRIMITIVE_ROUTE"
+              ]
+            }
+          },
+          "examples": [
+            {
+              "type": "NO_PRIMITIVE_ROUTE"
+            }
+          ]
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "examples": [
+        {
+          "type": "PRIMITIVE_ROUTE",
+          "primitive": {
+            "type": "SKILL",
+            "name": "tdd"
+          }
+        },
+        {
+          "type": "NO_PRIMITIVE_ROUTE"
+        }
+      ]
     }
   }
 }

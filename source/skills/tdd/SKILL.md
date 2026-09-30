@@ -1,125 +1,69 @@
 ---
-name: "tdd"
-description: "Use when behavior changes, bug fixes, contract changes, or tracer bullets need current-codebase preflight and focused executable proof; also for characterization before a refactor."
+name: tdd
+description: Use when proving behavior changes or auditing executable proof, including empty test selections, runner failures, and RED/GREEN claims. Characterize refactors with existing checks; prose and formatting changes use their normal validators.
 ---
 
 # Executable-Check TDD
 
-Use this skill to drive one observable change at a time with an executable
-check. The check does not need to come from a test framework: a compiler, type
-checker, linter, schema validator, build task, repository script, or focused
-shell command can be the oracle when its exit status proves the target claim.
-
-Honor the `type-safety` and `schema-driven-design` semantic context when the
-host supplies it and it is relevant to the behavior under test. Otherwise use
-the nearest repository-local equivalent.
-
-## Operating Contract
-
-- Read the nearest repository instructions, existing checks, and build metadata
-  before choosing a command.
-- Check the proposed concept against current owners, callers, contracts, and
-  tests before adding it. Choose reuse, extend, add, or investigate from that
-  evidence; a plan or incident report is a hypothesis until checked.
-- State one acceptance behavior and one check specification before changing the
-  implementation.
-- A check specification is its working directory, exact command, controlled
-  inputs and environment, assertion source, expected RED failure, and GREEN
-  success criterion.
-- Run the same check specification for RED and GREEN. Only the intentional
-  implementation change should explain the transition.
-- Keep RED and GREEN evidence in the check results. Commit or push only when the
-  requested end state or applicable repository policy authorizes publication; a
-  local TDD loop does not require a remote.
-- RED is valid only when the check ran and failed because the target behavior or
-  invariant is absent.
-- Infrastructure failures are not RED: command-not-found, dependency setup,
-  syntax errors in the check, timeouts, permission failures, and unrelated
-  failures must be repaired or isolated first.
-- If the check starts green, inspect what it actually covers. Existing behavior
-  is a reuse result; a refactor may use it as characterization. Tighten a weak
-  check only for a demonstrated uncovered requirement. Never invent a failure
-  or broaden the requirement merely to obtain RED.
-- Do not refactor while red or add production behavior not demanded by the
-  current check.
-- Use a retained tracer bullet for the smallest real path across an uncertain
-  boundary. Use a disposable spike for an unanswered feasibility question;
-  label its limits before treating any result as production evidence.
-- Do not add tests that mirror low-impact prose or formatting edits. Run the
-  existing relevant validators instead.
-- Choose required checks and a stopping condition before implementation. After
-  they pass, repeat or widen only for changed inputs, a failure, or a named
-  unresolved risk. Test friction calls for a smaller seam, not a new framework
-  by default.
-- Do not create a workflow state directory merely to narrate the loop. The
-  check, test source, native reports, and concise handoff are the evidence.
-
-Read [executable-check-contract.md](references/executable-check-contract.md)
-when selecting or adapting a non-test command, qualifying a RED result, or
-stabilizing the check specification.
+Choose the smallest executable oracle for the changed claim: a test, compiler,
+type checker, schema validator, linter, or repository command. Read the nearest
+repository instructions and inspect the current owner, callers, and existing
+checks first. An inherited plan describes a hypothesis, not a missing feature.
 
 ## Workflow
 
-1. Frame one observable behavior, invariant, or failure. Identify its current
-   owner and affected consumer. Use [codebase-preflight.md](references/codebase-preflight.md)
-   before implementing a proposed concept or acting on an inherited plan.
-2. Choose reuse, characterization, a behavior change, or a bounded investigation.
-   Reuse may complete the task without production edits. For a behavior change,
-   discover the narrowest check that distinguishes current and desired behavior.
-   Continue through the RED/GREEN steps below only for a demonstrated gap;
-   otherwise use the selected mode's evidence and completion criteria.
-3. Declare the check specification and verification boundary. Preflight dependencies
-   separately when their readiness is uncertain.
-   Read [isolation.md](references/isolation.md) when the check mutates the
-   filesystem, depends on a service, or evaluates an agent in an untrusted task.
-4. Add or tighten the smallest check before changing the implementation.
-5. Run the declared command and inspect the failure. Accept RED only when it
-   fails for the expected reason.
-6. Implement the narrowest vertical slice that can satisfy that check. Use
-   [tracer-bullets.md](references/tracer-bullets.md) when integration or feasibility
-   is uncertain; do not build every layer before exercising one path.
-7. Run the same check specification and accept GREEN only when it exits zero and
-   its output proves the intended assertion ran. Explain cached evidence and
-   skips; a green aggregate alone is insufficient.
-8. Refactor while green, rerunning the focused check after each meaningful move.
-9. Repeat for the next required behavior. Widen across affected contracts after
-   GREEN, run mandatory repository checks, then stop when acceptance is proved.
+1. State the acceptance behavior and inspect whether the current code already
+   satisfies it. Choose reuse, characterization, a behavior change, or a bounded
+   investigation. Do not create a duplicate implementation or manufacture RED
+   when the existing invariant is proved.
+2. Specify the working directory, exact command, fixtures, meaningful
+   environment, assertion source, expected failure, and passing criterion.
+   Check tooling readiness separately. Zero selected tests and infrastructure
+   failures do not prove the product behavior.
+3. For a behavior change, add or tighten the focused check and run it before
+   implementation. Accept RED only when the intended missing invariant causes
+   the failure. Reuse and refactors start from passing characterization.
+4. Implement the smallest real path that satisfies the claim. Keep effects
+   explicit and preserve refined domain values and finite expected failures.
+   Do not refactor while red or add behavior outside the acceptance boundary.
+5. Run the same check specification. Accept GREEN only when the relevant
+   assertion executed and passed. Explain skips and cached evidence. Refactor
+   while green and rerun the affected check after meaningful changes.
+6. Run repository-required checks and widen across affected owners or consumers.
+   Repeat or broaden only for changed inputs, failures, or a named unresolved
+   concern. Do not add implementation-mirroring tests for reversible prose or
+   formatting changes.
+7. Report the exact checks, observed outcomes, changed invariant, and limits.
+   Keep evidence in native reports and the handoff; ordinary work needs no new
+   task filesystem. Commit or push only when the requested end state or
+   applicable repository policy authorizes publication. Do not request again
+   for authority already supplied. A local TDD loop does not require a remote.
 
-For a behavior-preserving refactor, establish passing characterization first,
-make the structural change, then rerun that same check. Report characterization,
-not an invented RED. If a defect emerges, start a separate behavior-change loop.
-
-Ask for clarification only when the acceptance boundary, critical behavior, or
-risk tolerance cannot be inferred from the task and local evidence.
-
-## Evidence And Handoff
-
-Report the acceptance behavior, check specification, RED and GREEN signals, and
-remaining limits. Read [handoff.md](references/handoff.md) when work spans
-sessions or needs a durable handoff; ordinary updates need only the current
-transition and its evidence.
-
-## Completion Criteria
-
-- The implementation decision follows current source and consumer evidence.
-- For a behavior change, the focused check failed for the intended reason before
-  implementation and the same specification now passes. For reuse or refactoring,
-  passing baseline evidence is labeled accurately.
-- Commit and push state match the requested end state or applicable repository
-  policy; local-only work requires neither.
-- Refactoring, if any, happened while the focused check remained green.
-- Relevant broader checks pass, or their exact residual failures are reported.
-- Remaining required work prevents `DONE`; optional future work has an explicit
-  trigger and does not expand the current slice.
-- The handoff names exact commands and results rather than claiming confidence.
+A timeout, missing command, broken fixture, permission error, or unrelated
+failure requires readiness repair or isolation; it is not product RED. A passing
+aggregate without a relevant assertion is not GREEN. Remaining required work
+prevents completion.
 
 ## Reference Routing
 
-- Read [tests.md](references/tests.md) when the executable check is a behavior test.
-- Read [mocking.md](references/mocking.md) when an external boundary may need a test double.
-- Read [interface-design.md](references/interface-design.md) when a public code seam is hard to exercise.
-- Read [deep-modules.md](references/deep-modules.md) when test friction suggests a shallow interface.
-- Read [refactoring.md](references/refactoring.md) only after GREEN when choosing cleanup moves.
-- Read [isolation.md](references/isolation.md) when a temporary directory,
-  disposable worktree, service container, or containerized evaluation may be
-  needed.
+- Read [codebase-preflight.md](references/codebase-preflight.md) when deciding
+  whether a proposed implementation is needed.
+- Read [executable-check-contract.md](references/executable-check-contract.md)
+  when selecting a non-test oracle or qualifying RED/GREEN evidence.
+- Read [isolation.md](references/isolation.md) when checks mutate state, call a
+  service, or evaluate an agent in a disposable workspace.
+- Read [tracer-bullets.md](references/tracer-bullets.md) for an uncertain boundary;
+  distinguish a retained real path from a disposable feasibility spike.
+- Read [tests.md](references/tests.md) for behavior tests and
+  [mocking.md](references/mocking.md) for external boundaries.
+- Read [interface-design.md](references/interface-design.md) or
+  [deep-modules.md](references/deep-modules.md) when test friction exposes a seam.
+- Read [refactoring.md](references/refactoring.md) only after passing proof.
+- Read [handoff.md](references/handoff.md) for interrupted or sustained work.
+
+## Completion Criteria
+
+The current-codebase decision is supported by source and consumer evidence.
+The relevant check executed, required validation passed, publication matches the
+requested scope, and the handoff distinguishes reuse, characterization, and
+observed RED/GREEN without claiming a narrower check proves a broader result.

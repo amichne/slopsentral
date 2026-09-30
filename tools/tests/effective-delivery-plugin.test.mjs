@@ -16,13 +16,13 @@ function names(manifest, field) {
   return (manifest[field] ?? []).map((entry) => entry.name);
 }
 
-test("software engineering keeps explicit CI observation without automatic hooks", () => {
+test("software engineering keeps explicit CI observation without automatic CI hooks", () => {
   const engineering = readJson("source/plugins/software-engineering/plugin.json");
   for (const skill of ["git-change-flow", "github-ci-operations", "issue-tracker-operations",
     "pull-request-lifecycle", "delivery-pipeline-design"]) {
     assert.ok(names(engineering, "skills").includes(skill));
   }
-  assert.deepEqual(names(engineering, "hooks"), ["agents-md-turn-refresh", "repository-profile"]);
+  assert.deepEqual(names(engineering, "hooks"), ["software-engineering-context"]);
   assert.equal(
     fs.existsSync(path.join(repoRoot, "source/skills/github-ci-operations/scripts/ci_wait_for_actions")),
     true,

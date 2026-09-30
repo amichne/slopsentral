@@ -34,71 +34,38 @@ Inspect a profile without installing or executing anything:
 node tools/catalog.mjs --profile kotlin-repo-default --json
 ```
 
-Safely plan, apply, inspect, and reverse a named Codex user profile with the
-[profile lifecycle](docs/profile-lifecycle.md). It ensures the Slopsentral
-marketplace, installs selected plugins, writes a named overlay, and reports
-plugin-owned hooks for manual trust review. Declared standalone skills are
-installed at stable user paths and enabled or disabled in that overlay. Every
-overlay mutation records a verified preimage in a versioned transaction first.
+## Instruction Delivery
 
-## Portable CLI
+Install and select plugins through the host's marketplace interface. Slopsentral
+has no global binary or launch wrapper. Three read-only context hooks deliver
+canonical instruction dependencies through Codex `SessionStart.additionalContext`.
+They cover startup, resume, clear, and compaction, without installing plugins,
+rewriting configuration, or recording transcript-based deduplication state.
+Software Engineering supplies agent-execution and engineering-design guidance,
+Kotlin Engineering adds Kotlin guidance, and API Contracts adds schema guidance.
 
-Install the CLI directly from the public GitHub repository. Node 20.11 or newer
-is required:
+Review new or changed hook definitions through the host's `/hooks` interface.
+Installation is not hook trust: an untrusted or disabled hook does not deliver
+policy. If an enabled hook cannot load its complete bounded policy bundle, it
+reports the failure and requests that the turn stop instead of emitting partial
+guidance. Skills retain their own task rules and bundled references so they also
+work when context hooks are unavailable. See the official [hooks contract](https://learn.chatgpt.com/docs/hooks).
 
-```bash
-npm install --global github:amichne/slopsentral#main
-```
+The generated plugin `AGENTS.md` is a reference index, not proof of runtime
+loading. Source validation proves composition; projected-hook tests prove output;
+native host observations and task evaluations prove delivery and behavior
+separately. See [architecture](source/ARCHITECTURE.md).
 
-`#main` follows the branch. For a reproducible installation, replace it with an
-immutable release tag or full commit SHA.
+The former `repository-profile` startup hook is retired. Starting or resuming a
+session no longer installs plugins or rewrites repository configuration. Select
+Software Engineering and Kotlin Engineering for Kotlin work through the host.
+Plugin selection makes skills available; the task determines which skills to use.
 
-```bash
-slopsentral doctor
-slopsentral profile plan local-development-default
-slopsentral profile apply local-development-default
-slopsentral profile status local-development-default
-```
-
-For automatic Kotlin tooling, keep `settings.gradle.kts` at the repository root
-and launch Codex through the context command:
-
-```bash
-slopsentral context launch --repo /path/to/repository
-```
-
-This selects `kotlin-repo-default`: Software Engineering and Kotlin Engineering.
-Repository Knowledge remains an optional addition. It preserves other
-configured plugins and applies the repository configuration before Codex starts.
-The Software Engineering plugin also supplies a startup hook for desktop sessions;
-configuration first written by that hook takes effect in the next session.
-See [automatic repository activation](docs/profile-lifecycle.md#automatic-repository-activation)
-for setup, read-only inspection, and rollback.
-
-Use the `manifestPath` returned by `apply` to reverse that transaction:
-
-```bash
-slopsentral profile rollback /absolute/path/to/manifest.json
-```
-
-Operational commands emit stable JSON; `context launch` passes through Codex's
-terminal output and exit status. Exit status `0` means success, `1`
-means a runtime or I/O failure, `2` means an invalid request or contract, and
-`3` means a conflict. `doctor` is read-only; a missing Codex executable is a
-warning, while missing packaged assets or an unusable configuration root makes
-the check fail.
-
-Profile operations require Codex CLI 0.134.0 or newer. They leave the base user
-config, foreign plugins, and Codex's runtime-owned hook trust state untouched.
-Rollback reverses the generated profile overlay, not marketplace, plugin, or
-standalone-skill installations.
-
-Remove the global command without changing profiles or backups it previously
-created:
-
-```bash
-npm uninstall --global slopsentral
-```
+Workflow profiles remain declarative plugin selections. Maintainers can use the
+optional [repository-local profile lifecycle](docs/profile-lifecycle.md) for
+explicit setup and rollback of saved transactions. Normal plugin use needs no
+Slopsentral npm installation. See [migration](source/MIGRATION.md#retiring-the-global-cli)
+for existing global installations and configuration backups.
 
 ## Source Of Truth
 

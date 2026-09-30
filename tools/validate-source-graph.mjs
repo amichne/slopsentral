@@ -4,6 +4,7 @@ import fs from "node:fs";
 import { auditCatalog, loadCatalog } from "./catalog.mjs";
 import path from "node:path";
 import process from "node:process";
+import Ajv2020 from "ajv/dist/2020.js";
 import { validateWorkflowProfile } from "./validate-profile-contracts.mjs";
 
 const args = process.argv.slice(2);
@@ -223,7 +224,10 @@ function validatePrimitiveRef(ref, owner) {
     if (hook?.path && !fs.existsSync(path.join(sourceRoot, hook.path))) {
       fail(`${owner}: hook ${ref.name} adapter path source/${hook.path} is missing`);
     }
-    if (hook?.path) validateHookAdapter(ref.name, hook.path);
+    if (hook?.path) {
+      validateHookAdapter(ref.name, hook.path);
+      validateInstructionContext(hook);
+    }
   } else if (ref.type === "INSTRUCTION") {
     if (!fs.statSync(absolutePath).isFile()) {
       fail(`${owner}: instruction ${ref.name} must point at a file`);
@@ -234,6 +238,40 @@ function validatePrimitiveRef(ref, owner) {
 
   for (const dependency of ref.dependsOn ?? []) {
     validatePrimitiveRef(dependency, `${owner} dependency of ${ref.name}`);
+  }
+}
+
+function validateInstructionContext(metadata) {
+  const adapter = readJson(`source/${metadata.path}`);
+  if (!adapter?.hooks) return;
+  for (const [event, groups] of Object.entries(adapter.hooks)) {
+    if (!Array.isArray(groups)) continue;
+    for (const group of groups) {
+      if (!Array.isArray(group?.hooks)) continue;
+      for (const handler of group.hooks) {
+        if (typeof handler?.command !== 'string' ||
+            !handler.command.startsWith('python3 hooks/inject-instruction-context.py')) continue;
+        const args = handler.command.split(/\s+/u).slice(2);
+        const selected = args.filter((_, index) => index % 2 === 1);
+        const declarations = (metadata.dependsOn ?? []).filter(ref => ref.type === 'INSTRUCTION');
+        const names = declarations.map(ref => ref.name);
+        if (args.length === 0 || args.length % 2 ||
+            args.some((arg, index) => index % 2 === 0 && arg !== '--instruction') ||
+            new Set(selected).size !== selected.length ||
+            JSON.stringify(sorted(selected)) !== JSON.stringify(sorted(names))) {
+          fail(`${metadata.name}: instruction arguments must exactly match canonical instruction dependencies`);
+        }
+        if (declarations.some(ref => ref.path !== `instructions/${ref.name}.md`)) {
+          fail(`${metadata.name}: context policies must use canonical instructions/<name>.md paths`);
+        }
+        if (event !== 'SessionStart' || group.matcher !== '^(startup|resume|clear|compact)$') {
+          fail(`${metadata.name}: instruction context must cover the complete SessionStart lifecycle`);
+        }
+        if (handler.additionalContextLimit !== 8192) {
+          fail(`${metadata.name}: instruction context requires the bounded 8192 token host budget`);
+        }
+      }
+    }
   }
 }
 
@@ -765,7 +803,14 @@ function validateRoutingFieldObservationSet(relativePath, routingCases) {
 
   validateNoPrivateLocalStrings(relativePath, payload);
   validateSchemaLink(relativePath, payload.$schema);
-  if (payload.schemaVersion !== 1) fail(`${relativePath}: schemaVersion must be 1`);
+  const schema = readJson("source/schemas/evals/routing-field-observations.schema.json");
+  if (!schema) return;
+  const validate = new Ajv2020({ strict: false, discriminator: true }).compile(schema);
+  if (!validate(payload)) {
+    for (const error of validate.errors ?? []) {
+      fail(`${relativePath}: observation schema ${error.instancePath} ${error.message}`);
+    }
+  }
   for (const field of ["name", "description"]) {
     if (typeof payload[field] !== "string" || !payload[field].trim()) fail(`${relativePath}: ${field} is required`);
   }
@@ -795,15 +840,12 @@ function validateRoutingFieldObservationSet(relativePath, routingCases) {
     const routingCase = routingCases.get(observation.caseId);
     if (!routingCase) {
       fail(`${owner}: caseId ${observation.caseId ?? "<missing>"} does not exist in routing corpus`);
-    } else if (
-      observation.routedPrimitive?.type !== routingCase.expectedPrimitive?.type ||
-      observation.routedPrimitive?.name !== routingCase.expectedPrimitive?.name
-    ) {
-      fail(
-        `${owner}: routedPrimitive ${observation.routedPrimitive?.type ?? "<missing>"}/${
-          observation.routedPrimitive?.name ?? "<missing>"
-        } does not match routing case expected ${routingCase.expectedPrimitive?.type}/${routingCase.expectedPrimitive?.name}`,
-      );
+    } else if (observation.outcome === "PASS" && (
+      observation.route?.type !== "PRIMITIVE_ROUTE" ||
+      observation.route.primitive?.type !== routingCase.expectedPrimitive?.type ||
+      observation.route.primitive?.name !== routingCase.expectedPrimitive?.name
+    )) {
+      fail(`${owner}: PASS requires the expected primitive route ${routingCase.expectedPrimitive?.type}/${routingCase.expectedPrimitive?.name}`);
     }
     validateNonEmptyStringArray(`${owner}: evidenceRefs`, observation.evidenceRefs);
     validateNonEmptyStringArray(`${owner}: limitations`, observation.limitations);

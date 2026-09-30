@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "agent-tooling",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

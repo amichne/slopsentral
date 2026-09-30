@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "kotlin-engineering",
-  "version": "1.4.1",
+  "version": "1.5.1",
   "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -102,18 +102,17 @@
     }
   ],
   "agents": [],
-  "instructions": [
+  "instructions": [],
+  "hooks": [
     {
-      "type": "INSTRUCTION",
+      "type": "HOOK",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "instructions/kotlin-engineering.md",
-      "name": "kotlin-engineering"
-    }
-  ],
-  "hooks": [
+      "path": "hooks/kotlin-engineering-context.hook.json",
+      "name": "kotlin-engineering-context"
+    },
     {
       "type": "HOOK",
       "source": {

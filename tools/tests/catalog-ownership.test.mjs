@@ -58,3 +58,41 @@ test('rejects competing default choices', t => {
     plugin.metadata.role = 'default';
   }), /exactly one default plugin/);
 });
+
+test('rejects context delivery without the policy it requests', t => {
+  rejects(t, edit => edit('source/hooks/software-engineering-context.hook.json', hook => {
+    hook.dependsOn.pop();
+  }), /instruction arguments must exactly match canonical instruction dependencies/);
+});
+
+test('rejects lifecycle omissions and unbounded context configuration', t => {
+  rejects(t, edit => edit('source/hooks/codex/kotlin-engineering-context.hooks.json', adapter => {
+    adapter.hooks.SessionStart[0].matcher = '^startup$';
+    adapter.hooks.SessionStart[0].hooks[0].additionalContextLimit = 0;
+  }), /instruction context must cover the complete SessionStart lifecycle/);
+});
+
+test('field observations preserve a missing route without inventing success', t => {
+  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'routing-field-contract-'));
+  t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
+  fs.cpSync(path.join(root, 'source'), path.join(fixture, 'source'), { recursive: true });
+  const file = path.join(fixture, 'source/evals/routing/field-observations.json');
+  const payload = JSON.parse(fs.readFileSync(file, 'utf8'));
+  payload.observations[0].route = { type: 'NO_PRIMITIVE_ROUTE' };
+  payload.observations[0].outcome = 'DRIFT';
+  const check = () => {
+    fs.writeFileSync(file, JSON.stringify(payload));
+    return spawnSync(process.execPath, [path.join(root, 'tools/validate-source-graph.mjs'), '--repo', fixture], { encoding: 'utf8' });
+  };
+  const drift = check();
+  assert.equal(drift.status, 0, drift.stdout + drift.stderr);
+  payload.observations[0].outcome = 'PASS';
+  const falsePass = check();
+  assert.equal(falsePass.status, 1);
+  assert.match(falsePass.stdout + falsePass.stderr, /PASS requires the expected primitive route/);
+  payload.observations[0].outcome = 'DRIFT';
+  payload.observations[0].route.primitive = { type: 'SKILL', name: 'tdd' };
+  const invalidRoute = check();
+  assert.equal(invalidRoute.status, 1);
+  assert.match(invalidRoute.stdout + invalidRoute.stderr, /observation schema/);
+});

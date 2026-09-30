@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "software-engineering",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -129,26 +129,7 @@
     }
   ],
   "agents": [],
-  "instructions": [
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "instructions/agent-execution.md",
-      "name": "agent-execution"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "instructions/engineering-design.md",
-      "name": "engineering-design"
-    }
-  ],
+  "instructions": [],
   "hooks": [
     {
       "type": "HOOK",
@@ -156,17 +137,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "hooks/agents-md-turn-refresh.hook.json",
-      "name": "agents-md-turn-refresh"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/repository-profile.hook.json",
-      "name": "repository-profile"
+      "path": "hooks/software-engineering-context.hook.json",
+      "name": "software-engineering-context"
     }
   ],
   "metadata": {
