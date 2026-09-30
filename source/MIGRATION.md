@@ -55,9 +55,24 @@ advanced alternative, not a prerequisite for the normal plugin chooser.
 
 Software Engineering 1.1.0 removes the `repository-profile` startup hook.
 The `slopsentral` npm binary and `context` launcher are retired. Select plugins
-through the host marketplace; their canonical instructions are delivered passively
-and their remaining hooks own executable checks. No global Slopsentral process
-is required to inject guidance.
+through the host marketplace. Version 1.2.0 adds a read-only context hook for
+canonical instructions. No global Slopsentral process is required to inject
+guidance.
+
+Kotlin Engineering 1.5.0 and API Contracts 1.1.0 use the same context contract.
+The instruction primitives keep their identities and bytes; their install edges
+move from direct plugin references to hook dependencies. Refresh the marketplace,
+update the plugins, and review the new hook definitions through `/hooks`.
+Existing trust does not approve a changed hash. Disabled, unsupported, or
+untrusted hooks provide no policy guarantee; the skills remain self-contained.
+Plugin-level `AGENTS.md` links alone were packaging evidence, not established
+model-context delivery.
+
+Software Engineering 1.2.0 also retires `agents-md-turn-refresh`. Its automatic
+turn tracking wrote `.agent-turn/` even during tasks that requested no file
+changes. The default plugin now has only the read-only context hook. Instruction
+topology changes remain explicit work through the Agent Tooling skill. Saved
+tracking files are user state; this migration does not delete them automatically.
 
 After publication, refresh the marketplace and update Software Engineering to
 remove the old installed hook. An already-installed global CLI is not removed by

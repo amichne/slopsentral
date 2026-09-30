@@ -160,3 +160,5 @@ jobs:
 
           test -d "${CODEX_PROJECTION}/.agents/plugins"
           test -d "${GITHUB_COPILOT_PROJECTION}/.github/plugin"
+          INSTRUCTION_MARKETPLACE_ROOT="${CODEX_PROJECTION}" \
+            node --test tools/tests/instruction-delivery.test.mjs

@@ -28,8 +28,8 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
   ]);
 
   const baselineHooks = hookNames(selectedPlugins.get("software-engineering"));
-  assert.deepEqual([...baselineHooks], ["agents-md-turn-refresh"]);
-  assert.deepEqual(selectedPlugins.get("software-engineering").instructions.map(({ name }) => name), [
+  assert.deepEqual([...baselineHooks], ["software-engineering-context"]);
+  assert.deepEqual(readJson("source/hooks/software-engineering-context.hook.json").dependsOn.map(({ name }) => name), [
     "agent-execution",
     "engineering-design",
   ]);
@@ -37,7 +37,7 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
   assert.ok(!hookNames(selectedPlugins.get("software-engineering")).has("github-actions-await"));
 
   const kotlinHooks = hookNames(selectedPlugins.get("kotlin-engineering"));
-  assert.deepEqual(selectedPlugins.get("kotlin-engineering").instructions.map(({ name }) => name), [
+  assert.deepEqual(readJson("source/hooks/kotlin-engineering-context.hook.json").dependsOn.map(({ name }) => name), [
     "kotlin-engineering",
   ]);
   for (const hookName of ["kotlin-horizontalization-check", "gradle-check-green", "gradle-wrapper-integrity"]) {
@@ -51,7 +51,7 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
     );
   }
 
-  const adapter = readJson("source/hooks/codex/agents-md-turn-refresh.hooks.json");
-  assert.equal(adapter.hooks.PostToolUse[0].matcher, "^(Bash|apply_patch)$");
+  const adapter = readJson("source/hooks/codex/software-engineering-context.hooks.json");
+  assert.deepEqual(Object.keys(adapter.hooks), ["SessionStart"]);
   assert.equal(profile.hookPolicy.mode, "ADVISORY");
 });

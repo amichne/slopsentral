@@ -21,7 +21,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "1.1.0"
+        "version": "1.2.0"
       },
       "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
       "tags": [
@@ -71,7 +71,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "1.4.1"
+        "version": "1.5.0"
       },
       "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "tags": [
@@ -145,7 +145,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/pkl-configuration"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
       "tags": [
@@ -174,7 +174,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/api-contracts"
         },
-        "version": "1.0.1"
+        "version": "1.1.0"
       },
       "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
       "tags": [
@@ -199,7 +199,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/technical-writing"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
       "tags": [
@@ -251,7 +251,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/agent-tooling"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
       "tags": [
@@ -933,15 +933,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "hooks/agents-md-turn-refresh.hook.json",
-      "name": "agents-md-turn-refresh"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "hooks/required-skill-read.hook.json",
       "name": "required-skill-read"
     },
@@ -1016,6 +1007,33 @@
       },
       "path": "hooks/pkl-test-check.hook.json",
       "name": "pkl-test-check"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/software-engineering-context.hook.json",
+      "name": "software-engineering-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/kotlin-engineering-context.hook.json",
+      "name": "kotlin-engineering-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/api-contracts-context.hook.json",
+      "name": "api-contracts-context"
     }
   ],
   "metadata": {

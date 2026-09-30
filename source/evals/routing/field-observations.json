@@ -1,7 +1,7 @@
 {
   "$schema": "../../schemas/evals/routing-field-observations.schema.json",
   "type": "ROUTING_FIELD_OBSERVATION_SET",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "name": "post-readiness-field-observations",
   "description": "Sanitized observations from real workflow execution after routing readiness work.",
   "observations": [
@@ -12,10 +12,6 @@
       "capturedAt": "2026-06-22",
       "sourceType": "PR_VALIDATION",
       "outcome": "PASS",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "github-ci-operations"
-      },
       "evidenceRefs": [
         "PR 5 Validate Source run 27964536885 completed successfully.",
         "The run was checked after pushing head cc4cbfb."
@@ -24,7 +20,14 @@
       "followUpAction": "Keep PR checks green after future pushes and continue citing the latest run for review handoff.",
       "limitations": [
         "This observation proves remote check handling, not Kotlin code execution."
-      ]
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "github-ci-operations"
+        }
+      }
     },
     {
       "type": "ROUTING_FIELD_OBSERVATION",
@@ -33,10 +36,6 @@
       "capturedAt": "2026-06-22",
       "sourceType": "RUNTIME_VERIFICATION",
       "outcome": "PASS",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "repository-onboarding"
-      },
       "evidenceRefs": [
         "codex plugin list reported kotlin-engineering@slopsentral installed and enabled."
       ],
@@ -45,7 +44,14 @@
       "limitations": [
         "This does not prove the installed cache contains this branch head.",
         "This observation is local to one Codex environment."
-      ]
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "repository-onboarding"
+        }
+      }
     },
     {
       "type": "ROUTING_FIELD_OBSERVATION",
@@ -54,10 +60,6 @@
       "capturedAt": "2026-07-03",
       "sourceType": "LIVE_SESSION",
       "outcome": "PASS",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "git-change-flow"
-      },
       "evidenceRefs": [
         "Root session 019f28fd-4e93-75e0-be7c-18ccdf0cf14f identified unrelated backend changes before branch work.",
         "The session staged separate scoped commits, preserved the unrelated work, and verified the pushed remote head."
@@ -67,6 +69,83 @@
       "limitations": [
         "This observation covers one repository and one mixed-worktree delivery.",
         "It does not test conflict recovery or stash operations."
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "git-change-flow"
+        }
+      }
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "capturedAt": "2026-09-29",
+      "sourceType": "LIVE_SESSION",
+      "id": "proof-audit-trigger-miss-2026-09-29",
+      "caseId": "shell-check-tdd-uses-stable-red-green-proof",
+      "outcome": "DRIFT",
+      "route": {
+        "type": "NO_PRIMITIVE_ROUTE"
+      },
+      "evidenceRefs": [
+        "Native Codex thread 01a0f019-b7ac-7a02-ae6c-1684b79ffbf9 completed on gpt-6-astra.",
+        "Tool trace contained no tdd SKILL.md read; git status showed only hook-created .agent-turn state."
+      ],
+      "productiveOutcomeObserved": "The agent correctly rejected an empty test selection, but the intended TDD procedure was not selected and a default hook wrote unrequested state.",
+      "followUpAction": "Extend the trigger to proof audits, retire automatic turn tracking, and replay the same fixture.",
+      "limitations": [
+        "One synthetic proof-audit task; this records a routing miss even though the answer was useful."
+      ]
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "capturedAt": "2026-09-29",
+      "sourceType": "LIVE_SESSION",
+      "id": "proof-audit-replay-2026-09-29",
+      "caseId": "shell-check-tdd-uses-stable-red-green-proof",
+      "outcome": "PASS",
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "tdd"
+        }
+      },
+      "evidenceRefs": [
+        "Native Codex thread 01a0f01d-cff8-7c50-97eb-708bfae06a35 read tdd/SKILL.md.",
+        "The nonexistent selector was classified as no product proof; the existing duplicate-rejection assertion executed and passed.",
+        "Independent git status was empty and .agent-turn did not exist."
+      ],
+      "productiveOutcomeObserved": "The intended skill was loaded, existing passing evidence was labeled accurately, and no implementation, assertions, or workspace state was changed.",
+      "followUpAction": "Replay this audit when the TDD trigger or default hook surface changes.",
+      "limitations": [
+        "Single gpt-6-astra run; no claim about general routing accuracy, cost reduction, or RED/GREEN implementation quality.",
+        "Both the trigger and default tracking hook changed before replay; the observation is not a controlled attribution experiment."
+      ]
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "capturedAt": "2026-09-29",
+      "sourceType": "LIVE_SESSION",
+      "id": "prose-edit-with-pkl-marker-2026-09-29",
+      "caseId": "technical-prose-uses-controlled-terms",
+      "outcome": "PASS",
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "controlled-technical-writing"
+        }
+      },
+      "evidenceRefs": [
+        "Native Codex thread 01a0f01d-cfe4-7a70-b4fe-aad8f554ab16 read controlled-technical-writing/SKILL.md.",
+        "Only README.md changed; Config.pkl was untouched, no Pkl workflow was selected, and .agent-turn did not exist."
+      ],
+      "productiveOutcomeObserved": "A prose-only task used the focused writing workflow despite a Pkl repository marker, preserved meaning, and required no section-by-section approvals or configuration build.",
+      "followUpAction": "Keep marker-only negative requests in future workflow evaluations.",
+      "limitations": [
+        "One short prose fixture, not a broad writing quality measurement."
       ]
     }
   ]

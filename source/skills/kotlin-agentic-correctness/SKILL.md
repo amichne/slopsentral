@@ -1,14 +1,13 @@
 ---
 name: kotlin-agentic-correctness
-description: Use for Kotlin implementation or review where type-level invariants, semantic caller discovery, or cross-module verification materially affect correctness; not for routine Gradle troubleshooting or generic delivery work.
+description: Coordinate Kotlin changes spanning domain invariants, semantic caller discovery, and cross-module verification. Use focused Kotlin design, branching, or review skills for changes confined to those concerns.
 ---
 
 # Kotlin Agentic Correctness
 
-Coordinate the Kotlin-specific decisions that change implementation shape. Stable
-language policy, repository topology, and verification breadth live in the
-`kotlin-engineering` instruction. Do not restate that policy as a turn-local
-task file.
+Coordinate Kotlin implementation across owners and consumers. Read the nearest
+repository instructions and inspect the affected topology. The workflow below
+stands alone; a plugin context hook can additionally supply Kotlin policy.
 
 ## Operating Contract
 
@@ -58,7 +57,6 @@ workflow filesystem.
 
 ## Reference Map
 
-- Stable Kotlin policy, repository topology, and widening: `kotlin-engineering`
 - Executable-check discipline and isolation: `tdd`
 - Gradle failure diagnosis: `kotlin-gradle-validation`
 - Type-system before/after proof: `negative-capability-proof`

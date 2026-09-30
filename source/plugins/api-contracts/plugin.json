@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "api-contracts",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -67,18 +67,18 @@
       "name": "openapi-contract-rater"
     }
   ],
-  "instructions": [
+  "instructions": [],
+  "hooks": [
     {
-      "type": "INSTRUCTION",
+      "type": "HOOK",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "instructions/api-contract-design.md",
-      "name": "api-contract-design"
+      "path": "hooks/api-contracts-context.hook.json",
+      "name": "api-contracts-context"
     }
   ],
-  "hooks": [],
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Choose for OpenAPI and JSON Schema models, operations, examples, compatibility, and contract review.",

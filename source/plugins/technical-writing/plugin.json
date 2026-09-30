@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "technical-writing",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

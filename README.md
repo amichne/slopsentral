@@ -37,10 +37,24 @@ node tools/catalog.mjs --profile kotlin-repo-default --json
 ## Instruction Delivery
 
 Install and select plugins through the host's marketplace interface. Slopsentral
-has no global binary or launch wrapper. Plugins reference canonical instruction
-files for passive delivery; executable checks remain in their owning hooks.
+has no global binary or launch wrapper. Three read-only context hooks deliver
+canonical instruction dependencies through Codex `SessionStart.additionalContext`.
+They cover startup, resume, clear, and compaction, without installing plugins,
+rewriting configuration, or recording transcript-based deduplication state.
 Software Engineering supplies agent-execution and engineering-design guidance,
 Kotlin Engineering adds Kotlin guidance, and API Contracts adds schema guidance.
+
+Review new or changed hook definitions through the host's `/hooks` interface.
+Installation is not hook trust: an untrusted or disabled hook does not deliver
+policy. If an enabled hook cannot load its complete bounded policy bundle, it
+reports the failure and requests that the turn stop instead of emitting partial
+guidance. Skills retain their own task rules and bundled references so they also
+work when context hooks are unavailable. See the official [hooks contract](https://learn.chatgpt.com/docs/hooks).
+
+The generated plugin `AGENTS.md` is a reference index, not proof of runtime
+loading. Source validation proves composition; projected-hook tests prove output;
+native host observations and task evaluations prove delivery and behavior
+separately. See [architecture](source/ARCHITECTURE.md).
 
 The former `repository-profile` startup hook is retired. Starting or resuming a
 session no longer installs plugins or rewrites repository configuration. Select

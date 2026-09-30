@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
+import { loadCatalog, pluginClosure } from "../catalog.mjs";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
 
@@ -17,6 +18,11 @@ function plugin(name) {
   return readJson(`source/plugins/${name}/plugin.json`);
 }
 
+const catalog = loadCatalog(repoRoot);
+function instructions(name) {
+  return [...pluginClosure(catalog, plugin(name)).refs.values()].filter(ref => ref.type === "INSTRUCTION");
+}
+
 function primitiveByName(primitives, name) {
   return primitives.find((primitive) => primitive.name === name);
 }
@@ -25,7 +31,7 @@ function withoutFencedCode(markdown) {
   return markdown.replace(/^```[^\n]*\n[\s\S]*?^```\s*$/gmu, "");
 }
 
-test("semantic concepts stay source-owned while plugins load concise instructions once", () => {
+test("semantic concepts stay deferred while hooks reference concise canonical instructions", () => {
   const retiredContextHooks = [
     "type-safety-context",
     "schema-driven-design-context",
@@ -54,12 +60,12 @@ test("semantic concepts stay source-owned while plugins load concise instruction
     assert.equal(fs.existsSync(path.join(repoRoot, `source/hooks/codex/${hookName}.hooks.json`)), false);
   }
 
-  assert.deepEqual(plugin("software-engineering").instructions.map(({ name }) => name), [
+  assert.deepEqual(instructions("software-engineering").map(({ name }) => name), [
     "agent-execution",
     "engineering-design",
   ]);
-  assert.deepEqual(plugin("kotlin-engineering").instructions.map(({ name }) => name), ["kotlin-engineering"]);
-  assert.deepEqual(plugin("api-contracts").instructions.map(({ name }) => name), ["api-contract-design"]);
+  assert.deepEqual(instructions("kotlin-engineering").map(({ name }) => name), ["kotlin-engineering"]);
+  assert.deepEqual(instructions("api-contracts").map(({ name }) => name), ["api-contract-design"]);
 
   const typeSafetyWords = read("source/concepts/type-safety/core.md").split(/\s+/u).length;
   assert.ok(typeSafetyWords <= 1000, `type-safety must stay compact; found ${typeSafetyWords} words`);
@@ -69,7 +75,7 @@ test("non-concept instructions have one install owner and a bounded baseline", (
   const owners = new Map();
   for (const entry of fs.readdirSync(path.join(repoRoot, "source/plugins"), { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
-    for (const instruction of plugin(entry.name).instructions) {
+    for (const instruction of instructions(entry.name)) {
       owners.set(instruction.name, [...(owners.get(instruction.name) ?? []), entry.name]);
     }
   }
@@ -82,7 +88,7 @@ test("non-concept instructions have one install owner and a bounded baseline", (
   assert.deepEqual(owners.get("kotlin-engineering"), ["kotlin-engineering"]);
   assert.deepEqual(owners.get("api-contract-design"), ["api-contracts"]);
   assert.ok([...owners.values()].every(values => values.length === 1));
-  const baselineWords = plugin("software-engineering").instructions.reduce((count, ref) =>
+  const baselineWords = instructions("software-engineering").reduce((count, ref) =>
     count + read(`source/${ref.path}`).trim().split(/\s+/u).length, 0);
   assert.ok(baselineWords <= 1250, `baseline instructions grew to ${baselineWords} words`);
 });

@@ -1,0 +1,29 @@
+{
+  "type": "HOOK",
+  "source": {
+    "type": "LOCAL_SOURCE",
+    "path": "./"
+  },
+  "path": "hooks/codex/software-engineering-context.hooks.json",
+  "name": "software-engineering-context",
+  "dependsOn": [
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "instructions/agent-execution.md",
+      "name": "agent-execution"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "instructions/engineering-design.md",
+      "name": "engineering-design"
+    }
+  ]
+}

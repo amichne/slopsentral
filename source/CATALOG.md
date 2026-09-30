@@ -20,7 +20,7 @@ Outside this plugin: Language-specific design, building CLI products, knowledge 
 
 **Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [cli-data-pipelines](skills/cli-data-pipelines/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [delivery-pipeline-design](skills/delivery-pipeline-design/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [tdd](skills/tdd/SKILL.md).
 
-**Hooks:** [agents-md-turn-refresh](hooks/agents-md-turn-refresh.hook.json).
+**Hooks:** [software-engineering-context](hooks/software-engineering-context.hook.json).
 
 **Instructions:** [agent-execution](instructions/agent-execution.md), [engineering-design](instructions/engineering-design.md).
 
@@ -49,6 +49,8 @@ Outside this plugin: Application implementation, repository indexes, and general
 **Skills:** [manage-json-schemas](skills/manage-json-schemas/SKILL.md), [openapi-contract-authoring](skills/openapi-contract-authoring/SKILL.md), [openapi-contract-rating](skills/openapi-contract-rating/SKILL.md), [openapi-schema-modeling](skills/openapi-schema-modeling/SKILL.md).
 
 **Agents:** [openapi-contract-rater](agents/openapi/openapi-contract-rater.agent.md), [schema-type-enforcer](agents/schema-type-enforcer.agent.md).
+
+**Hooks:** [api-contracts-context](hooks/api-contracts-context.hook.json).
 
 **Instructions:** [api-contract-design](instructions/api-contract-design.md).
 
@@ -82,7 +84,7 @@ Outside this plugin: Everyday Git and hosted delivery, shell integration, and In
 
 **Skills:** [gradle-performance-engineering](skills/gradle-performance-engineering/SKILL.md), [kotlin-agentic-correctness](skills/kotlin-agentic-correctness/SKILL.md), [kotlin-api-surface-design](skills/kotlin-api-surface-design/SKILL.md), [kotlin-application-stack](skills/kotlin-application-stack/SKILL.md), [kotlin-branching](skills/kotlin-branching/SKILL.md), [kotlin-design-practices](skills/kotlin-design-practices/SKILL.md), [kotlin-gradle-validation](skills/kotlin-gradle-validation/SKILL.md), [kotlin-observability-design](skills/kotlin-observability-design/SKILL.md), [kotlin-review](skills/kotlin-review/SKILL.md), [negative-capability-proof](skills/negative-capability-proof/SKILL.md).
 
-**Hooks:** [gradle-check-green](hooks/gradle-check-green.hook.json), [gradle-wrapper-integrity](hooks/gradle-wrapper-integrity.hook.json), [kotlin-horizontalization-check](hooks/kotlin-horizontalization-check.hook.json).
+**Hooks:** [gradle-check-green](hooks/gradle-check-green.hook.json), [gradle-wrapper-integrity](hooks/gradle-wrapper-integrity.hook.json), [kotlin-engineering-context](hooks/kotlin-engineering-context.hook.json), [kotlin-horizontalization-check](hooks/kotlin-horizontalization-check.hook.json).
 
 **Instructions:** [kotlin-engineering](instructions/kotlin-engineering.md).
 
