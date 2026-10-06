@@ -7,8 +7,10 @@ import test from 'node:test';
 
 const repoRoot = path.resolve(import.meta.dirname, '../..');
 const wt = spawnSync('which', ['wt'], { encoding: 'utf8' }).stdout?.trim();
+const skipWorktrunk = !wt && process.env.CI !== 'true';
 
 function fixture(t) {
+  assert.ok(wt, 'Worktrunk (wt) is required for CI lifecycle checks');
   const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'slopsentral-wt-')));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const repo = path.join(root, 'repo');
@@ -55,7 +57,7 @@ esac
   return { root, repo, log, run, git };
 }
 
-test('creation runs blocking setup in the new worktree before handoff', { skip: !wt }, t => {
+test('creation runs blocking setup in the new worktree before handoff', { skip: skipWorktrunk }, t => {
   const f = fixture(t);
   const success = f.run(wt, ['switch', '--create', 'task', '--base=main', '--yes', '--no-cd', '--format=json']);
   assert.equal(success.status, 0, success.stderr);
@@ -70,7 +72,7 @@ test('creation runs blocking setup in the new worktree before handoff', { skip: 
   assert.equal(fs.existsSync(handoff), false, 'failed setup must prevent agent handoff');
 });
 
-test('failed pre-commit checks preserve HEAD and staged task scope', { skip: !wt }, t => {
+test('failed pre-commit checks preserve HEAD and staged task scope', { skip: skipWorktrunk }, t => {
   const f = fixture(t);
   const head = f.git('rev-parse', 'HEAD');
   fs.writeFileSync(path.join(f.repo, 'tracked.txt'), 'after\n');
@@ -91,7 +93,7 @@ test('failed pre-commit checks preserve HEAD and staged task scope', { skip: !wt
   assert.match(f.git('status', '--short'), /\?\? unrelated\.txt/);
 });
 
-test('manual verification and the merge gate propagate check failures', { skip: !wt }, t => {
+test('manual verification and the merge gate propagate check failures', { skip: skipWorktrunk }, t => {
   const f = fixture(t);
   const alias = f.run(wt, ['--yes', 'verify']);
   assert.equal(alias.status, 0, alias.stderr);

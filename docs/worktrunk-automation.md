@@ -41,7 +41,9 @@ deployment, or worktree deletion. Required hosted CI still needs terminal
 success at the exact current PR head.
 
 Run `node --test tools/tests/worktrunk-automation.test.mjs` with `wt` on PATH
-to exercise lifecycle success and rejection paths. Those tests skip when the
-CLI is unavailable. Projection runner tests are always part of `npm test`.
+to exercise lifecycle success and rejection paths. Those tests skip locally
+when the CLI is unavailable. CI installs checksum-pinned Worktrunk v0.53.0;
+a missing CLI fails the lifecycle tests. Projection runner tests are always
+part of `npm test`.
 These executable checks establish hook and command behavior; native model
 routing and host consumption need separate observation.
