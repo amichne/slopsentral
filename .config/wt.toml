@@ -1,0 +1,15 @@
+# Worktrunk owns the lifecycle. Setup must finish before an agent starts.
+[pre-start]
+dependencies = "npm ci"
+
+# Fast checks run before Worktrunk creates a commit.
+[pre-commit]
+source = "npm run check:source"
+
+# Recheck after rebase; a failed gate prevents local integration.
+[pre-merge]
+verification = "npm run verify"
+
+# The same checks are available without committing or merging.
+[aliases]
+verify = "npm run verify"

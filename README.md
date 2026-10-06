@@ -29,6 +29,12 @@ the [migration guide](source/MIGRATION.md) before replacing older installations,
 and the [architecture](source/ARCHITECTURE.md) for ownership contracts.
 [Upstream provenance](source/UPSTREAM.md) records the guidance behind the design.
 
+For automatic worktree setup and checks, add the upstream Worktrunk plugin
+alongside Software Engineering. This repository runs locked dependency setup
+on creation, source checks before Worktrunk commits, and complete marketplace
+verification through `wt verify` or `npm run verify`. See
+[Worktrunk automation](docs/worktrunk-automation.md) for setup and scope.
+
 Inspect a profile without installing or executing anything:
 
 ```bash
