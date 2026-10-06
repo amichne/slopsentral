@@ -1,0 +1,41 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Personal Setup for this task.",
+      "Review this repo with Personal Setup.",
+      "Show the Personal Setup workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Personal Setup",
+    "longDescription": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Manage amichne/shell-config and build composable personal tools with...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "building-blocks",
+    "cli",
+    "completion",
+    "composition",
+    "dotfiles",
+    "personal-setup",
+    "shell",
+    "shell-config",
+    "teach"
+  ],
+  "license": "UNLICENSED",
+  "name": "personal-setup",
+  "skills": "./skills/",
+  "version": "0.1.0"
+}

@@ -113,6 +113,18 @@
       }
     },
     {
+      "category": "Productivity",
+      "name": "personal-setup",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/personal-setup",
+        "source": "local"
+      }
+    },
+    {
       "category": "Engineering",
       "name": "skill-read-policy",
       "policy": {
