@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T10:10:21-04:00",
+  "generatedAt": "2026-10-06T19:28:53-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -55,7 +55,7 @@
         },
         {
           "name": "git-change-flow",
-          "sha256": "sha256:3f3b6ac70d1bcaed9fc4b0ca3fa5cefa44c28086ad67437c73d591008d5ade3f",
+          "sha256": "sha256:e384c9dbc4da844ca827db3de5548c9f75d95c4d501de0eec26058476195d938",
           "sourcePath": "source/skills/git-change-flow",
           "targetPath": "skills/git-change-flow",
           "type": "SKILL"
@@ -90,7 +90,7 @@
         },
         {
           "name": "repository-onboarding",
-          "sha256": "sha256:8d537841187705c51cbe21bb8043b79883e39c2fd11e7d75afe3f361be06c562",
+          "sha256": "sha256:88c2e000d22d019199f7fe143bdf62df29b878e6e48b5a620576b81c878029c6",
           "sourcePath": "source/skills/repository-onboarding",
           "targetPath": "skills/repository-onboarding",
           "type": "SKILL"
@@ -118,7 +118,7 @@
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     {
       "name": "kotlin-engineering",
@@ -590,6 +590,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "fd7a392164b28b34971610d13f70933418fead5e",
+  "sourceSha": "29e1c5d887aa438473f27b3df253cb086a75cbd7",
   "type": "HYDRATED_MARKETPLACE"
 }
