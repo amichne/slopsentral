@@ -61,6 +61,8 @@ to support `--teach`.
 
 ## Verify
 
+The shell integration checks require Zsh; CI installs it explicitly.
+
 ```sh
 node --test tools/tests/personal-setup-teach.test.mjs
 node tools/validate-source-graph.mjs

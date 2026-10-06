@@ -24,6 +24,7 @@ function run(cwd, args = [], input = '') {
   });
 }
 function packet(result) {
+  assert.ifError(result.error);
   assert.equal(result.status, 0, result.stderr);
   const value = JSON.parse(result.stdout);
   const schema = JSON.parse(fs.readFileSync(path.join(skill, 'references/teach-result.schema.json'), 'utf8'));
@@ -125,6 +126,7 @@ test('sample tool composes filters, JSON, teach and offline Zsh completion', t =
   const completion = path.join(cwd, '_personal-size');
   fs.writeFileSync(completion, generated.stdout);
   const loaded = spawnSync('zsh', ['-f', '-c', 'compdef() { :; }; _arguments() { print -rl -- "$@"; }; source "$1"; source "$1"; _personal_size', '_', completion], { encoding: 'utf8' });
+  assert.ifError(loaded.error);
   assert.equal(loaded.status, 0, loaded.stderr);
   assert.match(loaded.stdout, /--teach\[/);
   assert.match(loaded.stdout, /--min-bytes/);
@@ -141,6 +143,7 @@ test('sample shell wrapper supplies parent history only for teach and preserves 
   const result = spawnSync('zsh', ['-f', '-c', 'source "$1"; source "$1"; print -s -- "rg SECRET file"; personal-size --teach --teach-preview', '_', wrapper], { cwd, env: { ...process.env, PATH: bin + ':' + process.env.PATH }, encoding: 'utf8' });
   assert.deepEqual(packet(result).history.commands, ['rg']);
   const failed = spawnSync('zsh', ['-f', '-c', 'source "$1"; personal-size --bad', '_', wrapper], { cwd, env: { ...process.env, PATH: bin + ':' + process.env.PATH }, encoding: 'utf8' });
+  assert.ifError(failed.error);
   assert.equal(failed.status, 2);
   const noHistory = spawnSync('zsh', ['-f', '-c', 'source "$1"; personal-size --teach --teach-preview', '_', wrapper], { cwd, env: { ...process.env, PATH: bin + ':' + process.env.PATH }, encoding: 'utf8' });
   assert.equal(packet(noHistory).history.type, 'UNAVAILABLE');
