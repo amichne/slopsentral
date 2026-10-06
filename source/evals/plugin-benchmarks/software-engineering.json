@@ -40,7 +40,9 @@
     "Run this benchmark from a repository with GitHub Actions checks and a safe disposable branch.",
     "Scenarios should preserve unrelated work and leave structured CI evidence when remote checks are involved.",
     "Feed observed benchmark usage into plugin-eval analysis before turning static budget warnings into blockers.",
-    "Run in an isolated slopsentral worktree and preserve any unrelated local files."
+    "Run in an isolated slopsentral worktree and preserve any unrelated local files.",
+    "New core-flow prompts omit plugin-name hints. Supply a pinned local fixture before running; checklists are review rubrics, not observed activation or outcome results.",
+    "Negative scenarios require the controlled-technical-writing companion to be advertised by the prepared host. If it is unavailable, record SETUP_FRICTION and leave the expected route unproved; do not count that setup gap as a target routing failure or install another plugin during the run."
   ],
   "setupQuestions": [
     "Which small repository invariant has a deterministic shell-invokable oracle?",
@@ -49,7 +51,8 @@
     "Which CI script or workflow can be changed without affecting production deployment?",
     "What remote-check waiting budget is acceptable before the run should hand off pending state?",
     "Which requested paths may be staged while unrelated work remains untouched?",
-    "Which repository-owned check proves the scoped local change?"
+    "Which repository-owned check proves the scoped local change?",
+    "Is the prose companion already advertised in the host used for the marker-only negative scenario?"
   ],
   "scenarios": [
     {
@@ -244,6 +247,121 @@
         "The run records the initial dirty state before staging.",
         "Only the requested paths enter the staged diff.",
         "Unrelated tracked and untracked user work remains unchanged."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "installed-discovery-recovery-keeps-stage-proof",
+      "title": "Installed discovery recovery keeps stage proof",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "installed-discovery-recovery-keeps-stage-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "delivery-pipeline-design"
+      },
+      "userInput": "Qualify this installed tool end to end: pin the source and artifact, verify discovery in a fresh client, invoke a known semantic operation, and exercise recovery in the disposable target. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "Artifact identity and fresh discovery/invocation evidence refer to the same installed candidate.",
+        "Recovery repeats the semantic operation, or the missing recovery evidence remains explicit.",
+        "Claim a fresh-client invocation from an enabled entry or passing unit tests.",
+        "Restart or replace a live installation outside the authorized disposable target."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "runtime-performance-matches-semantic-workloads",
+      "title": "Runtime performance matches semantic workloads",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "runtime-performance-matches-semantic-workloads"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Measure whether this installed candidate makes the same semantic workload faster. Match results, coverage, continuations, and source revisions, and distinguish transport latency from native work. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "Paired reports establish workload equivalence before aggregating timings.",
+        "The handoff names measured dimensions, exact revisions, samples, and remaining limitations.",
+        "Call fewer rows, incomplete coverage, or a changed query a speed improvement.",
+        "Infer less native work from lower public latency or lessWork=false."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "pr-feedback-repair-rechecks-current-head",
+      "title": "Pr feedback repair rechecks current head",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "pr-feedback-repair-rechecks-current-head"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pull-request-lifecycle"
+      },
+      "userInput": "Validate this PR review comment against the current head. Repair only a valid claim, rerun its regression, re-review the change, and report the exact-head required CI state. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The handoff separates valid repair, local re-review, external review, and exact-head CI proof.",
+        "Pending or unavailable external checks remain explicit.",
+        "Implement speculative review advice or merge with required checks pending, cancelled, or stale.",
+        "Reuse a passing check or review from an older PR head."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "shell-script-safety-natural-language",
+      "title": "Natural-language shell-script-safety",
+      "purpose": "Check ordinary invocation without a plugin or skill name.",
+      "routingCaseIds": [
+        "ci-shell-automation-uses-safe-reusable-scripts"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "shell-script-safety"
+      },
+      "userInput": "Fix this automation script so spaces in input paths and a failed subprocess preserve argument boundaries, cleanup, structured output, and the nonzero status. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The intended focused skill is read and its relevant native checks execute.",
+        "No unrelated build, review, knowledge generation, or publication is introduced."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "shell-script-safety-explicit-invocation",
+      "title": "Explicit shell-script-safety",
+      "purpose": "Keep direct selection independently replayable.",
+      "routingCaseIds": [
+        "ci-shell-automation-uses-safe-reusable-scripts"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "shell-script-safety"
+      },
+      "userInput": "$shell-script-safety Inspect the supplied local fixture, apply the focused workflow, and report only the evidence it supports. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The explicitly selected skill is read.",
+        "The response preserves scope, uses the fixture native checks, and retains missing evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "shell-script-safety-marker-only-negative",
+      "title": "Marker-only negative for shell-script-safety",
+      "purpose": "Check that implicit availability does not broaden invocation to unrelated prose work.",
+      "routingCaseIds": [
+        "prose-only-edit-keeps-validation-skills-idle"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "userInput": "Rewrite only this README paragraph without changing meaning. The repository contains Gradle files, shell scripts, and plugin manifests; no executable or configuration change is requested. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The target shell-script-safety is not read or followed.",
+        "Only README prose changes; no build or executable edits occur.",
+        "Use the prose owner if available; record an unavailable companion rather than installing one."
       ]
     }
   ]

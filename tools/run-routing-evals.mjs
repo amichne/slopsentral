@@ -3,12 +3,15 @@
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { validateFieldObservations, fieldObservationFindings, summarizeFieldObservations } from './routing-field-observations.mjs';
 
 const args = process.argv.slice(2);
 const repoArgIndex = args.indexOf("--repo");
 const observationsArgIndex = args.indexOf("--observations");
 const jsonOutput = args.includes("--json");
-const requireAllObserved = args.includes("--require-all-observed");
+const requireAllFixtures = args.includes("--require-all-fixtures") || args.includes("--require-all-observed");
+if (args.includes('--require-all-observed')) console.error('DEPRECATED --require-all-observed checks fixtures; use --require-all-fixtures.');
+const fieldArgIndex = args.indexOf('--field-observations');
 const repoRoot =
   repoArgIndex >= 0 && args[repoArgIndex + 1]
     ? path.resolve(args[repoArgIndex + 1])
@@ -17,6 +20,7 @@ const observationsPath =
   observationsArgIndex >= 0 && args[observationsArgIndex + 1]
     ? path.resolve(repoRoot, args[observationsArgIndex + 1])
     : path.join(repoRoot, "source/evals/routing/fixtures/golden-routing-observations.json");
+const fieldPath = path.resolve(repoRoot, fieldArgIndex >= 0 ? args[fieldArgIndex + 1] : 'source/evals/routing/field-observations.json');
 
 const findings = [];
 
@@ -177,9 +181,9 @@ function scoreObservations(cases) {
   for (const caseId of requiredCaseIds) {
     if (!seen.has(caseId)) fail(`${ownerPath}: missing golden observation for required case ${caseId}`);
   }
-  if (requireAllObserved) {
+  if (requireAllFixtures) {
     for (const caseId of cases.keys()) {
-      if (!seen.has(caseId)) fail(`${ownerPath}: missing observation for routing case ${caseId}`);
+      if (!seen.has(caseId)) fail(`${ownerPath}: missing golden fixture for routing case ${caseId}`);
     }
   }
 
@@ -206,22 +210,30 @@ function requiredCasesFromPayload(ownerPath, payload, cases) {
 
 const { cases, caseFiles } = loadRoutingCases();
 const replay = scoreObservations(cases);
-const unobservedCases = [...cases.keys()].filter((caseId) => !replay.observedCaseIds.has(caseId)).sort();
+const fixtureFindings = findings.length;
+const uncoveredFixtureCases = [...cases.keys()].filter((caseId) => !replay.observedCaseIds.has(caseId)).sort();
+const fieldPayload = readJson(fieldPath);
+const fieldSchema = readJson(path.join(repoRoot, 'source/schemas/evals/routing-field-observations.schema.json'));
+const fieldResult = fieldPayload && fieldSchema ? validateFieldObservations(fieldPayload, fieldSchema, cases) : { type: 'INVALID_FIELD_OBSERVATIONS', failures: [] };
+for (const finding of fieldObservationFindings(fieldResult)) fail(`${relativeToRepo(fieldPath)}: ${finding}`);
+const observedFieldIds = new Set(fieldResult.type === 'VALID_FIELD_OBSERVATIONS' ? fieldResult.observations.map(item => item.caseId) : []);
+const unobservedFieldCases = [...cases.keys()].filter(caseId => !observedFieldIds.has(caseId)).sort();
 
 const summary = {
   routingCaseFiles: caseFiles.length,
   routingCases: cases.size,
-  requiredCases: replay.requiredCaseIds.size,
-  observations: replay.observationCount,
-  observedRoutingCases: replay.observedCaseIds.size,
-  unobservedRoutingCases: unobservedCases.length,
-  passedObservations: findings.length === 0 ? replay.passed : 0,
-  coveragePercent: cases.size === 0 ? 0 : Math.round((replay.observedCaseIds.size / cases.size) * 100),
+  fixtureConsistency: {
+    type: 'GOLDEN_FIXTURE_CHECK', requiredCases: replay.requiredCaseIds.size,
+    fixtures: replay.observationCount, coveredCases: replay.observedCaseIds.size,
+    passedFixtures: fixtureFindings === 0 ? replay.passed : 0,
+    coveragePercent: cases.size === 0 ? 0 : Math.round(100 * replay.observedCaseIds.size / cases.size),
+  },
+  fieldObservations: summarizeFieldObservations(fieldResult, cases),
 };
 
 if (findings.length > 0) {
   if (jsonOutput) {
-    console.log(JSON.stringify({ ok: false, summary, unobservedCases, findings }, null, 2));
+    console.log(JSON.stringify({ ok: false, summary, uncoveredFixtureCases, unobservedFieldCases, findings }, null, 2));
   } else {
     for (const finding of findings) console.error(`ERROR ${finding}`);
   }
@@ -229,9 +241,9 @@ if (findings.length > 0) {
 }
 
 if (jsonOutput) {
-  console.log(JSON.stringify({ ok: true, summary, unobservedCases }, null, 2));
+  console.log(JSON.stringify({ ok: true, summary, uncoveredFixtureCases, unobservedFieldCases }, null, 2));
 } else {
   console.log(
-    `OK routing evals: ${summary.routingCases} cases, ${summary.passedObservations}/${summary.requiredCases} required observations passed, ${summary.observedRoutingCases}/${summary.routingCases} cases observed`,
+    `OK routing evals: ${summary.fixtureConsistency.passedFixtures}/${summary.routingCases} golden fixtures consistent; ${summary.fieldObservations.coveredCases}/${summary.routingCases} cases have field observations (${summary.fieldObservations.byOutcome.DRIFT} drift, ${summary.fieldObservations.incompleteProof} incomplete proof).`,
   );
 }

@@ -21,7 +21,19 @@
     "intellij-mixed-language-psi-targets-filter-before-access",
     "intellij-ui-testing-uses-starter-driver-contract",
     "kotlin-repository-work-preserves-task-and-topology-proof",
-    "kotlin-application-stack-keeps-library-bindings-private"
+    "kotlin-application-stack-keeps-library-bindings-private",
+    "plugin-history-audit-separates-evidence",
+    "installed-discovery-recovery-keeps-stage-proof",
+    "runtime-performance-matches-semantic-workloads",
+    "openwiki-refresh-preserves-backend-authority",
+    "shell-startup-completion-preserves-session-state",
+    "cli-finite-json-errors-preserve-exit-status",
+    "docs-site-nav-preserves-generated-boundaries",
+    "technical-rfc-keeps-reader-decision-source-backed",
+    "openapi-operations-preserve-request-response-security",
+    "openapi-review-requires-validator-evidence",
+    "pr-feedback-repair-rechecks-current-head",
+    "prose-only-edit-keeps-validation-skills-idle"
   ],
   "observations": [
     {
@@ -1038,6 +1050,258 @@
         "Collapse External System tasks into an unrelated run configuration abstraction."
       ],
       "notes": "A passing replay preserves External System import and task boundaries across repeated synchronization."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "plugin-history-audit-separates-evidence",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "satisfiedAllowedActions": [
+        "Deduplicate root sessions and retain bounded prompt, read-trace, outcome, and limitation references.",
+        "Report fixture consistency separately from field coverage and retain drift alongside replays."
+      ],
+      "avoidedForbiddenActions": [
+        "Treat golden fixtures or a SKILL.md read as successful model behavior.",
+        "Attribute an absent read to a numeric cap without the actual advertised list or host evidence."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The report separates golden coverage, trace-supported routes, useful outcomes, and pending proof.",
+        "Explicit-only policies and observed list omissions are identified separately."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "installed-discovery-recovery-keeps-stage-proof",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "delivery-pipeline-design"
+      },
+      "satisfiedAllowedActions": [
+        "Reuse the existing installer, lifecycle controls, IDE delivery owner, and native schema discovery.",
+        "Record package, installation, discovery, invocation, and recovery evidence at their actual revisions."
+      ],
+      "avoidedForbiddenActions": [
+        "Claim a fresh-client invocation from an enabled entry or passing unit tests.",
+        "Restart or replace a live installation outside the authorized disposable target."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Artifact identity and fresh discovery/invocation evidence refer to the same installed candidate.",
+        "Recovery repeats the semantic operation, or the missing recovery evidence remains explicit."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "runtime-performance-matches-semantic-workloads",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "satisfiedAllowedActions": [
+        "Use existing replay reports and bounded stage measurements for equivalent baseline/candidate workloads.",
+        "Retain unmatched attempts and negative reduced-work signals."
+      ],
+      "avoidedForbiddenActions": [
+        "Call fewer rows, incomplete coverage, or a changed query a speed improvement.",
+        "Infer less native work from lower public latency or lessWork=false."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Paired reports establish workload equivalence before aggregating timings.",
+        "The handoff names measured dimensions, exact revisions, samples, and remaining limitations."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "openwiki-refresh-preserves-backend-authority",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "code-knowledge-base"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve the existing backend and hand off OpenWiki execution to its external skill/tooling.",
+        "Preserve citations and validate refresh or migration through the destination backend and repository gates."
+      ],
+      "avoidedForbiddenActions": [
+        "Copy an upstream OpenWiki skill into local canonical source.",
+        "Create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The selected backend and external owner are named, with missing tools reported rather than guessed.",
+        "Changed pages and Claims are verified; pending CI remains pending."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "shell-startup-completion-preserves-session-state",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "shell-session-integration"
+      },
+      "satisfiedAllowedActions": [
+        "Use native shell APIs, local option scope, and owned callback registrations.",
+        "Check repeated loading, paths with spaces, a failed wrapped command, startup, and non-interactive output."
+      ],
+      "avoidedForbiddenActions": [
+        "Overwrite unrelated shell callbacks or perform network calls in prompt/startup callbacks.",
+        "Treat a syntax check as proof of interactive state preservation."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Fresh startup and repeated source checks preserve callbacks and prior command status.",
+        "Non-interactive output stays quiet and timed-out helpers restore state."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "cli-finite-json-errors-preserve-exit-status",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "cli-creator"
+      },
+      "satisfiedAllowedActions": [
+        "Validate inputs once and use the current command owner and structured output contract.",
+        "Exercise success, invalid input, unavailable target, redirected output, and cancellation where applicable."
+      ],
+      "avoidedForbiddenActions": [
+        "Encode expected failures as arbitrary strings, null, booleans, or exceptions.",
+        "Print a progress banner into machine-readable stdout or return zero for a failed operation."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Success and every expected failure payload pass the canonical schema.",
+        "Failure paths preserve nonzero exit status and stream separation."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "docs-site-nav-preserves-generated-boundaries",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "site-docs-authoring"
+      },
+      "satisfiedAllowedActions": [
+        "Inspect the existing docs framework, navigation, authored roots, and reference generators.",
+        "Edit authored pages or generator inputs, regenerate references only through their owner, and check links/rendering."
+      ],
+      "avoidedForbiddenActions": [
+        "Hand-edit generated public contracts or omit navigation for a new page.",
+        "Call build success proof of rendered diagram readability without inspecting it."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The framework validator and broken-link check pass for the changed navigation.",
+        "Generated boundaries and source-backed claims are retained, and the rendered result is inspected."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "technical-rfc-keeps-reader-decision-source-backed",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "reference-doc-workflow"
+      },
+      "satisfiedAllowedActions": [
+        "Use the supplied audience, source evidence, and repository template to draft the authorized document.",
+        "Test whether a reader can make the intended decision from the document alone."
+      ],
+      "avoidedForbiddenActions": [
+        "Invent a guarantee or require section-by-section approval without a user request.",
+        "Treat polished prose as evidence that technical claims are true."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Claims, assumptions, decisions, and verification obligations remain distinct.",
+        "Reader testing resolves ambiguities that would change the decision."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "openapi-operations-preserve-request-response-security",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-authoring"
+      },
+      "satisfiedAllowedActions": [
+        "Use the operation authoring owner and reuse canonical components.",
+        "Validate request/response, status mapping, security requirements, and counterexamples."
+      ],
+      "avoidedForbiddenActions": [
+        "Treat a component-only edit as a complete operation contract.",
+        "Allow ambiguous failure strings or permissive extra fields without an intentional extension point."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The operation has source-backed request, response, failure, and security contracts.",
+        "Validator-backed examples reject the invalid combinations."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "openapi-review-requires-validator-evidence",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-rating"
+      },
+      "satisfiedAllowedActions": [
+        "Run the existing contract validator and cite specific schema/operation locations.",
+        "Separate validator findings, type-safety rubric judgments, and unverified runtime behavior."
+      ],
+      "avoidedForbiddenActions": [
+        "Give an unsupported overall quality score or rewrite the specification during a read-only review.",
+        "Treat a passing schema validator as complete runtime or security proof."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The rating cites the concrete contract boundaries and observed validator results.",
+        "Recommended fixes follow from the rubric and remain within the read-only scope."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pr-feedback-repair-rechecks-current-head",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "pull-request-lifecycle"
+      },
+      "satisfiedAllowedActions": [
+        "Check the review claim against source and an executable oracle before repairing it.",
+        "Re-review after repair and reacquire the PR head and structured required checks after a push when authorized."
+      ],
+      "avoidedForbiddenActions": [
+        "Implement speculative review advice or merge with required checks pending, cancelled, or stale.",
+        "Reuse a passing check or review from an older PR head."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The handoff separates valid repair, local re-review, external review, and exact-head CI proof.",
+        "Pending or unavailable external checks remain explicit."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "prose-only-edit-keeps-validation-skills-idle",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "satisfiedAllowedActions": [
+        "Apply the focused prose workflow when available and inspect the scoped diff.",
+        "Leave unrelated code, scripts, generated output, and validation workflows idle."
+      ],
+      "avoidedForbiddenActions": [
+        "Load primitive-routing-evaluation, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
+        "Run a build, generate knowledge, or change configuration for this prose-only request."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Only the requested prose changes and its meaning is preserved.",
+        "The trace contains no marker-driven routing, build, or script-safety activation."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
     }
   ]
 }

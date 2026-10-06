@@ -151,19 +151,24 @@ restores its global registration if needed.
 node tools/validate-source-graph.mjs
 node tools/catalog.mjs --check
 node tools/run-routing-evals.mjs
-node tools/run-routing-evals.mjs --require-all-observed
+node tools/run-routing-evals.mjs --require-all-fixtures
 tools/compile-kotlin-concepts
 projeKtor project --source . --harness codex --out /tmp/slopsentral-codex
 projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check
 ```
 
-Use the default routing eval command as the daily-driver production gate. Use
-`--require-all-observed` when promoting the full routing corpus; it fails when
-any routing case lacks a replay observation.
+The routing runner reports golden fixture consistency and real field coverage
+separately. `--require-all-fixtures` fails when a case lacks a golden contract
+fixture; it does not require or prove model execution. The previous
+`--require-all-observed` spelling is a deprecated alias for this fixture gate.
 Record real rollout and session evidence in
 `source/evals/routing/field-observations.json`; source validation checks that
-each observation points at an existing routing case and remains sanitized.
+each observation points at an existing routing case and remains sanitized. The
+v3 field contract requires activation evidence and a separate complete,
+incomplete, or unassessed proof state. Retained summaries remain reported routes;
+they are not promoted to raw trace proof. A route PASS can have pending CI or
+installed verification. Earlier drift remains alongside successful replays.
 
 Each marketplace plugin has one benchmark definition in
 `source/evals/plugin-benchmarks/`. Source validation requires a matching file,

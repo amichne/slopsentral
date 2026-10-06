@@ -4,7 +4,7 @@ import fs from "node:fs";
 import { auditCatalog, loadCatalog } from "./catalog.mjs";
 import path from "node:path";
 import process from "node:process";
-import Ajv2020 from "ajv/dist/2020.js";
+import { validateFieldObservations, fieldObservationFindings } from "./routing-field-observations.mjs";
 import { validateWorkflowProfile } from "./validate-profile-contracts.mjs";
 
 const args = process.argv.slice(2);
@@ -18,6 +18,7 @@ const sourceRoot = path.join(repoRoot, "source");
 
 
 const routingCaseTypes = new Set([
+  "COVERAGE_GAP",
   "TRIGGER_MISS",
   "WRONG_PRIMITIVE",
   "LOADED_BYPASSED",
@@ -801,58 +802,11 @@ function validateRoutingFieldObservationSet(relativePath, routingCases) {
   if (!payload) return;
   if (payload.type !== "ROUTING_FIELD_OBSERVATION_SET") return;
 
-  validateNoPrivateLocalStrings(relativePath, payload);
   validateSchemaLink(relativePath, payload.$schema);
   const schema = readJson("source/schemas/evals/routing-field-observations.schema.json");
   if (!schema) return;
-  const validate = new Ajv2020({ strict: false, discriminator: true }).compile(schema);
-  if (!validate(payload)) {
-    for (const error of validate.errors ?? []) {
-      fail(`${relativePath}: observation schema ${error.instancePath} ${error.message}`);
-    }
-  }
-  for (const field of ["name", "description"]) {
-    if (typeof payload[field] !== "string" || !payload[field].trim()) fail(`${relativePath}: ${field} is required`);
-  }
-  if (!Array.isArray(payload.observations) || payload.observations.length === 0) {
-    fail(`${relativePath}: observations must be a non-empty array`);
-    return;
-  }
-
-  const ids = new Set();
-  const sourceTypes = new Set(["LIVE_SESSION", "PR_VALIDATION", "RUNTIME_VERIFICATION", "TEAM_FEEDBACK"]);
-  const outcomes = new Set(["PASS", "DRIFT", "BLOCKED", "NEEDS_REPLAY_CASE"]);
-  for (const [index, observation] of payload.observations.entries()) {
-    const owner = `${relativePath}: observations[${index}]`;
-    if (observation.type !== "ROUTING_FIELD_OBSERVATION") fail(`${owner}: type must be ROUTING_FIELD_OBSERVATION`);
-    if (typeof observation.id !== "string" || !observation.id.match(/^[a-z0-9][a-z0-9-]+$/)) {
-      fail(`${owner}: id must be kebab-case`);
-    } else if (ids.has(observation.id)) {
-      fail(`${owner}: duplicate id ${observation.id}`);
-    } else {
-      ids.add(observation.id);
-    }
-    if (typeof observation.capturedAt !== "string" || !observation.capturedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      fail(`${owner}: capturedAt must be YYYY-MM-DD`);
-    }
-    if (!sourceTypes.has(observation.sourceType)) fail(`${owner}: sourceType is invalid`);
-    if (!outcomes.has(observation.outcome)) fail(`${owner}: outcome is invalid`);
-    const routingCase = routingCases.get(observation.caseId);
-    if (!routingCase) {
-      fail(`${owner}: caseId ${observation.caseId ?? "<missing>"} does not exist in routing corpus`);
-    } else if (observation.outcome === "PASS" && (
-      observation.route?.type !== "PRIMITIVE_ROUTE" ||
-      observation.route.primitive?.type !== routingCase.expectedPrimitive?.type ||
-      observation.route.primitive?.name !== routingCase.expectedPrimitive?.name
-    )) {
-      fail(`${owner}: PASS requires the expected primitive route ${routingCase.expectedPrimitive?.type}/${routingCase.expectedPrimitive?.name}`);
-    }
-    validateNonEmptyStringArray(`${owner}: evidenceRefs`, observation.evidenceRefs);
-    validateNonEmptyStringArray(`${owner}: limitations`, observation.limitations);
-    for (const field of ["productiveOutcomeObserved", "followUpAction"]) {
-      if (typeof observation[field] !== "string" || !observation[field].trim()) fail(`${owner}: ${field} is required`);
-    }
-  }
+  const result = validateFieldObservations(payload, schema, routingCases);
+  for (const finding of fieldObservationFindings(result)) fail(`${relativePath}: ${finding}`);
 }
 
 function validatePluginEvalBenchmark(relativePath, routingCases) {

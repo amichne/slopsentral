@@ -62,6 +62,10 @@ preserve data, and remain maintainable when run by agents, hooks, CI, or humans.
 
 ## Reference Routing
 
+Use this workflow for executable shell automation and error paths. Interactive
+completion, prompt callbacks, and shell state belong to shell-session-integration.
+A repository containing scripts does not require this workflow for prose edits.
+
 Read [review-patterns.md](references/review-patterns.md) when reviewing a
 script or adapting Bash templates for cleanup, path walks, or argument arrays.
 

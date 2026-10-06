@@ -35,13 +35,15 @@
     "The default workspace.sourcePath assumes a sibling Kotlin repository; teams should replace it with their own Kotlin/Gradle repository path before collecting baseline usage.",
     "The repository-guidance scenario is a portable rewrite of Kotlin repository instructions observed on 2026-08-23; it excludes repository-specific module counts, platform versions, documentation tooling, and exact commands.",
     "Feed the resulting benchmark-usage.jsonl back into plugin-eval analyze with --observed-usage before treating static budget warnings as production blockers.",
-    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result.",
+    "Negative scenarios require the controlled-technical-writing companion to be advertised by the prepared host. If it is unavailable, record SETUP_FRICTION and leave the expected route unproved; do not count that setup gap as a target routing failure or install another plugin during the run."
   ],
   "setupQuestions": [
     "Which Kotlin/Gradle repository should represent the daily-driver team workflow?",
     "Which scenario must pass before Kotlin Engineering is promoted to a team default?",
     "Which focused Gradle task proves each scenario without hiding failures behind a broad aggregate build?",
-    "What token and retry budget is acceptable for a successful Kotlin Engineering run?"
+    "What token and retry budget is acceptable for a successful Kotlin Engineering run?",
+    "Is the prose companion already advertised in the host used for the marker-only negative scenario?"
   ],
   "scenarios": [
     {
@@ -165,6 +167,61 @@
         "Kotlin proof includes semantic or Gradle evidence from Kotlin Engineering.",
         "The local delivery audit covers scoped staging and identifies the later commit, PR, and CI evidence without performing those actions.",
         "The run does not move generic Git, PR, CI, or release instructions into Kotlin Engineering."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-gradle-validation-natural-language",
+      "title": "Natural-language kotlin-gradle-validation",
+      "purpose": "Check ordinary invocation without a plugin or skill name.",
+      "routingCaseIds": [
+        "gradle-failure-uses-structured-reports"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-gradle-validation"
+      },
+      "userInput": "Diagnose this JVM Gradle test failure from the existing wrapper and native reports. Resolve the owning test task, repair only the demonstrated cause, and rerun it. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The intended focused skill is read and its relevant native checks execute.",
+        "No unrelated build, review, knowledge generation, or publication is introduced."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-gradle-validation-explicit-invocation",
+      "title": "Explicit kotlin-gradle-validation",
+      "purpose": "Keep direct selection independently replayable.",
+      "routingCaseIds": [
+        "gradle-failure-uses-structured-reports"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-gradle-validation"
+      },
+      "userInput": "$kotlin-gradle-validation Inspect the supplied local fixture, apply the focused workflow, and report only the evidence it supports. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The explicitly selected skill is read.",
+        "The response preserves scope, uses the fixture native checks, and retains missing evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-gradle-validation-marker-only-negative",
+      "title": "Marker-only negative for kotlin-gradle-validation",
+      "purpose": "Check that implicit availability does not broaden invocation to unrelated prose work.",
+      "routingCaseIds": [
+        "prose-only-edit-keeps-validation-skills-idle"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "userInput": "Rewrite only this README paragraph without changing meaning. The repository contains Gradle files, shell scripts, and plugin manifests; no executable or configuration change is requested. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The target kotlin-gradle-validation is not read or followed.",
+        "Only README prose changes; no build or executable edits occur.",
+        "Use the prose owner if available; record an unavailable companion rather than installing one."
       ]
     }
   ]

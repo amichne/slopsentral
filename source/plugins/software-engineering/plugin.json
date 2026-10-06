@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "software-engineering",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

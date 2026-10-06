@@ -32,7 +32,8 @@
   "notes": [
     "Run only in an isolated Kotlin repository worktree and keep the primary checkout untouched.",
     "The benchmark may change only local documentation evidence and must not publish or modify remote state.",
-    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result.",
+    "New core-flow prompts omit plugin-name hints. Supply a pinned local fixture before running; checklists are review rubrics, not observed activation or outcome results."
   ],
   "setupQuestions": [
     "Which bounded Kotlin or Gradle concept should become a source-backed OKF bundle?"
@@ -55,6 +56,26 @@
         "The knowledge artifact retains concrete code_sources or signature evidence.",
         "The focused code knowledge check and relevant documentation check pass.",
         "The result stays inside the Repository Knowledge boundary and does not become generic prose."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "openwiki-refresh-preserves-backend-authority",
+      "title": "Openwiki refresh preserves backend authority",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "openwiki-refresh-preserves-backend-authority"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "code-knowledge-base"
+      },
+      "userInput": "Refresh the source-backed knowledge pages in this repository, which already uses OpenWiki. Preserve the backend, citations, Claims, and existing publication boundary. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The selected backend and external owner are named, with missing tools reported rather than guessed.",
+        "Changed pages and Claims are verified; pending CI remains pending.",
+        "Copy an upstream OpenWiki skill into local canonical source.",
+        "Create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
       ]
     }
   ]

@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Use when proving behavior changes or auditing executable proof, including empty test selections, runner failures, and RED/GREEN claims. Characterize refactors with existing checks; prose and formatting changes use their normal validators.
+description: Use when proving behavior changes, comparing runtime performance, or auditing executable proof, including empty test selections, runner failures, and RED/GREEN claims. Characterize refactors with existing checks; prose and formatting changes use their normal validators.
 ---
 
 # Executable-Check TDD
@@ -45,6 +45,11 @@ aggregate without a relevant assertion is not GREEN. Remaining required work
 prevents completion.
 
 ## Reference Routing
+
+- Read [runtime-performance.md](references/runtime-performance.md) when the
+  acceptance claim concerns runtime latency, throughput, or reduced semantic work.
+  Use gradle-performance-engineering for build performance and ide-diagnostics-mcp
+  for live IDE capture; this reference qualifies comparison proof.
 
 - Read [codebase-preflight.md](references/codebase-preflight.md) when deciding
   whether a proposed implementation is needed.

@@ -27,7 +27,7 @@
     "type": "PLUGIN_EVAL_VERIFIERS",
     "commands": [
       "node tools/validate-source-graph.mjs",
-      "node tools/run-routing-evals.mjs --require-all-observed",
+      "node tools/run-routing-evals.mjs --require-all-fixtures",
       "git diff --check"
     ]
   },
@@ -35,13 +35,16 @@
     "Run this benchmark from a slopsentral checkout after materializing the Agent Tooling package.",
     "The scenarios intentionally target source-owned primitives and should not edit generated provider output directly.",
     "Feed benchmark usage back into plugin-eval analysis before treating static context-size warnings as production blockers.",
-    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result.",
+    "New core-flow prompts omit plugin-name hints. Supply a pinned local fixture before running; checklists are review rubrics, not observed activation or outcome results.",
+    "Negative scenarios require the controlled-technical-writing companion to be advertised by the prepared host. If it is unavailable, record SETUP_FRICTION and leave the expected route unproved; do not count that setup gap as a target routing failure or install another plugin during the run."
   ],
   "setupQuestions": [
     "Which source-graph workflow should represent the daily-driver platform-authoring path?",
     "Which plugin or primitive family is safe to edit during the benchmark?",
     "Which validation gates must pass before the result is considered shareable?",
-    "What token, retry, and changed-file budget is acceptable for a successful platform-authoring run?"
+    "What token, retry, and changed-file budget is acceptable for a successful platform-authoring run?",
+    "Is the prose companion already advertised in the host used for the marker-only negative scenario?"
   ],
   "scenarios": [
     {
@@ -118,7 +121,64 @@
       "successChecklist": [
         "The case is schema-backed, sanitized, and tied to an existing canonical primitive.",
         "The fix surface is limited to the primitive, plugin metadata, or adapter layer that explains the miss.",
-        "The run includes node tools/run-routing-evals.mjs --require-all-observed."
+        "The run includes node tools/run-routing-evals.mjs --require-all-fixtures."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "plugin-history-audit-separates-evidence",
+      "title": "Plugin history audit separates evidence",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "plugin-history-audit-separates-evidence"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "userInput": "Audit these plugins against completed tasks and actual skill activations. Explain uncovered flows and distinguish fixture scores, skill reads, useful outcomes, incomplete verification, and observed skill-list limits. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The report separates golden coverage, trace-supported routes, useful outcomes, and pending proof.",
+        "Explicit-only policies and observed list omissions are identified separately.",
+        "Treat golden fixtures or a SKILL.md read as successful model behavior.",
+        "Attribute an absent read to a numeric cap without the actual advertised list or host evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "primitive-routing-evaluation-explicit-invocation",
+      "title": "Explicit primitive-routing-evaluation",
+      "purpose": "Keep direct selection independently replayable.",
+      "routingCaseIds": [
+        "routing-miss-becomes-full-corpus-replay"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "userInput": "$primitive-routing-evaluation Inspect the supplied local fixture, apply the focused workflow, and report only the evidence it supports. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The explicitly selected skill is read.",
+        "The response preserves scope, uses the fixture native checks, and retains missing evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "primitive-routing-evaluation-marker-only-negative",
+      "title": "Marker-only negative for primitive-routing-evaluation",
+      "purpose": "Check that implicit availability does not broaden invocation to unrelated prose work.",
+      "routingCaseIds": [
+        "prose-only-edit-keeps-validation-skills-idle"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "userInput": "Rewrite only this README paragraph without changing meaning. The repository contains Gradle files, shell scripts, and plugin manifests; no executable or configuration change is requested. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The target primitive-routing-evaluation is not read or followed.",
+        "Only README prose changes; no build or executable edits occur.",
+        "Use the prose owner if available; record an unavailable companion rather than installing one."
       ]
     }
   ]

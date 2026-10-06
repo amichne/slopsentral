@@ -1,0 +1,453 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 2,
+  "name": "core-flow-workflows",
+  "description": "Complete-flow and negative coverage retained from the historical-task audit, using existing primitive owners.",
+  "cases": [
+    {
+      "id": "plugin-history-audit-separates-evidence",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Audit these plugins against completed tasks and actual skill activations. Explain uncovered flows and distinguish fixture scores, skill reads, useful outcomes, incomplete verification, and observed skill-list limits.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Deduplicate root sessions and retain bounded prompt, read-trace, outcome, and limitation references.",
+        "Report fixture consistency separately from field coverage and retain drift alongside replays."
+      ],
+      "forbiddenActions": [
+        "Treat golden fixtures or a SKILL.md read as successful model behavior.",
+        "Attribute an absent read to a numeric cap without the actual advertised list or host evidence."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "The report separates golden coverage, trace-supported routes, useful outcomes, and pending proof.",
+        "Explicit-only policies and observed list omissions are identified separately."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "installed-discovery-recovery-keeps-stage-proof",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Qualify this installed tool end to end: pin the source and artifact, verify discovery in a fresh client, invoke a known semantic operation, and exercise recovery in the disposable target.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "delivery-pipeline-design"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Reuse the existing installer, lifecycle controls, IDE delivery owner, and native schema discovery.",
+        "Record package, installation, discovery, invocation, and recovery evidence at their actual revisions."
+      ],
+      "forbiddenActions": [
+        "Claim a fresh-client invocation from an enabled entry or passing unit tests.",
+        "Restart or replace a live installation outside the authorized disposable target."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "Artifact identity and fresh discovery/invocation evidence refer to the same installed candidate.",
+        "Recovery repeats the semantic operation, or the missing recovery evidence remains explicit."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "runtime-performance-matches-semantic-workloads",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Measure whether this installed candidate makes the same semantic workload faster. Match results, coverage, continuations, and source revisions, and distinguish transport latency from native work.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Use existing replay reports and bounded stage measurements for equivalent baseline/candidate workloads.",
+        "Retain unmatched attempts and negative reduced-work signals."
+      ],
+      "forbiddenActions": [
+        "Call fewer rows, incomplete coverage, or a changed query a speed improvement.",
+        "Infer less native work from lower public latency or lessWork=false."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "Paired reports establish workload equivalence before aggregating timings.",
+        "The handoff names measured dimensions, exact revisions, samples, and remaining limitations."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "openwiki-refresh-preserves-backend-authority",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Refresh the source-backed knowledge pages in this repository, which already uses OpenWiki. Preserve the backend, citations, Claims, and existing publication boundary.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "code-knowledge-base"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Resolve the existing backend and hand off OpenWiki execution to its external skill/tooling.",
+        "Preserve citations and validate refresh or migration through the destination backend and repository gates."
+      ],
+      "forbiddenActions": [
+        "Copy an upstream OpenWiki skill into local canonical source.",
+        "Create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "The selected backend and external owner are named, with missing tools reported rather than guessed.",
+        "Changed pages and Claims are verified; pending CI remains pending."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "shell-startup-completion-preserves-session-state",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Fix this shell completion recursion and prompt slowdown. Preserve existing callbacks, exit status, argument boundaries, and startup behavior when the integration is sourced twice.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "shell-session-integration"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Use native shell APIs, local option scope, and owned callback registrations.",
+        "Check repeated loading, paths with spaces, a failed wrapped command, startup, and non-interactive output."
+      ],
+      "forbiddenActions": [
+        "Overwrite unrelated shell callbacks or perform network calls in prompt/startup callbacks.",
+        "Treat a syntax check as proof of interactive state preservation."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "Fresh startup and repeated source checks preserve callbacks and prior command status.",
+        "Non-interactive output stays quiet and timed-out helpers restore state."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "cli-finite-json-errors-preserve-exit-status",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Add a composable CLI command with stable JSON output. Invalid input and unavailable targets must return finite typed error variants, nonzero exit status, and bounded stderr without contaminating stdout.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "cli-creator"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Validate inputs once and use the current command owner and structured output contract.",
+        "Exercise success, invalid input, unavailable target, redirected output, and cancellation where applicable."
+      ],
+      "forbiddenActions": [
+        "Encode expected failures as arbitrary strings, null, booleans, or exceptions.",
+        "Print a progress banner into machine-readable stdout or return zero for a failed operation."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "Success and every expected failure payload pass the canonical schema.",
+        "Failure paths preserve nonzero exit status and stream separation."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "docs-site-nav-preserves-generated-boundaries",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Update this documentation site navigation and the source-backed architecture page. Preserve generated API reference ownership and verify the changed links and rendered diagram.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "site-docs-authoring"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Inspect the existing docs framework, navigation, authored roots, and reference generators.",
+        "Edit authored pages or generator inputs, regenerate references only through their owner, and check links/rendering."
+      ],
+      "forbiddenActions": [
+        "Hand-edit generated public contracts or omit navigation for a new page.",
+        "Call build success proof of rendered diagram readability without inspecting it."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "The framework validator and broken-link check pass for the changed navigation.",
+        "Generated boundaries and source-backed claims are retained, and the rendered result is inspected."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "technical-rfc-keeps-reader-decision-source-backed",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Write a substantial RFC from the supplied source evidence and repository template. Make the reader decision, tradeoffs, failure paths, and verification plan clear in a complete reviewable draft.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "reference-doc-workflow"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Use the supplied audience, source evidence, and repository template to draft the authorized document.",
+        "Test whether a reader can make the intended decision from the document alone."
+      ],
+      "forbiddenActions": [
+        "Invent a guarantee or require section-by-section approval without a user request.",
+        "Treat polished prose as evidence that technical claims are true."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "Claims, assumptions, decisions, and verification obligations remain distinct.",
+        "Reader testing resolves ambiguities that would change the decision."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "openapi-operations-preserve-request-response-security",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Add an OpenAPI operation with a validated request, discriminated success and failure responses, and explicit security. Preserve existing component ownership and validate valid and invalid examples.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-authoring"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Use the operation authoring owner and reuse canonical components.",
+        "Validate request/response, status mapping, security requirements, and counterexamples."
+      ],
+      "forbiddenActions": [
+        "Treat a component-only edit as a complete operation contract.",
+        "Allow ambiguous failure strings or permissive extra fields without an intentional extension point."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "The operation has source-backed request, response, failure, and security contracts.",
+        "Validator-backed examples reject the invalid combinations."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "openapi-review-requires-validator-evidence",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Review this OpenAPI specification and rate the operations, schemas, failures, and security boundaries with evidence. Explain the highest priority fixes without changing source.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-rating"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Run the existing contract validator and cite specific schema/operation locations.",
+        "Separate validator findings, type-safety rubric judgments, and unverified runtime behavior."
+      ],
+      "forbiddenActions": [
+        "Give an unsupported overall quality score or rewrite the specification during a read-only review.",
+        "Treat a passing schema validator as complete runtime or security proof."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "The rating cites the concrete contract boundaries and observed validator results.",
+        "Recommended fixes follow from the rubric and remain within the read-only scope."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "pr-feedback-repair-rechecks-current-head",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Validate this PR review comment against the current head. Repair only a valid claim, rerun its regression, re-review the change, and report the exact-head required CI state.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pull-request-lifecycle"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Check the review claim against source and an executable oracle before repairing it.",
+        "Re-review after repair and reacquire the PR head and structured required checks after a push when authorized."
+      ],
+      "forbiddenActions": [
+        "Implement speculative review advice or merge with required checks pending, cancelled, or stale.",
+        "Reuse a passing check or review from an older PR head."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "The handoff separates valid repair, local re-review, external review, and exact-head CI proof.",
+        "Pending or unavailable external checks remain explicit."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    },
+    {
+      "id": "prose-only-edit-keeps-validation-skills-idle",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-06",
+        "evidenceRefs": [
+          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
+        ]
+      },
+      "prompt": "Rewrite only this README paragraph without changing meaning. The repository contains Gradle files, shell scripts, and plugin manifests; no executable or configuration change is requested.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
+        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Apply the focused prose workflow when available and inspect the scoped diff.",
+        "Leave unrelated code, scripts, generated output, and validation workflows idle."
+      ],
+      "forbiddenActions": [
+        "Load primitive-routing-evaluation, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
+        "Run a build, generate knowledge, or change configuration for this prose-only request."
+      ],
+      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
+      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
+      "verificationEvidence": [
+        "Only the requested prose changes and its meaning is preserved.",
+        "The trace contains no marker-driven routing, build, or script-safety activation."
+      ],
+      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
+    }
+  ]
+}
