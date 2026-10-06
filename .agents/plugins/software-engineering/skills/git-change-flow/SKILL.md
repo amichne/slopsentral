@@ -1,6 +1,6 @@
 ---
 name: "git-change-flow"
-description: "Use when local Git work needs status inspection, user-work protection, safe branching, diff review, staging, commits, or recovery. Use pull-request-lifecycle for a requested push, pull request, or hosted delivery."
+description: "Use when local Git work needs status inspection, user-work protection, safe branching, worktree setup, repeatable project checks, diff review, staging, commits, or recovery. Use pull-request-lifecycle for a requested push, pull request, or hosted delivery."
 ---
 
 # Git Change Flow
@@ -34,11 +34,17 @@ useful in any Git repository.
 
 2. Isolate the work.
    Create or reuse an appropriate branch. Keep unrelated dirty files out of the
-   change set and call out conflicts with the requested work.
+   change set and call out conflicts with the requested work. For worktrees,
+   preserve the host's managed checkout ownership; use Worktrunk for CLI-owned
+   worktrees when available. Refresh the intended remote base before creating
+   a new task branch and verify the resulting commit and path.
 
 3. Make and validate changes.
    Run the smallest meaningful checks for the edited surface. Broaden checks
-   when shared contracts, generated outputs, or workflow files changed.
+   when shared contracts, generated outputs, or workflow files changed. When
+   asked to automate repeated setup or checks, put the repository's existing
+   commands in Worktrunk project hooks. Setup that an agent needs must finish
+   before handoff; required verification must block the affected operation.
 
 4. Review the diff.
    Use `git diff --stat`, targeted `git diff`, and `git diff --check` before
@@ -59,6 +65,8 @@ useful in any Git repository.
   includes branching, staging, committing, pushing, or pull request handoff.
 - Load [recovery.md](references/recovery.md) before resolving merge conflicts,
   undoing a local mistake, recovering lost commits, or touching stash/reflog.
+- Load [worktrunk-automation.md](references/worktrunk-automation.md) for worktree
+  creation, project hook automation, Worktrunk commits, or agent handoff.
 
 ## Completion Criteria
 
