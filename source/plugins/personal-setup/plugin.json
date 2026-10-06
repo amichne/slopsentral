@@ -1,0 +1,44 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "personal-setup",
+  "version": "0.1.0",
+  "description": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/personal-setup-management",
+      "name": "personal-setup-management"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/personal-cli-authoring",
+      "name": "personal-cli-authoring"
+    }
+  ],
+  "agents": [],
+  "instructions": [],
+  "hooks": [],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Choose for personal shell-config changes or parameterized personal CLI tools with source-backed --teach.",
+    "notFor": "General agent-facing API CLIs, terminal UI products, automatic setup installation, or marketplace publication.",
+    "role": "specialty",
+    "scope": "Verified personal setup ownership, composable command building blocks, local completions, and contextual teaching.",
+    "workstream": "personal-setup",
+    "owner": "personal-setup"
+  }
+}

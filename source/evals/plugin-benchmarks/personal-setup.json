@@ -1,0 +1,83 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "personal-setup",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-6-astra",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "node tools/tests/personal-setup-teach.test.mjs",
+      "node tools/validate-source-graph.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Definition only; static validation is not an observed model benchmark.",
+    "Use fixture-owned shell-config metadata and history. Do not read or edit real HOME configuration.",
+    "Do not invoke a live assistant from a fixture; use a deterministic adapter and distinguish transport proof from guidance quality."
+  ],
+  "setupQuestions": [
+    "Which one existing personal-tool building block should the isolated exercise extend?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "personal-setup-verifies-current-dotfiles-authority",
+      "title": "Current setup authority",
+      "purpose": "Verify source ownership despite stale bare-HOME assumptions.",
+      "routingCaseIds": [
+        "personal-setup-verifies-current-dotfiles-authority"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "personal-setup-management"
+      },
+      "userInput": "Use Personal Setup Management in this isolated Slopsentral worktree. Build a disposable shell-config fixture with an explicit config wrapper, separate Git directory, public worktree and one consumer link. Prove discovery uses the wrapper and rejects an inconsistent origin or missing authority. Do not inspect or edit real HOME, invoke live assistants, install tooling, or modify remote state.",
+      "successChecklist": [
+        "The run reads the relevant skill and verifies fixture source, metadata and consumer ownership.",
+        "Historical bare-HOME assumptions do not select a destination.",
+        "Focused proof distinguishes valid fixture discovery from invalid authority."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "personal-cli-composition-and-source-backed-teach",
+      "title": "Composable CLI and contextual teach",
+      "purpose": "Verify personal-tool design and executable teach/completion boundaries.",
+      "routingCaseIds": [
+        "personal-cli-composition-and-source-backed-teach"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "personal-cli-authoring"
+      },
+      "userInput": "Use Personal CLI Authoring in this isolated Slopsentral worktree to extend the retained personal-size example with one pure size selector parameter. Preserve composition, generate Zsh completion from its options, and verify --teach uses the updated source, caller directory, history summaries and optional question. Use a deterministic assistant adapter. Do not inspect or edit real HOME, call a live model, install tooling, or modify remote state.",
+      "successChecklist": [
+        "The new selector is validated once and composes with existing output.",
+        "Help and completion derive from authoritative command options.",
+        "Teach captures the changed implementation and propagates source/adapter failures.",
+        "The handoff labels deterministic transport proof separately from model quality."
+      ]
+    }
+  ]
+}

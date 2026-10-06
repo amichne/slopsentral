@@ -37,6 +37,12 @@ jobs:
       - name: Install schema validation dependencies
         run: npm ci
 
+      - name: Install Zsh for shell integration tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes zsh
+          zsh --version
+
       - name: Validate source graph and evals
         run: |
           set -euo pipefail
