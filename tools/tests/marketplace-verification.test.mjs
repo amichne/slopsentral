@@ -7,7 +7,7 @@ import test from 'node:test';
 
 const repoRoot = path.resolve(import.meta.dirname, '../..');
 
-test('the source gate rejects whitespace already staged for a Worktrunk commit', t => {
+function sourceGate(t) {
   const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'slopsentral-source-gate-')));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const bin = path.join(root, 'bin');
@@ -18,19 +18,72 @@ test('the source gate rejects whitespace already staged for a Worktrunk commit',
     .filter(([key]) => !key.startsWith('GIT_') && key !== 'BASH_ENV' && key !== 'ENV'));
   env.PATH = `${bin}:${process.env.PATH}`;
   const run = (command, args) => spawnSync(command, args, { cwd: root, env, encoding: 'utf8', timeout: 30_000 });
-  for (const args of [['init', '-q'], ['config', 'user.email', 'gate@example.invalid'],
-    ['config', 'user.name', 'Gate Test']]) assert.equal(run('git', args).status, 0);
+  const git = (...args) => {
+    const result = run('git', args);
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout.trim();
+  };
+  git('init', '-q', '--initial-branch=main');
+  fs.appendFileSync(path.join(root, '.git/info/exclude'), '/bin/\n');
+  git('config', 'user.email', 'gate@example.invalid');
+  git('config', 'user.name', 'Gate Test');
   const source = path.join(root, 'task.txt');
   fs.writeFileSync(source, 'valid\n');
-  assert.equal(run('git', ['add', 'task.txt']).status, 0);
-  assert.equal(run('git', ['commit', '-qm', 'test: source gate']).status, 0);
+  git('add', 'task.txt');
+  git('commit', '-qm', 'test: source gate');
+  git('update-ref', 'refs/remotes/origin/main', 'HEAD');
   const script = JSON.parse(fs.readFileSync(path.join(repoRoot, 'package.json'), 'utf8')).scripts['check:source'];
-  assert.equal(run('bash', ['--noprofile', '--norc', '-c', script]).status, 0);
+  const check = () => run('bash', ['--noprofile', '--norc', '-c', script]);
+  return { root, source, git, check };
+}
+
+test('the source gate rejects whitespace already staged for a Worktrunk commit', t => {
+  const { source, git, check } = sourceGate(t);
+  assert.equal(check().status, 0);
   fs.writeFileSync(source, 'invalid \n');
-  assert.equal(run('git', ['add', 'task.txt']).status, 0);
-  const rejected = run('bash', ['--noprofile', '--norc', '-c', script]);
+  git('add', 'task.txt');
+  const rejected = check();
   assert.equal(rejected.status, 2);
   assert.match(rejected.stdout, /trailing whitespace/);
+});
+
+test('the source gate rejects raw Git committed whitespace in a clean worktree', t => {
+  const { source, git, check } = sourceGate(t);
+  git('switch', '-qc', 'task');
+  fs.writeFileSync(source, 'invalid \n');
+  git('add', 'task.txt');
+  git('commit', '-qm', 'test: raw Git commit');
+  assert.equal(git('status', '--porcelain'), '');
+  assert.equal(git('diff', '--check'), '');
+  assert.equal(git('diff', '--cached', '--check'), '');
+  const rejected = check();
+  assert.equal(rejected.status, 2);
+  assert.match(rejected.stdout, /trailing whitespace/);
+});
+
+test('the source gate excludes inherited base whitespace after rebase', t => {
+  const { root, source, git, check } = sourceGate(t);
+  git('switch', '-qc', 'task');
+  fs.writeFileSync(source, 'valid task change\n');
+  git('add', 'task.txt');
+  git('commit', '-qm', 'test: valid task');
+  git('switch', '-q', 'main');
+  fs.writeFileSync(path.join(root, 'base-only.txt'), 'inherited \n');
+  git('add', 'base-only.txt');
+  git('commit', '-qm', 'test: advance base');
+  git('update-ref', 'refs/remotes/origin/main', 'HEAD');
+  git('switch', '-q', 'task');
+  git('rebase', 'origin/main');
+  assert.equal(git('status', '--porcelain'), '');
+  assert.equal(check().status, 0);
+});
+
+test('the source gate fails closed when the committed comparison base is missing', t => {
+  const { git, check } = sourceGate(t);
+  git('update-ref', '-d', 'refs/remotes/origin/main');
+  const rejected = check();
+  assert.equal(rejected.status, 128);
+  assert.match(rejected.stderr, /origin\/main/);
 });
 
 function verify(t, failedHarness) {

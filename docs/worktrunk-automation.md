@@ -32,7 +32,10 @@ files before `wt step commit --stage=none`; Worktrunk's default stages all
 changes. Host-managed worktrees use the host's creation and archival tools.
 
 The hooks run on Worktrunk operations. Raw Git and host tools must invoke the
-canonical verification command explicitly. Local merge automation and upstream
+canonical verification command explicitly. Source verification checks unstaged,
+staged, and committed task changes using `origin/main...HEAD` for the committed
+range. Fetch the `main` base before verification; an unavailable base or merge
+base fails the gate. Local merge automation and upstream
 activity markers do not authorize remote publication, extra agent sessions,
 deployment, or worktree deletion. Required hosted CI still needs terminal
 success at the exact current PR head.
