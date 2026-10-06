@@ -88,6 +88,16 @@ Outside this plugin: Everyday Git and hosted delivery, shell integration, and In
 
 **Instructions:** [kotlin-engineering](instructions/kotlin-engineering.md).
 
+### personal-setup
+
+Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.
+
+Choose for personal shell-config changes or parameterized personal CLI tools with source-backed --teach.
+
+Outside this plugin: General agent-facing API CLIs, terminal UI products, automatic setup installation, or marketplace publication.
+
+**Skills:** [personal-cli-authoring](skills/personal-cli-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md).
+
 ### pkl-configuration
 
 Model, validate, format, and maintain Pkl configuration and tooling.

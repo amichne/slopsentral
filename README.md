@@ -18,6 +18,7 @@ Keep it selected for your repository and add a specialty when the task needs one
 | Generated code indexes and knowledge documents | Repository Knowledge; optional for ordinary coding |
 | Skills, agents, hooks, and plugins | Agent Tooling |
 | CLI products, shell completions, and TUIs | CLI Development |
+| Personal shell-config setup and composable utilities with `--teach` | [Personal Setup](docs/personal-setup.md) |
 
 Describe the result you want. The agent selects the relevant skills from those
 plugins; you do not need to name each skill. Installation does not authorize a

@@ -294,6 +294,31 @@
     },
     {
       "type": "PLUGIN_ENTRY",
+      "name": "personal-setup",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "personal-setup",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/personal-setup"
+        },
+        "version": "0.1.0"
+      },
+      "description": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+      "tags": [
+        "building-blocks",
+        "cli",
+        "completion",
+        "composition",
+        "dotfiles",
+        "personal-setup",
+        "shell",
+        "shell-config",
+        "teach"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
       "name": "skill-read-policy",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
@@ -866,6 +891,24 @@
       },
       "path": "skills/gradle-performance-engineering",
       "name": "gradle-performance-engineering"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/personal-setup-management",
+      "name": "personal-setup-management"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/personal-cli-authoring",
+      "name": "personal-cli-authoring"
     }
   ],
   "agents": [
