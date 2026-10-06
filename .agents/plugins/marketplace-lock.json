@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T00:26:11-04:00",
+  "generatedAt": "2026-10-06T10:10:21-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -554,6 +554,27 @@
       "version": "1.0.1"
     },
     {
+      "name": "personal-setup",
+      "references": [
+        {
+          "name": "personal-cli-authoring",
+          "sha256": "sha256:7f35741b9400e9609a7f8a76ee5378f10ebdd487e33ade1c690f461dab45334c",
+          "sourcePath": "source/skills/personal-cli-authoring",
+          "targetPath": "skills/personal-cli-authoring",
+          "type": "SKILL"
+        },
+        {
+          "name": "personal-setup-management",
+          "sha256": "sha256:ce5b6b51c2bcd10cb927c231815a0c0c81486a82d8abfa74800c082dfbf95e59",
+          "sourcePath": "source/skills/personal-setup-management",
+          "targetPath": "skills/personal-setup-management",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/personal-setup/plugin.json",
+      "version": "0.1.0"
+    },
+    {
       "name": "skill-read-policy",
       "references": [
         {
@@ -569,6 +590,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "6b6d76e333ec0dab53fc17e2f2fabf4131168c35",
+  "sourceSha": "fd7a392164b28b34971610d13f70933418fead5e",
   "type": "HYDRATED_MARKETPLACE"
 }
