@@ -38,6 +38,9 @@ or local cache copies.
    For code work, start with Software Engineering and add the language, platform,
    or output specialties needed by the repository. Writing-only setup can use
    Technical Writing alone. Keep knowledge generation and skill-read policy opt-in.
+   When worktree automation is requested, select the upstream Worktrunk plugin
+   alongside Software Engineering. Keep its marketplace and payload owned by
+   max-sixty/worktrunk; use git-change-flow for task isolation and project checks.
 
 4. Write the checked-in reference.
    Create or update the repo's marketplace reference with the configured
@@ -49,7 +52,10 @@ or local cache copies.
 5. Apply runtime setup.
    Install or enable plugins through the runtime marketplace mechanism. Do not
    copy generated marketplace payloads, installed plugin folders, or cache
-   directories into source.
+   directories into source. Worktrunk's Codex plugin is `worktrunk@worktrunk`;
+   confirm the marketplace resolves to max-sixty/worktrunk before installing.
+   Verify installation separately from native hook delivery. Discover a missing
+   CLI as a setup requirement rather than manufacturing command availability.
 
 6. Verify.
    Confirm the reference file is tracked, remote marketplace sources resolve,

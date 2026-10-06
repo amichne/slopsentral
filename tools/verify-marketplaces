@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
+projection_root=$(mktemp -d "${TMPDIR:-/tmp}/slopsentral-projections.XXXXXX")
+trap 'rm -r -- "$projection_root"' EXIT
+
+projeKtor project --source . --harness codex --out "$projection_root/codex"
+projeKtor project --source . --harness github-copilot --out "$projection_root/github-copilot"
+
+INSTRUCTION_MARKETPLACE_ROOT="$projection_root/codex" \
+  node --test tools/tests/instruction-delivery.test.mjs
+STOP_MARKETPLACE_ROOT="$projection_root/codex" \
+  node --test tools/tests/stop-output-contract.test.mjs
