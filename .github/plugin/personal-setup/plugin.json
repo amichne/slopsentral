@@ -1,0 +1,33 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Productivity",
+  "description": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+  "keywords": [
+    "building-blocks",
+    "cli",
+    "completion",
+    "composition",
+    "dotfiles",
+    "personal-setup",
+    "shell",
+    "shell-config",
+    "teach"
+  ],
+  "license": "UNLICENSED",
+  "name": "personal-setup",
+  "skills": "./skills",
+  "tags": [
+    "building-blocks",
+    "cli",
+    "completion",
+    "composition",
+    "dotfiles",
+    "personal-setup",
+    "shell",
+    "shell-config",
+    "teach"
+  ],
+  "version": "0.1.0"
+}

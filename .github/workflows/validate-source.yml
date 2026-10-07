@@ -37,6 +37,29 @@ jobs:
       - name: Install schema validation dependencies
         run: npm ci
 
+      - name: Install Zsh for shell integration tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes zsh
+          zsh --version
+
+      - name: Install Worktrunk v0.53.0 for lifecycle tests
+        run: |
+          set -euo pipefail
+
+          worktrunk_dir="${RUNNER_TEMP}/worktrunk-v0.53.0"
+          mkdir -p "${worktrunk_dir}"
+          worktrunk_archive="${worktrunk_dir}/worktrunk-x86_64-unknown-linux-musl.tar.xz"
+          curl --fail --location --silent --show-error \
+            --output "$worktrunk_archive" \
+            https://github.com/max-sixty/worktrunk/releases/download/v0.53.0/worktrunk-x86_64-unknown-linux-musl.tar.xz
+          echo "2d0e810910270955fbf9a7c2d5c61c754eb4fea0c255a960d0acccff65646822  $worktrunk_archive" \
+            | sha256sum --check
+          tar -xJf "$worktrunk_archive" -C "$worktrunk_dir"
+          worktrunk_bin="${worktrunk_dir}/worktrunk-x86_64-unknown-linux-musl"
+          echo "$worktrunk_bin" >> "$GITHUB_PATH"
+          "$worktrunk_bin/wt" --version
+
       - name: Validate source graph and evals
         run: |
           set -euo pipefail

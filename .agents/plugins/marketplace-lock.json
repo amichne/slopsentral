@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T00:26:11-04:00",
+  "generatedAt": "2026-10-06T19:28:53-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -55,7 +55,7 @@
         },
         {
           "name": "git-change-flow",
-          "sha256": "sha256:3f3b6ac70d1bcaed9fc4b0ca3fa5cefa44c28086ad67437c73d591008d5ade3f",
+          "sha256": "sha256:e384c9dbc4da844ca827db3de5548c9f75d95c4d501de0eec26058476195d938",
           "sourcePath": "source/skills/git-change-flow",
           "targetPath": "skills/git-change-flow",
           "type": "SKILL"
@@ -90,7 +90,7 @@
         },
         {
           "name": "repository-onboarding",
-          "sha256": "sha256:8d537841187705c51cbe21bb8043b79883e39c2fd11e7d75afe3f361be06c562",
+          "sha256": "sha256:88c2e000d22d019199f7fe143bdf62df29b878e6e48b5a620576b81c878029c6",
           "sourcePath": "source/skills/repository-onboarding",
           "targetPath": "skills/repository-onboarding",
           "type": "SKILL"
@@ -118,7 +118,7 @@
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     {
       "name": "kotlin-engineering",
@@ -554,6 +554,27 @@
       "version": "1.0.1"
     },
     {
+      "name": "personal-setup",
+      "references": [
+        {
+          "name": "personal-cli-authoring",
+          "sha256": "sha256:7f35741b9400e9609a7f8a76ee5378f10ebdd487e33ade1c690f461dab45334c",
+          "sourcePath": "source/skills/personal-cli-authoring",
+          "targetPath": "skills/personal-cli-authoring",
+          "type": "SKILL"
+        },
+        {
+          "name": "personal-setup-management",
+          "sha256": "sha256:ce5b6b51c2bcd10cb927c231815a0c0c81486a82d8abfa74800c082dfbf95e59",
+          "sourcePath": "source/skills/personal-setup-management",
+          "targetPath": "skills/personal-setup-management",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/personal-setup/plugin.json",
+      "version": "0.1.0"
+    },
+    {
       "name": "skill-read-policy",
       "references": [
         {
@@ -569,6 +590,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "6b6d76e333ec0dab53fc17e2f2fabf4131168c35",
+  "sourceSha": "29e1c5d887aa438473f27b3df253cb086a75cbd7",
   "type": "HYDRATED_MARKETPLACE"
 }

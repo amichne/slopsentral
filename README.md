@@ -18,6 +18,7 @@ Keep it selected for your repository and add a specialty when the task needs one
 | Generated code indexes and knowledge documents | Repository Knowledge; optional for ordinary coding |
 | Skills, agents, hooks, and plugins | Agent Tooling |
 | CLI products, shell completions, and TUIs | CLI Development |
+| Personal shell-config setup and composable utilities with `--teach` | [Personal Setup](docs/personal-setup.md) |
 
 Describe the result you want. The agent selects the relevant skills from those
 plugins; you do not need to name each skill. Installation does not authorize a
@@ -27,6 +28,12 @@ See the [generated catalog](source/CATALOG.md) for exact plugin IDs and contents
 the [migration guide](source/MIGRATION.md) before replacing older installations,
 and the [architecture](source/ARCHITECTURE.md) for ownership contracts.
 [Upstream provenance](source/UPSTREAM.md) records the guidance behind the design.
+
+For automatic worktree setup and checks, add the upstream Worktrunk plugin
+alongside Software Engineering. This repository runs locked dependency setup
+on creation, source checks before Worktrunk commits, and complete marketplace
+verification through `wt verify` or `npm run verify`. See
+[Worktrunk automation](docs/worktrunk-automation.md) for setup and scope.
 
 Inspect a profile without installing or executing anything:
 

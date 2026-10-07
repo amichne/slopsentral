@@ -91,7 +91,7 @@
         "typestate",
         "workflow-graph"
       ],
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     {
       "author": {
@@ -433,6 +433,40 @@
         "user-interface"
       ],
       "version": "1.0.1"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+      "keywords": [
+        "building-blocks",
+        "cli",
+        "completion",
+        "composition",
+        "dotfiles",
+        "personal-setup",
+        "shell",
+        "shell-config",
+        "teach"
+      ],
+      "license": "UNLICENSED",
+      "name": "personal-setup",
+      "source": "personal-setup",
+      "strict": true,
+      "tags": [
+        "building-blocks",
+        "cli",
+        "completion",
+        "composition",
+        "dotfiles",
+        "personal-setup",
+        "shell",
+        "shell-config",
+        "teach"
+      ],
+      "version": "0.1.0"
     },
     {
       "author": {

@@ -1302,6 +1302,54 @@
         "The trace contains no marker-driven routing, build, or script-safety activation."
       ],
       "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "personal-setup-verifies-current-dotfiles-authority",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "personal-setup-management"
+      },
+      "satisfiedAllowedActions": [
+        "Verify the current wrapper, exact origin, Git directory, worktree and core.bare before dependent writes.",
+        "Use tracked public paths and the existing link installer owner.",
+        "Preserve unrelated source changes, index entries and private overrides."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The handoff names the verified source and consumer boundary.",
+        "A focused fixture check proves the edited installation or command invariant."
+      ],
+      "avoidedForbiddenActions": [
+        "Recreate historical ~/.cfg or use it as an automatic fallback.",
+        "Bulk-stage HOME or recursively read private setup state.",
+        "Claim installed behavior from a source-only check."
+      ],
+      "notes": "Synthetic golden contract fixture. This checks replay consistency only; no live model routing or guidance quality was observed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "personal-cli-composition-and-source-backed-teach",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "personal-cli-authoring"
+      },
+      "satisfiedAllowedActions": [
+        "Reuse cohesive parsing, selection, effect and presentation owners.",
+        "Generate offline completion from authoritative option definitions.",
+        "Supply explicit complete source files, bounded directory names, history summaries and a provided or inferred question to --teach.",
+        "Prove preview and success/failure transport with a deterministic adapter."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Normal operation, help, completion and teach preview pass focused checks.",
+        "Source and assistant failure paths are typed and nonzero."
+      ],
+      "avoidedForbiddenActions": [
+        "Invent options or infer complete implementation from a thin launcher.",
+        "Read raw private history databases to fill missing parent-shell context.",
+        "Execute teaching suggestions automatically.",
+        "Present adapter tests as observed model guidance quality."
+      ],
+      "notes": "Synthetic golden contract fixture. This checks replay consistency only; no live model routing or guidance quality was observed."
     }
   ]
 }

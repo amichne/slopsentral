@@ -8,6 +8,9 @@
   },
   "scripts": {
     "test": "node --test tools/tests/*.test.mjs",
+    "check:source": "node tools/validate-source-graph.mjs && node tools/catalog.mjs --check && git diff --check && git diff --cached --check && git diff --check origin/main...HEAD",
+    "verify:marketplaces": "bash tools/verify-marketplaces",
+    "verify": "npm run check:source && npm test && npm run verify:marketplaces",
     "validate:profile-contracts": "node tools/validate-profile-contracts.mjs"
   },
   "dependencies": {
