@@ -8,7 +8,8 @@ import { loadCatalog, pluginClosure } from '../catalog.mjs';
 const root = path.resolve(import.meta.dirname, '../..');
 const catalog = loadCatalog(root);
 const bundles = {
-  'software-engineering': ['agent-execution', 'engineering-design'],
+  'software-engineering': ['agent-execution'],
+  'engineering-excellence': ['engineering-design'],
   'kotlin-engineering': ['kotlin-engineering'],
   'api-contracts': ['api-contract-design'],
 };

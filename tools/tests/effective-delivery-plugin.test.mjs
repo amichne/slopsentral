@@ -44,6 +44,7 @@ test("default delivery composition does not activate automatic CI hooks", () => 
   assert.ok(marketplace.plugins.some((entry) => entry.name === "software-engineering"));
   assert.deepEqual(profile.plugins, [
     "software-engineering",
+    "engineering-excellence",
     "kotlin-engineering",
   ]);
   assert.equal(profile.hookPolicy.mode, "ADVISORY");

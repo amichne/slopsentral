@@ -33,7 +33,11 @@
     "openapi-operations-preserve-request-response-security",
     "openapi-review-requires-validator-evidence",
     "pr-feedback-repair-rechecks-current-head",
-    "prose-only-edit-keeps-validation-skills-idle"
+    "prose-only-edit-keeps-validation-skills-idle",
+    "proof-preservation-requires-strong-consumers",
+    "api-variants-retain-domain-proof",
+    "shell-failure-preserves-transition-contract",
+    "proof-loss-review-names-model-obligations"
   ],
   "observations": [
     {
@@ -1350,6 +1354,98 @@
         "Present adapter tests as observed model guidance quality."
       ],
       "notes": "Synthetic golden contract fixture. This checks replay consistency only; no live model routing or guidance quality was observed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "proof-preservation-requires-strong-consumers",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "satisfiedAllowedActions": [
+        "Identify the existing invariant owner, resolved consumers, and proof-loss boundary before editing.",
+        "Require refined values and closed outcomes at consumer contracts; keep construction controlled.",
+        "Demonstrate a legal path and a forbidden call rejected by the compiler or strongest available check."
+      ],
+      "satisfiedVerificationEvidence": [
+        "A named misuse fails for the intended type or contract reason.",
+        "The legal path retains the stronger representation through downstream consumers."
+      ],
+      "avoidedForbiddenActions": [
+        "Add wrappers with unchecked public construction or immediately unpack them in application code.",
+        "Repeat runtime guards deep in the application instead of preserving their proof.",
+        "Claim current authorization or one-time capability consumption from ordinary static types."
+      ],
+      "notes": "Expected contract fixture only; this scenario has no observed model run."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "api-variants-retain-domain-proof",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "satisfiedAllowedActions": [
+        "Define closed exclusive variants with required type tags in CAPS_CASE and case-owned required fields.",
+        "Reuse canonical schemas through references and map parsed transport values into domain representations.",
+        "Exercise valid cases and invalid null, unknown-tag, extra-field, and mixed-variant cases."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The schema validator accepts the intended shapes and rejects each named illegal payload.",
+        "The mapping preserves the facts required by the application consumer."
+      ],
+      "avoidedForbiddenActions": [
+        "Use a discriminator hint without exclusive constrained variant schemas.",
+        "Allow nullable sentinel fields, arbitrary error strings, or permissive shapes to make invalid examples pass.",
+        "Claim schema validation proves generated-model correctness or external service agreement."
+      ],
+      "notes": "Expected contract fixture only; this scenario has no observed model run."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "shell-failure-preserves-transition-contract",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "satisfiedAllowedActions": [
+        "Centralize ingress and stage transitions with an explicit finite status and output contract.",
+        "Use a controlled snapshot and expose effect failures without claiming unproved rollback.",
+        "Inject verification, publication, and cleanup failures and inspect the later-stage effects."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Failed verification prevents publication and emits a supported failure outcome.",
+        "Publication and cleanup failures cannot produce an unqualified success result."
+      ],
+      "avoidedForbiddenActions": [
+        "Swallow command failures with an unconditional success fallback.",
+        "Treat strict shell flags or tagged variable names as static type proof.",
+        "Verify one file and publish a later mutable reread while claiming the verification transfers."
+      ],
+      "notes": "Expected contract fixture only; this scenario has no observed model run."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "proof-loss-review-names-model-obligations",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "satisfiedAllowedActions": [
+        "Trace predicate identity, value flow, the boundary obligation, and proof materialization using semantic evidence where available.",
+        "Report witnessed proof loss separately from an undeclared obligation or incomplete flow model.",
+        "Keep the scope read-only and the claimed guarantee relative to the available model."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Each finding identifies its predicate, flow path, boundary obligation, and materialization evidence or the specific missing model.",
+        "The handoff does not upgrade a modeling question into a proven runtime bug."
+      ],
+      "avoidedForbiddenActions": [
+        "Infer a correctness defect or complete proof from a textual pattern alone.",
+        "Claim absence of proof loss when resolution, flow, or boundary modeling is incomplete.",
+        "Implement a proof-loss analyzer or modify code during a read-only review."
+      ],
+      "notes": "Expected contract fixture only; this scenario has no observed model run."
     }
   ]
 }

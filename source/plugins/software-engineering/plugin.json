@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "software-engineering",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -27,15 +27,6 @@
       },
       "path": "skills/repository-onboarding",
       "name": "repository-onboarding"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/semantic-ratchet",
-      "name": "semantic-ratchet"
     },
     {
       "type": "SKILL",
@@ -153,7 +144,7 @@
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Start here for everyday code changes, debugging, tests, Git, issues, pull requests, and CI. Publication follows the requested end state.",
-    "notFor": "Language-specific design, building CLI products, knowledge generation, and documentation production.",
+    "notFor": "Proof-preserving domain and contract design, language-specific design, building CLI products, knowledge generation, and documentation production.",
     "owner": "software-engineering",
     "role": "default",
     "scope": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",

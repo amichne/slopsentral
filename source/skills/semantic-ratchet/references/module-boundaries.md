@@ -16,6 +16,8 @@ records, and DTO-to-domain conversions as boundaries.
 - Do not expose untyped maps, universal values, primitive statuses, ambiguous
   nulls, or a primitive plus a prose list of allowed values as domain results.
 
-The review burden is on the weaker boundary. If a primitive truly is the public
-contract, name the reason and the assertion that prevents repeated
-interpretation downstream.
+Transport protocols may require primitive encodings. Keep that extraction in
+the owning adapter, validate the serialized contract, and require stronger
+representations at the application interfaces on each side. A transport
+requirement does not justify primitive domain contracts or repeated guards
+inside application layers.

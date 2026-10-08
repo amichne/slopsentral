@@ -16,13 +16,13 @@ Implement, test, review, and deliver code with Git, PR, and CI workflows.
 
 Start here for everyday code changes, debugging, tests, Git, issues, pull requests, and CI. Publication follows the requested end state.
 
-Outside this plugin: Language-specific design, building CLI products, knowledge generation, and documentation production.
+Outside this plugin: Proof-preserving domain and contract design, language-specific design, building CLI products, knowledge generation, and documentation production.
 
-**Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [cli-data-pipelines](skills/cli-data-pipelines/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [delivery-pipeline-design](skills/delivery-pipeline-design/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [tdd](skills/tdd/SKILL.md), [validation-first](skills/validation-first/SKILL.md).
+**Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [cli-data-pipelines](skills/cli-data-pipelines/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [delivery-pipeline-design](skills/delivery-pipeline-design/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [tdd](skills/tdd/SKILL.md), [validation-first](skills/validation-first/SKILL.md).
 
 **Hooks:** [software-engineering-context](hooks/software-engineering-context.hook.json).
 
-**Instructions:** [agent-execution](instructions/agent-execution.md), [engineering-design](instructions/engineering-design.md).
+**Instructions:** [agent-execution](instructions/agent-execution.md).
 
 ## Specialties
 
@@ -41,6 +41,20 @@ Outside this plugin: Application implementation, repository indexes, and general
 **Hooks:** [api-contracts-context](hooks/api-contracts-context.hook.json).
 
 **Instructions:** [api-contract-design](instructions/api-contract-design.md).
+
+### engineering-excellence
+
+Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.
+
+Use for contract-first domain design, proof-loss review, closed failures, and state transitions. Includes Kotlin, API, and shell examples; select implementation specialties as needed.
+
+Outside this plugin: Git, pull requests, CI operations, automatic proof-loss analysis, or a claim that the compiler proves all runtime behavior.
+
+**Skills:** [semantic-ratchet](skills/semantic-ratchet/SKILL.md).
+
+**Hooks:** [engineering-excellence-context](hooks/engineering-excellence-context.hook.json).
+
+**Instructions:** [engineering-design](instructions/engineering-design.md).
 
 ### intellij-plugin-development
 
@@ -116,15 +130,15 @@ Outside this plugin: Everyday engineering, default setup, and general skill disc
 
 ## Profiles
 
-- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + personal-setup. 468 instruction words.
+- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + engineering-excellence + personal-setup. 672 instruction words.
 
 - [documentation-default](profiles/documentation-default.json): repository-knowledge. 0 instruction words.
 
-- [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 604 instruction words.
+- [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + engineering-excellence + kotlin-engineering + intellij-plugin-development. 808 instruction words.
 
-- [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 604 instruction words.
+- [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + engineering-excellence + kotlin-engineering. 808 instruction words.
 
-- [local-development-default](profiles/local-development-default.json): software-engineering. 468 instruction words.
+- [local-development-default](profiles/local-development-default.json): software-engineering + engineering-excellence. 672 instruction words.
 
 ## Standalone skills
 

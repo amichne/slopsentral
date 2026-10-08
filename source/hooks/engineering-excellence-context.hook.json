@@ -4,8 +4,8 @@
     "type": "LOCAL_SOURCE",
     "path": "./"
   },
-  "path": "hooks/codex/software-engineering-context.hooks.json",
-  "name": "software-engineering-context",
+  "path": "hooks/codex/engineering-excellence-context.hooks.json",
+  "name": "engineering-excellence-context",
   "dependsOn": [
     {
       "type": "INSTRUCTION",
@@ -13,8 +13,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "instructions/agent-execution.md",
-      "name": "agent-execution"
+      "path": "instructions/engineering-design.md",
+      "name": "engineering-design"
     }
   ]
 }

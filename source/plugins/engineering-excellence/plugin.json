@@ -1,0 +1,45 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "engineering-excellence",
+  "version": "1.0.0",
+  "description": "Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/semantic-ratchet",
+      "name": "semantic-ratchet"
+    }
+  ],
+  "agents": [],
+  "instructions": [],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/engineering-excellence-context.hook.json",
+      "name": "engineering-excellence-context"
+    }
+  ],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Use for contract-first domain design, proof-loss review, closed failures, and state transitions. Includes Kotlin, API, and shell examples; select implementation specialties as needed.",
+    "notFor": "Git, pull requests, CI operations, automatic proof-loss analysis, or a claim that the compiler proves all runtime behavior.",
+    "owner": "engineering-excellence",
+    "role": "specialty",
+    "scope": "Preserve domain knowledge in mechanically enforced representations and reject invalid compositions at the strongest available boundary.",
+    "workstream": "engineering-excellence"
+  }
+}

@@ -11,20 +11,29 @@ types, then keep raw primitives out of core logic.
 ## Shape
 
 ```kotlin
-@JvmInline
-value class ProjectName private constructor(val value: String) {
+class ProjectName private constructor(private val text: String) {
     companion object {
-        fun parse(raw: String): Result<ProjectName> =
-            raw.trim()
-                .takeIf { it.isNotEmpty() }
-                ?.let { Result.success(ProjectName(it)) }
-                ?: Result.failure(IllegalArgumentException("project name is blank"))
+        fun parse(raw: String): ParseProjectName =
+            when (val normalized = raw.trim()) {
+                "" -> ParseProjectName.Blank
+                else -> ParseProjectName.Parsed(ProjectName(normalized))
+            }
     }
+
+    // Serialization is an explicit boundary; application APIs accept ProjectName.
+    fun encode(): String = text
+}
+
+sealed interface ParseProjectName {
+    data class Parsed(val name: ProjectName) : ParseProjectName
+    data object Blank : ParseProjectName
 }
 ```
 
-Use the repository's existing typed error pattern when one exists. The example
-uses `Result` only as a standard-library fallback.
+The constructor is private and the successful case carries the stronger value.
+The parser is the trusted owner of normalization and non-blank construction.
+Use the repository's closed outcome convention; expected parse failure must
+not fall back to an exception-backed `Result` or nullable sentinel.
 
 ## Review
 

@@ -19,8 +19,10 @@ primitive has one plugin owner, including dependencies introduced by hooks.
 
 ## Selection
 
-Software Engineering is the single code-work default. Add language, platform,
-or output specialties as needed. Repository Knowledge combines technical writing,
+Software Engineering is the single default chooser entry for execution and
+delivery. Standard code profiles also select Engineering Excellence for invariant
+representation and proof preservation. Add language, platform, or output
+specialties as needed. Repository Knowledge combines technical writing,
 documentation sites, source-backed artifacts, and opt-in sibling overlays.
 Personal Setup combines personal configuration, CLI products, and agent tooling.
 Plugin installation makes skills available; task intent selects procedures.
@@ -45,7 +47,13 @@ platform ownership uses kotlin-api-surface-design. Branch shape uses
 kotlin-branching. Build evidence uses kotlin-gradle-validation. Do not load all
 Kotlin references merely because a file ends in `.kt`.
 
-Software Engineering packages everyday design, tests, local Git, shell safety,
+Engineering Excellence owns Semantic Ratchet and the engineering-design policy.
+It packages contract-first invariant representation, closed failures, controlled
+construction, legal transitions, and proof-preserving consumer contracts. Its
+bundled examples realize the standard in Kotlin, API schemas, and shell; dedicated
+language and contract skills still own production syntax and tool selection.
+
+Software Engineering packages implementation, tests, local Git, shell safety,
 CLI data queries, mise, hosted issues, PRs, Actions, and delivery pipeline design.
 Personal Setup packages CLI authoring, shell integration, terminal UI design,
 and reusable skills, agents, hooks, plugins, and instruction topology.
@@ -77,7 +85,7 @@ The generated catalog and `--profile <name> --json` expose instruction word coun
 and install closure. They do not measure prompt loading, tokens, or route quality.
 Tests mutate the source graph to prove that invalid composition is rejected.
 The existing golden routing fixtures remain expected contracts; they are not new
-Astra runs. New behavioral scenarios are explicitly unobserved until executed.
+model runs. New behavioral scenarios are explicitly unobserved until executed.
 
 ## Model Guidance
 
@@ -90,6 +98,11 @@ The portable concept in `concepts/evidence-calibrated-execution/core.md` explain
 the invariant independently. It is not another automatically loaded instruction.
 Tool-specific details remain in skills and references. Explicit user instructions
 win over generic skill guidance within higher-priority policy.
+
+Engineering Excellence owns `instructions/engineering-design.md`, whose stable
+identity is preserved when its install edge moves out of Software Engineering.
+Its concise policy requires proof in consumer contracts; Semantic Ratchet owns
+the procedure and selectively routed rationale and representative examples.
 
 ## Hook Policy
 
