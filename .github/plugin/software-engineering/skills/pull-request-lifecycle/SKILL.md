@@ -103,6 +103,12 @@ Related primitives in this repository:
 
 ## Check Green Loop
 
+For review feedback, first validate each claim against the current PR revision
+and an executable oracle. Repair only mechanically supported findings, then
+re-review the changed boundary. After a push, reacquire the head SHA and terminal
+required checks. A passing local repair or a review of the previous revision
+does not prove the current PR is ready.
+
 When asked to babysit until green:
 
 1. Arm a transition-only observation and invoke one bounded `await --json`.

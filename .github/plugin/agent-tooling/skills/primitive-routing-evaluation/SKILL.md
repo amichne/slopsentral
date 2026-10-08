@@ -1,6 +1,6 @@
 ---
 name: "primitive-routing-evaluation"
-description: "Use when routing evals, missed triggers, wrong primitive loads, bypassed skills, session evidence, or trigger-description tuning need diagnosis."
+description: "Audit plugin or skill coverage against task history and activation evidence. Use for routing misses, wrong or bypassed skills, eval corpora, or trigger tuning; not ordinary application work."
 ---
 
 # Primitive Routing Evaluation
@@ -39,8 +39,9 @@ the independent primitive that should own the work.
    Prefer a user prompt plus the loaded primitives and tool sequence. Add host
    logs only when the prompt and tool trace do not explain the miss.
 
-3. Classify the miss.
-   Use one primary class:
+3. Classify the evidence.
+   Use `COVERAGE_GAP` for a designed obligation with no observed model failure.
+   Use a primary failure class only when the trace supports it:
 
    - `TRIGGER_MISS`: the expected primitive never loaded.
    - `WRONG_PRIMITIVE`: a related but incorrect primitive loaded.
@@ -95,20 +96,31 @@ corpus file.
 In this repository, durable cases live under `source/evals/routing/` and use
 `source/schemas/evals/routing-cases.schema.json`. The source graph validator
 checks that cases are sanitized, schema-linked, and point at existing canonical
-primitives. The replay runner checks observed routing coverage:
+primitives. The runner reports golden fixture consistency separately from field
+coverage; fixtures never establish model activation or useful task outcomes:
 
 ```bash
 node tools/validate-source-graph.mjs
-node tools/run-routing-evals.mjs --require-all-observed
+node tools/run-routing-evals.mjs --require-all-fixtures
 ```
 
-Actual runs belong in `field-observations.json`, validated by the v2 field
+Actual runs belong in `field-observations.json`, validated by the v3 field
 observation schema. Record `route` as `PRIMITIVE_ROUTE` with the primitive
 actually selected, or `NO_PRIMITIVE_ROUTE` when none was selected. A `PASS`
 requires the expected primitive; `DRIFT` preserves a missing or incorrect route.
 Do not fill a routing miss with the expected skill to make validation pass.
+Record `activationEvidence` as `TOOL_TRACE` only with session IDs and trace
+references; use `REPORTED_ROUTE` for retained summaries. Record `verification`
+as `COMPLETE_PROOF`, `INCOMPLETE_PROOF` with missing evidence, or
+`UNASSESSED_PROOF`. A route `PASS` can still have incomplete task proof.
+Record `productiveOutcomeObserved` as `USEFUL_OUTCOME`, `NO_USEFUL_OUTCOME`, or
+`UNASSESSED_OUTCOME`; loading a skill cannot manufacture a useful result.
 Keep runtime delivery, skill reads, useful output, workspace mutations, and token
-usage as separate observations. A correct answer does not erase a trigger miss.
+usage separate. A correct answer does not erase a trigger miss. Retain earlier
+failures alongside replays. Record model, host, and plugin revision when known;
+name missing context in limitations. Attribute a skill-list cap only when the
+actual advertised list or host trace proves omission; explicit-only policy,
+metadata shortening, absent reads, and source inspections are different evidence.
 
 ## Source Promotion Guidance
 
