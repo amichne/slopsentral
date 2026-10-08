@@ -15,7 +15,7 @@
   ],
   "plugins": [
     "software-engineering",
-    "agent-tooling"
+    "personal-setup"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

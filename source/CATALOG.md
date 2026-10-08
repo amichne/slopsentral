@@ -18,25 +18,13 @@ Start here for everyday code changes, debugging, tests, Git, issues, pull reques
 
 Outside this plugin: Language-specific design, building CLI products, knowledge generation, and documentation production.
 
-**Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [cli-data-pipelines](skills/cli-data-pipelines/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [delivery-pipeline-design](skills/delivery-pipeline-design/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [tdd](skills/tdd/SKILL.md).
+**Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [cli-data-pipelines](skills/cli-data-pipelines/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [delivery-pipeline-design](skills/delivery-pipeline-design/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [tdd](skills/tdd/SKILL.md), [validation-first](skills/validation-first/SKILL.md).
 
 **Hooks:** [software-engineering-context](hooks/software-engineering-context.hook.json).
 
 **Instructions:** [agent-execution](instructions/agent-execution.md), [engineering-design](instructions/engineering-design.md).
 
 ## Specialties
-
-### agent-tooling
-
-Create and improve skills, agents, hooks, plugins, and repository instructions.
-
-Choose when authoring reusable agent tooling, plugin compositions, routing evaluations, or repository instruction topology.
-
-Outside this plugin: Application implementation, user documentation, and automatic marketplace publication.
-
-**Skills:** [agent-profile-authoring](skills/agent-profile-authoring/SKILL.md), [hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md), [repo-instruction-topology](skills/repo-instruction-topology/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md).
-
-**Hooks:** [source-graph-valid](hooks/source-graph-valid.hook.json).
 
 ### api-contracts
 
@@ -53,16 +41,6 @@ Outside this plugin: Application implementation, repository indexes, and general
 **Hooks:** [api-contracts-context](hooks/api-contracts-context.hook.json).
 
 **Instructions:** [api-contract-design](instructions/api-contract-design.md).
-
-### cli-development
-
-Build command-line tools, shell completions, and terminal interfaces.
-
-Choose when building a CLI, shell integration, completion, or interactive terminal UI.
-
-Outside this plugin: Everyday Git and shell use, repository data queries, and CI operations.
-
-**Skills:** [cli-creator](skills/cli-creator/SKILL.md), [shell-session-integration](skills/shell-session-integration/SKILL.md), [terminal-ui-design](skills/terminal-ui-design/SKILL.md).
 
 ### intellij-plugin-development
 
@@ -90,13 +68,15 @@ Outside this plugin: Everyday Git and hosted delivery, shell integration, and In
 
 ### personal-setup
 
-Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.
+Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.
 
-Choose for personal shell-config changes or parameterized personal CLI tools with source-backed --teach.
+Choose for personal setup, CLI and terminal products, reusable agent tooling, or repository instruction topology.
 
-Outside this plugin: General agent-facing API CLIs, terminal UI products, automatic setup installation, or marketplace publication.
+Outside this plugin: Application implementation, documentation production, automatic setup installation, or marketplace publication.
 
-**Skills:** [personal-cli-authoring](skills/personal-cli-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md).
+**Skills:** [agent-profile-authoring](skills/agent-profile-authoring/SKILL.md), [cli-creator](skills/cli-creator/SKILL.md), [hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md), [personal-cli-authoring](skills/personal-cli-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md), [repo-instruction-topology](skills/repo-instruction-topology/SKILL.md), [shell-session-integration](skills/shell-session-integration/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md), [terminal-ui-design](skills/terminal-ui-design/SKILL.md).
+
+**Hooks:** [source-graph-valid](hooks/source-graph-valid.hook.json).
 
 ### pkl-configuration
 
@@ -112,25 +92,15 @@ Outside this plugin: General delivery pipelines, arbitrary shell automation, and
 
 ### repository-knowledge
 
-Generate and maintain code indexes, knowledge documents, and navigation maps.
+Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.
 
-Choose when producing or refreshing repository knowledge artifacts and checking their source drift.
+Choose for technical prose, documentation sites, source-backed knowledge, navigation, or sibling knowledge overlays.
 
-Outside this plugin: Routine source reading, ordinary code changes, and general documentation authoring.
+Outside this plugin: Automatic knowledge generation during ordinary code tasks or treating documentation as source authority.
 
-**Skills:** [code-knowledge-base](skills/code-knowledge-base/SKILL.md), [local-repository-navigation](skills/local-repository-navigation/SKILL.md), [repository-signature-indexing](skills/repository-signature-indexing/SKILL.md).
+**Skills:** [code-knowledge-base](skills/code-knowledge-base/SKILL.md), [controlled-technical-writing](skills/controlled-technical-writing/SKILL.md), [local-repository-navigation](skills/local-repository-navigation/SKILL.md), [reference-doc-workflow](skills/reference-doc-workflow/SKILL.md), [repository-signature-indexing](skills/repository-signature-indexing/SKILL.md), [site-docs-authoring](skills/site-docs-authoring/SKILL.md), [technical-documentation](skills/technical-documentation/SKILL.md).
 
-**Hooks:** [code-knowledge-drift](hooks/code-knowledge-drift.hook.json).
-
-### technical-writing
-
-Write and revise technical docs, proposals, runbooks, and documentation sites.
-
-Choose for technical prose, READMEs, runbooks, ADRs, proposals, and documentation site structure.
-
-Outside this plugin: Code implementation and generated repository indexes or knowledge bundles.
-
-**Skills:** [controlled-technical-writing](skills/controlled-technical-writing/SKILL.md), [reference-doc-workflow](skills/reference-doc-workflow/SKILL.md), [site-docs-authoring](skills/site-docs-authoring/SKILL.md), [technical-documentation](skills/technical-documentation/SKILL.md).
+**Hooks:** [code-knowledge-drift](hooks/code-knowledge-drift.hook.json), [knowledge-overlay](hooks/knowledge-overlay.hook.json).
 
 ## Advanced repository policy
 
@@ -146,9 +116,9 @@ Outside this plugin: Everyday engineering, default setup, and general skill disc
 
 ## Profiles
 
-- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + agent-tooling. 468 instruction words.
+- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + personal-setup. 468 instruction words.
 
-- [documentation-default](profiles/documentation-default.json): technical-writing. 0 instruction words.
+- [documentation-default](profiles/documentation-default.json): repository-knowledge. 0 instruction words.
 
 - [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 604 instruction words.
 

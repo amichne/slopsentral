@@ -20,7 +20,7 @@
       "prompt": "Evaluate overlap between the plugin definitions in the source directory and marketplace, focusing on existing source material, efficacy, overlap, and token waste rather than generated provider drift.",
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-tooling"
+        "name": "personal-setup"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -393,7 +393,7 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-20",
         "evidenceRefs": [
-          "source/plugins/agent-tooling/plugin.json",
+          "source/plugins/personal-setup/plugin.json",
           "source/adaptable.marketplace.json",
           "tools/validate-source-graph.mjs"
         ]
@@ -401,7 +401,7 @@
       "prompt": "Audit marketplace-visible standalone skills for placeholder migration text and overlap with existing canonical skills.",
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-tooling"
+        "name": "personal-setup"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

@@ -28,13 +28,17 @@
     "commands": [
       "node tools/tests/personal-setup-teach.test.mjs",
       "node tools/validate-source-graph.mjs",
-      "git diff --check"
+      "git diff --check",
+      "./gradlew :cli:test --no-daemon",
+      "node tools/run-routing-evals.mjs --require-all-fixtures"
     ]
   },
   "notes": [
     "Definition only; static validation is not an observed model benchmark.",
     "Use fixture-owned shell-config metadata and history. Do not read or edit real HOME configuration.",
-    "Do not invoke a live assistant from a fixture; use a deterministic adapter and distinguish transport proof from guidance quality."
+    "Do not invoke a live assistant from a fixture; use a deterministic adapter and distinguish transport proof from guidance quality.",
+    "Consolidated scenarios retained from the former cli-development plugin.",
+    "Consolidated scenarios retained from the former agent-tooling plugin."
   ],
   "setupQuestions": [
     "Which one existing personal-tool building block should the isolated exercise extend?"
@@ -77,6 +81,199 @@
         "Help and completion derive from authoritative command options.",
         "Teach captures the changed implementation and propagates source/adapter failures.",
         "The handoff labels deterministic transport proof separately from model quality."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "terminal-ui-contract-preservation",
+      "title": "Terminal UI contract preservation",
+      "purpose": "Measure whether a terminal-interface decision preserves product scope, machine-facing CLI contracts, degraded modes, and cleanup behavior.",
+      "routingCaseIds": [
+        "terminal-ui-work-preserves-cli-contracts"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "terminal-ui-design"
+      },
+      "userInput": "Use CLI Development to audit one existing human-facing terminal flow in this isolated Intelligence worktree. Preserve its projector-only product scope, command contracts, no-color and redirected-output behavior, and terminal cleanup. If the current product excludes a TUI, record that boundary and make no UI change. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run names the current terminal stack, explicit product scope, and reachable states.",
+        "No TUI or UI dependency is added when the product boundary excludes it.",
+        "Focused proof covers machine-readable output and relevant degraded or cleanup behavior."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "shell-startup-completion-preserves-session-state",
+      "title": "Shell startup completion preserves session state",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "shell-startup-completion-preserves-session-state"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "shell-session-integration"
+      },
+      "userInput": "Fix this shell completion recursion and prompt slowdown. Preserve existing callbacks, exit status, argument boundaries, and startup behavior when the integration is sourced twice. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "Fresh startup and repeated source checks preserve callbacks and prior command status.",
+        "Non-interactive output stays quiet and timed-out helpers restore state.",
+        "Overwrite unrelated shell callbacks or perform network calls in prompt/startup callbacks.",
+        "Treat a syntax check as proof of interactive state preservation."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "cli-finite-json-errors-preserve-exit-status",
+      "title": "Cli finite json errors preserve exit status",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "cli-finite-json-errors-preserve-exit-status"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "cli-creator"
+      },
+      "userInput": "Add a composable CLI command with stable JSON output. Invalid input and unavailable targets must return finite typed error variants, nonzero exit status, and bounded stderr without contaminating stdout. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "Success and every expected failure payload pass the canonical schema.",
+        "Failure paths preserve nonzero exit status and stream separation.",
+        "Encode expected failures as arbitrary strings, null, booleans, or exceptions.",
+        "Print a progress banner into machine-readable stdout or return zero for a failed operation."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "source-owned-marketplace-uplift",
+      "title": "Source-owned marketplace uplift",
+      "purpose": "Measure whether platform-authoring work stays on canonical source and uses generated provider output only as proof.",
+      "routingCaseIds": [
+        "source-over-generated-provider-output"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "personal-setup"
+      },
+      "userInput": "Use Agent Tooling to improve one marketplace plugin from source. Keep generated provider output untouched, run the source graph gate, and use materialization only as proof. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The run edits source-owned primitives, plugin manifests, schemas, evals, or source validation tooling.",
+        "Generated provider output is not patched by hand.",
+        "The final evidence includes source graph validation and hydrated marketplace validation when provider output matters."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "referential-plugin-composition-proof",
+      "title": "Referential plugin composition proof",
+      "purpose": "Measure whether a plugin composition change keeps primitive ownership independent and validates the manifest/catalog boundary.",
+      "routingCaseIds": [
+        "referential-plugin-composition-uses-focused-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "plugin-composition-authoring"
+      },
+      "userInput": "Use Agent Tooling to add or revise a referential plugin composition. Keep primitives independent, update the marketplace entry, and prove the composition with the focused helper plus source graph validation. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The plugin manifest references canonical source primitives with LOCAL_SOURCE ./ references.",
+        "The plugin directory does not receive copied primitive payloads.",
+        "The run uses check_plugin_composition and tools/validate-source-graph.mjs as evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "production-readiness-audit",
+      "title": "Production readiness audit",
+      "purpose": "Measure whether a share-readiness decision records durable quality evidence instead of relying on passing syntax and positive wording.",
+      "routingCaseIds": [
+        "production-sharing-requires-quality-audit-evidence",
+        "placeholder-skills-are-quality-audit-not-marketplace-products"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "personal-setup"
+      },
+      "userInput": "Use Agent Tooling to decide whether a plugin family is ready to share. Record capability boundary, schema coverage, provenance, validation, runtime safety, residual risks, and a next action. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The review names the target, baseline, decision, evidence, validation, residual risks, and next action.",
+        "The reviewed source passes source graph validation.",
+        "The result limits readiness claims to the available evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "routing-corpus-replay",
+      "title": "Routing corpus replay",
+      "purpose": "Measure whether routing fixes create sanitized cases and full-corpus replay evidence rather than one-off prompt tweaks.",
+      "routingCaseIds": [
+        "routing-miss-becomes-full-corpus-replay"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "userInput": "Use Agent Tooling to turn a marketplace routing miss into a sanitized eval case, update the narrowest primitive surface, and run full-corpus routing replay. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The case is schema-backed, sanitized, and tied to an existing canonical primitive.",
+        "The fix surface is limited to the primitive, plugin metadata, or adapter layer that explains the miss.",
+        "The run includes node tools/run-routing-evals.mjs --require-all-fixtures."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "plugin-history-audit-separates-evidence",
+      "title": "Plugin history audit separates evidence",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "plugin-history-audit-separates-evidence"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "userInput": "Audit these plugins against completed tasks and actual skill activations. Explain uncovered flows and distinguish fixture scores, skill reads, useful outcomes, incomplete verification, and observed skill-list limits. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The report separates golden coverage, trace-supported routes, useful outcomes, and pending proof.",
+        "Explicit-only policies and observed list omissions are identified separately.",
+        "Treat golden fixtures or a SKILL.md read as successful model behavior.",
+        "Attribute an absent read to a numeric cap without the actual advertised list or host evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "primitive-routing-evaluation-explicit-invocation",
+      "title": "Explicit primitive-routing-evaluation",
+      "purpose": "Keep direct selection independently replayable.",
+      "routingCaseIds": [
+        "routing-miss-becomes-full-corpus-replay"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "primitive-routing-evaluation"
+      },
+      "userInput": "$primitive-routing-evaluation Inspect the supplied local fixture, apply the focused workflow, and report only the evidence it supports. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The explicitly selected skill is read.",
+        "The response preserves scope, uses the fixture native checks, and retains missing evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "primitive-routing-evaluation-marker-only-negative",
+      "title": "Marker-only negative for primitive-routing-evaluation",
+      "purpose": "Check that implicit availability does not broaden invocation to unrelated prose work.",
+      "routingCaseIds": [
+        "prose-only-edit-keeps-validation-skills-idle"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "userInput": "Rewrite only this README paragraph without changing meaning. The repository contains Gradle files, shell scripts, and plugin manifests; no executable or configuration change is requested. Do not commit, push, or otherwise modify remote state.",
+      "successChecklist": [
+        "The target primitive-routing-evaluation is not read or followed.",
+        "Only README prose changes; no build or executable edits occur.",
+        "Use the prose owner if available; record an unavailable companion rather than installing one."
       ]
     }
   ]

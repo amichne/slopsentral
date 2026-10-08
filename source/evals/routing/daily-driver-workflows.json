@@ -60,7 +60,7 @@
       "prompt": "Refine marketplace skills, plugins, hooks, and evals so the team can share productive agent workflows.",
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-tooling"
+        "name": "personal-setup"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -490,7 +490,7 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
-          "source/plugins/agent-tooling/plugin.json",
+          "source/plugins/personal-setup/plugin.json",
           "source/schemas/evals/routing-cases.schema.json",
           "tools/validate-source-graph.mjs"
         ]
@@ -498,7 +498,7 @@
       "prompt": "Decide whether the new workflow additions are production-ready and safe to share with the team.",
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-tooling"
+        "name": "personal-setup"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "personal-setup",
-  "version": "0.1.0",
-  "description": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+  "version": "0.2.0",
+  "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -27,17 +27,108 @@
       },
       "path": "skills/personal-cli-authoring",
       "name": "personal-cli-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/shell-session-integration",
+      "name": "shell-session-integration"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/cli-creator",
+      "name": "cli-creator"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/terminal-ui-design",
+      "name": "terminal-ui-design"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/skill-primitive-authoring",
+      "name": "skill-primitive-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/agent-profile-authoring",
+      "name": "agent-profile-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/plugin-composition-authoring",
+      "name": "plugin-composition-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/primitive-routing-evaluation",
+      "name": "primitive-routing-evaluation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/hook-primitive-authoring",
+      "name": "hook-primitive-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/repo-instruction-topology",
+      "name": "repo-instruction-topology"
     }
   ],
   "agents": [],
   "instructions": [],
-  "hooks": [],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/source-graph-valid.hook.json",
+      "name": "source-graph-valid"
+    }
+  ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Choose for personal shell-config changes or parameterized personal CLI tools with source-backed --teach.",
-    "notFor": "General agent-facing API CLIs, terminal UI products, automatic setup installation, or marketplace publication.",
+    "dailyDriver": "Choose for personal setup, CLI and terminal products, reusable agent tooling, or repository instruction topology.",
+    "notFor": "Application implementation, documentation production, automatic setup installation, or marketplace publication.",
     "role": "specialty",
-    "scope": "Verified personal setup ownership, composable command building blocks, local completions, and contextual teaching.",
+    "scope": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
     "workstream": "personal-setup",
     "owner": "personal-setup"
   }

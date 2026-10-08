@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "documentation-default",
-  "description": "Technical writing and documentation sites, without engineering hooks or delivery workflows.",
+  "description": "Technical writing, documentation sites, and source-backed repository knowledge with advisory checks.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -14,7 +14,7 @@
     }
   ],
   "plugins": [
-    "technical-writing"
+    "repository-knowledge"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

@@ -21,7 +21,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "1.2.1"
+        "version": "1.3.0"
       },
       "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
       "tags": [
@@ -191,29 +191,6 @@
     },
     {
       "type": "PLUGIN_ENTRY",
-      "name": "technical-writing",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "technical-writing",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/technical-writing"
-        },
-        "version": "1.0.1"
-      },
-      "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
-      "tags": [
-        "controlled-language",
-        "docs",
-        "glossary",
-        "prose",
-        "semantics",
-        "technical-writing",
-        "terminology"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
       "name": "repository-knowledge",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
@@ -222,74 +199,29 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/repository-knowledge"
         },
-        "version": "1.1.2"
+        "version": "1.2.0"
       },
-      "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+      "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
       "tags": [
+        "controlled-language",
         "docs",
         "generation",
+        "glossary",
         "gradle",
         "hooks",
         "impact",
         "knowledge-base",
         "kotlin",
         "okf",
+        "prose",
         "repository",
+        "semantics",
         "signatures",
         "skills",
         "source-backed",
+        "technical-writing",
+        "terminology",
         "validation"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "agent-tooling",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "agent-tooling",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/agent-tooling"
-        },
-        "version": "1.0.3"
-      },
-      "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
-      "tags": [
-        "agents",
-        "authoring",
-        "governance",
-        "hooks",
-        "marketplace",
-        "plugins",
-        "proof",
-        "repository",
-        "routing",
-        "skills",
-        "workflow"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "cli-development",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "cli-development",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/cli-development"
-        },
-        "version": "1.0.1"
-      },
-      "description": "Build command-line tools, shell completions, and terminal interfaces.",
-      "tags": [
-        "accessibility",
-        "cli",
-        "completion",
-        "design",
-        "shell",
-        "terminal",
-        "tui",
-        "user-interface"
       ]
     },
     {
@@ -302,19 +234,35 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/personal-setup"
         },
-        "version": "0.1.0"
+        "version": "0.2.0"
       },
-      "description": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+      "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
       "tags": [
+        "accessibility",
+        "agents",
+        "authoring",
         "building-blocks",
         "cli",
         "completion",
         "composition",
+        "design",
         "dotfiles",
+        "governance",
+        "hooks",
+        "marketplace",
         "personal-setup",
+        "plugins",
+        "proof",
+        "repository",
+        "routing",
         "shell",
         "shell-config",
-        "teach"
+        "skills",
+        "teach",
+        "terminal",
+        "tui",
+        "user-interface",
+        "workflow"
       ]
     },
     {
@@ -909,6 +857,15 @@
       },
       "path": "skills/personal-cli-authoring",
       "name": "personal-cli-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/validation-first",
+      "name": "validation-first"
     }
   ],
   "agents": [
@@ -1077,6 +1034,15 @@
       },
       "path": "hooks/api-contracts-context.hook.json",
       "name": "api-contracts-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/knowledge-overlay.hook.json",
+      "name": "knowledge-overlay"
     }
   ],
   "metadata": {

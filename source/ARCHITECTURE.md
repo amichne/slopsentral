@@ -20,8 +20,9 @@ primitive has one plugin owner, including dependencies introduced by hooks.
 ## Selection
 
 Software Engineering is the single code-work default. Add language, platform,
-or output specialties as needed; writing-only work can select Technical Writing
-alone. Repository Knowledge generates maintained artifacts and is optional.
+or output specialties as needed. Repository Knowledge combines technical writing,
+documentation sites, source-backed artifacts, and opt-in sibling overlays.
+Personal Setup combines personal configuration, CLI products, and agent tooling.
 Plugin installation makes skills available; task intent selects procedures.
 A skill or ticket cannot manufacture publication authority.
 
@@ -46,7 +47,10 @@ Kotlin references merely because a file ends in `.kt`.
 
 Software Engineering packages everyday design, tests, local Git, shell safety,
 CLI data queries, mise, hosted issues, PRs, Actions, and delivery pipeline design.
-CLI Development packages CLI authoring, shell integration, and terminal UI design.
+Personal Setup packages CLI authoring, shell integration, terminal UI design,
+and reusable skills, agents, hooks, plugins, and instruction topology.
+validation-first plans decisive checks on explicit invocation and remains
+planning-only; tdd owns executable proof when execution is authorized.
 A pipeline design establishes stage and artifact boundaries; github-ci-operations
 implements and diagnoses the GitHub-specific workflow.
 
@@ -162,3 +166,19 @@ Edit the canonical primitive and manifest, update relevant scenarios, run the
 source graph gate, regenerate CATALOG.md, and run required tests and both pinned
 projections. Add a plugin only for a distinct installable workstream. Prefer a
 focused reference or a narrower trigger over another overlapping skill.
+
+## Consolidation and storage migration
+
+CLI Development and Agent Tooling move to Personal Setup; Technical Writing
+moves to Repository Knowledge. Canonical skill paths remain stable. Profiles
+and proposed benchmark routes use the surviving owners; recorded field
+observations retain their historical provider and plugin identities. Install
+the surviving bundles and disable the retired bundles when reconciling a host.
+This source change does not modify installed plugin caches.
+
+The optional knowledge manifest selects TRACKED storage inside the source or
+INVISIBLE storage in a separate Git repository. SessionStart loads bounded
+registered guidance; Stop uses the same OKF source-impact checker against the
+selected documents. Neither hook writes into the source repository. OpenWiki
+keeps its external lifecycle and provenance; sibling OKF storage does not
+establish external OpenWiki generation support.

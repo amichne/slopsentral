@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "repository-knowledge",
-  "version": "1.1.2",
-  "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+  "version": "1.2.0",
+  "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -36,6 +36,42 @@
       },
       "path": "skills/local-repository-navigation",
       "name": "local-repository-navigation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/controlled-technical-writing",
+      "name": "controlled-technical-writing"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/technical-documentation",
+      "name": "technical-documentation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/reference-doc-workflow",
+      "name": "reference-doc-workflow"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/site-docs-authoring",
+      "name": "site-docs-authoring"
     }
   ],
   "agents": [],
@@ -49,16 +85,25 @@
       },
       "path": "hooks/code-knowledge-drift.hook.json",
       "name": "code-knowledge-drift"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/knowledge-overlay.hook.json",
+      "name": "knowledge-overlay"
     }
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Choose when producing or refreshing repository knowledge artifacts and checking their source drift.",
+    "dailyDriver": "Choose for technical prose, documentation sites, source-backed knowledge, navigation, or sibling knowledge overlays.",
     "harness": "provider-neutral",
-    "notFor": "Routine source reading, ordinary code changes, and general documentation authoring.",
+    "notFor": "Automatic knowledge generation during ordinary code tasks or treating documentation as source authority.",
     "owner": "repository-knowledge",
     "role": "specialty",
-    "scope": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+    "scope": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
     "workstream": "repository-knowledge"
   }
 }

@@ -11,13 +11,15 @@ from editing or projecting this source catalog.
 | --- | --- |
 | engineering-baseline | software-engineering |
 | effective-delivery | software-engineering |
-| developer-tools | software-engineering for everyday Git, shell safety, data queries, and mise; cli-development for CLI authoring and shell integration |
-| terminal-ui-design | cli-development |
-| agent-platform-authoring | agent-tooling |
+| developer-tools | software-engineering for everyday Git, shell safety, data queries, and mise; personal-setup for CLI authoring and shell integration |
+| terminal-ui-design | personal-setup |
+| agent-platform-authoring | personal-setup |
 | code-knowledge-base | repository-knowledge |
+| cli-development, agent-tooling | personal-setup |
+| technical-writing | repository-knowledge |
 | intellij-engineering | intellij-plugin-development |
 | pkl-engineering | pkl-configuration |
-| writing | technical-writing |
+| writing | repository-knowledge |
 | kotlin-engineering, api-contracts | Same IDs; clearer task descriptions |
 | skill-read-policy | Same ID; advanced opt-in, outside ordinary task choices |
 
@@ -33,8 +35,8 @@ policy. RED/GREEN checkpoints do not require commits or remote publication.
 | local-development-default | software-engineering |
 | kotlin-repo-default | software-engineering + kotlin-engineering |
 | intellij-plugin-default | software-engineering + kotlin-engineering + intellij-plugin-development |
-| documentation-default | technical-writing |
-| agent-authoring-default | software-engineering + agent-tooling |
+| documentation-default | repository-knowledge |
+| agent-authoring-default | software-engineering + personal-setup |
 
 Repository Knowledge is optional. Documentation alone no longer installs
 engineering hooks. Profiles retain their names so callers can select the same

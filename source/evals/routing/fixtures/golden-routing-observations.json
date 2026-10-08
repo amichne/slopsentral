@@ -64,7 +64,7 @@
       "caseId": "source-graph-edits-use-canonical-source-and-gates",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-tooling"
+        "name": "personal-setup"
       },
       "satisfiedAllowedActions": [
         "Edit source-owned primitives, plugin manifests, schemas, evals, or source validation tools.",
@@ -301,7 +301,7 @@
       "caseId": "production-sharing-requires-quality-audit-evidence",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-tooling"
+        "name": "personal-setup"
       },
       "satisfiedAllowedActions": [
         "Review the concrete primitive, plugin, or eval family against a baseline.",
@@ -482,7 +482,7 @@
       "caseId": "source-over-generated-provider-output",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-tooling"
+        "name": "personal-setup"
       },
       "satisfiedAllowedActions": [
         "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and source validation contracts.",
@@ -693,7 +693,7 @@
       "caseId": "placeholder-skills-are-quality-audit-not-marketplace-products",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "agent-tooling"
+        "name": "personal-setup"
       },
       "satisfiedAllowedActions": [
         "Quarantine placeholder-only skills from marketplace exposure.",
