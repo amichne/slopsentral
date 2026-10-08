@@ -1,6 +1,6 @@
 ---
 name: delivery-pipeline-design
-description: "Use when defining CI/CD stages, artifact promotion, deployment gates, rollback, or trust boundaries before encoding the design in a provider-specific workflow."
+description: "Use when defining CI/CD stages, artifact promotion, installed discovery or recovery qualification, deployment gates, rollback, or trust boundaries."
 ---
 
 # Delivery Pipeline Design
@@ -28,6 +28,9 @@ to github-ci-operations; a pipeline design does not authorize deployment.
    stale artifact, and failed rollback scenario before authoring provider configuration.
 
 ## References
+
+Read [installed qualification](references/installed-qualification.md) when the
+claim crosses from packaging into installed discovery, live use, or recovery.
 
 Read [pipeline review](references/pipeline-review.md) for the deliverable and
 counterexamples. Use provider documentation for exact workflow syntax and current

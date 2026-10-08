@@ -66,5 +66,5 @@
   "mcpServers": "./.mcp.json",
   "name": "kotlin-engineering",
   "skills": "./skills/",
-  "version": "1.5.1"
+  "version": "1.5.2"
 }
