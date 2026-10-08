@@ -1,6 +1,6 @@
 ---
 name: "controlled-technical-writing"
-description: "Use when writing or revising technical prose that needs plain wording, stable terms, disambiguated glossary lookup, one name per concept, or known-synonym migration."
+description: "Use when writing or revising technical prose, measuring text complexity and readability with the shared Vale policy, or checking diction, canonical glossary terms, and known-synonym migration."
 ---
 
 # Controlled Technical Writing
@@ -24,18 +24,39 @@ no-change checks, and [provenance](references/provenance.md) for source lineage.
 
 ## Workflow
 
-1. Choose the mode.
-   Use `strict` for procedures, safety text, and error messages. Use `plain` for
-   general technical prose.
-2. Load the repository's nearby writing rules and source material.
-3. If a repository glossary governs a term or prose contains an ambiguous
+1. Load the repository's nearby writing rules and source material.
+2. If a repository glossary governs a term or prose contains an ambiguous
    `ALL CAPS` domain phrase, consult the glossary and load [glossary-contract.md](references/glossary-contract.md)
    before drafting.
-4. Resolve known synonyms against the glossary. Migrate clear matches to the
+3. Resolve known synonyms against the glossary. Migrate clear matches to the
    canonical term. Preserve and flag an ambiguous term rather than inventing a
    definition or blocking unrelated edits.
-5. Draft or revise only the requested text.
-6. Check every changed sentence and glossary reference before returning it.
+4. Draft or revise only the requested text.
+5. Run the bundled text assessment for every changed prose artifact. Use the
+   same engine, rules, and thresholds for README files, reference pages,
+   specifications, runbooks, and other technical prose. Do not select a metric
+   or mode from the document's purpose.
+6. Resolve findings without changing facts, domain meaning, or quoted text.
+   Re-run the assessment after edits, then check reader comprehension separately.
+
+## One Measurement Procedure
+
+Read [text assessment](references/text-assessment.md) before measuring text.
+From this skill directory, run:
+
+```sh
+python3 scripts/assess_text.py --glossary /path/to/GLOSSARY.md /path/to/document.md
+```
+
+The procedure uses Vale 3.24.0 with bundled, integrity-checked rules: one
+Flesch-Kincaid grade estimate, one sentence-length advisory, a fixed diction
+policy, and the repository's canonical glossary. Preserve the JSON report and
+its input hashes. Missing dependencies, invalid input, and policy overrides
+are typed failures, not permission to substitute another formula.
+
+If no glossary exists, omit `--glossary`. The report retains the measurements
+but is `INCOMPLETE`; terminology consistency has not been checked. Do not
+invent glossary definitions to get a successful check.
 
 ## Writing Rules
 
@@ -47,10 +68,9 @@ no-change checks, and [provenance](references/provenance.md) for source lineage.
 - Put conditions before the action they control.
 - Keep one topic in each paragraph.
 - Remove filler, marketing claims, and unsupported adjectives.
-- In `strict` mode, keep instructions at 20 words or fewer and descriptive
-  sentences at 25 words or fewer.
-- In `plain` mode, prefer short sentences but preserve necessary precision and
-  natural technical vocabulary.
+- Review sentences above 25 words and estimated grades above 8. These shared
+  advisories are revision signals, not proof that the reader understands the text.
+- Preserve necessary precision and natural technical vocabulary.
 
 ## Final Check
 
@@ -66,9 +86,12 @@ no-change checks, and [provenance](references/provenance.md) for source lineage.
 
 ## Completion Criteria
 
-The requested prose is complete when it preserves the source meaning, follows
-the selected mode, and passes the repository's glossary check when a glossary
-is present.
+The requested prose preserves the source meaning and has a recorded assessment.
+Resolve each finding or record its exact rule, location, and semantic reason
+for retaining the text; never disable the rule or report a clean run when
+findings remain. An unavailable check or missing glossary remains explicit.
+Reader testing must separately establish that the intended action is clear;
+a numeric estimate never establishes comprehension.
 
 ## Provenance
 

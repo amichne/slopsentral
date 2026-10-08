@@ -53,6 +53,9 @@ small sections, then test whether a fresh reader can use it.
    Re-read the full draft for flow, contradictions, duplicated claims, missing
    evidence, undefined terms, and generic filler. Remove text that does not help
    the intended reader act.
+   Run controlled-technical-writing's shared Vale assessment and retain its
+   report. Resolve or explain located findings before reader testing; proposals
+   and specifications use the same text measurement as every other artifact.
 
 6. Reader-test before calling it done.
    Test the document against likely reader questions. Use a fresh subagent when

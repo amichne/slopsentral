@@ -94,13 +94,18 @@ must preserve disambiguation and cannot create semantic shadowing.
 
 ## Check
 
-Run the bundled checker from the skill directory:
+For a full prose assessment, run the shared procedure from the skill directory:
 
 ```sh
-python3 scripts/check_glossary.py /path/to/GLOSSARY.md /path/to/docs
+python3 scripts/assess_text.py --glossary /path/to/GLOSSARY.md /path/to/document.md
 ```
 
-The check fails for missing definitions or synonym fields, invalid internal
+The procedure reuses `check_glossary.py` for glossary registration validation
+and Vale for markup-aware prose checks. The registration check fails for missing
+definitions or synonym fields, invalid internal
 markers, duplicate entries or synonyms, lexical shadowing, identical
 definitions, undefined internal references, bare glossary-internal references,
-known synonyms in prose, and markers outside the glossary.
+known synonyms in glossary definitions. The Vale assessment reports known
+synonyms, casing conflicts, and markers in document prose. The standalone
+`check_glossary.py` command remains available for registration checks; it is not
+an alternate readability or text-complexity procedure.
