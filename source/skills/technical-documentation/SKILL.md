@@ -26,6 +26,9 @@ signature-backed knowledge bundles to code-knowledge-base.
 6. Verify commands, links, examples, and changed documented defaults against the
    source. Run the repository's relevant documentation checks. Update discoverability
    when required, handing site navigation to its owner rather than duplicating it.
+7. Use controlled-technical-writing's shared Vale assessment for changed prose,
+   including README files and runbooks. Retain its report and resolve or explain
+   findings; do not choose a document-specific complexity metric.
 
 ## References
 

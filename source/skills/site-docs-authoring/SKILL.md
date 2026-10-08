@@ -51,6 +51,9 @@ the rendered contract when layout or nav changes.
    generated pages changed. Prefer `zensical build --clean` for Zensical sites
    and `mkdocs build --strict` or the repo's wrapper for MkDocs sites. If a
    build cannot run, report the missing tool or dependency.
+   Assess changed prose through controlled-technical-writing's shared Vale
+   procedure. Site builds prove rendering and links, not readability; preserve
+   both kinds of evidence without changing the measurement policy by page type.
 
 For Mintlify, inspect the connected deployment's source and local `docs.json`
 before choosing an edit path. Repository PR changes and live deployment changes

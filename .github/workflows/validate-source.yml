@@ -60,6 +60,22 @@ jobs:
           echo "$worktrunk_bin" >> "$GITHUB_PATH"
           "$worktrunk_bin/wt" --version
 
+      - name: Install Vale v3.24.0 for text assessment tests
+        run: |
+          set -euo pipefail
+
+          vale_dir="${RUNNER_TEMP}/vale-v3.24.0"
+          mkdir -p "$vale_dir"
+          vale_archive="${vale_dir}/vale.tar.gz"
+          curl --fail --location --silent --show-error \
+            --output "$vale_archive" \
+            https://github.com/vale-cli/vale/releases/download/v3.24.0/vale_3.24.0_Linux_64-bit.tar.gz
+          echo "867534ddb678abca7f214bc4706ead0922bd5252ffe8035fc227013f66c8b214  $vale_archive" \
+            | sha256sum --check
+          tar -xzf "$vale_archive" -C "$vale_dir"
+          echo "$vale_dir" >> "$GITHUB_PATH"
+          "$vale_dir/vale" --version
+
       - name: Validate source graph and evals
         run: |
           set -euo pipefail
