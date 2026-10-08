@@ -1,5 +1,13 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "bash": "python3 \"$PLUGIN_ROOT/hooks/knowledge-overlay.py\"",
+        "matcher": "^(startup|resume|clear|compact)$",
+        "timeoutSec": 20,
+        "type": "command"
+      }
+    ],
     "Stop": [
       {
         "bash": "python3 \"$PLUGIN_ROOT/hooks/code-knowledge-drift.py\" --repo . --docs docs --format codex-stop --advisory",

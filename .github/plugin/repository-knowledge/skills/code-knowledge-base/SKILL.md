@@ -1,11 +1,11 @@
 ---
 name: "code-knowledge-base"
-description: "Create, refresh, or impact-check source-backed OKF concepts for Kotlin/Gradle repositories, or resolve an OKF/OpenWiki backend handoff. Use when knowledge pages need citations or drift evidence."
+description: "Create, refresh, or impact-check source-backed OKF concepts for repositories, configure tracked or sibling knowledge overlays, or resolve an OKF/OpenWiki backend handoff. Use when knowledge pages need citations or drift evidence."
 ---
 
 # Code Knowledge Base
 
-Use this skill to maintain an Open Knowledge Format bundle for a Kotlin/Gradle
+Use this skill to maintain an Open Knowledge Format bundle for a source
 repository. The bundle is portable Markdown with YAML frontmatter; source
 evidence lives in frontmatter extensions, Markdown links, and citations rather
 than a provider-specific cache or database.
@@ -24,8 +24,10 @@ than a provider-specific cache or database.
 
 1. Define the knowledge boundary.
    Identify repository, audience, source roots, existing knowledge backend, and
-   refresh scope. For OpenWiki or a migration, read the backend handoff reference
-   before choosing output or validation. Continue the OKF steps only for OKF.
+   refresh scope. For tracked or sibling storage, read the overlay reference and
+   select the registered source and knowledge roots before writing. For OpenWiki
+   or a migration, read the backend handoff reference before choosing output or
+   validation. Continue the OKF steps only for OKF.
 
 2. Build source evidence.
    Gather Gradle/module/source-set facts, public APIs, generated contracts,
@@ -50,6 +52,9 @@ than a provider-specific cache or database.
    Run the repository's docs or contract checks when available.
 
 ## Reference Routing
+
+- Read [knowledge-overlay.md](references/knowledge-overlay.md) when configuring
+  tracked or invisible storage, or applying manifest-selected sibling guidance.
 
 - Read [knowledge-backend-handoff.md](references/knowledge-backend-handoff.md)
   when the repository uses OpenWiki, both backends, or requests a migration.
