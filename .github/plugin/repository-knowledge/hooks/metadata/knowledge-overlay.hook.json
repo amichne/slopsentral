@@ -1,0 +1,20 @@
+{
+  "dependsOn": [
+    {
+      "name": "code-knowledge-base",
+      "path": "skills/code-knowledge-base",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "SKILL"
+    }
+  ],
+  "name": "knowledge-overlay",
+  "path": "hooks/knowledge-overlay.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

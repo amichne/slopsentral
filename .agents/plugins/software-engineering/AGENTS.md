@@ -41,6 +41,7 @@ Implement, test, review, and deliver code with Git, PR, and CI workflows.
 - `semantic-ratchet`: `skills/semantic-ratchet` (source: `source/skills/semantic-ratchet`)
 - `shell-script-safety`: `skills/shell-script-safety` (source: `source/skills/shell-script-safety`)
 - `tdd`: `skills/tdd` (source: `source/skills/tdd`)
+- `validation-first`: `skills/validation-first` (source: `source/skills/validation-first`)
 
 ## Hook Primitives
 

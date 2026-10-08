@@ -1,0 +1,15 @@
+extends: substitution
+message: "Consider '%s' instead of '%s'; preserve the source meaning."
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  in order to: to
+  at this point in time: now
+  prior to: before
+  subsequent to: after
+  utilize: use
+  utilizes: uses
+  utilized: used
+  utilizing: using

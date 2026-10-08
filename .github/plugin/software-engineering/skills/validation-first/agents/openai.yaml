@@ -1,0 +1,6 @@
+interface:
+  display_name: "Validation First"
+  short_description: "Plan the smallest faithful test before implementation"
+  default_prompt: "Use $validation-first for my idea; prefill this chat and refine the smallest faithful validation plan."
+policy:
+  allow_implicit_invocation: false

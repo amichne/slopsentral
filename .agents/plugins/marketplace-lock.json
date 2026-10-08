@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T21:30:12-04:00",
+  "generatedAt": "2026-10-08T14:38:32-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -115,10 +115,17 @@
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
+        },
+        {
+          "name": "validation-first",
+          "sha256": "sha256:17231276a7123224f127113b21766ca16ad42df7a771fede3dfc5c6da94e6253",
+          "sourcePath": "source/skills/validation-first",
+          "targetPath": "skills/validation-first",
+          "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "1.2.1"
+      "version": "1.3.0"
     },
     {
       "name": "kotlin-engineering",
@@ -400,41 +407,6 @@
       "version": "1.1.0"
     },
     {
-      "name": "technical-writing",
-      "references": [
-        {
-          "name": "controlled-technical-writing",
-          "sha256": "sha256:28be7ce79d261e4fe62a9b30a122848abed75596ea3cb0c4290fbb72a113dcc4",
-          "sourcePath": "source/skills/controlled-technical-writing",
-          "targetPath": "skills/controlled-technical-writing",
-          "type": "SKILL"
-        },
-        {
-          "name": "reference-doc-workflow",
-          "sha256": "sha256:9869a35678f591c4410065917a135ec785caa3a86d46ee4824e880f4c7f90381",
-          "sourcePath": "source/skills/reference-doc-workflow",
-          "targetPath": "skills/reference-doc-workflow",
-          "type": "SKILL"
-        },
-        {
-          "name": "site-docs-authoring",
-          "sha256": "sha256:48b58d80ea204565540706a619f91977fd2f5aa66e3e6085c13c8b622c9d926f",
-          "sourcePath": "source/skills/site-docs-authoring",
-          "targetPath": "skills/site-docs-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "technical-documentation",
-          "sha256": "sha256:9b67751a51cb24662e4c5b81be54005c7c0c5dbf3ddb3606d0ec34c00d09b81f",
-          "sourcePath": "source/skills/technical-documentation",
-          "targetPath": "skills/technical-documentation",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/technical-writing/plugin.json",
-      "version": "1.0.1"
-    },
-    {
       "name": "repository-knowledge",
       "references": [
         {
@@ -445,10 +417,24 @@
           "type": "HOOK"
         },
         {
+          "name": "knowledge-overlay",
+          "sha256": "sha256:89ad9b8a0bb39b07d00c8f960cabd42ec3253d143511246da24a136904d30930",
+          "sourcePath": "source/hooks/knowledge-overlay.hook.json",
+          "targetPath": "hooks/knowledge-overlay.hooks.json",
+          "type": "HOOK"
+        },
+        {
           "name": "code-knowledge-base",
-          "sha256": "sha256:311ca33063521009fd798b053e201f692d1b1fa57d03a290475ba51f9c86de60",
+          "sha256": "sha256:07fc4d0b4028edbe8be623a622a5dc9e078be43587adc59edf2d5f6a4e08702d",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
+          "type": "SKILL"
+        },
+        {
+          "name": "controlled-technical-writing",
+          "sha256": "sha256:94114d5818262cfa5e08a962fa491203ca39ff18a6cb188822816aa8806a1ba0",
+          "sourcePath": "source/skills/controlled-technical-writing",
+          "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
         },
         {
@@ -459,18 +445,39 @@
           "type": "SKILL"
         },
         {
+          "name": "reference-doc-workflow",
+          "sha256": "sha256:ce99f2d8e431158fab8b80bfce1b92ce02912f4e688785fca85218b51286d5b6",
+          "sourcePath": "source/skills/reference-doc-workflow",
+          "targetPath": "skills/reference-doc-workflow",
+          "type": "SKILL"
+        },
+        {
           "name": "repository-signature-indexing",
           "sha256": "sha256:d03750c7916e0174f95bb9c057b0b895339634134e68ed65ee1b46c8a93b068a",
           "sourcePath": "source/skills/repository-signature-indexing",
           "targetPath": "skills/repository-signature-indexing",
           "type": "SKILL"
+        },
+        {
+          "name": "site-docs-authoring",
+          "sha256": "sha256:329d29465789b9183f5cc4bfa7979383b939921a51b24fe5b6d414b286718233",
+          "sourcePath": "source/skills/site-docs-authoring",
+          "targetPath": "skills/site-docs-authoring",
+          "type": "SKILL"
+        },
+        {
+          "name": "technical-documentation",
+          "sha256": "sha256:cf0d035dd7a9fa33882ace55f1361546acf6725816b3c3e181f2ee381f4faa7c",
+          "sourcePath": "source/skills/technical-documentation",
+          "targetPath": "skills/technical-documentation",
+          "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/repository-knowledge/plugin.json",
-      "version": "1.1.2"
+      "version": "1.2.0"
     },
     {
-      "name": "agent-tooling",
+      "name": "personal-setup",
       "references": [
         {
           "name": "source-graph-valid",
@@ -487,10 +494,31 @@
           "type": "SKILL"
         },
         {
+          "name": "cli-creator",
+          "sha256": "sha256:8d3d4997c61045a806b987be9e837d9d76d229ac3480915dc6ce3f599394fe85",
+          "sourcePath": "source/skills/cli-creator",
+          "targetPath": "skills/cli-creator",
+          "type": "SKILL"
+        },
+        {
           "name": "hook-primitive-authoring",
           "sha256": "sha256:dbc248da1e58f937b0a5923b187691e1439b9643fed8a8e240a9dcb6a9d31b1c",
           "sourcePath": "source/skills/hook-primitive-authoring",
           "targetPath": "skills/hook-primitive-authoring",
+          "type": "SKILL"
+        },
+        {
+          "name": "personal-cli-authoring",
+          "sha256": "sha256:7f35741b9400e9609a7f8a76ee5378f10ebdd487e33ade1c690f461dab45334c",
+          "sourcePath": "source/skills/personal-cli-authoring",
+          "targetPath": "skills/personal-cli-authoring",
+          "type": "SKILL"
+        },
+        {
+          "name": "personal-setup-management",
+          "sha256": "sha256:ce5b6b51c2bcd10cb927c231815a0c0c81486a82d8abfa74800c082dfbf95e59",
+          "sourcePath": "source/skills/personal-setup-management",
+          "targetPath": "skills/personal-setup-management",
           "type": "SKILL"
         },
         {
@@ -515,31 +543,17 @@
           "type": "SKILL"
         },
         {
-          "name": "skill-primitive-authoring",
-          "sha256": "sha256:21df9199af11f449d66b5d7326d567eec3c8af2cda1729c8e507041b7336dd82",
-          "sourcePath": "source/skills/skill-primitive-authoring",
-          "targetPath": "skills/skill-primitive-authoring",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/agent-tooling/plugin.json",
-      "version": "1.0.3"
-    },
-    {
-      "name": "cli-development",
-      "references": [
-        {
-          "name": "cli-creator",
-          "sha256": "sha256:8d3d4997c61045a806b987be9e837d9d76d229ac3480915dc6ce3f599394fe85",
-          "sourcePath": "source/skills/cli-creator",
-          "targetPath": "skills/cli-creator",
-          "type": "SKILL"
-        },
-        {
           "name": "shell-session-integration",
           "sha256": "sha256:24c0729c60d56b9ae5868f33bad929a5a0771d7785e4f45a041fd9362298c876",
           "sourcePath": "source/skills/shell-session-integration",
           "targetPath": "skills/shell-session-integration",
+          "type": "SKILL"
+        },
+        {
+          "name": "skill-primitive-authoring",
+          "sha256": "sha256:21df9199af11f449d66b5d7326d567eec3c8af2cda1729c8e507041b7336dd82",
+          "sourcePath": "source/skills/skill-primitive-authoring",
+          "targetPath": "skills/skill-primitive-authoring",
           "type": "SKILL"
         },
         {
@@ -550,29 +564,8 @@
           "type": "SKILL"
         }
       ],
-      "sourceManifest": "source/plugins/cli-development/plugin.json",
-      "version": "1.0.1"
-    },
-    {
-      "name": "personal-setup",
-      "references": [
-        {
-          "name": "personal-cli-authoring",
-          "sha256": "sha256:7f35741b9400e9609a7f8a76ee5378f10ebdd487e33ade1c690f461dab45334c",
-          "sourcePath": "source/skills/personal-cli-authoring",
-          "targetPath": "skills/personal-cli-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "personal-setup-management",
-          "sha256": "sha256:ce5b6b51c2bcd10cb927c231815a0c0c81486a82d8abfa74800c082dfbf95e59",
-          "sourcePath": "source/skills/personal-setup-management",
-          "targetPath": "skills/personal-setup-management",
-          "type": "SKILL"
-        }
-      ],
       "sourceManifest": "source/plugins/personal-setup/plugin.json",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "skill-read-policy",
@@ -590,6 +583,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "4450497e5344f20465e857b7289886a0a2502295",
+  "sourceSha": "c5d5f9931e670f833fccf55497657c0844ac012b",
   "type": "HYDRATED_MARKETPLACE"
 }

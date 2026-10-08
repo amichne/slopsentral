@@ -2,9 +2,10 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+  "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
   "hooks": [
-    "./hooks/code-knowledge-drift.hooks.json"
+    "./hooks/code-knowledge-drift.hooks.json",
+    "./hooks/knowledge-overlay.hooks.json"
   ],
   "interface": {
     "brandColor": "#2563EB",
@@ -20,30 +21,36 @@
     ],
     "developerName": "Amichne",
     "displayName": "Repository Knowledge",
-    "longDescription": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+    "longDescription": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Generate and maintain code indexes, knowledge documents, and navigati...",
+    "shortDescription": "Write technical documentation and maintain source-backed repository k...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
   "keywords": [
+    "controlled-language",
     "docs",
     "generation",
+    "glossary",
     "gradle",
     "hooks",
     "impact",
     "knowledge-base",
     "kotlin",
     "okf",
+    "prose",
     "repository",
     "repository-knowledge",
+    "semantics",
     "signatures",
     "skills",
     "source-backed",
+    "technical-writing",
+    "terminology",
     "validation"
   ],
   "license": "UNLICENSED",
   "name": "repository-knowledge",
   "skills": "./skills/",
-  "version": "1.1.2"
+  "version": "1.2.0"
 }

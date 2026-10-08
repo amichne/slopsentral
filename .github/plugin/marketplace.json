@@ -91,7 +91,7 @@
         "typestate",
         "workflow-graph"
       ],
-      "version": "1.2.1"
+      "version": "1.3.0"
     },
     {
       "author": {
@@ -293,52 +293,28 @@
       "author": {
         "name": "Amichne"
       },
-      "category": "Productivity",
-      "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
-      "keywords": [
-        "controlled-language",
-        "docs",
-        "glossary",
-        "prose",
-        "semantics",
-        "technical-writing",
-        "terminology"
-      ],
-      "license": "UNLICENSED",
-      "name": "technical-writing",
-      "source": "technical-writing",
-      "strict": true,
-      "tags": [
-        "controlled-language",
-        "docs",
-        "glossary",
-        "prose",
-        "semantics",
-        "technical-writing",
-        "terminology"
-      ],
-      "version": "1.0.1"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
       "category": "Coding",
-      "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+      "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
       "keywords": [
+        "controlled-language",
         "docs",
         "generation",
+        "glossary",
         "gradle",
         "hooks",
         "impact",
         "knowledge-base",
         "kotlin",
         "okf",
+        "prose",
         "repository",
         "repository-knowledge",
+        "semantics",
         "signatures",
         "skills",
         "source-backed",
+        "technical-writing",
+        "terminology",
         "validation"
       ],
       "license": "UNLICENSED",
@@ -346,127 +322,93 @@
       "source": "repository-knowledge",
       "strict": true,
       "tags": [
+        "controlled-language",
         "docs",
         "generation",
+        "glossary",
         "gradle",
         "hooks",
         "impact",
         "knowledge-base",
         "kotlin",
         "okf",
+        "prose",
         "repository",
+        "semantics",
         "signatures",
         "skills",
         "source-backed",
+        "technical-writing",
+        "terminology",
         "validation"
       ],
-      "version": "1.1.2"
+      "version": "1.2.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
-      "keywords": [
-        "agent-tooling",
-        "agents",
-        "authoring",
-        "governance",
-        "hooks",
-        "marketplace",
-        "plugins",
-        "proof",
-        "repository",
-        "routing",
-        "skills",
-        "workflow"
-      ],
-      "license": "UNLICENSED",
-      "name": "agent-tooling",
-      "source": "agent-tooling",
-      "strict": true,
-      "tags": [
-        "agents",
-        "authoring",
-        "governance",
-        "hooks",
-        "marketplace",
-        "plugins",
-        "proof",
-        "repository",
-        "routing",
-        "skills",
-        "workflow"
-      ],
-      "version": "1.0.3"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Productivity",
-      "description": "Build command-line tools, shell completions, and terminal interfaces.",
+      "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
       "keywords": [
         "accessibility",
-        "cli",
-        "cli-development",
-        "completion",
-        "design",
-        "shell",
-        "terminal",
-        "tui",
-        "user-interface"
-      ],
-      "license": "UNLICENSED",
-      "name": "cli-development",
-      "source": "cli-development",
-      "strict": true,
-      "tags": [
-        "accessibility",
-        "cli",
-        "completion",
-        "design",
-        "shell",
-        "terminal",
-        "tui",
-        "user-interface"
-      ],
-      "version": "1.0.1"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Productivity",
-      "description": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
-      "keywords": [
+        "agents",
+        "authoring",
         "building-blocks",
         "cli",
         "completion",
         "composition",
+        "design",
         "dotfiles",
+        "governance",
+        "hooks",
+        "marketplace",
         "personal-setup",
+        "plugins",
+        "proof",
+        "repository",
+        "routing",
         "shell",
         "shell-config",
-        "teach"
+        "skills",
+        "teach",
+        "terminal",
+        "tui",
+        "user-interface",
+        "workflow"
       ],
       "license": "UNLICENSED",
       "name": "personal-setup",
       "source": "personal-setup",
       "strict": true,
       "tags": [
+        "accessibility",
+        "agents",
+        "authoring",
         "building-blocks",
         "cli",
         "completion",
         "composition",
+        "design",
         "dotfiles",
+        "governance",
+        "hooks",
+        "marketplace",
         "personal-setup",
+        "plugins",
+        "proof",
+        "repository",
+        "routing",
         "shell",
         "shell-config",
-        "teach"
+        "skills",
+        "teach",
+        "terminal",
+        "tui",
+        "user-interface",
+        "workflow"
       ],
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "author": {
