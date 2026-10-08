@@ -33,7 +33,8 @@
   "notes": [
     "Run only in an isolated Intelligence worktree and respect the current projector-only product boundary.",
     "The benchmark must not add a TUI when the repository excludes one or modify remote state.",
-    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result.",
+    "New core-flow prompts omit plugin-name hints. Supply a pinned local fixture before running; checklists are review rubrics, not observed activation or outcome results."
   ],
   "setupQuestions": [
     "Which existing human-facing terminal state is in product scope and safe to refine locally?"
@@ -56,6 +57,46 @@
         "The run names the current terminal stack, explicit product scope, and reachable states.",
         "No TUI or UI dependency is added when the product boundary excludes it.",
         "Focused proof covers machine-readable output and relevant degraded or cleanup behavior."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "shell-startup-completion-preserves-session-state",
+      "title": "Shell startup completion preserves session state",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "shell-startup-completion-preserves-session-state"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "shell-session-integration"
+      },
+      "userInput": "Fix this shell completion recursion and prompt slowdown. Preserve existing callbacks, exit status, argument boundaries, and startup behavior when the integration is sourced twice. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "Fresh startup and repeated source checks preserve callbacks and prior command status.",
+        "Non-interactive output stays quiet and timed-out helpers restore state.",
+        "Overwrite unrelated shell callbacks or perform network calls in prompt/startup callbacks.",
+        "Treat a syntax check as proof of interactive state preservation."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "cli-finite-json-errors-preserve-exit-status",
+      "title": "Cli finite json errors preserve exit status",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "cli-finite-json-errors-preserve-exit-status"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "cli-creator"
+      },
+      "userInput": "Add a composable CLI command with stable JSON output. Invalid input and unavailable targets must return finite typed error variants, nonzero exit status, and bounded stderr without contaminating stdout. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "Success and every expected failure payload pass the canonical schema.",
+        "Failure paths preserve nonzero exit status and stream separation.",
+        "Encode expected failures as arbitrary strings, null, booleans, or exceptions.",
+        "Print a progress banner into machine-readable stdout or return zero for a failed operation."
       ]
     }
   ]

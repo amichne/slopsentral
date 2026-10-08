@@ -8,7 +8,7 @@
     {
       "$schema": "../../schemas/evals/routing-field-observations.schema.json",
       "type": "ROUTING_FIELD_OBSERVATION_SET",
-      "schemaVersion": 2,
+      "schemaVersion": 3,
       "name": "post-readiness-field-observations",
       "description": "Sanitized observations from real workflow execution after routing readiness work.",
       "observations": [
@@ -22,7 +22,10 @@
           "evidenceRefs": [
             "PR 5 Validate Source run 27964536885 completed successfully."
           ],
-          "productiveOutcomeObserved": "Remote check evidence was read after the branch changed.",
+          "productiveOutcomeObserved": {
+            "type": "USEFUL_OUTCOME",
+            "summary": "Remote check evidence was read after the branch changed."
+          },
           "followUpAction": "Keep PR checks green after future pushes.",
           "limitations": [
             "This observation proves remote check handling, not Kotlin code execution."
@@ -33,6 +36,18 @@
               "type": "SKILL",
               "name": "github-ci-operations"
             }
+          },
+          "activationEvidence": {
+            "type": "REPORTED_ROUTE",
+            "evidenceRefs": [
+              "Existing summary reports the selected route; no raw skill-read trace was retained."
+            ]
+          },
+          "verification": {
+            "type": "COMPLETE_PROOF",
+            "evidenceRefs": [
+              "Relevant assertion executed and passed for the scoped claim."
+            ]
           }
         }
       ]
@@ -52,7 +67,8 @@
       "minLength": 1,
       "examples": [
         "../../schemas/evals/routing-field-observations.schema.json"
-      ]
+      ],
+      "pattern": "\\S"
     },
     "type": {
       "type": "string",
@@ -66,10 +82,10 @@
     "schemaVersion": {
       "type": "integer",
       "enum": [
-        2
+        3
       ],
       "examples": [
-        2
+        3
       ]
     },
     "name": {
@@ -77,14 +93,16 @@
       "minLength": 1,
       "examples": [
         "post-readiness-field-observations"
-      ]
+      ],
+      "pattern": "\\S"
     },
     "description": {
       "type": "string",
       "minLength": 1,
       "examples": [
         "Sanitized observations from real workflow execution after routing readiness work."
-      ]
+      ],
+      "pattern": "\\S"
     },
     "observations": {
       "type": "array",
@@ -101,7 +119,10 @@
             "evidenceRefs": [
               "PR 5 Validate Source run 27964536885 completed successfully."
             ],
-            "productiveOutcomeObserved": "Remote check evidence was read after the branch changed.",
+            "productiveOutcomeObserved": {
+              "type": "USEFUL_OUTCOME",
+              "summary": "Remote check evidence was read after the branch changed."
+            },
             "followUpAction": "Keep PR checks green after future pushes.",
             "limitations": [
               "This observation proves remote check handling, not Kotlin code execution."
@@ -112,6 +133,18 @@
                 "type": "SKILL",
                 "name": "github-ci-operations"
               }
+            },
+            "activationEvidence": {
+              "type": "REPORTED_ROUTE",
+              "evidenceRefs": [
+                "Existing summary reports the selected route; no raw skill-read trace was retained."
+              ]
+            },
+            "verification": {
+              "type": "COMPLETE_PROOF",
+              "evidenceRefs": [
+                "Relevant assertion executed and passed for the scoped claim."
+              ]
             }
           }
         ]
@@ -136,7 +169,10 @@
           "evidenceRefs": [
             "codex plugin list reported kotlin-engineering@slopsentral installed and enabled."
           ],
-          "productiveOutcomeObserved": "Provider-visible installed-state evidence was captured without editing installed caches.",
+          "productiveOutcomeObserved": {
+            "type": "USEFUL_OUTCOME",
+            "summary": "Provider-visible installed-state evidence was captured without editing installed caches."
+          },
           "followUpAction": "Repeat the installed-state check in each target team environment.",
           "limitations": [
             "This does not prove the installed cache contains this branch head."
@@ -147,6 +183,18 @@
               "type": "SKILL",
               "name": "repository-onboarding"
             }
+          },
+          "activationEvidence": {
+            "type": "REPORTED_ROUTE",
+            "evidenceRefs": [
+              "Existing summary reports the selected route; no raw skill-read trace was retained."
+            ]
+          },
+          "verification": {
+            "type": "INCOMPLETE_PROOF",
+            "missingEvidence": [
+              "Exact cache source revision and fresh semantic invocation were not proved."
+            ]
           }
         }
       ],
@@ -161,7 +209,9 @@
         "evidenceRefs",
         "productiveOutcomeObserved",
         "followUpAction",
-        "limitations"
+        "limitations",
+        "activationEvidence",
+        "verification"
       ],
       "properties": {
         "type": {
@@ -222,24 +272,27 @@
           "$ref": "#/$defs/nonEmptyStrings"
         },
         "productiveOutcomeObserved": {
-          "type": "string",
-          "minLength": 1,
-          "examples": [
-            "Provider-visible installed-state evidence was captured without editing installed caches."
-          ]
+          "$ref": "#/$defs/productiveOutcome"
         },
         "followUpAction": {
           "type": "string",
           "minLength": 1,
           "examples": [
             "Repeat the installed-state check in each target team environment."
-          ]
+          ],
+          "pattern": "\\S"
         },
         "limitations": {
           "$ref": "#/$defs/nonEmptyStrings"
         },
         "route": {
           "$ref": "#/$defs/route"
+        },
+        "activationEvidence": {
+          "$ref": "#/$defs/activationEvidence"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
         }
       }
     },
@@ -275,7 +328,8 @@
           "minLength": 1,
           "examples": [
             "repository-onboarding"
-          ]
+          ],
+          "pattern": "\\S"
         }
       }
     },
@@ -292,7 +346,8 @@
         "minLength": 1,
         "examples": [
           "codex plugin list reported kotlin-engineering@slopsentral installed and enabled."
-        ]
+        ],
+        "pattern": "\\S"
       }
     },
     "route": {
@@ -365,6 +420,377 @@
         },
         {
           "type": "NO_PRIMITIVE_ROUTE"
+        }
+      ]
+    },
+    "reportedRouteEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "evidenceRefs"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "REPORTED_ROUTE"
+          ],
+          "examples": [
+            "REPORTED_ROUTE"
+          ]
+        },
+        "evidenceRefs": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      },
+      "examples": [
+        {
+          "type": "REPORTED_ROUTE",
+          "evidenceRefs": [
+            "Existing summary reports the selected route; no raw skill-read trace was retained."
+          ]
+        }
+      ]
+    },
+    "toolTraceEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "sessionIds",
+        "evidenceRefs"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "TOOL_TRACE"
+          ],
+          "examples": [
+            "TOOL_TRACE"
+          ]
+        },
+        "sessionIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "examples": [
+              "01a0f01d-cff8-7c50-97eb-708bfae06a35"
+            ]
+          },
+          "examples": [
+            [
+              "01a0f01d-cff8-7c50-97eb-708bfae06a35"
+            ]
+          ]
+        },
+        "evidenceRefs": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      },
+      "examples": [
+        {
+          "type": "TOOL_TRACE",
+          "sessionIds": [
+            "01a0f01d-cff8-7c50-97eb-708bfae06a35"
+          ],
+          "evidenceRefs": [
+            "Tool output returned tdd/SKILL.md frontmatter."
+          ]
+        }
+      ]
+    },
+    "completeProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "evidenceRefs"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "COMPLETE_PROOF"
+          ],
+          "examples": [
+            "COMPLETE_PROOF"
+          ]
+        },
+        "evidenceRefs": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      },
+      "examples": [
+        {
+          "type": "COMPLETE_PROOF",
+          "evidenceRefs": [
+            "Relevant assertion executed and passed for the scoped claim."
+          ]
+        }
+      ]
+    },
+    "incompleteProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "missingEvidence"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "INCOMPLETE_PROOF"
+          ],
+          "examples": [
+            "INCOMPLETE_PROOF"
+          ]
+        },
+        "missingEvidence": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      },
+      "examples": [
+        {
+          "type": "INCOMPLETE_PROOF",
+          "missingEvidence": [
+            "Fresh client discovery and semantic invocation remain unverified."
+          ]
+        }
+      ]
+    },
+    "unassessedProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "reason"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "UNASSESSED_PROOF"
+          ],
+          "examples": [
+            "UNASSESSED_PROOF"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "examples": [
+            "A useful answer was observed; independent outcome verification was not retained."
+          ],
+          "pattern": "\\S"
+        }
+      },
+      "examples": [
+        {
+          "type": "UNASSESSED_PROOF",
+          "reason": "A useful answer was observed; independent outcome verification was not retained."
+        }
+      ]
+    },
+    "activationEvidence": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reportedRouteEvidence"
+        },
+        {
+          "$ref": "#/$defs/toolTraceEvidence"
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "examples": [
+        {
+          "type": "REPORTED_ROUTE",
+          "evidenceRefs": [
+            "Existing summary reports the selected route; no raw skill-read trace was retained."
+          ]
+        },
+        {
+          "type": "TOOL_TRACE",
+          "sessionIds": [
+            "01a0f01d-cff8-7c50-97eb-708bfae06a35"
+          ],
+          "evidenceRefs": [
+            "Tool output returned tdd/SKILL.md frontmatter."
+          ]
+        }
+      ]
+    },
+    "verification": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/completeProof"
+        },
+        {
+          "$ref": "#/$defs/incompleteProof"
+        },
+        {
+          "$ref": "#/$defs/unassessedProof"
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "examples": [
+        {
+          "type": "COMPLETE_PROOF",
+          "evidenceRefs": [
+            "Relevant assertion executed and passed for the scoped claim."
+          ]
+        },
+        {
+          "type": "INCOMPLETE_PROOF",
+          "missingEvidence": [
+            "Fresh client discovery and semantic invocation remain unverified."
+          ]
+        },
+        {
+          "type": "UNASSESSED_PROOF",
+          "reason": "A useful answer was observed; independent outcome verification was not retained."
+        }
+      ]
+    },
+    "usefulOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "summary"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "USEFUL_OUTCOME"
+          ],
+          "examples": [
+            "USEFUL_OUTCOME"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "examples": [
+            "The requested result was produced within the scoped claim."
+          ],
+          "pattern": "\\S"
+        }
+      },
+      "examples": [
+        {
+          "type": "USEFUL_OUTCOME",
+          "summary": "The requested result was produced within the scoped claim."
+        }
+      ]
+    },
+    "noUsefulOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "reason"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "NO_USEFUL_OUTCOME"
+          ],
+          "examples": [
+            "NO_USEFUL_OUTCOME"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "examples": [
+            "The expected skill loaded but the requested result was not produced."
+          ],
+          "pattern": "\\S"
+        }
+      },
+      "examples": [
+        {
+          "type": "NO_USEFUL_OUTCOME",
+          "reason": "The expected skill loaded but the requested result was not produced."
+        }
+      ]
+    },
+    "unassessedOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "reason"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "UNASSESSED_OUTCOME"
+          ],
+          "examples": [
+            "UNASSESSED_OUTCOME"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "examples": [
+            "No task outcome evidence was retained."
+          ],
+          "pattern": "\\S"
+        }
+      },
+      "examples": [
+        {
+          "type": "UNASSESSED_OUTCOME",
+          "reason": "No task outcome evidence was retained."
+        }
+      ]
+    },
+    "productiveOutcome": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/usefulOutcome"
+        },
+        {
+          "$ref": "#/$defs/noUsefulOutcome"
+        },
+        {
+          "$ref": "#/$defs/unassessedOutcome"
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "examples": [
+        {
+          "type": "USEFUL_OUTCOME",
+          "summary": "The requested result was produced within the scoped claim."
+        },
+        {
+          "type": "NO_USEFUL_OUTCOME",
+          "reason": "The expected skill loaded but the requested result was not produced."
+        },
+        {
+          "type": "UNASSESSED_OUTCOME",
+          "reason": "No task outcome evidence was retained."
         }
       ]
     }

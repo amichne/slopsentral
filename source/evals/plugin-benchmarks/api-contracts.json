@@ -34,7 +34,8 @@
   "notes": [
     "Run in an isolated slopsentral worktree and keep generated provider output untouched.",
     "The benchmark may change only local files and must not publish or modify remote state.",
-    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result."
+    "Astra-targeted definition; static validation and golden replay are not a live model benchmark result.",
+    "New core-flow prompts omit plugin-name hints. Supply a pinned local fixture before running; checklists are review rubrics, not observed activation or outcome results."
   ],
   "setupQuestions": [
     "Which local JSON Schema or OpenAPI boundary is safe to revise in this disposable worktree?"
@@ -57,6 +58,46 @@
         "The contract encodes variant and error invariants instead of relying on prose or unconstrained primitives.",
         "JSON Schema and OpenAPI examples validate with the repository-owned checks.",
         "The run changes only local source-owned contract material."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "openapi-operations-preserve-request-response-security",
+      "title": "Openapi operations preserve request response security",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "openapi-operations-preserve-request-response-security"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-authoring"
+      },
+      "userInput": "Add an OpenAPI operation with a validated request, discriminated success and failure responses, and explicit security. Preserve existing component ownership and validate valid and invalid examples. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The operation has source-backed request, response, failure, and security contracts.",
+        "Validator-backed examples reject the invalid combinations.",
+        "Treat a component-only edit as a complete operation contract.",
+        "Allow ambiguous failure strings or permissive extra fields without an intentional extension point."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "openapi-review-requires-validator-evidence",
+      "title": "Openapi review requires validator evidence",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "openapi-review-requires-validator-evidence"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-rating"
+      },
+      "userInput": "Review this OpenAPI specification and rate the operations, schemas, failures, and security boundaries with evidence. Explain the highest priority fixes without changing source. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The rating cites the concrete contract boundaries and observed validator results.",
+        "Recommended fixes follow from the rubric and remain within the read-only scope.",
+        "Give an unsupported overall quality score or rewrite the specification during a read-only review.",
+        "Treat a passing schema validator as complete runtime or security proof."
       ]
     }
   ]

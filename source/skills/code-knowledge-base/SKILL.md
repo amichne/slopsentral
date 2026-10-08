@@ -1,6 +1,6 @@
 ---
 name: "code-knowledge-base"
-description: "Create, refresh, or impact-check source-backed OKF concept documents for Kotlin/Gradle repositories. Use when knowledge pages need code citations and drift evidence."
+description: "Create, refresh, or impact-check source-backed OKF concepts for Kotlin/Gradle repositories, or resolve an OKF/OpenWiki backend handoff. Use when knowledge pages need citations or drift evidence."
 ---
 
 # Code Knowledge Base
@@ -23,8 +23,9 @@ than a provider-specific cache or database.
 ## Workflow
 
 1. Define the knowledge boundary.
-   Identify repository, audience, source roots, OKF output root, and refresh
-   scope.
+   Identify repository, audience, source roots, existing knowledge backend, and
+   refresh scope. For OpenWiki or a migration, read the backend handoff reference
+   before choosing output or validation. Continue the OKF steps only for OKF.
 
 2. Build source evidence.
    Gather Gradle/module/source-set facts, public APIs, generated contracts,
@@ -49,6 +50,9 @@ than a provider-specific cache or database.
    Run the repository's docs or contract checks when available.
 
 ## Reference Routing
+
+- Read [knowledge-backend-handoff.md](references/knowledge-backend-handoff.md)
+  when the repository uses OpenWiki, both backends, or requests a migration.
 
 - Read [knowledge-page-contract.md](references/knowledge-page-contract.md) when
   creating, checking, or modifying OKF concept documents.

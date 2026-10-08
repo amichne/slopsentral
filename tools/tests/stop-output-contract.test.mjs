@@ -16,7 +16,7 @@ const owners = {
 };
 const quote = value => `'${value.replaceAll("'", "'\\''")}'`;
 
-function run(t, name, prepare = () => {}) {
+function run(t, name, prepare = () => {}, options = {}) {
   const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'stop-output-'));
   t.after(() => fs.rmSync(cwd, { recursive: true, force: true }));
   prepare(cwd);
@@ -24,8 +24,13 @@ function run(t, name, prepare = () => {}) {
   const config = path.join(root, projection ? 'hooks' : 'hooks/codex', `${name}.hooks.json`);
   let command = JSON.parse(fs.readFileSync(config)).hooks.Stop[0].hooks[0].command;
   if (!projection) command = command.replace(/\bhooks\/[\w.-]+/g, value => quote(path.join(root, value)));
-  const result = spawnSync('bash', ['-c', command], {
-    cwd, env: { ...process.env, PLUGIN_ROOT: root, INTELLIGENCE_CHANGED_FILES: '' },
+  if (options.commandPrefix) command = options.commandPrefix + command;
+  const env = { ...process.env, ...options.env, PLUGIN_ROOT: root, INTELLIGENCE_CHANGED_FILES: '' };
+  // This oracle measures the configured hook, independently of personal startup files.
+  delete env.BASH_ENV;
+  delete env.ENV;
+  const result = spawnSync('bash', ['--noprofile', '--norc', '-c', command], {
+    cwd, env,
     input: JSON.stringify({ hook_event_name: 'Stop', stop_hook_active: false, session_id: 'contract', cwd }),
     encoding: 'utf8',
   });
@@ -84,4 +89,31 @@ test('source graph Stop preserves a failed required check as continuation feedba
   });
   assert.equal(result.output.decision, 'block');
   assert.match(result.output.reason, /outcome=check-failed/);
+});
+
+test('hook protocol checks isolate inherited shell startup stderr', t => {
+  const startup = fs.mkdtempSync(path.join(os.tmpdir(), 'noisy-startup-'));
+  t.after(() => fs.rmSync(startup, { recursive: true, force: true }));
+  const envFile = path.join(startup, 'startup.sh');
+  fs.writeFileSync(envFile, "printf 'inherited-shell-noise\\n' >&2\n");
+  const result = run(t, 'code-knowledge-drift', cwd => {
+    bundle(cwd);
+    fs.writeFileSync(path.join(cwd, 'docs/app.md'), '# Invalid metadata\n');
+    assert.equal(spawnSync('git', ['init', '-q', cwd]).status, 0);
+  }, { env: { BASH_ENV: envFile } });
+  assert.doesNotMatch(result.stderr, /inherited-shell-noise/);
+  assert.equal(JSON.parse(result.stderr).outcome, 'invalid');
+});
+
+test('shell isolation does not accept extra stdout from the configured hook command', t => {
+  assert.throws(() => run(t, 'code-knowledge-drift', () => {}, {
+    commandPrefix: "printf 'unexpected-hook-output\\n'; ",
+  }), SyntaxError);
+});
+
+test('shell isolation does not discard extra stderr from the configured hook command', t => {
+  const result = run(t, 'code-knowledge-drift', () => {}, {
+    commandPrefix: "printf 'unexpected-hook-diagnostic\\n' >&2; ",
+  });
+  assert.throws(() => JSON.parse(result.stderr), SyntaxError);
 });
