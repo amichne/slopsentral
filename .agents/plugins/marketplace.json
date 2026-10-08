@@ -65,18 +65,6 @@
       }
     },
     {
-      "category": "Productivity",
-      "name": "technical-writing",
-      "policy": {
-        "authentication": "ON_INSTALL",
-        "installation": "AVAILABLE"
-      },
-      "source": {
-        "path": "./.agents/plugins/technical-writing",
-        "source": "local"
-      }
-    },
-    {
       "category": "Coding",
       "name": "repository-knowledge",
       "policy": {
@@ -90,30 +78,6 @@
     },
     {
       "category": "Engineering",
-      "name": "agent-tooling",
-      "policy": {
-        "authentication": "ON_INSTALL",
-        "installation": "AVAILABLE"
-      },
-      "source": {
-        "path": "./.agents/plugins/agent-tooling",
-        "source": "local"
-      }
-    },
-    {
-      "category": "Productivity",
-      "name": "cli-development",
-      "policy": {
-        "authentication": "ON_INSTALL",
-        "installation": "AVAILABLE"
-      },
-      "source": {
-        "path": "./.agents/plugins/cli-development",
-        "source": "local"
-      }
-    },
-    {
-      "category": "Productivity",
       "name": "personal-setup",
       "policy": {
         "authentication": "ON_INSTALL",

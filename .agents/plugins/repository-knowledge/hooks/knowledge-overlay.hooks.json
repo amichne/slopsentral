@@ -1,0 +1,18 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "additionalContextLimit": 8192,
+            "command": "python3 \"$PLUGIN_ROOT/hooks/knowledge-overlay.py\"",
+            "statusMessage": "Loading registered repository knowledge guidance",
+            "timeout": 20,
+            "type": "command"
+          }
+        ],
+        "matcher": "^(startup|resume|clear|compact)$"
+      }
+    ]
+  }
+}

@@ -7,11 +7,15 @@ import argparse
 from enum import Enum
 import json
 import sys
+
 from pathlib import Path
+
+sys.dont_write_bytecode = True
 
 # The declared skill dependency has the same sibling layout in source and projections.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "skills/code-knowledge-base/scripts"))
 from code_kb import Failure, build_impact, failure_payload, write_output
+from knowledge_overlay import Failure as OverlayFailure, Knowledge, NoOverlay, select_knowledge
 
 
 class OutputFormat(str, Enum):
@@ -25,10 +29,10 @@ class ImpactOutcome(str, Enum):
     INVALID = "invalid"
 
 
-def emit_stop(result: dict | Failure) -> None:
+def emit_stop(result: dict | Failure | OverlayFailure) -> None:
     """Keep native hook feedback bounded; the ordinary CLI owns full reports."""
-    if isinstance(result, Failure):
-        stage, code = result.value
+    if isinstance(result, (Failure, OverlayFailure)):
+        stage, code = result.value if isinstance(result, Failure) else (result.stage.value, result.code.value)
         evidence = {"type": "KNOWLEDGE_DRIFT_STOP", "stage": stage, "outcome": "error", "code": code}
         message = f"knowledge-drift: stage={stage} outcome=error code={code}; drift is unverified. Inspect the knowledge checker when relevant."
     else:
@@ -59,8 +63,27 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--advisory", action="store_true")
     args = parser.parse_args(argv)
     repo = args.repo.resolve()
-    result = build_impact(repo, (repo / args.docs).resolve(), args.changed_file, from_git=True)
-    payload = failure_payload("impact", result) if isinstance(result, Failure) else result
+    selected = select_knowledge(repo)
+    if selected is NoOverlay.UNREGISTERED:
+        if args.format == OutputFormat.CODEX_STOP.value:
+            print("{}")
+            print(json.dumps({"type": "KNOWLEDGE_DRIFT_STOP", "stage": "selection", "outcome": "UNREGISTERED"}), file=sys.stderr)
+        else:
+            if args.format == OutputFormat.JSON.value:
+                print(json.dumps({"type": "KNOWLEDGE_DRIFT_SKIPPED", "reason": "UNREGISTERED"}))
+            else:
+                print("knowledge-drift: repository is unregistered; no overlay scan requested")
+        return 0
+    if isinstance(selected, OverlayFailure):
+        result = selected
+        payload = {"command": "impact", "status": "error", "error": {"stage": selected.stage.value, "code": selected.code.value}}
+    else:
+        if isinstance(selected, Knowledge):
+            repo, docs = selected.source, selected.documents
+        else:
+            docs = (repo / args.docs).resolve()
+        result = build_impact(repo, docs, args.changed_file, from_git=True)
+        payload = failure_payload("impact", result) if isinstance(result, Failure) else result
 
     output_format = OutputFormat(args.format)
     if output_format is OutputFormat.CODEX_STOP:

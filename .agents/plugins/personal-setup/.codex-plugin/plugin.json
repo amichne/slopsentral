@@ -2,14 +2,17 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+  "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
+  "hooks": [
+    "./hooks/source-graph-valid.hooks.json"
+  ],
   "interface": {
-    "brandColor": "#7C3AED",
+    "brandColor": "#0F766E",
     "capabilities": [
       "Interactive",
       "Write"
     ],
-    "category": "Productivity",
+    "category": "Engineering",
     "defaultPrompt": [
       "Use Personal Setup for this task.",
       "Review this repo with Personal Setup.",
@@ -17,25 +20,41 @@
     ],
     "developerName": "Amichne",
     "displayName": "Personal Setup",
-    "longDescription": "Manage amichne/shell-config and build composable personal tools with completions and contextual --teach guidance.",
+    "longDescription": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Manage amichne/shell-config and build composable personal tools with...",
+    "shortDescription": "Manage personal setup and build CLI tools, shell integrations, termin...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
   "keywords": [
+    "accessibility",
+    "agents",
+    "authoring",
     "building-blocks",
     "cli",
     "completion",
     "composition",
+    "design",
     "dotfiles",
+    "governance",
+    "hooks",
+    "marketplace",
     "personal-setup",
+    "plugins",
+    "proof",
+    "repository",
+    "routing",
     "shell",
     "shell-config",
-    "teach"
+    "skills",
+    "teach",
+    "terminal",
+    "tui",
+    "user-interface",
+    "workflow"
   ],
   "license": "UNLICENSED",
   "name": "personal-setup",
   "skills": "./skills/",
-  "version": "0.1.0"
+  "version": "0.2.0"
 }
