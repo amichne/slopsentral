@@ -9,11 +9,9 @@ sealed interface DigestParse {
 
 enum class DigestRejection { WRONG_LENGTH, NON_LOWERCASE_HEX }
 
-class Sha256Digest private constructor(private val hex: String) {
+@JvmInline
+value class Sha256Digest private constructor(internal val hex: String) {
     fun sameAs(other: Sha256Digest): Boolean = hex == other.hex
-
-    // Extraction belongs to the wire adapter, not application decisions.
-    fun toWire(): String = hex
 
     companion object {
         fun parse(raw: String): DigestParse = when {
@@ -26,7 +24,9 @@ class Sha256Digest private constructor(private val hex: String) {
         internal fun of(bytes: ArtifactBytes): Sha256Digest {
             // SHA-256 is a required JVM algorithm. No expected error protocol
             // is implemented with an exception here.
-            val digest = MessageDigest.getInstance("SHA-256").digest(bytes.toWire())
+            val algorithm = MessageDigest.getInstance("SHA-256")
+            bytes.forEachByte { algorithm.update(it) }
+            val digest = algorithm.digest()
             val alphabet = "0123456789abcdef"
             return Sha256Digest(buildString(64) {
                 for (byte in digest) {
@@ -44,13 +44,17 @@ sealed interface ContentParse {
     data object Empty : ContentParse
 }
 
-// A head plus a privately owned tail represents nonemptiness structurally.
-// Neither a mutable input array nor an extracted output array aliases storage.
+// A head plus an owned tail represents nonemptiness structurally.
+// The trusted owning module exposes snapshots only through output adapters.
 class ArtifactBytes private constructor(
     private val head: Byte,
     private val tail: List<Byte>,
 ) {
-    fun toWire(): ByteArray = byteArrayOf(head, *tail.toByteArray())
+    // Read-only traversal supports hashing and adapters without exposing storage.
+    internal fun forEachByte(consume: (Byte) -> Unit) {
+        consume(head)
+        tail.forEach(consume)
+    }
 
     companion object {
         fun parse(raw: ByteArray): ContentParse = when {
@@ -81,7 +85,7 @@ class UnverifiedArtifact private constructor(
 }
 
 class VerifiedArtifact private constructor(
-    private val bytes: ArtifactBytes,
+    internal val bytes: ArtifactBytes,
     val digest: Sha256Digest,
 ) {
     private class Accepted(override val artifact: VerifiedArtifact) : Verification.Verified
@@ -89,9 +93,6 @@ class VerifiedArtifact private constructor(
         override val expected: Sha256Digest,
         override val observed: Sha256Digest,
     ) : Verification.ChecksumMismatch
-
-    // This is the outbound serialization edge; mutation cannot change the proof.
-    fun toWire(): ByteArray = bytes.toWire()
 
     companion object {
         fun verify(bytes: ArtifactBytes, expected: Sha256Digest): Verification {
@@ -107,7 +108,8 @@ class VerifiedArtifact private constructor(
 
 // Pure preparation of the next state. An effect adapter may consume this
 // request; this example makes no claim that publication has occurred.
-class PublicationRequest private constructor(val artifact: VerifiedArtifact) {
+@JvmInline
+value class PublicationRequest private constructor(val artifact: VerifiedArtifact) {
     companion object {
         fun prepare(artifact: VerifiedArtifact): PublicationRequest =
             PublicationRequest(artifact)

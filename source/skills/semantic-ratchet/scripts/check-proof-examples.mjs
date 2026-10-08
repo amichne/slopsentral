@@ -219,7 +219,8 @@ function checkKotlin(directory) {
   const identity = (version.stdout + version.stderr).match(/kotlinc-jvm [^\n]+/u);
   assert.ok(identity, 'Compiler identity must be available');
   const library = path.join(directory, 'domain.jar');
-  const compiled = run(compiler, [path.join(assets, 'kotlin/ArtifactProof.kt'), '-d', library]);
+  const compiled = run(compiler, [path.join(assets, 'kotlin/ArtifactProof.kt'),
+    path.join(assets, 'kotlin/ArtifactOutputAdapters.kt'), '-d', library]);
   assert.equal(compiled.status, 0, compiled.stderr);
   const legalJar = path.join(directory, 'legal.jar');
   const legal = run(compiler, [path.join(assets, 'kotlin/Legal.kt'), '-classpath', library, '-include-runtime', '-d', legalJar]);

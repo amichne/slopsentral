@@ -10,21 +10,30 @@ Publication preparation is pure; it does not claim an external write occurred.
 
 | Established fact | Representation | Obligation discharged |
 | --- | --- | --- |
-| Exactly 64 lowercase hexadecimal characters | `Sha256Digest`, private constructor | Consumers need no string shape checks |
+| Exactly 64 lowercase hexadecimal characters | `Sha256Digest` value class, private constructor and `parse` | Consumers need no string shape checks |
 | At least one byte, privately owned storage | `ArtifactBytes`, head plus private copied tail | Empty content and mutable aliases cannot enter the core |
 | Supplied checksum matched these bytes | `VerifiedArtifact`, private constructor | `PublicationRequest.prepare` requires verification |
 | Verification has two supported outcomes | Sealed `Verification` hierarchy | Complete consumers handle success and mismatch |
 | Digest parsing has finite rejection reasons | `DigestRejection` enum inside sealed `DigestParse` | Failure requires neither an exception nor a nullable value |
+| Prepared request retains verification | `PublicationRequest` value class | A single-field state distinction needs no ordinary wrapper class |
 
 Parsing checks raw input once. Verification then makes the remaining domain
 decision: whether two refined digests agree. That equality predicate is not a
 boolean failure protocol; verification returns a sealed outcome containing the
 case-specific evidence. Publication preparation performs no repeated guards.
 
-Primitive storage remains inside the owning types. Extraction is confined to
-the SHA-256 algorithm and explicit serialization edges. Returned byte arrays are
-copies. Callers continue passing `VerifiedArtifact`; they cannot replace that
-contract with its digest string or the original bytes.
+Primitive storage remains internal to the trusted owning module. The SHA-256
+algorithm reads those immutable bytes directly. [Output adapters](../assets/kotlin/ArtifactOutputAdapters.kt)
+implement the shared `OutputEncoder` abstraction; domain types expose no
+`encode` or `toWire` methods. Returned byte arrays are copies. Application
+consumers continue passing `VerifiedArtifact`; its digest string or original
+bytes cannot replace that contract. Internal visibility excludes other Kotlin
+modules, not trusted code inside the owning module.
+
+Use value classes aggressively for single-field domain distinctions. Direct
+JVM use can retain the underlying representation; generic and interface use can
+box. The format-independent Kotlin serialization example in Kotlin Design
+Practices shows the same model through JSON and binary adapters.
 
 The checks compile consumers separately from the domain library:
 

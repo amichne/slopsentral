@@ -130,15 +130,15 @@ Outside this plugin: Everyday engineering, default setup, and general skill disc
 
 ## Profiles
 
-- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + engineering-excellence + personal-setup. 672 instruction words.
+- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + engineering-excellence + personal-setup. 690 instruction words.
 
 - [documentation-default](profiles/documentation-default.json): repository-knowledge. 0 instruction words.
 
-- [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + engineering-excellence + kotlin-engineering + intellij-plugin-development. 808 instruction words.
+- [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + engineering-excellence + kotlin-engineering + intellij-plugin-development. 826 instruction words.
 
-- [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + engineering-excellence + kotlin-engineering. 808 instruction words.
+- [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + engineering-excellence + kotlin-engineering. 826 instruction words.
 
-- [local-development-default](profiles/local-development-default.json): software-engineering + engineering-excellence. 672 instruction words.
+- [local-development-default](profiles/local-development-default.json): software-engineering + engineering-excellence. 690 instruction words.
 
 ## Standalone skills
 

@@ -22,14 +22,17 @@ fun main() {
     val bytes = parsedBytes(raw)
     val expected = parsedDigest("5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03")
     raw.fill(0) // Mutation of the boundary input cannot invalidate stored bytes.
-    bytes.toWire().fill(0) // Neither can mutation of a serialization result.
+    ArtifactSnapshotOutput.encode(bytes).fill(0) // Output arrays do not alias storage.
     val outcome = UnverifiedArtifact.prepare(bytes, expected).verify()
     check(describe(outcome) == "VERIFIED")
     when (outcome) {
         is Verification.Verified -> {
             val request = PublicationRequest.prepare(outcome.artifact)
-            check(request.artifact.toWire().contentEquals("hello\n".toByteArray()))
+            check(VerifiedArtifactBytesOutput.encode(request.artifact)
+                .contentEquals("hello\n".toByteArray()))
             check(request.artifact.digest.sameAs(expected))
+            check(DigestTextOutput.encode(request.artifact.digest) ==
+                "5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03")
         }
         is Verification.ChecksumMismatch -> error("Matching fixture failed verification")
     }

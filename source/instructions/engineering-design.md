@@ -13,6 +13,8 @@ consumer. Primitive extraction belongs in explicit serialization and effect
 adapters, not application APIs. Do not repeat discharged input checks deep in
 application layers or bypass rejection with casts, assertions, nullable
 sentinels, default branches, or exception-backed expected failures.
+Output adapters implement shared serialization abstractions; domain values do
+not own encoding methods or choose their output format.
 
 Represent expected failure as a closed, typed set of outcomes. Fail closed on
 unknown, ambiguous, unsupported, incomplete, or unproven input. Keep domain

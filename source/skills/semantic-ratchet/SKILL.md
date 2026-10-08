@@ -24,6 +24,8 @@ remembers established knowledge; callers reason only about remaining obligations
   failures must not use null, Boolean, sentinel, free text, or exception protocols.
 - Keep discharged input checks out of application layers. Put pure decisions
   with their invariant owner; make effects and any new proof obligations explicit.
+- Delegate encoding and format selection to output adapters through a shared
+  serialization abstraction. Domain types do not own encoding methods.
 - Use the strongest local mechanism: static types, schemas, opaque construction,
   closed tagged values, module APIs, or focused contract checks.
 - Choose the smallest model that prevents the named misuse. Do not add generic
