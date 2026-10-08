@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T19:28:53-04:00",
+  "generatedAt": "2026-10-07T21:30:12-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -48,7 +48,7 @@
         },
         {
           "name": "delivery-pipeline-design",
-          "sha256": "sha256:bd3cc723e1b4b8eccaab1b1357517d6c7eeb1f1bf715ba1dac75a41a42460f8b",
+          "sha256": "sha256:3d76ce15838dbf096ab8a4e437618c843807d7c1d5a9ee576be72e3445f317a9",
           "sourcePath": "source/skills/delivery-pipeline-design",
           "targetPath": "skills/delivery-pipeline-design",
           "type": "SKILL"
@@ -83,7 +83,7 @@
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:27e3866e6e5b6d61c8db26718707c93cec3cc21ef0e71125652bf0bf2e22908b",
+          "sha256": "sha256:6233d4458645ba159ca44ae6713afcc90b530ef6fd77316f39a96d34c280d555",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
@@ -104,14 +104,14 @@
         },
         {
           "name": "shell-script-safety",
-          "sha256": "sha256:82b471aac5dfddcf7b16237392cd7093b5867ac684f65c9bd3a09b2ba6745514",
+          "sha256": "sha256:57672251b7166a3eb46df5611c9c20cd18dcf7ddda26cebf17227a7d5ebf9651",
           "sourcePath": "source/skills/shell-script-safety",
           "targetPath": "skills/shell-script-safety",
           "type": "SKILL"
         },
         {
           "name": "tdd",
-          "sha256": "sha256:01f20d3a988e13ed870ff193126cfc41a119eefdae9d851a0784154e627c1b45",
+          "sha256": "sha256:cf934727b4c5a07d8be4c8d2b2796ac681b6c89e6617b71a2281560f20bb90c9",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
@@ -208,7 +208,7 @@
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:4a38d0ac1ceeaf986840d3937c523ec0bde1c071aae7f7d9eeb3735ceaf3ffdb",
+          "sha256": "sha256:67478812961621073673433521836a623c1c1d7e436550c26ecf6943e27a0bbf",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -236,7 +236,7 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "1.5.1"
+      "version": "1.5.2"
     },
     {
       "name": "intellij-plugin-development",
@@ -446,7 +446,7 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:d09dbc12ec2d8c0d1f442538932158f7c50660b07197be7e57476dfaeef4bb01",
+          "sha256": "sha256:311ca33063521009fd798b053e201f692d1b1fa57d03a290475ba51f9c86de60",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
@@ -467,7 +467,7 @@
         }
       ],
       "sourceManifest": "source/plugins/repository-knowledge/plugin.json",
-      "version": "1.1.1"
+      "version": "1.1.2"
     },
     {
       "name": "agent-tooling",
@@ -502,7 +502,7 @@
         },
         {
           "name": "primitive-routing-evaluation",
-          "sha256": "sha256:b98ba0eb2cc62e6d3faee1461408d40300ae501a64ae9854e577777dcd5dac21",
+          "sha256": "sha256:6e32753d8b68c6e803667d7d3bea58a3756e08f2ead3bd6f487d9bf0592d79c7",
           "sourcePath": "source/skills/primitive-routing-evaluation",
           "targetPath": "skills/primitive-routing-evaluation",
           "type": "SKILL"
@@ -523,7 +523,7 @@
         }
       ],
       "sourceManifest": "source/plugins/agent-tooling/plugin.json",
-      "version": "1.0.2"
+      "version": "1.0.3"
     },
     {
       "name": "cli-development",
@@ -590,6 +590,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "29e1c5d887aa438473f27b3df253cb086a75cbd7",
+  "sourceSha": "4450497e5344f20465e857b7289886a0a2502295",
   "type": "HYDRATED_MARKETPLACE"
 }

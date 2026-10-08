@@ -1,6 +1,6 @@
 ---
 name: "kotlin-gradle-validation"
-description: "Diagnose and verify Kotlin or JVM Gradle builds with focused tasks and native reports. Use for failing tests, compiler diagnostics, build reports, coverage, or incremental-build problems."
+description: "Diagnose and verify Kotlin or JVM Gradle builds with focused tasks and native reports. Use for failing tests, compiler diagnostics, coverage, or incremental-build problems; not prose edits or runtime latency measurement."
 ---
 
 # Kotlin Gradle Validation
