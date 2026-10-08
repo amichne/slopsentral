@@ -12,3 +12,5 @@ INSTRUCTION_MARKETPLACE_ROOT="$projection_root/codex" \
   node --test tools/tests/instruction-delivery.test.mjs
 STOP_MARKETPLACE_ROOT="$projection_root/codex" \
   node --test tools/tests/stop-output-contract.test.mjs
+KNOWLEDGE_MARKETPLACE_ROOT="$projection_root/codex" \
+  node --test tools/tests/knowledge-overlay-contract.test.mjs

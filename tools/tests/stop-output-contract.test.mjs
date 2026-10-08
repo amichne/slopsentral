@@ -9,7 +9,7 @@ const repo = path.resolve(import.meta.dirname, '../..');
 const projection = process.env.STOP_MARKETPLACE_ROOT;
 const owners = {
   'code-knowledge-drift': 'repository-knowledge',
-  'source-graph-valid': 'agent-tooling',
+  'source-graph-valid': 'personal-setup',
   'pkl-evaluate-check': 'pkl-configuration',
   'pkl-format-check': 'pkl-configuration',
   'pkl-test-check': 'pkl-configuration',

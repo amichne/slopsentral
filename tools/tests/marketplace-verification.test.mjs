@@ -103,6 +103,7 @@ fs.appendFileSync(process.env.VERIFY_TEST_LOG, JSON.stringify({
   command: ${JSON.stringify(command)}, args, cwd: process.cwd(),
   instructionRoot: process.env.INSTRUCTION_MARKETPLACE_ROOT,
   stopRoot: process.env.STOP_MARKETPLACE_ROOT,
+  knowledgeRoot: process.env.KNOWLEDGE_MARKETPLACE_ROOT,
 }) + '\\n');
 if (args.includes('--out')) fs.mkdirSync(args[args.indexOf('--out') + 1], { recursive: true });
 if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
@@ -112,6 +113,7 @@ if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
   delete env.BASH_ENV;
   delete env.INSTRUCTION_MARKETPLACE_ROOT;
   delete env.STOP_MARKETPLACE_ROOT;
+  delete env.KNOWLEDGE_MARKETPLACE_ROOT;
   if (failedHarness) env.VERIFY_TEST_FAILED_HARNESS = failedHarness;
   else delete env.VERIFY_TEST_FAILED_HARNESS;
   const result = spawnSync('bash', ['--noprofile', '--norc', path.join(repo, 'tools/verify-marketplaces')], {
@@ -126,7 +128,7 @@ if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
 test('verification projects both providers and checks the generated Codex hooks', t => {
   const { result, commands } = verify(t);
   assert.equal(result.status, 0, result.stderr);
-  assert.deepEqual(commands.map(({ command }) => command), ['projeKtor', 'projeKtor', 'node', 'node']);
+  assert.deepEqual(commands.map(({ command }) => command), ['projeKtor', 'projeKtor', 'node', 'node', 'node']);
   assert.deepEqual(commands.slice(0, 2).map(({ args }) => args.slice(0, 5)), [
     ['project', '--source', '.', '--harness', 'codex'],
     ['project', '--source', '.', '--harness', 'github-copilot'],
@@ -135,8 +137,10 @@ test('verification projects both providers and checks the generated Codex hooks'
   assert.notEqual(codexRoot, commands[1].args[6]);
   assert.equal(commands[2].instructionRoot, codexRoot);
   assert.equal(commands[3].stopRoot, codexRoot);
+  assert.equal(commands[4].knowledgeRoot, codexRoot);
   assert.deepEqual(commands[2].args, ['--test', 'tools/tests/instruction-delivery.test.mjs']);
   assert.deepEqual(commands[3].args, ['--test', 'tools/tests/stop-output-contract.test.mjs']);
+  assert.deepEqual(commands[4].args, ['--test', 'tools/tests/knowledge-overlay-contract.test.mjs']);
 });
 
 for (const failedHarness of ['codex', 'github-copilot']) {

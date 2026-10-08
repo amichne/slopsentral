@@ -26,16 +26,14 @@ const home = process.env.CODEX_HOME;
 const statePath = path.join(home, "fake-codex-state.json");
 const callsPath = path.join(path.dirname(home), "fake-codex-calls.jsonl");
 const plugins = ${JSON.stringify([
-  "agent-tooling",
+  "personal-setup",
   "api-contracts",
-  "cli-development",
   "intellij-plugin-development",
   "kotlin-engineering",
   "pkl-configuration",
   "repository-knowledge",
   "skill-read-policy",
-  "software-engineering",
-  "technical-writing"
+  "software-engineering"
 ])};
 const readState = () => fs.existsSync(statePath)
   ? JSON.parse(fs.readFileSync(statePath, "utf8"))

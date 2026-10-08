@@ -7,6 +7,11 @@ external `openwiki` skill and its repository tooling; preserve that provenance
 and load it by name when available. Do not copy it into this marketplace, run
 the OKF checker over OpenWiki pages, or silently create a second knowledge store.
 
+For a requested sibling Git repository with no source diff, select the OKF
+overlay described in knowledge-overlay.md. OpenWiki workspace linking does not
+establish separate source and storage roots. Do not start its normal generation
+in invisible mode without a qualified external-storage capability.
+
 If OpenWiki is requested but its owner or tools are unavailable, retain the
 backend decision and report the missing capability. Installation and remote
 publication need their own applicable authority. An ordinary code task does not
