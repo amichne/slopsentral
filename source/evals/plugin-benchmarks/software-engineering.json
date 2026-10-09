@@ -385,6 +385,27 @@
         "The handoff labels fixture work as reproduced only if run, and keeps native drain and latency untested.",
         "The run rejects the forbidden claims and retains untested boundaries."
       ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "faithful-surrogate-qualifies-bounded-improvement",
+      "title": "Faithful surrogate qualifies a bounded improvement",
+      "purpose": "Check that sufficient mechanism evidence supports a scoped improvement without requiring inaccessible enterprise replay.",
+      "routingCaseIds": [
+        "faithful-surrogate-qualifies-bounded-improvement"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Review supplied old and candidate results from a public surrogate that exercises the production preparation boundary and preserves repeated-capture scaling. Fixture, oracle, source identities and resource grants are frozen. The negative control retains the pathology; candidate work counts remove it while answer, completeness, freshness and cancellation checks pass. A small native integration verifies read closure and stale-result suppression. Qualify the represented improvement and its limits. The private enterprise environment is inaccessible. Keep the review read-only. Use only the supplied disposable fixture. Do not edit files, commit, push, install, activate hooks, or modify remote state.",
+      "successChecklist": [
+        "Accept a qualified conclusion that the candidate removes the represented repeated-capture pathology when the supplied mechanism, frozen oracle, controls and invariants support it.",
+        "Use native integration evidence for read closure and stale-result suppression while retaining the surrogate's workload and environment limits.",
+        "The conclusion names the frozen identities, oracle, negative control, old/candidate scaling and preserved invariants that support the bounded improvement.",
+        "The handoff accepts the scoped improvement without enterprise replay and distinguishes supplied evidence, native lifecycle qualification and untested enterprise latency.",
+        "The run rejects the blanket replay gate and preserves the limits of the accepted conclusion."
+      ]
     }
   ]
 }

@@ -40,6 +40,7 @@
     "proof-loss-review-names-model-obligations",
     "authority-preserves-partial-evidence",
     "native-scope-and-cancellation-proof",
+    "faithful-surrogate-qualifies-bounded-improvement",
     "read-local-preparation-preserves-lifetime"
   ],
   "observations": [
@@ -1493,6 +1494,28 @@
         "Treat caller completion as proof of native drain or increase limits before phase observation."
       ],
       "notes": "Expected contract fixture only; no live model observation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "faithful-surrogate-qualifies-bounded-improvement",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "satisfiedAllowedActions": [
+        "Accept a qualified conclusion that the candidate removes the represented repeated-capture pathology when the supplied mechanism, frozen oracle, controls and invariants support it.",
+        "Use native integration evidence for read closure and stale-result suppression while retaining the surrogate's workload and environment limits."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The conclusion names the frozen identities, oracle, negative control, old/candidate scaling and preserved invariants that support the bounded improvement.",
+        "The handoff accepts the scoped improvement without enterprise replay and distinguishes supplied evidence, native lifecycle qualification and untested enterprise latency."
+      ],
+      "avoidedForbiddenActions": [
+        "Demand inaccessible enterprise incident replay as a blanket prerequisite for any improvement conclusion.",
+        "Promote represented work reduction or native lifecycle checks into enterprise latency or agent usability proof.",
+        "Treat supplied evidence as a locally reproduced execution when no replay was run."
+      ],
+      "notes": "Expected contract fixture only; no live model observation or measured performance."
     },
     {
       "type": "ROUTING_OBSERVATION",

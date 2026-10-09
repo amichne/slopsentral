@@ -85,6 +85,44 @@
       "notes": "Unobserved behavioral scenario. Golden fixtures prove contract consistency only."
     },
     {
+      "id": "faithful-surrogate-qualifies-bounded-improvement",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-09",
+        "evidenceRefs": [
+          "https://github.com/amichne/kast/pull/966"
+        ]
+      },
+      "prompt": "Review supplied old and candidate results from a public surrogate that exercises the production preparation boundary and preserves repeated-capture scaling. Fixture, oracle, source identities and resource grants are frozen. The negative control retains the pathology; candidate work counts remove it while answer, completeness, freshness and cancellation checks pass. A small native integration verifies read closure and stale-result suppression. Qualify the represented improvement and its limits. The private enterprise environment is inaccessible. Keep the review read-only.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Proposed source-backed contract; no model replay is recorded.",
+        "risk": "A valid bounded improvement could be withheld for inaccessible enterprise replay or overstated as enterprise latency.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Accept a qualified conclusion that the candidate removes the represented repeated-capture pathology when the supplied mechanism, frozen oracle, controls and invariants support it.",
+        "Use native integration evidence for read closure and stale-result suppression while retaining the surrogate's workload and environment limits."
+      ],
+      "forbiddenActions": [
+        "Demand inaccessible enterprise incident replay as a blanket prerequisite for any improvement conclusion.",
+        "Promote represented work reduction or native lifecycle checks into enterprise latency or agent usability proof.",
+        "Treat supplied evidence as a locally reproduced execution when no replay was run."
+      ],
+      "recoveryExpectation": "Assess the supplied evidence within its represented mechanism and identify only the additional evidence needed for a broader claim.",
+      "productiveOutcome": "The review accepts removal of the represented pathology and states which native lifecycle properties are supported and which broader performance claims remain untested.",
+      "verificationEvidence": [
+        "The conclusion names the frozen identities, oracle, negative control, old/candidate scaling and preserved invariants that support the bounded improvement.",
+        "The handoff accepts the scoped improvement without enterprise replay and distinguishes supplied evidence, native lifecycle qualification and untested enterprise latency."
+      ],
+      "notes": "Unobserved behavioral scenario. Supplied result premises are an evaluation fixture, not measured Kast performance. Golden fixtures prove contract consistency only."
+    },
+    {
       "id": "read-local-preparation-preserves-lifetime",
       "type": "COVERAGE_GAP",
       "source": {
