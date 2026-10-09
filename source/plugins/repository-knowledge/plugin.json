@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "repository-knowledge",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

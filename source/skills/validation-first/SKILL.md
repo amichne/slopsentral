@@ -51,6 +51,12 @@ negative control that must fail or remain unchanged and likely confounders.
 Mocks must not encode the desired conclusion. Prefer a deterministic focused
 regression or compiler/type proof for a static claim when it tests the mechanism.
 
+Freeze the input fixture, independently derived oracle, command, and source
+identity before comparing candidates. A changed fixture or assertion requires
+a new comparison. Label each claim as source-confirmed, reproduced at the named
+boundary, qualified in the target environment, or untested. These labels describe
+proof scope; they do not replace the card's test execution status.
+
 Widen when a narrower layer passes and a new claim needs proof, when the fixture
 is unrepresentative, or when a boundary issue appears. Do not wait for narrow-test
 polish. Name the claim the earlier evidence cannot establish and why integration,

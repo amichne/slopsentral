@@ -76,8 +76,8 @@
       "successChecklist": [
         "The operation has source-backed request, response, failure, and security contracts.",
         "Validator-backed examples reject the invalid combinations.",
-        "Treat a component-only edit as a complete operation contract.",
-        "Allow ambiguous failure strings or permissive extra fields without an intentional extension point."
+        "The run does not treat a component-only edit as a complete operation contract.",
+        "The run does not allow ambiguous failure strings or permissive extra fields without an intentional extension point."
       ]
     },
     {
@@ -96,8 +96,8 @@
       "successChecklist": [
         "The rating cites the concrete contract boundaries and observed validator results.",
         "Recommended fixes follow from the rubric and remain within the read-only scope.",
-        "Give an unsupported overall quality score or rewrite the specification during a read-only review.",
-        "Treat a passing schema validator as complete runtime or security proof."
+        "The run does not give an unsupported overall quality score or rewrite the specification during a read-only review.",
+        "The run does not treat a passing schema validator as complete runtime or security proof."
       ]
     }
   ]

@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "api-contracts",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

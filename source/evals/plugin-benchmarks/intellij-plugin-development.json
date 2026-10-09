@@ -136,6 +136,27 @@
         "Unchanged, changed, and removal reimports reconcile only owned state.",
         "Task result, cancellation, and structured failure are tested."
       ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "read-local-preparation-preserves-lifetime",
+      "title": "Read local preparation preserves lifetime",
+      "purpose": "Check authority, lifetime, and proof scope against a source-backed adversarial case.",
+      "routingCaseIds": [
+        "read-local-preparation-preserves-lifetime"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-psi-indexing"
+      },
+      "userInput": "Review this optional PSI dependency provider: it eagerly hashes all inputs before subject admission, shares positive state across native retries, and publishes after cancellation. Propose the smallest correction and production-boundary cases without changing code. Use only the supplied disposable fixture. Do not edit files, commit, push, install, activate hooks, or modify remote state.",
+      "successChecklist": [
+        "Admit subject, scope, authority, and current budget before optional preparation; initialize retained state lazily.",
+        "Scope positive reuse to one native read; retain finite negative causes by universe and close providers on every exit.",
+        "Cases require zero rejected-request preparation, one lazy capture, eligible reuse, and fresh capture after close.",
+        "Cases cover changed authoritative dependencies, current-budget rejection on hits, cancellation, and idempotent release.",
+        "The run rejects the forbidden claims and retains untested boundaries."
+      ]
     }
   ]
 }

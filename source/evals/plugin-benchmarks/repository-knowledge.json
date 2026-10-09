@@ -75,8 +75,8 @@
       "successChecklist": [
         "The selected backend and external owner are named, with missing tools reported rather than guessed.",
         "Changed pages and Claims are verified; pending CI remains pending.",
-        "Copy an upstream OpenWiki skill into local canonical source.",
-        "Create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
+        "The run does not copy an upstream OpenWiki skill into local canonical source.",
+        "The run does not create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
       ]
     },
     {
@@ -114,8 +114,8 @@
       "successChecklist": [
         "The framework validator and broken-link check pass for the changed navigation.",
         "Generated boundaries and source-backed claims are retained, and the rendered result is inspected.",
-        "Hand-edit generated public contracts or omit navigation for a new page.",
-        "Call build success proof of rendered diagram readability without inspecting it."
+        "The run does not hand-edit generated public contracts or omit navigation for a new page.",
+        "The run does not call build success proof of rendered diagram readability without inspecting it."
       ]
     },
     {
@@ -134,8 +134,8 @@
       "successChecklist": [
         "Claims, assumptions, decisions, and verification obligations remain distinct.",
         "Reader testing resolves ambiguities that would change the decision.",
-        "Invent a guarantee or require section-by-section approval without a user request.",
-        "Treat polished prose as evidence that technical claims are true."
+        "The run does not invent a guarantee or require section-by-section approval without a user request.",
+        "The run does not treat polished prose as evidence that technical claims are true."
       ]
     },
     {
@@ -154,8 +154,8 @@
       "successChecklist": [
         "Only the requested prose changes and its meaning is preserved.",
         "The trace contains no marker-driven routing, build, or script-safety activation.",
-        "Load primitive-routing-evaluation, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
-        "Run a build, generate knowledge, or change configuration for this prose-only request."
+        "The run does not load primitive-routing-evaluation, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
+        "The run does not run a build, generate knowledge, or change configuration for this prose-only request."
       ]
     }
   ]
