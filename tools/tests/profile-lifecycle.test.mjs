@@ -33,7 +33,8 @@ const plugins = ${JSON.stringify([
   "pkl-configuration",
   "repository-knowledge",
   "skill-read-policy",
-  "software-engineering"
+  "software-engineering",
+  "engineering-excellence"
 ])};
 const readState = () => fs.existsSync(statePath)
   ? JSON.parse(fs.readFileSync(statePath, "utf8"))
@@ -236,9 +237,11 @@ test("plan and apply reconcile the marketplace and selected plugins", (t) => {
   assert.deepEqual(planned.output.operations.map(({ type }) => type), [
     "MARKETPLACE_ADD_PLANNED",
     "PLUGIN_INSTALL_PLANNED",
+    "PLUGIN_INSTALL_PLANNED",
     "FILE_CREATE_PLANNED",
   ]);
-  assert.deepEqual(planned.output.operations.slice(1, 2).map(({ pluginId }) => pluginId), [
+  assert.deepEqual(planned.output.operations.slice(1, 3).map(({ pluginId }) => pluginId), [
+    "engineering-excellence@slopsentral",
     "software-engineering@slopsentral",
   ]);
   assert.deepEqual(codexCalls(context), [
@@ -251,16 +254,17 @@ test("plan and apply reconcile the marketplace and selected plugins", (t) => {
   assert.equal(applied.status, 0, diagnostic(applied));
   assert.equal(applied.output.type, "PROFILE_APPLIED");
   assert.equal(applied.output.hookReview.type, "HOOK_REVIEW_REQUIRED");
-  assert.deepEqual(applied.output.hookReview.hooks, ["software-engineering-context"]);
+  assert.deepEqual(applied.output.hookReview.hooks, ["engineering-excellence-context", "software-engineering-context"]);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(context.codexHome, "fake-codex-state.json"), "utf8")), {
     marketplace: true,
-    installed: ["software-engineering"],
+    installed: ["engineering-excellence", "software-engineering"],
   });
   const generated = fs.readFileSync(
     path.join(context.codexHome, "local-development-default.config.toml"),
     "utf8",
   );
   assert.match(generated, /\[plugins\."software-engineering@slopsentral"\]\nenabled = true/);
+  assert.match(generated, /\[plugins\."engineering-excellence@slopsentral"\]\nenabled = true/);
   assert.match(generated, /\[plugins\."pkl-configuration@slopsentral"\]\nenabled = false/);
 });
 

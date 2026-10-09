@@ -225,7 +225,7 @@
       "entrypoint": ".agents/plugins/marketplace.json",
       "scope": "plugins in this workflow profile"
     }],
-    "plugins": ["software-engineering"],
+    "plugins": ["software-engineering", "engineering-excellence"],
     "standaloneSkills": [],
     "hookPolicy": {"type": "HOOK_POLICY", "mode": "ADVISORY"},
     "reconciliation": {"type": "PLUGIN_RECONCILIATION", "unselected": "DISABLE_UNSELECTED"},

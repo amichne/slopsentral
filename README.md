@@ -5,11 +5,13 @@ plugins, hooks, agents, concepts, and workflow profiles.
 
 ## Choose a Plugin
 
-Start with **Software Engineering** for code changes, tests, Git, PRs, and CI.
-Keep it selected for your repository and add a specialty when the task needs one:
+Start with **Software Engineering** for code changes, tests, Git, PRs, and CI,
+and **Engineering Excellence** for the domain and contract design standard.
+The code profiles select both. Add a specialty when the task needs one:
 
 | Task | Add or choose |
 | --- | --- |
+| Invariant representation, proof preservation, and closed failures | [Engineering Excellence](docs/engineering-excellence.md); usable on its own for design or review |
 | Kotlin and Gradle | Kotlin Engineering |
 | IntelliJ Platform plugins | IntelliJ Plugin Development, plus Kotlin Engineering for Kotlin code |
 | Pkl configuration | Pkl Configuration |
@@ -44,12 +46,13 @@ node tools/catalog.mjs --profile kotlin-repo-default --json
 ## Instruction Delivery
 
 Install and select plugins through the host's marketplace interface. Slopsentral
-has no global binary or launch wrapper. Three read-only context hooks deliver
+has no global binary or launch wrapper. Four read-only context hooks deliver
 canonical instruction dependencies through Codex `SessionStart.additionalContext`.
 They cover startup, resume, clear, and compaction, without installing plugins,
 rewriting configuration, or recording transcript-based deduplication state.
-Software Engineering supplies agent-execution and engineering-design guidance,
-Kotlin Engineering adds Kotlin guidance, and API Contracts adds schema guidance.
+Software Engineering supplies execution guidance, Engineering Excellence owns
+engineering-design guidance, Kotlin Engineering adds Kotlin guidance, and API
+Contracts adds schema guidance.
 
 Review new or changed hook definitions through the host's `/hooks` interface.
 Installation is not hook trust: an untrusted or disabled hook does not deliver
@@ -65,7 +68,8 @@ separately. See [architecture](source/ARCHITECTURE.md).
 
 The former `repository-profile` startup hook is retired. Starting or resuming a
 session no longer installs plugins or rewrites repository configuration. Select
-Software Engineering and Kotlin Engineering for Kotlin work through the host.
+Software Engineering, Engineering Excellence, and Kotlin Engineering for Kotlin
+work through the host.
 Plugin selection makes skills available; the task determines which skills to use.
 
 Workflow profiles remain declarative plugin selections. Maintainers can use the

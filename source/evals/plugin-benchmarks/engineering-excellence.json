@@ -1,0 +1,129 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "engineering-excellence",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-6.1-sol",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "node source/skills/semantic-ratchet/scripts/check-proof-examples.mjs",
+      "node tools/validate-source-graph.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Definitions and golden fixtures are proposed acceptance contracts, not observed model behavior.",
+    "Run only in a disposable local worktree with Node/AJV, Bash, and the declared Kotlin compiler ready.",
+    "No remote writes, live installation, or publication are authorized by this benchmark.",
+    "Sample checks prove their encoded obligations; a review must verify that any edited example still tests the actual requirement."
+  ],
+  "setupQuestions": [
+    "Which pinned local fixture and compiler version will expose the target proof-loss boundary?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "proof-preservation-requires-strong-consumers",
+      "title": "Proof preservation requires strong consumers",
+      "purpose": "Evaluate whether the agent preserves the named proof and reports the enforcement boundary honestly.",
+      "routingCaseIds": [
+        "proof-preservation-requires-strong-consumers"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "userInput": "This application checks an identifier and an authorization condition, then passes the original primitive values to another module. Change the contracts so downstream operations require those established facts. Keep the work local. Use only the supplied disposable fixture. Do not commit, push, publish, install into a live environment, or modify remote state.",
+      "successChecklist": [
+        "Identify the existing invariant owner, resolved consumers, and proof-loss boundary before editing.",
+        "Require refined values and closed outcomes at consumer contracts; keep construction controlled.",
+        "Demonstrate a legal path and a forbidden call rejected by the compiler or strongest available check.",
+        "A named misuse fails for the intended type or contract reason.",
+        "The legal path retains the stronger representation through downstream consumers."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "api-variants-retain-domain-proof",
+      "title": "Api variants retain domain proof",
+      "purpose": "Evaluate whether the agent preserves the named proof and reports the enforcement boundary honestly.",
+      "routingCaseIds": [
+        "api-variants-retain-domain-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "userInput": "A JSON API represents verification success and failure with a free-form status and nullable fields. Encode the legal shapes before implementing the parser, and show that mixed-case and missing-evidence payloads are rejected. Keep the work local. Use only the supplied disposable fixture. Do not commit, push, publish, install into a live environment, or modify remote state.",
+      "successChecklist": [
+        "Define closed exclusive variants with required type tags in CAPS_CASE and case-owned required fields.",
+        "Reuse canonical schemas through references and map parsed transport values into domain representations.",
+        "Exercise valid cases and invalid null, unknown-tag, extra-field, and mixed-variant cases.",
+        "The schema validator accepts the intended shapes and rejects each named illegal payload.",
+        "The mapping preserves the facts required by the application consumer."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "shell-failure-preserves-transition-contract",
+      "title": "Shell failure preserves transition contract",
+      "purpose": "Evaluate whether the agent preserves the named proof and reports the enforcement boundary honestly.",
+      "routingCaseIds": [
+        "shell-failure-preserves-transition-contract"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "userInput": "This shell workflow verifies an artifact and then publishes it. Make the stage outcomes explicit, ensure verification failure cannot reach publication, and retain the same bytes between verification and publication. Keep the work local. Use only the supplied disposable fixture. Do not commit, push, publish, install into a live environment, or modify remote state.",
+      "successChecklist": [
+        "Centralize ingress and stage transitions with an explicit finite status and output contract.",
+        "Use a controlled snapshot and expose effect failures without claiming unproved rollback.",
+        "Inject verification, publication, and cleanup failures and inspect the later-stage effects.",
+        "Failed verification prevents publication and emits a supported failure outcome.",
+        "Publication and cleanup failures cannot produce an unqualified success result."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "proof-loss-review-names-model-obligations",
+      "title": "Proof loss review names model obligations",
+      "purpose": "Evaluate whether the agent preserves the named proof and reports the enforcement boundary honestly.",
+      "routingCaseIds": [
+        "proof-loss-review-names-model-obligations"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "userInput": "Review this checked value crossing a module boundary. Distinguish a declared proof obligation carried only by local control flow from a boundary whose obligation is not modeled. Explain the evidence and limits without changing code. Use only the supplied disposable fixture. Do not commit, push, publish, install into a live environment, or modify remote state.",
+      "successChecklist": [
+        "Trace predicate identity, value flow, the boundary obligation, and proof materialization using semantic evidence where available.",
+        "Report witnessed proof loss separately from an undeclared obligation or incomplete flow model.",
+        "Keep the scope read-only and the claimed guarantee relative to the available model.",
+        "Each finding identifies its predicate, flow path, boundary obligation, and materialization evidence or the specific missing model.",
+        "The handoff does not upgrade a modeling question into a proven runtime bug."
+      ]
+    }
+  ]
+}

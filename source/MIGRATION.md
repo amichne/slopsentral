@@ -9,7 +9,7 @@ from editing or projecting this source catalog.
 
 | Previous plugin | Replacement |
 | --- | --- |
-| engineering-baseline | software-engineering |
+| engineering-baseline | software-engineering + engineering-excellence |
 | effective-delivery | software-engineering |
 | developer-tools | software-engineering for everyday Git, shell safety, data queries, and mise; personal-setup for CLI authoring and shell integration |
 | terminal-ui-design | personal-setup |
@@ -32,11 +32,11 @@ policy. RED/GREEN checkpoints do not require commits or remote publication.
 
 | Profile | Selected plugins |
 | --- | --- |
-| local-development-default | software-engineering |
-| kotlin-repo-default | software-engineering + kotlin-engineering |
-| intellij-plugin-default | software-engineering + kotlin-engineering + intellij-plugin-development |
+| local-development-default | software-engineering + engineering-excellence |
+| kotlin-repo-default | software-engineering + engineering-excellence + kotlin-engineering |
+| intellij-plugin-default | software-engineering + engineering-excellence + kotlin-engineering + intellij-plugin-development |
 | documentation-default | repository-knowledge |
-| agent-authoring-default | software-engineering + personal-setup |
+| agent-authoring-default | software-engineering + engineering-excellence + personal-setup |
 
 Repository Knowledge is optional. Documentation alone no longer installs
 engineering hooks. Profiles retain their names so callers can select the same
@@ -52,6 +52,21 @@ Old and replacement plugins should not remain enabled together.
 No installed cache, user configuration, hook trust state, or remote marketplace
 is changed by this source migration. Standalone skill installation remains an
 advanced alternative, not a prerequisite for the normal plugin chooser.
+
+## Engineering Excellence Extraction
+
+Software Engineering 1.4.0 transfers Semantic Ratchet and the engineering-design
+policy to Engineering Excellence 1.0.0. The canonical skill and instruction paths
+remain stable, and each primitive still has one owner. Standard code profiles
+select both plugins so they retain the earlier capability. Documentation-only
+profiles continue without engineering policy.
+
+After publication, update Software Engineering and install Engineering Excellence
+together, then review `engineering-excellence-context` through the host's hook
+interface. The Software Engineering context hook now delivers agent-execution
+only; the new context hook delivers engineering-design. An existing older
+Software Engineering installation may still deliver the old policy until updated.
+The source change neither modifies installed caches nor changes hook trust.
 
 ## Retiring The Global CLI
 
@@ -111,7 +126,7 @@ skill-read-policy plugin. Placeholder migration skills stay retired.
 
 ## Evidence
 
-The catalog has 10 plugins: one default, eight specialties, and one advanced
+The catalog has 9 plugins: one default, seven specialties, and one advanced
 policy. Removing automatic repository activation preserves the skill and
 instruction owners; the retired startup hook is no longer in the install closure.
 Regression checks cover the task selections, unique ownership, profile lifecycle,

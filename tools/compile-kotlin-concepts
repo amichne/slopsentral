@@ -40,3 +40,7 @@ if ! grep -Fq "must be exhaustive" "$diagnostics"; then
 fi
 
 echo "OK Kotlin concepts: $compiled compiled; sealed-when misuse rejected"
+
+# Retain the same compiler authority for the Engineering Excellence examples.
+PATH="$(dirname -- "$compiler"):$PATH" \
+    node "$repo_root/source/skills/semantic-ratchet/scripts/check-proof-examples.mjs"

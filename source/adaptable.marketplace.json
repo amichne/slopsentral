@@ -5,7 +5,7 @@
   "owner": {
     "name": "Amichne"
   },
-  "description": "Start with Software Engineering, then add task-specific plugins for your language, platform, or deliverable.",
+  "description": "Start with Software Engineering and Engineering Excellence for code work, then add language, platform, or deliverable specialties.",
   "management": {
     "type": "MANAGEMENT_POLICY",
     "mode": "CURATED"
@@ -21,7 +21,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "1.3.0"
+        "version": "1.4.0"
       },
       "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
       "tags": [
@@ -48,17 +48,40 @@
         "mise",
         "onboarding",
         "optimization",
-        "proof",
         "pull-requests",
         "release",
         "schemas",
-        "semantic-design",
         "shell",
         "skills",
         "tdd",
         "testing",
-        "typestate",
         "workflow-graph"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "engineering-excellence",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "engineering-excellence",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/engineering-excellence"
+        },
+        "version": "1.0.0"
+      },
+      "description": "Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.",
+      "tags": [
+        "contracts",
+        "domain-modeling",
+        "evidence",
+        "failures",
+        "invariants",
+        "parse-dont-validate",
+        "proof",
+        "semantic-design",
+        "type-safety",
+        "typestate"
       ]
     },
     {
@@ -71,7 +94,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "1.5.2"
+        "version": "1.5.3"
       },
       "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "tags": [
@@ -1043,6 +1066,15 @@
       },
       "path": "hooks/knowledge-overlay.hook.json",
       "name": "knowledge-overlay"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/engineering-excellence-context.hook.json",
+      "name": "engineering-excellence-context"
     }
   ],
   "metadata": {

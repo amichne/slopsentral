@@ -10,7 +10,7 @@ test('everyday implementation and delivery need only one plugin', () => {
   const engineering = plugin('software-engineering');
   assert.ok(engineering, 'Software Engineering must be an installable plugin');
   const closure = pluginClosure(catalog, engineering).refs;
-  for (const name of ['validation-first', 'tdd', 'semantic-ratchet', 'git-change-flow', 'shell-script-safety',
+  for (const name of ['validation-first', 'tdd', 'git-change-flow', 'shell-script-safety',
     'cli-data-pipelines', 'mise-project-tooling', 'github-ci-operations',
     'issue-tracker-operations', 'pull-request-lifecycle', 'delivery-pipeline-design']) {
     assert.ok(closure.has(`SKILL/${name}`), `one installation must include ${name}`);
@@ -24,12 +24,12 @@ test('everyday implementation and delivery need only one plugin', () => {
 
 test('repository defaults add only required specialties', () => {
   const selections = Object.fromEntries(catalog.profiles.map(p => [p.name, p.plugins]));
-  assert.deepEqual(selections['local-development-default'], ['software-engineering']);
-  assert.deepEqual(selections['kotlin-repo-default'], ['software-engineering', 'kotlin-engineering']);
+  assert.deepEqual(selections['local-development-default'], ['software-engineering', 'engineering-excellence']);
+  assert.deepEqual(selections['kotlin-repo-default'], ['software-engineering', 'engineering-excellence', 'kotlin-engineering']);
   assert.deepEqual(selections['intellij-plugin-default'],
-    ['software-engineering', 'kotlin-engineering', 'intellij-plugin-development']);
+    ['software-engineering', 'engineering-excellence', 'kotlin-engineering', 'intellij-plugin-development']);
   assert.deepEqual(selections['documentation-default'], ['repository-knowledge']);
-  assert.deepEqual(selections['agent-authoring-default'], ['software-engineering', 'personal-setup']);
+  assert.deepEqual(selections['agent-authoring-default'], ['software-engineering', 'engineering-excellence', 'personal-setup']);
   for (const profile of catalog.profiles) {
     assert.ok(!profile.plugins.includes('skill-read-policy'));
   }
