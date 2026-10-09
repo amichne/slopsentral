@@ -5,8 +5,8 @@
         "hooks": [
           {
             "additionalContextLimit": 8192,
-            "command": "python3 \"$PLUGIN_ROOT/hooks/inject-instruction-context.py\" --instruction agent-execution",
-            "statusMessage": "Loading software-engineering policy",
+            "command": "python3 \"$PLUGIN_ROOT/hooks/inject-instruction-context.py\" --instruction engineering-design",
+            "statusMessage": "Loading engineering-excellence policy",
             "timeout": 10,
             "type": "command"
           }

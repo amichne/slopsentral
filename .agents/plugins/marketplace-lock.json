@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-08T14:38:32-04:00",
+  "generatedAt": "2026-10-08T23:31:19-04:00",
   "plugins": [
     {
       "name": "software-engineering",
       "references": [
         {
           "name": "software-engineering-context",
-          "sha256": "sha256:fc6b26fe9b8fdf77c474c1a944c4524287e642f4baaf1bdd76bdb35794d16056",
+          "sha256": "sha256:1e0908fbc990024d257b42363e75370719678a8a2e1fd1247812e38d537cfe89",
           "sourcePath": "source/hooks/software-engineering-context.hook.json",
           "targetPath": "hooks/software-engineering-context.hooks.json",
           "type": "HOOK"
@@ -16,13 +16,6 @@
           "sha256": "sha256:6be9c1c159cc876f85c20006ed99a5881e52896ed7331ff30e7a6d0d25dc4a9f",
           "sourcePath": "source/instructions/agent-execution.md",
           "targetPath": "instructions/agent-execution.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "engineering-design",
-          "sha256": "sha256:e69c14aaf1cc0deb86b247c179f1d4e0ef330d1fb60bd68ac421ae6be975102b",
-          "sourcePath": "source/instructions/engineering-design.md",
-          "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
         },
         {
@@ -96,13 +89,6 @@
           "type": "SKILL"
         },
         {
-          "name": "semantic-ratchet",
-          "sha256": "sha256:26084549c0de6da75e3faa28a931b4d4eec2b4771ec75ef4bd6765a77459974f",
-          "sourcePath": "source/skills/semantic-ratchet",
-          "targetPath": "skills/semantic-ratchet",
-          "type": "SKILL"
-        },
-        {
           "name": "shell-script-safety",
           "sha256": "sha256:57672251b7166a3eb46df5611c9c20cd18dcf7ddda26cebf17227a7d5ebf9651",
           "sourcePath": "source/skills/shell-script-safety",
@@ -125,7 +111,35 @@
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "1.3.0"
+      "version": "1.4.0"
+    },
+    {
+      "name": "engineering-excellence",
+      "references": [
+        {
+          "name": "engineering-excellence-context",
+          "sha256": "sha256:979214583d921a21b8e4d71631d947249455fb65912ae22cb6134a131b0d8f4d",
+          "sourcePath": "source/hooks/engineering-excellence-context.hook.json",
+          "targetPath": "hooks/engineering-excellence-context.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "engineering-design",
+          "sha256": "sha256:dcd6151e64886021b166db36ff0b8099a04de0616f14c10d21690b7804fe008d",
+          "sourcePath": "source/instructions/engineering-design.md",
+          "targetPath": "instructions/engineering-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "semantic-ratchet",
+          "sha256": "sha256:56e79bc6796be8470555baafd201bbea77f909f24ef783f6a53960b5226d5ffa",
+          "sourcePath": "source/skills/semantic-ratchet",
+          "targetPath": "skills/semantic-ratchet",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/engineering-excellence/plugin.json",
+      "version": "1.0.0"
     },
     {
       "name": "kotlin-engineering",
@@ -208,7 +222,7 @@
         },
         {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:11c823d1917890762e33a66dd64d2eab9e2f5ebb442b42ac20070409751c957f",
+          "sha256": "sha256:86986f249b13d7cec6b51386218449bc63dfdac3867cfd0fd9e358cfdc4323f4",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
@@ -243,7 +257,7 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "1.5.2"
+      "version": "1.5.3"
     },
     {
       "name": "intellij-plugin-development",
@@ -583,6 +597,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "c5d5f9931e670f833fccf55497657c0844ac012b",
+  "sourceSha": "8ba22c33f3b517ff7d3356a974ae867c4bc2dccb",
   "type": "HYDRATED_MARKETPLACE"
 }

@@ -20,6 +20,9 @@ Read the relevant bundled reference below for the implementation details.
    the invariant and the raw input that can violate it.
 2. Parse once at ingress. Carry a constrained value, closed variant, or explicit
    capability inward instead of repeating checks or adding Boolean state flags.
+   Prefer value classes for domain scalars, with private construction and a
+   companion `parse` function. Keep encoding in adapters that implement a shared
+   serialization abstraction; domain values do not choose an output format.
 3. Choose the smallest owner that can enforce the invariant. Keep pure rules
    separate from I/O and mutable resources. Do not add an abstraction solely for reuse.
 4. Read the focused reference below. Use the repository's established idioms when

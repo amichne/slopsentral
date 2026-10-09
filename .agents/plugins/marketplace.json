@@ -17,6 +17,18 @@
       }
     },
     {
+      "category": "Productivity",
+      "name": "engineering-excellence",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/engineering-excellence",
+        "source": "local"
+      }
+    },
+    {
       "category": "Coding",
       "name": "kotlin-engineering",
       "policy": {

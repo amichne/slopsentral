@@ -24,7 +24,6 @@ Implement, test, review, and deliver code with Git, PR, and CI workflows.
 ## Instruction Primitives
 
 - `agent-execution`: `instructions/agent-execution.md` (source: `source/instructions/agent-execution.md`)
-- `engineering-design`: `instructions/engineering-design.md` (source: `source/instructions/engineering-design.md`)
 
 ## Skill Primitives
 
@@ -38,7 +37,6 @@ Implement, test, review, and deliver code with Git, PR, and CI workflows.
 - `mise-project-tooling`: `skills/mise-project-tooling` (source: `source/skills/mise-project-tooling`)
 - `pull-request-lifecycle`: `skills/pull-request-lifecycle` (source: `source/skills/pull-request-lifecycle`)
 - `repository-onboarding`: `skills/repository-onboarding` (source: `source/skills/repository-onboarding`)
-- `semantic-ratchet`: `skills/semantic-ratchet` (source: `source/skills/semantic-ratchet`)
 - `shell-script-safety`: `skills/shell-script-safety` (source: `source/skills/shell-script-safety`)
 - `tdd`: `skills/tdd` (source: `source/skills/tdd`)
 - `validation-first`: `skills/validation-first` (source: `source/skills/validation-first`)

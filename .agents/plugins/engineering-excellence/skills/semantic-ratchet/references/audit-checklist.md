@@ -17,6 +17,12 @@ Name the fact being asserted, where it is lost, the boundary it crosses, the
 smallest representation that preserves it, and the compiler, type checker,
 schema, exhaustive handler, or focused test expected to reject the old misuse.
 
+For a modeled proof-loss finding, retain the resolved predicate and value,
+supported flow path, declared boundary obligation, and missing materialization
+witness. If the boundary obligation is undeclared, report a modeling question.
+If resolution or flow coverage is incomplete, report that limitation rather
+than claiming proof loss or its absence.
+
 ## Acceptance Standard
 
 Prefer a fix that changes the contract so old invalid calls stop compiling or
