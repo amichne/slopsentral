@@ -81,6 +81,8 @@ Verified reuse may satisfy the requirement without inventing a new type.
   for lifecycle protocols, authorization, and discharged preconditions.
 - Read [module-boundaries.md](references/module-boundaries.md) for public APIs,
   services, repositories, adapters, generated models, or persistence seams.
+- Read [authority-and-evidence.md](references/authority-and-evidence.md) when
+  compiler identities, partial results, coverage, or freshness cross a boundary.
 - Read [audit-checklist.md](references/audit-checklist.md) when reviewing code or
   planning a ratchet.
 - Read [refactor-playbook.md](references/refactor-playbook.md) when implementing

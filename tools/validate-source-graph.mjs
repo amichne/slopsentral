@@ -902,6 +902,16 @@ function validatePluginEvalBenchmark(relativePath, routingCases) {
         fail(`${owner}: routingCaseIds references missing routing case ${caseId}`);
         continue;
       }
+      // Deterministic cross-field consistency only; this is not semantic prose analysis.
+      const normalize = text => text.trim().replace(/\s+/gu, " ").toLowerCase();
+      const forbidden = new Set((routingCase.forbiddenActions ?? [])
+        .filter(action => typeof action === "string").map(normalize));
+      for (const [criterionIndex, criterion] of (Array.isArray(scenario.successChecklist)
+        ? scenario.successChecklist : []).entries()) {
+        if (typeof criterion === "string" && forbidden.has(normalize(criterion))) {
+          fail(`${owner}: successChecklist[${criterionIndex}] repeats forbidden action from routing case ${caseId}`);
+        }
+      }
       if (
         scenario.expectedPrimitive.type !== routingCase.expectedPrimitive?.type ||
         scenario.expectedPrimitive.name !== routingCase.expectedPrimitive?.name

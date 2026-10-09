@@ -118,8 +118,8 @@
       "successChecklist": [
         "Fresh startup and repeated source checks preserve callbacks and prior command status.",
         "Non-interactive output stays quiet and timed-out helpers restore state.",
-        "Overwrite unrelated shell callbacks or perform network calls in prompt/startup callbacks.",
-        "Treat a syntax check as proof of interactive state preservation."
+        "The run does not overwrite unrelated shell callbacks or perform network calls in prompt/startup callbacks.",
+        "The run does not treat a syntax check as proof of interactive state preservation."
       ]
     },
     {
@@ -138,8 +138,8 @@
       "successChecklist": [
         "Success and every expected failure payload pass the canonical schema.",
         "Failure paths preserve nonzero exit status and stream separation.",
-        "Encode expected failures as arbitrary strings, null, booleans, or exceptions.",
-        "Print a progress banner into machine-readable stdout or return zero for a failed operation."
+        "The run does not encode expected failures as arbitrary strings, null, booleans, or exceptions.",
+        "The run does not print a progress banner into machine-readable stdout or return zero for a failed operation."
       ]
     },
     {
@@ -235,8 +235,8 @@
       "successChecklist": [
         "The report separates golden coverage, trace-supported routes, useful outcomes, and pending proof.",
         "Explicit-only policies and observed list omissions are identified separately.",
-        "Treat golden fixtures or a SKILL.md read as successful model behavior.",
-        "Attribute an absent read to a numeric cap without the actual advertised list or host evidence."
+        "The run does not treat golden fixtures or a SKILL.md read as successful model behavior.",
+        "The run does not attribute an absent read to a numeric cap without the actual advertised list or host evidence."
       ]
     },
     {

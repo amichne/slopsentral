@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "intellij-plugin-development",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

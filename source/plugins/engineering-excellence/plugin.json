@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "engineering-excellence",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

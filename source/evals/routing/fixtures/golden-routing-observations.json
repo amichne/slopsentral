@@ -37,7 +37,11 @@
     "proof-preservation-requires-strong-consumers",
     "api-variants-retain-domain-proof",
     "shell-failure-preserves-transition-contract",
-    "proof-loss-review-names-model-obligations"
+    "proof-loss-review-names-model-obligations",
+    "authority-preserves-partial-evidence",
+    "native-scope-and-cancellation-proof",
+    "faithful-surrogate-qualifies-bounded-improvement",
+    "read-local-preparation-preserves-lifetime"
   ],
   "observations": [
     {
@@ -1446,6 +1450,94 @@
         "Implement a proof-loss analyzer or modify code during a read-only review."
       ],
       "notes": "Expected contract fixture only; this scenario has no observed model run."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "authority-preserves-partial-evidence",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "satisfiedAllowedActions": [
+        "Trace compiler-issued identity and the original input universe through the consumer.",
+        "Keep exactness, completeness, model coverage, freshness, and retained rejection causes distinct."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The review names the foreign-model and uncaptured-module rejection cases.",
+        "The handoff preserves partial evidence and identifies remaining runtime proof."
+      ],
+      "avoidedForbiddenActions": [
+        "Treat exact observed items as a complete universe.",
+        "Replace original authority with a matching name or reconstructed graph.",
+        "Turn uncaptured input or partial evidence into a complete empty success."
+      ],
+      "notes": "Expected contract fixture only; no live model observation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "native-scope-and-cancellation-proof",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "satisfiedAllowedActions": [
+        "Separate requested scope, underlying inventory, fixture work counts, and native latency.",
+        "Distinguish semantic budget, host containment, transport timeout, cancellation request, native drain, and resource release."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The proposed check freezes workload, oracle, source identity, and includes a negative control.",
+        "The handoff labels fixture work as reproduced only if run, and keeps native drain and latency untested."
+      ],
+      "avoidedForbiddenActions": [
+        "Report target-scale latency or agent usability from synthetic work counters.",
+        "Infer narrow underlying search from an exact-name output filter.",
+        "Treat caller completion as proof of native drain or increase limits before phase observation."
+      ],
+      "notes": "Expected contract fixture only; no live model observation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "faithful-surrogate-qualifies-bounded-improvement",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "satisfiedAllowedActions": [
+        "Accept a qualified conclusion that the candidate removes the represented repeated-capture pathology when the supplied mechanism, frozen oracle, controls and invariants support it.",
+        "Use native integration evidence for read closure and stale-result suppression while retaining the surrogate's workload and environment limits."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The conclusion names the frozen identities, oracle, negative control, old/candidate scaling and preserved invariants that support the bounded improvement.",
+        "The handoff accepts the scoped improvement without enterprise replay and distinguishes supplied evidence, native lifecycle qualification and untested enterprise latency."
+      ],
+      "avoidedForbiddenActions": [
+        "Demand inaccessible enterprise incident replay as a blanket prerequisite for any improvement conclusion.",
+        "Promote represented work reduction or native lifecycle checks into enterprise latency or agent usability proof.",
+        "Treat supplied evidence as a locally reproduced execution when no replay was run."
+      ],
+      "notes": "Expected contract fixture only; no live model observation or measured performance."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "read-local-preparation-preserves-lifetime",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-psi-indexing"
+      },
+      "satisfiedAllowedActions": [
+        "Admit subject, scope, authority, and current budget before optional preparation; initialize retained state lazily.",
+        "Scope positive reuse to one native read; retain finite negative causes by universe and close providers on every exit."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Cases require zero rejected-request preparation, one lazy capture, eligible reuse, and fresh capture after close.",
+        "Cases cover changed authoritative dependencies, current-budget rejection on hits, cancellation, and idempotent release."
+      ],
+      "avoidedForbiddenActions": [
+        "Keep live PSI or positive captures across native read attempts without authoritative lifetime proof.",
+        "Publish stale or cancelled results or let a rejected universe disable independent inputs.",
+        "Claim native speed from lifecycle fixture counters."
+      ],
+      "notes": "Expected contract fixture only; no live model observation."
     }
   ]
 }

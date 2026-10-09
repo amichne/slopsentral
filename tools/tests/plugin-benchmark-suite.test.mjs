@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
@@ -72,4 +73,45 @@ test("CI validates benchmark definitions without executing agents", () => {
 
   assert.match(workflows, /node tools\/validate-source-graph\.mjs/u);
   assert.doesNotMatch(workflows, /plugin-eval\s+benchmark/u);
+});
+
+function rubricFixture(t) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'benchmark-rubric-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.cpSync(path.join(repoRoot, 'source'), path.join(root, 'source'), { recursive: true });
+  const file = path.join(root, 'source/evals/plugin-benchmarks/software-engineering.json');
+  const benchmark = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const scenario = benchmark.scenarios.find(entry => entry.id === 'pr-feedback-repair-rechecks-current-head');
+  // Isolate the mutation from the historical inverted criteria being repaired.
+  scenario.successChecklist = ['The run retains current-head evidence.'];
+  return { scenario, check() {
+    fs.writeFileSync(file, JSON.stringify(benchmark));
+    return spawnSync(process.execPath, [path.join(repoRoot, 'tools/validate-source-graph.mjs'), '--repo', root],
+      { encoding: 'utf8' });
+  } };
+}
+
+test('benchmark success cannot repeat a linked forbidden action', t => {
+  const fixture = rubricFixture(t);
+  fixture.scenario.successChecklist.push('Reuse a passing check or review from an older PR head.');
+  const result = fixture.check();
+  assert.equal(result.status, 1, result.stdout + result.stderr);
+  assert.match(result.stdout + result.stderr, /successChecklist.*repeats forbidden action.*pr-feedback-repair-rechecks-current-head/u);
+});
+
+test('rubric collision checks every linked route and normalizes case and whitespace', t => {
+  const fixture = rubricFixture(t);
+  fixture.scenario.routingCaseIds.push('push-request-means-branch-commit-push-pr');
+  fixture.scenario.successChecklist.push('  USE broad staging\n that captures unrelated user work.  ');
+  const result = fixture.check();
+  assert.equal(result.status, 1, result.stdout + result.stderr);
+  assert.match(result.stdout + result.stderr, /successChecklist.*repeats forbidden action.*push-request-means-branch-commit-push-pr/u);
+});
+
+test('explicit refusal and forbidden text from an unlinked route remain valid rubric text', t => {
+  const fixture = rubricFixture(t);
+  fixture.scenario.successChecklist.push('The run refuses to reuse a passing check or review from an older PR head.');
+  fixture.scenario.successChecklist.push('Claim a fresh-client invocation from an enabled entry or passing unit tests.');
+  const result = fixture.check();
+  assert.equal(result.status, 0, result.stdout + result.stderr);
 });

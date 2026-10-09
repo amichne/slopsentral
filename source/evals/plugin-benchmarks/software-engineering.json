@@ -261,12 +261,13 @@
         "type": "SKILL",
         "name": "delivery-pipeline-design"
       },
-      "userInput": "Qualify this installed tool end to end: pin the source and artifact, verify discovery in a fresh client, invoke a known semantic operation, and exercise recovery in the disposable target. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "Qualify this installed tool end to end: pin the source commit/tree, producer and artifact digest, installed bytes and loaded runtime identity (the version label may match a stale process), verify discovery in a fresh client, invoke a known semantic operation, and exercise recovery in the disposable target. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
         "Artifact identity and fresh discovery/invocation evidence refer to the same installed candidate.",
         "Recovery repeats the semantic operation, or the missing recovery evidence remains explicit.",
-        "Claim a fresh-client invocation from an enabled entry or passing unit tests.",
-        "Restart or replace a live installation outside the authorized disposable target."
+        "The run does not claim a fresh-client invocation from an enabled entry or passing unit tests.",
+        "The run does not restart or replace a live installation outside the authorized disposable target.",
+        "A matching version label with missing or stale loaded-runtime identity leaves current-candidate qualification open; tested tree promotion does not replace exact-head CI."
       ]
     },
     {
@@ -285,8 +286,8 @@
       "successChecklist": [
         "Paired reports establish workload equivalence before aggregating timings.",
         "The handoff names measured dimensions, exact revisions, samples, and remaining limitations.",
-        "Call fewer rows, incomplete coverage, or a changed query a speed improvement.",
-        "Infer less native work from lower public latency or lessWork=false."
+        "The run does not call fewer rows, incomplete coverage, or a changed query a speed improvement.",
+        "The run does not infer less native work from lower public latency or lessWork=false."
       ]
     },
     {
@@ -305,8 +306,8 @@
       "successChecklist": [
         "The handoff separates valid repair, local re-review, external review, and exact-head CI proof.",
         "Pending or unavailable external checks remain explicit.",
-        "Implement speculative review advice or merge with required checks pending, cancelled, or stale.",
-        "Reuse a passing check or review from an older PR head."
+        "The run does not implement speculative review advice or merge with required checks pending, cancelled, or stale.",
+        "The run does not reuse a passing check or review from an older PR head."
       ]
     },
     {
@@ -362,6 +363,48 @@
         "The target shell-script-safety is not read or followed.",
         "Only README prose changes; no build or executable edits occur.",
         "Use the prose owner if available; record an unavailable companion rather than installing one."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "native-scope-and-cancellation-proof",
+      "title": "Native scope and cancellation proof",
+      "purpose": "Check authority, lifetime, and proof scope against a source-backed adversarial case.",
+      "routingCaseIds": [
+        "native-scope-and-cancellation-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "A controlled production-rule fixture visits fewer objects for the same query. The exact-name result filter still triggers broad inventory, and the caller times out while native work remains active. Audit what the evidence proves and define the next faithful check. Keep the audit read-only. Use only the supplied disposable fixture. Do not edit files, commit, push, install, activate hooks, or modify remote state.",
+      "successChecklist": [
+        "Separate requested scope, underlying inventory, fixture work counts, and native latency.",
+        "Distinguish semantic budget, host containment, transport timeout, cancellation request, native drain, and resource release.",
+        "The proposed check freezes workload, oracle, source identity, and includes a negative control.",
+        "The handoff labels fixture work as reproduced only if run, and keeps native drain and latency untested.",
+        "The run rejects the forbidden claims and retains untested boundaries."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "faithful-surrogate-qualifies-bounded-improvement",
+      "title": "Faithful surrogate qualifies a bounded improvement",
+      "purpose": "Check that sufficient mechanism evidence supports a scoped improvement without requiring inaccessible enterprise replay.",
+      "routingCaseIds": [
+        "faithful-surrogate-qualifies-bounded-improvement"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Review supplied old and candidate results from a public surrogate that exercises the production preparation boundary and preserves repeated-capture scaling. Fixture, oracle, source identities and resource grants are frozen. The negative control retains the pathology; candidate work counts remove it while answer, completeness, freshness and cancellation checks pass. A small native integration verifies read closure and stale-result suppression. Qualify the represented improvement and its limits. The private enterprise environment is inaccessible. Keep the review read-only. Use only the supplied disposable fixture. Do not edit files, commit, push, install, activate hooks, or modify remote state.",
+      "successChecklist": [
+        "Accept a qualified conclusion that the candidate removes the represented repeated-capture pathology when the supplied mechanism, frozen oracle, controls and invariants support it.",
+        "Use native integration evidence for read closure and stale-result suppression while retaining the surrogate's workload and environment limits.",
+        "The conclusion names the frozen identities, oracle, negative control, old/candidate scaling and preserved invariants that support the bounded improvement.",
+        "The handoff accepts the scoped improvement without enterprise replay and distinguishes supplied evidence, native lifecycle qualification and untested enterprise latency.",
+        "The run rejects the blanket replay gate and preserves the limits of the accepted conclusion."
       ]
     }
   ]

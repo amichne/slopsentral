@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "personal-setup",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

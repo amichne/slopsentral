@@ -21,7 +21,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "1.4.0"
+        "version": "1.4.1"
       },
       "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
       "tags": [
@@ -68,7 +68,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/engineering-excellence"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "description": "Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.",
       "tags": [
@@ -140,7 +140,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/intellij-plugin-development"
         },
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
       "tags": [
@@ -197,7 +197,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/api-contracts"
         },
-        "version": "1.1.0"
+        "version": "1.1.1"
       },
       "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
       "tags": [
@@ -222,7 +222,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/repository-knowledge"
         },
-        "version": "1.2.0"
+        "version": "1.2.1"
       },
       "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
       "tags": [
@@ -257,7 +257,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/personal-setup"
         },
-        "version": "0.2.0"
+        "version": "0.2.1"
       },
       "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
       "tags": [

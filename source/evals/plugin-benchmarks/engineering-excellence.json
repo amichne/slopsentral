@@ -124,6 +124,27 @@
         "Each finding identifies its predicate, flow path, boundary obligation, and materialization evidence or the specific missing model.",
         "The handoff does not upgrade a modeling question into a proven runtime bug."
       ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "authority-preserves-partial-evidence",
+      "title": "Authority preserves partial evidence",
+      "purpose": "Check authority, lifetime, and proof scope against a source-backed adversarial case.",
+      "routingCaseIds": [
+        "authority-preserves-partial-evidence"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "userInput": "Review this compiler-backed query result: exact observed items come from a partial universe, and a projection uses matching names from a different model. Require the consumer to preserve original authority, completion, coverage, and freshness obligations. Keep the review read-only. Use only the supplied disposable fixture. Do not edit files, commit, push, install, activate hooks, or modify remote state.",
+      "successChecklist": [
+        "Trace compiler-issued identity and the original input universe through the consumer.",
+        "Keep exactness, completeness, model coverage, freshness, and retained rejection causes distinct.",
+        "The review names the foreign-model and uncaptured-module rejection cases.",
+        "The handoff preserves partial evidence and identifies remaining runtime proof.",
+        "The run rejects the forbidden claims and retains untested boundaries."
+      ]
     }
   ]
 }

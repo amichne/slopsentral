@@ -1,0 +1,166 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 2,
+  "name": "reliability-workflows",
+  "description": "Unobserved source-backed cases for original authority, measured work, and native read lifetime.",
+  "cases": [
+    {
+      "id": "authority-preserves-partial-evidence",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-09",
+        "evidenceRefs": [
+          "https://github.com/amichne/kast/pull/965",
+          "https://github.com/amichne/kast/pull/966"
+        ]
+      },
+      "prompt": "Review this compiler-backed query result: exact observed items come from a partial universe, and a projection uses matching names from a different model. Require the consumer to preserve original authority, completion, coverage, and freshness obligations. Keep the review read-only.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Proposed source-backed contract; no model replay is recorded.",
+        "risk": "A narrow result or fixture could be promoted beyond its authority or observed boundary.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Trace compiler-issued identity and the original input universe through the consumer.",
+        "Keep exactness, completeness, model coverage, freshness, and retained rejection causes distinct."
+      ],
+      "forbiddenActions": [
+        "Treat exact observed items as a complete universe.",
+        "Replace original authority with a matching name or reconstructed graph.",
+        "Turn uncaptured input or partial evidence into a complete empty success."
+      ],
+      "recoveryExpectation": "Use the existing owner and preserve the requested read-only scope and missing evidence.",
+      "productiveOutcome": "The review identifies a bounded correction and the precise evidence needed to qualify it.",
+      "verificationEvidence": [
+        "The review names the foreign-model and uncaptured-module rejection cases.",
+        "The handoff preserves partial evidence and identifies remaining runtime proof."
+      ],
+      "notes": "Unobserved behavioral scenario. Golden fixtures prove contract consistency only."
+    },
+    {
+      "id": "native-scope-and-cancellation-proof",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-09",
+        "evidenceRefs": [
+          "https://github.com/amichne/kast/pull/963",
+          "https://github.com/amichne/kast/pull/964",
+          "https://github.com/amichne/kast/pull/966"
+        ]
+      },
+      "prompt": "A controlled production-rule fixture visits fewer objects for the same query. The exact-name result filter still triggers broad inventory, and the caller times out while native work remains active. Audit what the evidence proves and define the next faithful check. Keep the audit read-only.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Proposed source-backed contract; no model replay is recorded.",
+        "risk": "A narrow result or fixture could be promoted beyond its authority or observed boundary.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Separate requested scope, underlying inventory, fixture work counts, and native latency.",
+        "Distinguish semantic budget, host containment, transport timeout, cancellation request, native drain, and resource release."
+      ],
+      "forbiddenActions": [
+        "Report target-scale latency or agent usability from synthetic work counters.",
+        "Infer narrow underlying search from an exact-name output filter.",
+        "Treat caller completion as proof of native drain or increase limits before phase observation."
+      ],
+      "recoveryExpectation": "Use the existing owner and preserve the requested read-only scope and missing evidence.",
+      "productiveOutcome": "The review identifies a bounded correction and the precise evidence needed to qualify it.",
+      "verificationEvidence": [
+        "The proposed check freezes workload, oracle, source identity, and includes a negative control.",
+        "The handoff labels fixture work as reproduced only if run, and keeps native drain and latency untested."
+      ],
+      "notes": "Unobserved behavioral scenario. Golden fixtures prove contract consistency only."
+    },
+    {
+      "id": "faithful-surrogate-qualifies-bounded-improvement",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-09",
+        "evidenceRefs": [
+          "https://github.com/amichne/kast/pull/966"
+        ]
+      },
+      "prompt": "Review supplied old and candidate results from a public surrogate that exercises the production preparation boundary and preserves repeated-capture scaling. Fixture, oracle, source identities and resource grants are frozen. The negative control retains the pathology; candidate work counts remove it while answer, completeness, freshness and cancellation checks pass. A small native integration verifies read closure and stale-result suppression. Qualify the represented improvement and its limits. The private enterprise environment is inaccessible. Keep the review read-only.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Proposed source-backed contract; no model replay is recorded.",
+        "risk": "A valid bounded improvement could be withheld for inaccessible enterprise replay or overstated as enterprise latency.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Accept a qualified conclusion that the candidate removes the represented repeated-capture pathology when the supplied mechanism, frozen oracle, controls and invariants support it.",
+        "Use native integration evidence for read closure and stale-result suppression while retaining the surrogate's workload and environment limits."
+      ],
+      "forbiddenActions": [
+        "Demand inaccessible enterprise incident replay as a blanket prerequisite for any improvement conclusion.",
+        "Promote represented work reduction or native lifecycle checks into enterprise latency or agent usability proof.",
+        "Treat supplied evidence as a locally reproduced execution when no replay was run."
+      ],
+      "recoveryExpectation": "Assess the supplied evidence within its represented mechanism and identify only the additional evidence needed for a broader claim.",
+      "productiveOutcome": "The review accepts removal of the represented pathology and states which native lifecycle properties are supported and which broader performance claims remain untested.",
+      "verificationEvidence": [
+        "The conclusion names the frozen identities, oracle, negative control, old/candidate scaling and preserved invariants that support the bounded improvement.",
+        "The handoff accepts the scoped improvement without enterprise replay and distinguishes supplied evidence, native lifecycle qualification and untested enterprise latency."
+      ],
+      "notes": "Unobserved behavioral scenario. Supplied result premises are an evaluation fixture, not measured Kast performance. Golden fixtures prove contract consistency only."
+    },
+    {
+      "id": "read-local-preparation-preserves-lifetime",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-09",
+        "evidenceRefs": [
+          "https://github.com/amichne/kast/pull/961",
+          "https://github.com/amichne/kast/pull/962",
+          "https://github.com/amichne/kast/pull/966"
+        ]
+      },
+      "prompt": "Review this optional PSI dependency provider: it eagerly hashes all inputs before subject admission, shares positive state across native retries, and publishes after cancellation. Propose the smallest correction and production-boundary cases without changing code.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "intellij-psi-indexing"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Proposed source-backed contract; no model replay is recorded.",
+        "risk": "A narrow result or fixture could be promoted beyond its authority or observed boundary.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Admit subject, scope, authority, and current budget before optional preparation; initialize retained state lazily.",
+        "Scope positive reuse to one native read; retain finite negative causes by universe and close providers on every exit."
+      ],
+      "forbiddenActions": [
+        "Keep live PSI or positive captures across native read attempts without authoritative lifetime proof.",
+        "Publish stale or cancelled results or let a rejected universe disable independent inputs.",
+        "Claim native speed from lifecycle fixture counters."
+      ],
+      "recoveryExpectation": "Use the existing owner and preserve the requested read-only scope and missing evidence.",
+      "productiveOutcome": "The review identifies a bounded correction and the precise evidence needed to qualify it.",
+      "verificationEvidence": [
+        "Cases require zero rejected-request preparation, one lazy capture, eligible reuse, and fresh capture after close.",
+        "Cases cover changed authoritative dependencies, current-budget rejection on hits, cancellation, and idempotent release."
+      ],
+      "notes": "Unobserved behavioral scenario. Golden fixtures prove contract consistency only."
+    }
+  ]
+}
