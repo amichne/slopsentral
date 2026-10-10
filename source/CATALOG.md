@@ -42,6 +42,16 @@ Outside this plugin: Application implementation, repository indexes, and general
 
 **Instructions:** [api-contract-design](instructions/api-contract-design.md).
 
+### developer-tooling
+
+Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.
+
+Choose to author developer tools or reusable agent workflows.
+
+Outside this plugin: Personal dotfiles maintenance, application implementation, automatic setup, or publication.
+
+**Skills:** [agent-profile-authoring](skills/agent-profile-authoring/SKILL.md), [cli-creator](skills/cli-creator/SKILL.md), [hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md), [manage-json-schemas](skills/manage-json-schemas/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md), [repo-instruction-topology](skills/repo-instruction-topology/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [shell-session-integration](skills/shell-session-integration/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md), [terminal-ui-design](skills/terminal-ui-design/SKILL.md).
+
 ### engineering-excellence
 
 Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.
@@ -79,6 +89,16 @@ Outside this plugin: Everyday Git and hosted delivery, shell integration, and In
 **Hooks:** [gradle-check-green](hooks/gradle-check-green.hook.json), [gradle-wrapper-integrity](hooks/gradle-wrapper-integrity.hook.json), [kotlin-engineering-context](hooks/kotlin-engineering-context.hook.json), [kotlin-horizontalization-check](hooks/kotlin-horizontalization-check.hook.json).
 
 **Instructions:** [kotlin-engineering](instructions/kotlin-engineering.md).
+
+### personal-configuration
+
+Maintain verified personal dotfiles, command installation, and shell configuration.
+
+Choose to change personal configuration or install personal shell commands.
+
+Outside this plugin: General CLI products, plugin authoring, application work, or automatic installation.
+
+**Skills:** [personal-cli-authoring](skills/personal-cli-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [shell-session-integration](skills/shell-session-integration/SKILL.md).
 
 ### personal-setup
 
@@ -118,6 +138,16 @@ Outside this plugin: Automatic knowledge generation during ordinary code tasks o
 
 ## Advanced repository policy
 
+### repository-source-checks
+
+Run explicit repository source-graph checks through supported host events.
+
+Opt in to source-graph validation on supported local host events.
+
+Outside this plugin: Portable writing or tool-authoring guidance, automatic installation, or unrelated repository checks.
+
+**Hooks:** [source-graph-valid](hooks/source-graph-valid.hook.json).
+
 ### skill-read-policy
 
 Advanced: enforce repository-declared required skill reads.
@@ -132,6 +162,8 @@ Outside this plugin: Everyday engineering, default setup, and general skill disc
 
 - [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + engineering-excellence + personal-setup. 690 instruction words.
 
+- [developer-tooling-default](profiles/developer-tooling-default.json): software-engineering + engineering-excellence + developer-tooling + repository-source-checks. 690 instruction words.
+
 - [documentation-default](profiles/documentation-default.json): repository-knowledge. 0 instruction words.
 
 - [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + engineering-excellence + kotlin-engineering + intellij-plugin-development. 826 instruction words.
@@ -140,6 +172,8 @@ Outside this plugin: Everyday engineering, default setup, and general skill disc
 
 - [local-development-default](profiles/local-development-default.json): software-engineering + engineering-excellence. 690 instruction words.
 
+- [personal-configuration-default](profiles/personal-configuration-default.json): personal-configuration. 0 instruction words.
+
 ## Reused assets
 
 Each asset has one canonical source. Plugins may compose it in several bundles.
@@ -147,8 +181,20 @@ Profiles may share skills, agents, and instructions. Select each hook through on
 
 | Asset | Composed by |
 | --- | --- |
-| [SKILL/manage-json-schemas](skills/manage-json-schemas/SKILL.md) | api-contracts, personal-setup |
-| [SKILL/shell-script-safety](skills/shell-script-safety/SKILL.md) | personal-setup, software-engineering |
+| [HOOK/source-graph-valid](hooks/source-graph-valid.hook.json) | personal-setup, repository-source-checks |
+| [SKILL/agent-profile-authoring](skills/agent-profile-authoring/SKILL.md) | developer-tooling, personal-setup |
+| [SKILL/cli-creator](skills/cli-creator/SKILL.md) | developer-tooling, personal-setup |
+| [SKILL/hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md) | developer-tooling, personal-setup |
+| [SKILL/manage-json-schemas](skills/manage-json-schemas/SKILL.md) | api-contracts, developer-tooling, personal-setup |
+| [SKILL/personal-cli-authoring](skills/personal-cli-authoring/SKILL.md) | personal-configuration, personal-setup |
+| [SKILL/personal-setup-management](skills/personal-setup-management/SKILL.md) | personal-configuration, personal-setup |
+| [SKILL/plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md) | developer-tooling, personal-setup |
+| [SKILL/primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md) | developer-tooling, personal-setup |
+| [SKILL/repo-instruction-topology](skills/repo-instruction-topology/SKILL.md) | developer-tooling, personal-setup |
+| [SKILL/shell-script-safety](skills/shell-script-safety/SKILL.md) | developer-tooling, personal-configuration, personal-setup, software-engineering |
+| [SKILL/shell-session-integration](skills/shell-session-integration/SKILL.md) | developer-tooling, personal-configuration, personal-setup |
+| [SKILL/skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md) | developer-tooling, personal-setup |
+| [SKILL/terminal-ui-design](skills/terminal-ui-design/SKILL.md) | developer-tooling, personal-setup |
 
 ## Standalone skills
 

@@ -1,5 +1,11 @@
 # Personal Setup
 
+Personal Setup remains the combined compatibility bundle. The redesign adds
+Personal Configuration for personal workflows and Developer Tooling for general
+tool authoring. Source checks are a separate optional integration. See the
+[migration ledger](../source/MIGRATION.md#tooling-redesign-pilot) before selecting
+overlapping bundles. This page documents the retained personal capabilities.
+
 The `personal-setup` plugin focuses on `amichne/shell-config` and tools built for
 the user's own command-line workflows. It composes two independent skills:
 
@@ -74,5 +80,5 @@ These are deterministic implementation checks. Routing cases and the benchmark
 definition are unobserved model scenarios until run with a live evaluator.
 
 The plugin is authored under `source/plugins/personal-setup`. Provider packages
-must be generated with projeKtor before installation; installation and publishing
+must be generated with the local Pkl projector before installation; installation and publishing
 use the marketplace's existing workflow.

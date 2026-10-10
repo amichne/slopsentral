@@ -106,7 +106,7 @@ test('reused assets expose every composing plugin with unique source counts', ()
   const report = catalogReport(catalog);
   assert.equal(report.schemaVersion, 2);
   const shell = report.assets.find(asset => asset.primitiveType === 'SKILL' && asset.name === 'shell-script-safety');
-  assert.deepEqual(shell.plugins, ['personal-setup', 'software-engineering']);
+  assert.deepEqual(shell.plugins, ['developer-tooling', 'personal-configuration', 'personal-setup', 'software-engineering']);
   assert.equal(shell.path, 'skills/shell-script-safety');
   const shared = catalog.marketplace.instructions.find(ref => ref.name === 'engineering-design');
   const modified = { ...catalog, plugins: catalog.plugins.map(p => p.name !== 'repository-knowledge' ? p : {

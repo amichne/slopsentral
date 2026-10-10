@@ -55,8 +55,12 @@ language and contract skills still own production syntax and tool selection.
 
 Software Engineering packages implementation, tests, local Git, shell safety,
 CLI data queries, mise, hosted issues, PRs, Actions, and delivery pipeline design.
-Personal Setup packages CLI authoring, shell integration, terminal UI design,
-and reusable skills, agents, hooks, plugins, and instruction topology.
+Developer Tooling packages CLI authoring, shell integration, terminal UI design,
+and reusable skills, agents, hooks, plugins, and instruction topology. Personal
+Configuration packages verified dotfiles and personal utility workflows. These
+pilot alternatives keep source automation in the optional Repository Source
+Checks plugin. Personal Setup retains the earlier combined composition until
+observed task evidence supports migration. See [the ledger](MIGRATION.md#tooling-redesign-pilot).
 validation-first plans decisive checks on explicit invocation and remains
 planning-only; tdd owns executable proof when execution is authorized.
 A pipeline design establishes stage and artifact boundaries; github-ci-operations
@@ -68,7 +72,9 @@ implements and diagnoses the GitHub-specific workflow.
 manifests, follows dependencies, rejects conflicting identities and cycles,
 and renders CATALOG.md. Shared references keep the same canonical identity.
 It has no provider-specific projection rules.
-projeKtor remains the owner of Codex and GitHub Copilot projection.
+The repository-local Pkl modules under `tools/projection` own Codex and GitHub
+Copilot shapes. `tools/project-marketplaces.mjs` owns frozen reads, resource
+copying, digest sealing, and staged publication; it contains no manifest mapping.
 
 An optional `codexMcpServers` declaration references a plugin-adjacent
 `.mcp.json` packaging file. The projector copies it into the Codex plugin and
@@ -181,8 +187,8 @@ The official [skill guidance](https://developers.openai.com/plugins/build/skills
 [plugin packaging](https://developers.openai.com/plugins/build/plugins), and
 [hooks contract](https://learn.chatgpt.com/docs/hooks) govern provider behavior.
 The current projector emits the supported Codex compatibility manifest. Portable
-root manifests require a change in projeKtor, the projection owner; never emulate
-that migration by patching generated output here.
+root manifests require a typed target and host qualification in the local
+projector; never emulate that migration by patching generated output.
 
 ## Updating
 

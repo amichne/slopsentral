@@ -1446,6 +1446,72 @@
         "Implement a proof-loss analyzer or modify code during a read-only review."
       ],
       "notes": "Expected contract fixture only; this scenario has no observed model run."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "developer-tooling-keeps-personal-effects-explicit",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "developer-tooling"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve all canonical skill references in Developer Tooling.",
+        "Keep personal setup management and automatic integrations outside this package."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The source graph and focused composition checks pass.",
+        "The package closure has no hooks or MCP declaration."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected fixture only; this is not a field observation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "personal-configuration-keeps-authoring-outside",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "personal-configuration"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve personal setup and CLI skills from canonical source.",
+        "Keep general plugin authoring and automatic integrations outside this package."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The source graph and focused composition checks pass.",
+        "The closure includes personal setup management and has no hooks."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected fixture only; this is not a field observation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "source-check-integration-needs-no-authoring-skill",
+      "routedPrimitive": {
+        "type": "HOOK",
+        "name": "source-graph-valid"
+      },
+      "satisfiedAllowedActions": [
+        "Select the source hook explicitly through one profile closure.",
+        "Preserve the existing source validation and Stop output adapters."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The source graph and focused composition checks pass.",
+        "The integration closure contains the hook and no skill dependencies."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected fixture only; this is not a field observation."
     }
   ]
 }

@@ -76,6 +76,11 @@ jobs:
           echo "$vale_dir" >> "$GITHUB_PATH"
           "$vale_dir/vale" --version
 
+      - name: Set up pinned projection runtime
+        run: |
+          node tools/install-projection-pkl.mjs --out "$RUNNER_TEMP/projection-pkl/pkl"
+          echo "PKL_BIN=$RUNNER_TEMP/projection-pkl/pkl" >> "$GITHUB_ENV"
+
       - name: Validate source graph and evals
         run: |
           set -euo pipefail
@@ -141,19 +146,11 @@ jobs:
             -p 'test_*.py' \
             -v
 
-          pkl_dir="${RUNNER_TEMP}/pkl-0.32.0"
-          mkdir -p "${pkl_dir}"
-          gh release download 0.32.0 \
-            --repo apple/pkl \
-            --pattern jpkl \
-            --dir "${pkl_dir}"
-          chmod +x "${pkl_dir}/jpkl"
-
           facade="source/skills/pkl-engineering/scripts/pkl_agent"
           fixture="${RUNNER_TEMP}/pkl-agent-fixture"
           mkdir -p "${fixture}"
           cp -R source/skills/pkl-engineering/scripts/tests/fixtures/project/. "${fixture}/"
-          common=(--workspace "${fixture}" --pkl-bin "${pkl_dir}/jpkl")
+          common=(--workspace "${fixture}" --pkl-bin "$PKL_BIN")
 
           home_toon="${RUNNER_TEMP}/pkl-agent-home.toon"
           "${facade}" "${common[@]}" > "${home_toon}"
@@ -176,19 +173,17 @@ jobs:
 
       - name: Project Codex marketplace
         id: codex_projection
-        uses: amichne/projeKtor@eb3799c2bc60b4803c84fded0b6f4cd587bd0702 # v1.2.1
-        with:
-          source: .
-          harness: codex
-          version: v1.2.1
+        run: |
+          projection_path="$RUNNER_TEMP/projected-codex"
+          node tools/project-marketplaces.mjs --source . --harness codex --out "$projection_path"
+          echo "projection-path=$projection_path" >> "$GITHUB_OUTPUT"
 
       - name: Project GitHub Copilot marketplace
         id: github_copilot_projection
-        uses: amichne/projeKtor@eb3799c2bc60b4803c84fded0b6f4cd587bd0702 # v1.2.1
-        with:
-          source: .
-          harness: github-copilot
-          version: v1.2.1
+        run: |
+          projection_path="$RUNNER_TEMP/projected-github-copilot"
+          node tools/project-marketplaces.mjs --source . --harness github-copilot --out "$projection_path"
+          echo "projection-path=$projection_path" >> "$GITHUB_OUTPUT"
 
       - name: Validate marketplace projections
         env:

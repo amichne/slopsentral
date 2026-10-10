@@ -23,5 +23,5 @@ This file applies to reusable hook assets under `source/hooks/`.
 
 ## Verify
 
-- Run both `projeKtor project` harness projections after changing hook metadata.
+- Run both local Pkl harness projections from root `AGENTS.md` after changing hook metadata.
 - Run syntax checks for every executable hook implementation touched.

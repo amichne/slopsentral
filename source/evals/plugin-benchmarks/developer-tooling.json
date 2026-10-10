@@ -1,0 +1,64 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "developer-tooling",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-6-astra",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin developer-tooling",
+      "node tools/tests/tooling-redesign.test.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Candidate package boundary benchmark; not an observed model run.",
+    "Verifiers prove composition and selection boundaries only; model selection and task usefulness remain separately assessed.",
+    "No real HOME, installed cache, or remote mutation is authorized."
+  ],
+  "setupQuestions": [
+    "Which supplied disposable repository should exercise this package boundary?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "developer-tooling-keeps-personal-effects-explicit",
+      "title": "developer-tooling boundary audit",
+      "purpose": "Check the new installation boundary independently of existing compatibility bundles.",
+      "routingCaseIds": [
+        "developer-tooling-keeps-personal-effects-explicit"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "developer-tooling"
+      },
+      "userInput": "Audit the Developer Tooling composition. Prove it exposes general CLI and agent workflow authoring without personal dotfiles installation, hooks, or MCP connections. Use only the supplied local or disposable fixture. Do not install, publish, push, or modify remote state.",
+      "successChecklist": [
+        "Resolve all canonical skill references in Developer Tooling.",
+        "Keep personal setup management and automatic integrations outside this package.",
+        "The source graph and focused composition checks pass.",
+        "The package closure has no hooks or MCP declaration."
+      ]
+    }
+  ]
+}

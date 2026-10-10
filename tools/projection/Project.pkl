@@ -1,0 +1,412 @@
+module slopsentral.projection.Project
+
+import "pkl:json"
+import "pkl:yaml"
+
+import "Decode.pkl"
+import "Schema.pkl"
+import "Targets.pkl"
+
+local input = Decode.input((new json.Parser {}).parse(read(read("prop:input"))))
+local selectedHarness: Schema.Harness = read("prop:harness")
+local outputRoot = if (selectedHarness == "codex") ".agents/plugins" else ".github/plugin"
+local commandPath = Regex("\\bhooks/[A-Za-z0-9_.-]+")
+local acronyms =
+  Map(
+    "api", "API",
+    "ci", "CI",
+    "cli", "CLI",
+    "github", "GitHub",
+    "json", "JSON",
+    "pr", "PR",
+    "prs", "PRs",
+    "tdd", "TDD",
+    "yaml", "YAML",
+  )
+
+function title(value: String): String =
+  value
+    .replaceAll("_", "-")
+    .split("-")
+    .filter((p) -> !p.isEmpty)
+    .map((p) -> acronyms.getOrNull(p.toLowerCase()) ?? p.take(1).toUpperCase() + p.drop(1))
+    .join(" ")
+
+function pluginCategory(tags: List<String>): Targets.Category =
+  if (tags.any((t) -> List("git", "github", "ci", "schemas", "audit", "governance").contains(t)))
+    "Engineering"
+  else if (tags.any((t) -> List("kotlin", "testing").contains(t)))
+    "Coding"
+  else
+    "Productivity"
+
+function color(value: Targets.Category): String =
+  if (value == "Engineering") "#0F766E" else if (value == "Coding") "#2563EB" else "#7C3AED"
+function jsonText(value: Any): String =
+  (new JsonRenderer { omitNullProperties = true }).renderDocument(value)
+function jsonFile(destination: String, value: Any): Schema.TextFile = new {
+  path = destination
+  format = "JSON"
+  text = jsonText(value)
+}
+function textFile(destination: String, value: String): Schema.TextFile = new {
+  path = destination
+  text = value
+}
+function basename(value: String): String = value.split("/").last
+function referenceTarget(ref: Schema.Asset): String =
+  if (ref.type == "SKILL")
+    "skills/" + ref.name
+  else if (ref.type == "AGENT")
+    "agents/" + basename(ref.sourcePath)
+  else if (ref.type == "INSTRUCTION")
+    "instructions/" + ref.name + "." + basename(ref.sourcePath).split(".").last
+  else
+    "hooks/" + basename((ref as Schema.HookReference).hook.path)
+function refs(p: Schema.Plugin, kind: Schema.Kind): List<Schema.Asset> =
+  p.references.filter((r) -> r.type == kind)
+function hooks(p: Schema.Plugin): List<Schema.HookReference> =
+  p.references
+    .filter((r) -> r is Schema.HookReference)
+    .map((r) -> r as Schema.HookReference)
+function agents(p: Schema.Plugin): List<Schema.AgentReference> =
+  p.references
+    .filter((r) -> r is Schema.AgentReference)
+    .map((r) -> r as Schema.AgentReference)
+function pluginKeywords(p: Schema.Plugin): List<String> = (List(p.name) + p.tags).distinct.sort()
+function rewritten(command: String): String =
+  command.replaceAllMapped(commandPath, (match) -> "\"$PLUGIN_ROOT/" + match.value + "\"")
+
+function primitiveTarget(p: Schema.Primitive): String =
+  if (p.type == "SKILL")
+    "skills/" + p.name
+  else if (p.type == "AGENT")
+    "agents/" + basename(p.path)
+  else if (p.type == "INSTRUCTION")
+    "instructions/" + p.name + "." + basename(p.path).split(".").last
+  else
+    "hooks/" + p.name + ".hooks.json"
+
+function primitive(p: Schema.Primitive): Targets.Primitive = new {
+  type = p.type
+  source = p.source
+  path = primitiveTarget(p)
+  name = p.name
+  dependsOn = if (p.dependsOn.isEmpty) null else p.dependsOn.toList().map((r) -> primitive(r))
+}
+
+function adapter(r: Schema.HookReference): Schema.HookAdapter = new {
+  hooks {
+    for (event, groups in r.hook.adapter.hooks) {
+      [event] {
+        for (group in groups) {
+          new Schema.HookGroup {
+            matcher = group.matcher
+            hooks {
+              for (c in group.hooks) {
+                new Schema.Command {
+                  type = c.type
+                  command = rewritten(c.command)
+                  commandWindows = c.commandWindows
+                  matcher = c.matcher
+                  timeout = c.timeout
+                  statusMessage = c.statusMessage
+                  additionalContextLimit = c.additionalContextLimit
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function codex(p: Schema.Plugin): Targets.CodexPlugin = new {
+  name = p.name
+  version = p.version
+  description = p.description
+  author = new { name = input.owner.name }
+  keywords = pluginKeywords(p)
+  skills = if (!refs(p, "SKILL").isEmpty) "./skills/" else null
+  hooks = if (!hooks(p).isEmpty) hooks(p).map((r) -> "./" + referenceTarget(r)).sort() else null
+  mcpServers = if (p.mcp != null) "./.mcp.json" else null
+  interface = new {
+    displayName = title(p.name)
+    shortDescription =
+      if (p.description.length <= 72) p.description else p.description.take(69).trimEnd() + "..."
+    longDescription = p.description
+    developerName = input.owner.name
+    category = pluginCategory(p.tags)
+    capabilities =
+      if (!refs(p, "SKILL").isEmpty || !hooks(p).isEmpty)
+        List("Interactive", "Write")
+      else
+        List("Interactive")
+    websiteURL = p.interface.websiteURL
+    privacyPolicyURL = p.interface.privacyPolicyURL
+    termsOfServiceURL = p.interface.termsOfServiceURL
+    brandColor = color(pluginCategory(p.tags))
+    defaultPrompt =
+      List(
+        "Use " + title(p.name) + " for this task.",
+        "Review this repo with " + title(p.name) + ".",
+        "Show the " + title(p.name) + " workflow.",
+      )
+  }
+}
+
+function copilot(p: Schema.Plugin): Targets.CopilotPlugin = new {
+  name = p.name
+  description = p.description
+  version = p.version
+  author = input.owner
+  keywords = pluginKeywords(p)
+  category = pluginCategory(p.tags)
+  tags = p.tags
+  agents = if (!agents(p).isEmpty) "./agents" else null
+  skills = if (!refs(p, "SKILL").isEmpty) "./skills" else null
+  hooks = if (!hooks(p).isEmpty) "./hooks.json" else null
+}
+
+function copilotHooks(p: Schema.Plugin): Targets.CopilotHooks = new {
+  local events = hooks(p).flatMap((r) -> r.hook.adapter.hooks.keys.toList()).distinct.sort()
+  hooks {
+    for (event in events) {
+      [event] =
+        hooks(p)
+          .sortBy((r) -> referenceTarget(r))
+          .flatMap((r) ->
+            (r.hook.adapter.hooks.getOrNull(event)?.toList() ?? List()).flatMap((g) ->
+              g.hooks
+                .toList()
+                .map((c) -> new Targets.CopilotCommand {
+                  bash = rewritten(c.command)
+                  matcher = c.matcher ?? g.matcher
+                  timeoutSec = c.timeout
+                })
+            )
+          )
+    }
+  }
+}
+
+function section(p: Schema.Plugin, kind: Schema.Kind, heading: String): String =
+  if (refs(p, kind).isEmpty)
+    ""
+  else
+    "## "
+      + heading
+      + "\n\n"
+      + refs(p, kind)
+        .sortBy((r) -> r.sourcePath)
+        .map((r) ->
+          "- `" + r.name + "`: `" + referenceTarget(r) + "` (source: `" + r.sourcePath + "`)"
+        )
+        .join("\n")
+      + "\n\n"
+
+function agentsIndex(p: Schema.Plugin): String =
+  """
+  # \(title(p.name)) Plugin Instructions
+
+  ## Scope
+
+  This generated adapter applies to the `\(p.name)` plugin payload. Do not edit it directly; update the provider-neutral primitives or plugin manifest, then regenerate the marketplace output.
+
+  ## Runtime Boundary
+
+  The source graph keeps skills, agent profiles, instructions, concepts, and hooks as independent primitives. This `AGENTS.md` adapts bundled agent and instruction primitives into a plain instruction file for runtimes that do not expose those primitive kinds directly.
+
+  ## Plugin Intent
+
+  \(p.description)
+
+  ## Operating Rules
+
+  - Treat this file as an adapter, not a new source of truth.
+  - Use bundled skills for step-by-step workflows.
+  - Apply bundled instructions as normative guidance when their scope matches the task.
+  - Treat bundled agent profiles as review criteria or focused review passes.
+  - Keep hook behavior in bundled hook files and runtime adapter configs.
+  - When guidance conflicts with the target repository's nearest `AGENTS.md`, follow the target repository unless the user explicitly chooses this plugin's rule.
+
+  \(section(p, "INSTRUCTION", "Instruction Primitives"))\(section(p, "AGENT", "Agent Profile Primitives"))\(section(p, "SKILL", "Skill Primitives"))\(section(p, "HOOK", "Hook Primitives"))
+  """.trimEnd() + "\n"
+
+function agentFrontmatter(r: Schema.AgentReference): Schema.AgentHeader =
+  Decode
+    .checked(
+      (new yaml.Parser {}).parse(r.text.split("\n---").first.drop(4)) as Dynamic,
+      List("name", "description", "model"),
+    )
+    .toTyped(Schema.AgentHeader)
+function agentBody(r: Schema.AgentReference): String =
+  r.text.drop(r.text.indexOf("\n---") + 4).trim() + "\n"
+function agentToml(r: Schema.AgentReference): String =
+  "name = "
+    + jsonText(agentFrontmatter(r).name).trim()
+    + "\n"
+    + "description = "
+    + jsonText(agentFrontmatter(r).description).trim()
+    + "\n"
+    + "developer_instructions = "
+    + jsonText(agentBody(r)).trim()
+    + "\n"
+function copilotAgent(r: Schema.AgentReference): String =
+  "---\n"
+    + r.text
+      .split("\n---")
+      .first
+      .drop(4)
+      .split("\n")
+      .filter((line) -> !line.matches(Regex("\\s*model\\s*:.*")))
+      .join("\n")
+      .trimEnd()
+    + "\n---"
+    + r.text.drop(r.text.indexOf("\n---") + 4).trimEnd()
+    + "\n"
+
+function digest(p: Schema.Plugin, r: Schema.Asset): Schema.Digest =
+  if (input.phase == "SEALED")
+    input.projectedDigests[p.name + ":" + r.type + "/" + r.name]
+  else
+    r.sha256
+
+function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
+  name = p.name
+  root = outputRoot + "/" + p.name
+  copies =
+    p.references
+      .filter((r) -> r.type != "HOOK" && !(selectedHarness == "github-copilot" && r.type == "AGENT"))
+      .map((r) -> new Schema.Copy {
+        source = r.sourcePath
+        target = referenceTarget(r)
+      })
+      + (
+        if (selectedHarness == "codex" && p.mcp != null)
+          List(new Schema.Copy {
+            source = p.mcp!!
+            target = ".mcp.json"
+          })
+        else
+          List()
+      )
+  files =
+    (
+      new Listing<Schema.TextFile> {
+        jsonFile(
+          if (selectedHarness == "codex") ".codex-plugin/plugin.json" else "plugin.json",
+          if (selectedHarness == "codex") codex(p) else copilot(p),
+        )
+        for (r in hooks(p)) {
+          jsonFile(referenceTarget(r), adapter(r))
+          jsonFile(
+            "hooks/metadata/" + basename(r.sourcePath),
+            ((primitive(r.hook)) { path = referenceTarget(r) }),
+          )
+        }
+        for (r in agents(p)) {
+          textFile("agents/" + basename(r.sourcePath).replaceLast(".md", ".toml"), agentToml(r))
+          when (selectedHarness == "github-copilot") {
+            textFile(referenceTarget(r), copilotAgent(r))
+          }
+        }
+        when (!refs(p, "INSTRUCTION").isEmpty || !agents(p).isEmpty) {
+          textFile("AGENTS.md", agentsIndex(p))
+        }
+        when (selectedHarness == "github-copilot" && !hooks(p).isEmpty) {
+          jsonFile("hooks.json", copilotHooks(p))
+        }
+      }
+    ).toList()
+  references =
+    (
+      new Listing<Schema.LockReference> {
+        for (r in p.references) {
+          new Schema.LockReference {
+            type = r.type
+            name = r.name
+            sourcePath = r.sourcePath
+            targetPath = referenceTarget(r)
+            sha256 = digest(p, r)
+          }
+        }
+        when (selectedHarness == "codex" && p.mcp != null) {
+          new Schema.LockReference {
+            type = "MCP_CONFIGURATION"
+            sourcePath = p.mcp!!
+            targetPath = ".mcp.json"
+            sha256 = input.projectedDigests[p.name + ":MCP_CONFIGURATION"]
+          }
+        }
+      }
+    )
+      .toList()
+      .sortBy((r) -> r.type + "/" + r.sourcePath + "/" + r.targetPath)
+}
+
+local plans = input.plugins.toList().map((p) -> pluginPlan(p))
+local marketplace: Targets.CodexMarketplace | Targets.CopilotMarketplace =
+  if (selectedHarness == "codex")
+    new Targets.CodexMarketplace {
+      name = input.name
+      interface = new { displayName = title(input.name) }
+      plugins =
+        input.plugins
+          .toList()
+          .map((p) -> new Targets.CodexEntry {
+            name = p.name
+            source = new { path = "./" + outputRoot + "/" + p.name }
+            category = pluginCategory(p.tags)
+          })
+    }
+  else
+    new Targets.CopilotMarketplace {
+      name = input.name
+      owner = input.owner
+      metadata = new { description = input.description }
+      plugins =
+        input.plugins
+          .toList()
+          .map((p) -> new Targets.CopilotEntry {
+            name = p.name
+            description = p.description
+            version = p.version
+            author = input.owner
+            keywords = pluginKeywords(p)
+            category = pluginCategory(p.tags)
+            tags = p.tags
+            source = p.name
+          })
+    }
+
+local lock: Targets.Lock = new {
+  generatedAt = input.generatedAt
+  sourceSha = input.sourceSha
+  plugins =
+    input.plugins
+      .toList()
+      .map((p) -> new Targets.LockedPlugin {
+        name = p.name
+        version = p.version
+        sourceManifest = "source/plugins/" + p.name + "/plugin.json"
+        references = plans.find((plan) -> plan.name == p.name).references
+      })
+}
+
+output {
+  value = new Schema.Plan {
+    harness = selectedHarness
+    plugins = plans
+    files =
+      List(jsonFile(outputRoot + "/marketplace.json", marketplace))
+        + (
+          if (selectedHarness == "codex" && input.phase == "SEALED")
+            List(jsonFile(outputRoot + "/marketplace-lock.json", lock))
+          else
+            List()
+        )
+  }
+  renderer = new JsonRenderer { omitNullProperties = true }
+}

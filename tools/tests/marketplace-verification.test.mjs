@@ -95,7 +95,7 @@ function verify(t, failedHarness) {
   for (const directory of [path.join(repo, 'tools'), bin, temp]) fs.mkdirSync(directory, { recursive: true });
   fs.copyFileSync(path.join(repoRoot, 'tools/verify-marketplaces'), path.join(repo, 'tools/verify-marketplaces'));
   const log = path.join(root, 'commands.jsonl');
-  for (const command of ['projeKtor', 'node']) {
+  for (const command of ['node']) {
     fs.writeFileSync(path.join(bin, command), `#!${process.execPath}
 const fs = require('node:fs');
 const args = process.argv.slice(2);
@@ -132,10 +132,10 @@ if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
 test('verification projects both providers and checks the generated Codex hooks', t => {
   const { result, commands } = verify(t);
   assert.equal(result.status, 0, result.stderr);
-  assert.deepEqual(commands.map(({ command }) => command), ['projeKtor', 'projeKtor', 'node', 'node', 'node', 'node']);
+  assert.deepEqual(commands.map(({ command }) => command), ['node', 'node', 'node', 'node', 'node', 'node']);
   assert.deepEqual(commands.slice(0, 2).map(({ args }) => args.slice(0, 5)), [
-    ['project', '--source', '.', '--harness', 'codex'],
-    ['project', '--source', '.', '--harness', 'github-copilot'],
+    ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'codex'],
+    ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'github-copilot'],
   ]);
   const codexRoot = commands[0].args[6];
   assert.notEqual(codexRoot, commands[1].args[6]);

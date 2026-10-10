@@ -1,0 +1,125 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "developer-tooling",
+  "version": "1.0.0",
+  "description": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/shell-session-integration",
+      "name": "shell-session-integration"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/cli-creator",
+      "name": "cli-creator"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/terminal-ui-design",
+      "name": "terminal-ui-design"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/skill-primitive-authoring",
+      "name": "skill-primitive-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/agent-profile-authoring",
+      "name": "agent-profile-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/plugin-composition-authoring",
+      "name": "plugin-composition-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/primitive-routing-evaluation",
+      "name": "primitive-routing-evaluation"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/hook-primitive-authoring",
+      "name": "hook-primitive-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/repo-instruction-topology",
+      "name": "repo-instruction-topology"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/shell-script-safety",
+      "name": "shell-script-safety"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/manage-json-schemas",
+      "name": "manage-json-schemas"
+    }
+  ],
+  "agents": [],
+  "instructions": [],
+  "hooks": [],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Choose to author developer tools or reusable agent workflows.",
+    "notFor": "Personal dotfiles maintenance, application implementation, automatic setup, or publication.",
+    "role": "specialty",
+    "scope": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+    "workstream": "developer-tooling",
+    "owner": "developer-tooling"
+  }
+}
