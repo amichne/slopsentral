@@ -1,0 +1,126 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 2,
+  "name": "workflow-resource-boundaries",
+  "description": "Designed obligations for Pkl guidance and executable resource boundaries.",
+  "cases": [
+    {
+      "id": "pkl-workflows-do-not-install-automation",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-10",
+        "evidenceRefs": [
+          "source/plugins/pkl-workflows/plugin.json",
+          "docs/workflow-resources.md"
+        ]
+      },
+      "prompt": "Audit Pkl Workflows. Prove the package exposes the existing Pkl workflows without hooks or MCP connections.",
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "pkl-workflows"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Unobserved resource-boundary acceptance scenario.",
+        "risk": "Installing a workflow also selects unrelated personal or automatic behavior.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration."
+      ],
+      "forbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "recoveryExpectation": "Reject unproven or overlapping hook selection and report missing host evidence.",
+      "productiveOutcome": "A coherent package selection preserves the stated workflow and effect boundary.",
+      "verificationEvidence": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ],
+      "notes": "Designed obligation only; no model routing or host execution observation is claimed."
+    },
+    {
+      "id": "pkl-checks-carry-runtime-without-workflow-discovery",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-10",
+        "evidenceRefs": [
+          "source/plugins/pkl-repository-checks/plugin.json",
+          "docs/workflow-resources.md"
+        ]
+      },
+      "prompt": "Audit Pkl Repository Checks. Prove automatic checks carry the required executable without publishing a SKILL.md workflow.",
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "pkl-repository-checks"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Unobserved resource-boundary acceptance scenario.",
+        "risk": "Installing a workflow also selects unrelated personal or automatic behavior.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration."
+      ],
+      "forbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "recoveryExpectation": "Reject unproven or overlapping hook selection and report missing host evidence.",
+      "productiveOutcome": "A coherent package selection preserves the stated workflow and effect boundary.",
+      "verificationEvidence": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ],
+      "notes": "Designed obligation only; no model routing or host execution observation is claimed."
+    },
+    {
+      "id": "pkl-checks-preserve-runtime-contract",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-10",
+        "evidenceRefs": [
+          "source/hooks/pkl-evaluate-check.hook.json",
+          "docs/workflow-resources.md"
+        ]
+      },
+      "prompt": "Verify the projected Pkl evaluation hook executes its bundled runtime against the supplied disposable Pkl fixture, and preserves failure as host JSON.",
+      "expectedPrimitive": {
+        "type": "HOOK",
+        "name": "pkl-evaluate-check"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Unobserved resource-boundary acceptance scenario.",
+        "risk": "Installing a workflow also selects unrelated personal or automatic behavior.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration."
+      ],
+      "forbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "recoveryExpectation": "Reject unproven or overlapping hook selection and report missing host evidence.",
+      "productiveOutcome": "A coherent package selection preserves the stated workflow and effect boundary.",
+      "verificationEvidence": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ],
+      "notes": "Designed obligation only; no model routing or host execution observation is claimed."
+    }
+  ]
+}

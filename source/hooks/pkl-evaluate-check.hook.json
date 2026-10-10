@@ -8,22 +8,13 @@
   "name": "pkl-evaluate-check",
   "dependsOn": [
     {
-      "type": "SKILL",
+      "type": "RESOURCE",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/pkl-engineering",
-      "name": "pkl-engineering"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/pkl-tooling-setup",
-      "name": "pkl-tooling-setup"
+      "path": "skills/pkl-engineering/scripts/pkl_agent",
+      "name": "pkl-agent-runtime"
     }
   ]
 }

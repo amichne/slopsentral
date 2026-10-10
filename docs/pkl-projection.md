@@ -1,5 +1,10 @@
 # Repository-owned Pkl projection
 
+The typed asset union also supports a `RESOURCE` for one authored file. It
+preserves the file's source path, bytes, mode, and digest without a skill entry
+point. See [workflow resources](workflow-resources.md) for the contract and
+the Pkl workflow/check split. Existing provider compatibility fixtures remain fixed.
+
 This document guides maintainers changing a provider mapping or generating a
 marketplace. The projector supports the existing Codex and GitHub Copilot
 shapes. Authored assets remain under `source/`; plugins compose them by reference.

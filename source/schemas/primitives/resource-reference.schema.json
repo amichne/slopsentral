@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/primitives/resource-reference.schema.json",
+  "title": "RESOURCE_REFERENCE",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "name",
+    "source",
+    "path"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "RESOURCE"
+      ],
+      "examples": [
+        "RESOURCE"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "examples": [
+        "pkl-agent-runtime"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "path"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "LOCAL_SOURCE"
+          ],
+          "examples": [
+            "LOCAL_SOURCE"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "enum": [
+            "./"
+          ],
+          "examples": [
+            "./"
+          ]
+        }
+      },
+      "examples": [
+        {
+          "type": "LOCAL_SOURCE",
+          "path": "./"
+        }
+      ]
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^(?!.*(?:^|/)\\.\\.?(/|$))(?!.*//)(?!.*/$)(?!.*(?:^|/)[sS][kK][iI][lL][lL]\\.[mM][dD]$)(skills/[a-z][a-z0-9-]*/(scripts|assets)/[A-Za-z0-9_./-]+|schemas/[A-Za-z0-9_./-]+)$",
+      "examples": [
+        "skills/pkl-engineering/scripts/pkl_agent"
+      ]
+    },
+    "dependsOn": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#"
+      },
+      "examples": [
+        [
+          {
+            "type": "RESOURCE",
+            "name": "pkl-agent-runtime",
+            "source": {
+              "type": "LOCAL_SOURCE",
+              "path": "./"
+            },
+            "path": "skills/pkl-engineering/scripts/pkl_agent"
+          }
+        ]
+      ]
+    }
+  },
+  "examples": [
+    {
+      "type": "RESOURCE",
+      "name": "pkl-agent-runtime",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-engineering/scripts/pkl_agent"
+    }
+  ]
+}

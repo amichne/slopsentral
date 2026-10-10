@@ -1,0 +1,80 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "pkl-repository-checks",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-6-astra",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "node tools/tests/workflow-resources.test.mjs --require-native",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Definition only; package validity and native hook execution are not observed model outcomes.",
+    "Verifiers prove composition and selection boundaries only; model selection and task usefulness remain separately assessed.",
+    "No real HOME, installed cache, or remote mutation is authorized."
+  ],
+  "setupQuestions": [
+    "Which supplied disposable repository should exercise this package boundary?",
+    "Which installed Pkl 0.32.0 executable is provided through PKL_BIN for the native verifiers?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "pkl-checks-carry-runtime-without-workflow-discovery",
+      "title": "pkl-checks-carry-runtime-without-workflow-discovery",
+      "purpose": "Verify the guidance or runtime boundary for an explicit installation choice.",
+      "routingCaseIds": [
+        "pkl-checks-carry-runtime-without-workflow-discovery"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "pkl-repository-checks"
+      },
+      "userInput": "Audit Pkl Repository Checks. Prove automatic checks carry the required executable without publishing a SKILL.md workflow. Do not modify HOME, installed caches, or remote state.",
+      "successChecklist": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "pkl-checks-preserve-runtime-contract",
+      "title": "pkl-checks-preserve-runtime-contract",
+      "purpose": "Verify the guidance or runtime boundary for an explicit installation choice.",
+      "routingCaseIds": [
+        "pkl-checks-preserve-runtime-contract"
+      ],
+      "expectedPrimitive": {
+        "type": "HOOK",
+        "name": "pkl-evaluate-check"
+      },
+      "userInput": "Verify the projected Pkl evaluation hook executes its bundled runtime against the supplied disposable Pkl fixture, and preserves failure as host JSON. Do not modify HOME, installed caches, or remote state.",
+      "successChecklist": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ]
+    }
+  ]
+}

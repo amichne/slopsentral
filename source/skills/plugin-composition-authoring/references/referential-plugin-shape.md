@@ -24,6 +24,7 @@ python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composit
   "agents": [],
   "instructions": [],
   "hooks": [],
+  "resources": [],
   "metadata": {
     "composition": "referential"
   }
@@ -49,6 +50,15 @@ source and then to the primitive path:
 
 Use the same shape for `AGENT`, `INSTRUCTION`, and `HOOK` references with the
 appropriate path and name.
+
+`RESOURCE` uses that reference shape for one regular executable or data file
+under a skill's `scripts/` or `assets/`, or under `source/schemas/`. It excludes
+`SKILL.md`, directories, symlinks, and destination aliases. Declare its canonical
+identity in the marketplace. A plugin may select it through `resources`, and
+a hook may require it through `dependsOn`. Resource dependencies may contain
+only resources. Use a full skill reference when its procedure is required.
+The contract is in `source/schemas/primitives/resource-reference.schema.json`;
+see `docs/workflow-resources.md` for the Pkl example and validation evidence.
 
 For Codex session-wide concepts, reference a `HOOK` from the plugin and keep
 the plugin's `instructions` array empty. The hook metadata owns an

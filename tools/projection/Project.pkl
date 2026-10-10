@@ -57,6 +57,8 @@ function basename(value: String): String = value.split("/").last
 function referenceTarget(ref: Schema.Asset): String =
   if (ref.type == "SKILL")
     "skills/" + ref.name
+  else if (ref.type == "RESOURCE")
+    ref.sourcePath.drop(7)
   else if (ref.type == "AGENT")
     "agents/" + basename(ref.sourcePath)
   else if (ref.type == "INSTRUCTION")
@@ -80,6 +82,8 @@ function rewritten(command: String): String =
 function primitiveTarget(p: Schema.Primitive): String =
   if (p.type == "SKILL")
     "skills/" + p.name
+  else if (p.type == "RESOURCE")
+    p.path
   else if (p.type == "AGENT")
     "agents/" + basename(p.path)
   else if (p.type == "INSTRUCTION")

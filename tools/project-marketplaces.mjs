@@ -201,6 +201,8 @@ function operations(plan, files, harness, input) {
         || !relative(r.sourcePath) || !relative(r.targetPath) || !/^sha256:[a-f0-9]{64}$/.test(r.sha256))
         reject('plan', 'INVALID_PLAN', 'A projected reference is invalid');
       const authority = expected.references.find(e => e.type === r.type && e.name === r.name);
+      if (r.type === 'RESOURCE' && (!files.has(r.sourcePath) || r.targetPath !== r.sourcePath.slice('source/'.length)))
+        reject('plan', 'INVALID_PLAN', 'A resource reference must preserve its one frozen file and authored path');
       if (r.sourcePath !== (r.type === 'MCP_CONFIGURATION' ? expected.mcp : authority?.sourcePath))
         reject('plan', 'INVALID_PLAN', 'A projected reference differs from its source authority');
     }

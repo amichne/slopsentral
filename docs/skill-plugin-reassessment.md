@@ -1,6 +1,6 @@
 # Reassessing Slopsentral skills and plugins
 
-Date: 2026-10-10. Status: direction adopted; first source implementation slice.
+Date: 2026-10-10. Status: direction adopted; two source implementation slices.
 Audience: maintainers deciding the next Slopsentral architecture experiment.
 
 ## Recommendation
@@ -23,6 +23,14 @@ reuse. It does not implement this proposal. Its reviewed source is commit
 `33b2581eb6758bd39f2b51e4b6b517e79d402da7`. The redesign is a separate
 change so that the reuse PR retains its focused scope. This follow-up
 implements the first slice; it does not replace installed plugins or retire compatibility entries.
+
+The next stacked slice adds a typed resource reference for executable and data
+files. Hooks can now carry a helper without exposing its whole skill as a
+workflow choice. Pkl Workflows and optional Pkl Repository Checks exercise
+that boundary while preserving the complete Pkl Configuration bundle. This
+implements focused discovery and progressive disclosure from both labs'
+guidance; measured routing and host activation remain qualification work.
+See [workflow resources](workflow-resources.md) for the contract and evidence.
 
 ## What the public guidance supports
 
@@ -70,7 +78,8 @@ Use it as a structural reference, not a source of mandatory instructions.
 ## What the current source reveals
 
 The reuse baseline has nine plugin compositions and 66 skill directories.
-This slice adds three compositions and preserves all 66 skills. These are
+The tooling slice adds three compositions; the resource slice adds two more.
+The catalog now has 14 compositions and preserves all 66 skills. These are
 source inventory counts, not proof that every model session sees 66 skills.
 Profiles and installed plugins determine the actual discovery surface.
 
@@ -135,7 +144,7 @@ remaining names and boundaries below are experiments for later iterations.
 | `api-contracts` | Create and review schemas and API contracts | Current API workflows; reusable schema procedures and focused review output |
 | `kotlin-development` | Implement, review, and diagnose Kotlin code | Kotlin workflows and references; no mandatory Kast connection or event checks |
 | `intellij-development` | Develop and qualify IntelliJ plugins | Current IntelliJ workflows and their platform-specific references |
-| `pkl-configuration` | Develop and verify Pkl configuration | Current Pkl workflows; event hooks supplied separately |
+| `pkl-workflows` | Develop and verify Pkl configuration | Current Pkl workflows; optional Pkl Repository Checks supplies event hooks |
 | `personal-configuration` | Maintain the user's verified shell and dotfiles setup | Personal setup management and personal variants of shell/CLI workflows |
 
 The reuse PR lets `shell-script-safety` and `manage-json-schemas` serve more

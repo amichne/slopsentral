@@ -94,6 +94,32 @@ agent authoring, and personal installation remain required task comparisons.
 See [the redesign](../docs/skill-plugin-reassessment.md) and
 [Pkl qualification](../docs/pkl-projection.md).
 
+## Pkl Workflow and Resource Pilot
+
+Pkl Workflows 1.0.0 packages the four existing Pkl skills. Pkl Repository
+Checks 1.0.0 packages the three existing Pkl hooks and their executable helper.
+Pkl Configuration 1.0.3 retains the complete composition for existing callers.
+No skill, executable, adapter, or current profile selection is retired.
+
+The hooks now depend on one `RESOURCE`, `pkl-agent-runtime`, instead of whole
+skills. It references the existing `pkl-engineering/scripts/pkl_agent` file.
+Both projections preserve its bytes and executable mode. The combined new
+closures contain every asset selected by the compatibility composition.
+
+`pkl-workflow-default` selects Software Engineering, Engineering Excellence,
+and Pkl Workflows. `pkl-checked-repository` adds Pkl Repository Checks.
+After publication, choose the new packages or Pkl Configuration. A profile
+selecting the compatibility bundle with the new checks rejects duplicate hooks.
+Installed caches, configuration layers, and hook trust require explicit host
+selection; source edits do not migrate them.
+
+The source catalog now has 14 compositions and 66 skills. Catalog report v3
+extends the closed asset-kind union with `RESOURCE`; update report consumers.
+Profiles retain their current schema versions. Expected routing fixtures cover
+the new selections. Actual projected commands pass valid Pkl and reject a type
+error or a missing helper. Native host activation and model behavior remain
+unobserved for this pilot. See [workflow resources](../docs/workflow-resources.md).
+
 ## Engineering Excellence Extraction
 
 Software Engineering 1.4.0 transfers Semantic Ratchet and the engineering-design
@@ -194,9 +220,10 @@ hook composed by two selected plugins, even through a dependency. For each share
 composing bundle per profile. Hosts still install separate bundles; source
 reuse does not establish that the host deduplicates execution or context.
 
-Catalog JSON moves to schema v2. The new `assets` array lists canonical paths and
-composing plugins. `totals.instructionWords` now counts each instruction once.
-Per-plugin counts remain available when comparing separate packages.
+The reuse change introduced catalog report v2. Its `assets` array lists
+canonical paths and composing plugins. `totals.instructionWords` counts each
+instruction once. Per-plugin counts remain available for separate packages.
+The [resource pilot](#pkl-workflow-and-resource-pilot) now requires report v3.
 
 Regenerate provider output after source validation. Refresh installed plugins
 through the host after publication; source edits do not change running sessions.

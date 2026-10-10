@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 // Plugin manifests own composition. This module derives closure, checks, and views.
 import fs from 'node:fs';
+import { validateResourceReference } from './resource-contract.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const fields = ['skills', 'agents', 'hooks', 'instructions'];
+const fields = ['skills', 'agents', 'hooks', 'instructions', 'resources'];
 const key = ref => `${ref.type}/${ref.name}`;
 const sameLocation = (a, b) => a.path === b.path && a.source?.type === b.source?.type && a.source?.path === b.source?.path;
 const ordered = values => [...values].sort((a, b) => a.localeCompare(b, 'en'));
@@ -49,6 +50,7 @@ export function pluginClosure(catalog, plugin) {
   const canonical = new Map(fields.flatMap(field => (catalog.marketplace[field] ?? []).map(ref => [key(ref), ref])));
   function visit(ref) {
     const id = key(ref);
+    if (ref.type === 'RESOURCE' && validateResourceReference(ref).type !== 'RESOURCE_REFERENCE_VALID') findings.push(`${plugin.name}: invalid resource reference ${id}`);
     if (active.has(id)) { findings.push(`${plugin.name}: dependency cycle at ${id}`); return; }
     const expected = canonical.get(id);
     if (!expected) findings.push(`${plugin.name}: ${id} is not marketplace-visible`);
@@ -114,6 +116,8 @@ export function auditCatalog(catalog) {
     }
     paths.set(location, id);
   }
+  for (const ref of catalog.marketplace.resources ?? []) if (validateResourceReference(ref).type !== 'RESOURCE_REFERENCE_VALID') findings.push('marketplace has an invalid resource reference');
+  for (const plugin of catalog.plugins) for (const ref of plugin.resources ?? []) if (validateResourceReference(ref).type !== 'RESOURCE_REFERENCE_VALID') findings.push(`${plugin.name}: invalid direct resource reference`);
   const pluginNames = new Set();
   for (const entry of catalog.marketplace.plugins ?? []) {
     if (pluginNames.has(entry.name)) findings.push(`duplicate marketplace PLUGIN ${entry.name}`);
@@ -176,7 +180,7 @@ export function catalogReport(catalog, profileName) {
   });
   const composed = new Set(catalog.plugins.flatMap(p => [...pluginClosure(catalog, p).refs.keys()]));
   return {
-    type: 'CATALOG_REPORT', schemaVersion: 2,
+    type: 'CATALOG_REPORT', schemaVersion: 3,
     selection: profileName ? { type: 'WORKFLOW_PROFILE', name: profileName } : { type: 'ALL_PLUGINS' },
     measurement: 'Source word counts and install closure; not model tokens, routing accuracy, or runtime load.',
     plugins,
@@ -207,7 +211,7 @@ export function renderCatalog(catalog) {
       const manifest = catalog.plugins.find(source => source.name === plugin.name);
       lines.push(`### ${plugin.name}`, '', plugin.description, '', manifest.metadata.dailyDriver, '', `Outside this plugin: ${plugin.notFor}`, '');
       for (const field of fields) {
-        const refs = plugin.primitives.filter(id => id.startsWith({skills:'SKILL/', agents:'AGENT/',hooks:'HOOK/',instructions:'INSTRUCTION/'}[field]));
+        const refs = plugin.primitives.filter(id => id.startsWith({skills:'SKILL/', agents:'AGENT/',hooks:'HOOK/',instructions:'INSTRUCTION/', resources:'RESOURCE/'}[field]));
         if (refs.length) lines.push(`**${field[0].toUpperCase() + field.slice(1)}:** ${refs.map(id => {
           const [type, name] = id.split('/');
           const ref = catalog.marketplace[field].find(r => r.type === type && r.name === name);
@@ -234,7 +238,7 @@ export function renderCatalog(catalog) {
     '## Evidence', '',
     'Counts describe source instruction text, not actual prompt loading or token use.',
     'The graph gate checks canonical identity, dependencies, profile hook activation, and projection inputs.',
-    'Report v2 totals count each instruction once; per-plugin counts describe each bundle separately.',
+    'Report v3 totals count each instruction once; per-plugin counts describe each bundle separately.',
     'Behavioral scenarios and golden replay are specifications, not observed Astra results.', '');
   return lines.join('\n');
 }
