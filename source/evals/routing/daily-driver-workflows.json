@@ -503,7 +503,7 @@
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
         "summary": "A share-readiness decision can be based on passing JSON syntax and positive wording rather than evidence of routing clarity, independence, provenance, validation, and runtime safety.",
-        "risk": "The team receives primitives that load in the wrong situations, duplicate ownership, or lack reproducible validation.",
+        "risk": "The team receives primitives that load in the wrong situations, conflicting source identities, or lack reproducible validation.",
         "loadedPrimitives": [
           "primitive-routing-evaluation"
         ]

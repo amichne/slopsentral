@@ -18,6 +18,10 @@ the primitive remains usable without the plugin.
   canonical `concepts/*` instruction instead of composing the instruction
   directly.
 - Keep plugin manifests small and declarative.
+- Reuse canonical identities across plugins. A plugin composes an asset; its
+  packaging does not give it exclusive ownership of that asset.
+- Check selected profiles as well as each bundle. Shared skills, agents, and
+  instructions are valid; each hook must occur in one selected plugin closure.
 - Treat plugin manifests and marketplace catalogs as structured data governed by
   repo-local schemas. Shape changes require schema changes or validation
   evidence, not prose-only agreement.

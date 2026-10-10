@@ -45,7 +45,7 @@ test('the generated chooser separates the default, specialties, and advanced pol
 });
 
 
-test('consolidated specialties retain all capabilities with one owner', () => {
+test('consolidated specialties retain all primitive capabilities', () => {
   const personal = pluginClosure(catalog, plugin('personal-setup')).refs;
   for (const name of ['personal-setup-management', 'personal-cli-authoring',
     'cli-creator', 'shell-session-integration', 'terminal-ui-design',

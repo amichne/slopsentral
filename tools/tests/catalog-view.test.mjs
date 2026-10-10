@@ -2,11 +2,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
-import { auditCatalog, catalogReport, loadCatalog, pluginClosure, renderCatalog } from '../catalog.mjs';
+import Ajv2020 from 'ajv/dist/2020.js';
+import { auditCatalog, auditProfileComposition, catalogReport, loadCatalog, pluginClosure, renderCatalog } from '../catalog.mjs';
 const root = path.resolve(import.meta.dirname, '../..');
 const catalog = loadCatalog(root);
 
-test('current catalog has no ownership or closure failures', () => {
+test('current catalog has no identity or closure failures', () => {
   assert.deepEqual(auditCatalog(catalog), []);
 });
 
@@ -22,7 +23,7 @@ test('a profile includes exactly its selected plugins and rejects unknown profil
   assert.throws(() => catalogReport(catalog, 'unknown-profile'), /unknown profile/);
 });
 
-test('repeated dependency edges inside one owner are idempotent', () => {
+test('repeated dependency edges inside one plugin are idempotent', () => {
   const kotlin = catalog.plugins.find(p => p.name === 'kotlin-engineering');
   const before = pluginClosure(catalog, kotlin);
   const after = pluginClosure(catalog, { ...kotlin, skills: [...kotlin.skills, ...kotlin.skills] });
@@ -66,7 +67,9 @@ test('canonical dependencies are traversed even when the plugin reference omits 
   const target = marketplace.skills.find(ref => ref.name === 'mise-project-tooling');
   target.dependsOn = [marketplace.skills.find(ref => ref.name === 'manage-json-schemas')];
   const modified = { ...catalog, marketplace };
-  assert.ok(auditCatalog(modified).some(f => /skill manage-json-schemas has multiple plugin owners/.test(f)));
+  assert.deepEqual(auditCatalog(modified), []);
+  const closure = pluginClosure(modified, modified.plugins.find(p => p.name === 'software-engineering'));
+  assert.ok(closure.refs.has('SKILL/manage-json-schemas'));
 });
 
 test('a repeated dependency identity cannot hide a conflicting source location', () => {
@@ -94,5 +97,63 @@ test('a repeated identity cannot hide additional dependency edges', () => {
       ...ref, dependsOn: [{ ...repeated, dependsOn: [foreign] }],
     })],
   }) };
-  assert.ok(auditCatalog(modified).some(f => /skill manage-json-schemas has multiple plugin owners/.test(f)));
+  assert.deepEqual(auditCatalog(modified), []);
+  const closure = pluginClosure(modified, modified.plugins.find(p => p.name === 'software-engineering'));
+  assert.ok(closure.refs.has('SKILL/manage-json-schemas'));
+});
+
+test('reused assets expose every composing plugin with unique source counts', () => {
+  const report = catalogReport(catalog);
+  assert.equal(report.schemaVersion, 2);
+  const shell = report.assets.find(asset => asset.primitiveType === 'SKILL' && asset.name === 'shell-script-safety');
+  assert.deepEqual(shell.plugins, ['personal-setup', 'software-engineering']);
+  assert.equal(shell.path, 'skills/shell-script-safety');
+  const shared = catalog.marketplace.instructions.find(ref => ref.name === 'engineering-design');
+  const modified = { ...catalog, plugins: catalog.plugins.map(p => p.name !== 'repository-knowledge' ? p : {
+    ...p, instructions: [...p.instructions, shared],
+  }) };
+  assert.deepEqual(auditCatalog(modified), []);
+  const reused = catalogReport(modified);
+  assert.equal(reused.totals.instructionWords, report.totals.instructionWords);
+  assert.ok(reused.plugins.reduce((sum, p) => sum + p.instructionWords, 0) > reused.totals.instructionWords);
+  const profile = catalogReport(catalog, 'agent-authoring-default');
+  assert.deepEqual(profile.assets.find(asset => asset.name === 'shell-script-safety').plugins,
+    ['personal-setup', 'software-engineering']);
+});
+
+test('report v2 validates and rejects unknown asset kinds or ambiguous composition', () => {
+  const ajv = new Ajv2020({ strict: false });
+  const schema = JSON.parse(fs.readFileSync(path.join(root, 'source/schemas/catalog/catalog.schema.json'), 'utf8'));
+  const validate = ajv.compile(schema);
+  const report = catalogReport(catalog);
+  assert.ok(validate(report), JSON.stringify(validate.errors));
+  for (const mutate of [
+    value => { value.schemaVersion = 1; },
+    value => { value.assets[0].primitiveType = 'UNKNOWN'; },
+    value => { value.assets[0].plugins.push(value.assets[0].plugins[0]); },
+    value => { delete value.assets; },
+  ]) {
+    const invalid = structuredClone(report);
+    mutate(invalid);
+    assert.equal(validate(invalid), false);
+  }
+});
+
+test('profile hook activation includes dependencies and fails closed on missing definitions', () => {
+  const modified = { ...catalog, definitions: new Map(catalog.definitions) };
+  const sourceHook = catalog.marketplace.hooks.find(ref => ref.name === 'source-graph-valid');
+  const carrier = structuredClone(modified.definitions.get('HOOK/code-knowledge-drift'));
+  carrier.dependsOn = [...carrier.dependsOn ?? [], sourceHook];
+  modified.definitions.set('HOOK/code-knowledge-drift', carrier);
+  const profile = { name: 'shared-hook', plugins: ['personal-setup', 'repository-knowledge'] };
+  assert.match(auditProfileComposition(modified, profile).join('\n'), /activate HOOK\/source-graph-valid multiple times/);
+  modified.definitions.delete('HOOK/source-graph-valid');
+  assert.match(auditProfileComposition(modified, profile).join('\n'), /missing canonical hook definition/);
+});
+
+test('a report cannot silently erase a conflicting canonical location', () => {
+  const modified = { ...catalog, plugins: catalog.plugins.map(p => p.name !== 'personal-setup' ? p : {
+    ...p, skills: p.skills.map(ref => ref.name !== 'shell-script-safety' ? ref : { ...ref, path: 'skills/cli-data-pipelines' }),
+  }) };
+  assert.throws(() => catalogReport(modified), /differs from its canonical marketplace reference/);
 });

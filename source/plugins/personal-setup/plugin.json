@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "personal-setup",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -108,6 +108,24 @@
       },
       "path": "skills/repo-instruction-topology",
       "name": "repo-instruction-topology"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/shell-script-safety",
+      "name": "shell-script-safety"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/manage-json-schemas",
+      "name": "manage-json-schemas"
     }
   ],
   "agents": [],
