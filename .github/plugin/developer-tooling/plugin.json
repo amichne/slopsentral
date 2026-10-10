@@ -1,0 +1,24 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Productivity",
+  "description": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+  "keywords": [
+    "cli",
+    "developer-tooling",
+    "shell",
+    "skills",
+    "tools"
+  ],
+  "license": "UNLICENSED",
+  "name": "developer-tooling",
+  "skills": "./skills",
+  "tags": [
+    "cli",
+    "shell",
+    "tools",
+    "skills"
+  ],
+  "version": "1.0.0"
+}

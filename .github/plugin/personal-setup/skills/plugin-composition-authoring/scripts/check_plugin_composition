@@ -13,6 +13,7 @@ PRIMITIVE_FIELDS = {
     "agents": "AGENT",
     "hooks": "HOOK",
     "instructions": "INSTRUCTION",
+    "resources": "RESOURCE",
 }
 PAYLOAD_DIR_NAMES = {
     "agents",
@@ -111,7 +112,10 @@ def validate_ref(repo: Path, owner: str, ref: Any, expected_type: str, findings:
         findings.append(f"{owner}: path does not exist: source/{path_value}")
         return
 
-    if expected_type == "SKILL":
+    if expected_type == "RESOURCE":
+        if not absolute_path.is_file() or absolute_path.is_symlink() or absolute_path.name.lower() == "skill.md":
+            findings.append(f"{owner}: resource must name one regular non-workflow file")
+    elif expected_type == "SKILL":
         frontmatter = read_frontmatter(absolute_path / "SKILL.md", findings)
         if frontmatter.get("name") != name:
             findings.append(f"{owner}: SKILL.md frontmatter name must match {name}")

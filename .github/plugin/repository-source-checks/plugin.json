@@ -1,0 +1,22 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Engineering",
+  "description": "Run explicit repository source-graph checks through supported host events.",
+  "hooks": "./hooks.json",
+  "keywords": [
+    "governance",
+    "hooks",
+    "repository-source-checks",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "repository-source-checks",
+  "tags": [
+    "hooks",
+    "validation",
+    "governance"
+  ],
+  "version": "1.0.0"
+}
