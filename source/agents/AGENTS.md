@@ -26,5 +26,5 @@ This file applies to reusable agent profiles under `source/agents/`.
 
 ## Verify
 
-- Run both `projeKtor project` harness projections after adding agents to a
+- Run both local Pkl harness projections from root `AGENTS.md` after adding agents to a
   plugin or marketplace manifest.

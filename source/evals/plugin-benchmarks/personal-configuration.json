@@ -1,0 +1,64 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "personal-configuration",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-6-astra",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin personal-configuration",
+      "node tools/tests/tooling-redesign.test.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Candidate package boundary benchmark; not an observed model run.",
+    "Verifiers prove composition and selection boundaries only; model selection and task usefulness remain separately assessed.",
+    "No real HOME, installed cache, or remote mutation is authorized."
+  ],
+  "setupQuestions": [
+    "Which supplied disposable repository should exercise this package boundary?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "personal-configuration-keeps-authoring-outside",
+      "title": "personal-configuration boundary audit",
+      "purpose": "Check the new installation boundary independently of existing compatibility bundles.",
+      "routingCaseIds": [
+        "personal-configuration-keeps-authoring-outside"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "personal-configuration"
+      },
+      "userInput": "Audit Personal Configuration. Prove it exposes personal setup and shell workflows without installing general agent authoring or automatic source checks. Use only the supplied local or disposable fixture. Do not install, publish, push, or modify remote state.",
+      "successChecklist": [
+        "Resolve personal setup and CLI skills from canonical source.",
+        "Keep general plugin authoring and automatic integrations outside this package.",
+        "The source graph and focused composition checks pass.",
+        "The closure includes personal setup management and has no hooks."
+      ]
+    }
+  ]
+}

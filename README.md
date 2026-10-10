@@ -16,11 +16,16 @@ The code profiles select both. Add a specialty when the task needs one:
 | IntelliJ Platform plugins | IntelliJ Plugin Development, plus Kotlin Engineering for Kotlin code |
 | Pkl configuration | Pkl Configuration |
 | OpenAPI or JSON Schema | API Contracts |
-| Docs, proposals, runbooks, or documentation sites | Technical Writing; sufficient on its own for writing tasks |
-| Generated code indexes and knowledge documents | Repository Knowledge; optional for ordinary coding |
-| Skills, agents, hooks, and plugins | Agent Tooling |
-| CLI products, shell completions, and TUIs | CLI Development |
-| Personal shell-config setup and composable utilities with `--teach` | [Personal Setup](docs/personal-setup.md) |
+| Docs, proposals, runbooks, sites, and source-backed knowledge | Repository Knowledge |
+| Skills, agents, hooks, and plugins | Developer Tooling |
+| CLI products, shell completions, and TUIs | Developer Tooling |
+| Personal shell-config setup and utilities with `--teach` | Personal Configuration |
+| Automatic Slopsentral source-graph checks | Repository Source Checks; explicit opt-in |
+
+Developer Tooling and Personal Configuration are pilot alternatives to the
+retained [Personal Setup](docs/personal-setup.md) bundle. See the
+[migration ledger](source/MIGRATION.md#tooling-redesign-pilot) and
+[design direction](docs/skill-plugin-reassessment.md) for scope and evaluation.
 
 Describe the result you want. The agent selects the relevant skills from those
 plugins; you do not need to name each skill. Installation does not authorize a
@@ -85,7 +90,7 @@ for existing global installations and configuration backups.
   source evidence, not generated marketplace output.
 - Keep source-graph schemas under `source/schemas/` and reusable validation
   utilities under `tools/`.
-- Regenerate provider output with projeKtor from authored source. Both
+- Regenerate provider output with the local Pkl projector from authored source. Both
   marketplaces are published on `main` and the dedicated harness branches.
 - Prefer this repository over installed plugin caches such as
   `~/.codex/plugins/cache`.
@@ -99,7 +104,7 @@ for existing global installations and configuration backups.
 | Codex | `main` and [`harness/codex`](https://github.com/amichne/slopsentral/tree/harness/codex) | `.agents/plugins/marketplace.json` |
 | GitHub Copilot | `main` and [`harness/github-copilot`](https://github.com/amichne/slopsentral/tree/harness/github-copilot) | `.github/plugin/marketplace.json` |
 
-The `Publish Harnesses` workflow projects validated source with projeKtor and
+The `Publish Harnesses` workflow projects validated source with the local Pkl projector and
 publishes each dedicated output branch, then commits both generated trees to
 `main` together. Authored files are preserved. Each publication commit records
 the source commit in a `Source-Commit` trailer. Stale runs skip publication;
@@ -158,14 +163,28 @@ restores its global registration if needed.
 
 ## Validation
 
+Use a Git checkout with a resolvable HEAD. The local projector requires Node.js
+20.11 or later, locked Node dependencies, Python 3, and exactly Pkl 0.32.0.
+Install the checksum-locked runtime explicitly, then select it:
+
+```bash
+npm ci
+node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
+export PKL_BIN=/tmp/slopsentral-pkl/pkl
+```
+
+Choose fresh output directories for every projection. The projector rejects
+existing destinations. See [Pkl projection](docs/pkl-projection.md) for the typed
+mapping, supported inputs, provenance, and publication checks.
+
 ```bash
 node tools/validate-source-graph.mjs
 node tools/catalog.mjs --check
 node tools/run-routing-evals.mjs
 node tools/run-routing-evals.mjs --require-all-fixtures
 tools/compile-kotlin-concepts
-projeKtor project --source . --harness codex --out /tmp/slopsentral-codex
-projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
+node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check
 ```
 

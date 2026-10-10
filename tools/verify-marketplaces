@@ -5,8 +5,8 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 projection_root=$(mktemp -d "${TMPDIR:-/tmp}/slopsentral-projections.XXXXXX")
 trap 'rm -r -- "$projection_root"' EXIT
 
-projeKtor project --source . --harness codex --out "$projection_root/codex"
-projeKtor project --source . --harness github-copilot --out "$projection_root/github-copilot"
+node tools/project-marketplaces.mjs --source . --harness codex --out "$projection_root/codex"
+node tools/project-marketplaces.mjs --source . --harness github-copilot --out "$projection_root/github-copilot"
 
 REUSE_CODEX_PROJECTION="$projection_root/codex" \
 REUSE_COPILOT_PROJECTION="$projection_root/github-copilot" \

@@ -1,0 +1,22 @@
+{
+  "version": "0.32.0",
+  "repository": "apple/pkl",
+  "assets": {
+    "darwin-arm64": {
+      "name": "pkl-macos-aarch64",
+      "sha256": "fb891856705f3dcb8589c74999e01ded3eeb6b77ad5c6a95c02579a848c13928"
+    },
+    "darwin-x64": {
+      "name": "pkl-macos-amd64",
+      "sha256": "190ad63fec4f81f40e75dba8d6309033dd30e51b3e042db3b846f67c7ab46e3d"
+    },
+    "linux-x64": {
+      "name": "pkl-linux-amd64",
+      "sha256": "15e7e7375c28b8542b3d13fe35bccaeb7b9542114008998708385489885f41e7"
+    },
+    "linux-arm64": {
+      "name": "pkl-linux-aarch64",
+      "sha256": "b1ba7ef5dec9287f8f843ce563911eba822fed5789a5baab8cc712615a9dbaf0"
+    }
+  }
+}

@@ -5,9 +5,6 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const projeKtorAction =
-  "amichne/projeKtor@eb3799c2bc60b4803c84fded0b6f4cd587bd0702";
-
 function read(relativePath) {
   return fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
 }
@@ -15,19 +12,21 @@ function read(relativePath) {
 const validateWorkflow = read(".github/workflows/validate-source.yml");
 const publicationWorkflow = read(".github/workflows/publish-harnesses.yml");
 
-test("source validation projects both harnesses through immutable projeKtor", () => {
-  assert.equal(validateWorkflow.match(new RegExp(`uses: ${projeKtorAction}`, "g"))?.length, 2);
-  assert.equal(validateWorkflow.match(/version: v1\.2\.1/g)?.length, 2);
-  assert.match(validateWorkflow, /harness: codex/);
-  assert.match(validateWorkflow, /harness: github-copilot/);
-  assert.doesNotMatch(validateWorkflow, /amichne\/intelligence|intelligence project/);
+test("source validation projects both harnesses through pinned local Pkl", () => {
+  assert.equal(validateWorkflow.match(/node tools\/project-marketplaces.mjs --source \./g)?.length, 2);
+  assert.match(validateWorkflow, /--harness codex/);
+  assert.match(validateWorkflow, /--harness github-copilot/);
+  assert.match(validateWorkflow, /node tools\/install-projection-pkl.mjs/);
+  assert.ok(validateWorkflow.indexOf('Set up pinned projection runtime') < validateWorkflow.indexOf('Validate source graph and evals'));
+  assert.doesNotMatch(validateWorkflow, /amichne\/projeKtor|intelligence project/);
 });
 
-test("publication projects a harness matrix through immutable projeKtor", () => {
-  assert.equal(publicationWorkflow.match(new RegExp(`uses: ${projeKtorAction}`, "g"))?.length, 1);
-  assert.equal(publicationWorkflow.match(/version: v1\.2\.1/g)?.length, 1);
-  assert.match(publicationWorkflow, /harness: \$\{\{ matrix\.harness \}\}/);
-  assert.doesNotMatch(publicationWorkflow, /amichne\/intelligence|intelligence project/);
+test("publication projects a harness matrix through the same local Pkl boundary", () => {
+  assert.match(publicationWorkflow, /node tools\/project-marketplaces.mjs --source \./);
+  assert.match(publicationWorkflow, /--harness '\$\{\{ matrix\.harness \}\}'/);
+  assert.match(publicationWorkflow, /node tools\/install-projection-pkl.mjs/);
+  assert.match(publicationWorkflow, /npm ci --ignore-scripts/);
+  assert.doesNotMatch(publicationWorkflow, /amichne\/projeKtor|intelligence project/);
 });
 
 test("publication maps each projection to its dedicated harness branch", () => {

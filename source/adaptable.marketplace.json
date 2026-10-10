@@ -257,7 +257,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/personal-setup"
         },
-        "version": "0.3.0"
+        "version": "0.3.1"
       },
       "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
       "tags": [
@@ -307,6 +307,64 @@
         "policy",
         "repository",
         "skills"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "developer-tooling",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "developer-tooling",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/developer-tooling"
+        },
+        "version": "1.0.0"
+      },
+      "description": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+      "tags": [
+        "cli",
+        "shell",
+        "tools",
+        "skills"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "personal-configuration",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "personal-configuration",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/personal-configuration"
+        },
+        "version": "1.0.0"
+      },
+      "description": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+      "tags": [
+        "configuration",
+        "personal",
+        "shell"
+      ]
+    },
+    {
+      "type": "PLUGIN_ENTRY",
+      "name": "repository-source-checks",
+      "plugin": {
+        "type": "PLUGIN_REFERENCE",
+        "name": "repository-source-checks",
+        "source": {
+          "type": "LOCAL_SOURCE",
+          "path": "./plugins/repository-source-checks"
+        },
+        "version": "1.0.0"
+      },
+      "description": "Run explicit repository source-graph checks through supported host events.",
+      "tags": [
+        "hooks",
+        "validation",
+        "governance"
       ]
     }
   ],

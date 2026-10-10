@@ -19,8 +19,8 @@ Project commands need Worktrunk approval before their first execution. Inspect
 the expanded commands and use existing authorization for the reviewed task;
 do not treat skipped commands as successful verification.
 
-`npm run verify` requires Node dependencies and projeKtor on PATH. Use
-projeKtor v1.2.1 to match the pinned CI projection contract. The projection
+`npm run verify` requires Node dependencies and Pkl 0.32.0 on PATH (or `PKL_BIN`). Use
+the checksum-verified `tools/install-projection-pkl.mjs` setup command. The projection
 script creates a unique temporary directory per invocation and removes only
 that directory on success or failure. Generated provider trees in the checkout
 are updated by the existing publication workflow.

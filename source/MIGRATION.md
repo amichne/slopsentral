@@ -1,6 +1,8 @@
 # Task-Oriented Plugin Migration
 
-This is a breaking catalog change. Old plugin IDs are retired without aliases.
+The earlier task-oriented migration retired old plugin IDs without aliases.
+The [tooling redesign pilot](#tooling-redesign-pilot) below adds alternatives
+and retires no current entry.
 Canonical skills, agents, hooks, and instructions keep their identities and
 retain one canonical source. Publication and installed-session activation are separate
 from editing or projecting this source catalog.
@@ -52,6 +54,45 @@ Old and replacement plugins should not remain enabled together.
 No installed cache, user configuration, hook trust state, or remote marketplace
 is changed by this source migration. Standalone skill installation remains an
 advanced alternative, not a prerequisite for the normal plugin chooser.
+
+## Tooling Redesign Pilot
+
+This slice adds alternatives; it retires no existing identity. Personal Setup
+0.3.1 retains its skills and source-check hook. Its hook metadata no longer
+advertises two authoring skills as executable dependencies. The script and
+provider adapter are unchanged. The complete source graph remains authoritative.
+
+| Canonical assets | Existing consumer | New consumer | Evidence required |
+| --- | --- | --- | --- |
+| CLI, shell, terminal, skill, agent, hook, plugin, routing, and instruction authoring skills | Personal Setup | Developer Tooling | Both projections preserve canonical skill bytes; real tasks must establish routing and useful results |
+| `personal-setup-management`, `personal-cli-authoring` | Personal Setup | Personal Configuration | Same source paths and constraints; no live personal configuration migration |
+| `shell-session-integration`, `shell-script-safety` | Personal Setup; shell safety also in Software Engineering | Both pilot bundles | Shared canonical identity is allowed; host discovery deduplication remains unproven |
+| `source-graph-valid` hook | Personal Setup | Repository Source Checks | One hook in the profile closure; projected scripts and native Stop contract |
+
+All asset identities and paths stay fixed. No payload moves or upstream skills
+become local canonical assets. New plugins reference existing assets. The only
+removed edges are the source hook's instructional dependencies; its executable
+uses the repository validator, not those skills. Legacy Personal Setup continues
+to select both skills directly.
+
+`developer-tooling-default` selects Software Engineering, Engineering Excellence,
+Developer Tooling, and Repository Source Checks. `personal-configuration-default`
+selects only Personal Configuration. Existing profiles keep their selections.
+The two workflow bundles have no hooks or MCP declaration of their own.
+
+After publication, select a pilot instead of overlapping legacy installation
+where the old hook would execute again. Selecting Personal Setup together with
+Repository Source Checks fails profile validation. Identical shared skills are
+allowed, but inspect host discovery entries before assuming they collapse.
+Source edits and generated package checks do not change installed caches,
+configuration layers, or hook trust. Do not retire the compatibility bundle
+until fresh sessions and task comparisons qualify its replacements.
+
+The first three benchmark definitions audit composition boundaries. Their golden
+routing fixtures are contracts, not observed model runs. CLI creation, completion,
+agent authoring, and personal installation remain required task comparisons.
+See [the redesign](../docs/skill-plugin-reassessment.md) and
+[Pkl qualification](../docs/pkl-projection.md).
 
 ## Engineering Excellence Extraction
 
@@ -126,8 +167,9 @@ skill-read-policy plugin. Placeholder migration skills stay retired.
 
 ## Evidence
 
-The catalog has 9 plugins: one default, seven specialties, and one advanced
-policy. Removing automatic repository activation preserves the skill and
+The reuse baseline had 9 plugins: one default, seven specialties, and one
+advanced policy. The tooling pilot adds two specialties and one advanced
+integration, bringing the source catalog to 12. Removing automatic repository activation preserves the skill and
 instruction owners; the retired startup hook is no longer in the install closure.
 Regression checks cover the task selections, canonical identity, profile lifecycle,
 and provider inputs. Renamed routing fixtures remain expected contracts, not

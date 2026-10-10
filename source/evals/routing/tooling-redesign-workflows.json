@@ -1,0 +1,126 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 2,
+  "name": "tooling-redesign-workflows",
+  "description": "Unobserved acceptance definitions for the first catalog redesign slice.",
+  "cases": [
+    {
+      "id": "developer-tooling-keeps-personal-effects-explicit",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-10",
+        "evidenceRefs": [
+          "source/plugins/developer-tooling/plugin.json",
+          "docs/skill-plugin-reassessment.md"
+        ]
+      },
+      "prompt": "Audit the Developer Tooling composition. Prove it exposes general CLI and agent workflow authoring without personal dotfiles installation, hooks, or MCP connections.",
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "developer-tooling"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Unobserved redesign acceptance scenario.",
+        "risk": "Installing a workflow also selects unrelated personal or automatic behavior.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Resolve all canonical skill references in Developer Tooling.",
+        "Keep personal setup management and automatic integrations outside this package."
+      ],
+      "forbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "recoveryExpectation": "Reject unproven or overlapping hook selection and report missing host evidence.",
+      "productiveOutcome": "A coherent package selection preserves the stated workflow and effect boundary.",
+      "verificationEvidence": [
+        "The source graph and focused composition checks pass.",
+        "The package closure has no hooks or MCP declaration."
+      ],
+      "notes": "Designed obligation only; no model routing or host execution observation is claimed."
+    },
+    {
+      "id": "personal-configuration-keeps-authoring-outside",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-10",
+        "evidenceRefs": [
+          "source/plugins/personal-configuration/plugin.json",
+          "docs/skill-plugin-reassessment.md"
+        ]
+      },
+      "prompt": "Audit Personal Configuration. Prove it exposes personal setup and shell workflows without installing general agent authoring or automatic source checks.",
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "personal-configuration"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Unobserved redesign acceptance scenario.",
+        "risk": "Installing a workflow also selects unrelated personal or automatic behavior.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Resolve personal setup and CLI skills from canonical source.",
+        "Keep general plugin authoring and automatic integrations outside this package."
+      ],
+      "forbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "recoveryExpectation": "Reject unproven or overlapping hook selection and report missing host evidence.",
+      "productiveOutcome": "A coherent package selection preserves the stated workflow and effect boundary.",
+      "verificationEvidence": [
+        "The source graph and focused composition checks pass.",
+        "The closure includes personal setup management and has no hooks."
+      ],
+      "notes": "Designed obligation only; no model routing or host execution observation is claimed."
+    },
+    {
+      "id": "source-check-integration-needs-no-authoring-skill",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-10",
+        "evidenceRefs": [
+          "source/plugins/repository-source-checks/plugin.json",
+          "docs/skill-plugin-reassessment.md"
+        ]
+      },
+      "prompt": "Audit Repository Source Checks. Prove it packages the source-graph hook without advertising authoring skills as runtime dependencies.",
+      "expectedPrimitive": {
+        "type": "HOOK",
+        "name": "source-graph-valid"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Unobserved redesign acceptance scenario.",
+        "risk": "Installing a workflow also selects unrelated personal or automatic behavior.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Select the source hook explicitly through one profile closure.",
+        "Preserve the existing source validation and Stop output adapters."
+      ],
+      "forbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "recoveryExpectation": "Reject unproven or overlapping hook selection and report missing host evidence.",
+      "productiveOutcome": "A coherent package selection preserves the stated workflow and effect boundary.",
+      "verificationEvidence": [
+        "The source graph and focused composition checks pass.",
+        "The integration closure contains the hook and no skill dependencies."
+      ],
+      "notes": "Designed obligation only; no model routing or host execution observation is claimed."
+    }
+  ]
+}

@@ -45,7 +45,7 @@ This file applies to authored marketplace source under `source/`.
 ## Generated Boundaries
 
 - Edit `source/` as authored source.
-- Do not hand-edit generated provider output. projeKtor publishes Codex output
+- Do not hand-edit generated provider output. The local Pkl projector publishes Codex output
   to `.agents/plugins` and GitHub Copilot output to `.github/plugin` on `main`,
   as well as `harness/codex` and `harness/github-copilot`, from validated source.
 

@@ -1,0 +1,64 @@
+{
+  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "type": "PLUGIN_EVAL_BENCHMARK",
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "plugin",
+  "targetName": "repository-source-checks",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-6-astra",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "type": "PLUGIN_EVAL_WORKSPACE",
+    "sourcePath": ".",
+    "setupMode": "git-worktree",
+    "preserve": "never"
+  },
+  "targetProvisioning": {
+    "type": "PLUGIN_EVAL_TARGET_PROVISIONING",
+    "mode": "workspace-plugin-marketplace"
+  },
+  "verifiers": {
+    "type": "PLUGIN_EVAL_VERIFIERS",
+    "commands": [
+      "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin repository-source-checks",
+      "node tools/tests/tooling-redesign.test.mjs",
+      "git diff --check"
+    ]
+  },
+  "notes": [
+    "Candidate package boundary benchmark; not an observed model run.",
+    "Verifiers prove composition and selection boundaries only; model selection and task usefulness remain separately assessed.",
+    "No real HOME, installed cache, or remote mutation is authorized."
+  ],
+  "setupQuestions": [
+    "Which supplied disposable repository should exercise this package boundary?"
+  ],
+  "scenarios": [
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "source-check-integration-needs-no-authoring-skill",
+      "title": "repository-source-checks boundary audit",
+      "purpose": "Check the new installation boundary independently of existing compatibility bundles.",
+      "routingCaseIds": [
+        "source-check-integration-needs-no-authoring-skill"
+      ],
+      "expectedPrimitive": {
+        "type": "HOOK",
+        "name": "source-graph-valid"
+      },
+      "userInput": "Audit Repository Source Checks. Prove it packages the source-graph hook without advertising authoring skills as runtime dependencies. Use only the supplied local or disposable fixture. Do not install, publish, push, or modify remote state.",
+      "successChecklist": [
+        "Select the source hook explicitly through one profile closure.",
+        "Preserve the existing source validation and Stop output adapters.",
+        "The source graph and focused composition checks pass.",
+        "The integration closure contains the hook and no skill dependencies."
+      ]
+    }
+  ]
+}

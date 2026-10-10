@@ -1,0 +1,142 @@
+module slopsentral.projection.Schema
+
+typealias Harness = "codex" | "github-copilot"
+typealias Kind = "SKILL" | "AGENT" | "INSTRUCTION" | "HOOK"
+typealias RelativePath =
+  String(!isEmpty && !startsWith("/") && !contains("\\") && !split("/").contains(".."))
+typealias Identity = String(matches(Regex("[a-z][a-z0-9-]*")))
+typealias Digest = String(matches(Regex("sha256:[a-f0-9]{64}")))
+
+class Person {
+  name: String(!isEmpty)
+  email: String? = null
+  url: String? = null
+}
+
+class Interface {
+  websiteURL: String? = null
+  privacyPolicyURL: String? = null
+  termsOfServiceURL: String? = null
+}
+
+open class Reference {
+  type: Kind
+  name: Identity
+  sourcePath: RelativePath
+  sha256: Digest
+}
+
+class AgentHeader {
+  name: Identity
+  description: String(!isEmpty)
+  model: String? = null
+}
+
+class SkillReference extends Reference {
+  type: "SKILL" = "SKILL"
+}
+class InstructionReference extends Reference {
+  type: "INSTRUCTION" = "INSTRUCTION"
+}
+class AgentReference extends Reference {
+  type: "AGENT" = "AGENT"
+  text: String(startsWith("---\n"))
+}
+class HookReference extends Reference {
+  type: "HOOK" = "HOOK"
+  hook: HookDefinition
+}
+typealias Asset = SkillReference | InstructionReference | AgentReference | HookReference
+
+class Command {
+  type: "command"
+  command: String(!isEmpty)
+  commandWindows: String? = null
+  matcher: String? = null
+  timeout: Int(isPositive)? = null
+  statusMessage: String? = null
+  additionalContextLimit: Int(isPositive)? = null
+}
+
+class HookGroup {
+  matcher: String? = null
+  hooks: Listing<Command>
+}
+
+class HookAdapter {
+  hooks: Mapping<String, Listing<HookGroup>>
+}
+
+class LocalSource {
+  type: "LOCAL_SOURCE"
+  path: "./"
+}
+
+open class Primitive {
+  type: Kind
+  name: Identity
+  source: LocalSource
+  path: RelativePath
+  dependsOn: Listing<Primitive> = new {}
+}
+
+class HookDefinition extends Primitive {
+  type: "HOOK" = "HOOK"
+  adapter: HookAdapter
+}
+
+class Plugin {
+  name: Identity
+  version: String(matches(Regex("[0-9]+\\.[0-9]+\\.[0-9]+")))
+  description: String(!isEmpty)
+  interface: Interface
+  tags: List<String>
+  references: List<Asset>
+  mcp: RelativePath? = null
+}
+
+class Input {
+  name: Identity
+  owner: Person
+  description: String
+  generatedAt: String
+  sourceSha: String(matches(Regex("[a-f0-9]{40}")))
+  plugins: Listing<Plugin>
+  phase: "PLAN" | "SEALED" = "PLAN"
+  projectedDigests: Mapping<String, Digest> = new {}
+}
+
+class Copy {
+  source: RelativePath
+  target: RelativePath
+}
+
+class TextFile {
+  path: RelativePath
+  text: String
+  format: "TEXT" | "JSON" = "TEXT"
+}
+
+class PluginPlan {
+  name: Identity
+  root: RelativePath
+  copies: List<Copy>
+  files: List<TextFile>
+  references: List<LockReference>
+}
+
+class LockReference {
+  type: Kind | "MCP_CONFIGURATION"
+  name: Identity? = null
+  sourcePath: RelativePath
+  targetPath: RelativePath
+  sha256: Digest
+}
+
+class Plan {
+  type: "PROJECTION_PLAN" = "PROJECTION_PLAN"
+  schemaVersion: Int(this == 1) = 1
+  harness: Harness
+  plugins: List<PluginPlan>
+  files: List<TextFile>
+}

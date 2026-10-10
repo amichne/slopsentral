@@ -16,7 +16,7 @@ by hand when the authored source can be fixed instead.
 - Generated provider output is published on `main` under `.agents/plugins`
   (Codex) and `.github/plugin` (GitHub Copilot), and on the corresponding
   `harness/codex` and `harness/github-copilot` branches.
-- Regenerate these trees from validated authored source with projeKtor; never
+- Regenerate these trees from validated authored source with the local Pkl projector; never
   hand-edit them. Publication updates both trees on `main` in one commit and
   preserves all authored files.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
@@ -33,7 +33,12 @@ composition edits, run:
 
 ```bash
 node tools/validate-source-graph.mjs
-projeKtor project --source . --harness codex --out /tmp/slopsentral-codex
-projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
+node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check
 ```
+
+The projector requires Pkl 0.32.0 (`PKL_BIN` may select an explicit executable).
+Use fresh output directories. Projection never downloads a runtime or replaces
+an existing tree. `node tools/install-projection-pkl.mjs --out <path>` is the
+explicit checksum-verified runtime setup boundary.

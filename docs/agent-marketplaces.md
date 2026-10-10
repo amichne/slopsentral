@@ -6,7 +6,7 @@ worktree automation. Plugin payloads remain with their owning marketplaces.
 | Provider | Marketplace | Source | Entrypoint | Selected capability |
 | --- | --- | --- | --- | --- |
 | Codex | slopsentral | https://github.com/amichne/slopsentral/tree/harness/codex | `.agents/plugins/marketplace.json` | Software Engineering and Agent Tooling for marketplace work |
-| GitHub Copilot | slopsentral | https://github.com/amichne/slopsentral/tree/harness/github-copilot | `.github/plugin/marketplace.json` | Same authored workflows through projeKtor |
+| GitHub Copilot | slopsentral | https://github.com/amichne/slopsentral/tree/harness/github-copilot | `.github/plugin/marketplace.json` | Same authored workflows through the local Pkl projector |
 | Codex | worktrunk | https://github.com/max-sixty/worktrunk | `.agents/plugins/marketplace.json` | `worktrunk@worktrunk` configuration guidance and upstream host hooks |
 
 The Worktrunk source was reviewed at
