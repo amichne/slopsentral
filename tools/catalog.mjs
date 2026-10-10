@@ -51,6 +51,7 @@ export function pluginClosure(catalog, plugin) {
     const id = key(ref);
     if (active.has(id)) { findings.push(`${plugin.name}: dependency cycle at ${id}`); return; }
     const expected = canonical.get(id);
+    if (!expected) findings.push(`${plugin.name}: ${id} is not marketplace-visible`);
     if (expected && !sameLocation(ref, expected)) findings.push(`${plugin.name}: ${id} differs from its canonical marketplace reference`);
     if (refs.has(id)) {
       if (!sameLocation(ref, refs.get(id))) findings.push(`${plugin.name}: conflicting dependency locations for ${id}`);
@@ -71,11 +72,37 @@ export function pluginClosure(catalog, plugin) {
   return { refs, findings };
 }
 
+/** Source reuse is independent of selection. Hooks need one activation per profile. */
+export function auditProfileComposition(catalog, profile) {
+  const findings = [];
+  const hooks = new Map();
+  if (new Set(profile.plugins).size !== profile.plugins.length) findings.push(`${profile.name}: duplicate plugin selection`);
+  for (const name of new Set(profile.plugins)) {
+    const plugin = catalog.plugins.find(p => p.name === name);
+    if (!plugin) { findings.push(`${profile.name}: profile references missing plugin ${name}`); continue; }
+    const closure = pluginClosure(catalog, plugin);
+    findings.push(...closure.findings);
+    for (const [id, ref] of closure.refs) {
+      if (ref.type !== 'HOOK') continue;
+      if (!catalog.definitions.has(id)) findings.push(`${profile.name}: missing canonical hook definition for ${id}`);
+      const composedBy = hooks.get(id) ?? [];
+      composedBy.push(name);
+      hooks.set(id, composedBy);
+    }
+  }
+  for (const [id, composedBy] of hooks) {
+    if (composedBy.length > 1) findings.push(`${profile.name}: selected plugins activate ${id} multiple times via [${ordered(composedBy).join(', ')}]`);
+  }
+  for (const ref of profile.hooks ?? []) {
+    if (!hooks.has(key(ref))) findings.push(`${profile.name}: profile hook ${ref.name} is not composed by a selected plugin`);
+  }
+  return ordered(new Set(findings));
+}
+
 /** Structural checks only. These findings do not claim successful model routing. */
 export function auditCatalog(catalog) {
   const findings = [];
   const canonical = new Map();
-  const owners = new Map();
   const paths = new Map();
   for (const field of fields) for (const ref of catalog.marketplace[field] ?? []) {
     const id = key(ref);
@@ -112,35 +139,34 @@ export function auditCatalog(catalog) {
       else if (!sameLocation(ref, expected)) {
         findings.push(`${plugin.name}: ${id} differs from its canonical marketplace reference`);
       }
-      const installedBy = owners.get(id) ?? [];
-      installedBy.push(plugin.name);
-      owners.set(id, installedBy);
     }
   }
   if (catalog.plugins.filter(plugin => plugin.metadata?.role === 'default').length !== 1) {
     findings.push('catalog must expose exactly one default plugin');
   }
-  for (const [id, installedBy] of owners) {
-    if (installedBy.length > 1) {
-      const [type, name] = id.split('/');
-      findings.push(`${type.toLowerCase()} ${name} has multiple plugin owners: ${ordered(installedBy).join(', ')}`);
-    }
-  }
   for (const profile of catalog.profiles) {
-    if (new Set(profile.plugins).size !== profile.plugins.length) findings.push(`${profile.name}: duplicate plugin selection`);
+    findings.push(...auditProfileComposition(catalog, profile));
   }
   return ordered(new Set(findings));
 }
 
 /** A provider-neutral inventory and word count, not a tokenizer or live usage metric. */
 export function catalogReport(catalog, profileName) {
+  const findings = auditCatalog(catalog);
+  if (findings.length) throw new Error(findings.join('\n'));
   const profile = profileName ? catalog.profiles.find(p => p.name === profileName) : undefined;
   if (profileName && !profile) throw new Error(`unknown profile: ${profileName}`);
   const selected = catalog.plugins.filter(p => !profile || profile.plugins.includes(p.name));
   const all = new Map();
+  const compositions = new Map();
   const plugins = selected.sort((a, b) => a.name.localeCompare(b.name, 'en')).map(plugin => {
     const closure = pluginClosure(catalog, plugin);
-    for (const [id, ref] of closure.refs) all.set(id, ref);
+    for (const [id, ref] of closure.refs) {
+      all.set(id, ref);
+      const composedBy = compositions.get(id) ?? [];
+      composedBy.push(plugin.name);
+      compositions.set(id, composedBy);
+    }
     return {
       type: 'CATALOG_PLUGIN', name: plugin.name, description: plugin.description, notFor: plugin.metadata.notFor,
       primitives: ordered(closure.refs.keys()),
@@ -148,15 +174,21 @@ export function catalogReport(catalog, profileName) {
         .reduce((sum, id) => sum + words(catalog.contents.get(id) ?? ''), 0),
     };
   });
-  const owned = new Set(catalog.plugins.flatMap(p => [...pluginClosure(catalog, p).refs.keys()]));
+  const composed = new Set(catalog.plugins.flatMap(p => [...pluginClosure(catalog, p).refs.keys()]));
   return {
-    type: 'CATALOG_REPORT', schemaVersion: 1,
+    type: 'CATALOG_REPORT', schemaVersion: 2,
     selection: profileName ? { type: 'WORKFLOW_PROFILE', name: profileName } : { type: 'ALL_PLUGINS' },
     measurement: 'Source word counts and install closure; not model tokens, routing accuracy, or runtime load.',
     plugins,
+    assets: ordered(all.keys()).map(id => {
+      const ref = all.get(id);
+      return { type: 'CATALOG_ASSET', primitiveType: ref.type, name: ref.name, path: ref.path,
+        plugins: ordered(compositions.get(id)) };
+    }),
     totals: { type: 'CATALOG_TOTALS', plugins: plugins.length, primitives: all.size,
-      instructionWords: plugins.reduce((sum, p) => sum + p.instructionWords, 0) },
-    standaloneSkills: ordered((catalog.marketplace.skills ?? []).filter(ref => !owned.has(key(ref))).map(ref => ref.name)),
+      instructionWords: [...all.keys()].filter(id => id.startsWith('INSTRUCTION/'))
+        .reduce((sum, id) => sum + words(catalog.contents.get(id) ?? ''), 0) },
+    standaloneSkills: ordered((catalog.marketplace.skills ?? []).filter(ref => !composed.has(key(ref))).map(ref => ref.name)),
   };
 }
 
@@ -167,7 +199,7 @@ export function renderCatalog(catalog) {
     'For code work, start with Software Engineering and add only the specialties your task needs.',
     'Keep that selection for the repository. Describe the outcome; the agent selects relevant skills within the installed plugins.',
     'Installing a plugin makes its capabilities available; it does not require every skill to run or authorize publication.', '',
-    'For documentation alone, choose Technical Writing. Repository Knowledge is optional artifact generation.',
+    'For documentation alone, choose Repository Knowledge. Knowledge generation remains optional.',
     'Profiles provide repeatable setup selections. See [migration](MIGRATION.md) before replacing older installations.', ''];
   for (const [role, heading] of [['default', 'Start here'], ['specialty', 'Specialties'], ['advanced', 'Advanced repository policy']]) {
     lines.push(`## ${heading}`, '');
@@ -189,12 +221,20 @@ export function renderCatalog(catalog) {
     const view = catalogReport(catalog, profile.name);
     lines.push(`- [${profile.name}](profiles/${profile.name}.json): ${profile.plugins.join(' + ')}. ${view.totals.instructionWords} instruction words.`, '');
   }
-  lines.push('## Standalone skills', '',
+  lines.push('## Reused assets', '',
+    'Each asset has one canonical source. Plugins may compose it in several bundles.',
+    'Profiles may share skills, agents, and instructions. Select each hook through one plugin to avoid duplicate execution.', '',
+    '| Asset | Composed by |', '| --- | --- |');
+  for (const asset of report.assets.filter(asset => asset.plugins.length > 1)) {
+    lines.push(`| [${asset.primitiveType}/${asset.name}](${asset.path}${asset.primitiveType === 'SKILL' ? '/SKILL.md' : ''}) | ${asset.plugins.join(', ')} |`);
+  }
+  lines.push('', '## Standalone skills', '',
     'Advanced alternatives outside the plugin chooser. They require explicit standalone setup; normal plugin selection does not depend on installing individual skills.', '',
     report.standaloneSkills.map(name => `[${name}](skills/${name}/SKILL.md)`).join(', ') + '.', '',
     '## Evidence', '',
     'Counts describe source instruction text, not actual prompt loading or token use.',
-    'The graph gate checks identity, ownership, dependencies, and projection inputs.',
+    'The graph gate checks canonical identity, dependencies, profile hook activation, and projection inputs.',
+    'Report v2 totals count each instruction once; per-plugin counts describe each bundle separately.',
     'Behavioral scenarios and golden replay are specifications, not observed Astra results.', '');
   return lines.join('\n');
 }

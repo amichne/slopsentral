@@ -199,6 +199,9 @@ jobs:
 
           test -d "${CODEX_PROJECTION}/.agents/plugins"
           test -d "${GITHUB_COPILOT_PROJECTION}/.github/plugin"
+          REUSE_CODEX_PROJECTION="${CODEX_PROJECTION}" \
+            REUSE_COPILOT_PROJECTION="${GITHUB_COPILOT_PROJECTION}" \
+            node --test tools/tests/asset-reuse-projection.test.mjs
           INSTRUCTION_MARKETPLACE_ROOT="${CODEX_PROJECTION}" \
             node --test tools/tests/instruction-delivery.test.mjs
           STOP_MARKETPLACE_ROOT="${CODEX_PROJECTION}" \

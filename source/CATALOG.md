@@ -5,7 +5,7 @@ For code work, start with Software Engineering and add only the specialties your
 Keep that selection for the repository. Describe the outcome; the agent selects relevant skills within the installed plugins.
 Installing a plugin makes its capabilities available; it does not require every skill to run or authorize publication.
 
-For documentation alone, choose Technical Writing. Repository Knowledge is optional artifact generation.
+For documentation alone, choose Repository Knowledge. Knowledge generation remains optional.
 Profiles provide repeatable setup selections. See [migration](MIGRATION.md) before replacing older installations.
 
 ## Start here
@@ -88,7 +88,7 @@ Choose for personal setup, CLI and terminal products, reusable agent tooling, or
 
 Outside this plugin: Application implementation, documentation production, automatic setup installation, or marketplace publication.
 
-**Skills:** [agent-profile-authoring](skills/agent-profile-authoring/SKILL.md), [cli-creator](skills/cli-creator/SKILL.md), [hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md), [personal-cli-authoring](skills/personal-cli-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md), [repo-instruction-topology](skills/repo-instruction-topology/SKILL.md), [shell-session-integration](skills/shell-session-integration/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md), [terminal-ui-design](skills/terminal-ui-design/SKILL.md).
+**Skills:** [agent-profile-authoring](skills/agent-profile-authoring/SKILL.md), [cli-creator](skills/cli-creator/SKILL.md), [hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md), [manage-json-schemas](skills/manage-json-schemas/SKILL.md), [personal-cli-authoring](skills/personal-cli-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md), [repo-instruction-topology](skills/repo-instruction-topology/SKILL.md), [shell-script-safety](skills/shell-script-safety/SKILL.md), [shell-session-integration](skills/shell-session-integration/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md), [terminal-ui-design](skills/terminal-ui-design/SKILL.md).
 
 **Hooks:** [source-graph-valid](hooks/source-graph-valid.hook.json).
 
@@ -140,6 +140,16 @@ Outside this plugin: Everyday engineering, default setup, and general skill disc
 
 - [local-development-default](profiles/local-development-default.json): software-engineering + engineering-excellence. 690 instruction words.
 
+## Reused assets
+
+Each asset has one canonical source. Plugins may compose it in several bundles.
+Profiles may share skills, agents, and instructions. Select each hook through one plugin to avoid duplicate execution.
+
+| Asset | Composed by |
+| --- | --- |
+| [SKILL/manage-json-schemas](skills/manage-json-schemas/SKILL.md) | api-contracts, personal-setup |
+| [SKILL/shell-script-safety](skills/shell-script-safety/SKILL.md) | personal-setup, software-engineering |
+
 ## Standalone skills
 
 Advanced alternatives outside the plugin chooser. They require explicit standalone setup; normal plugin selection does not depend on installing individual skills.
@@ -149,5 +159,6 @@ Advanced alternatives outside the plugin chooser. They require explicit standalo
 ## Evidence
 
 Counts describe source instruction text, not actual prompt loading or token use.
-The graph gate checks identity, ownership, dependencies, and projection inputs.
+The graph gate checks canonical identity, dependencies, profile hook activation, and projection inputs.
+Report v2 totals count each instruction once; per-plugin counts describe each bundle separately.
 Behavioral scenarios and golden replay are specifications, not observed Astra results.
