@@ -2,7 +2,7 @@
 
 This is a breaking catalog change. Old plugin IDs are retired without aliases.
 Canonical skills, agents, hooks, and instructions keep their identities and
-remain owned once. Publication and installed-session activation are separate
+retain one canonical source. Publication and installed-session activation are separate
 from editing or projecting this source catalog.
 
 ## Plugin choices
@@ -57,7 +57,7 @@ advanced alternative, not a prerequisite for the normal plugin chooser.
 
 Software Engineering 1.4.0 transfers Semantic Ratchet and the engineering-design
 policy to Engineering Excellence 1.0.0. The canonical skill and instruction paths
-remain stable, and each primitive still has one owner. Standard code profiles
+remain stable, and each primitive retains its canonical source. Standard code profiles
 select both plugins so they retain the earlier capability. Documentation-only
 profiles continue without engineering policy.
 
@@ -129,7 +129,7 @@ skill-read-policy plugin. Placeholder migration skills stay retired.
 The catalog has 9 plugins: one default, seven specialties, and one advanced
 policy. Removing automatic repository activation preserves the skill and
 instruction owners; the retired startup hook is no longer in the install closure.
-Regression checks cover the task selections, unique ownership, profile lifecycle,
+Regression checks cover the task selections, canonical identity, profile lifecycle,
 and provider inputs. Renamed routing fixtures remain expected contracts, not
 fresh model observations. Benchmark scenarios are retained under their new
 plugin owners; authored additions require live execution before behavior claims.
@@ -138,3 +138,23 @@ Use Plugin Eval on the projected Codex plugins, where its manifest format applie
 Its static budget estimates and heuristic findings do not establish runtime
 loading or token savings. Keep generated output and raw evaluator reports outside
 the source branch. See [upstream guidance](UPSTREAM.md) for the design rationale.
+
+## Shared Asset Composition
+
+Plugins may now compose the same canonical skills, agents, hooks, and instructions.
+Personal Setup 0.3.0 reuses shell-script-safety from Software Engineering and
+manage-json-schemas from API Contracts. Their source paths and names stay stable.
+The earlier Personal Setup and Repository Knowledge consolidations remain intact.
+No routine or role is renamed for packaging alone.
+
+Profiles may select overlapping skills, agents, and instructions. They reject a
+hook composed by two selected plugins, even through a dependency. For each shared hook, select one
+composing bundle per profile. Hosts still install separate bundles; source
+reuse does not establish that the host deduplicates execution or context.
+
+Catalog JSON moves to schema v2. The new `assets` array lists canonical paths and
+composing plugins. `totals.instructionWords` now counts each instruction once.
+Per-plugin counts remain available when comparing separate packages.
+
+Regenerate provider output after source validation. Refresh installed plugins
+through the host after publication; source edits do not change running sessions.

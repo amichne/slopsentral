@@ -11,7 +11,8 @@
     "measurement",
     "plugins",
     "totals",
-    "standaloneSkills"
+    "standaloneSkills",
+    "assets"
   ],
   "properties": {
     "type": {
@@ -26,10 +27,10 @@
     "schemaVersion": {
       "type": "integer",
       "enum": [
-        1
+        2
       ],
       "examples": [
-        1
+        2
       ]
     },
     "selection": {
@@ -243,7 +244,8 @@
           "minimum": 0,
           "examples": [
             0
-          ]
+          ],
+          "description": "Unique source instruction words across the selected plugin closures."
         }
       },
       "examples": [
@@ -269,12 +271,107 @@
           "grill-me-with-docs"
         ]
       ]
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "primitiveType",
+          "name",
+          "path",
+          "plugins"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "CATALOG_ASSET"
+            ],
+            "examples": [
+              "CATALOG_ASSET"
+            ]
+          },
+          "primitiveType": {
+            "type": "string",
+            "enum": [
+              "SKILL",
+              "AGENT",
+              "HOOK",
+              "INSTRUCTION"
+            ],
+            "examples": [
+              "SKILL"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "shell-script-safety"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "skills/shell-script-safety"
+            ]
+          },
+          "plugins": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "examples": [
+                "personal-setup"
+              ]
+            },
+            "examples": [
+              [
+                "personal-setup",
+                "software-engineering"
+              ]
+            ]
+          }
+        },
+        "examples": [
+          {
+            "type": "CATALOG_ASSET",
+            "primitiveType": "SKILL",
+            "name": "shell-script-safety",
+            "path": "skills/shell-script-safety",
+            "plugins": [
+              "personal-setup",
+              "software-engineering"
+            ]
+          }
+        ]
+      },
+      "examples": [
+        [
+          {
+            "type": "CATALOG_ASSET",
+            "primitiveType": "SKILL",
+            "name": "shell-script-safety",
+            "path": "skills/shell-script-safety",
+            "plugins": [
+              "personal-setup",
+              "software-engineering"
+            ]
+          }
+        ]
+      ]
     }
   },
   "examples": [
     {
       "type": "CATALOG_REPORT",
-      "schemaVersion": 1,
+      "schemaVersion": 2,
       "selection": {
         "type": "ALL_PLUGINS"
       },
@@ -299,6 +396,17 @@
       },
       "standaloneSkills": [
         "grill-me-with-docs"
+      ],
+      "assets": [
+        {
+          "type": "CATALOG_ASSET",
+          "primitiveType": "SKILL",
+          "name": "controlled-technical-writing",
+          "path": "skills/controlled-technical-writing",
+          "plugins": [
+            "writing"
+          ]
+        }
       ]
     }
   ]

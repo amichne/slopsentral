@@ -59,6 +59,10 @@ the concept into the installed plugin while the hook injects it at
 ## Rules
 
 - Do not place copied skill or agent directories inside the plugin.
+- Several plugins may reference the same canonical asset, including dependencies.
+- Keep each primitive listed once in the marketplace with one source path.
+- Profiles may share skills, agents, and instruction chunks. Select each hook
+  through one plugin closure; provider packaging does not prove one execution.
 - Do not reference runtime caches or installed marketplace bundles.
 - Do not add unsupported schema fields to satisfy a UI wish.
 - Do not make installed skills resolve `concepts/*` or `skills/*` as

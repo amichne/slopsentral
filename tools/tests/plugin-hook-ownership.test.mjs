@@ -24,14 +24,15 @@ for (const pluginName of pluginNames) {
   }
 }
 
-test("every authored hook has an explicit ownership policy", () => {
+test("every authored hook has a canonical marketplace identity", () => {
   const hookNames = fs.readdirSync(path.join(repoRoot, "source/hooks"))
     .filter((name) => name.endsWith(".hook.json"))
     .map((name) => name.slice(0, -".hook.json".length));
 
   for (const hookName of hookNames) {
-    const actualOwners = [...(owners.get(hookName) ?? [])].sort();
-    assert.equal(actualOwners.length, 1, `${hookName} must have one plugin owner`);
+    const refs = readJson("source/adaptable.marketplace.json").hooks.filter(ref => ref.name === hookName);
+    assert.equal(refs.length, 1, `${hookName} must have one canonical reference`);
+    assert.equal(refs[0].path, `hooks/${hookName}.hook.json`);
   }
 });
 

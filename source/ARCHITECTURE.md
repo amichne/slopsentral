@@ -1,8 +1,8 @@
 # Catalog Architecture
 
 A plugin packages a recognizable job and composes canonical primitives;
-a profile selects several plugins for a broader workflow. Every installed
-primitive has one plugin owner, including dependencies introduced by hooks.
+a profile selects several plugins for a broader workflow. Each primitive has
+one canonical source. Several plugins may compose the same source identity.
 
 ## Primitive Responsibilities
 
@@ -13,8 +13,8 @@ primitive has one plugin owner, including dependencies introduced by hooks.
 | Skill | A triggered procedure and completion evidence | Automatic authority to publish, deploy, or change unrelated state |
 | Agent | A bounded delegated result and review criteria | An assumed model, unavailable tool, or competing write owner |
 | Hook | A deterministic event check or explicit advisory | Proof that the model obeyed guidance, or a portable security boundary |
-| Plugin | Install composition and routing boundary | Payload copies or hidden ownership through dependency edges |
-| Profile | Selection of plugin owners | Duplicated primitives or a second implementation |
+| Plugin | Install composition and routing boundary | Payload copies or competing canonical definitions |
+| Profile | Selection of plugin compositions | Duplicate hook activation or a second implementation |
 | Evaluation | A test contract or an observed result, labeled distinctly | An invented behavioral measurement |
 
 ## Selection
@@ -65,8 +65,9 @@ implements and diagnoses the GitHub-specific workflow.
 ## Composition and Evidence
 
 `plugin.json` is the only composition authority. `catalog.mjs` reads those
-manifests, follows hook dependencies, rejects duplicate owners and conflicting
-identities, and renders CATALOG.md. It has no provider-specific projection rules.
+manifests, follows dependencies, rejects conflicting identities and cycles,
+and renders CATALOG.md. Shared references keep the same canonical identity.
+It has no provider-specific projection rules.
 projeKtor remains the owner of Codex and GitHub Copilot projection.
 
 An optional `codexMcpServers` declaration references a plugin-adjacent
@@ -74,16 +75,26 @@ An optional `codexMcpServers` declaration references a plugin-adjacent
 records its digest. The server executable and its installation remain owned by
 the server's project.
 
-Marketplace-listed standalone specialties can have no plugin owner. A v2 profile
-installs one only when it explicitly declares the skill `PRESENT`; `ABSENT`
-disables its stable user path without deleting it, and `PRESERVE` leaves it out
-of the overlay. A selected plugin cannot smuggle another plugin's skill into its
-package through a hook dependency. Repeated references inside one plugin closure
-are idempotent.
+Marketplace-listed assets may stand alone or appear in several plugins.
+A v2 profile installs a standalone skill when it declares that skill `PRESENT`.
+`ABSENT` disables its stable user path without deleting it.
+`PRESERVE` leaves it out of the overlay. Dependencies may reuse assets already composed by other plugins.
+Repeated references inside one plugin closure are idempotent.
 
-The generated catalog and `--profile <name> --json` expose instruction word counts
-and install closure. They do not measure prompt loading, tokens, or route quality.
-Tests mutate the source graph to prove that invalid composition is rejected.
+Profiles may share skills, agents, and instructions across their selected plugins.
+The graph gate and checkout-local profile planner reject repeated hook identities
+across selected closures, including hooks reached only through dependencies.
+A shared hook is valid in alternative bundles. Select one such bundle in a profile.
+Provider bundles remain separate; the catalog does not claim that a host merges
+skill listings, instruction context, or hook execution across installed plugins.
+Manual host selections outside declared profiles need the same hook review.
+
+The generated catalog lists reused assets. `--profile <name> --json` reports the
+selected closure and which plugins compose each asset. Report schema v2 adds
+`assets` and counts each canonical instruction once in `totals.instructionWords`.
+Per-plugin instruction counts still describe each separate bundle.
+These counts do not measure prompt loading, tokens, or route quality.
+Tests prove accepted reuse and reject conflicting definitions, cycles, and repeated hook activation.
 The existing golden routing fixtures remain expected contracts; they are not new
 model runs. New behavioral scenarios are explicitly unobserved until executed.
 

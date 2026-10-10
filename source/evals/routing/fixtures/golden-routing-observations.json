@@ -575,7 +575,7 @@
         "Route Kotlin type-safety review through generic Git/CI primitives.",
         "Let two selected plugins provide the same hook or agent in a profile."
       ],
-      "notes": "A passing run proves this route by delivering: Baseline TDD, Kotlin semantic work, local Git mechanics, and Software Engineering compose cleanly without duplicate owners or bloated plugin prompts."
+      "notes": "A passing run proves this route by delivering: Baseline TDD, Kotlin semantic work, local Git mechanics, and Software Engineering compose cleanly with canonical asset reuse and focused plugin context."
     },
     {
       "type": "ROUTING_OBSERVATION",

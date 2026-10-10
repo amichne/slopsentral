@@ -22,14 +22,14 @@ test('Engineering Excellence owns proof preservation and its delivered policy ex
   assert.deepEqual(auditCatalog(catalog), []);
 });
 
-test('code profiles preserve proof-preservation capability without duplicate ownership', () => {
+test('code profiles include proof-preservation capability and one policy hook', () => {
   for (const name of ['local-development-default', 'kotlin-repo-default',
     'intellij-plugin-default', 'agent-authoring-default']) {
     const profile = catalog.profiles.find(entry => entry.name === name);
     assert.ok(profile.plugins.includes('engineering-excellence'), name);
-    const owners = profile.plugins.filter(owner =>
-      pluginClosure(catalog, plugin(owner)).refs.has('SKILL/semantic-ratchet'));
-    assert.deepEqual(owners, ['engineering-excellence']);
+    const closures = profile.plugins.map(name => pluginClosure(catalog, plugin(name)).refs);
+    assert.ok(closures.some(refs => refs.has('SKILL/semantic-ratchet')));
+    assert.equal(closures.filter(refs => refs.has('HOOK/engineering-excellence-context')).length, 1);
   }
   assert.equal(catalog.profiles.find(entry => entry.name === 'documentation-default')
     .plugins.includes('engineering-excellence'), false);

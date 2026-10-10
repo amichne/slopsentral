@@ -257,7 +257,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/personal-setup"
         },
-        "version": "0.2.0"
+        "version": "0.3.0"
       },
       "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
       "tags": [

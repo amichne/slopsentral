@@ -491,6 +491,7 @@ for (const [pluginName, manifest] of pluginManifests) {
   assertUniqueRefs(owner, "skill", manifest.skills);
   assertUniqueRefs(owner, "agent", manifest.agents);
   assertUniqueRefs(owner, "hook", manifest.hooks);
+  assertUniqueRefs(owner, "instruction", manifest.instructions);
   for (const ref of manifest.skills ?? []) {
     validatePrimitiveRef(ref, owner);
     addOwner(skillOwners, ref.name, pluginName);
@@ -509,27 +510,19 @@ for (const [pluginName, manifest] of pluginManifests) {
   for (const ref of manifest.instructions ?? []) validatePrimitiveRef(ref, owner);
 }
 
-// Catalog closure includes hook dependencies and instruction ownership.
-// Do not introduce per-plugin overlap exceptions.
+// Canonical closure permits reuse; profile selection checks hook activation.
 try {
   for (const finding of auditCatalog(loadCatalog(repoRoot))) fail(finding);
 } catch (error) {
   fail(`catalog: ${error.message}`);
 }
 
-for (const [agentName, owners] of agentOwners) {
-  if (owners.length > 1) {
-    fail(`agent ${agentName} is shared by plugins [${sorted(owners).join(", ")}]; agents should have one plugin owner`);
-  }
-}
-
 for (const hookPath of listFiles("source/hooks", (file) => file.endsWith(".hook.json"))) {
   const relativePath = relativeToRepo(hookPath);
   const hook = readJson(relativePath);
   if (!hook?.name) continue;
-  const owners = hookOwners.get(hook.name) ?? [];
-  if (owners.length !== 1) {
-    fail(`${relativePath}: hook ${hook.name} must have exactly one plugin owner, found [${sorted(owners).join(", ")}]`);
+  if (!(marketplace.hooks ?? []).some(ref => ref.name === hook.name && ref.path === path.relative(sourceRoot, hookPath))) {
+    fail(`${relativePath}: hook ${hook.name} must have a canonical marketplace reference`);
   }
 }
 
@@ -550,37 +543,6 @@ for (const profilePath of listFiles("source/profiles", (file) => file.endsWith("
   for (const pluginName of selectedPlugins) {
     if (!pluginManifests.has(pluginName)) {
       fail(`${relativePath}: profile references missing plugin ${pluginName}`);
-    }
-  }
-  const profileSkills = new Map();
-  const profileAgents = new Map();
-  const profileHooks = new Map();
-  for (const pluginName of selectedPlugins) {
-    const manifest = pluginManifests.get(pluginName);
-    if (!manifest) continue;
-    for (const ref of manifest.skills ?? []) addOwner(profileSkills, ref.name, pluginName);
-    for (const ref of manifest.agents ?? []) addOwner(profileAgents, ref.name, pluginName);
-    for (const ref of manifest.hooks ?? []) addOwner(profileHooks, ref.name, pluginName);
-  }
-  for (const [skillName, owners] of profileSkills) {
-    if (owners.length > 1) {
-      fail(`${relativePath}: selected plugins duplicate skill ${skillName} via [${sorted(owners).join(", ")}]`);
-    }
-  }
-  for (const [agentName, owners] of profileAgents) {
-    if (owners.length > 1) {
-      fail(`${relativePath}: selected plugins duplicate agent ${agentName} via [${sorted(owners).join(", ")}]`);
-    }
-  }
-  for (const [hookName, owners] of profileHooks) {
-    if (owners.length > 1) {
-      fail(`${relativePath}: selected plugins duplicate hook ${hookName} via [${sorted(owners).join(", ")}]`);
-    }
-  }
-  for (const hook of profile.hooks ?? []) {
-    const owners = profileHooks.get(hook.name) ?? [];
-    if (owners.length !== 1) {
-      fail(`${relativePath}: profile hook ${hook.name} has invalid selected owners [${owners.join(", ")}]`);
     }
   }
   if (!(profile.validation?.commands ?? []).includes("node tools/validate-source-graph.mjs")) {
