@@ -104,7 +104,7 @@ test('a repeated identity cannot hide additional dependency edges', () => {
 
 test('reused assets expose every composing plugin with unique source counts', () => {
   const report = catalogReport(catalog);
-  assert.equal(report.schemaVersion, 2);
+  assert.equal(report.schemaVersion, 3);
   const shell = report.assets.find(asset => asset.primitiveType === 'SKILL' && asset.name === 'shell-script-safety');
   assert.deepEqual(shell.plugins, ['developer-tooling', 'personal-configuration', 'personal-setup', 'software-engineering']);
   assert.equal(shell.path, 'skills/shell-script-safety');
@@ -121,7 +121,7 @@ test('reused assets expose every composing plugin with unique source counts', ()
     ['personal-setup', 'software-engineering']);
 });
 
-test('report v2 validates and rejects unknown asset kinds or ambiguous composition', () => {
+test('report v3 validates and rejects unknown asset kinds or ambiguous composition', () => {
   const ajv = new Ajv2020({ strict: false });
   const schema = JSON.parse(fs.readFileSync(path.join(root, 'source/schemas/catalog/catalog.schema.json'), 'utf8'));
   const validate = ajv.compile(schema);
@@ -129,6 +129,7 @@ test('report v2 validates and rejects unknown asset kinds or ambiguous compositi
   assert.ok(validate(report), JSON.stringify(validate.errors));
   for (const mutate of [
     value => { value.schemaVersion = 1; },
+    value => { value.schemaVersion = 2; },
     value => { value.assets[0].primitiveType = 'UNKNOWN'; },
     value => { value.assets[0].plugins.push(value.assets[0].plugins[0]); },
     value => { delete value.assets; },

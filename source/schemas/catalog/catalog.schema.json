@@ -27,10 +27,10 @@
     "schemaVersion": {
       "type": "integer",
       "enum": [
-        2
+        3
       ],
       "examples": [
-        2
+        3
       ]
     },
     "selection": {
@@ -300,7 +300,8 @@
               "SKILL",
               "AGENT",
               "HOOK",
-              "INSTRUCTION"
+              "INSTRUCTION",
+              "RESOURCE"
             ],
             "examples": [
               "SKILL"
@@ -371,7 +372,7 @@
   "examples": [
     {
       "type": "CATALOG_REPORT",
-      "schemaVersion": 2,
+      "schemaVersion": 3,
       "selection": {
         "type": "ALL_PLUGINS"
       },

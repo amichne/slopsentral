@@ -1,7 +1,7 @@
 module slopsentral.projection.Schema
 
 typealias Harness = "codex" | "github-copilot"
-typealias Kind = "SKILL" | "AGENT" | "INSTRUCTION" | "HOOK"
+typealias Kind = "SKILL" | "AGENT" | "INSTRUCTION" | "HOOK" | "RESOURCE"
 typealias RelativePath =
   String(!isEmpty && !startsWith("/") && !contains("\\") && !split("/").contains(".."))
 typealias Identity = String(matches(Regex("[a-z][a-z0-9-]*")))
@@ -46,7 +46,24 @@ class HookReference extends Reference {
   type: "HOOK" = "HOOK"
   hook: HookDefinition
 }
-typealias Asset = SkillReference | InstructionReference | AgentReference | HookReference
+typealias ResourcePath =
+  String(
+    matches(
+      Regex("(skills/[a-z][a-z0-9-]*/(scripts|assets)/[A-Za-z0-9_./-]+|schemas/[A-Za-z0-9_./-]+)"),
+    )
+      && !split("/").contains("..")
+      && !split("/").contains(".")
+      && !contains("//")
+      && !endsWith("/")
+      && !toLowerCase().endsWith("/skill.md"),
+  )
+class ResourceReference extends Reference {
+  type: "RESOURCE" = "RESOURCE"
+  sourcePath: RelativePath(startsWith("source/") && drop(7) is ResourcePath)
+}
+
+typealias Asset =
+  SkillReference | InstructionReference | AgentReference | HookReference | ResourceReference
 
 class Command {
   type: "command"
@@ -78,6 +95,12 @@ open class Primitive {
   source: LocalSource
   path: RelativePath
   dependsOn: Listing<Primitive> = new {}
+}
+
+class ResourcePrimitive extends Primitive {
+  type: "RESOURCE" = "RESOURCE"
+  path: ResourcePath
+  dependsOn: Listing<ResourcePrimitive> = new {}
 }
 
 class HookDefinition extends Primitive {

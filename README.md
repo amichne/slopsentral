@@ -14,7 +14,7 @@ The code profiles select both. Add a specialty when the task needs one:
 | Invariant representation, proof preservation, and closed failures | [Engineering Excellence](docs/engineering-excellence.md); usable on its own for design or review |
 | Kotlin and Gradle | Kotlin Engineering |
 | IntelliJ Platform plugins | IntelliJ Plugin Development, plus Kotlin Engineering for Kotlin code |
-| Pkl configuration | Pkl Configuration |
+| Pkl configuration | Pkl Workflows; optional Pkl Repository Checks |
 | OpenAPI or JSON Schema | API Contracts |
 | Docs, proposals, runbooks, sites, and source-backed knowledge | Repository Knowledge |
 | Skills, agents, hooks, and plugins | Developer Tooling |
@@ -129,18 +129,24 @@ use `--force` only when replacement is intentional.
 
 ## Pkl Engineering Plugin
 
-Install the complete Pkl workflow from the configured `slopsentral`
+Install Pkl workflows from the configured `slopsentral`
 marketplace:
 
 ```bash
-codex plugin add pkl-configuration@slopsentral
+codex plugin add pkl-workflows@slopsentral
 ```
 
 The plugin composes independently installable skills for engineering,
 toolchain/LSP setup, specification and official-source navigation, and pattern
-catalogs. It also provides Pkl format, explicit-entrypoint evaluation, and
-sandboxed test hooks. Repositories using the evaluation hook declare directly
+catalogs. Add `pkl-repository-checks@slopsentral` for Pkl format,
+explicit-entrypoint evaluation, and sandboxed test hooks. Repositories using the evaluation hook declare directly
 evaluable modules one per line in `.intelligence/pkl-entrypoints`.
+Checks need Python 3 and a separate Pkl `>=0.31.1,<0.34.0` installation,
+selected through `PKL_BIN` or `PATH`. They skip without relevant changes;
+evaluation also needs explicit roots, and testing needs project or test files.
+The existing `pkl-configuration` bundle retains both capabilities. Choose it
+or the new packages to avoid duplicate hooks. See
+[workflow resources](docs/workflow-resources.md) for the pilot and evidence.
 
 ## Kast MCP in Kotlin Engineering
 

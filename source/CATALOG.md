@@ -124,6 +124,18 @@ Outside this plugin: General delivery pipelines, arbitrary shell automation, and
 
 **Hooks:** [pkl-evaluate-check](hooks/pkl-evaluate-check.hook.json), [pkl-format-check](hooks/pkl-format-check.hook.json), [pkl-test-check](hooks/pkl-test-check.hook.json).
 
+**Resources:** [pkl-agent-runtime](skills/pkl-engineering/scripts/pkl_agent).
+
+### pkl-workflows
+
+Model, evaluate, format, and maintain Pkl configuration through explicit task workflows.
+
+Choose Pkl task guidance.
+
+Outside this plugin: Automatic host checks or installing tooling without authorization.
+
+**Skills:** [pkl-engineering](skills/pkl-engineering/SKILL.md), [pkl-pattern-catalogs](skills/pkl-pattern-catalogs/SKILL.md), [pkl-specification](skills/pkl-specification/SKILL.md), [pkl-tooling-setup](skills/pkl-tooling-setup/SKILL.md).
+
 ### repository-knowledge
 
 Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.
@@ -137,6 +149,18 @@ Outside this plugin: Automatic knowledge generation during ordinary code tasks o
 **Hooks:** [code-knowledge-drift](hooks/code-knowledge-drift.hook.json), [knowledge-overlay](hooks/knowledge-overlay.hook.json).
 
 ## Advanced repository policy
+
+### pkl-repository-checks
+
+Run explicitly selected Pkl format, evaluation, and test hooks without advertising workflow skills.
+
+Choose automatic Pkl checks for a repository with explicit check configuration.
+
+Outside this plugin: Pkl task guidance, automatic tool installation, or silently inferred evaluation entrypoints.
+
+**Hooks:** [pkl-evaluate-check](hooks/pkl-evaluate-check.hook.json), [pkl-format-check](hooks/pkl-format-check.hook.json), [pkl-test-check](hooks/pkl-test-check.hook.json).
+
+**Resources:** [pkl-agent-runtime](skills/pkl-engineering/scripts/pkl_agent).
 
 ### repository-source-checks
 
@@ -174,6 +198,10 @@ Outside this plugin: Everyday engineering, default setup, and general skill disc
 
 - [personal-configuration-default](profiles/personal-configuration-default.json): personal-configuration. 0 instruction words.
 
+- [pkl-checked-repository](profiles/pkl-checked-repository.json): software-engineering + engineering-excellence + pkl-workflows + pkl-repository-checks. 690 instruction words.
+
+- [pkl-workflow-default](profiles/pkl-workflow-default.json): software-engineering + engineering-excellence + pkl-workflows. 690 instruction words.
+
 ## Reused assets
 
 Each asset has one canonical source. Plugins may compose it in several bundles.
@@ -181,13 +209,21 @@ Profiles may share skills, agents, and instructions. Select each hook through on
 
 | Asset | Composed by |
 | --- | --- |
+| [HOOK/pkl-evaluate-check](hooks/pkl-evaluate-check.hook.json) | pkl-configuration, pkl-repository-checks |
+| [HOOK/pkl-format-check](hooks/pkl-format-check.hook.json) | pkl-configuration, pkl-repository-checks |
+| [HOOK/pkl-test-check](hooks/pkl-test-check.hook.json) | pkl-configuration, pkl-repository-checks |
 | [HOOK/source-graph-valid](hooks/source-graph-valid.hook.json) | personal-setup, repository-source-checks |
+| [RESOURCE/pkl-agent-runtime](skills/pkl-engineering/scripts/pkl_agent) | pkl-configuration, pkl-repository-checks |
 | [SKILL/agent-profile-authoring](skills/agent-profile-authoring/SKILL.md) | developer-tooling, personal-setup |
 | [SKILL/cli-creator](skills/cli-creator/SKILL.md) | developer-tooling, personal-setup |
 | [SKILL/hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md) | developer-tooling, personal-setup |
 | [SKILL/manage-json-schemas](skills/manage-json-schemas/SKILL.md) | api-contracts, developer-tooling, personal-setup |
 | [SKILL/personal-cli-authoring](skills/personal-cli-authoring/SKILL.md) | personal-configuration, personal-setup |
 | [SKILL/personal-setup-management](skills/personal-setup-management/SKILL.md) | personal-configuration, personal-setup |
+| [SKILL/pkl-engineering](skills/pkl-engineering/SKILL.md) | pkl-configuration, pkl-workflows |
+| [SKILL/pkl-pattern-catalogs](skills/pkl-pattern-catalogs/SKILL.md) | pkl-configuration, pkl-workflows |
+| [SKILL/pkl-specification](skills/pkl-specification/SKILL.md) | pkl-configuration, pkl-workflows |
+| [SKILL/pkl-tooling-setup](skills/pkl-tooling-setup/SKILL.md) | pkl-configuration, pkl-workflows |
 | [SKILL/plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md) | developer-tooling, personal-setup |
 | [SKILL/primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md) | developer-tooling, personal-setup |
 | [SKILL/repo-instruction-topology](skills/repo-instruction-topology/SKILL.md) | developer-tooling, personal-setup |
@@ -206,5 +242,5 @@ Advanced alternatives outside the plugin chooser. They require explicit standalo
 
 Counts describe source instruction text, not actual prompt loading or token use.
 The graph gate checks canonical identity, dependencies, profile hook activation, and projection inputs.
-Report v2 totals count each instruction once; per-plugin counts describe each bundle separately.
+Report v3 totals count each instruction once; per-plugin counts describe each bundle separately.
 Behavioral scenarios and golden replay are specifications, not observed Astra results.

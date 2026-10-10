@@ -184,8 +184,18 @@ test('Pkl rejects impossible asset variants and unknown nested input fields', na
     { ...base, type: 'AGENT' },
     { ...base, type: 'UNKNOWN' },
     { ...base, sourcePath: '../outside' },
+    { ...base, type: 'RESOURCE', sourcePath: 'source/skills/fixture/SKILL.md' },
+    { ...base, type: 'RESOURCE', sourcePath: 'source/skills/fixture/scripts/SKILL.MD' },
+    { ...base, type: 'RESOURCE', sourcePath: 'source/skills/fixture/scripts/../runtime' },
+    { ...base, type: 'RESOURCE', sourcePath: 'outside/skills/fixture/scripts/runtime' },
+    { ...base, type: 'RESOURCE', sourcePath: 'source/skills/fixture/scripts/runtime/' },
     { ...base, type: 'HOOK', hook: { type: 'HOOK', name: 'fixture', source: { type: 'LOCAL_SOURCE', path: './' },
       path: 'hooks/fixture.json', adapter: { hooks: { Stop: [{ hooks: [{ type: 'command', command: 'true', unknown: 'field' }] }] } } } },
+    { ...base, type: 'HOOK', hook: { type: 'HOOK', name: 'fixture', source: { type: 'LOCAL_SOURCE', path: './' },
+      path: 'hooks/fixture.json', adapter: { hooks: { Stop: [{ hooks: [{ type: 'command', command: 'true' }] }] } },
+      dependsOn: [{ type: 'RESOURCE', name: 'runtime', source: { type: 'LOCAL_SOURCE', path: './' },
+        path: 'skills/fixture/scripts/runtime', dependsOn: [{ type: 'SKILL', name: 'fixture',
+          source: { type: 'LOCAL_SOURCE', path: './' }, path: 'skills/fixture' }] }] } },
   ];
   for (const ref of references) {
     const input = { name: 'fixture', owner: { name: 'Fixture' }, description: 'Fixture', generatedAt: '2026-10-10T00:00:00Z',

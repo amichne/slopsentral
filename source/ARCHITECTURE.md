@@ -13,6 +13,7 @@ one canonical source. Several plugins may compose the same source identity.
 | Skill | A triggered procedure and completion evidence | Automatic authority to publish, deploy, or change unrelated state |
 | Agent | A bounded delegated result and review criteria | An assumed model, unavailable tool, or competing write owner |
 | Hook | A deterministic event check or explicit advisory | Proof that the model obeyed guidance, or a portable security boundary |
+| Resource | One executable or data file with a checked identity | A discoverable skill procedure or directory copy |
 | Plugin | Install composition and routing boundary | Payload copies or competing canonical definitions |
 | Profile | Selection of plugin compositions | Duplicate hook activation or a second implementation |
 | Evaluation | A test contract or an observed result, labeled distinctly | An invented behavioral measurement |
@@ -61,6 +62,10 @@ Configuration packages verified dotfiles and personal utility workflows. These
 pilot alternatives keep source automation in the optional Repository Source
 Checks plugin. Personal Setup retains the earlier combined composition until
 observed task evidence supports migration. See [the ledger](MIGRATION.md#tooling-redesign-pilot).
+Pkl Workflows packages the existing Pkl procedures. Optional Pkl Repository
+Checks carries their event checks through one executable resource. The complete
+Pkl Configuration bundle remains available. See
+[workflow resources](../docs/workflow-resources.md) for this second pilot.
 validation-first plans decisive checks on explicit invocation and remains
 planning-only; tdd owns executable proof when execution is authorized.
 A pipeline design establishes stage and artifact boundaries; github-ci-operations
@@ -96,8 +101,9 @@ skill listings, instruction context, or hook execution across installed plugins.
 Manual host selections outside declared profiles need the same hook review.
 
 The generated catalog lists reused assets. `--profile <name> --json` reports the
-selected closure and which plugins compose each asset. Report schema v2 adds
-`assets` and counts each canonical instruction once in `totals.instructionWords`.
+selected closure and which plugins compose each asset. Report schema v3 includes
+`RESOURCE` in the closed asset-kind union. The v2 `assets` array and unique
+counts in `totals.instructionWords` remain.
 Per-plugin instruction counts still describe each separate bundle.
 These counts do not measure prompt loading, tokens, or route quality.
 Tests prove accepted reuse and reject conflicting definitions, cycles, and repeated hook activation.

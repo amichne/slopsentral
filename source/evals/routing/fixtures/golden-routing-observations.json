@@ -37,7 +37,10 @@
     "proof-preservation-requires-strong-consumers",
     "api-variants-retain-domain-proof",
     "shell-failure-preserves-transition-contract",
-    "proof-loss-review-names-model-obligations"
+    "proof-loss-review-names-model-obligations",
+    "pkl-workflows-do-not-install-automation",
+    "pkl-checks-carry-runtime-without-workflow-discovery",
+    "pkl-checks-preserve-runtime-contract"
   ],
   "observations": [
     {
@@ -1512,6 +1515,72 @@
         "Treat static composition checks as observed model routing or useful outcomes."
       ],
       "notes": "Expected fixture only; this is not a field observation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-workflows-do-not-install-automation",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "pkl-workflows"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected contract fixture only; no field observation is claimed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-checks-carry-runtime-without-workflow-discovery",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "pkl-repository-checks"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected contract fixture only; no field observation is claimed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-checks-preserve-runtime-contract",
+      "routedPrimitive": {
+        "type": "HOOK",
+        "name": "pkl-evaluate-check"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected contract fixture only; no field observation is claimed."
     }
   ]
 }

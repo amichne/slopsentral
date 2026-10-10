@@ -20,7 +20,7 @@ This file applies to authored marketplace source under `source/`.
 
 - A plugin is an installable composition surface, not a primitive owner.
 - `source/plugins/*/plugin.json` may describe plugin metadata and reference
-  skills, agents, hooks, and instructions that already exist under `source/`.
+  skills, agents, hooks, instructions, and resources that already exist under `source/`.
 - Do not put the only copy of a skill, agent, hook, instruction, concept, or
   schema inside a plugin directory.
 - If a plugin needs packaging-only resources, keep them clearly
@@ -58,6 +58,12 @@ This file applies to authored marketplace source under `source/`.
   validation set.
 
 ## Asset Reuse
+
+Use `RESOURCE` for one executable or data file when a consumer does not need
+the skill's procedure. Keep the file in its authored skill `scripts/` or
+`assets/`, or in `source/schemas/`. Resource references exclude skill entry
+points, directories, symlinks, and destination aliases. Their dependencies
+may contain only resources. See [workflow resources](../docs/workflow-resources.md).
 
 Each primitive has one canonical source identity. Any plugin may compose that
 identity, including through dependencies. Plugins are consumers of assets.

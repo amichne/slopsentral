@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import { validateResourceReference } from "./resource-contract.mjs";
 import { auditCatalog, loadCatalog } from "./catalog.mjs";
 import path from "node:path";
 import process from "node:process";
@@ -198,6 +199,14 @@ function validatePrimitiveRef(ref, owner) {
     return;
   }
 
+  if (ref.type === "RESOURCE") {
+    const refined = validateResourceReference(ref);
+    if (refined.type !== 'RESOURCE_REFERENCE_VALID') {
+      fail(`${owner}: RESOURCE reference violates its schema`);
+      return;
+    }
+    ref = refined.reference;
+  }
   const relativePath = `source/${ref.path}`;
   const absolutePath = path.join(repoRoot, relativePath);
   if (!fs.existsSync(absolutePath)) {
@@ -229,6 +238,13 @@ function validatePrimitiveRef(ref, owner) {
       validateHookAdapter(ref.name, hook.path);
       validateInstructionContext(hook);
     }
+  } else if (ref.type === "RESOURCE") {
+    let candidate = absolutePath;
+    while (candidate !== sourceRoot) {
+      if (fs.lstatSync(candidate).isSymbolicLink()) { fail(`${owner}: resource path must not follow symbolic links`); break; }
+      candidate = path.dirname(candidate);
+    }
+    if (!fs.lstatSync(absolutePath).isFile()) fail(`${owner}: resource must name one regular file`);
   } else if (ref.type === "INSTRUCTION") {
     if (!fs.statSync(absolutePath).isFile()) {
       fail(`${owner}: instruction ${ref.name} must point at a file`);
@@ -476,6 +492,10 @@ for (const ref of marketplace.skills ?? []) {
 for (const ref of marketplace.agents ?? []) validatePrimitiveRef(ref, "source/adaptable.marketplace.json");
 for (const ref of marketplace.hooks ?? []) validatePrimitiveRef(ref, "source/adaptable.marketplace.json");
 for (const ref of marketplace.instructions ?? []) validatePrimitiveRef(ref, "source/adaptable.marketplace.json");
+for (const ref of marketplace.resources ?? []) {
+  if (ref.type !== 'RESOURCE') fail('source/adaptable.marketplace.json: resources must contain RESOURCE references');
+  validatePrimitiveRef(ref, "source/adaptable.marketplace.json");
+}
 
 const skillOwners = new Map();
 const agentOwners = new Map();
@@ -492,6 +512,7 @@ for (const [pluginName, manifest] of pluginManifests) {
   assertUniqueRefs(owner, "agent", manifest.agents);
   assertUniqueRefs(owner, "hook", manifest.hooks);
   assertUniqueRefs(owner, "instruction", manifest.instructions);
+  assertUniqueRefs(owner, "resource", manifest.resources);
   for (const ref of manifest.skills ?? []) {
     validatePrimitiveRef(ref, owner);
     addOwner(skillOwners, ref.name, pluginName);
@@ -508,6 +529,10 @@ for (const [pluginName, manifest] of pluginManifests) {
     addOwner(hookOwners, ref.name, pluginName);
   }
   for (const ref of manifest.instructions ?? []) validatePrimitiveRef(ref, owner);
+  for (const ref of manifest.resources ?? []) {
+    if (ref.type !== 'RESOURCE') fail(`${owner}: resources must contain RESOURCE references`);
+    validatePrimitiveRef(ref, owner);
+  }
 }
 
 // Canonical closure permits reuse; profile selection checks hook activation.

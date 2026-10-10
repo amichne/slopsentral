@@ -1,0 +1,53 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "pkl-repository-checks",
+  "version": "1.0.0",
+  "description": "Run explicitly selected Pkl format, evaluation, and test hooks without advertising workflow skills.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [],
+  "agents": [],
+  "instructions": [],
+  "hooks": [
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/pkl-format-check.hook.json",
+      "name": "pkl-format-check"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/pkl-evaluate-check.hook.json",
+      "name": "pkl-evaluate-check"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/pkl-test-check.hook.json",
+      "name": "pkl-test-check"
+    }
+  ],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Choose automatic Pkl checks for a repository with explicit check configuration.",
+    "notFor": "Pkl task guidance, automatic tool installation, or silently inferred evaluation entrypoints.",
+    "owner": "pkl-repository-checks",
+    "role": "advanced",
+    "scope": "Run explicitly selected Pkl format, evaluation, and test hooks without advertising workflow skills.",
+    "workstream": "pkl-repository-checks"
+  }
+}

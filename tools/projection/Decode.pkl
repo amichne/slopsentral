@@ -10,7 +10,8 @@ function checked(raw: Dynamic, keys: List<String>): Dynamic =
     throw("Unknown projection input field")
 
 function primitive(raw: Dynamic): Schema.Primitive = (
-  checked(raw, List("type", "name", "source", "path", "dependsOn")).toTyped(Schema.Primitive)
+  checked(raw, List("type", "name", "source", "path", "dependsOn"))
+    .toTyped(if (raw.type == "RESOURCE") Schema.ResourcePrimitive else Schema.Primitive)
 ) {
   source = checked(raw.source, List("type", "path")).toTyped(Schema.LocalSource)
   dependsOn = new Listing<Schema.Primitive> {
@@ -59,6 +60,8 @@ function hook(raw: Dynamic): Schema.HookDefinition = (
 function reference(raw: Dynamic): Schema.Asset =
   if (raw.type == "SKILL")
     checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.SkillReference)
+  else if (raw.type == "RESOURCE")
+    checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.ResourceReference)
   else if (raw.type == "INSTRUCTION")
     checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.InstructionReference)
   else if (raw.type == "AGENT")
