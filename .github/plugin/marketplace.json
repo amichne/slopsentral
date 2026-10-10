@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "description": "Start with Software Engineering, then add task-specific plugins for your language, platform, or deliverable.",
+    "description": "Start with Software Engineering and Engineering Excellence for code work, then add language, platform, or deliverable specialties.",
     "pluginRoot": ".github/plugin"
   },
   "name": "slopsentral",
@@ -38,17 +38,14 @@
         "mise",
         "onboarding",
         "optimization",
-        "proof",
         "pull-requests",
         "release",
         "schemas",
-        "semantic-design",
         "shell",
         "skills",
         "software-engineering",
         "tdd",
         "testing",
-        "typestate",
         "workflow-graph"
       ],
       "license": "UNLICENSED",
@@ -79,19 +76,53 @@
         "mise",
         "onboarding",
         "optimization",
-        "proof",
         "pull-requests",
         "release",
         "schemas",
-        "semantic-design",
         "shell",
         "skills",
         "tdd",
         "testing",
-        "typestate",
         "workflow-graph"
       ],
-      "version": "1.3.0"
+      "version": "1.4.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.",
+      "keywords": [
+        "contracts",
+        "domain-modeling",
+        "engineering-excellence",
+        "evidence",
+        "failures",
+        "invariants",
+        "parse-dont-validate",
+        "proof",
+        "semantic-design",
+        "type-safety",
+        "typestate"
+      ],
+      "license": "UNLICENSED",
+      "name": "engineering-excellence",
+      "source": "engineering-excellence",
+      "strict": true,
+      "tags": [
+        "contracts",
+        "domain-modeling",
+        "evidence",
+        "failures",
+        "invariants",
+        "parse-dont-validate",
+        "proof",
+        "semantic-design",
+        "type-safety",
+        "typestate"
+      ],
+      "version": "1.0.0"
     },
     {
       "author": {
@@ -168,7 +199,7 @@
         "type-safety",
         "validation"
       ],
-      "version": "1.5.2"
+      "version": "1.5.3"
     },
     {
       "author": {
@@ -252,7 +283,7 @@
         "type-safety",
         "validation"
       ],
-      "version": "1.0.2"
+      "version": "1.0.3"
     },
     {
       "author": {
@@ -408,7 +439,7 @@
         "user-interface",
         "workflow"
       ],
-      "version": "0.2.0"
+      "version": "0.3.1"
     },
     {
       "author": {
@@ -436,6 +467,123 @@
         "skills"
       ],
       "version": "1.0.1"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+      "keywords": [
+        "cli",
+        "developer-tooling",
+        "shell",
+        "skills",
+        "tools"
+      ],
+      "license": "UNLICENSED",
+      "name": "developer-tooling",
+      "source": "developer-tooling",
+      "strict": true,
+      "tags": [
+        "cli",
+        "shell",
+        "tools",
+        "skills"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+      "keywords": [
+        "configuration",
+        "personal",
+        "personal-configuration",
+        "shell"
+      ],
+      "license": "UNLICENSED",
+      "name": "personal-configuration",
+      "source": "personal-configuration",
+      "strict": true,
+      "tags": [
+        "configuration",
+        "personal",
+        "shell"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Engineering",
+      "description": "Run explicit repository source-graph checks through supported host events.",
+      "keywords": [
+        "governance",
+        "hooks",
+        "repository-source-checks",
+        "validation"
+      ],
+      "license": "UNLICENSED",
+      "name": "repository-source-checks",
+      "source": "repository-source-checks",
+      "strict": true,
+      "tags": [
+        "hooks",
+        "validation",
+        "governance"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Model, evaluate, format, and maintain Pkl configuration through explicit task workflows.",
+      "keywords": [
+        "configuration",
+        "pkl",
+        "pkl-workflows",
+        "workflows"
+      ],
+      "license": "UNLICENSED",
+      "name": "pkl-workflows",
+      "source": "pkl-workflows",
+      "strict": true,
+      "tags": [
+        "pkl",
+        "configuration",
+        "workflows"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "author": {
+        "name": "Amichne"
+      },
+      "category": "Productivity",
+      "description": "Run explicitly selected Pkl format, evaluation, and test hooks without advertising workflow skills.",
+      "keywords": [
+        "hooks",
+        "pkl",
+        "pkl-repository-checks",
+        "validation"
+      ],
+      "license": "UNLICENSED",
+      "name": "pkl-repository-checks",
+      "source": "pkl-repository-checks",
+      "strict": true,
+      "tags": [
+        "pkl",
+        "hooks",
+        "validation"
+      ],
+      "version": "1.0.0"
     }
   ]
 }

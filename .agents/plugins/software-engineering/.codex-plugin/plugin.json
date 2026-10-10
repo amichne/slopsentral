@@ -50,21 +50,18 @@
     "mise",
     "onboarding",
     "optimization",
-    "proof",
     "pull-requests",
     "release",
     "schemas",
-    "semantic-design",
     "shell",
     "skills",
     "software-engineering",
     "tdd",
     "testing",
-    "typestate",
     "workflow-graph"
   ],
   "license": "UNLICENSED",
   "name": "software-engineering",
   "skills": "./skills/",
-  "version": "1.3.0"
+  "version": "1.4.0"
 }

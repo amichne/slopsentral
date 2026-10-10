@@ -1,0 +1,46 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.",
+  "hooks": [
+    "./hooks/engineering-excellence-context.hooks.json"
+  ],
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Engineering Excellence for this task.",
+      "Review this repo with Engineering Excellence.",
+      "Show the Engineering Excellence workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Engineering Excellence",
+    "longDescription": "Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Encode invariants in types and contracts, preserve established proofs...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "contracts",
+    "domain-modeling",
+    "engineering-excellence",
+    "evidence",
+    "failures",
+    "invariants",
+    "parse-dont-validate",
+    "proof",
+    "semantic-design",
+    "type-safety",
+    "typestate"
+  ],
+  "license": "UNLICENSED",
+  "name": "engineering-excellence",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

@@ -1,13 +1,13 @@
 {
   "dependsOn": [
     {
-      "name": "pkl-engineering",
-      "path": "skills/pkl-engineering",
+      "name": "pkl-agent-runtime",
+      "path": "skills/pkl-engineering/scripts/pkl_agent",
       "source": {
         "path": "./",
         "type": "LOCAL_SOURCE"
       },
-      "type": "SKILL"
+      "type": "RESOURCE"
     }
   ],
   "name": "pkl-format-check",

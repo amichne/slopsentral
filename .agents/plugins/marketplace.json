@@ -17,6 +17,18 @@
       }
     },
     {
+      "category": "Productivity",
+      "name": "engineering-excellence",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/engineering-excellence",
+        "source": "local"
+      }
+    },
+    {
       "category": "Coding",
       "name": "kotlin-engineering",
       "policy": {
@@ -97,6 +109,66 @@
       },
       "source": {
         "path": "./.agents/plugins/skill-read-policy",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "developer-tooling",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/developer-tooling",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "personal-configuration",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/personal-configuration",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
+      "name": "repository-source-checks",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/repository-source-checks",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "pkl-workflows",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/pkl-workflows",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "pkl-repository-checks",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/pkl-repository-checks",
         "source": "local"
       }
     }

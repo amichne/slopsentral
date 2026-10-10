@@ -1,0 +1,22 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Productivity",
+  "description": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+  "keywords": [
+    "configuration",
+    "personal",
+    "personal-configuration",
+    "shell"
+  ],
+  "license": "UNLICENSED",
+  "name": "personal-configuration",
+  "skills": "./skills",
+  "tags": [
+    "configuration",
+    "personal",
+    "shell"
+  ],
+  "version": "1.0.0"
+}
