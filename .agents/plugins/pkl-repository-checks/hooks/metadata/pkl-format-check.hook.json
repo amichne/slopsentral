@@ -1,0 +1,20 @@
+{
+  "dependsOn": [
+    {
+      "name": "pkl-agent-runtime",
+      "path": "skills/pkl-engineering/scripts/pkl_agent",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "RESOURCE"
+    }
+  ],
+  "name": "pkl-format-check",
+  "path": "hooks/pkl-format-check.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

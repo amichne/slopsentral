@@ -1,0 +1,37 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Developer Tooling for this task.",
+      "Review this repo with Developer Tooling.",
+      "Show the Developer Tooling workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Developer Tooling",
+    "longDescription": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Build CLI products, shell integrations, terminal interfaces, and reus...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "cli",
+    "developer-tooling",
+    "shell",
+    "skills",
+    "tools"
+  ],
+  "license": "UNLICENSED",
+  "name": "developer-tooling",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}

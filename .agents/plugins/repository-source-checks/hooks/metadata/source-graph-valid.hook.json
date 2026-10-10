@@ -1,0 +1,9 @@
+{
+  "name": "source-graph-valid",
+  "path": "hooks/source-graph-valid.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

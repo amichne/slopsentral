@@ -1,0 +1,36 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Personal Configuration for this task.",
+      "Review this repo with Personal Configuration.",
+      "Show the Personal Configuration workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Personal Configuration",
+    "longDescription": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Maintain verified personal dotfiles, command installation, and shell...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "configuration",
+    "personal",
+    "personal-configuration",
+    "shell"
+  ],
+  "license": "UNLICENSED",
+  "name": "personal-configuration",
+  "skills": "./skills/",
+  "version": "1.0.0"
+}
