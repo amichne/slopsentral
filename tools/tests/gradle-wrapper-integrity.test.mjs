@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
-const hook = path.join(repoRoot, "source/hooks/gradle-wrapper-integrity.sh");
+const hook = path.join(repoRoot, "source/hooks/gradle-wrapper-integrity.py");
 
 function createWrapperRepo() {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), "slopsentral-wrapper-hook-"));

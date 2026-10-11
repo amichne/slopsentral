@@ -9,9 +9,10 @@
   "scripts": {
     "test": "node --test tools/tests/*.test.mjs",
     "check:source": "node tools/validate-source-graph.mjs && node tools/catalog.mjs --check && git diff --check && git diff --cached --check && git diff --check origin/main...HEAD",
-    "verify:marketplaces": "bash tools/verify-marketplaces",
-    "verify": "npm run check:source && npm test && npm run verify:marketplaces",
-    "validate:profile-contracts": "node tools/validate-profile-contracts.mjs"
+    "verify:marketplaces": "uv run --locked tools/verify_marketplaces.py",
+    "verify": "npm run check:python && npm run check:source && npm test && npm run verify:marketplaces",
+    "validate:profile-contracts": "node tools/validate-profile-contracts.mjs",
+    "check:python": "uv run --locked tools/check.py"
   },
   "dependencies": {
     "ajv": "^8.20.0",

@@ -93,7 +93,7 @@ function verify(t, failedHarness) {
   const bin = path.join(root, 'bin');
   const temp = path.join(root, 'temp');
   for (const directory of [path.join(repo, 'tools'), bin, temp]) fs.mkdirSync(directory, { recursive: true });
-  fs.copyFileSync(path.join(repoRoot, 'tools/verify-marketplaces'), path.join(repo, 'tools/verify-marketplaces'));
+  fs.copyFileSync(path.join(repoRoot, 'tools/verify_marketplaces.py'), path.join(repo, 'tools/verify_marketplaces.py'));
   const log = path.join(root, 'commands.jsonl');
   for (const command of ['node']) {
     fs.writeFileSync(path.join(bin, command), `#!${process.execPath}
@@ -120,11 +120,11 @@ if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
   delete env.REUSE_COPILOT_PROJECTION;
   if (failedHarness) env.VERIFY_TEST_FAILED_HARNESS = failedHarness;
   else delete env.VERIFY_TEST_FAILED_HARNESS;
-  const result = spawnSync('bash', ['--noprofile', '--norc', path.join(repo, 'tools/verify-marketplaces')], {
+  const result = spawnSync('uv', ['run', '--script', path.join(repo, 'tools/verify_marketplaces.py')], {
     cwd: root, env, encoding: 'utf8', timeout: 30_000,
   });
   const commands = fs.readFileSync(log, 'utf8').trim().split('\n').map(line => JSON.parse(line));
-  assert.deepEqual(fs.readdirSync(temp), [], 'all invocation-owned projections must be removed');
+  assert.deepEqual(fs.readdirSync(temp).filter(name => name.startsWith('slopsentral-projections-')), [], 'all invocation-owned projections must be removed');
   for (const command of commands) assert.equal(command.cwd, repo);
   return { result, commands };
 }

@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/codex-stop.py -- bash hooks/source-graph-valid.sh --repo .",
+            "command": "uv run --locked --script hooks/codex-stop.py -- uv run --locked --script hooks/source-graph-valid.py --repo .",
             "timeout": 60,
             "statusMessage": "Validating the authored source graph"
           }

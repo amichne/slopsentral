@@ -21,9 +21,7 @@ test('toolmaking and personal setup expose independent installation intents', ()
   assert.ok(!personal.refs.has('SKILL/plugin-composition-authoring'));
   for (const name of ['developer-tooling', 'personal-configuration'])
     assert.ok(!catalog.plugins.find(p => p.name === name).codexMcpServers);
-  const retained = [...closure('personal-setup').refs.keys()].filter(k => k.startsWith('SKILL/')).sort();
-  const alternatives = [...new Set([...tooling.refs.keys(), ...personal.refs.keys()])].sort();
-  assert.deepEqual(alternatives, retained, 'the pilot alternatives must preserve every legacy workflow');
+  assert.equal(catalog.plugins.some(p => p.name === 'personal-setup'), false);
 });
 test('source automation carries executable resources without authoring skill dependencies', () => {
   assert.deepEqual([...closure('repository-source-checks').refs.keys()], ['HOOK/source-graph-valid']);
@@ -34,7 +32,8 @@ test('candidate profiles preserve shared skills and reject overlapping automatic
   const personal = catalog.profiles.find(p => p.name === 'personal-configuration-default');
   assert.ok(!personal.plugins.includes('repository-source-checks'));
   const candidate = catalog.profiles.find(p => p.name === 'developer-tooling-default');
-  const conflict = { ...candidate, plugins: [...candidate.plugins, 'personal-setup'] };
-  assert.match(auditProfileComposition(catalog, conflict).join('\n'), /HOOK\/source-graph-valid multiple times/);
+  const duplicate = { ...catalog, plugins: catalog.plugins.map(p => p.name === 'developer-tooling' ? { ...p, hooks: catalog.plugins.find(p => p.name === 'repository-source-checks').hooks } : p) };
+  const conflict = candidate;
+  assert.match(auditProfileComposition(duplicate, conflict).join('\n'), /HOOK\/source-graph-valid multiple times/);
   assert.deepEqual(auditProfileComposition(catalog, { name: 'shared-guidance', plugins: ['developer-tooling', 'personal-configuration'] }), []);
 });

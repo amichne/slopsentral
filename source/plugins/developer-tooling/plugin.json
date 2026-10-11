@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "developer-tooling",
-  "version": "1.0.0",
-  "description": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+  "version": "2.0.0",
+  "description": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -16,8 +16,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/shell-session-integration",
-      "name": "shell-session-integration"
+      "path": "skills/python-tooling",
+      "name": "python-tooling"
     },
     {
       "type": "SKILL",
@@ -97,15 +97,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/shell-script-safety",
-      "name": "shell-script-safety"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/manage-json-schemas",
       "name": "manage-json-schemas"
     }
@@ -115,10 +106,10 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Choose to author developer tools or reusable agent workflows.",
+    "dailyDriver": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
     "notFor": "Personal dotfiles maintenance, application implementation, automatic setup, or publication.",
     "role": "specialty",
-    "scope": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+    "scope": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
     "workstream": "developer-tooling",
     "owner": "developer-tooling"
   }

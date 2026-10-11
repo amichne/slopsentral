@@ -15,6 +15,15 @@
       },
       "path": "instructions/agent-execution.md",
       "name": "agent-execution"
+    },
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "instructions/engineering-design.md",
+      "name": "engineering-design"
     }
   ]
 }

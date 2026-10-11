@@ -154,43 +154,6 @@
       "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
     },
     {
-      "id": "shell-startup-completion-preserves-session-state",
-      "type": "COVERAGE_GAP",
-      "source": {
-        "type": "CURRENT_SOURCE",
-        "capturedAt": "2026-10-06",
-        "evidenceRefs": [
-          "Core-flow coverage audit: compare existing source owners, historical task traces, and maintained eval coverage."
-        ]
-      },
-      "prompt": "Fix this shell completion recursion and prompt slowdown. Preserve existing callbacks, exit status, argument boundaries, and startup behavior when the integration is sourced twice.",
-      "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "shell-session-integration"
-      },
-      "observedRoute": {
-        "type": "ROUTING_ROUTE_OBSERVATION",
-        "summary": "The maintained suite did not independently cover this complete-flow obligation or negative boundary.",
-        "risk": "Fixture or partial-stage success could be reported as broader behavioral proof.",
-        "loadedPrimitives": []
-      },
-      "allowedActions": [
-        "Use native shell APIs, local option scope, and owned callback registrations.",
-        "Check repeated loading, paths with spaces, a failed wrapped command, startup, and non-interactive output."
-      ],
-      "forbiddenActions": [
-        "Overwrite unrelated shell callbacks or perform network calls in prompt/startup callbacks.",
-        "Treat a syntax check as proof of interactive state preservation."
-      ],
-      "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",
-      "productiveOutcome": "The requested flow completes with scope and proof preserved, or its missing external evidence is reported accurately.",
-      "verificationEvidence": [
-        "Fresh startup and repeated source checks preserve callbacks and prior command status.",
-        "Non-interactive output stays quiet and timed-out helpers restore state."
-      ],
-      "notes": "Designed regression from the coverage audit. Golden fixtures establish contract consistency; a fresh model replay remains a separate obligation."
-    },
-    {
       "id": "cli-finite-json-errors-preserve-exit-status",
       "type": "COVERAGE_GAP",
       "source": {

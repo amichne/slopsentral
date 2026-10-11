@@ -311,42 +311,6 @@
     },
     {
       "type": "PLUGIN_EVAL_SCENARIO",
-      "id": "shell-script-safety-natural-language",
-      "title": "Natural-language shell-script-safety",
-      "purpose": "Check ordinary invocation without a plugin or skill name.",
-      "routingCaseIds": [
-        "ci-shell-automation-uses-safe-reusable-scripts"
-      ],
-      "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "shell-script-safety"
-      },
-      "userInput": "Fix this automation script so spaces in input paths and a failed subprocess preserve argument boundaries, cleanup, structured output, and the nonzero status. Do not commit, push, or otherwise modify remote state.",
-      "successChecklist": [
-        "The intended focused skill is read and its relevant native checks execute.",
-        "No unrelated build, review, knowledge generation, or publication is introduced."
-      ]
-    },
-    {
-      "type": "PLUGIN_EVAL_SCENARIO",
-      "id": "shell-script-safety-explicit-invocation",
-      "title": "Explicit shell-script-safety",
-      "purpose": "Keep direct selection independently replayable.",
-      "routingCaseIds": [
-        "ci-shell-automation-uses-safe-reusable-scripts"
-      ],
-      "expectedPrimitive": {
-        "type": "SKILL",
-        "name": "shell-script-safety"
-      },
-      "userInput": "$shell-script-safety Inspect the supplied local fixture, apply the focused workflow, and report only the evidence it supports. Do not commit, push, or otherwise modify remote state.",
-      "successChecklist": [
-        "The explicitly selected skill is read.",
-        "The response preserves scope, uses the fixture native checks, and retains missing evidence."
-      ]
-    },
-    {
-      "type": "PLUGIN_EVAL_SCENARIO",
       "id": "shell-script-safety-marker-only-negative",
       "title": "Marker-only negative for shell-script-safety",
       "purpose": "Check that implicit availability does not broaden invocation to unrelated prose work.",

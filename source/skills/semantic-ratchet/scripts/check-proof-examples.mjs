@@ -64,153 +64,6 @@ function checkSchema() {
   return checked;
 }
 
-function checkShell(directory) {
-  const commands = [
-    ['mktemp', 'PREPARE', commandPath('mktemp')],
-    ['cp', 'COPY', commandPath('cp')],
-    ['chmod', 'FREEZE', commandPath('chmod')],
-    ['shasum', 'HASH', commandPath('shasum')],
-    ['node', 'PUBLISH', process.execPath],
-    ['rm', 'CLEANUP', commandPath('rm')],
-  ];
-  let checked = 0;
-  const cases = [
-    { name: 'workspace failure', faultStage: 'PREPARE', faultStatus: 74,
-      outcome: { type: 'STAGE_FAILED', stage: 'PREPARE', exit_status: 74 }, status: 1, events: [] },
-    { name: 'untrusted workspace path', mode: 'MALFORMED_WORKSPACE',
-      outcome: { type: 'PROTOCOL_FAILED', stage: 'PREPARE' }, status: 1, events: [] },
-    { name: 'preparation interrupted before ownership', mode: 'INTERRUPT_PREPARE',
-      outcome: { type: 'PREPARATION_INTERRUPTED', signal: 'TERM' }, status: 1, events: [], retainedWorkspace: true },
-    { name: 'matching snapshot', outcome: { type: 'PUBLISHED', sha256: digest }, status: 0,
-      events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'], published: true },
-    { name: 'mutable source', mode: 'MUTATE_SOURCE', outcome: { type: 'PUBLISHED', sha256: digest }, status: 0,
-      events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'], published: true },
-    { name: 'closed stdout after publication', closedStdout: true, status: 74,
-      events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'], published: true },
-    { name: 'closed stdout after failed cleanup', closedStdout: true, faultStage: 'CLEANUP', faultStatus: 79,
-      status: 74,
-      events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'], published: true, retainedWorkspace: true },
-    { name: 'both result channels closed', closedStdout: true, closedStderr: true,
-      status: 74, events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'], published: true },
-    { name: 'mismatch', expected: wrongDigest,
-      outcome: { type: 'CHECKSUM_MISMATCH', expected: wrongDigest, observed: digest }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'CLEANUP'] },
-    { name: 'copy failure', faultStage: 'COPY', faultStatus: 74,
-      outcome: { type: 'STAGE_FAILED', stage: 'COPY', exit_status: 74 }, status: 1, events: ['COPY', 'CLEANUP'] },
-    { name: 'freeze failure', faultStage: 'FREEZE', faultStatus: 74,
-      outcome: { type: 'STAGE_FAILED', stage: 'FREEZE', exit_status: 74 }, status: 1,
-      events: ['COPY', 'FREEZE', 'CLEANUP'] },
-    { name: 'hash failure', faultStage: 'HASH', faultStatus: 74,
-      outcome: { type: 'STAGE_FAILED', stage: 'HASH', exit_status: 74 }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'CLEANUP'] },
-    { name: 'missing hasher', faultStage: 'HASH', faultStatus: 127,
-      outcome: { type: 'TOOL_UNAVAILABLE', stage: 'HASH' }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'CLEANUP'] },
-    { name: 'malformed hash reply', mode: 'MALFORMED_HASH',
-      outcome: { type: 'PROTOCOL_FAILED', stage: 'HASH' }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'CLEANUP'] },
-    { name: 'destination conflict', destinationExists: 'FILE',
-      outcome: { type: 'STAGE_FAILED', stage: 'PUBLISH', exit_status: 73 }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'] },
-    { name: 'destination is directory', destinationExists: 'DIRECTORY',
-      outcome: { type: 'STAGE_FAILED', stage: 'PUBLISH', exit_status: 73 }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'] },
-    { name: 'unconfirmed publication', faultStage: 'PUBLISH', faultStatus: 70,
-      outcome: { type: 'PUBLICATION_UNCONFIRMED', exit_status: 70 }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'] },
-    { name: 'cleanup after publication', faultStage: 'CLEANUP', faultStatus: 79,
-      outcome: { type: 'CLEANUP_FAILED', outcome: { type: 'PUBLISHED', sha256: digest }, exit_status: 79 }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'], published: true, retainedWorkspace: true },
-    { name: 'cleanup after rejection', expected: wrongDigest, faultStage: 'CLEANUP', faultStatus: 79,
-      outcome: { type: 'CLEANUP_FAILED', outcome: { type: 'CHECKSUM_MISMATCH',
-        expected: wrongDigest, observed: digest }, exit_status: 79 }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'CLEANUP'], retainedWorkspace: true },
-    { name: 'empty content', content: '', outcome: { type: 'INPUT_REJECTED', reason: 'EMPTY_CONTENT' },
-      status: 1, events: ['COPY', 'CLEANUP'] },
-    { name: 'malformed digest', expected: 'abc', outcome: { type: 'INPUT_REJECTED', reason: 'DIGEST_SHAPE' },
-      status: 1, events: [] },
-    { name: 'missing arguments', noArgs: true, outcome: { type: 'INPUT_REJECTED', reason: 'ARGUMENT_COUNT' },
-      status: 1, events: [] },
-    { name: 'copy interrupted', mode: 'INTERRUPT_COPY',
-      outcome: { type: 'INTERRUPTED', stage: 'COPY', signal: 'TERM' }, status: 1, events: ['COPY', 'CLEANUP'] },
-    { name: 'publication interrupted', mode: 'INTERRUPT_PUBLISH',
-      outcome: { type: 'PUBLICATION_INTERRUPTED', signal: 'TERM' }, status: 1,
-      events: ['COPY', 'FREEZE', 'HASH', 'PUBLISH', 'CLEANUP'] },
-  ];
-  for (const fixture of cases) {
-    const base = path.join(directory, `shell-${checked}`);
-    const tools = path.join(base, 'tools');
-    const staging = path.join(base, 'staging');
-    mkdirSync(tools, { recursive: true });
-    mkdirSync(staging);
-    const source = path.join(base, 'input with spaces.bin');
-    const destination = path.join(base, 'published with spaces.bin');
-    const eventsFile = path.join(base, 'events');
-    const untrustedWorkspace = path.join(base, 'untrusted-workspace');
-    mkdirSync(untrustedWorkspace);
-    writeFileSync(path.join(untrustedWorkspace, 'keep'), 'unverified path must not be removed');
-    writeFileSync(source, fixture.content ?? 'hello\n');
-    if (fixture.destinationExists === 'FILE') writeFileSync(destination, 'existing destination\n');
-    if (fixture.destinationExists === 'DIRECTORY') mkdirSync(destination);
-    for (const [command, stage, executable] of commands) {
-      const wrapper = `#!/bin/sh\nset -u\n` +
-        (stage === 'PREPARE' ? '' : `printf '%s\\n' '${stage}' >> "$PROOF_EVENTS"\n`) +
-        `if [ "$PROOF_FAULT_STAGE" = '${stage}' ]; then exit "$PROOF_FAULT_STATUS"; fi\n` +
-        (stage === 'PREPARE' ?
-          `if [ "$PROOF_MODE" = INTERRUPT_PREPARE ]; then\n` +
-          `  workspace=$(${shellQuote(executable)} "$@") || exit $?\n` +
-          `  printf '%s\\n' "$workspace"\n  kill -TERM "$PROOF_MAIN_PID"\n  exit 0\nfi\n` :
-          `if [ "$PROOF_MODE" = 'INTERRUPT_${stage}' ]; then kill -TERM "$PPID"; exit 143; fi\n`) +
-        (stage === 'PREPARE' ?
-          `if [ "$PROOF_MODE" = MALFORMED_WORKSPACE ]; then printf '%s\\n' "$PROOF_UNTRUSTED_WORKSPACE"; exit 0; fi\n` : '') +
-        (stage === 'HASH' ?
-          `if [ "$PROOF_MODE" = MALFORMED_HASH ]; then printf '%s\\n' garbage; exit 0; fi\n` +
-          `if [ "$PROOF_MODE" = MUTATE_SOURCE ]; then printf '%s\\n' changed > "$PROOF_SOURCE"; fi\n` : '') +
-        `exec ${shellQuote(executable)} "$@"\n`;
-      writeFileSync(path.join(tools, command), wrapper, { mode: 0o700 });
-    }
-    const args = fixture.noArgs ? [] : [source, fixture.expected ?? digest, destination];
-    const launch = 'PROOF_MAIN_PID=$$; export PROOF_MAIN_PID; ' +
-      (fixture.closedStdout ? 'exec 1>&-; ' : '') +
-      (fixture.closedStderr ? 'exec 2>&-; ' : '') +
-      'exec sh "$@"';
-    const result = run('sh', ['-c', launch, 'sh', path.join(assets, 'publish-verified.sh'), ...args], {
-      env: { ...process.env, PATH: `${tools}${path.delimiter}${process.env.PATH}`, TMPDIR: staging,
-        PROOF_EVENTS: eventsFile, PROOF_SOURCE: source, PROOF_MODE: fixture.mode ?? 'NORMAL',
-        PROOF_UNTRUSTED_WORKSPACE: untrustedWorkspace,
-        PROOF_FAULT_STAGE: fixture.faultStage ?? 'NONE', PROOF_FAULT_STATUS: String(fixture.faultStatus ?? 74) },
-    });
-    assert.equal(result.status, fixture.status, `${fixture.name}: ${result.stderr}`);
-    if (fixture.closedStdout) {
-      assert.equal(result.stdout, '', `${fixture.name}: stdout cannot deliver an outcome`);
-      if (fixture.closedStderr) assert.equal(result.stderr, '', `${fixture.name}: neither channel can deliver an outcome`);
-      // No message parsing: the explicit transport status carries the failure.
-    } else {
-      const delivered = result.stdout;
-      assert.equal(delivered.trim().split('\n').length, 1, `${fixture.name}: one structured outcome`);
-      const outcome = JSON.parse(delivered);
-      assert.equal(validate(outcome), true, `${fixture.name}: ${JSON.stringify(validate.errors)}`);
-      assert.deepEqual(outcome, fixture.outcome, fixture.name);
-    }
-    const events = existsSync(eventsFile) ? readFileSync(eventsFile, 'utf8').trim().split('\n') : [];
-    assert.deepEqual(events, fixture.events, `${fixture.name}: forbidden later stage ran`);
-    if (fixture.published) {
-      assert.equal(readFileSync(destination, 'utf8'), 'hello\n', `${fixture.name}: verified snapshot must be published`);
-    } else if (fixture.destinationExists === 'FILE') {
-      assert.equal(readFileSync(destination, 'utf8'), 'existing destination\n', 'existing destination changed');
-    } else if (fixture.destinationExists === 'DIRECTORY') {
-      assert.deepEqual(readdirSync(destination), [], 'publication must not redirect into a directory');
-    } else {
-      assert.equal(existsSync(destination), false, `${fixture.name}: publication occurred`);
-    }
-    if (fixture.mode === 'MUTATE_SOURCE') assert.equal(readFileSync(source, 'utf8'), 'changed\n');
-    assert.equal(readFileSync(path.join(untrustedWorkspace, 'keep'), 'utf8'), 'unverified path must not be removed');
-    assert.equal(readdirSync(staging).length, fixture.retainedWorkspace ? 1 : 0, `${fixture.name}: cleanup evidence`);
-    checked++;
-  }
-  return checked;
-}
-
 function checkKotlin(directory) {
   const compiler = commandPath('kotlinc');
   const java = commandPath('java');
@@ -248,10 +101,9 @@ export function checkProofExamples({ contractsOnly = false } = {}) {
   const directory = mkdtempSync(path.join(tmpdir(), 'semantic-ratchet-proof-'));
   try {
     const schemaCases = checkSchema();
-    const shellCases = checkShell(directory);
     const kotlin = contractsOnly ? { type: 'NOT_RUN', reason: 'CONTRACTS_ONLY' } : checkKotlin(directory);
     return { type: 'PROOF_EXAMPLES_CHECKED', mode: contractsOnly ? 'CONTRACTS_ONLY' : 'ALL',
-      schema_cases: schemaCases, shell_cases: shellCases, kotlin };
+      schema_cases: schemaCases, kotlin };
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }

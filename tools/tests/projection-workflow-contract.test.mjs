@@ -13,12 +13,14 @@ const validateWorkflow = read(".github/workflows/validate-source.yml");
 const publicationWorkflow = read(".github/workflows/publish-harnesses.yml");
 
 test("source validation projects both harnesses through pinned local Pkl", () => {
-  assert.equal(validateWorkflow.match(/node tools\/project-marketplaces.mjs --source \./g)?.length, 2);
-  assert.match(validateWorkflow, /--harness codex/);
-  assert.match(validateWorkflow, /--harness github-copilot/);
-  assert.match(validateWorkflow, /node tools\/install-projection-pkl.mjs/);
-  assert.ok(validateWorkflow.indexOf('Set up pinned projection runtime') < validateWorkflow.indexOf('Validate source graph and evals'));
-  assert.doesNotMatch(validateWorkflow, /amichne\/projeKtor|intelligence project/);
+  assert.match(validateWorkflow, /uv run --locked tools\/verify_marketplaces.py/);
+  assert.match(validateWorkflow, /uv run --locked tools\/ci.py native/);
+  const verifier = read("tools/verify_marketplaces.py");
+  assert.match(verifier, /"codex", "github-copilot"/);
+  assert.match(verifier, /tools\/project-marketplaces.mjs/);
+  assert.match(read("tools/ci.py"), /tools\/install-projection-pkl.mjs/);
+  assert.ok(validateWorkflow.indexOf('Install checksum-verified native tools') < validateWorkflow.indexOf('Validate source, Python'));
+
 });
 
 test("publication projects a harness matrix through the same local Pkl boundary", () => {
@@ -32,7 +34,7 @@ test("publication projects a harness matrix through the same local Pkl boundary"
 test("publication maps each projection to its dedicated harness branch", () => {
   assert.match(publicationWorkflow, /harness: codex\s+branch: harness\/codex/);
   assert.match(publicationWorkflow, /harness: github-copilot\s+branch: harness\/github-copilot/);
-  assert.match(publicationWorkflow, /\.github\/scripts\/publish-harness-branch/);
+  assert.match(publicationWorkflow, /tools\/publish.py harness/);
   assert.doesNotMatch(publicationWorkflow, /git push origin "HEAD:\$\{GITHUB_REF_NAME\}"/);
 });
 
@@ -41,7 +43,7 @@ test("main publication joins both projections without triggering itself", () => 
   assert.match(publicationWorkflow, /tar -cf/);
   assert.match(publicationWorkflow, /tar -xf/);
   assert.match(publicationWorkflow, /merge-multiple: true/);
-  assert.match(publicationWorkflow, /publish-marketplaces-main/);
+  assert.match(publicationWorkflow, /tools\/publish.py main/);
   assert.match(publicationWorkflow, /paths-ignore:\s+- '\.agents\/plugins\/\*\*'\s+- '\.github\/plugin\/\*\*'/);
 });
 

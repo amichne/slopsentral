@@ -6,10 +6,10 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
-const hook = path.join(repoRoot, "source/hooks/gradle-check-green.sh");
+const hook = path.join(repoRoot, "source/hooks/gradle-check-green.py");
 const runner = path.join(
   repoRoot,
-  "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.sh",
+  "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.py",
 );
 
 function createGradleRepo() {

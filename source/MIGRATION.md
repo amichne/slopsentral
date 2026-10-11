@@ -1,3 +1,31 @@
+# Python foundation migration
+
+This revision establishes these current replacements. Later sections retain
+historical decisions and are not installation instructions for the current tree.
+
+| Retired surface | Current selection |
+| --- | --- |
+| engineering-excellence | software-engineering (Semantic Ratchet and baseline policy) |
+| personal-setup | developer-tooling + personal-configuration; repository-source-checks only when requested |
+| pkl-configuration | pkl-workflows; pkl-repository-checks only for automatic checks |
+| shell-script-safety, shell-session-integration, cli-data-pipelines | python-tooling for automation; minimal host glue only where required |
+| web-artifacts-builder | Retired legacy shell scaffolder; use the frontend specialty and project-owned tools |
+
+Require uv before invoking bundled Python automation. Setup uses
+`uv run --locked tools/setup.py`; strict checks use `uv run --locked tools/check.py`.
+Hooks execute locked PEP 723 scripts. Trust hashes change when hosts later install
+this source. No installed cache or user configuration is modified by this branch.
+Regenerate provider output through the local Pkl projector at publication.
+
+The shared baseline comes from the existing Semantic Ratchet and Kotlin API
+ownership practices. Python adds concrete setup, strict static checking, literal
+argv process boundaries, exhaustive outcomes, and independent runtime tests.
+Shell examples and overlapping bundle selections are removed. Existing contracts
+and useful Kotlin/schema checks are retained; no comparative model evaluations
+are introduced. Obsolete routing fixtures are removed only for retired identities.
+
+## Historical migration record
+
 # Task-Oriented Plugin Migration
 
 The earlier task-oriented migration retired old plugin IDs without aliases.

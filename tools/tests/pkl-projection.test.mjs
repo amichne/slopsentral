@@ -117,7 +117,7 @@ test('source mutation during evaluation rejects the frozen result', native, t =>
   const { executable } = fake(t, `
 const fs=require('node:fs');
 const cp=require('node:child_process');
-fs.appendFileSync(${JSON.stringify(path.join(repo, 'source/skills/shell-script-safety/SKILL.md'))}, '\\nchanged during evaluation\\n');
+fs.appendFileSync(${JSON.stringify(path.join(repo, 'source/skills/python-tooling/SKILL.md'))}, '\\nchanged during evaluation\\n');
 const r=cp.spawnSync(${JSON.stringify(pkl)},process.argv.slice(2),{encoding:'utf8',maxBuffer:32*1024*1024});
 process.stdout.write(r.stdout ?? ''); process.stderr.write(r.stderr ?? ''); process.exitCode=r.status ?? 9;
 `);

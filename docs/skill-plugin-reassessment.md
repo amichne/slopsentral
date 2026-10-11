@@ -101,7 +101,7 @@ Sources: [plugin compositions](../source/plugins/),
 
 Dependency meaning also matters. The
 [source graph hook](../source/hooks/source-graph-valid.hook.json) previously depended on two
-authoring skills, but its [script](../source/hooks/source-graph-valid.sh) runs
+authoring skills, but its [script](../source/hooks/source-graph-valid.py) runs
 the repository validator. This slice removes those instructional dependencies. The script and provider
 adapter retain their behavior; authoring skills stay in the workflow bundles.
 Other hook dependencies may supply executable files and must be checked

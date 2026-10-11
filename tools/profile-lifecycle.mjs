@@ -289,7 +289,7 @@ function plannedSkillInstalls(profile, skills, codexHome) {
 }
 
 function installSkill(options, name) {
-  const installer = path.join(repoRoot, "tools/install-skill");
+  const installer = path.join(repoRoot, "tools/install_skill.py");
   const result = spawnSync(installer, [name, "--codex-home", options.codexHome], {
     cwd: repoRoot,
     encoding: "utf8",

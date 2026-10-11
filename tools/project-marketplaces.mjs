@@ -219,6 +219,7 @@ function operations(plan, files, harness, input) {
         for (const match of command.command.matchAll(/\bhooks\/[A-Za-z0-9_.-]+/g)) {
           const source = 'source/' + match[0];
           copy(source, plugin.root + '/' + match[0]);
+          if (files.has(source + '.lock')) copy(source + '.lock', plugin.root + '/' + match[0] + '.lock');
           const stem = source.slice(0, source.lastIndexOf('.'));
           for (const key of files.keys()) if (key.startsWith(stem + '.') && key.endsWith('.json') && !key.endsWith('.hook.json'))
             copy(key, plugin.root + '/hooks/' + path.posix.basename(key));

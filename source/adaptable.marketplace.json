@@ -21,9 +21,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "1.4.0"
+        "version": "2.0.0"
       },
-      "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+      "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
       "tags": [
         "actions",
         "automation",
@@ -51,37 +51,10 @@
         "pull-requests",
         "release",
         "schemas",
-        "shell",
         "skills",
         "tdd",
         "testing",
         "workflow-graph"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "engineering-excellence",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "engineering-excellence",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/engineering-excellence"
-        },
-        "version": "1.0.0"
-      },
-      "description": "Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.",
-      "tags": [
-        "contracts",
-        "domain-modeling",
-        "evidence",
-        "failures",
-        "invariants",
-        "parse-dont-validate",
-        "proof",
-        "semantic-design",
-        "type-safety",
-        "typestate"
       ]
     },
     {
@@ -94,7 +67,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "1.5.3"
+        "version": "2.0.0"
       },
       "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "tags": [
@@ -140,7 +113,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/intellij-plugin-development"
         },
-        "version": "1.0.0"
+        "version": "2.0.0"
       },
       "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
       "tags": [
@@ -160,35 +133,6 @@
     },
     {
       "type": "PLUGIN_ENTRY",
-      "name": "pkl-configuration",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "pkl-configuration",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/pkl-configuration"
-        },
-        "version": "1.0.3"
-      },
-      "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
-      "tags": [
-        "configuration",
-        "hooks",
-        "lsp",
-        "patterns",
-        "pkl",
-        "rendering",
-        "resources",
-        "schemas",
-        "skills",
-        "testing",
-        "tooling",
-        "type-safety",
-        "validation"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
       "name": "api-contracts",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
@@ -197,7 +141,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/api-contracts"
         },
-        "version": "1.1.0"
+        "version": "2.0.0"
       },
       "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
       "tags": [
@@ -222,7 +166,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/repository-knowledge"
         },
-        "version": "1.2.0"
+        "version": "2.0.0"
       },
       "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
       "tags": [
@@ -249,47 +193,6 @@
     },
     {
       "type": "PLUGIN_ENTRY",
-      "name": "personal-setup",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "personal-setup",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/personal-setup"
-        },
-        "version": "0.3.1"
-      },
-      "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
-      "tags": [
-        "accessibility",
-        "agents",
-        "authoring",
-        "building-blocks",
-        "cli",
-        "completion",
-        "composition",
-        "design",
-        "dotfiles",
-        "governance",
-        "hooks",
-        "marketplace",
-        "personal-setup",
-        "plugins",
-        "proof",
-        "repository",
-        "routing",
-        "shell",
-        "shell-config",
-        "skills",
-        "teach",
-        "terminal",
-        "tui",
-        "user-interface",
-        "workflow"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
       "name": "skill-read-policy",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
@@ -298,7 +201,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/skill-read-policy"
         },
-        "version": "1.0.1"
+        "version": "2.0.0"
       },
       "description": "Advanced: enforce repository-declared required skill reads.",
       "tags": [
@@ -319,12 +222,11 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/developer-tooling"
         },
-        "version": "1.0.0"
+        "version": "2.0.0"
       },
-      "description": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+      "description": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
       "tags": [
         "cli",
-        "shell",
         "tools",
         "skills"
       ]
@@ -339,13 +241,12 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/personal-configuration"
         },
-        "version": "1.0.0"
+        "version": "2.0.0"
       },
-      "description": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+      "description": "Manage personal configuration and uv-managed Python utilities.",
       "tags": [
         "configuration",
-        "personal",
-        "shell"
+        "personal"
       ]
     },
     {
@@ -358,7 +259,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/repository-source-checks"
         },
-        "version": "1.0.0"
+        "version": "2.0.0"
       },
       "description": "Run explicit repository source-graph checks through supported host events.",
       "tags": [
@@ -377,7 +278,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/pkl-workflows"
         },
-        "version": "1.0.0"
+        "version": "2.0.0"
       },
       "description": "Model, evaluate, format, and maintain Pkl configuration through explicit task workflows.",
       "tags": [
@@ -396,7 +297,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/pkl-repository-checks"
         },
-        "version": "1.0.0"
+        "version": "2.0.0"
       },
       "description": "Run explicitly selected Pkl format, evaluation, and test hooks without advertising workflow skills.",
       "tags": [
@@ -490,15 +391,6 @@
       },
       "path": "skills/hook-primitive-authoring",
       "name": "hook-primitive-authoring"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/shell-script-safety",
-      "name": "shell-script-safety"
     },
     {
       "type": "SKILL",
@@ -821,15 +713,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/web-artifacts-builder",
-      "name": "web-artifacts-builder"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/workflow",
       "name": "workflow"
     },
@@ -902,24 +785,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/cli-data-pipelines",
-      "name": "cli-data-pipelines"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/shell-session-integration",
-      "name": "shell-session-integration"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/mise-project-tooling",
       "name": "mise-project-tooling"
     },
@@ -985,6 +850,15 @@
       },
       "path": "skills/validation-first",
       "name": "validation-first"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/python-tooling",
+      "name": "python-tooling"
     }
   ],
   "agents": [
@@ -1162,15 +1036,6 @@
       },
       "path": "hooks/knowledge-overlay.hook.json",
       "name": "knowledge-overlay"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/engineering-excellence-context.hook.json",
-      "name": "engineering-excellence-context"
     }
   ],
   "metadata": {

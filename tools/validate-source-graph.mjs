@@ -267,8 +267,8 @@ function validateInstructionContext(metadata) {
       if (!Array.isArray(group?.hooks)) continue;
       for (const handler of group.hooks) {
         if (typeof handler?.command !== 'string' ||
-            !handler.command.startsWith('python3 hooks/inject-instruction-context.py')) continue;
-        const args = handler.command.split(/\s+/u).slice(2);
+            !handler.command.startsWith('uv run --locked --script hooks/inject-instruction-context.py')) continue;
+        const args = handler.command.split(/\s+/u).slice(5);
         const selected = args.filter((_, index) => index % 2 === 1);
         const declarations = (metadata.dependsOn ?? []).filter(ref => ref.type === 'INSTRUCTION');
         const names = declarations.map(ref => ref.name);
@@ -303,36 +303,20 @@ function validateHookAdapter(hookName, adapterPath) {
     fail(`${relativePath}: hook adapter ${hookName} does not define any command hooks`);
   }
   for (const command of commands) {
-    const match = command.match(/^(bash|python3)\s+hooks\/([A-Za-z0-9_.-]+)(?:\s|$)/);
+    const match = command.match(/^uv run --locked --script hooks\/([A-Za-z0-9_.-]+)(?:\s|$)/);
     if (!match) {
-      fail(`${relativePath}: hook command must call bash/python3 hooks/<script>: ${command}`);
+      fail(`${relativePath}: hook command must call uv run --locked --script hooks/<script>: ${command}`);
       continue;
     }
-    const runner = match[1];
-    const scriptName = match[2];
-    const scriptPath = path.join(sourceRoot, "hooks", scriptName);
-    if (!fs.existsSync(scriptPath)) {
-      fail(`${relativePath}: hook command points at missing source/hooks/${scriptName}`);
-      continue;
-    }
-    if (runner === "bash") {
-      const mode = fs.statSync(scriptPath).mode;
-      if (!scriptName.endsWith(".sh")) {
-        fail(`${relativePath}: bash command should target a .sh script: ${scriptName}`);
-      }
-      if ((mode & 0o111) === 0) {
-        fail(`${relativePath}: bash script source/hooks/${scriptName} must be executable`);
-      }
-    }
-    if (runner === "python3") {
-      const mode = fs.statSync(scriptPath).mode;
-      const firstLine = fs.readFileSync(scriptPath, "utf8").split(/\r?\n/, 1)[0] ?? "";
-      if (scriptName.endsWith(".py")) {
+    for (const found of command.matchAll(/\bhooks\/[A-Za-z0-9_.-]+/g)) {
+      const scriptPath = path.join(sourceRoot, found[0]);
+      if (!fs.existsSync(scriptPath) || !fs.existsSync(scriptPath + '.lock')) {
+        fail(`${relativePath}: missing uv script or adjacent lock: ${found[0]}`);
         continue;
       }
-      if ((mode & 0o111) === 0 || !firstLine.includes("python")) {
-        fail(`${relativePath}: python3 command should target a .py script or executable Python script: ${scriptName}`);
-      }
+      const script = fs.readFileSync(scriptPath, 'utf8');
+      if (!script.includes('# /// script\n') || !script.includes('# no-build = true'))
+        fail(`${relativePath}: uv hook must declare PEP 723 metadata and no-build: ${found[0]}`);
     }
   }
 }

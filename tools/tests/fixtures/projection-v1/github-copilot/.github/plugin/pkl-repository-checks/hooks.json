@@ -1,0 +1,22 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "bash": "uv run --locked --script \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- uv run --locked --script \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check evaluate",
+        "timeoutSec": 600,
+        "type": "command"
+      },
+      {
+        "bash": "uv run --locked --script \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- uv run --locked --script \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check format",
+        "timeoutSec": 300,
+        "type": "command"
+      },
+      {
+        "bash": "uv run --locked --script \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- uv run --locked --script \"$PLUGIN_ROOT/hooks/pkl-check.py\" --repo . --check test",
+        "timeoutSec": 900,
+        "type": "command"
+      }
+    ]
+  },
+  "version": 1
+}

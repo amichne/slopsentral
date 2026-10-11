@@ -37,7 +37,7 @@ test("every authored hook has a canonical marketplace identity", () => {
 });
 
 test("source graph automation is selectable apart from authoring workflows", () => {
-  assert.deepEqual(owners.get("source-graph-valid"), ["personal-setup", "repository-source-checks"]);
+  assert.deepEqual(owners.get("source-graph-valid"), ["repository-source-checks"]);
   assert.deepEqual(readJson("source/hooks/source-graph-valid.hook.json").dependsOn ?? [], []);
   assert.deepEqual(owners.get("required-skill-read"), ["skill-read-policy"]);
 });

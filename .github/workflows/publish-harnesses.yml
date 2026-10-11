@@ -25,6 +25,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.9"
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -58,6 +62,10 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.sha }}
 
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.9"
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -84,7 +92,7 @@ jobs:
           TARGET_BRANCH: ${{ matrix.branch }}
         run: |
           set -euo pipefail
-          .github/scripts/publish-harness-branch \
+          uv run --locked tools/publish.py harness \
             "${PROJECTION_PATH}" \
             "${TARGET_BRANCH}" \
             main \
@@ -117,6 +125,10 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.sha }}
 
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.9"
+
       - name: Download this run's projections
         uses: actions/download-artifact@v4
         with:
@@ -133,4 +145,4 @@ jobs:
       - name: Publish generated trees to main
         env:
           PROJECTION_PATH: ${{ runner.temp }}/marketplaces
-        run: .github/scripts/publish-marketplaces-main "$PROJECTION_PATH" "$GITHUB_SHA"
+        run: uv run --locked tools/publish.py main "$PROJECTION_PATH" "$GITHUB_SHA"

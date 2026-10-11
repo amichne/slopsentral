@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/inject-instruction-context.py --instruction kotlin-engineering",
+            "command": "uv run --locked --script hooks/inject-instruction-context.py --instruction kotlin-engineering",
             "timeout": 10,
             "additionalContextLimit": 8192,
             "statusMessage": "Loading kotlin-engineering policy"

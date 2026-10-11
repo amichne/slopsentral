@@ -43,7 +43,7 @@ test('accepts cross-plugin reuse through a hook dependency', t => {
 
 test('accepts canonical agent reuse in a profile', t => {
   checks(t, edit => {
-    edit('source/plugins/personal-setup/plugin.json', plugin => {
+    edit('source/plugins/developer-tooling/plugin.json', plugin => {
       plugin.agents.push({ type: 'AGENT', name: 'schema-type-enforcer', path: 'agents/schema-type-enforcer.agent.md', source: { type: 'LOCAL_SOURCE', path: './' } });
     });
     edit('source/profiles/agent-authoring-default.json', profile => profile.plugins.push('api-contracts'));
@@ -66,8 +66,8 @@ test('rejects duplicate hook activation in a profile', t => {
 });
 
 test('rejects conflicting source locations across bundles', t => {
-  rejects(t, edit => edit('source/plugins/personal-setup/plugin.json', plugin => {
-    plugin.skills.find(ref => ref.name === 'shell-script-safety').path = 'skills/cli-data-pipelines';
+  rejects(t, edit => edit('source/plugins/developer-tooling/plugin.json', plugin => {
+    plugin.skills.find(ref => ref.name === 'python-tooling').path = 'skills/semantic-ratchet';
   }), /differs from its canonical marketplace reference/);
 });
 
@@ -77,7 +77,7 @@ test('checkout-local planning rejects duplicate hook activation before any host 
   fs.cpSync(path.join(root, 'source'), path.join(fixture, 'source'), { recursive: true });
   fs.cpSync(path.join(root, 'tools'), path.join(fixture, 'tools'), { recursive: true });
   fs.symlinkSync(path.join(root, 'node_modules'), path.join(fixture, 'node_modules'));
-  const file = path.join(fixture, 'source/plugins/personal-setup/plugin.json');
+  const file = path.join(fixture, 'source/plugins/developer-tooling/plugin.json');
   const plugin = JSON.parse(fs.readFileSync(file, 'utf8'));
   const marketplace = JSON.parse(fs.readFileSync(path.join(fixture, 'source/adaptable.marketplace.json'), 'utf8'));
   plugin.hooks.push(marketplace.hooks.find(ref => ref.name === 'software-engineering-context'));

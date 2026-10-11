@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/required-skill-read.py init --repo .",
+            "command": "uv run --locked --script hooks/required-skill-read.py init --repo .",
             "timeout": 10,
             "statusMessage": "Starting required-skill read tracking"
           }
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/required-skill-read.py check --repo .",
+            "command": "uv run --locked --script hooks/required-skill-read.py check --repo .",
             "timeout": 10,
             "statusMessage": "Checking required skill reads"
           }
