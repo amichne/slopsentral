@@ -63,6 +63,13 @@ Verified reuse may satisfy the requirement without inventing a new type.
    and unresolved effect or model limits. A typed capability alone does not prove
    single use, fresh authorization, or immutable external state.
 
+## API and Composition
+
+For function ownership, callback purity, closure capture, and failure-preserving
+higher-order operations, read [API boundaries](references/api-boundaries.md).
+Decompose requirements before selecting syntax; language specialties apply this
+process to their own visibility, exhaustiveness, and platform mechanisms.
+
 ## Reference Routing
 
 - Read [proof-discipline.md](references/proof-discipline.md) when establishing
@@ -70,7 +77,7 @@ Verified reuse may satisfy the requirement without inventing a new type.
   constructive modeling from named wrappers.
 - Read [kotlin-proof-example.md](references/kotlin-proof-example.md),
   [api-proof-example.md](references/api-proof-example.md), or
-  [shell-proof-example.md](references/shell-proof-example.md) for a representative
+  the Python Tooling self-contained example for a representative
   realization and its legal-path and forbidden-path checks. Use the relevant
   language or contract skill for production syntax and tool selection.
 - Read [domain-values.md](references/domain-values.md) for constrained

@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/codex-stop.py -- bash hooks/gradle-check-green.sh --repo .",
+            "command": "uv run --locked --script hooks/codex-stop.py -- uv run --locked --script hooks/gradle-check-green.py --repo .",
             "timeout": 1800,
             "statusMessage": "Checking Gradle green state"
           }

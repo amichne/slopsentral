@@ -26,7 +26,7 @@ class NavigationTest(unittest.TestCase):
                               check=True, capture_output=True, text=True).stdout
 
     def setup(self, *args, repo=None):
-        return subprocess.run(['bash', str(SCRIPTS / 'setup-local-nav.sh'),
+        return subprocess.run(['uv', 'run', '--locked', '--script', str(SCRIPTS / 'setup-local-nav.py'),
                                '--repo-root', str(repo or self.repo), *args],
                               capture_output=True, text=True)
 

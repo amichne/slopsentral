@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/inject-instruction-context.py --instruction api-contract-design",
+            "command": "uv run --locked --script hooks/inject-instruction-context.py --instruction api-contract-design",
             "timeout": 10,
             "additionalContextLimit": 8192,
             "statusMessage": "Loading api-contracts policy"

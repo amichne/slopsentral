@@ -15,7 +15,6 @@
   ],
   "plugins": [
     "software-engineering",
-    "engineering-excellence",
     "pkl-workflows",
     "pkl-repository-checks"
   ],

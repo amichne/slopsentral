@@ -6,14 +6,12 @@
   "description": "Golden provider-neutral replay observations for the daily-driver routing cases.",
   "requiredCaseIds": [
     "active-goal-continuation-keeps-original-scope",
-    "source-graph-edits-use-canonical-source-and-gates",
     "shell-check-tdd-uses-stable-red-green-proof",
     "push-request-means-branch-commit-push-pr",
     "issue-backend-selection-preserves-native-dependencies",
     "dirty-worktree-uses-scoped-git-change-flow",
     "ci-failure-triage-uses-remote-check-evidence",
     "plugin-install-recovery-proves-installed-state",
-    "production-sharing-requires-quality-audit-evidence",
     "terminal-ui-work-preserves-cli-contracts",
     "technical-prose-uses-controlled-terms",
     "intellij-full-delivery-uses-default-profile",
@@ -26,7 +24,6 @@
     "installed-discovery-recovery-keeps-stage-proof",
     "runtime-performance-matches-semantic-workloads",
     "openwiki-refresh-preserves-backend-authority",
-    "shell-startup-completion-preserves-session-state",
     "cli-finite-json-errors-preserve-exit-status",
     "docs-site-nav-preserves-generated-boundaries",
     "technical-rfc-keeps-reader-decision-source-backed",
@@ -65,29 +62,6 @@
         "Skip current-state inspection because earlier context sounds familiar."
       ],
       "notes": "A passing continuation keeps the active objective intact and reports incomplete rollout evidence instead of claiming done."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
-      "caseId": "source-graph-edits-use-canonical-source-and-gates",
-      "routedPrimitive": {
-        "type": "PLUGIN",
-        "name": "personal-setup"
-      },
-      "satisfiedAllowedActions": [
-        "Edit source-owned primitives, plugin manifests, schemas, evals, or source validation tools.",
-        "Regenerate provider output only from source when publication proof is required.",
-        "Run the source graph gate before broader marketplace validation."
-      ],
-      "satisfiedVerificationEvidence": [
-        "Changed structured source files are covered by schema or source graph validation.",
-        "Provider output proof, when needed, comes from materialization rather than hand edits."
-      ],
-      "avoidedForbiddenActions": [
-        "Patch generated provider output as the primary fix.",
-        "Treat installed caches as source material.",
-        "Add marketplace content without schema or validator coverage for structured data."
-      ],
-      "notes": "A passing source-graph run edits canonical source and uses provider materialization only as proof."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -259,29 +233,6 @@
     },
     {
       "type": "ROUTING_OBSERVATION",
-      "caseId": "ci-shell-automation-uses-safe-reusable-scripts",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "shell-script-safety"
-      },
-      "satisfiedAllowedActions": [
-        "Move shared CI logic into a versioned repo script when it is reused or stateful.",
-        "Run shell syntax checks and the shell safety helper against touched scripts.",
-        "Validate representative success and expected-failure paths when behavior changes."
-      ],
-      "satisfiedVerificationEvidence": [
-        "The run includes bash -n for touched shell scripts.",
-        "The run includes check_shell_safety output for touched shell scripts."
-      ],
-      "avoidedForbiddenActions": [
-        "Duplicate long inline shell across workflow files.",
-        "Skip strict mode and input validation for CI-owned Bash scripts.",
-        "Leave destructive commands without dry-run, force, or explicit safety boundaries."
-      ],
-      "notes": "A passing run proves this route by delivering: CI shell logic becomes reusable automation that agents can test locally before relying on remote workflows."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
       "caseId": "plugin-install-recovery-proves-installed-state",
       "routedPrimitive": {
         "type": "SKILL",
@@ -302,29 +253,6 @@
         "Use obsolete install subcommands when current CLI help shows a different surface."
       ],
       "notes": "A passing install recovery run proves both source validity and consumer-visible installed state."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
-      "caseId": "production-sharing-requires-quality-audit-evidence",
-      "routedPrimitive": {
-        "type": "PLUGIN",
-        "name": "personal-setup"
-      },
-      "satisfiedAllowedActions": [
-        "Review the concrete primitive, plugin, or eval family against a baseline.",
-        "Record evidence for capability boundary, trigger clarity, independence, schema coverage, provenance, executable proof, and runtime safety.",
-        "Defer production-sharing claims when evidence is thin or validation does not cover the changed surface."
-      ],
-      "satisfiedVerificationEvidence": [
-        "The review names the target, baseline, findings, validation, residual risks, and next action.",
-        "Structured artifacts changed by the workflow pass the source graph and marketplace validation gates."
-      ],
-      "avoidedForbiddenActions": [
-        "Treat new eval cases alone as production readiness.",
-        "Share primitives that are not independently usable outside a plugin composition.",
-        "Claim production readiness without reproducible validation and explicit residual risks."
-      ],
-      "notes": "A passing readiness run keeps rollout claims bounded by reproducible evidence."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -483,29 +411,6 @@
         "Let selected profile plugins duplicate the same hook, agent, or skill owner."
       ],
       "notes": "A passing run proves this route by delivering: Software Engineering owns red-green workflow, Kotlin Engineering owns semantic proof, Software Engineering owns local repository mechanics, and Software Engineering owns publication."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
-      "caseId": "source-over-generated-provider-output",
-      "routedPrimitive": {
-        "type": "PLUGIN",
-        "name": "personal-setup"
-      },
-      "satisfiedAllowedActions": [
-        "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and source validation contracts.",
-        "Use materialization only as proof after source quality checks pass.",
-        "Add source-owned validation when overlap or routing quality is the failure mode."
-      ],
-      "satisfiedVerificationEvidence": [
-        "The changed files are under source or validation tooling unless provider publication is explicitly in scope.",
-        "Validation includes the source graph gate and, when provider output matters, materialization from source."
-      ],
-      "avoidedForbiddenActions": [
-        "Patch .agents or .github provider output by hand.",
-        "Treat installed plugin cache payloads as canonical source.",
-        "Report generated provider drift as the primary answer when the source graph is the target."
-      ],
-      "notes": "A passing run proves this route by delivering: Source-graph audits spend time on canonical authored material and only touch provider output through regeneration, reducing churn and review noise."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -694,29 +599,6 @@
         "Treat hook adapter JSON as proof that its requirement payload is valid."
       ],
       "notes": "A passing run proves this route by delivering: Hook requirements remain machine-checkable and cannot silently point at missing or hidden skills."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
-      "caseId": "placeholder-skills-are-quality-audit-not-marketplace-products",
-      "routedPrimitive": {
-        "type": "PLUGIN",
-        "name": "personal-setup"
-      },
-      "satisfiedAllowedActions": [
-        "Quarantine placeholder-only skills from marketplace exposure.",
-        "Delete placeholder-only skills when a substantive rewrite is not justified.",
-        "Fail validation if marketplace-visible skills expose placeholder migration descriptions."
-      ],
-      "satisfiedVerificationEvidence": [
-        "Marketplace-visible skills have routeable descriptions rather than placeholder migration text.",
-        "Unfinished primitive candidates are rewritten or excluded from the source marketplace."
-      ],
-      "avoidedForbiddenActions": [
-        "Keep placeholder-only skills in the standalone marketplace catalog.",
-        "Replace a real canonical skill with a placeholder duplicate.",
-        "Treat syntactic validity as quality readiness."
-      ],
-      "notes": "A passing run proves this route by delivering: Team-shared marketplace listings contain usable primitives, while unfinished migration placeholders stay out of daily-driver routing."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -1139,27 +1021,6 @@
       "satisfiedVerificationEvidence": [
         "The selected backend and external owner are named, with missing tools reported rather than guessed.",
         "Changed pages and Claims are verified; pending CI remains pending."
-      ],
-      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
-      "caseId": "shell-startup-completion-preserves-session-state",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "shell-session-integration"
-      },
-      "satisfiedAllowedActions": [
-        "Use native shell APIs, local option scope, and owned callback registrations.",
-        "Check repeated loading, paths with spaces, a failed wrapped command, startup, and non-interactive output."
-      ],
-      "avoidedForbiddenActions": [
-        "Overwrite unrelated shell callbacks or perform network calls in prompt/startup callbacks.",
-        "Treat a syntax check as proof of interactive state preservation."
-      ],
-      "satisfiedVerificationEvidence": [
-        "Fresh startup and repeated source checks preserve callbacks and prior command status.",
-        "Non-interactive output stays quiet and timed-out helpers restore state."
       ],
       "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
     },

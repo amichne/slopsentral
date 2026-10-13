@@ -15,7 +15,6 @@
   ],
   "plugins": [
     "software-engineering",
-    "engineering-excellence",
     "kotlin-engineering"
   ],
   "standaloneSkills": [],

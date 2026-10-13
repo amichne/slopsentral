@@ -28,7 +28,6 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
   const profile = readJson("source/profiles/intellij-plugin-default.json");
   assert.deepEqual(profile.plugins, [
     "software-engineering",
-    "engineering-excellence",
     "kotlin-engineering",
     "intellij-plugin-development",
   ]);
@@ -51,7 +50,6 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     [],
   );
   assert.deepEqual([...hookOwners.keys()].sort(), [
-    "engineering-excellence-context",
     "gradle-check-green",
     "gradle-wrapper-integrity",
     "kotlin-engineering-context",

@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "pkl-repository-checks",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Run explicitly selected Pkl format, evaluation, and test hooks without advertising workflow skills.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

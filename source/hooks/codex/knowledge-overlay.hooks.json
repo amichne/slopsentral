@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/knowledge-overlay.py",
+            "command": "uv run --locked --script hooks/knowledge-overlay.py",
             "timeout": 20,
             "additionalContextLimit": 8192,
             "statusMessage": "Loading registered repository knowledge guidance"

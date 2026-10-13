@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "repository-source-checks",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Run explicit repository source-graph checks through supported host events.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

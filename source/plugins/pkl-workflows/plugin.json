@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "pkl-workflows",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Model, evaluate, format, and maintain Pkl configuration through explicit task workflows.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

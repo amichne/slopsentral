@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/inject-instruction-context.py --instruction agent-execution",
+            "command": "uv run --locked --script hooks/inject-instruction-context.py --instruction agent-execution --instruction engineering-design",
             "timeout": 10,
             "additionalContextLimit": 8192,
             "statusMessage": "Loading software-engineering policy"

@@ -24,18 +24,15 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
 
   assert.deepEqual([...selectedPlugins.keys()], [
     "software-engineering",
-    "engineering-excellence",
     "kotlin-engineering",
   ]);
 
   const baselineHooks = hookNames(selectedPlugins.get("software-engineering"));
   assert.deepEqual([...baselineHooks], ["software-engineering-context"]);
   assert.deepEqual(readJson("source/hooks/software-engineering-context.hook.json").dependsOn.map(({ name }) => name), [
-    "agent-execution",
+    "agent-execution", "engineering-design",
   ]);
 
-  assert.deepEqual([...hookNames(selectedPlugins.get("engineering-excellence"))], ["engineering-excellence-context"]);
-  assert.deepEqual(readJson("source/hooks/engineering-excellence-context.hook.json").dependsOn.map(({ name }) => name), ["engineering-design"]);
 
   assert.ok(!hookNames(selectedPlugins.get("software-engineering")).has("github-actions-await"));
 

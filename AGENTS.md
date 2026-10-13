@@ -42,3 +42,14 @@ The projector requires Pkl 0.32.0 (`PKL_BIN` may select an explicit executable).
 Use fresh output directories. Projection never downloads a runtime or replaces
 an existing tree. `node tools/install-projection-pkl.mjs --out <path>` is the
 explicit checksum-verified runtime setup boundary.
+
+## Shared Engineering Baseline
+
+Read and apply [the canonical engineering baseline](source/instructions/engineering-design.md)
+for all work. Software Engineering delivers this same source through its context
+hook; language and domain instructions refine it.
+
+New automation uses required uv, strict Pyright, Ruff, pytest, PEP 723 metadata,
+locked dependencies, and `tool.uv.no-build = true`. Run `uv run --locked tools/check.py`
+for the Python boundary checks. Use `uv run --locked tools/setup.py` for explicit
+checkout setup. Keep generated outputs and installed caches outside authored edits.

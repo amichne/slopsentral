@@ -47,10 +47,9 @@ test('guidance and automatic Pkl checks preserve every legacy workflow while sel
   assert.ok([...workflows.refs.keys()].every(k => k.startsWith('SKILL/')));
   assert.ok([...checks.refs.keys()].every(k => k.startsWith('HOOK/') || k.startsWith('RESOURCE/')));
   assert.deepEqual([...checks.refs.keys()].filter(k => k.startsWith('RESOURCE/')), ['RESOURCE/pkl-agent-runtime']);
-  assert.deepEqual([...new Set([...workflows.refs.keys(), ...checks.refs.keys()])].sort(), [...closure('pkl-configuration').refs.keys()].sort());
   for (const name of ['pkl-workflow-default', 'pkl-checked-repository'])
     assert.deepEqual(auditProfileComposition(catalog, catalog.profiles.find(p => p.name === name)), []);
-  assert.match(auditProfileComposition(catalog, { name: 'duplicate', plugins: ['pkl-configuration', 'pkl-repository-checks'] }).join('\n'), /activate HOOK\/pkl-evaluate-check multiple times/);
+  assert.match(auditProfileComposition(catalog, { name: 'duplicate', plugins: ['pkl-repository-checks', 'pkl-repository-checks'] }).join('\n'), /duplicate plugin selection/);
   assert.equal(catalogReport(catalog).schemaVersion, 3);
 });
 

@@ -1,3 +1,7 @@
+> Current selection: Engineering Excellence is merged into Software Engineering.
+> Install the latter for Semantic Ratchet and the shared engineering baseline.
+> The following design history predates that consolidation.
+
 # Engineering Excellence
 
 Engineering Excellence expresses a strict design standard: preserve established

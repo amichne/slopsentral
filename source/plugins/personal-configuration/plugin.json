@@ -2,14 +2,23 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "personal-configuration",
-  "version": "1.0.0",
-  "description": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+  "version": "2.0.0",
+  "description": "Manage personal configuration and uv-managed Python utilities.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral"
   },
   "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/python-tooling",
+      "name": "python-tooling"
+    },
     {
       "type": "SKILL",
       "source": {
@@ -27,24 +36,6 @@
       },
       "path": "skills/personal-cli-authoring",
       "name": "personal-cli-authoring"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/shell-session-integration",
-      "name": "shell-session-integration"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/shell-script-safety",
-      "name": "shell-script-safety"
     }
   ],
   "agents": [],
@@ -52,10 +43,10 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Choose to change personal configuration or install personal shell commands.",
+    "dailyDriver": "Manage personal configuration and uv-managed Python utilities.",
     "notFor": "General CLI products, plugin authoring, application work, or automatic installation.",
     "role": "specialty",
-    "scope": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+    "scope": "Manage personal configuration and uv-managed Python utilities.",
     "workstream": "personal-configuration",
     "owner": "personal-configuration"
   }

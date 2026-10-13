@@ -14,8 +14,7 @@
     }
   ],
   "plugins": [
-    "software-engineering",
-    "engineering-excellence"
+    "software-engineering"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

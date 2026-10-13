@@ -51,7 +51,7 @@ test('Astra defaults do not require unrelated skill reads', () => {
 });
 
 test('new standalone skills have bounded procedures and portable local references', () => {
-  for (const name of ['kotlin-branching', 'cli-data-pipelines', 'shell-session-integration', 'mise-project-tooling', 'delivery-pipeline-design', 'technical-documentation', 'bounded-delegation']) {
+  for (const name of ['kotlin-branching', 'python-tooling', 'mise-project-tooling', 'delivery-pipeline-design', 'technical-documentation', 'bounded-delegation']) {
     const folder = path.join(root, 'source/skills', name);
     const text = fs.readFileSync(path.join(folder, 'SKILL.md'), 'utf8');
     assert.ok(text.trim().split(/\s+/u).length <= 550, `${name}: move details to references`);
@@ -90,7 +90,7 @@ test('catalog reports distinguish all-plugin and profile selections', () => {
 
 test('a repeated identity cannot hide additional dependency edges', () => {
   const plugin = catalog.plugins.find(p => p.name === 'software-engineering');
-  const repeated = plugin.skills.find(ref => ref.name === 'cli-data-pipelines');
+  const repeated = plugin.skills.find(ref => ref.name === 'semantic-ratchet');
   const foreign = catalog.marketplace.skills.find(ref => ref.name === 'manage-json-schemas');
   const modified = { ...catalog, plugins: catalog.plugins.map(p => p !== plugin ? p : {
     ...p, skills: [repeated, ...p.skills.filter(ref => ref !== repeated).map(ref => ref.name !== 'mise-project-tooling' ? ref : {
@@ -105,9 +105,9 @@ test('a repeated identity cannot hide additional dependency edges', () => {
 test('reused assets expose every composing plugin with unique source counts', () => {
   const report = catalogReport(catalog);
   assert.equal(report.schemaVersion, 3);
-  const shell = report.assets.find(asset => asset.primitiveType === 'SKILL' && asset.name === 'shell-script-safety');
-  assert.deepEqual(shell.plugins, ['developer-tooling', 'personal-configuration', 'personal-setup', 'software-engineering']);
-  assert.equal(shell.path, 'skills/shell-script-safety');
+  const shell = report.assets.find(asset => asset.primitiveType === 'SKILL' && asset.name === 'python-tooling');
+  assert.deepEqual(shell.plugins, ['developer-tooling', 'personal-configuration', 'software-engineering']);
+  assert.equal(shell.path, 'skills/python-tooling');
   const shared = catalog.marketplace.instructions.find(ref => ref.name === 'engineering-design');
   const modified = { ...catalog, plugins: catalog.plugins.map(p => p.name !== 'repository-knowledge' ? p : {
     ...p, instructions: [...p.instructions, shared],
@@ -117,8 +117,8 @@ test('reused assets expose every composing plugin with unique source counts', ()
   assert.equal(reused.totals.instructionWords, report.totals.instructionWords);
   assert.ok(reused.plugins.reduce((sum, p) => sum + p.instructionWords, 0) > reused.totals.instructionWords);
   const profile = catalogReport(catalog, 'agent-authoring-default');
-  assert.deepEqual(profile.assets.find(asset => asset.name === 'shell-script-safety').plugins,
-    ['personal-setup', 'software-engineering']);
+  assert.deepEqual(profile.assets.find(asset => asset.name === 'python-tooling').plugins,
+    ['developer-tooling', 'personal-configuration', 'software-engineering']);
 });
 
 test('report v3 validates and rejects unknown asset kinds or ambiguous composition', () => {
@@ -146,15 +146,15 @@ test('profile hook activation includes dependencies and fails closed on missing 
   const carrier = structuredClone(modified.definitions.get('HOOK/code-knowledge-drift'));
   carrier.dependsOn = [...carrier.dependsOn ?? [], sourceHook];
   modified.definitions.set('HOOK/code-knowledge-drift', carrier);
-  const profile = { name: 'shared-hook', plugins: ['personal-setup', 'repository-knowledge'] };
+  const profile = { name: 'shared-hook', plugins: ['repository-source-checks', 'repository-knowledge'] };
   assert.match(auditProfileComposition(modified, profile).join('\n'), /activate HOOK\/source-graph-valid multiple times/);
   modified.definitions.delete('HOOK/source-graph-valid');
   assert.match(auditProfileComposition(modified, profile).join('\n'), /missing canonical hook definition/);
 });
 
 test('a report cannot silently erase a conflicting canonical location', () => {
-  const modified = { ...catalog, plugins: catalog.plugins.map(p => p.name !== 'personal-setup' ? p : {
-    ...p, skills: p.skills.map(ref => ref.name !== 'shell-script-safety' ? ref : { ...ref, path: 'skills/cli-data-pipelines' }),
+  const modified = { ...catalog, plugins: catalog.plugins.map(p => p.name !== 'developer-tooling' ? p : {
+    ...p, skills: p.skills.map(ref => ref.name !== 'python-tooling' ? ref : { ...ref, path: 'skills/semantic-ratchet' }),
   }) };
   assert.throws(() => catalogReport(modified), /differs from its canonical marketplace reference/);
 });

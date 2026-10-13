@@ -7,7 +7,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const publisher = path.join(repoRoot, ".github/scripts/publish-marketplaces-main");
+const publisher = path.join(repoRoot, "tools/publish.py");
 
 function git(cwd, ...args) {
   return execFileSync("git", args, {
@@ -52,7 +52,7 @@ function projection(fixture) {
   return directory;
 }
 function run(f, p, sha = f.sourceSha) {
-  return spawnSync(publisher, [p, sha], { cwd: f.checkout, encoding: "utf8" });
+  return spawnSync(publisher, ["main", p, sha], { cwd: f.checkout, encoding: "utf8" });
 }
 test("publishes both trees atomically, preserves source, removes obsolete output, and is idempotent", (t) => {
   const f = createFixture();

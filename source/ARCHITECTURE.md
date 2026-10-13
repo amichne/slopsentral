@@ -18,58 +18,40 @@ one canonical source. Several plugins may compose the same source identity.
 | Profile | Selection of plugin compositions | Duplicate hook activation or a second implementation |
 | Evaluation | A test contract or an observed result, labeled distinctly | An invented behavioral measurement |
 
-## Selection
+## Selection and layering
 
-Software Engineering is the single default chooser entry for execution and
-delivery. Standard code profiles also select Engineering Excellence for invariant
-representation and proof preservation. Add language, platform, or output
-specialties as needed. Repository Knowledge combines technical writing,
-documentation sites, source-backed artifacts, and opt-in sibling overlays.
-Personal Setup combines personal configuration, CLI products, and agent tooling.
-Plugin installation makes skills available; task intent selects procedures.
-A skill or ticket cannot manufacture publication authority.
+Software Engineering is the single default: the engineering baseline,
+Semantic Ratchet, Python Tooling, implementation, tests, local Git, hosted
+issues, PRs, CI, and delivery design. Engineering Excellence is folded into it;
+there is one baseline context hook, not two independently selected policies.
 
-Manifest `metadata.role` is one of `default`, `specialty`, or `advanced`.
-The catalog validator rejects unknown roles and requires exactly one default.
-The generated chooser groups by this field. The provider projector derives its
-plugin display name from the plugin ID and description from the manifest;
-advanced-policy wording therefore remains explicit in the projected description.
+Language and domain specialties refine that baseline. Kotlin owns Kotlin syntax,
+sealed/value-class enforcement, Gradle, and platform constraints. Python Tooling
+owns uv setup, PEP 723 scripts, strict Pyright, Ruff, pytest, and refactoring.
+Semantic Ratchet owns the language-neutral invariant and API design process.
+Developer Tooling owns reusable CLIs and agent resources. Personal Configuration
+owns verified configuration installation and personal utilities. The combined
+Personal Setup bundle is retired. Pkl Workflows and opt-in Pkl Repository Checks
+replace Pkl Configuration; source checks remain separately selected effects.
 
-## Routing
+Shell authoring and data-pipeline skills are retired. New transformations,
+branching, setup, subprocess handling, and cleanup live in Python. Keep a minimal
+host launcher only where the host requires it or a parent shell owns the state.
+Native compilers, schema validators, and the Pkl projector remain explicit tools;
+Python dependency management does not replace their authority.
 
-Select the narrowest skill whose output matches the request. A pure prose edit
-uses controlled-technical-writing. A runbook or ADR uses technical-documentation.
-Site navigation uses site-docs-authoring. A signature-backed knowledge bundle
-uses code-knowledge-base. These may be sequenced when their outputs are needed;
-they are not aliases for every task containing the word documentation.
+`AGENTS.md` references `instructions/engineering-design.md` as the canonical
+baseline. The same instruction is delivered by the software-engineering context
+hook. Skills remain independently usable. Automatic instruction delivery is a
+host capability, not something a generated plugin index can establish.
 
-Kotlin domain representation uses kotlin-design-practices. Public function and
-platform ownership uses kotlin-api-surface-design. Branch shape uses
-kotlin-branching. Build evidence uses kotlin-gradle-validation. Do not load all
-Kotlin references merely because a file ends in `.kt`.
-
-Engineering Excellence owns Semantic Ratchet and the engineering-design policy.
-It packages contract-first invariant representation, closed failures, controlled
-construction, legal transitions, and proof-preserving consumer contracts. Its
-bundled examples realize the standard in Kotlin, API schemas, and shell; dedicated
-language and contract skills still own production syntax and tool selection.
-
-Software Engineering packages implementation, tests, local Git, shell safety,
-CLI data queries, mise, hosted issues, PRs, Actions, and delivery pipeline design.
-Developer Tooling packages CLI authoring, shell integration, terminal UI design,
-and reusable skills, agents, hooks, plugins, and instruction topology. Personal
-Configuration packages verified dotfiles and personal utility workflows. These
-pilot alternatives keep source automation in the optional Repository Source
-Checks plugin. Personal Setup retains the earlier combined composition until
-observed task evidence supports migration. See [the ledger](MIGRATION.md#tooling-redesign-pilot).
-Pkl Workflows packages the existing Pkl procedures. Optional Pkl Repository
-Checks carries their event checks through one executable resource. The complete
-Pkl Configuration bundle remains available. See
-[workflow resources](../docs/workflow-resources.md) for this second pilot.
-validation-first plans decisive checks on explicit invocation and remains
-planning-only; tdd owns executable proof when execution is authorized.
-A pipeline design establishes stage and artifact boundaries; github-ci-operations
-implements and diagnoses the GitHub-specific workflow.
+The uv project pins checking and refactoring dependencies with no source builds.
+Portable scripts declare PEP 723 environments and adjacent locks. Hook manifests
+require `uv run --locked --script`; projection copies both source and lock.
+Strict checking covers new and migrated boundaries explicitly. Retained Python
+suites are collected by pytest; passing them is not a claim that legacy modules
+meet every new static rule. Negative type tests require a specific diagnostic
+and nonempty file analysis, never merely an unsuccessful process.
 
 ## Composition and Evidence
 
@@ -122,8 +104,8 @@ the invariant independently. It is not another automatically loaded instruction.
 Tool-specific details remain in skills and references. Explicit user instructions
 win over generic skill guidance within higher-priority policy.
 
-Engineering Excellence owns `instructions/engineering-design.md`, whose stable
-identity is preserved when its install edge moves out of Software Engineering.
+Software Engineering owns `instructions/engineering-design.md` and its
+merged policy delivery.
 Its concise policy requires proof in consumer contracts; Semantic Ratchet owns
 the procedure and selectively routed rationale and representative examples.
 
@@ -205,7 +187,7 @@ focused reference or a narrower trigger over another overlapping skill.
 
 ## Consolidation and storage migration
 
-CLI Development and Agent Tooling move to Personal Setup; Technical Writing
+CLI Development and Agent Tooling move to Developer Tooling; Technical Writing
 moves to Repository Knowledge. Canonical skill paths remain stable. Profiles
 and proposed benchmark routes use the surviving owners; recorded field
 observations retain their historical provider and plugin identities. Install

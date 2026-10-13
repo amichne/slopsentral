@@ -25,8 +25,8 @@ overrides belong outside its tracked tree.
    local overrides, consumers, staged changes and unrelated source edits.
 4. For a personal command, use `personal-cli-authoring` for the command contract,
    parameter precedence, composition, completion and source-backed `--teach`.
-   For a session-specific integration, use `shell-session-integration` when
-   available. These are separate procedures, not automatic extra work.
+   Use Python Tooling for automation. Keep only the required parent-shell adapter
+   when session state cannot be accessed from a child process. These are separate procedures, not automatic extra work.
 5. Make the requested source change. Register new installed paths with the
    actual installer owner. Never bulk-stage HOME or the source tree. Stage
    explicit public paths only when a commit is in scope. Do not push from a

@@ -5,27 +5,51 @@ plugins, hooks, agents, concepts, and workflow profiles.
 
 ## Choose a Plugin
 
-Start with **Software Engineering** for code changes, tests, Git, PRs, and CI,
-and **Engineering Excellence** for the domain and contract design standard.
-The code profiles select both. Add a specialty when the task needs one:
+Start with **Software Engineering** for typed domain design, Python automation,
+refactoring, tests, Git, PRs, and CI. Engineering Excellence is now part of this
+shared baseline. Add a specialty when the task needs one:
 
 | Task | Add or choose |
 | --- | --- |
-| Invariant representation, proof preservation, and closed failures | [Engineering Excellence](docs/engineering-excellence.md); usable on its own for design or review |
+| Invariant representation, proof preservation, and closed failures | Software Engineering: Semantic Ratchet and the shared engineering baseline |
 | Kotlin and Gradle | Kotlin Engineering |
 | IntelliJ Platform plugins | IntelliJ Plugin Development, plus Kotlin Engineering for Kotlin code |
 | Pkl configuration | Pkl Workflows; optional Pkl Repository Checks |
 | OpenAPI or JSON Schema | API Contracts |
 | Docs, proposals, runbooks, sites, and source-backed knowledge | Repository Knowledge |
 | Skills, agents, hooks, and plugins | Developer Tooling |
-| CLI products, shell completions, and TUIs | Developer Tooling |
+| Typed Python CLI products and TUIs | Developer Tooling |
 | Personal shell-config setup and utilities with `--teach` | Personal Configuration |
 | Automatic Slopsentral source-graph checks | Repository Source Checks; explicit opt-in |
 
-Developer Tooling and Personal Configuration are pilot alternatives to the
-retained [Personal Setup](docs/personal-setup.md) bundle. See the
-[migration ledger](source/MIGRATION.md#tooling-redesign-pilot) and
-[design direction](docs/skill-plugin-reassessment.md) for scope and evaluation.
+Developer Tooling and Personal Configuration are the focused replacements for
+Personal Setup. Pkl Workflows and opt-in Pkl Repository Checks replace the
+combined Pkl Configuration bundle. The migration changes source selections only;
+installed caches and host configuration are not modified.
+
+## Python automation
+
+Install **uv 0.12.9 or newer** first, then run:
+
+```text
+uv run --locked tools/setup.py
+uv run --locked tools/check.py
+npm run verify
+```
+
+The Python path declares Pyright (including its Node runtime), Ruff, pytest,
+coverage tooling, PyYAML, and the optional LibCST refactor group in `pyproject.toml`.
+Dependencies and the public index are locked; source builds are disabled.
+Python Tooling includes a standalone PEP 723 example, adjacent lock, project
+configuration, scaffolder, and an isolated self-test command. Editor clients can
+run `uv run --locked pyright-langserver --stdio` against the same environment.
+
+New and migrated Python boundaries pass strict type and lint checks. Retained
+Python utilities run through pytest; they are not all retroactively certified
+strict. The explicit include list in `pyproject.toml` records that boundary.
+Node schema/catalog tooling, Pkl projection, Kotlin compilation, and the small
+parent-shell history adapter retain their native contracts. Python owns new
+orchestration and replaces the former shell check/setup scripts.
 
 Describe the result you want. The agent selects the relevant skills from those
 plugins; you do not need to name each skill. Installation does not authorize a
@@ -51,12 +75,12 @@ node tools/catalog.mjs --profile kotlin-repo-default --json
 ## Instruction Delivery
 
 Install and select plugins through the host's marketplace interface. Slopsentral
-has no global binary or launch wrapper. Four read-only context hooks deliver
+has no global binary or launch wrapper. Three read-only context hooks deliver
 canonical instruction dependencies through Codex `SessionStart.additionalContext`.
 They cover startup, resume, clear, and compaction, without installing plugins,
 rewriting configuration, or recording transcript-based deduplication state.
-Software Engineering supplies execution guidance, Engineering Excellence owns
-engineering-design guidance, Kotlin Engineering adds Kotlin guidance, and API
+Software Engineering supplies execution and engineering-design guidance,
+Kotlin Engineering adds Kotlin guidance, and API
 Contracts adds schema guidance.
 
 Review new or changed hook definitions through the host's `/hooks` interface.
@@ -73,7 +97,7 @@ separately. See [architecture](source/ARCHITECTURE.md).
 
 The former `repository-profile` startup hook is retired. Starting or resuming a
 session no longer installs plugins or rewrites repository configuration. Select
-Software Engineering, Engineering Excellence, and Kotlin Engineering for Kotlin
+Software Engineering and Kotlin Engineering for Kotlin
 work through the host.
 Plugin selection makes skills available; the task determines which skills to use.
 
@@ -117,10 +141,10 @@ Install one marketplace-listed skill into `${CODEX_HOME:-$HOME/.codex}/skills`
 without installing a plugin:
 
 ```bash
-tools/install-skill pkl-engineering
-tools/install-skill pkl-tooling-setup
-tools/install-skill pkl-specification
-tools/install-skill pkl-pattern-catalogs
+tools/install_skill.py pkl-engineering
+tools/install_skill.py pkl-tooling-setup
+tools/install_skill.py pkl-specification
+tools/install_skill.py pkl-pattern-catalogs
 ```
 
 The command copies a real skill directory and is an idempotent no-op when the
@@ -141,10 +165,10 @@ toolchain/LSP setup, specification and official-source navigation, and pattern
 catalogs. Add `pkl-repository-checks@slopsentral` for Pkl format,
 explicit-entrypoint evaluation, and sandboxed test hooks. Repositories using the evaluation hook declare directly
 evaluable modules one per line in `.intelligence/pkl-entrypoints`.
-Checks need Python 3 and a separate Pkl `>=0.31.1,<0.34.0` installation,
+Checks need uv and a separate Pkl `>=0.31.1,<0.34.0` installation,
 selected through `PKL_BIN` or `PATH`. They skip without relevant changes;
 evaluation also needs explicit roots, and testing needs project or test files.
-The existing `pkl-configuration` bundle retains both capabilities. Choose it
+The former `pkl-configuration` bundle is retired. Select both focused bundles
 or the new packages to avoid duplicate hooks. See
 [workflow resources](docs/workflow-resources.md) for the pilot and evidence.
 
@@ -188,7 +212,7 @@ node tools/validate-source-graph.mjs
 node tools/catalog.mjs --check
 node tools/run-routing-evals.mjs
 node tools/run-routing-evals.mjs --require-all-fixtures
-tools/compile-kotlin-concepts
+tools/compile_kotlin_concepts.py
 node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
 node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check

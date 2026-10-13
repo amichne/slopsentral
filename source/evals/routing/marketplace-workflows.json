@@ -6,47 +6,6 @@
   "description": "Sanitized routing cases for source-owned marketplace, plugin, and primitive workflow decisions.",
   "cases": [
     {
-      "id": "source-over-generated-provider-output",
-      "type": "ADAPTER_DRIFT",
-      "source": {
-        "type": "USER_CLARIFICATION",
-        "capturedAt": "2026-06-20",
-        "evidenceRefs": [
-          "user clarified that invisible generated provider output is not the quality target",
-          "source/adaptable.marketplace.json",
-          "source/plugins"
-        ]
-      },
-      "prompt": "Evaluate overlap between the plugin definitions in the source directory and marketplace, focusing on existing source material, efficacy, overlap, and token waste rather than generated provider drift.",
-      "expectedPrimitive": {
-        "type": "PLUGIN",
-        "name": "personal-setup"
-      },
-      "observedRoute": {
-        "type": "ROUTING_ROUTE_OBSERVATION",
-        "summary": "A provider-adapter route can spend the turn diffing generated marketplace payloads instead of auditing canonical source plugins and primitives.",
-        "risk": "Token budget is wasted on generated churn and the source graph remains ambiguous.",
-        "loadedPrimitives": []
-      },
-      "allowedActions": [
-        "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and source validation contracts.",
-        "Use materialization only as proof after source quality checks pass.",
-        "Add source-owned validation when overlap or routing quality is the failure mode."
-      ],
-      "forbiddenActions": [
-        "Patch .agents or .github provider output by hand.",
-        "Treat installed plugin cache payloads as canonical source.",
-        "Report generated provider drift as the primary answer when the source graph is the target."
-      ],
-      "recoveryExpectation": "If generated output is stale, first make the authored source graph coherent and validated, then regenerate provider output from source only when publication requires it.",
-      "notes": "This protects the user-stated source ownership boundary and prevents adapter output from hiding source-quality regressions.",
-      "productiveOutcome": "Source-graph audits spend time on canonical authored material and only touch provider output through regeneration, reducing churn and review noise.",
-      "verificationEvidence": [
-        "The changed files are under source or validation tooling unless provider publication is explicitly in scope.",
-        "Validation includes the source graph gate and, when provider output matters, materialization from source."
-      ]
-    },
-    {
       "id": "referential-plugin-composition-uses-focused-proof",
       "type": "LOADED_BYPASSED",
       "source": {
@@ -384,47 +343,6 @@
       "verificationEvidence": [
         "Requirement files include schema metadata and validate through source graph checks.",
         "Referenced required skills exist in canonical source and are marketplace-visible."
-      ]
-    },
-    {
-      "id": "placeholder-skills-are-quality-audit-not-marketplace-products",
-      "type": "TRIGGER_MISS",
-      "source": {
-        "type": "CURRENT_SOURCE",
-        "capturedAt": "2026-06-20",
-        "evidenceRefs": [
-          "source/plugins/personal-setup/plugin.json",
-          "source/adaptable.marketplace.json",
-          "tools/validate-source-graph.mjs"
-        ]
-      },
-      "prompt": "Audit marketplace-visible standalone skills for placeholder migration text and overlap with existing canonical skills.",
-      "expectedPrimitive": {
-        "type": "PLUGIN",
-        "name": "personal-setup"
-      },
-      "observedRoute": {
-        "type": "ROUTING_ROUTE_OBSERVATION",
-        "summary": "Placeholder skills can remain marketplace-visible because they are syntactically valid primitive directories.",
-        "risk": "Agents load useless skills, waste context, and attribute capability to empty migration shells.",
-        "loadedPrimitives": []
-      },
-      "allowedActions": [
-        "Quarantine placeholder-only skills from marketplace exposure.",
-        "Delete placeholder-only skills when a substantive rewrite is not justified.",
-        "Fail validation if marketplace-visible skills expose placeholder migration descriptions."
-      ],
-      "forbiddenActions": [
-        "Keep placeholder-only skills in the standalone marketplace catalog.",
-        "Replace a real canonical skill with a placeholder duplicate.",
-        "Treat syntactic validity as quality readiness."
-      ],
-      "recoveryExpectation": "Agent Tooling should either rewrite a placeholder into a real workflow or keep it out of marketplace exposure until it is ready.",
-      "notes": "This turns token-wasting placeholder exposure into a source validation failure.",
-      "productiveOutcome": "Team-shared marketplace listings contain usable primitives, while unfinished migration placeholders stay out of daily-driver routing.",
-      "verificationEvidence": [
-        "Marketplace-visible skills have routeable descriptions rather than placeholder migration text.",
-        "Unfinished primitive candidates are rewritten or excluded from the source marketplace."
       ]
     }
   ]

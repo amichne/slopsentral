@@ -1,6 +1,6 @@
 # Worktrunk owns the lifecycle. Setup must finish before an agent starts.
 [pre-start]
-dependencies = "npm ci"
+dependencies = "uv run --locked tools/setup.py"
 
 # Fast checks run before Worktrunk creates a commit.
 [pre-commit]

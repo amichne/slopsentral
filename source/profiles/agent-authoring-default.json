@@ -15,8 +15,9 @@
   ],
   "plugins": [
     "software-engineering",
-    "engineering-excellence",
-    "personal-setup"
+    "developer-tooling",
+    "personal-configuration",
+    "repository-source-checks"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

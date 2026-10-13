@@ -1,3 +1,6 @@
+> Current selection: use Developer Tooling and/or Personal Configuration.
+> The combined Personal Setup bundle is retired. This document retains its history.
+
 # Personal Setup
 
 Personal Setup remains the combined compatibility bundle. The redesign adds

@@ -75,7 +75,7 @@ the new representation excludes. Check transformation and construction escape
 paths. A successful change removes the invalid composition, rather than moving
 the same guard or adding a test around unchanged primitive ambiguity.
 
-Use the Kotlin, API, and shell examples for the smallest representative proof.
+Use the Kotlin and API examples, and Python Tooling for the smallest representative proof.
 Choose production checks from the consuming repository. Do not run every bundled
 example for an unrelated edit or turn sample checks into a universal ceremony.
 

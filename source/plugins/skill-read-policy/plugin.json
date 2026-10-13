@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "skill-read-policy",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Advanced: enforce repository-declared required skill reads.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

@@ -303,51 +303,6 @@
     },
     {
       "type": "ROUTING_FIELD_OBSERVATION",
-      "id": "shell-startup-completion-preserves-session-state-history-2026-10-02",
-      "caseId": "shell-startup-completion-preserves-session-state",
-      "capturedAt": "2026-10-02",
-      "sourceType": "LIVE_SESSION",
-      "outcome": "PASS",
-      "route": {
-        "type": "PRIMITIVE_ROUTE",
-        "primitive": {
-          "type": "SKILL",
-          "name": "shell-session-integration"
-        }
-      },
-      "evidenceRefs": [
-        "Root session 01a0fc8f-2f65-7643-8683-77df17edcd58: tool output line 172 returned shell-session-integration/SKILL.md frontmatter.",
-        "Root session 01a0fc8f-2f65-7643-8683-77df17edcd58: scoped outcome recorded at line 2846.",
-        "Recorded context: gpt-6.1-sol, Codex CLI 0.159.2, vscode host; read payload slopsentral/cli-development/1.0.1/skills/shell-session-integration/SKILL.md."
-      ],
-      "productiveOutcomeObserved": {
-        "type": "USEFUL_OUTCOME",
-        "summary": "Completion recursion, prompt timeout handling, and terminal editing were repaired at 4486d2f; tests and fresh shell startup passed."
-      },
-      "followUpAction": "Replay the maintained complete-flow scenario at a pinned revision; retain the historical result and qualify each missing obligation independently.",
-      "limitations": [
-        "The historical check is specific to the supported shell and configuration; it does not prove all Bash, Zsh, and Fish states.",
-        "Skill-read evidence proves loading, not procedural compliance. Exact host advertised skill list and source revision of the cached plugin were not retained; no numeric cap attribution is supported."
-      ],
-      "activationEvidence": {
-        "type": "TOOL_TRACE",
-        "sessionIds": [
-          "01a0fc8f-2f65-7643-8683-77df17edcd58"
-        ],
-        "evidenceRefs": [
-          "Root session 01a0fc8f-2f65-7643-8683-77df17edcd58: tool output line 172 returned shell-session-integration/SKILL.md frontmatter.",
-          "Recorded context: gpt-6.1-sol, Codex CLI 0.159.2, vscode host; read payload slopsentral/cli-development/1.0.1/skills/shell-session-integration/SKILL.md."
-        ]
-      },
-      "verification": {
-        "type": "INCOMPLETE_PROOF",
-        "missingEvidence": [
-          "The historical check is specific to the supported shell and configuration; it does not prove all Bash, Zsh, and Fish states."
-        ]
-      }
-    },
-    {
-      "type": "ROUTING_FIELD_OBSERVATION",
       "id": "intellij-live-freeze-uses-diagnostics-mcp-before-profiler-history-2026-10-02",
       "caseId": "intellij-live-freeze-uses-diagnostics-mcp-before-profiler",
       "capturedAt": "2026-10-02",

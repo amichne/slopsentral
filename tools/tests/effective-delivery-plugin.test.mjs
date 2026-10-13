@@ -44,7 +44,6 @@ test("default delivery composition does not activate automatic CI hooks", () => 
   assert.ok(marketplace.plugins.some((entry) => entry.name === "software-engineering"));
   assert.deepEqual(profile.plugins, [
     "software-engineering",
-    "engineering-excellence",
     "kotlin-engineering",
   ]);
   assert.equal(profile.hookPolicy.mode, "ADVISORY");
@@ -54,13 +53,13 @@ test("default delivery composition does not activate automatic CI hooks", () => 
 
 test("source validation executes the issue backend contracts", () => {
   const workflow = fs.readFileSync(
-    path.join(repoRoot, ".github/workflows/validate-source.yml"),
+    path.join(repoRoot, "tools/ci.py"),
     "utf8",
   );
 
   assert.match(
     workflow,
-    /source\/skills\/issue-tracker-operations\/scripts\/tests/,
+    /"pytest", "source", "tools\/python_checks"/,
   );
   assert.match(
     workflow,

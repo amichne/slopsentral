@@ -54,37 +54,40 @@ Do not replace a real instructional requirement merely to reduce discovery.
 Shared helpers stay in their canonical authored folder; no payload moves or
 second implementations are needed.
 
-## Pkl pilot
+## Current Pkl packages
 
 | Package | Contents | Selection |
 | --- | --- | --- |
 | `pkl-workflows` | Four existing Pkl skills | Develop, inspect, and maintain Pkl configuration |
 | `pkl-repository-checks` | Three existing hooks and the `pkl-agent-runtime` resource | Add automatic format, evaluation, and test checks |
-| `pkl-configuration` | The same four skills and three hooks | Retain the complete compatibility bundle |
 
 `pkl-workflow-default` selects the workflow package with Software Engineering
-and Engineering Excellence. `pkl-checked-repository` also selects Pkl Repository
-Checks. Existing profiles retain their selections. Evaluation still requires
-repositories to name modules in `.intelligence/pkl-entrypoints`.
+for the shared design policy. `pkl-checked-repository` also selects Pkl Repository
+Checks. Evaluation needs explicit modules in `.intelligence/pkl-entrypoints`.
 
-The bundled helper is a Python program, not the Pkl binary. Checks require
-Python 3 and Pkl `>=0.31.1,<0.34.0` available through `PKL_BIN` or `PATH`.
-Installing the package does not install either tool. The repository projector
-has its separate, exact Pkl 0.32.0 requirement.
+The bundled helper is a Python program. The hooks use uv to run locked Python
+scripts. They need a separate Pkl `>=0.31.1,<0.34.0` installation, selected through
+`PKL_BIN` or `PATH`. The package does not install these tools. The repository
+projector needs exactly Pkl 0.32.0.
 
 All checks skip without changed Pkl-owned files. Evaluation skips without
 explicit entrypoints. Testing skips without a `PklProject` or changed
 `.test.pkl` or `_test.pkl` files. Formatting skips without changed `.pkl`
 files or `PklProject`. A skipped hook proves no evaluation or test result.
 
-After publication, choose the two new packages or the compatibility bundle.
-A profile selecting both `pkl-configuration` and `pkl-repository-checks` fails
-because it would activate the same hooks twice. Source edits do not migrate
-installed caches, configuration layers, or hook trust.
+Select `pkl-workflows` for Pkl procedures. Add `pkl-repository-checks` for automatic
+checks. Source edits do not migrate installed caches, configuration layers, or
+hook trust.
 
-The Pkl hooks now depend on the executable resource rather than whole skills.
-Their scripts and provider commands retain their behavior. The combined new
-closures preserve every asset in the compatibility bundle's closure.
+The Pkl hooks depend on the executable resource. The workflow package supplies
+the skill procedures.
+
+## Historical compatibility bundle
+
+The former `pkl-configuration` bundle combined the four skills and three hooks.
+The initial Pkl split kept that coverage across two packages. The marketplace
+later retired `pkl-configuration` and the separate Engineering Excellence plugin.
+The current packages and profiles listed here replace those selections.
 
 ## Evidence and limits
 

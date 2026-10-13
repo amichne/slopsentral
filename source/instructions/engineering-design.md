@@ -1,53 +1,52 @@
-# Engineering Excellence
+# Engineering Baseline
 
-Move information from weaker representations to stronger ones. Give domain
-meaning a type, make invalid states unrepresentable where the language permits,
-and preserve proven facts instead of converting them back to primitives.
+Refine; never erase. Decompose each requirement into an invariant, its owner,
+construction boundary, legal transitions, closed failures, and decisive check.
+Inspect existing contracts and callers before adding a representation. Carry
+established facts in consumer types; aliases, names, prior guards, flags, and
+unchecked wrappers do not establish a proof.
 
-Treat the type system as durable memory. Every fact a downstream consumer
-requires must survive in its input contract. Prefer a representation that
-structurally excludes invalid values and combinations. A name, type alias,
-unchecked wrapper, Boolean validation result, or prior branch is insufficient.
-Keep unchecked construction private and require the stronger value at every
-consumer. Primitive extraction belongs in explicit serialization and effect
-adapters, not application APIs. Do not repeat discharged input checks deep in
-application layers or bypass rejection with casts, assertions, nullable
-sentinels, default branches, or exception-backed expected failures.
-Output adapters implement shared serialization abstractions; domain values do
-not own encoding methods or choose their output format.
+Keep primitives at ingress and serialization boundaries. Parse external values
+once into constrained values or case-specific immutable variants. Close finite
+state and failure spaces, keep constructors under the invariant owner, and make
+illegal combinations absent from public APIs. Fail early on unknown, ambiguous,
+unsupported, incomplete, or unproven states. Preserve evidence identity, version,
+and lifetime; ordinary types cannot prove freshness or single consumption.
 
-Represent expected failure as a closed, typed set of outcomes. Fail closed on
-unknown, ambiguous, unsupported, incomplete, or unproven input. Keep domain
-logic deterministic; isolate I/O, mutation, time, randomness, and external
-state behind explicit boundaries.
+Keep the core deterministic and pure. Pass filesystem, process, network, clock,
+randomness, and mutable state through explicit outer capabilities. Functions
+belong to the smallest semantic owner. Use higher-order functions when they
+compose a real operation: map preserves every failure, fold handles every case,
+and traversal declares order and short-circuit or accumulation semantics.
+Closures may capture immutable refined values; they must not hide effects,
+mutable ambient state, resource lifetimes, or deferred failure channels.
 
-Put each invariant with the type or module that owns it. Each legal transition
-accepts its source-state representation and returns its destination state or a
-closed failure. Case-specific facts and operations belong to that case. Effects
-can establish new facts or fail; represent those outcomes explicitly. Scope
-volatile evidence to the resource, version, and lifetime it establishes.
+Expected failures are finite domain data. For each fallible effect, enumerate
+which invariant could not be established and translate documented exceptions
+once at that adapter into case-specific outcomes. Do not use exceptions as a
+second domain control flow or catch all defects and label them success. Unknown
+adapter failures stop the operation with bounded stage evidence. Preserve
+cancellation and interruption; do not invent rollback or successful completion.
 
-For structured data, define and validate a schema or typed parser at the trust
-boundary. Require meaningful fields, close object shapes by default, use finite
-variants for finite concepts, and construct a stronger internal value after
-validation. Prefer compiler proof, then schema proof, then structured semantic
-evidence, runtime observation, text, and finally heuristic inference.
+Use the strongest available authority: compiler, schema, structured semantic
+evidence, runtime observation, text, then heuristics. Prove accepted behavior and
+named forbidden calls or transitions. Exhaustive handling must fail when a new
+case is added. Do not bypass errors with casts, blanket ignores, catch-all
+branches, nullable sentinels, or weaker types. Test expectations independently
+of implementation. Add bounded stage/outcome instrumentation while investigating
+opaque effects, without secrets, source payloads, or unbounded output.
 
-Use Semantic Ratchet for proof-preserving design and review. Its bundled
-references explain the rationale and Kotlin, API, and shell realizations.
-Compiler rejection proves only the encoded obligation; encapsulated parsers,
-schemas, and effect transitions need their own focused evidence. Do not claim
-linear consumption, current authorization, external agreement, or complete
-runtime correctness from an ordinary type alone.
+Default new automation to Python managed by required uv. Use PEP 723 for portable
+scripts, declared dependencies and indexes, committed locks, and
+`[tool.uv] no-build = true`. Use strict Pyright for static checking and its LSP
+for symbol-aware navigation/refactors when available; run Ruff formatting and
+linting plus pytest success, failure, and boundary checks. Do not claim Python
+proves purity, sealed construction, or linearity: enforce the remaining limits
+with encapsulation and executable tests. Shell is limited to unavoidable host
+launchers; parsing, branching, pipelines, setup, and cleanup belong in Python.
+Existing language toolchains remain authoritative for their code.
 
-Completion needs a focused executable check that proves the changed invariant.
-When an opaque effect boundary causes investigation, add bounded structured
-outcome evidence there without recording secrets or unbounded payloads.
-
-Before implementing a proposed concept, check current owners, contracts, callers,
-and tests. Treat plans and incident explanations as hypotheses. Choose reuse,
-extend, add, or investigate from source evidence; an unknown state does not
-justify a duplicate owner. Use the `tdd` codebase preflight for behavior work.
-Build only the unmet requirement. Preserve flexibility through small cohesive
-boundaries; add abstractions for current invariants or consumers, not imagined
-future variants. Verified reuse is a successful outcome.
+Use Semantic Ratchet for invariant and API design, Python Tooling for automation,
+and language/domain specialties for concrete syntax and local verification.
+Complete the smallest useful implementation and the repository's required
+checks. Retain useful existing contracts; remove redundant owners and paths.

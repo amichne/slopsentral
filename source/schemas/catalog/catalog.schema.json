@@ -138,7 +138,7 @@
             "type": "string",
             "minLength": 1,
             "examples": [
-              "writing"
+              "repository-knowledge"
             ]
           },
           "description": {
@@ -181,7 +181,7 @@
         "examples": [
           {
             "type": "CATALOG_PLUGIN",
-            "name": "writing",
+            "name": "repository-knowledge",
             "description": "Source-grounded prose and technical documentation.",
             "notFor": "Code implementation.",
             "primitives": [
@@ -195,7 +195,7 @@
         [
           {
             "type": "CATALOG_PLUGIN",
-            "name": "writing",
+            "name": "repository-knowledge",
             "description": "Source-grounded prose and technical documentation.",
             "notFor": "Code implementation.",
             "primitives": [
@@ -311,14 +311,14 @@
             "type": "string",
             "minLength": 1,
             "examples": [
-              "shell-script-safety"
+              "python-tooling"
             ]
           },
           "path": {
             "type": "string",
             "minLength": 1,
             "examples": [
-              "skills/shell-script-safety"
+              "skills/python-tooling"
             ]
           },
           "plugins": {
@@ -329,12 +329,13 @@
               "type": "string",
               "minLength": 1,
               "examples": [
-                "personal-setup"
+                "personal-configuration"
               ]
             },
             "examples": [
               [
-                "personal-setup",
+                "developer-tooling",
+                "personal-configuration",
                 "software-engineering"
               ]
             ]
@@ -344,10 +345,11 @@
           {
             "type": "CATALOG_ASSET",
             "primitiveType": "SKILL",
-            "name": "shell-script-safety",
-            "path": "skills/shell-script-safety",
+            "name": "python-tooling",
+            "path": "skills/python-tooling",
             "plugins": [
-              "personal-setup",
+              "developer-tooling",
+              "personal-configuration",
               "software-engineering"
             ]
           }
@@ -358,10 +360,11 @@
           {
             "type": "CATALOG_ASSET",
             "primitiveType": "SKILL",
-            "name": "shell-script-safety",
-            "path": "skills/shell-script-safety",
+            "name": "python-tooling",
+            "path": "skills/python-tooling",
             "plugins": [
-              "personal-setup",
+              "developer-tooling",
+              "personal-configuration",
               "software-engineering"
             ]
           }
@@ -380,7 +383,7 @@
       "plugins": [
         {
           "type": "CATALOG_PLUGIN",
-          "name": "writing",
+          "name": "repository-knowledge",
           "description": "Source-grounded prose and technical documentation.",
           "notFor": "Code implementation.",
           "primitives": [
@@ -405,7 +408,7 @@
           "name": "controlled-technical-writing",
           "path": "skills/controlled-technical-writing",
           "plugins": [
-            "writing"
+            "repository-knowledge"
           ]
         }
       ]

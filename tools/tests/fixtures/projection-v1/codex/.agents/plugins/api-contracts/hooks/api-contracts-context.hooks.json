@@ -5,7 +5,7 @@
         "hooks": [
           {
             "additionalContextLimit": 8192,
-            "command": "python3 \"$PLUGIN_ROOT/hooks/inject-instruction-context.py\" --instruction api-contract-design",
+            "command": "uv run --locked --script \"$PLUGIN_ROOT/hooks/inject-instruction-context.py\" --instruction api-contract-design",
             "statusMessage": "Loading api-contracts policy",
             "timeout": 10,
             "type": "command"

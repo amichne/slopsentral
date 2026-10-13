@@ -2,14 +2,32 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "software-engineering",
-  "version": "1.4.0",
-  "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+  "version": "2.0.0",
+  "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral"
   },
   "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/semantic-ratchet",
+      "name": "semantic-ratchet"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/python-tooling",
+      "name": "python-tooling"
+    },
     {
       "type": "SKILL",
       "source": {
@@ -63,24 +81,6 @@
       },
       "path": "skills/git-change-flow",
       "name": "git-change-flow"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/shell-script-safety",
-      "name": "shell-script-safety"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/cli-data-pipelines",
-      "name": "cli-data-pipelines"
     },
     {
       "type": "SKILL",
@@ -143,11 +143,11 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Start here for everyday code changes, debugging, tests, Git, issues, pull requests, and CI. Publication follows the requested end state.",
-    "notFor": "Proof-preserving domain and contract design, language-specific design, building CLI products, knowledge generation, and documentation production.",
+    "dailyDriver": "Start here for typed design, invariant decomposition, Python automation, testing, refactoring, Git, PRs, and CI.",
+    "notFor": "Language and platform syntax beyond the shared baseline; add the relevant specialty.",
     "owner": "software-engineering",
     "role": "default",
-    "scope": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+    "scope": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
     "workstream": "software-engineering"
   }
 }
