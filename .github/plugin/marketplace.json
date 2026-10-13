@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "description": "Start with Software Engineering and Engineering Excellence for code work, then add language, platform, or deliverable specialties.",
+    "description": "Start with Software Engineering for code work, then add language, platform, or deliverable specialties.",
     "pluginRoot": ".github/plugin"
   },
   "name": "slopsentral",
@@ -13,7 +13,7 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+      "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
       "keywords": [
         "actions",
         "automation",
@@ -41,7 +41,6 @@
         "pull-requests",
         "release",
         "schemas",
-        "shell",
         "skills",
         "software-engineering",
         "tdd",
@@ -79,50 +78,12 @@
         "pull-requests",
         "release",
         "schemas",
-        "shell",
         "skills",
         "tdd",
         "testing",
         "workflow-graph"
       ],
-      "version": "1.4.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Productivity",
-      "description": "Encode invariants in types and contracts, preserve established proofs, and make illegal states unrepresentable.",
-      "keywords": [
-        "contracts",
-        "domain-modeling",
-        "engineering-excellence",
-        "evidence",
-        "failures",
-        "invariants",
-        "parse-dont-validate",
-        "proof",
-        "semantic-design",
-        "type-safety",
-        "typestate"
-      ],
-      "license": "UNLICENSED",
-      "name": "engineering-excellence",
-      "source": "engineering-excellence",
-      "strict": true,
-      "tags": [
-        "contracts",
-        "domain-modeling",
-        "evidence",
-        "failures",
-        "invariants",
-        "parse-dont-validate",
-        "proof",
-        "semantic-design",
-        "type-safety",
-        "typestate"
-      ],
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "author": {
@@ -199,7 +160,7 @@
         "type-safety",
         "validation"
       ],
-      "version": "1.5.3"
+      "version": "2.0.0"
     },
     {
       "author": {
@@ -240,50 +201,7 @@
         "ui-testing",
         "verification"
       ],
-      "version": "1.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
-      "keywords": [
-        "configuration",
-        "hooks",
-        "lsp",
-        "patterns",
-        "pkl",
-        "pkl-configuration",
-        "rendering",
-        "resources",
-        "schemas",
-        "skills",
-        "testing",
-        "tooling",
-        "type-safety",
-        "validation"
-      ],
-      "license": "UNLICENSED",
-      "name": "pkl-configuration",
-      "source": "pkl-configuration",
-      "strict": true,
-      "tags": [
-        "configuration",
-        "hooks",
-        "lsp",
-        "patterns",
-        "pkl",
-        "rendering",
-        "resources",
-        "schemas",
-        "skills",
-        "testing",
-        "tooling",
-        "type-safety",
-        "validation"
-      ],
-      "version": "1.0.3"
+      "version": "2.0.0"
     },
     {
       "author": {
@@ -318,7 +236,7 @@
         "skills",
         "validation"
       ],
-      "version": "1.1.0"
+      "version": "2.0.0"
     },
     {
       "author": {
@@ -373,73 +291,7 @@
         "terminology",
         "validation"
       ],
-      "version": "1.2.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Manage personal setup and build CLI tools, shell integrations, terminal interfaces, skills, agents, hooks, and plugins.",
-      "keywords": [
-        "accessibility",
-        "agents",
-        "authoring",
-        "building-blocks",
-        "cli",
-        "completion",
-        "composition",
-        "design",
-        "dotfiles",
-        "governance",
-        "hooks",
-        "marketplace",
-        "personal-setup",
-        "plugins",
-        "proof",
-        "repository",
-        "routing",
-        "shell",
-        "shell-config",
-        "skills",
-        "teach",
-        "terminal",
-        "tui",
-        "user-interface",
-        "workflow"
-      ],
-      "license": "UNLICENSED",
-      "name": "personal-setup",
-      "source": "personal-setup",
-      "strict": true,
-      "tags": [
-        "accessibility",
-        "agents",
-        "authoring",
-        "building-blocks",
-        "cli",
-        "completion",
-        "composition",
-        "design",
-        "dotfiles",
-        "governance",
-        "hooks",
-        "marketplace",
-        "personal-setup",
-        "plugins",
-        "proof",
-        "repository",
-        "routing",
-        "shell",
-        "shell-config",
-        "skills",
-        "teach",
-        "terminal",
-        "tui",
-        "user-interface",
-        "workflow"
-      ],
-      "version": "0.3.1"
+      "version": "2.0.0"
     },
     {
       "author": {
@@ -466,18 +318,17 @@
         "repository",
         "skills"
       ],
-      "version": "1.0.1"
+      "version": "2.0.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Productivity",
-      "description": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+      "description": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
       "keywords": [
         "cli",
         "developer-tooling",
-        "shell",
         "skills",
         "tools"
       ],
@@ -487,23 +338,21 @@
       "strict": true,
       "tags": [
         "cli",
-        "shell",
         "tools",
         "skills"
       ],
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Productivity",
-      "description": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+      "description": "Manage personal configuration and uv-managed Python utilities.",
       "keywords": [
         "configuration",
         "personal",
-        "personal-configuration",
-        "shell"
+        "personal-configuration"
       ],
       "license": "UNLICENSED",
       "name": "personal-configuration",
@@ -511,10 +360,9 @@
       "strict": true,
       "tags": [
         "configuration",
-        "personal",
-        "shell"
+        "personal"
       ],
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "author": {
@@ -537,7 +385,7 @@
         "validation",
         "governance"
       ],
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "author": {
@@ -560,7 +408,7 @@
         "configuration",
         "workflows"
       ],
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "author": {
@@ -583,7 +431,7 @@
         "hooks",
         "validation"
       ],
-      "version": "1.0.0"
+      "version": "2.0.0"
     }
   ]
 }

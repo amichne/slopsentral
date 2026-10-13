@@ -3,20 +3,18 @@
     "name": "Amichne"
   },
   "category": "Productivity",
-  "description": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+  "description": "Manage personal configuration and uv-managed Python utilities.",
   "keywords": [
     "configuration",
     "personal",
-    "personal-configuration",
-    "shell"
+    "personal-configuration"
   ],
   "license": "UNLICENSED",
   "name": "personal-configuration",
   "skills": "./skills",
   "tags": [
     "configuration",
-    "personal",
-    "shell"
+    "personal"
   ],
-  "version": "1.0.0"
+  "version": "2.0.0"
 }

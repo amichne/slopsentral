@@ -5,7 +5,7 @@
         "hooks": [
           {
             "additionalContextLimit": 8192,
-            "command": "python3 \"$PLUGIN_ROOT/hooks/inject-instruction-context.py\" --instruction kotlin-engineering",
+            "command": "uv run --locked --script \"$PLUGIN_ROOT/hooks/inject-instruction-context.py\" --instruction kotlin-engineering",
             "statusMessage": "Loading kotlin-engineering policy",
             "timeout": 10,
             "type": "command"

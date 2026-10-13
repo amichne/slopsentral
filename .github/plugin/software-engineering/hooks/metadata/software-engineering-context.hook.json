@@ -8,6 +8,15 @@
         "type": "LOCAL_SOURCE"
       },
       "type": "INSTRUCTION"
+    },
+    {
+      "name": "engineering-design",
+      "path": "instructions/engineering-design.md",
+      "source": {
+        "path": "./",
+        "type": "LOCAL_SOURCE"
+      },
+      "type": "INSTRUCTION"
     }
   ],
   "name": "software-engineering-context",

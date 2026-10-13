@@ -10,6 +10,14 @@ can run from any repository. The CLI should expose small composable operations,
 stable JSON, clear help, and safe write boundaries rather than one opaque
 "solve everything" command.
 
+## Implementation Baseline
+
+Default new implementations to Python Tooling: required uv, PEP 723 or a locked
+uv project, strict Pyright, Ruff, and pytest. Parse once into immutable domain
+values; return closed case-specific failures from pure decisions. Use explicit
+argv process adapters and Python data transformations instead of shell pipelines.
+Use the LSP for symbol-aware refactoring when available and verify changed callers.
+
 ## Operating Contract
 
 - Start from the system's real nouns, IDs, and workflows.
