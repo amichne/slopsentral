@@ -1,12 +1,16 @@
 ---
 name: personal-cli-authoring
-description: "Craft parameterized, composable personal command-line tools with reusable building blocks, shell completions and source-backed --teach guidance using the caller's directory, recent command summaries and an optional question. Use when creating or extending the user's shell utilities, especially amichne/shell-config tools; not for ordinary command execution or agent-facing API wrappers."
+description: "Craft parameterized, composable personal command-line tools with reusable building blocks, generated completions and source-backed --teach guidance using the caller's directory, recent command summaries and an optional question. Use when creating or extending the user's personal utilities, especially amichne/shell-config tools; not for ordinary command execution or agent-facing API wrappers."
 ---
 
 # Personal CLI Authoring
 
 Build a tool the user can understand, compose and extend. Start from a concrete
 task and the existing implementation; add only the missing capability.
+
+Default new automation to Python Tooling and its uv-managed, self-validating
+template. Keep shell glue only when an operation must observe its parent shell
+(such as opt-in session history); it must contain no business logic.
 
 ## Workflow
 

@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Implement, test, review, and deliver code with Git, PR, and CI workflows.
+Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.
 
 ## Operating Rules
 
@@ -24,11 +24,11 @@ Implement, test, review, and deliver code with Git, PR, and CI workflows.
 ## Instruction Primitives
 
 - `agent-execution`: `instructions/agent-execution.md` (source: `source/instructions/agent-execution.md`)
+- `engineering-design`: `instructions/engineering-design.md` (source: `source/instructions/engineering-design.md`)
 
 ## Skill Primitives
 
 - `bounded-delegation`: `skills/bounded-delegation` (source: `source/skills/bounded-delegation`)
-- `cli-data-pipelines`: `skills/cli-data-pipelines` (source: `source/skills/cli-data-pipelines`)
 - `define-goal`: `skills/define-goal` (source: `source/skills/define-goal`)
 - `delivery-pipeline-design`: `skills/delivery-pipeline-design` (source: `source/skills/delivery-pipeline-design`)
 - `git-change-flow`: `skills/git-change-flow` (source: `source/skills/git-change-flow`)
@@ -36,8 +36,9 @@ Implement, test, review, and deliver code with Git, PR, and CI workflows.
 - `issue-tracker-operations`: `skills/issue-tracker-operations` (source: `source/skills/issue-tracker-operations`)
 - `mise-project-tooling`: `skills/mise-project-tooling` (source: `source/skills/mise-project-tooling`)
 - `pull-request-lifecycle`: `skills/pull-request-lifecycle` (source: `source/skills/pull-request-lifecycle`)
+- `python-tooling`: `skills/python-tooling` (source: `source/skills/python-tooling`)
 - `repository-onboarding`: `skills/repository-onboarding` (source: `source/skills/repository-onboarding`)
-- `shell-script-safety`: `skills/shell-script-safety` (source: `source/skills/shell-script-safety`)
+- `semantic-ratchet`: `skills/semantic-ratchet` (source: `source/skills/semantic-ratchet`)
 - `tdd`: `skills/tdd` (source: `source/skills/tdd`)
 - `validation-first`: `skills/validation-first` (source: `source/skills/validation-first`)
 

@@ -10,6 +10,10 @@ platform independence remain visible to callers. Prefer the smallest public
 surface that preserves those facts; fluent syntax and generic reuse are not
 goals when they weaken ownership or exhaustiveness.
 
+Apply the shared Semantic Ratchet invariant decomposition and API ownership
+process first. This specialty adds Kotlin visibility, value classes, exhaustive
+sealed outcomes, interop, and multiplatform enforcement.
+
 ## Operating Contract
 
 - Name the domain concept, semantic owner, callers, and proof carried across

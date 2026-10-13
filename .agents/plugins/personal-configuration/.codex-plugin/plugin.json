@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+  "description": "Manage personal configuration and uv-managed Python utilities.",
   "interface": {
     "brandColor": "#7C3AED",
     "capabilities": [
@@ -17,20 +17,19 @@
     ],
     "developerName": "Amichne",
     "displayName": "Personal Configuration",
-    "longDescription": "Maintain verified personal dotfiles, command installation, and shell configuration.",
+    "longDescription": "Manage personal configuration and uv-managed Python utilities.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Maintain verified personal dotfiles, command installation, and shell...",
+    "shortDescription": "Manage personal configuration and uv-managed Python utilities.",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
   "keywords": [
     "configuration",
     "personal",
-    "personal-configuration",
-    "shell"
+    "personal-configuration"
   ],
   "license": "UNLICENSED",
   "name": "personal-configuration",
   "skills": "./skills/",
-  "version": "1.0.0"
+  "version": "2.0.0"
 }
