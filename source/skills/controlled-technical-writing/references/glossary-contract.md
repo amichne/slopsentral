@@ -3,6 +3,9 @@
 Load this contract when a repository defines controlled terms or prose contains
 an `ALL CAPS` word or phrase.
 
+For term selection and definitions, use [glossary authoring](glossary-authoring.md).
+This contract owns the registration format and lexical checks.
+
 ## Lookup
 
 Written documentation uses bare `ALL CAPS` terms. Each such term is a lookup
@@ -45,18 +48,24 @@ because Markdown uses them for tables.
 Each entry requires one non-empty definition and one known-synonyms field:
 
 ```markdown
-- §SOURCE OF TRUTH§: The only authored location from which generated copies derive.
-  - Known synonyms: canonical source, authoritative source
+- §SKILL§: A directory with task instructions in `SKILL.md` and optional resources for an agent.
+  - Known synonyms: none
 ```
 
 Write `Known synonyms: none` when no synonyms are known. Synonyms are
 comma-separated lookup and migration inputs. They are not permitted alternate
 names.
 
+`none` means that no alternate label passed the evidence review.
+It does not claim that the wider domain has no alternate labels.
+Shared wording, related functions, and adjacent code do not establish equivalent meaning.
+Keep narrower, broader, related, and unresolved concepts outside this field.
+
 The glossary definition is the sole meaning of that term in the repository:
 
 - Do not redefine a marked term in another file or local section.
-- If one phrase needs two meanings, give the meanings different terms.
+- If one label has two meanings, use established terms that distinguish them.
+  If no supported labels exist, record the conflict instead of inventing names.
 - Use the bare uppercase term in written documentation.
 - Preserve the exact uppercase spelling in prose and inside every marker.
 - Mark references inside other glossary definitions.
@@ -65,7 +74,7 @@ The glossary definition is the sole meaning of that term in the repository:
 - Do not mark code identifiers, command syntax, or literal values inside code
   spans or fenced code blocks.
 
-## Synonym Kickback
+## Synonym Review
 
 When prose uses a known synonym:
 
@@ -75,6 +84,11 @@ When prose uses a known synonym:
    or calling LLM for clarification.
 4. Do not register a new term to bypass the conflict.
 
+Before registering a synonym, record a source that uses both labels for the same concept in the same scope.
+Examine the nearest case in which the labels refer to different things.
+If that case exists, keep the distinction and reject a blanket substitution.
+Keep exact label occurrences in the known-synonyms field or code spans within source evidence.
+
 ## Registration
 
 Before adding an entry, compare its proposed term, synonyms, and definition
@@ -82,15 +96,17 @@ with every existing entry:
 
 - Reject a term or synonym that normalizes to an existing term or synonym.
 - Reject an identical definition under a different term.
-- Have the LLM compare non-identical definitions for semantic overlap.
+- Compare non-identical definitions against their source evidence and distinguishing properties.
+  An LLM can propose questions, but its similarity judgment does not establish equivalence.
 - If an existing definition covers the proposal, migrate to that canonical
   term.
-- If the boundary is unclear, request clarification before editing the
-  glossary.
+- If the distinguishing property remains unknown, preserve the conflict and request the missing domain fact.
 - Register the entry only when it represents a distinct semantic reference.
 
 Different spelling does not create a different meaning. Glossary registration
 must preserve disambiguation and cannot create semantic shadowing.
+An existing external meaning must support the proposed term.
+Do not infer domain usage from a repository-only phrase or search-result count.
 
 ## Check
 
@@ -100,7 +116,8 @@ Run the bundled checker from the skill directory:
 python3 scripts/check_glossary.py /path/to/GLOSSARY.md /path/to/docs
 ```
 
-The check fails for missing definitions or synonym fields, invalid internal
-markers, duplicate entries or synonyms, lexical shadowing, identical
-definitions, undefined internal references, bare glossary-internal references,
-known synonyms in prose, and markers outside the glossary.
+The checker rejects missing definitions or synonym fields, invalid markers, duplicate entries or synonyms, and conflicting labels.
+It also rejects identical definitions, undefined references, bare internal references, known synonyms in prose, and markers outside the glossary.
+
+The checker does not establish external usage, semantic equivalence, current source accuracy, or reader comprehension.
+Review those facts with the authoring protocol before registration.

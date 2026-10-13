@@ -1,6 +1,6 @@
 ---
 name: "controlled-technical-writing"
-description: "Use when writing or revising technical prose that needs plain wording, stable terms, disambiguated glossary lookup, one name per concept, or known-synonym migration."
+description: "Use for technical prose, commit messages, review comments, glossary creation, established domain terminology, or local Vale CLI setup with Diataxis defaults."
 ---
 
 # Controlled Technical Writing
@@ -24,6 +24,9 @@ no-change checks, and [provenance](references/provenance.md) for source lineage.
 
 ## Workflow
 
+If the task creates or changes a glossary, read [glossary authoring](references/glossary-authoring.md) before you select terms.
+Use the [entry template](assets/glossary-entry.md) for source evidence and distinctions.
+
 1. Choose the mode.
    Use `strict` for procedures, safety text, and error messages. Use `plain` for
    general technical prose.
@@ -36,10 +39,24 @@ no-change checks, and [provenance](references/provenance.md) for source lineage.
    definition or blocking unrelated edits.
 5. Draft or revise only the requested text.
 6. Check every changed sentence and glossary reference before returning it.
+7. If the task needs Vale, read [local Vale](references/vale-local.md) for setup, commands, and evidence limits.
+   Use the bundled configuration and `--no-global` for each lint command.
+   Examine the JSON findings because warnings and suggestions return exit code zero.
+
+## Local Tool Policy
+
+Use only the standalone Vale CLI and the bundled rules.
+Do not connect to Vale CMS or Vale MCP servers.
+Do not register a server, create an account, or send project prose to a hosted service.
+The installer gets a pinned GitHub release or reads a supplied archive.
+Local lint commands need no network access.
 
 ## Writing Rules
 
 - Use one name for one concept.
+- Use terms and names that current domain sources use with the same meaning.
+- Do not coin terminology or assign a new technical meaning to a familiar word.
+- Register a synonym only when evidence establishes the same referent within the declared scope.
 - Use common, concrete words.
 - Use active voice when the actor is known.
 - Use a verb for an action instead of a noun phrase.
@@ -66,9 +83,8 @@ no-change checks, and [provenance](references/provenance.md) for source lineage.
 
 ## Completion Criteria
 
-The requested prose is complete when it preserves the source meaning, follows
-the selected mode, and passes the repository's glossary check when a glossary
-is present.
+The requested prose is complete when it keeps the source meaning and obeys the selected mode.
+If a glossary exists, the repository glossary check must pass.
 
 ## Provenance
 
