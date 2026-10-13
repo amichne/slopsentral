@@ -78,10 +78,9 @@ code work can still modify source files; the overlay grants no such authority.
 
 ## Author, retrieve, and validate
 
-First determine whether the requested output is prose, a runbook, a docs site,
-or source-backed knowledge. Use controlled-technical-writing,
-technical-documentation, reference-doc-workflow, or site-docs-authoring for the
-matching output. Installing Repository Knowledge does not trigger generation.
+First identify the requested output: prose, a runbook, a documentation site, or source-backed knowledge.
+Use controlled-technical-writing for prose and technical-documentation for documents or sites.
+Repository Knowledge installation does not trigger generation.
 
 The SessionStart adapter reads the manifest and only the selected instructions,
 with an 8 KiB complete-context limit. It injects routing paths and guidance for
@@ -94,9 +93,9 @@ and emit bounded stage/outcome codes; they are not empty successful checks.
 Resolve `<skill-root>` to the installed code-knowledge-base directory, then run:
 
 ```sh
-python3 "<skill-root>/scripts/code_kb.py" check --strict \
+uv run --locked python "<skill-root>/scripts/code_kb.py" check --strict \
   --repo /workspace/project --docs /workspace/project-knowledge/docs
-python3 "<skill-root>/scripts/code_kb.py" impact --from-git \
+uv run --locked python "<skill-root>/scripts/code_kb.py" impact --from-git \
   --repo /workspace/project --docs /workspace/project-knowledge/docs
 ```
 

@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
+  "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
   "interface": {
     "brandColor": "#7C3AED",
     "capabilities": [
@@ -17,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Developer Tooling",
-    "longDescription": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
+    "longDescription": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Build typed Python CLIs, terminal interfaces, and reusable agent reso...",
+    "shortDescription": "Author typed Python tools, schemas, Pkl contracts, agent resources, a...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -32,5 +32,5 @@
   "license": "UNLICENSED",
   "name": "developer-tooling",
   "skills": "./skills/",
-  "version": "2.0.0"
+  "version": "3.0.0"
 }

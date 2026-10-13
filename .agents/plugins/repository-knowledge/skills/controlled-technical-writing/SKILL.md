@@ -45,12 +45,12 @@ Read [text assessment](references/text-assessment.md) before measuring text.
 From this skill directory, run:
 
 ```sh
-python3 scripts/assess_text.py --glossary /path/to/GLOSSARY.md /path/to/document.md
+uv run --locked python scripts/assess_text.py --glossary /path/to/GLOSSARY.md /path/to/document.md
 ```
 
-The procedure uses Vale 3.24.0 with bundled, integrity-checked rules: one
-Flesch-Kincaid grade estimate, one sentence-length advisory, a fixed diction
-policy, and the repository's canonical glossary. Preserve the JSON report and
+The procedure uses Vale 3.24.0 with bundled rules whose integrity is checked.
+It reports a Flesch-Kincaid grade estimate, a sentence-length advisory, a fixed diction policy, and the repository's canonical glossary.
+Preserve the JSON report and
 its input hashes. Missing dependencies, invalid input, and policy overrides
 are typed failures, not permission to substitute another formula.
 
@@ -87,9 +87,9 @@ invent glossary definitions to get a successful check.
 ## Completion Criteria
 
 The requested prose preserves the source meaning and has a recorded assessment.
-Resolve each finding or record its exact rule, location, and semantic reason
-for retaining the text; never disable the rule or report a clean run when
-findings remain. An unavailable check or missing glossary remains explicit.
+Resolve each finding or record its exact rule, location, and technical reason to keep the text.
+Never disable the rule or report a clean run when findings remain.
+An unavailable assessment or missing glossary remains explicit.
 Reader testing must separately establish that the intended action is clear;
 a numeric estimate never establishes comprehension.
 

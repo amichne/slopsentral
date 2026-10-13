@@ -78,3 +78,11 @@ useful in any Git repository.
   validation evidence.
 
 Read [provenance](references/provenance.md) when updating this skill.
+
+## Repository setup
+
+For marketplace setup, inspect configured sources and select only the needed bundles.
+Use remote marketplace references. Keep installed caches outside repository source.
+Record selected plugins, immutable source identities, and pending host evidence in the repository setup reference.
+Installation alone does not prove hook delivery or model behavior.
+Read [the setup reference](references/checked-in-marketplace-reference.md) when the user requests repository setup.
