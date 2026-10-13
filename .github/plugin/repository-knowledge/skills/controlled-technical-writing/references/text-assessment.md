@@ -4,9 +4,9 @@
 
 Use `scripts/assess_text.py` as the only measurement entry point. Document
 purpose never selects a different formula, threshold, or writing mode. The
-supported boundary is UTF-8 English prose in `.md`, `.mdx`, or `.txt` files;
-other formats must be supplied as a supported prose artifact, not guessed from
-source code. Language is an explicit caller precondition, not an auto-detection
+supported input is UTF-8 English prose in `.md`, `.mdx`, or `.txt` files.
+For other formats, supply a supported prose artifact.
+Do not infer prose from source code. Language is an explicit caller precondition, not an auto-detection
 claim. Non-English assessments are unqualified.
 
 The fixed policy reports:
@@ -39,14 +39,13 @@ install binaries or download style packages during assessment.
 From the skill directory:
 
 ```sh
-python3 scripts/assess_text.py --glossary /path/to/GLOSSARY.md /path/to/README.md /path/to/runbook.md
+uv run --locked python scripts/assess_text.py --glossary /path/to/GLOSSARY.md /path/to/README.md /path/to/runbook.md
 ```
 
 Use `--vale-bin /absolute/path/to/vale` when the pinned executable is not on
 PATH. Inputs must be explicit files. The procedure freezes each document and
-the glossary once, disables global Vale configuration, strips `VALE_*`
-environment overrides, and uses a temporary configuration containing only the
-locked resources and glossary-derived literal rules. It never changes source
+the glossary once. It disables global Vale configuration and strips `VALE_*` environment overrides.
+Its temporary configuration contains only the locked resources and glossary-derived literal rules. It never changes source
 files. Inline Vale suppression comments are rejected.
 
 Vale's native format parser determines prose boundaries, not a hand-written
@@ -104,12 +103,11 @@ integrity and loads the glossary; editor previews are not completion evidence.
 
 Change the canonical policy, its lock digests, provenance, schema, fixtures,
 and CI engine pin together when upgrading. Validate the upstream rule changes
-and affected counts before accepting a new baseline. The lock is an integrity
-record for reviewed source, not a signature or a guarantee against someone
-editing both the rules and lock.
+and affected counts before accepting a new baseline. The lock records the integrity of reviewed source.
+It is not a signature. A person can change both the rules and the lock.
 
 ```sh
-VALE_BIN=/absolute/path/to/vale python3 -m unittest discover -s scripts/tests -p 'test_*.py' -v
+VALE_BIN=/absolute/path/to/vale uv run --locked python -m unittest discover -s scripts/tests -p 'test_*.py' -v
 ```
 
 Fixtures prove hand-counted arithmetic, advisory activation, filename/context

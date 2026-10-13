@@ -79,7 +79,7 @@ environments. Treat Develocity authentication as its own supported API boundary;
 cloud OIDC support does not imply Develocity supports that exchange. Build a
 versioned artifact once, tie its digest to validation/provenance, and promote that
 identity across environments. Define rollback to a known validated artifact.
-Use `delivery-pipeline-design` and `release-flow.md` for promotion and release
+Use `github-ci-operations` and `release-flow.md` for promotion and release
 work; optimization does not itself authorize deployment or protection changes.
 
 ## Acceptance and Handoff

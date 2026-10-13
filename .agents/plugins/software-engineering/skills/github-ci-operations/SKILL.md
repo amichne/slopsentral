@@ -5,9 +5,7 @@ description: "Use when GitHub Actions, PR checks, workflow YAML, dispatches, cac
 
 # GitHub CI Operations
 
-Use this skill for GitHub-hosted workflow and CI work. Keep it focused on the
-repository's actual workflows and logs; do not guess from generic CI patterns
-when the live run, YAML, scripts, or package metadata can be inspected.
+Use this skill for GitHub-hosted workflow and CI work. Inspect the repository workflows, logs, scripts, and package metadata before a diagnosis.
 
 ## Operating Contract
 
@@ -43,14 +41,13 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 ## Workflow
 
 1. Resolve the target.
-   Identify the repo, branch, PR number or URL, workflow file, run URL, and
-   whether the user wants diagnosis, a fix, workflow authoring, release work, or
-   publication.
+   Identify the repository, branch, PR, workflow file, and run URL.
+   Identify whether the request concerns diagnosis, repair, workflow design, release work, or publication.
 
 2. Inspect live state.
    Use the connected GitHub app for supported repository and PR metadata.
-   When native `gh` is needed and available, run `gh auth status` and confirm the local target
-   with `git remote get-url origin`. Use `gh repo view --json nameWithOwner,url`
+   When native `gh` is needed, run `gh auth status`.
+   Examine the local target with `git remote get-url origin`. Use `gh repo view --json nameWithOwner,url`
    only when the app and local remote do not resolve the target. Inspect Actions
    state with `gh` JSON and workflow YAML under `.github/workflows/`. Capture
    the failing job name, command, error snippet, run URL, head SHA, and owning
@@ -100,8 +97,7 @@ when the live run, YAML, scripts, or package metadata can be inspected.
 
 Read [workflow trust boundaries](references/workflow-trust-boundaries.md) for
 permissions, untrusted input, artifact identity, and cancellation behavior.
-Use delivery-pipeline-design when the stage graph or promotion contract is the
-main decision; this skill remains the GitHub-specific implementation owner.
+Use the artifact promotion procedure when the stage graph or promotion contract is the main decision.
 
 ## Completion Criteria
 
@@ -113,3 +109,16 @@ main decision; this skill remains the GitHub-specific implementation owner.
   verification is documented.
 
 Read [provenance](references/provenance.md) when updating this skill.
+
+## Artifact promotion and installed proof
+
+For pipeline design, name each stage input, output, authority, failure, and evidence.
+Bind tests and deployment evidence to the same source revision and immutable artifact.
+Promote the tested artifact without a duplicate release build when the target permits it.
+Separate untrusted PR processes from publication credentials.
+Name health signals, stop conditions, schema compatibility, and recovery limits before a rollout.
+A design or local test grants no deployment authority.
+
+Read [pipeline review](references/pipeline-review.md) for stage design and rejection cases.
+Read [installed qualification](references/installed-qualification.md) for fresh discovery, semantic invocation, and recovery proof.
+Read [delivery provenance](references/delivery-provenance.md) when revising these procedures.

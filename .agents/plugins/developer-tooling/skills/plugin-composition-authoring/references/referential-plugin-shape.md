@@ -8,7 +8,7 @@ repository gate and the focused composition helper:
 
 ```sh
 node tools/validate-source-graph.mjs
-python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>
+uv run --locked python source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>
 ```
 
 ## Manifest Pattern

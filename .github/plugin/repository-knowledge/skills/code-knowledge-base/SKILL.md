@@ -1,76 +1,45 @@
 ---
-name: "code-knowledge-base"
-description: "Create, refresh, or impact-check source-backed OKF concepts for repositories, configure tracked or sibling knowledge overlays, or resolve an OKF/OpenWiki backend handoff. Use when knowledge pages need citations or drift evidence."
+name: code-knowledge-base
+description: "Create or refresh source-backed OKF concepts, migrate notes, assess source drift, or generate deterministic signature indexes. Use for knowledge bundles and backend handoffs."
 ---
 
 # Code Knowledge Base
 
-Use this skill to maintain an Open Knowledge Format bundle for a source
-repository. The bundle is portable Markdown with YAML frontmatter; source
-evidence lives in frontmatter extensions, Markdown links, and citations rather
-than a provider-specific cache or database.
-
-## Operating Contract
-
-- Keep authoring provider and harness agnostic; runtime hooks are adapters.
-- Treat code, schemas, generated contracts, checked docs, and tests as evidence.
-- Use semantic indexes, compiler tools, Gradle metadata, LSP, or repository
-  signatures before broad text search when they are available.
-- Emit deterministic OKF concept documents. Use standard OKF fields first and
-  producer extensions such as `code_sources` only for code evidence.
-- Hooks are advisory unless the user explicitly asks for blocking enforcement.
+Keep one atomic concept per OKF document and one source owner per claim.
+Use code, schemas, compiler facts, generated contracts, and tests as evidence.
+Treat indexes as navigation aids whose claims still need source evidence.
 
 ## Workflow
 
-1. Define the knowledge boundary.
-   Identify repository, audience, source roots, existing knowledge backend, and
-   refresh scope. For tracked or sibling storage, read the overlay reference and
-   select the registered source and knowledge roots before writing. For OpenWiki
-   or a migration, read the backend handoff reference before choosing output or
-   validation. Continue the OKF steps only for OKF.
+1. Identify the repository, reader, source roots, knowledge backend, and requested scope.
+   Reuse the existing store. An ordinary code task does not authorize knowledge generation.
+2. Select the smallest operation: read, create, refresh, migrate, assess impact, or generate signatures.
+   For a query, start at `index.md` and read only concepts that answer the question.
+3. Gather source paths, symbols, schemas, and module facts before prose.
+   Use compiler tools, LSP, Gradle metadata, or current signatures when they exist.
+4. Define stable concept paths and links before new pages.
+   Keep source facts, accepted decisions, proposals, and unresolved gaps distinct.
+5. Change the selected pages and their indexes together.
+   Update inbound links after a rename. Keep historical `log.md` links unchanged.
+6. Run the format and source-evidence procedures from [knowledge-page-contract.md](references/knowledge-page-contract.md).
+   Record each command and result. An impact list does not prove page correctness.
+7. Assess changed prose with controlled-technical-writing.
+   Report missing tools, unresolved citations, and unproved host behavior.
 
-2. Build source evidence.
-   Gather Gradle/module/source-set facts, public APIs, generated contracts,
-   signatures, tests, and citations before drafting.
+## Select the Necessary Reference
 
-3. Plan the page set.
-   Choose stable concept paths, `type` values, titles, source files, symbols,
-   and cross-links. Avoid concepts backed only by institutional memory.
+- For concept fields, links, history, format checks, or graph output, read [knowledge-page-contract.md](references/knowledge-page-contract.md).
+- For tracked or sibling storage, read [knowledge-overlay.md](references/knowledge-overlay.md) before a write.
+- For OpenWiki or a backend migration, read [knowledge-backend-handoff.md](references/knowledge-backend-handoff.md).
+- For imported notes or exports, read [knowledge-migration.md](references/knowledge-migration.md).
+- For Kotlin or Gradle sources, read [kotlin-gradle-okf-principles.md](references/kotlin-gradle-okf-principles.md).
+- For generated signatures, read [signature-contract.md](references/signature-contract.md).
+- For upstream assets or inherited format behavior, read [provenance.md](references/provenance.md).
 
-4. Write source-backed OKF Markdown.
-   Every non-reserved concept document needs YAML frontmatter with non-empty
-   `type`. Claims should trace to concrete sources.
+## Completion
 
-5. Check impact.
-   Use `code_sources` to identify concepts affected by changed files.
-
-6. Validate.
-   Run the bundled `scripts/code_kb.py check --strict --repo <repo> --docs <bundle>`
-   to validate pages, then `impact --repo <repo> --docs <bundle> --from-git`
-   for working-tree changes. Impact lookup does not replace page validation.
-   Missing documents or unavailable Git are failures, never evidence of no drift.
-   Run the repository's docs or contract checks when available.
-
-## Reference Routing
-
-- Read [knowledge-overlay.md](references/knowledge-overlay.md) when configuring
-  tracked or invisible storage, or applying manifest-selected sibling guidance.
-
-- Read [knowledge-backend-handoff.md](references/knowledge-backend-handoff.md)
-  when the repository uses OpenWiki, both backends, or requests a migration.
-
-- Read [knowledge-page-contract.md](references/knowledge-page-contract.md) when
-  creating, checking, or modifying OKF concept documents.
-- Read [kotlin-gradle-okf-principles.md](references/kotlin-gradle-okf-principles.md)
-  when generating OKF bundles for Kotlin/Gradle repositories.
-- Use [scripts/code_kb.py](scripts/code_kb.py) for deterministic OKF checks and
-  impact lookup.
-
-## Completion Criteria
-
-- Each concept has a stable path and non-empty frontmatter `type`.
-- Claims are backed by source paths, symbols, schemas, commands, or generated
-  contracts.
-- Impact checks identify stale or affected pages from changed files.
-- Provider-specific hooks or plugin payloads are adapter projections only.
-- Validation evidence is recorded before generated docs are trusted.
+Each concept has a stable path, a non-empty `type`, and explicit source evidence.
+Changed sources map to affected concepts or a reported coverage gap.
+Missing documents and unavailable Git are failures, never proof of no drift.
+Signature output is deterministic, and unknown syntax has an explicit outcome.
+Keep generated provider output separate from authored source.

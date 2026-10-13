@@ -28,13 +28,9 @@ Design, verify, review, and optimize Kotlin and Gradle changes.
 ## Skill Primitives
 
 - `gradle-performance-engineering`: `skills/gradle-performance-engineering` (source: `source/skills/gradle-performance-engineering`)
-- `kotlin-agentic-correctness`: `skills/kotlin-agentic-correctness` (source: `source/skills/kotlin-agentic-correctness`)
-- `kotlin-api-surface-design`: `skills/kotlin-api-surface-design` (source: `source/skills/kotlin-api-surface-design`)
 - `kotlin-application-stack`: `skills/kotlin-application-stack` (source: `source/skills/kotlin-application-stack`)
-- `kotlin-branching`: `skills/kotlin-branching` (source: `source/skills/kotlin-branching`)
 - `kotlin-design-practices`: `skills/kotlin-design-practices` (source: `source/skills/kotlin-design-practices`)
 - `kotlin-gradle-validation`: `skills/kotlin-gradle-validation` (source: `source/skills/kotlin-gradle-validation`)
-- `kotlin-observability-design`: `skills/kotlin-observability-design` (source: `source/skills/kotlin-observability-design`)
 - `kotlin-review`: `skills/kotlin-review` (source: `source/skills/kotlin-review`)
 - `negative-capability-proof`: `skills/negative-capability-proof` (source: `source/skills/negative-capability-proof`)
 

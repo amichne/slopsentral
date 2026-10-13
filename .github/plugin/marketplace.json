@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "description": "Start with Software Engineering for code work, then add language, platform, or deliverable specialties.",
+    "description": "Kotlin-first engineering with proof-preserving design, focused tests, and locked uv Python automation.",
     "pluginRoot": ".github/plugin"
   },
   "name": "slopsentral",
@@ -83,7 +83,7 @@
         "testing",
         "workflow-graph"
       ],
-      "version": "2.0.0"
+      "version": "3.0.0"
     },
     {
       "author": {
@@ -160,7 +160,7 @@
         "type-safety",
         "validation"
       ],
-      "version": "2.0.0"
+      "version": "3.0.0"
     },
     {
       "author": {
@@ -201,42 +201,7 @@
         "ui-testing",
         "verification"
       ],
-      "version": "2.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
-      "keywords": [
-        "agents",
-        "api",
-        "api-contracts",
-        "boundary",
-        "contracts",
-        "governance",
-        "openapi",
-        "schemas",
-        "skills",
-        "validation"
-      ],
-      "license": "UNLICENSED",
-      "name": "api-contracts",
-      "source": "api-contracts",
-      "strict": true,
-      "tags": [
-        "agents",
-        "api",
-        "boundary",
-        "contracts",
-        "governance",
-        "openapi",
-        "schemas",
-        "skills",
-        "validation"
-      ],
-      "version": "2.0.0"
+      "version": "3.0.0"
     },
     {
       "author": {
@@ -291,41 +256,14 @@
         "terminology",
         "validation"
       ],
-      "version": "2.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Advanced: enforce repository-declared required skill reads.",
-      "keywords": [
-        "governance",
-        "hooks",
-        "policy",
-        "repository",
-        "skill-read-policy",
-        "skills"
-      ],
-      "license": "UNLICENSED",
-      "name": "skill-read-policy",
-      "source": "skill-read-policy",
-      "strict": true,
-      "tags": [
-        "governance",
-        "hooks",
-        "policy",
-        "repository",
-        "skills"
-      ],
-      "version": "2.0.0"
+      "version": "3.0.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Productivity",
-      "description": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
+      "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
       "keywords": [
         "cli",
         "developer-tooling",
@@ -341,97 +279,7 @@
         "tools",
         "skills"
       ],
-      "version": "2.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Productivity",
-      "description": "Manage personal configuration and uv-managed Python utilities.",
-      "keywords": [
-        "configuration",
-        "personal",
-        "personal-configuration"
-      ],
-      "license": "UNLICENSED",
-      "name": "personal-configuration",
-      "source": "personal-configuration",
-      "strict": true,
-      "tags": [
-        "configuration",
-        "personal"
-      ],
-      "version": "2.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Run explicit repository source-graph checks through supported host events.",
-      "keywords": [
-        "governance",
-        "hooks",
-        "repository-source-checks",
-        "validation"
-      ],
-      "license": "UNLICENSED",
-      "name": "repository-source-checks",
-      "source": "repository-source-checks",
-      "strict": true,
-      "tags": [
-        "hooks",
-        "validation",
-        "governance"
-      ],
-      "version": "2.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Productivity",
-      "description": "Model, evaluate, format, and maintain Pkl configuration through explicit task workflows.",
-      "keywords": [
-        "configuration",
-        "pkl",
-        "pkl-workflows",
-        "workflows"
-      ],
-      "license": "UNLICENSED",
-      "name": "pkl-workflows",
-      "source": "pkl-workflows",
-      "strict": true,
-      "tags": [
-        "pkl",
-        "configuration",
-        "workflows"
-      ],
-      "version": "2.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Productivity",
-      "description": "Run explicitly selected Pkl format, evaluation, and test hooks without advertising workflow skills.",
-      "keywords": [
-        "hooks",
-        "pkl",
-        "pkl-repository-checks",
-        "validation"
-      ],
-      "license": "UNLICENSED",
-      "name": "pkl-repository-checks",
-      "source": "pkl-repository-checks",
-      "strict": true,
-      "tags": [
-        "pkl",
-        "hooks",
-        "validation"
-      ],
-      "version": "2.0.0"
+      "version": "3.0.0"
     }
   ]
 }

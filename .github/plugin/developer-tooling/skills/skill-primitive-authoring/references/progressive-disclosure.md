@@ -29,7 +29,7 @@ Use this reference to keep skills compact and loadable.
 - Use lower-case hyphenated skill names.
 - Choose capability names that do not collide with first-party or installed
   skill names.
-- Prefer local semantic names such as `reference-doc-workflow` over upstream
+- Prefer local semantic names such as `technical-documentation` over upstream
   names when synthesizing from distributed material.
 
 ## Review Questions

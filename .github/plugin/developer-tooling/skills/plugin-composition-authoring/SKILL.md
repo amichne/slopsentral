@@ -1,73 +1,56 @@
 ---
 name: "plugin-composition-authoring"
-description: "Use when creating or validating referential plugin manifests, marketplace entries, primitive references, or payload-to-reference plugin conversions."
+description: "Create or revise referential plugin manifests, hook primitives, runtime adapters, marketplace entries, or scoped repository instructions. Use for composition and source ownership."
 ---
 
 # Plugin Composition Authoring
 
-Use this skill to create plugin manifests that assemble primitives already
-owned elsewhere in the repo. The plugin is the installable composition surface;
-the primitive remains usable without the plugin.
+Compose canonical primitives by reference.
+Give each instruction, hook, and runtime adapter one source owner.
+Keep installed caches and generated projections outside authored edits.
 
-## Operating Contract
+## Contract
 
-- Do not copy primitive payloads into a plugin folder.
-- Reference direct primitive roots such as `skills/*`, `agents/*`, and
-  `hooks/*` inside the repository `source/` graph. When Codex should receive a
-  concept as session context, compose the hook primitive that depends on the
-  canonical `concepts/*` instruction instead of composing the instruction
-  directly.
-- Keep plugin manifests small and declarative.
-- Reuse canonical identities across plugins. A plugin composes an asset; its
-  packaging does not give it exclusive ownership of that asset.
-- Check selected profiles as well as each bundle. Shared skills, agents, and
-  instructions are valid; each hook must occur in one selected plugin closure.
-- Treat plugin manifests and marketplace catalogs as structured data governed by
-  repo-local schemas. Shape changes require schema changes or validation
-  evidence, not prose-only agreement.
-- Add marketplace entries only after the plugin manifest exists.
-- Keep source provenance public-safe; the plugin itself should not be the only
-  place provenance lives.
-- Validate against the repository source graph and local reference checks.
+Plugin manifests describe composition, version, and scope.
+They do not own copied skills, agent profiles, or reusable hook logic.
+Use repo-local schemas for manifests, hooks, adapters, and sidecars.
+A new structured shape needs an owning schema before use.
+
+Each selected hook must occur in one plugin closure.
+Shared skills, agents, instructions, and resources can serve several plugins.
+For session context, compose the hook whose `dependsOn` names the canonical instruction.
+Do not infer runtime delivery from a valid manifest.
 
 ## Workflow
 
-1. Define the plugin family.
-   Name the composed capability set, the primitives it should assemble, and
-   what should remain outside the plugin.
+1. Name the consumer, installation scope, source owner, and selected profile.
+2. Inspect canonical primitives, callers, runtime adapters, schemas, and current projection commands.
+3. Reuse independent primitives and declare dependencies through local references.
+4. For hooks, define the event, input, output, timeout, and failure policy before code.
+5. For instructions, place shared rules at their owning ancestor and local differences in scoped files.
+6. Change the owning source and update its catalog references.
+7. Run the source graph gate and the focused composition helper.
+8. Project both providers into fresh output directories with the local Pkl projector.
+9. For hook changes, run the configured command with success and failure inputs outside the plugin root.
 
-2. Confirm primitive independence.
-   Verify every skill, agent, hook, and concept exists under the canonical root
-   and makes sense without the plugin. Verify concept-injection hooks declare
-   the instruction in `dependsOn` so projection bundles the context file.
+```sh
+node tools/validate-source-graph.mjs
+uv run --locked python source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>
+node tools/project-marketplaces.mjs --source . --harness codex --out <fresh-codex-directory>
+node tools/project-marketplaces.mjs --source . --harness github-copilot --out <fresh-copilot-directory>
+git diff --check
+```
 
-3. Write `source/plugins/<name>/plugin.json`.
-   Use local references to existing primitives. Keep metadata limited to
-   composition, version, and description.
+## References
 
-4. Update `source/adaptable.marketplace.json`.
-   Add or update one plugin entry and any newly promoted primitive entries.
-   Preserve existing ordering unless a new order is part of the request.
+- Read [plugin shape](references/referential-plugin-shape.md) for primitive references and resource dependencies.
+- Read [marketplace catalog](references/marketplace-catalog.md) for catalog entries and projection proof.
+- Read [hooks](references/hooks.md) for event protocols, runtime adapters, dependency declarations, and executable proof.
+- Read [instruction scope](references/instruction-scope.md) for source ownership and scoped `AGENTS.md` files.
 
-5. Validate.
-   Run the source graph gate and, for focused plugin review, the composition
-   checker:
+## Completion
 
-   ```sh
-   node tools/validate-source-graph.mjs
-   python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>
-   ```
-
-## Reference Routing
-
-- Load [referential-plugin-shape.md](references/referential-plugin-shape.md)
-  when creating or reviewing a plugin manifest in this repository.
-- Load [marketplace-catalog.md](references/marketplace-catalog.md) when editing
-  `source/adaptable.marketplace.json` or plugin catalog metadata.
-
-## Completion Criteria
-
-- The plugin references only existing independent primitives.
-- No plugin-payload copy is introduced.
-- `source/adaptable.marketplace.json` and plugin manifest references validate.
-- First-party source handling remains clean.
+Every reference resolves to one canonical owner.
+The catalog, schemas, selected profile, and provider projections agree.
+Hook output obeys the host protocol under representative execution.
+Report static acceptance separately from installed host evidence.
