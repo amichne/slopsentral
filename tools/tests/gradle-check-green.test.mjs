@@ -6,14 +6,24 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
-const hook = path.join(repoRoot, "source/hooks/gradle-check-green.py");
+const hookRoot = process.env.SLOPSENTRAL_GRADLE_HOOK_ROOT
+  ? path.resolve(process.env.SLOPSENTRAL_GRADLE_HOOK_ROOT)
+  : path.join(repoRoot, "source");
+const hook = path.join(hookRoot, "hooks/gradle-check-green.py");
 const runner = path.join(
-  repoRoot,
-  "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.py",
+  hookRoot,
+  "skills/kotlin-gradle-validation/scripts/run_gradle_task.py",
 );
 
 function createGradleRepo() {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "slopsentral-gradle-hook-"));
+  const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "slopsentral-gradle-hook-")));
+  const initialized = spawnSync("git", ["init", "--quiet", directory], { encoding: "utf8" });
+  assert.equal(initialized.status, 0, initialized.stderr);
+  const committed = spawnSync("git", ["-C", directory,
+    "-c", "user.name=Slopsentral Fixture", "-c", "user.email=fixture@example.invalid",
+    "-c", "core.hooksPath=/dev/null", "commit", "--quiet", "--allow-empty", "--no-gpg-sign",
+    "-m", "Fixture baseline"], { encoding: "utf8" });
+  assert.equal(committed.status, 0, committed.stderr);
   fs.writeFileSync(path.join(directory, "settings.gradle.kts"), 'include(":app", ":lib")\n');
   for (const moduleName of ["app", "lib"]) {
     const moduleDirectory = path.join(directory, moduleName);
@@ -21,30 +31,39 @@ function createGradleRepo() {
     fs.writeFileSync(path.join(moduleDirectory, "build.gradle.kts"), "plugins { kotlin(\"jvm\") }\n");
     fs.writeFileSync(path.join(moduleDirectory, "src/main/kotlin/Main.kt"), "class Main\n");
   }
-  fs.writeFileSync(
-    path.join(directory, "gradlew"),
-    [
-      "#!/usr/bin/env bash",
-      "set -euo pipefail",
-      "printf '%s\\n' \"$@\" > gradle-args.txt",
-      "echo BUILD SUCCESSFUL",
-      "",
-    ].join("\n"),
-    { mode: 0o755 },
-  );
+  writeGradleWrapper(directory);
   return directory;
 }
 
-function runHook(directory, changedFiles, extraEnv = {}) {
-  return spawnSync(hook, ["--repo", directory], {
-    cwd: repoRoot,
-    env: {
-      ...process.env,
-      INTELLIGENCE_CHANGED_FILES: changedFiles.join("\n"),
-      INTELLIGENCE_GRADLE_LOG_DIR: "",
-      INTELLIGENCE_GRADLE_CHECK: "",
-      ...extraEnv,
-    },
+function writeGradleWrapper(directory, exitCode = 0, output = "BUILD SUCCESSFUL") {
+  fs.writeFileSync(path.join(directory, "gradlew"), [
+    "#!/usr/bin/env node",
+    'const fs = require("node:fs");',
+    "const args = process.argv.slice(2);",
+    'fs.writeFileSync("gradle-args.txt", args.join("\\n") + "\\n");',
+    'fs.writeFileSync("gradle-invocation.json", JSON.stringify({ cwd: fs.realpathSync(process.cwd()), args }));',
+    `console.log(${JSON.stringify(output)});`,
+    `process.exit(${exitCode});`,
+    "",
+  ].join("\n"), { mode: 0o755 });
+}
+
+function runHook(directory, changedFiles, extraEnv = {}, options = {}) {
+  const environment = {
+    ...process.env,
+    INTELLIGENCE_GRADLE_LOG_DIR: "",
+    INTELLIGENCE_GRADLE_CHECK: "",
+    ...extraEnv,
+  };
+  if (changedFiles === undefined) {
+    delete environment.INTELLIGENCE_CHANGED_FILES;
+  } else {
+    environment.INTELLIGENCE_CHANGED_FILES = changedFiles.join("\n");
+  }
+  delete environment.INTELLIGENCE_GRADLE_CHECK_COMMAND_FILE;
+  return spawnSync(hook, options.args ?? ["--repo", directory], {
+    cwd: options.cwd ?? repoRoot,
+    env: environment,
     encoding: "utf8",
   });
 }
@@ -83,6 +102,73 @@ test("gradle check command can be configured by repository file", (context) => {
     "--stacktrace",
   ]);
   assert.equal(fs.existsSync(path.join(directory, ".agent-turn")), false);
+});
+
+for (const location of ["omitted --repo from nested cwd", "explicit --repo subdirectory"]) {
+  for (const exitCode of [0, 7]) {
+    test(`gradle check resolves the Git root with ${location} and preserves exit ${exitCode}`, (context) => {
+      const directory = createGradleRepo();
+      context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+      writeGradleWrapper(directory, exitCode, exitCode === 0 ? "BUILD SUCCESSFUL" : "BUILD FAILED");
+      fs.mkdirSync(path.join(directory, ".intelligence"));
+      fs.writeFileSync(path.join(directory, ".intelligence/gradle-check-command"),
+        ':app:test --tests "example.SomeTest.with spaces" "-Pmessage=$(touch nested-hook-injected)" --stacktrace\n');
+      const nested = path.join(directory, "app/src/main/kotlin");
+      const options = location.startsWith("omitted")
+        ? { cwd: nested, args: [] }
+        : { cwd: repoRoot, args: ["--repo", nested] };
+
+      const result = runHook(directory, ["app/src/main/kotlin/Main.kt"], {}, options);
+
+      assert.equal(result.status, exitCode, result.stderr || result.stdout);
+      assert.match(result.stdout, exitCode === 0 ? /BUILD SUCCESSFUL/ : /BUILD FAILED/);
+      const invocation = JSON.parse(fs.readFileSync(path.join(directory, "gradle-invocation.json"), "utf8"));
+      assert.deepEqual(invocation, {
+        cwd: directory,
+        args: ["--console=plain", ":app:test", "--tests", "example.SomeTest.with spaces",
+          "-Pmessage=$(touch nested-hook-injected)", "--stacktrace"],
+      });
+      assert.equal(fs.existsSync(path.join(directory, "nested-hook-injected")), false);
+      assert.equal(fs.existsSync(path.join(nested, "gradle-invocation.json")), false);
+    });
+  }
+}
+
+test("gradle check discovers Git changes from nested cwd without a changed-file override", (context) => {
+  const directory = createGradleRepo();
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(directory, ".intelligence"));
+  fs.writeFileSync(path.join(directory, ".intelligence/gradle-check-command"), ":app:test --stacktrace\n");
+
+  const result = runHook(directory, undefined, {}, {
+    cwd: path.join(directory, "app/src/main/kotlin"), args: [],
+  });
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /BUILD SUCCESSFUL/);
+  const invocation = JSON.parse(fs.readFileSync(path.join(directory, "gradle-invocation.json"), "utf8"));
+  assert.deepEqual(invocation, {
+    cwd: directory,
+    args: ["--console=plain", ":app:test", "--stacktrace"],
+  });
+});
+
+test("gradle check preserves configured execution in a standalone non-Git directory", (context) => {
+  const directory = createGradleRepo();
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  fs.rmSync(path.join(directory, ".git"), { recursive: true });
+  fs.mkdirSync(path.join(directory, ".intelligence"));
+  fs.writeFileSync(path.join(directory, ".intelligence/gradle-check-command"), ":app:test --stacktrace\n");
+
+  const result = runHook(directory, ["app/src/main/kotlin/Main.kt"]);
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /BUILD SUCCESSFUL/);
+  const invocation = JSON.parse(fs.readFileSync(path.join(directory, "gradle-invocation.json"), "utf8"));
+  assert.deepEqual(invocation, {
+    cwd: directory,
+    args: ["--console=plain", ":app:test", "--stacktrace"],
+  });
 });
 
 test("Gradle evidence capture requires an explicit log directory", (context) => {
@@ -133,7 +219,7 @@ test("gradle check skips configured command when no Gradle-owned files changed",
 test("configured Gradle failure keeps its exit status without leaving logs", (context) => {
   const directory = createGradleRepo();
   context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
-  fs.writeFileSync(path.join(directory, "gradlew"), "#!/bin/sh\necho BUILD FAILED\nexit 1\n", { mode: 0o755 });
+  writeGradleWrapper(directory, 1, "BUILD FAILED");
   const result = runHook(directory, ["app/src/main/kotlin/Main.kt"], { INTELLIGENCE_GRADLE_CHECK: ":app:test" });
   assert.equal(result.status, 1);
   assert.match(result.stdout, /BUILD FAILED/);
@@ -143,20 +229,13 @@ test("configured Gradle failure keeps its exit status without leaving logs", (co
 test("Gradle runner surfaces compilation errors before JUnit reports exist", (context) => {
   const directory = createGradleRepo();
   context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
-  fs.writeFileSync(
-    path.join(directory, "gradlew"),
-    [
-      "#!/usr/bin/env bash",
-      "echo \"e: file:///ExampleTest.kt:8:9 Unresolved reference 'expectedBehavior'\"",
-      "echo 'FAILURE: Build failed with an exception.'",
-      "echo \"* What went wrong:\"",
-      "echo \"Execution failed for task ':app:compileTestKotlin'.\"",
-      "echo 'BUILD FAILED in 1s'",
-      "exit 1",
-      "",
-    ].join("\n"),
-    { mode: 0o755 },
-  );
+  writeGradleWrapper(directory, 1, [
+    "e: file:///ExampleTest.kt:8:9 Unresolved reference 'expectedBehavior'",
+    "FAILURE: Build failed with an exception.",
+    "* What went wrong:",
+    "Execution failed for task ':app:compileTestKotlin'.",
+    "BUILD FAILED in 1s",
+  ].join("\n"));
 
   const result = spawnSync(runner, ["--repo", directory, "--task", ":app:test"], {
     cwd: repoRoot,

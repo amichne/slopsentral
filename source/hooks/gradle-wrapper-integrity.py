@@ -18,15 +18,28 @@ import sys
 import zipfile
 from pathlib import Path
 
+sys.dont_write_bytecode = True
+sys.path.insert(
+    0, str(Path(__file__).resolve().parents[1] / "skills/kotlin-gradle-validation/scripts")
+)
+from gradle_repository import (  # noqa: E402 - delivered skill owns repository selection
+    ResolutionFailure,
+    resolve_project_directory,
+)
+
 parser = argparse.ArgumentParser(description="Verify changed Gradle wrapper metadata")
 _ = parser.add_argument("--repo", type=Path, default=Path.cwd())
-repo = parser.parse_args().repo.resolve()
+requested: Path = parser.parse_args().repo
 mode = os.environ.get("INTELLIGENCE_GRADLE_WRAPPER_INTEGRITY", "normal")
 if mode in {"off", "skip"}:
     print("gradle-wrapper-integrity: skipped")
     raise SystemExit(0)
 if mode not in {"normal", "strict"}:
     print("gradle-wrapper-integrity: invalid mode", file=sys.stderr)
+    raise SystemExit(2)
+repo = resolve_project_directory(requested)
+if isinstance(repo, ResolutionFailure):
+    print(f"gradle-wrapper-integrity: {repo.value}", file=sys.stderr)
     raise SystemExit(2)
 changed = os.environ.get("INTELLIGENCE_CHANGED_FILES")
 if changed is None:
@@ -36,7 +49,7 @@ if changed is None:
         ("ls-files", "--others", "--exclude-standard"),
     ):
         result = subprocess.run(
-            ["git", "-C", str(repo), *args], capture_output=True, text=True, check=False
+            ["git", "-C", str(repo.path), *args], capture_output=True, text=True, check=False
         )
         if result.returncode:
             print("gradle-wrapper-integrity: change discovery failed", file=sys.stderr)
@@ -51,12 +64,12 @@ if not set(changed.replace(",", "\n").splitlines()) & {
 }:
     print("gradle-wrapper-integrity: no Gradle wrapper changes detected")
     raise SystemExit(0)
-properties_path = repo / "gradle/wrapper/gradle-wrapper.properties"
-jar_path = repo / "gradle/wrapper/gradle-wrapper.jar"
+properties_path = repo.path / "gradle/wrapper/gradle-wrapper.properties"
+jar_path = repo.path / "gradle/wrapper/gradle-wrapper.jar"
 if (
     not properties_path.is_file()
     or not jar_path.is_file()
-    or not os.access(repo / "gradlew", os.X_OK)
+    or not os.access(repo.path / "gradlew", os.X_OK)
 ):
     print(
         "gradle-wrapper-integrity: missing wrapper files or executable permission", file=sys.stderr

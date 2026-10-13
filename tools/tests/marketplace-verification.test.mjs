@@ -106,6 +106,7 @@ fs.appendFileSync(process.env.VERIFY_TEST_LOG, JSON.stringify({
   knowledgeRoot: process.env.KNOWLEDGE_MARKETPLACE_ROOT,
   reuseCodexRoot: process.env.REUSE_CODEX_PROJECTION,
   reuseCopilotRoot: process.env.REUSE_COPILOT_PROJECTION,
+  gradleHookRoot: process.env.SLOPSENTRAL_GRADLE_HOOK_ROOT,
 }) + '\\n');
 if (args.includes('--out')) fs.mkdirSync(args[args.indexOf('--out') + 1], { recursive: true });
 if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
@@ -132,7 +133,7 @@ if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
 test('verification projects both providers and checks the generated Codex hooks', t => {
   const { result, commands } = verify(t);
   assert.equal(result.status, 0, result.stderr);
-  assert.deepEqual(commands.map(({ command }) => command), ['node', 'node', 'node', 'node', 'node', 'node']);
+  assert.deepEqual(commands.map(({ command }) => command), Array(8).fill('node'));
   assert.deepEqual(commands.slice(0, 2).map(({ args }) => args.slice(0, 5)), [
     ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'codex'],
     ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'github-copilot'],
@@ -148,6 +149,10 @@ test('verification projects both providers and checks the generated Codex hooks'
   assert.deepEqual(commands[3].args, ['--test', 'tools/tests/instruction-delivery.test.mjs']);
   assert.deepEqual(commands[4].args, ['--test', 'tools/tests/stop-output-contract.test.mjs']);
   assert.deepEqual(commands[5].args, ['--test', 'tools/tests/knowledge-overlay-contract.test.mjs']);
+  for (const [index, projection, tree] of [[6, codexRoot, '.agents/plugins'], [7, commands[1].args[6], '.github/plugin']]) {
+    assert.deepEqual(commands[index].args, ['--test', 'tools/tests/gradle-check-green.test.mjs', 'tools/tests/gradle-wrapper-integrity.test.mjs']);
+    assert.equal(commands[index].gradleHookRoot, path.join(projection, tree, 'kotlin-engineering'));
+  }
 });
 
 for (const failedHarness of ['codex', 'github-copilot']) {
