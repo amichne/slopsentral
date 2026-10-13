@@ -5,14 +5,12 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 import { currentSourceLocalPaths, currentSourceEvidenceFindings } from '../routing-source-evidence.mjs';
+import { validPaths, invalidPaths, wrappedPaths, nonlocalReferences } from './fixtures/current-source-paths.mjs';
 
 const repo = path.resolve(import.meta.dirname, '../..');
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
-const rootEvidence = ['README.md', 'package.json', 'LICENSE', '.gitignore', 'proof-data', '..name'];
-const invalidEvidence = ['./README.md', '../README.md', '/README.md', 'C:\\README.md',
-  'docs\\README.md', 'docs//README.md', 'docs/../README.md',
-  'README.md ', ' README.md', '\tREADME.md', 'README.md\n', ' ./README.md',
-  ' docs/README.md', 'docs/README.md ', '\u00a0README.md\u00a0'];
+const rootEvidence = validPaths;
+const invalidEvidence = [...invalidPaths, ...wrappedPaths];
 
 test('current Astra scenarios route to surviving skills', () => {
   const document = fs.readFileSync(path.join(repo, 'source/evals/astra-workstreams.md'), 'utf8');
@@ -50,7 +48,10 @@ for (const script of ['validate-source-graph.mjs', 'run-routing-evals.mjs']) {
     const corpus = read(file);
     corpus.cases[0].source.evidenceRefs = rootEvidence;
     fs.writeFileSync(file, JSON.stringify(corpus));
-    for (const ref of rootEvidence) fs.writeFileSync(path.join(root, ref), 'current evidence\n');
+    for (const ref of rootEvidence) {
+      fs.mkdirSync(path.dirname(path.join(root, ref)), { recursive: true });
+      fs.writeFileSync(path.join(root, ref), 'current evidence\n');
+    }
     const run = () => spawnSync(process.execPath,
       [path.join(repo, 'tools', script), '--repo', root], { encoding: 'utf8' });
     const baseline = run();
@@ -116,10 +117,7 @@ test('root evidence uses the same canonical path rules as nested evidence', t =>
 test('URI, descriptive, and historical references keep their nonlocal meaning', t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'routing-nonlocal-source-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const nonlocal = ['https://example.invalid/evidence', 'http://example.invalid/evidence',
-    'file:///outside/README.md', 'urn:evidence:README.md',
-    'User requested a focused plugin for amichne/shell-config.',
-    ' https://example.invalid/evidence ', ' Source evidence supports the routing fixture. '];
+  const nonlocal = nonlocalReferences;
   const source = { type: 'CURRENT_SOURCE', evidenceRefs: nonlocal };
   assert.deepEqual(currentSourceLocalPaths(source), []);
   assert.deepEqual(currentSourceEvidenceFindings(source, root, 'fixture'), []);

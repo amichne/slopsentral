@@ -33,7 +33,15 @@ kinds retain their existing dependency choices.
   "type": "RESOURCE",
   "name": "pkl-agent-runtime",
   "source": { "type": "LOCAL_SOURCE", "path": "./" },
-  "path": "skills/pkl-engineering/scripts/pkl_agent"
+  "path": "skills/pkl-engineering/scripts/pkl_agent",
+  "dependsOn": [
+    {
+      "type": "RESOURCE",
+      "name": "pkl-agent-runtime-lock",
+      "source": { "type": "LOCAL_SOURCE", "path": "./" },
+      "path": "skills/pkl-engineering/scripts/pkl_agent.lock"
+    }
+  ]
 }
 ```
 

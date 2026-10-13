@@ -140,6 +140,25 @@ function relativeToRepo(absolutePath) {
   return path.relative(repoRoot, absolutePath).split(path.sep).join("/");
 }
 
+// Portable consumers carry the existing project minimum without an ambient project.
+for (const root of ["source", "tools"]) {
+  for (const file of listFiles(root, file => !file.split(path.sep).includes("__pycache__"))) {
+    const script = fs.readFileSync(file, "utf8");
+    if (!script.startsWith("#!") || !script.includes("# /// script\n")) continue;
+    const metadata = script.match(/^# \/\/\/ script\n([\s\S]*?)^# \/\/\/$/m)?.[1];
+    if (!metadata || !/^# required-version = ">=0\.12\.9"$/m.test(metadata)) {
+      fail(`${relativeToRepo(file)}: portable uv script must declare the existing uv >=0.12.9 minimum`);
+    }
+    if ((fs.statSync(file).mode & 0o111) !== 0
+        && !script.startsWith("#!/usr/bin/env -S uv run --locked --script\n")) {
+      fail(`${relativeToRepo(file)}: direct portable uv script must use a locked script launcher`);
+    }
+    if (!fs.existsSync(file + ".lock")) {
+      fail(`${relativeToRepo(file)}: portable uv script must have an adjacent lock`);
+    }
+  }
+}
+
 function parseFrontmatter(relativePath) {
   const absolutePath = path.join(repoRoot, relativePath);
   if (!fs.existsSync(absolutePath)) {

@@ -10,6 +10,7 @@ import { project } from '../project-marketplaces.mjs';
 import { install } from '../install-projection-pkl.mjs';
 import { loadCatalog, pluginClosure } from '../catalog.mjs';
 import { currentSourceLocalPaths } from '../routing-source-evidence.mjs';
+import { validPaths, invalidPaths, wrappedPaths, nonlocalReferences } from './fixtures/current-source-paths.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const pkl = process.env.PKL_BIN;
@@ -195,8 +196,7 @@ function externalEvidenceFixture(t, references) {
   }
   const casesPath = path.join(fixture.repo, 'source/evals/routing/pkl-engineering-workflows.json');
   const payload = JSON.parse(fs.readFileSync(casesPath, 'utf8'));
-  payload.cases[0].source.evidenceRefs = [...references,
-    'https://example.invalid/evidence', 'Source evidence supports the routing fixture.'];
+  payload.cases[0].source.evidenceRefs = [...references, ...nonlocalReferences];
   payload.cases[1].source = { type: 'LOCAL_VALIDATION', capturedAt: '2026-10-13',
     evidenceRefs: ['docs/historical-missing.txt', 'historical-missing.txt'] };
   fs.writeFileSync(casesPath, JSON.stringify(payload));
@@ -207,25 +207,33 @@ function externalEvidenceFixture(t, references) {
   return { ...fixture, references };
 }
 
-test('whitespace-wrapped current paths reject before evaluation or publication', t => {
+test('the complete invalid current path matrix rejects before evaluation or publication', native, t => {
   const { dir, repo } = sourceFixture(t);
+  const marker = path.join(dir, 'evaluator-invoked');
+  const { executable } = fake(t, `
+const fs=require('node:fs');
+const cp=require('node:child_process');
+fs.writeFileSync(${JSON.stringify(marker)}, 'INVOKED');
+const r=cp.spawnSync(${JSON.stringify(pkl)},process.argv.slice(2),{encoding:'utf8',maxBuffer:32*1024*1024});
+process.stdout.write(r.stdout ?? ''); process.stderr.write(r.stderr ?? ''); process.exitCode=r.status ?? 9;
+`);
   fs.writeFileSync(path.join(repo, 'README.md'), 'current evidence\n');
   const casesPath = path.join(repo, 'source/evals/routing/pkl-engineering-workflows.json');
   const payload = JSON.parse(fs.readFileSync(casesPath, 'utf8'));
-  for (const ref of ['README.md ', ' README.md', '\tREADME.md', 'README.md\n',
-    ' ./README.md', ' source/MIGRATION.md', 'source/MIGRATION.md ', ' missing-evidence.md ']) {
+  for (const ref of [...invalidPaths, ...wrappedPaths]) {
     payload.cases[0].source.evidenceRefs = [ref];
     fs.writeFileSync(casesPath, JSON.stringify(payload));
     const out = path.join(dir, 'output');
-    assert.throws(() => project({ source: repo, harness: 'codex', out, pkl: '/absent/evaluator' }),
+    assert.throws(() => project({ source: repo, harness: 'codex', out, pkl: executable }),
       e => { assert.equal(e.outcome?.code, 'SOURCE_REJECTED', `${JSON.stringify(ref)}: ${e}`); return true; });
     assert.equal(fs.existsSync(out), false);
+    assert.equal(fs.existsSync(marker), false, `${JSON.stringify(ref)} must not reach the evaluator`);
   }
 });
 
 for (const [location, evidencePaths] of [
   ['nested', ['docs/projection-evidence.txt', 'tools/projection-evidence.txt', '.github/projection-evidence.txt']],
-  ['root', ['README.md', 'package.json', 'LICENSE', '.gitignore', 'proof-data', '..name']],
+  ['root', validPaths],
 ]) {
 for (const harness of ['codex', 'github-copilot']) {
   test(`${harness}: ${location} current evidence validates frozen source without entering payloads`, native, t => {

@@ -54,6 +54,13 @@ test('resource contract refines immutable data and rejects unsafe or workflow pa
   ]) assert.equal(validateResourceReference({ ...resource, ...patch }).type, 'RESOURCE_REFERENCE_REJECTED');
 });
 
+test('the executable documentation example preserves the canonical runtime dependency', () => {
+  const document = fs.readFileSync(path.join(root, 'docs/workflow-resources.md'), 'utf8');
+  const [example] = [...document.matchAll(/```json\n([\s\S]*?)\n```/g)].map(match => JSON.parse(match[1]));
+  assert.equal(validateResourceReference(example).type, 'RESOURCE_REFERENCE_VALID');
+  assert.deepEqual(example, resource);
+});
+
 test('Pkl guidance and unselected runtime contracts keep independent composition', () => {
   const workflows = closure('developer-tooling');
   const checks = closure(fixtureName);

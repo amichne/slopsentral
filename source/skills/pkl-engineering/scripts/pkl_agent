@@ -4,6 +4,7 @@
 # dependencies = []
 # [tool.uv]
 # no-build = true
+# required-version = ">=0.12.9"
 # [[tool.uv.index]]
 # name = "pypi"
 # url = "https://pypi.org/simple"

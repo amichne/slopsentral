@@ -1,9 +1,10 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env -S uv run --locked --script
 # /// script
 # requires-python = ">=3.12,<3.14"
 # dependencies = []
 # [tool.uv]
 # no-build = true
+# required-version = ">=0.12.9"
 # [[tool.uv.index]]
 # name = "pypi"
 # url = "https://pypi.org/simple"

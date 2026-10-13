@@ -8,7 +8,7 @@ export function currentSourceLocalPaths(source) {
   return source.evidenceRefs.filter(ref => {
     if (typeof ref !== 'string') return false;
     const candidate = ref.trim();
-    return /^[A-Za-z]:[/\\]/.test(candidate)
+    return path.win32.parse(candidate).root !== ''
       || (!/^[A-Za-z][A-Za-z0-9+.-]*:/.test(candidate)
         && /^(?:[/\\]|[^\s/\\:]+(?:[/\\]|$))/.test(candidate));
   });
@@ -29,8 +29,7 @@ export function currentSourceEvidenceFindings(source, repoRoot, owner) {
       continue;
     }
     if (!localPaths.has(ref)) continue;
-    if (ref !== ref.trim() || path.isAbsolute(ref) || ref.includes('\\')
-        || /^[A-Za-z]:\//.test(ref)
+    if (ref !== ref.trim() || path.win32.parse(ref).root !== '' || ref.includes('\\')
         || ref.split('/').some(segment => ['', '.', '..'].includes(segment))) {
       findings.push(`${owner}: CURRENT_SOURCE evidence path is invalid: ${ref}`);
       continue;
