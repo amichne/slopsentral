@@ -1,9 +1,10 @@
 {
+  "agents": "./agents",
   "author": {
     "name": "Amichne"
   },
   "category": "Productivity",
-  "description": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
+  "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
   "keywords": [
     "cli",
     "developer-tooling",
@@ -18,5 +19,5 @@
     "tools",
     "skills"
   ],
-  "version": "2.0.0"
+  "version": "3.0.0"
 }

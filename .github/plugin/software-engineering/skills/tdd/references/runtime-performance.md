@@ -3,7 +3,7 @@
 Name the measured dimension before changing code: transport latency, total
 latency, semantic work, allocations, throughput, or build time. A faster wrapper
 does not prove less native work. Keep Gradle build experiments with
-gradle-performance-engineering and IDE capture with ide-diagnostics-mcp.
+gradle-performance-engineering and IDE capture with intellij-platform-testing.
 
 Pin baseline and candidate source revisions, installed artifact identities,
 client/IDE builds, model or runner configuration, and environment. Compare the

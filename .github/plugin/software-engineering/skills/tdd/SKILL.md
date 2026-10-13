@@ -48,7 +48,7 @@ prevents completion.
 
 - Read [runtime-performance.md](references/runtime-performance.md) when the
   acceptance claim concerns runtime latency, throughput, or reduced semantic work.
-  Use gradle-performance-engineering for build performance and ide-diagnostics-mcp
+  Use gradle-performance-engineering for build performance and intellij-platform-testing
   for live IDE capture; this reference qualifies comparison proof.
 
 - Read [codebase-preflight.md](references/codebase-preflight.md) when deciding
@@ -69,6 +69,13 @@ prevents completion.
 ## Completion Criteria
 
 The current-codebase decision is supported by source and consumer evidence.
-The relevant check executed, required validation passed, publication matches the
-requested scope, and the handoff distinguishes reuse, characterization, and
-observed RED/GREEN without claiming a narrower check proves a broader result.
+The focused oracle and necessary repository gates passed.
+Publication matches the requested scope.
+The handoff distinguishes reuse, characterization, and measured RED/GREEN.
+A narrow result supports only the mechanism that its oracle exercises.
+
+## Optional procedures
+
+For a validation plan or explicit goal request, read [planning and scope](references/planning-and-scope.md).
+Planning alone grants no execution authority.
+For independent work across agents, read [delegation](references/delegation.md).

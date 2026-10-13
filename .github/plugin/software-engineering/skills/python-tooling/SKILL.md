@@ -18,7 +18,7 @@ fallback. Keep existing non-Python compilers at their explicit process boundary.
    [standalone.py](assets/standalone.py): PEP 723 dependencies, Python requirement,
    named index, no-build, pure decisions, typed outcomes, and `--self-test`.
    Read [boundaries](references/boundaries.md) for the Python enforcement limits.
-3. For a new directory, run `uv run --script scripts/scaffold.py --out PATH` from
+3. For a new directory, run `uv run --locked --script scripts/scaffold.py --out PATH` from
    this skill directory. It copies the authored template and check configuration
    without overwriting an existing directory. Run `uv run --locked --script setup.py` inside the new directory to create
    project and script locks, install declared tools, and run every gate. Review
