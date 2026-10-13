@@ -59,7 +59,8 @@ test('Pkl guidance and unselected runtime contracts keep independent composition
   const checks = closure(fixtureName);
   assert.ok([...workflows.refs.keys()].every(k => k.startsWith('SKILL/') || k.startsWith('AGENT/')));
   assert.ok([...checks.refs.keys()].every(k => k.startsWith('HOOK/') || k.startsWith('RESOURCE/')));
-  assert.deepEqual([...checks.refs.keys()].filter(k => k.startsWith('RESOURCE/')), ['RESOURCE/pkl-agent-runtime']);
+  assert.deepEqual([...checks.refs.keys()].filter(k => k.startsWith('RESOURCE/')),
+    ['RESOURCE/pkl-agent-runtime', 'RESOURCE/pkl-agent-runtime-lock']);
   for (const name of ['pkl-workflow-default', 'pkl-checked-repository'])
     assert.deepEqual(auditProfileComposition(catalog, catalog.profiles.find(p => p.name === name)), []);
   assert.match(auditProfileComposition(fixtureCatalog, { name: 'duplicate', plugins: [fixtureName, fixtureName] }).join('\n'), /duplicate plugin selection/);
@@ -119,6 +120,10 @@ for (const [harness, tree] of [['codex', '.agents/plugins'], ['github-copilot', 
     const target = path.join(bundle, resource.path);
     assert.deepEqual(fs.readFileSync(target), fs.readFileSync(path.join(root, 'source', resource.path)));
     assert.equal(fs.statSync(target).mode & 0o777, fs.statSync(path.join(root, 'source', resource.path)).mode & 0o777);
+    const runtimeLock = `${target}.lock`;
+    assert.ok(fs.existsSync(runtimeLock), 'runtime-only projection must supply the adjacent script lock');
+    const sourceLock = fs.readFileSync(path.join(root, 'source', `${resource.path}.lock`), 'utf8');
+    assert.equal(fs.readFileSync(runtimeLock, 'utf8'), sourceLock);
     assert.ok(fs.readdirSync(bundle, { recursive: true }).every(p => path.basename(p) !== 'SKILL.md'));
     const manifest = JSON.parse(fs.readFileSync(path.join(bundle, harness === 'codex' ? '.codex-plugin/plugin.json' : 'plugin.json')));
     assert.equal(Object.hasOwn(manifest, 'skills'), false);
@@ -128,8 +133,11 @@ for (const [harness, tree] of [['codex', '.agents/plugins'], ['github-copilot', 
     assert.ok(fs.existsSync(path.join(workflowBundle, 'skills/pkl-engineering/SKILL.md')));
     if (harness === 'codex') {
       const lock = JSON.parse(fs.readFileSync(path.join(result.out, tree, 'marketplace-lock.json')));
-      const ref = lock.plugins.find(p => p.name === fixtureName).references.find(r => r.type === 'RESOURCE');
+      const references = lock.plugins.find(p => p.name === fixtureName).references;
+      const ref = references.find(r => r.name === resource.name);
       assert.equal(ref.sha256, 'sha256:' + crypto.createHash('sha256').update(fs.readFileSync(target)).digest('hex'));
+      const lockRef = references.find(r => r.name === 'pkl-agent-runtime-lock');
+      assert.equal(lockRef.sha256, 'sha256:' + crypto.createHash('sha256').update(sourceLock).digest('hex'));
     }
     const config = JSON.parse(fs.readFileSync(path.join(bundle, 'hooks/pkl-evaluate-check.hooks.json')));
     const command = config.hooks.Stop[0].hooks[0].command;
@@ -149,6 +157,15 @@ for (const [harness, tree] of [['codex', '.agents/plugins'], ['github-copilot', 
     }
     assert.match(run('value: Int = 42\n').systemMessage, /outcome=completed/);
     assert.match(run('value: Int = "PRIVATE PAYLOAD"\n').reason, /outcome=check-failed/);
+    const staleLock = sourceLock.replace('>=3.12, <3.14', '>=3.12, <3.13');
+    assert.notEqual(staleLock, sourceLock);
+    fs.writeFileSync(runtimeLock, staleLock);
+    assert.match(run('value: Int = 42\n').reason, /outcome=check-failed/);
+    assert.equal(fs.readFileSync(runtimeLock, 'utf8'), staleLock);
+    fs.unlinkSync(runtimeLock);
+    assert.match(run('value: Int = 42\n').reason, /outcome=check-failed/);
+    assert.equal(fs.existsSync(runtimeLock), false);
+    fs.writeFileSync(runtimeLock, sourceLock);
     fs.unlinkSync(target);
     assert.match(run('value: Int = 42\n').reason, /outcome=check-failed/);
   });

@@ -13,7 +13,7 @@ the shared [okf_common.py](/systems/okf-common.md) parser, so the graph matches 
 [validator](/systems/validator.md) checks — including ignoring links inside code.
 
 ```
-python scripts/visualize.py <bundle> [--title "..."]
+uv run --locked --script scripts/visualize.py <bundle> [--title "..."]
 ```
 
 The graph is **fully self-contained and offline**: a vanilla-JS force-directed graph rendered on

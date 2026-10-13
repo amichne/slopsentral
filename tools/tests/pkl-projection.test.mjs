@@ -207,6 +207,22 @@ function externalEvidenceFixture(t, references) {
   return { ...fixture, references };
 }
 
+test('whitespace-wrapped current paths reject before evaluation or publication', t => {
+  const { dir, repo } = sourceFixture(t);
+  fs.writeFileSync(path.join(repo, 'README.md'), 'current evidence\n');
+  const casesPath = path.join(repo, 'source/evals/routing/pkl-engineering-workflows.json');
+  const payload = JSON.parse(fs.readFileSync(casesPath, 'utf8'));
+  for (const ref of ['README.md ', ' README.md', '\tREADME.md', 'README.md\n',
+    ' ./README.md', ' source/MIGRATION.md', 'source/MIGRATION.md ', ' missing-evidence.md ']) {
+    payload.cases[0].source.evidenceRefs = [ref];
+    fs.writeFileSync(casesPath, JSON.stringify(payload));
+    const out = path.join(dir, 'output');
+    assert.throws(() => project({ source: repo, harness: 'codex', out, pkl: '/absent/evaluator' }),
+      e => { assert.equal(e.outcome?.code, 'SOURCE_REJECTED', `${JSON.stringify(ref)}: ${e}`); return true; });
+    assert.equal(fs.existsSync(out), false);
+  }
+});
+
 for (const [location, evidencePaths] of [
   ['nested', ['docs/projection-evidence.txt', 'tools/projection-evidence.txt', '.github/projection-evidence.txt']],
   ['root', ['README.md', 'package.json', 'LICENSE', '.gitignore', 'proof-data', '..name']],

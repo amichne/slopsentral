@@ -144,7 +144,7 @@ Preserve historical links after a concept rename or removal.
 After the format procedure passes, generate a graph only when the task needs one:
 
 ```sh
-uv run --locked python "<skill-root>/scripts/visualize.py" docs
+uv run --locked --script "<skill-root>/scripts/visualize.py" docs
 ```
 
 The script writes `viz.html` and `graph.mmd` from explicit concept links.

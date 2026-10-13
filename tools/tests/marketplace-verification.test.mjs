@@ -109,6 +109,7 @@ fs.appendFileSync(process.env.VERIFY_TEST_LOG, JSON.stringify({
   gradleHookRoot: process.env.SLOPSENTRAL_GRADLE_HOOK_ROOT,
   openapiSkillRoot: process.env.SLOPSENTRAL_OPENAPI_SKILL_ROOT,
   okfSkillRoot: process.env.SLOPSENTRAL_OKF_SKILL_ROOT,
+  pklSkillRoot: process.env.SLOPSENTRAL_PKL_SKILL_ROOT,
 }) + '\\n');
 if (args.includes('--out')) fs.mkdirSync(args[args.indexOf('--out') + 1], { recursive: true });
 if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
@@ -152,10 +153,11 @@ test('verification projects both providers and checks the generated Codex hooks'
   assert.deepEqual(commands[4].args, ['--test', 'tools/tests/stop-output-contract.test.mjs']);
   assert.deepEqual(commands[5].args, ['--test', 'tools/tests/knowledge-overlay-contract.test.mjs']);
   for (const [index, projection, tree] of [[6, codexRoot, '.agents/plugins'], [7, commands[1].args[6], '.github/plugin']]) {
-    assert.deepEqual(commands[index].args, ['--test', 'tools/tests/gradle-check-green.test.mjs', 'tools/tests/gradle-wrapper-integrity.test.mjs', 'tools/tests/openapi-installed-commands.test.mjs', 'tools/tests/okf-validator-isolation.test.mjs']);
+    assert.deepEqual(commands[index].args, ['--test', 'tools/tests/gradle-check-green.test.mjs', 'tools/tests/gradle-wrapper-integrity.test.mjs', 'tools/tests/openapi-installed-commands.test.mjs', 'tools/tests/okf-validator-isolation.test.mjs', 'tools/tests/okf-visualizer-isolation.test.mjs', 'tools/tests/pkl-installed-entrypoints.test.mjs']);
     assert.equal(commands[index].gradleHookRoot, path.join(projection, tree, 'kotlin-engineering'));
     assert.equal(commands[index].openapiSkillRoot, path.join(projection, tree, 'developer-tooling/skills/openapi-contract-authoring'));
     assert.equal(commands[index].okfSkillRoot, path.join(projection, tree, 'repository-knowledge/skills/code-knowledge-base'));
+    assert.equal(commands[index].pklSkillRoot, path.join(projection, tree, 'developer-tooling/skills/pkl-engineering'));
   }
 });
 

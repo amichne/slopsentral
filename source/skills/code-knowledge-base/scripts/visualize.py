@@ -1,4 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --locked --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = ["pyyaml==6.0.3"]
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 """Visualize an Open Knowledge Format (OKF) bundle as an interactive graph.
 
 Reads every non-reserved .md concept, extracts its type/title/description from the
@@ -16,9 +27,9 @@ The HTML is fully offline: no external <script>/<link>, no CDN. The interactive
 graph is a compact vanilla-JS force-directed simulation rendered on a <canvas>.
 
 Usage:
-    python visualize.py <bundle> [--title "My Bundle"]
+    uv run --locked --script visualize.py <bundle> [--title "My Bundle"]
 
-Requires PyYAML (via okf_common):  pip install pyyaml
+The adjacent script lock supplies PyYAML for the shared parser.
 """
 from __future__ import annotations
 
@@ -80,7 +91,7 @@ def main(argv=None):
 
     if yaml is None:
         print("error: PyYAML is required (via okf_common). "
-              "Install it with: pip install pyyaml", file=sys.stderr)
+              "Run this script with uv run --locked --script", file=sys.stderr)
         return 2
 
     root = Path(args.bundle)

@@ -67,6 +67,8 @@ The focused tests use a disposable composition to prove resource-only delivery.
 They add no wrapper to the shipped marketplace.
 
 The helper is a Python program. The hooks use uv with locked Python scripts.
+The `pkl-agent-runtime` resource depends on `pkl-agent-runtime-lock`.
+Both files reach the same scripts directory. Locked execution rejects missing or stale locks.
 The helper needs a separate Pkl `>=0.31.1,<0.34.0` executable through `PKL_BIN` or `PATH`.
 The repository projector needs exactly Pkl 0.32.0.
 Evaluation hooks need explicit modules in `.intelligence/pkl-entrypoints`.

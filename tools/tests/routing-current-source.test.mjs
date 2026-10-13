@@ -10,7 +10,9 @@ const repo = path.resolve(import.meta.dirname, '../..');
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const rootEvidence = ['README.md', 'package.json', 'LICENSE', '.gitignore', 'proof-data', '..name'];
 const invalidEvidence = ['./README.md', '../README.md', '/README.md', 'C:\\README.md',
-  'docs\\README.md', 'docs//README.md', 'docs/../README.md'];
+  'docs\\README.md', 'docs//README.md', 'docs/../README.md',
+  'README.md ', ' README.md', '\tREADME.md', 'README.md\n', ' ./README.md',
+  ' docs/README.md', 'docs/README.md ', '\u00a0README.md\u00a0'];
 
 test('current Astra scenarios route to surviving skills', () => {
   const document = fs.readFileSync(path.join(repo, 'source/evals/astra-workstreams.md'), 'utf8');
@@ -116,12 +118,13 @@ test('URI, descriptive, and historical references keep their nonlocal meaning', 
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const nonlocal = ['https://example.invalid/evidence', 'http://example.invalid/evidence',
     'file:///outside/README.md', 'urn:evidence:README.md',
-    'User requested a focused plugin for amichne/shell-config.'];
+    'User requested a focused plugin for amichne/shell-config.',
+    ' https://example.invalid/evidence ', ' Source evidence supports the routing fixture. '];
   const source = { type: 'CURRENT_SOURCE', evidenceRefs: nonlocal };
   assert.deepEqual(currentSourceLocalPaths(source), []);
   assert.deepEqual(currentSourceEvidenceFindings(source, root, 'fixture'), []);
   for (const type of ['CODEX_SESSION', 'MEMORY_INDEX', 'USER_CLARIFICATION', 'LOCAL_VALIDATION']) {
-    const historical = { type, evidenceRefs: [...rootEvidence, 'docs/missing-evidence.md'] };
+    const historical = { type, evidenceRefs: [...rootEvidence, ...invalidEvidence, 'docs/missing-evidence.md'] };
     assert.deepEqual(currentSourceLocalPaths(historical), []);
     assert.deepEqual(currentSourceEvidenceFindings(historical, root, 'fixture'), []);
   }

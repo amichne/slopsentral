@@ -628,7 +628,27 @@
         "path": "./"
       },
       "path": "skills/pkl-engineering/scripts/pkl_agent",
-      "name": "pkl-agent-runtime"
+      "name": "pkl-agent-runtime",
+      "dependsOn": [
+        {
+          "type": "RESOURCE",
+          "source": {
+            "type": "LOCAL_SOURCE",
+            "path": "./"
+          },
+          "path": "skills/pkl-engineering/scripts/pkl_agent.lock",
+          "name": "pkl-agent-runtime-lock"
+        }
+      ]
+    },
+    {
+      "type": "RESOURCE",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-engineering/scripts/pkl_agent.lock",
+      "name": "pkl-agent-runtime-lock"
     }
   ]
 }
