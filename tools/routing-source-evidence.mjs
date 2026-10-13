@@ -3,9 +3,12 @@ import path from 'node:path';
 
 export function currentSourceLocalPaths(source) {
   if (source?.type !== 'CURRENT_SOURCE' || !Array.isArray(source.evidenceRefs)) return [];
+  // A path starts with a single filename segment or an absolute/drive prefix.
+  // Keep URI references and descriptive sentences outside the file contract.
   return source.evidenceRefs.filter(ref => typeof ref === 'string'
-    && !/^https?:\/\//.test(ref)
-    && /^(?:\.{1,2}\/|[A-Za-z0-9_.-]+\/)/.test(ref));
+    && (/^[A-Za-z]:[/\\]/.test(ref)
+      || (!/^[A-Za-z][A-Za-z0-9+.-]*:/.test(ref)
+        && /^(?:[/\\]|[^\s/\\:]+(?:[/\\]|$))/.test(ref))));
 }
 
 // Historical source kinds preserve their recorded paths at capture time.
@@ -23,11 +26,17 @@ export function currentSourceEvidenceFindings(source, repoRoot, owner) {
       continue;
     }
     if (!localPaths.has(ref)) continue;
+    if (path.isAbsolute(ref) || ref.includes('\\')
+        || /^[A-Za-z]:\//.test(ref)
+        || ref.split('/').some(segment => ['', '.', '..'].includes(segment))) {
+      findings.push(`${owner}: CURRENT_SOURCE evidence path is invalid: ${ref}`);
+      continue;
+    }
     const candidate = path.resolve(root, ref);
     try {
       const real = fs.realpathSync(candidate);
       const relative = path.relative(root, real);
-      if (path.posix.normalize(ref) !== ref || relative.startsWith('..')
+      if (relative === '..' || relative.startsWith('..' + path.sep)
           || path.isAbsolute(relative) || !fs.statSync(real).isFile()) {
         findings.push(`${owner}: CURRENT_SOURCE evidence path is invalid: ${ref}`);
       }

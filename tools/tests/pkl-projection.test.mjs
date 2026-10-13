@@ -186,9 +186,8 @@ function externalEvidencePaths(repo) {
   return [...references].sort();
 }
 
-function externalEvidenceFixture(t) {
+function externalEvidenceFixture(t, references) {
   const fixture = sourceFixture(t);
-  const references = ['docs/projection-evidence.txt', 'tools/projection-evidence.txt', '.github/projection-evidence.txt'];
   for (const relative of references) {
     const file = path.join(fixture.repo, relative);
     fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -196,9 +195,10 @@ function externalEvidenceFixture(t) {
   }
   const casesPath = path.join(fixture.repo, 'source/evals/routing/pkl-engineering-workflows.json');
   const payload = JSON.parse(fs.readFileSync(casesPath, 'utf8'));
-  payload.cases[0].source.evidenceRefs = references;
+  payload.cases[0].source.evidenceRefs = [...references,
+    'https://example.invalid/evidence', 'Source evidence supports the routing fixture.'];
   payload.cases[1].source = { type: 'LOCAL_VALIDATION', capturedAt: '2026-10-13',
-    evidenceRefs: ['docs/historical-missing.txt'] };
+    evidenceRefs: ['docs/historical-missing.txt', 'historical-missing.txt'] };
   fs.writeFileSync(casesPath, JSON.stringify(payload));
   // Unreferenced repository files must not enlarge the frozen input.
   fs.symlinkSync('/etc/passwd', path.join(fixture.repo, 'docs/unreferenced-secret'));
@@ -207,20 +207,25 @@ function externalEvidenceFixture(t) {
   return { ...fixture, references };
 }
 
+for (const [location, evidencePaths] of [
+  ['nested', ['docs/projection-evidence.txt', 'tools/projection-evidence.txt', '.github/projection-evidence.txt']],
+  ['root', ['README.md', 'package.json', 'LICENSE', '.gitignore', 'proof-data', '..name']],
+]) {
 for (const harness of ['codex', 'github-copilot']) {
-  test(`${harness}: external current evidence validates frozen source without entering payloads`, native, t => {
-    const { dir, repo, references } = externalEvidenceFixture(t);
+  test(`${harness}: ${location} current evidence validates frozen source without entering payloads`, native, t => {
+    const { dir, repo, references } = externalEvidenceFixture(t, evidencePaths);
     const result = project({ source: repo, harness, out: path.join(dir, 'output'), pkl });
     assert.equal(result.type, 'PROJECTED');
-    for (const [name, file] of tree(result.out)) {
-      assert.ok(references.every(ref => !name.endsWith('/' + ref)), `evidence entered payload: ${name}`);
+    const projected = tree(result.out);
+    for (const ref of references) assert.equal(projected.has(ref), false, `evidence entered payload: ${ref}`);
+    for (const [name, file] of projected) {
       assert.equal(file.bytes.includes(Buffer.from('PRIVATE EXTERNAL EVIDENCE')), false, name);
     }
   });
 }
 
-test('missing external current evidence rejects before evaluation or publication', t => {
-  const { dir, repo, references } = externalEvidenceFixture(t);
+test(`missing ${location} current evidence rejects before evaluation or publication`, t => {
+  const { dir, repo, references } = externalEvidenceFixture(t, evidencePaths);
   fs.unlinkSync(path.join(repo, references[0]));
   const out = path.join(dir, 'output');
   assert.throws(() => project({ source: repo, harness: 'codex', out, pkl: '/absent/evaluator' }),
@@ -229,8 +234,8 @@ test('missing external current evidence rejects before evaluation or publication
 });
 
 for (const mutation of ['bytes', 'mode', 'removal']) {
-  test(`external current evidence ${mutation} mutation rejects the frozen result`, native, t => {
-    const { dir, repo, references } = externalEvidenceFixture(t);
+  test(`${location} current evidence ${mutation} mutation rejects the frozen result`, native, t => {
+    const { dir, repo, references } = externalEvidenceFixture(t, evidencePaths);
     const target = path.join(repo, references[0]);
     const change = mutation === 'bytes' ? `fs.appendFileSync(target, 'changed');`
       : mutation === 'mode' ? `fs.chmodSync(target, 0o600);`
@@ -248,6 +253,7 @@ process.stdout.write(r.stdout ?? ''); process.stderr.write(r.stderr ?? ''); proc
       e => { assert.equal(e.outcome?.code, 'INPUT_CHANGED', JSON.stringify(e.outcome)); return true; });
     assert.equal(fs.existsSync(out), false);
   });
+}
 }
 
 test('symbolic source fails closed before publication', t => {
