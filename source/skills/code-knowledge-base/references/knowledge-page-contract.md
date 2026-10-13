@@ -5,7 +5,7 @@ OKF is intentionally small: a bundle is a directory of Markdown files with YAML
 frontmatter. Every non-reserved concept document must have parseable
 frontmatter with a non-empty `type`.
 
-Spec basis: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/code-knowledge-base/SPEC.md
+Spec basis: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
 
 ## Page Shape
 
