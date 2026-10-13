@@ -23,7 +23,7 @@ overrides belong outside its tracked tree.
    `runtime`, shell functions and completions under `.config/zsh`, and link
    installation through the existing manifest and installer. Preserve existing
    local overrides, consumers, staged changes and unrelated source edits.
-4. For a personal command, use `personal-cli-authoring` for the command contract,
+4. For a personal command, use `cli-creator` for the command contract,
    parameter precedence, composition, completion and source-backed `--teach`.
    Use Python Tooling for automation. Keep only the required parent-shell adapter
    when session state cannot be accessed from a child process. These are separate procedures, not automatic extra work.

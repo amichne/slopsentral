@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "personal-configuration-default",
-  "description": "Personal dotfiles and shell commands without automatic source hooks.",
+  "description": "Explicit personal configuration and Python tools without automatic source hooks.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -14,7 +14,7 @@
     }
   ],
   "plugins": [
-    "personal-configuration"
+    "developer-tooling"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

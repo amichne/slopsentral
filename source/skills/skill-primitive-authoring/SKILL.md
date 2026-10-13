@@ -1,75 +1,50 @@
 ---
 name: "skill-primitive-authoring"
-description: "Use when creating, revising, consolidating, or evaluating reusable skills, including triggers, references, scripts, overlap checks, and promotion."
+description: "Create, consolidate, or assess reusable skills and agent profiles. Use for trigger design, delegated scope, routing evidence, references, scripts, or promotion."
 ---
 
 # Skill Primitive Authoring
 
-Use this skill to turn repeated work into a durable skill primitive. The skill
-must stand on its own: a plugin may compose it later, but the skill cannot rely
-on the plugin to explain its behavior.
+Give each reusable workflow one owner, one trigger, and an explicit result.
+Use this skill for skills, agent profiles, and routing evidence.
+Use `plugin-composition-authoring` for installable compositions, hooks, and repository instruction scope.
 
-## Operating Contract
+## Contract
 
-- Start from observed repeated work, user corrections, logs, or existing source
-  material rather than a generic capability wish.
-- Keep `SKILL.md` as the trigger, workflow, and reference router.
-- Put variant details, schemas, examples, and long policies in `references/`.
-- Put deterministic repeated work in `scripts/`.
-- Keep runtime/UI metadata optional and adapter-owned.
-- For structured data owned or emitted by the skill, require a schema,
-  generator, parser, or validation command before persisting the data.
-- Avoid first-party or installed-skill name collisions when synthesizing from
-  OpenAI, Anthropic, or other distributed sources.
-- Keep source provenance public-safe when promoting a skill into this
-  repository.
+Start from repeated work, a concrete request, or a source-backed failure.
+Inspect existing primitives before a new design.
+Extend an existing owner when its scope covers the work.
+Keep skills and agents useful without plugin text or host-specific metadata.
+Preserve public-safe provenance and avoid names from upstream system skills.
+
+Keep `SKILL.md` as a focused router.
+Place concrete variants and examples in references.
+Use scripts for deterministic work with a real consumer.
+Default new automation to `python-tooling`: required uv, PEP 723, committed locks, `tool.uv.no-build = true`, strict Pyright, Ruff, and pytest.
+Keep decisions pure and effect adapters explicit.
 
 ## Workflow
 
-1. Define the contract.
-   Identify what the skill should help an agent do, when it should trigger,
-   what success means, and what source material proves the workflow.
+1. Name the consumer, accepted input, protected invariant, authorized scope, and result.
+2. Find overlapping skills or agents and choose reuse, extension, consolidation, or a new owner.
+3. Write realistic trigger cases, a nearest non-trigger, and the evidence that separates them.
+4. For agent profiles, define delegated ownership, excluded work, tool access, stop conditions, and returned evidence.
+5. Define a focused executable assertion or a recorded assessment with an explicit evidence limit.
+6. Keep one procedure for shared work and route case-specific details through the references.
+7. Examine frontmatter, links, scripts, schemas, provenance, and composition through the repository gates.
+8. Report the changed owner, passing assertions, remaining findings, and absent model evidence.
 
-2. Check overlap.
-   Search existing `source/skills/`. Prefer improving or synthesizing an
-   existing skill over adding a narrow duplicate.
+## References
 
-3. Design the shape.
-   Use a compact `SKILL.md` plus one-level references. Add scripts only when a
-   step needs deterministic reliability or would otherwise be rewritten often.
+- Read [layout](references/progressive-disclosure.md) to choose between the router, references, scripts, and assets.
+- Read [agent profiles](references/agent-profiles.md) for delegation prompts, tool scope, and trigger examples.
+- Read [routing evidence](references/routing-evidence.md) for missed, incorrect, or bypassed routes and durable eval cases.
+- Read [evaluation](references/evaluation-scaffold.md) for cases, holdouts, comparison baselines, and consolidation evidence.
+- Read [interface adapters](references/interface-adapters.md) for host-specific metadata.
 
-4. Write the skill.
-   Put the trigger language in frontmatter `description`. Keep the body
-   procedural and concrete. Link every optional reference from `SKILL.md` with
-   a clear "read this when..." condition.
+## Completion
 
-5. Validate.
-   Confirm frontmatter parses, references exist, paths are stable, and the
-   skill does not raw-copy first-party content. If the skill has eval assets,
-   validate the eval scaffold and keep transient benchmark output outside the
-   skill folder.
-
-6. Promote.
-   Add the skill to `source/adaptable.marketplace.json` and any referential
-   plugin that should compose it. If promotion changes any JSON shape, update
-   the owning schema first and run manifest validation.
-
-## Reference Routing
-
-- Load [progressive-disclosure.md](references/progressive-disclosure.md) when
-  deciding what belongs in `SKILL.md`, `references/`, `scripts/`, or `assets/`.
-- Load [evaluation-scaffold.md](references/evaluation-scaffold.md) when a skill
-  needs objective proof, holdouts, or consolidation evidence.
-- Load [interface-adapters.md](references/interface-adapters.md) when adding
-  UI-facing metadata or host-specific adapters.
-
-## Completion Criteria
-
-- The skill has a clear trigger, workflow, and success contract.
-- Related details are discoverable without loading unnecessary context.
-- Existing overlap was checked and either avoided or intentionally synthesized.
-- Source provenance and first-party handling are recorded in public-safe form
-  when applicable.
-- Structured data created or changed by the skill has an owning schema,
-  generator, parser, or validation command.
-- Manifest validation passes after promotion.
+Each supported task has one discoverable owner and a specific success condition.
+Structured output has a schema or typed parser.
+Fixture consistency proves the fixture contract only.
+A model-routing claim needs a real trace or an explicitly limited recorded report.

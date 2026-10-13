@@ -56,7 +56,7 @@
       ],
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "kotlin-agentic-correctness"
+        "name": "kotlin-design-practices"
       },
       "userInput": "Use Kotlin Engineering for this Kotlin repository. Change a Kotlin API so an invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
@@ -115,7 +115,7 @@
       ],
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "kotlin-agentic-correctness"
+        "name": "kotlin-design-practices"
       },
       "userInput": "Use Kotlin Engineering to implement this multi-module behavior change. Preserve each validated Kotlin value as a stronger type across callers, keep concrete adapters out of pure module APIs, maintain only the AGENTS.md files whose durable facts changed, and run one stable focused command RED and GREEN. Widen verification through the owning module, affected consumers, generated boundaries, and installed public artifact only where the changed contract requires it. Do not create turn-local task files, commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [

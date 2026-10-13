@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "repository-knowledge",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -18,15 +18,6 @@
       },
       "path": "skills/code-knowledge-base",
       "name": "code-knowledge-base"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/repository-signature-indexing",
-      "name": "repository-signature-indexing"
     },
     {
       "type": "SKILL",
@@ -54,24 +45,6 @@
       },
       "path": "skills/technical-documentation",
       "name": "technical-documentation"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/reference-doc-workflow",
-      "name": "reference-doc-workflow"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/site-docs-authoring",
-      "name": "site-docs-authoring"
     }
   ],
   "agents": [],

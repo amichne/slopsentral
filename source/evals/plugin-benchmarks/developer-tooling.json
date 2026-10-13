@@ -52,12 +52,130 @@
         "type": "PLUGIN",
         "name": "developer-tooling"
       },
-      "userInput": "Audit the Developer Tooling composition. Prove it exposes general CLI and agent workflow authoring without personal dotfiles installation, hooks, or MCP connections. Use only the supplied local or disposable fixture. Do not install, publish, push, or modify remote state.",
+      "userInput": "Audit Developer Tooling. Prove its tool and configuration procedures remain task-selected and install no automatic hooks or MCP connections. Use only the supplied disposable fixture. Do not install, publish, push, or modify remote state.",
       "successChecklist": [
-        "Resolve all canonical skill references in Developer Tooling.",
-        "Keep personal setup management and automatic integrations outside this package.",
+        "Resolve each canonical skill and agent reference in Developer Tooling.",
+        "Keep personal configuration changes subject to the requested task scope.",
         "The source graph and focused composition checks pass.",
         "The package closure has no hooks or MCP declaration."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "typed-api-boundary",
+      "title": "Typed API boundary",
+      "purpose": "Measure whether API boundary work encodes invalid states in JSON Schema and OpenAPI and validates its examples.",
+      "routingCaseIds": [
+        "api-boundary-work-belongs-to-api-contracts"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "developer-tooling"
+      },
+      "userInput": "Use API Contracts in this isolated workspace. Design or revise a persisted JSON and OpenAPI boundary with discriminated variants, typed errors, examples, and validation evidence. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The contract encodes variant and error invariants instead of relying on prose or unconstrained primitives.",
+        "JSON Schema and OpenAPI examples validate with the repository-owned checks.",
+        "The run changes only local source-owned contract material."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "openapi-operations-preserve-request-response-security",
+      "title": "Openapi operations preserve request response security",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "openapi-operations-preserve-request-response-security"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-authoring"
+      },
+      "userInput": "Add an OpenAPI operation with a validated request, discriminated success and failure responses, and explicit security. Preserve existing component ownership and validate valid and invalid examples. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The operation has source-backed request, response, failure, and security contracts.",
+        "Validator-backed examples reject the invalid combinations.",
+        "Do not treat a component-only edit as a complete operation contract.",
+        "Do not allow ambiguous failure strings or permissive extra fields without an intentional extension point."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "openapi-review-requires-validator-evidence",
+      "title": "Openapi review requires validator evidence",
+      "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
+      "routingCaseIds": [
+        "openapi-review-requires-validator-evidence"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-authoring"
+      },
+      "userInput": "Review this OpenAPI specification and rate the operations, schemas, failures, and security boundaries with evidence. Explain the highest priority fixes without changing source. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The rating cites the concrete contract boundaries and observed validator results.",
+        "Recommended fixes follow from the rubric and remain within the read-only scope.",
+        "Do not give an unsupported overall quality score or rewrite the specification during a read-only review.",
+        "Do not treat a passing schema validator as complete runtime or security proof."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "personal-configuration-keeps-authoring-outside",
+      "title": "developer-tooling boundary audit",
+      "purpose": "Check the new installation boundary independently of existing compatibility bundles.",
+      "routingCaseIds": [
+        "personal-configuration-keeps-authoring-outside"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "developer-tooling"
+      },
+      "userInput": "Audit the personal configuration procedure in Developer Tooling. Prove that unrelated agent authoring stays idle and that no automatic hook changes personal state. Use only the supplied disposable fixture. Do not install, publish, push, or modify remote state.",
+      "successChecklist": [
+        "Resolve personal setup and CLI procedures from canonical source.",
+        "Keep unrelated authoring procedures idle for a personal configuration task.",
+        "The source graph and focused composition checks pass.",
+        "The closure includes personal setup management and has no hooks."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "pkl-workflows-do-not-install-automation",
+      "title": "pkl-workflows-do-not-install-automation",
+      "purpose": "Verify the guidance or runtime boundary for an explicit installation choice.",
+      "routingCaseIds": [
+        "pkl-workflows-do-not-install-automation"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "developer-tooling"
+      },
+      "userInput": "Audit Pkl Engineering within Developer Tooling. Prove the bundle has one Pkl procedure and no automatic Pkl hooks. Use only the supplied disposable fixture. Do not install, publish, push, or modify remote state.",
+      "successChecklist": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration.",
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "evaluated-pkl-contract",
+      "title": "Evaluated Pkl contract",
+      "purpose": "Measure whether a Pkl change is evaluated and tested under an explicit capability policy before consumer JSON is rendered.",
+      "routingCaseIds": [
+        "pkl-implementation-proves-evaluated-contract"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "pkl-engineering"
+      },
+      "userInput": "Use Pkl Engineering in this isolated workspace. Change one bounded Pkl configuration contract, evaluate its real entry module under an explicit policy, run focused tests without snapshot updates, and derive the consumer JSON from the typed model. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "successChecklist": [
+        "The real Pkl entry module evaluates under an explicit resource and module policy.",
+        "Focused Pkl tests pass without unreviewed snapshot writes.",
+        "Consumer JSON is rendered from the typed Pkl module and is not hand-edited."
       ]
     }
   ]

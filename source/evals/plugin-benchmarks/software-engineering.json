@@ -223,7 +223,7 @@
         "type": "SKILL",
         "name": "pull-request-lifecycle"
       },
-      "userInput": "Use Software Engineering with Software Engineering to prepare a focused local change, audit scoped staging, and produce a PR and CI handoff plan. Do not commit, push, open or update a PR, arm remote events, or otherwise modify remote state.",
+      "userInput": "Use Software Engineering to prepare a focused local change, audit scoped staging, and produce a PR and CI handoff plan. Do not commit, push, open or update a PR, arm remote events, or otherwise modify remote state.",
       "successChecklist": [
         "The run preserves unrelated work and stages only the requested change set.",
         "The proposed PR handoff includes branch, base, prospective validation commands, and residual risks.",
@@ -259,14 +259,14 @@
       ],
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "delivery-pipeline-design"
+        "name": "github-ci-operations"
       },
       "userInput": "Qualify this installed tool end to end: pin the source and artifact, verify discovery in a fresh client, invoke a known semantic operation, and exercise recovery in the disposable target. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
         "Artifact identity and fresh discovery/invocation evidence refer to the same installed candidate.",
         "Recovery repeats the semantic operation, or the missing recovery evidence remains explicit.",
-        "Claim a fresh-client invocation from an enabled entry or passing unit tests.",
-        "Restart or replace a live installation outside the authorized disposable target."
+        "Do not claim a fresh-client invocation from an enabled entry or passing unit tests.",
+        "Do not restart or replace a live installation outside the authorized disposable target."
       ]
     },
     {
@@ -285,8 +285,8 @@
       "successChecklist": [
         "Paired reports establish workload equivalence before aggregating timings.",
         "The handoff names measured dimensions, exact revisions, samples, and remaining limitations.",
-        "Call fewer rows, incomplete coverage, or a changed query a speed improvement.",
-        "Infer less native work from lower public latency or lessWork=false."
+        "Do not call fewer rows, incomplete coverage, or a changed query a speed improvement.",
+        "Do not infer less native work from lower public latency or lessWork=false."
       ]
     },
     {
@@ -305,8 +305,8 @@
       "successChecklist": [
         "The handoff separates valid repair, local re-review, external review, and exact-head CI proof.",
         "Pending or unavailable external checks remain explicit.",
-        "Implement speculative review advice or merge with required checks pending, cancelled, or stale.",
-        "Reuse a passing check or review from an older PR head."
+        "Do not implement speculative review advice or merge with required checks pending, cancelled, or stale.",
+        "Do not reuse a passing check or review from an older PR head."
       ]
     },
     {

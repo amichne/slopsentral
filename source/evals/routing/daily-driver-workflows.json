@@ -19,7 +19,7 @@
       "prompt": "Continue the active thread goal to refine critical workflows and evals until the additions are ready for production and team sharing.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "define-goal"
+        "name": "tdd"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -371,7 +371,7 @@
       "prompt": "Install or refresh the shared marketplace plugin for my Codex setup, recover from missing plugin manifests, and prove the plugin is installed.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "repository-onboarding"
+        "name": "git-change-flow"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -415,7 +415,7 @@
       "prompt": "Refine this human-facing terminal interface while preserving its command contracts, degraded modes, and explicit product scope.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "terminal-ui-design"
+        "name": "cli-creator"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

@@ -15,15 +15,6 @@
       },
       "path": "skills/code-knowledge-base",
       "name": "code-knowledge-base"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/repository-signature-indexing",
-      "name": "repository-signature-indexing"
     }
   ]
 }

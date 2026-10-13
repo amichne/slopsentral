@@ -54,45 +54,36 @@ Do not replace a real instructional requirement merely to reduce discovery.
 Shared helpers stay in their canonical authored folder; no payload moves or
 second implementations are needed.
 
-## Current Pkl packages
+## Pkl composition
 
-| Package | Contents | Selection |
-| --- | --- | --- |
-| `pkl-workflows` | Four existing Pkl skills | Develop, inspect, and maintain Pkl configuration |
-| `pkl-repository-checks` | Three existing hooks and the `pkl-agent-runtime` resource | Add automatic format, evaluation, and test checks |
+Developer Tooling includes the single Pkl Engineering skill and no automatic Pkl hooks.
+Pkl Engineering owns configuration contracts, tool setup, source evidence, and modeling references.
+Both Pkl profiles now select Software Engineering and Developer Tooling.
+The historical `pkl-checked-repository` identifier no longer selects automatic checks.
 
-`pkl-workflow-default` selects the workflow package with Software Engineering
-for the shared design policy. `pkl-checked-repository` also selects Pkl Repository
-Checks. Evaluation needs explicit modules in `.intelligence/pkl-entrypoints`.
+The three Pkl hooks remain standalone source primitives.
+A repository can compose them explicitly with the `pkl-agent-runtime` resource.
+The focused tests use a disposable composition to prove resource-only delivery.
+They add no wrapper to the shipped marketplace.
 
-The bundled helper is a Python program. The hooks use uv to run locked Python
-scripts. They need a separate Pkl `>=0.31.1,<0.34.0` installation, selected through
-`PKL_BIN` or `PATH`. The package does not install these tools. The repository
-projector needs exactly Pkl 0.32.0.
+The helper is a Python program. The hooks use uv with locked Python scripts.
+The helper needs a separate Pkl `>=0.31.1,<0.34.0` executable through `PKL_BIN` or `PATH`.
+The repository projector needs exactly Pkl 0.32.0.
+Evaluation hooks need explicit modules in `.intelligence/pkl-entrypoints`.
+Hooks skip when their input scope contains no eligible files.
+A skipped hook proves no evaluation or test result.
 
-All checks skip without changed Pkl-owned files. Evaluation skips without
-explicit entrypoints. Testing skips without a `PklProject` or changed
-`.test.pkl` or `_test.pkl` files. Formatting skips without changed `.pkl`
-files or `PklProject`. A skipped hook proves no evaluation or test result.
+## Historical compatibility bundles
 
-Select `pkl-workflows` for Pkl procedures. Add `pkl-repository-checks` for automatic
-checks. Source edits do not migrate installed caches, configuration layers, or
-hook trust.
+The marketplace retired `pkl-configuration`, `pkl-workflows`, and `pkl-repository-checks`.
+Software Engineering supplies the policy from the retired Engineering Excellence plugin.
+The current profiles select the surviving owners and contain no automatic Pkl hooks.
 
-The Pkl hooks depend on the executable resource. The workflow package supplies
-the skill procedures.
-
-## Historical compatibility bundle
-
-The former `pkl-configuration` bundle combined the four skills and three hooks.
-The initial Pkl split kept that coverage across two packages. The marketplace
-later retired `pkl-configuration` and the separate Engineering Excellence plugin.
-The current packages and profiles listed here replace those selections.
 
 ## Evidence and limits
 
-Both provider projections preserve the executable's bytes and mode. The checks
-package contains no skill entry point; the workflow package declares no hooks.
+Both provider projections preserve the executable's bytes and mode. The disposable runtime-only
+fixture contains no skill entry point. Developer Tooling declares no hooks.
 Tests execute each projected evaluation hook command against actual Pkl:
 a valid module completes, a type error fails, and a missing helper fails.
 Failure output is bounded and excludes the fixture's private source text.
@@ -117,4 +108,4 @@ Then run both fresh provider projections and the required repository checks.
 Other workflow/integration splits can reuse this boundary after their actual
 runtime dependencies have been traced. See the
 [redesign direction](skill-plugin-reassessment.md) and
-[migration ledger](../source/MIGRATION.md#pkl-workflow-and-resource-pilot).
+[migration ledger](../source/MIGRATION.md#plugin-replacements).

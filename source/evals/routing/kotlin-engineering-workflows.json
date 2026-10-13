@@ -19,7 +19,7 @@
       "prompt": "Change a Kotlin API so invalid raw string state is no longer representable, find all callers safely, and prove the owning Gradle tests still pass.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "kotlin-agentic-correctness"
+        "name": "kotlin-design-practices"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -152,7 +152,7 @@
       "prompt": "Implement a behavior change in this multi-module Kotlin repository. Preserve proof-carrying validation across callers, keep implementation bindings out of pure modules, maintain scoped AGENTS.md guidance, and run one stable focused check RED and GREEN before widening verification to affected consumers and the installed public artifact. Do not create turn-local workflow files when repository-native tests and reports suffice.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "kotlin-agentic-correctness"
+        "name": "kotlin-design-practices"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

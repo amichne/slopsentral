@@ -10,7 +10,6 @@ const catalog = loadCatalog(root);
 const bundles = {
   'software-engineering': ['agent-execution', 'engineering-design'],
   'kotlin-engineering': ['kotlin-engineering'],
-  'api-contracts': ['api-contract-design'],
 };
 
 for (const [name, instructions] of Object.entries(bundles)) {
@@ -60,4 +59,21 @@ test('native startup trace contains the complete canonical policy as developer c
     const text = fs.readFileSync(path.join(root, 'source/instructions', `${id}.md`), 'utf8').trim();
     assert.ok(developer.some(message => message.includes(text)), `${id} must be delivered before claiming native loading`);
   }
+});
+
+// API context stays an explicit standalone primitive after its plugin retires.
+test('standalone API policy preserves the complete output contract', () => {
+  const metadata = catalog.definitions.get('HOOK/api-contracts-context');
+  assert.deepEqual(metadata.dependsOn.map(ref => ref.name), ['api-contract-design']);
+  const config = JSON.parse(fs.readFileSync(path.join(root, 'source', metadata.path)));
+  const command = config.hooks.SessionStart[0].hooks[0].command;
+  const result = spawnSync('bash', ['-c', command], {
+    cwd: path.join(root, 'source'), env: { ...process.env, PLUGIN_ROOT: path.join(root, 'source') },
+    input: JSON.stringify({ hook_event_name: 'SessionStart', source: 'startup', session_id: 'standalone-policy-test' }), encoding: 'utf8',
+  });
+  assert.equal(result.status, 0, result.stderr);
+  const output = JSON.parse(result.stdout);
+  assert.ok(output.hookSpecificOutput.additionalContext.includes(
+    fs.readFileSync(path.join(root, 'source/instructions/api-contract-design.md'), 'utf8').trim()));
+  assert.ok(catalog.plugins.every(plugin => !plugin.hooks.some(ref => ref.name === 'api-contracts-context')));
 });

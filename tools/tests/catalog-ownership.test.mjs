@@ -43,10 +43,10 @@ test('accepts cross-plugin reuse through a hook dependency', t => {
 
 test('accepts canonical agent reuse in a profile', t => {
   checks(t, edit => {
-    edit('source/plugins/developer-tooling/plugin.json', plugin => {
+    edit('source/plugins/repository-knowledge/plugin.json', plugin => {
       plugin.agents.push({ type: 'AGENT', name: 'schema-type-enforcer', path: 'agents/schema-type-enforcer.agent.md', source: { type: 'LOCAL_SOURCE', path: './' } });
     });
-    edit('source/profiles/agent-authoring-default.json', profile => profile.plugins.push('api-contracts'));
+    edit('source/profiles/agent-authoring-default.json', profile => profile.plugins.push('repository-knowledge'));
   });
 });
 
@@ -58,6 +58,9 @@ test('hooks can be reused across alternative bundles', t => {
 
 test('rejects duplicate hook activation in a profile', t => {
   rejects(t, edit => {
+    edit('source/plugins/developer-tooling/plugin.json', plugin => {
+      plugin.hooks.push({ type: 'HOOK', name: 'source-graph-valid', path: 'hooks/source-graph-valid.hook.json', source: { type: 'LOCAL_SOURCE', path: './' } });
+    });
     edit('source/plugins/repository-knowledge/plugin.json', plugin => {
       plugin.hooks.push({ type: 'HOOK', name: 'source-graph-valid', path: 'hooks/source-graph-valid.hook.json', source: { type: 'LOCAL_SOURCE', path: './' } });
     });

@@ -63,10 +63,10 @@ Codex's runtime-owned hook trust state. Review and trust non-managed hooks in
 Codex with `/hooks`. When Codex appends `[hooks.state]` to a managed profile
 overlay, later lifecycle operations preserve that section byte-for-byte.
 
-`required-skill-read` is packaged only by the opt-in `skill-read-policy` plugin.
-No authored default profile selects that plugin. The default engineering and
-Kotlin plugins install concise instruction files once instead of launching
-concept-injection processes at session lifecycle events.
+`required-skill-read` remains a standalone primitive for explicit custom compositions.
+No shipped plugin or default profile selects it.
+Software Engineering and Kotlin Engineering inject their concise policies through context hooks at startup, resume, clear, and compact.
+The host owns trust and context consumption.
 
 ## Profile Contract
 

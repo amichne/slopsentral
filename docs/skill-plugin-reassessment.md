@@ -1,3 +1,5 @@
+> Historical proposal from 2026-10-10. The [current migration map](../source/MIGRATION.md) supersedes its plugin selections.
+
 # Reassessing Slopsentral skills and plugins
 
 Date: 2026-10-10. Status: direction adopted; two source implementation slices.

@@ -18,7 +18,7 @@ Start here for typed design, invariant decomposition, Python automation, testing
 
 Outside this plugin: Language and platform syntax beyond the shared baseline; add the relevant specialty.
 
-**Skills:** [bounded-delegation](skills/bounded-delegation/SKILL.md), [define-goal](skills/define-goal/SKILL.md), [delivery-pipeline-design](skills/delivery-pipeline-design/SKILL.md), [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [python-tooling](skills/python-tooling/SKILL.md), [repository-onboarding](skills/repository-onboarding/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [tdd](skills/tdd/SKILL.md), [validation-first](skills/validation-first/SKILL.md).
+**Skills:** [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [python-tooling](skills/python-tooling/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [tdd](skills/tdd/SKILL.md).
 
 **Hooks:** [software-engineering-context](hooks/software-engineering-context.hook.json).
 
@@ -26,31 +26,17 @@ Outside this plugin: Language and platform syntax beyond the shared baseline; ad
 
 ## Specialties
 
-### api-contracts
-
-Author and review OpenAPI specifications and JSON Schema contracts.
-
-Choose for OpenAPI and JSON Schema models, operations, examples, compatibility, and contract review.
-
-Outside this plugin: Application implementation, repository indexes, and general technical prose.
-
-**Skills:** [manage-json-schemas](skills/manage-json-schemas/SKILL.md), [openapi-contract-authoring](skills/openapi-contract-authoring/SKILL.md), [openapi-contract-rating](skills/openapi-contract-rating/SKILL.md), [openapi-schema-modeling](skills/openapi-schema-modeling/SKILL.md).
-
-**Agents:** [openapi-contract-rater](agents/openapi/openapi-contract-rater.agent.md), [schema-type-enforcer](agents/schema-type-enforcer.agent.md).
-
-**Hooks:** [api-contracts-context](hooks/api-contracts-context.hook.json).
-
-**Instructions:** [api-contract-design](instructions/api-contract-design.md).
-
 ### developer-tooling
 
-Build typed Python CLIs, terminal interfaces, and reusable agent resources.
+Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.
 
-Build typed Python CLIs, terminal interfaces, and reusable agent resources.
+Use for a requested tool, contract, agent resource, or configuration change.
 
-Outside this plugin: Personal dotfiles maintenance, application implementation, automatic setup, or publication.
+Outside this plugin: Automatic source checks, skill-read policy, or unrequested personal configuration changes.
 
-**Skills:** [agent-profile-authoring](skills/agent-profile-authoring/SKILL.md), [cli-creator](skills/cli-creator/SKILL.md), [hook-primitive-authoring](skills/hook-primitive-authoring/SKILL.md), [manage-json-schemas](skills/manage-json-schemas/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [primitive-routing-evaluation](skills/primitive-routing-evaluation/SKILL.md), [python-tooling](skills/python-tooling/SKILL.md), [repo-instruction-topology](skills/repo-instruction-topology/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md), [terminal-ui-design](skills/terminal-ui-design/SKILL.md).
+**Skills:** [cli-creator](skills/cli-creator/SKILL.md), [manage-json-schemas](skills/manage-json-schemas/SKILL.md), [openapi-contract-authoring](skills/openapi-contract-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md), [pkl-engineering](skills/pkl-engineering/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [python-tooling](skills/python-tooling/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md).
+
+**Agents:** [openapi-contract-rater](agents/openapi/openapi-contract-rater.agent.md), [schema-type-enforcer](agents/schema-type-enforcer.agent.md).
 
 ### intellij-plugin-development
 
@@ -60,7 +46,7 @@ Choose for IntelliJ plugin lifecycle, PSI, indexing, integrations, tests, and ID
 
 Outside this plugin: General Kotlin design and everyday Git, PR, or CI workflows.
 
-**Skills:** [ide-diagnostics-mcp](skills/ide-diagnostics-mcp/SKILL.md), [intellij-platform-integrations](skills/intellij-platform-integrations/SKILL.md), [intellij-platform-testing](skills/intellij-platform-testing/SKILL.md), [intellij-plugin-delivery](skills/intellij-plugin-delivery/SKILL.md), [intellij-psi-indexing](skills/intellij-psi-indexing/SKILL.md).
+**Skills:** [intellij-platform-testing](skills/intellij-platform-testing/SKILL.md), [intellij-plugin-delivery](skills/intellij-plugin-delivery/SKILL.md), [intellij-psi-indexing](skills/intellij-psi-indexing/SKILL.md).
 
 ### kotlin-engineering
 
@@ -70,31 +56,11 @@ Choose for Kotlin invariants, API design, libraries, observability, review, Grad
 
 Outside this plugin: Everyday Git and hosted delivery, shell integration, and IntelliJ-specific plugin mechanics.
 
-**Skills:** [gradle-performance-engineering](skills/gradle-performance-engineering/SKILL.md), [kotlin-agentic-correctness](skills/kotlin-agentic-correctness/SKILL.md), [kotlin-api-surface-design](skills/kotlin-api-surface-design/SKILL.md), [kotlin-application-stack](skills/kotlin-application-stack/SKILL.md), [kotlin-branching](skills/kotlin-branching/SKILL.md), [kotlin-design-practices](skills/kotlin-design-practices/SKILL.md), [kotlin-gradle-validation](skills/kotlin-gradle-validation/SKILL.md), [kotlin-observability-design](skills/kotlin-observability-design/SKILL.md), [kotlin-review](skills/kotlin-review/SKILL.md), [negative-capability-proof](skills/negative-capability-proof/SKILL.md).
+**Skills:** [gradle-performance-engineering](skills/gradle-performance-engineering/SKILL.md), [kotlin-application-stack](skills/kotlin-application-stack/SKILL.md), [kotlin-design-practices](skills/kotlin-design-practices/SKILL.md), [kotlin-gradle-validation](skills/kotlin-gradle-validation/SKILL.md), [kotlin-review](skills/kotlin-review/SKILL.md), [negative-capability-proof](skills/negative-capability-proof/SKILL.md).
 
 **Hooks:** [gradle-check-green](hooks/gradle-check-green.hook.json), [gradle-wrapper-integrity](hooks/gradle-wrapper-integrity.hook.json), [kotlin-engineering-context](hooks/kotlin-engineering-context.hook.json), [kotlin-horizontalization-check](hooks/kotlin-horizontalization-check.hook.json).
 
 **Instructions:** [kotlin-engineering](instructions/kotlin-engineering.md).
-
-### personal-configuration
-
-Manage personal configuration and uv-managed Python utilities.
-
-Manage personal configuration and uv-managed Python utilities.
-
-Outside this plugin: General CLI products, plugin authoring, application work, or automatic installation.
-
-**Skills:** [personal-cli-authoring](skills/personal-cli-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md), [python-tooling](skills/python-tooling/SKILL.md).
-
-### pkl-workflows
-
-Model, evaluate, format, and maintain Pkl configuration through explicit task workflows.
-
-Choose Pkl task guidance.
-
-Outside this plugin: Automatic host checks or installing tooling without authorization.
-
-**Skills:** [pkl-engineering](skills/pkl-engineering/SKILL.md), [pkl-pattern-catalogs](skills/pkl-pattern-catalogs/SKILL.md), [pkl-specification](skills/pkl-specification/SKILL.md), [pkl-tooling-setup](skills/pkl-tooling-setup/SKILL.md).
 
 ### repository-knowledge
 
@@ -104,49 +70,17 @@ Choose for technical prose, documentation sites, source-backed knowledge, naviga
 
 Outside this plugin: Automatic knowledge generation during ordinary code tasks or treating documentation as source authority.
 
-**Skills:** [code-knowledge-base](skills/code-knowledge-base/SKILL.md), [controlled-technical-writing](skills/controlled-technical-writing/SKILL.md), [local-repository-navigation](skills/local-repository-navigation/SKILL.md), [reference-doc-workflow](skills/reference-doc-workflow/SKILL.md), [repository-signature-indexing](skills/repository-signature-indexing/SKILL.md), [site-docs-authoring](skills/site-docs-authoring/SKILL.md), [technical-documentation](skills/technical-documentation/SKILL.md).
+**Skills:** [code-knowledge-base](skills/code-knowledge-base/SKILL.md), [controlled-technical-writing](skills/controlled-technical-writing/SKILL.md), [local-repository-navigation](skills/local-repository-navigation/SKILL.md), [technical-documentation](skills/technical-documentation/SKILL.md).
 
 **Hooks:** [code-knowledge-drift](hooks/code-knowledge-drift.hook.json), [knowledge-overlay](hooks/knowledge-overlay.hook.json).
 
 ## Advanced repository policy
 
-### pkl-repository-checks
-
-Run explicitly selected Pkl format, evaluation, and test hooks without advertising workflow skills.
-
-Choose automatic Pkl checks for a repository with explicit check configuration.
-
-Outside this plugin: Pkl task guidance, automatic tool installation, or silently inferred evaluation entrypoints.
-
-**Hooks:** [pkl-evaluate-check](hooks/pkl-evaluate-check.hook.json), [pkl-format-check](hooks/pkl-format-check.hook.json), [pkl-test-check](hooks/pkl-test-check.hook.json).
-
-**Resources:** [pkl-agent-runtime](skills/pkl-engineering/scripts/pkl_agent).
-
-### repository-source-checks
-
-Run explicit repository source-graph checks through supported host events.
-
-Opt in to source-graph validation on supported local host events.
-
-Outside this plugin: Portable writing or tool-authoring guidance, automatic installation, or unrelated repository checks.
-
-**Hooks:** [source-graph-valid](hooks/source-graph-valid.hook.json).
-
-### skill-read-policy
-
-Advanced: enforce repository-declared required skill reads.
-
-Opt in only when a repository explicitly requires skill-read policy enforcement.
-
-Outside this plugin: Everyday engineering, default setup, and general skill discovery.
-
-**Hooks:** [required-skill-read](hooks/required-skill-read.hook.json).
-
 ## Profiles
 
-- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + developer-tooling + personal-configuration + repository-source-checks. 697 instruction words.
+- [agent-authoring-default](profiles/agent-authoring-default.json): software-engineering + developer-tooling. 697 instruction words.
 
-- [developer-tooling-default](profiles/developer-tooling-default.json): software-engineering + developer-tooling + repository-source-checks. 697 instruction words.
+- [developer-tooling-default](profiles/developer-tooling-default.json): software-engineering + developer-tooling. 697 instruction words.
 
 - [documentation-default](profiles/documentation-default.json): repository-knowledge. 0 instruction words.
 
@@ -156,11 +90,11 @@ Outside this plugin: Everyday engineering, default setup, and general skill disc
 
 - [local-development-default](profiles/local-development-default.json): software-engineering. 697 instruction words.
 
-- [personal-configuration-default](profiles/personal-configuration-default.json): personal-configuration. 0 instruction words.
+- [personal-configuration-default](profiles/personal-configuration-default.json): developer-tooling. 0 instruction words.
 
-- [pkl-checked-repository](profiles/pkl-checked-repository.json): software-engineering + pkl-workflows + pkl-repository-checks. 697 instruction words.
+- [pkl-checked-repository](profiles/pkl-checked-repository.json): software-engineering + developer-tooling. 697 instruction words.
 
-- [pkl-workflow-default](profiles/pkl-workflow-default.json): software-engineering + pkl-workflows. 697 instruction words.
+- [pkl-workflow-default](profiles/pkl-workflow-default.json): software-engineering + developer-tooling. 697 instruction words.
 
 ## Reused assets
 
@@ -169,14 +103,13 @@ Profiles may share skills, agents, and instructions. Select each hook through on
 
 | Asset | Composed by |
 | --- | --- |
-| [SKILL/manage-json-schemas](skills/manage-json-schemas/SKILL.md) | api-contracts, developer-tooling |
-| [SKILL/python-tooling](skills/python-tooling/SKILL.md) | developer-tooling, personal-configuration, software-engineering |
+| [SKILL/python-tooling](skills/python-tooling/SKILL.md) | developer-tooling, software-engineering |
 
 ## Standalone skills
 
 Advanced alternatives outside the plugin chooser. They require explicit standalone setup; normal plugin selection does not depend on installing individual skills.
 
-[agents-sdk](skills/agents-sdk/SKILL.md), [frontend-design](skills/frontend-design/SKILL.md), [grill-me-with-docs](skills/grill-me-with-docs/SKILL.md), [migrate-to-codex](skills/migrate-to-codex/SKILL.md), [react-best-practices](skills/react-best-practices/SKILL.md), [refactor](skills/refactor/SKILL.md), [stripe-best-practices](skills/stripe-best-practices/SKILL.md), [workflow](skills/workflow/SKILL.md).
+.
 
 ## Evidence
 

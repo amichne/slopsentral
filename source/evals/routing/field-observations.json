@@ -51,7 +51,7 @@
       "caseId": "plugin-install-recovery-proves-installed-state",
       "capturedAt": "2026-06-22",
       "sourceType": "RUNTIME_VERIFICATION",
-      "outcome": "PASS",
+      "outcome": "NEEDS_REPLAY_CASE",
       "evidenceRefs": [
         "codex plugin list reported kotlin-engineering@slopsentral installed and enabled."
       ],
@@ -59,11 +59,12 @@
         "type": "USEFUL_OUTCOME",
         "summary": "Provider-visible installed-state evidence was captured without editing installed caches or generated provider output."
       },
-      "followUpAction": "Repeat the installed-state check in each target team environment before treating rollout as complete.",
+      "followUpAction": "Run the current case against the replacement skill. Keep the historical route and evidence unchanged.",
       "limitations": [
         "This does not prove the installed cache contains this branch head.",
         "This observation is local to one Codex environment.",
-        "Historical summary was retained; raw activation trace, model, host version, and exact plugin revision were not verified in this record."
+        "Historical summary was retained; raw activation trace, model, host version, and exact plugin revision were not verified in this record.",
+        "The historical route passed its original contract. Its skill retired on 2026-10-12. The replacement route needs a fresh replay."
       ],
       "route": {
         "type": "PRIMITIVE_ROUTE",
@@ -307,7 +308,7 @@
       "caseId": "intellij-live-freeze-uses-diagnostics-mcp-before-profiler",
       "capturedAt": "2026-10-02",
       "sourceType": "LIVE_SESSION",
-      "outcome": "PASS",
+      "outcome": "NEEDS_REPLAY_CASE",
       "route": {
         "type": "PRIMITIVE_ROUTE",
         "primitive": {
@@ -324,11 +325,12 @@
         "type": "USEFUL_OUTCOME",
         "summary": "102 installed-candidate query attempts retained successful reads and pagination as well as an epoch invalidation and a 1-second budget taking 3.47 seconds natively."
       },
-      "followUpAction": "Replay the maintained complete-flow scenario at a pinned revision; retain the historical result and qualify each missing obligation independently.",
+      "followUpAction": "Run the current case against the replacement skill. Keep the historical route and evidence unchanged.",
       "limitations": [
         "The epoch trigger remained unresolved; startup/indexing and a launch log overlapped.",
         "The native traversal budget overrun remained unresolved.",
-        "Skill-read evidence proves loading, not procedural compliance. Exact host advertised skill list and source revision of the cached plugin were not retained; no numeric cap attribution is supported."
+        "Skill-read evidence proves loading, not procedural compliance. Exact host advertised skill list and source revision of the cached plugin were not retained; no numeric cap attribution is supported.",
+        "The historical route passed its original contract. Its skill retired on 2026-10-12. The replacement route needs a fresh replay."
       ],
       "activationEvidence": {
         "type": "TOOL_TRACE",

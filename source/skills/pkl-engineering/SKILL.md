@@ -9,10 +9,8 @@ Treat Pkl as an evaluated configuration contract. Put invariants in Pkl types,
 constraints, and amendment boundaries; then prove them by evaluating the real
 entry modules and running their tests.
 
-Honor the `type-safety` semantic context when the host supplies it. This skill
-owns Pkl-specific realization through closed
-classes, literal unions, constrained aliases, typed amendments, evaluation, and
-explicit evaluator capabilities; it does not redefine the cross-language rules.
+Honor the `type-safety` semantic context when the host supplies it. This skill owns Pkl classes, literal unions, constrained aliases, typed amendments, and evaluation.
+The shared policy owns cross-language rules. Evaluator capabilities remain explicit.
 
 ## Start From Live State
 
@@ -103,3 +101,15 @@ Pkl boundaries rather than hidden façade behavior.
   corresponding façade result.
 - No secret, environment resource, remote module, external reader, command
   write, or package publication capability is enabled implicitly.
+
+## Setup, source evidence, and patterns
+
+For CLI or editor setup, read [installation and LSP](references/installation-and-lsp.md).
+Run `uv run --locked --script scripts/pkl_tooling --workspace PATH capabilities` from this skill directory.
+For renderers and generators, read [tooling capabilities](references/tooling-capabilities.md).
+For schemas and external inputs, read [specification and resources](references/specification-and-resources.md).
+For source research, read [the official source map](references/official-source-map.md).
+Use `scripts/pkl_sources` for explicit source synchronization and immutable indexing.
+For modeling choices, read [best practices](references/best-practices.md).
+For specialized evaluator capabilities, read [advanced patterns](references/advanced-patterns.md).
+Each real entry module must evaluate under explicit capabilities. Neither formatting nor source indexing proves runtime correctness.

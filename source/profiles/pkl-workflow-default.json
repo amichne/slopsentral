@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "pkl-workflow-default",
-  "description": "Pkl task workflows with engineering guidance and no Pkl event checks.",
+  "description": "Pkl contracts and tool guidance without automatic Pkl hooks.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -15,7 +15,7 @@
   ],
   "plugins": [
     "software-engineering",
-    "pkl-workflows"
+    "developer-tooling"
   ],
   "standaloneSkills": [],
   "hookPolicy": {

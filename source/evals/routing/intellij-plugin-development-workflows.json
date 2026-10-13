@@ -200,7 +200,7 @@
       "prompt": "Diagnose which running IntelliJ thread causes a repeatable CPU spike during completion, then plan one bounded method trace.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "ide-diagnostics-mcp"
+        "name": "intellij-platform-testing"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -285,7 +285,7 @@
       "prompt": "Implement idempotent External System project import plus execution of one discovered external task.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-platform-integrations"
+        "name": "intellij-plugin-delivery"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

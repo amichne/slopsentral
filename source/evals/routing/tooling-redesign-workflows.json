@@ -10,13 +10,13 @@
       "type": "COVERAGE_GAP",
       "source": {
         "type": "CURRENT_SOURCE",
-        "capturedAt": "2026-10-10",
+        "capturedAt": "2026-10-12",
         "evidenceRefs": [
           "source/plugins/developer-tooling/plugin.json",
-          "docs/skill-plugin-reassessment.md"
+          "source/MIGRATION.md"
         ]
       },
-      "prompt": "Audit the Developer Tooling composition. Prove it exposes general CLI and agent workflow authoring without personal dotfiles installation, hooks, or MCP connections.",
+      "prompt": "Audit Developer Tooling. Prove its tool and configuration procedures remain task-selected and install no automatic hooks or MCP connections.",
       "expectedPrimitive": {
         "type": "PLUGIN",
         "name": "developer-tooling"
@@ -28,8 +28,8 @@
         "loadedPrimitives": []
       },
       "allowedActions": [
-        "Resolve all canonical skill references in Developer Tooling.",
-        "Keep personal setup management and automatic integrations outside this package."
+        "Resolve each canonical skill and agent reference in Developer Tooling.",
+        "Keep personal configuration changes subject to the requested task scope."
       ],
       "forbiddenActions": [
         "Patch generated provider output by hand.",
@@ -49,16 +49,16 @@
       "type": "COVERAGE_GAP",
       "source": {
         "type": "CURRENT_SOURCE",
-        "capturedAt": "2026-10-10",
+        "capturedAt": "2026-10-12",
         "evidenceRefs": [
-          "source/plugins/personal-configuration/plugin.json",
-          "docs/skill-plugin-reassessment.md"
+          "source/plugins/developer-tooling/plugin.json",
+          "source/MIGRATION.md"
         ]
       },
-      "prompt": "Audit Personal Configuration. Prove it exposes personal setup and shell workflows without installing general agent authoring or automatic source checks.",
+      "prompt": "Audit the personal configuration procedure in Developer Tooling. Prove that unrelated agent authoring stays idle and that no automatic hook changes personal state.",
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "personal-configuration"
+        "name": "developer-tooling"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -67,8 +67,8 @@
         "loadedPrimitives": []
       },
       "allowedActions": [
-        "Resolve personal setup and CLI skills from canonical source.",
-        "Keep general plugin authoring and automatic integrations outside this package."
+        "Resolve personal setup and CLI procedures from canonical source.",
+        "Keep unrelated authoring procedures idle for a personal configuration task."
       ],
       "forbiddenActions": [
         "Patch generated provider output by hand.",
@@ -88,13 +88,13 @@
       "type": "COVERAGE_GAP",
       "source": {
         "type": "CURRENT_SOURCE",
-        "capturedAt": "2026-10-10",
+        "capturedAt": "2026-10-12",
         "evidenceRefs": [
-          "source/plugins/repository-source-checks/plugin.json",
-          "docs/skill-plugin-reassessment.md"
+          "source/hooks/source-graph-valid.hook.json",
+          "docs/workflow-resources.md"
         ]
       },
-      "prompt": "Audit Repository Source Checks. Prove it packages the source-graph hook without advertising authoring skills as runtime dependencies.",
+      "prompt": "Audit the standalone source-graph hook. Prove a disposable custom composition carries the runtime without unrelated authoring skills.",
       "expectedPrimitive": {
         "type": "HOOK",
         "name": "source-graph-valid"
@@ -106,8 +106,8 @@
         "loadedPrimitives": []
       },
       "allowedActions": [
-        "Select the source hook explicitly through one profile closure.",
-        "Preserve the existing source validation and Stop output adapters."
+        "Compose the source hook explicitly in one disposable test bundle.",
+        "Preserve the source validator and Stop output adapter."
       ],
       "forbiddenActions": [
         "Patch generated provider output by hand.",

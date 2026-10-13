@@ -64,7 +64,7 @@
       "prompt": "Set up Pkl and the LSP for this repository in VS Code, then explain the available JSON/YAML rendering and build tooling.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "pkl-tooling-setup"
+        "name": "pkl-engineering"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -109,7 +109,7 @@
       "prompt": "Specify a Pkl model that reads external YAML resources, emits JSON, and tell me which official repositories define the relevant APIs and examples.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "pkl-specification"
+        "name": "pkl-engineering"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -154,7 +154,7 @@
       "prompt": "Which Pkl pattern should I use for a package API with extension points, multiple output files, and a custom renderer?",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "pkl-pattern-catalogs"
+        "name": "pkl-engineering"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

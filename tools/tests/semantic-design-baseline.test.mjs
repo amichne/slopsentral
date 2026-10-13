@@ -64,7 +64,11 @@ test("semantic concepts stay deferred while hooks reference concise canonical in
     "agent-execution", "engineering-design",
   ]);
   assert.deepEqual(instructions("kotlin-engineering").map(({ name }) => name), ["kotlin-engineering"]);
-  assert.deepEqual(instructions("api-contracts").map(({ name }) => name), ["api-contract-design"]);
+  assert.deepEqual(instructions("developer-tooling"), []);
+  assert.equal(
+    primitiveByName(plugin("developer-tooling").skills, "openapi-contract-authoring")?.path,
+    "skills/openapi-contract-authoring",
+  );
 
   const typeSafetyWords = read("source/concepts/type-safety/core.md").split(/\s+/u).length;
   assert.ok(typeSafetyWords <= 1000, `type-safety must stay compact; found ${typeSafetyWords} words`);
@@ -85,7 +89,7 @@ test("non-concept instructions have one install owner and a bounded baseline", (
   assert.deepEqual(owners.get("agent-execution"), ["software-engineering"]);
   assert.deepEqual(owners.get("engineering-design"), ["software-engineering"]);
   assert.deepEqual(owners.get("kotlin-engineering"), ["kotlin-engineering"]);
-  assert.deepEqual(owners.get("api-contract-design"), ["api-contracts"]);
+  assert.equal(owners.has("api-contract-design"), false);
   assert.ok([...owners.values()].every(values => values.length === 1));
   const baselineWords = instructions("software-engineering").reduce((count, ref) =>
     count + read(`source/${ref.path}`).trim().split(/\s+/u).length, 0);
@@ -161,7 +165,7 @@ test("semantic ratchet detail is selectively routed through addressable referenc
 });
 
 test("Kotlin semantic routing stays external-tool neutral", () => {
-  const correctness = read("source/skills/kotlin-agentic-correctness/SKILL.md");
+  const correctness = read("source/skills/kotlin-design-practices/SKILL.md");
   const routing = read("source/evals/routing/kotlin-engineering-workflows.json");
 
   assert.doesNotMatch(correctness, /\bkast\b/i);

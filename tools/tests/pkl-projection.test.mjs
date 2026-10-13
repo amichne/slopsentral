@@ -13,6 +13,14 @@ import { loadCatalog, pluginClosure } from '../catalog.mjs';
 const root = path.resolve(import.meta.dirname, '../..');
 const pkl = process.env.PKL_BIN;
 const native = { skip: !pkl };
+const compatibilityBaselines = [
+  // PROVENANCE.md names the original source. The first fixture commit preserves those exact provider bytes.
+  { name: 'original provider compatibility', sourceRevision: '33b2581eb6758bd39f2b51e4b6b517e79d402da7',
+    fixtureRevision: 'c1409b05191c20e110e978844e8919bf6a4b9e25' },
+  // The uv migration changed the checked-in fixture bytes without updating PROVENANCE.md.
+  { name: 'uv provider regression', sourceRevision: '774716ce2cdee28133d463ae865f4c67bef68fb4',
+    fixtureRevision: '774716ce2cdee28133d463ae865f4c67bef68fb4' },
+];
 function temporary(t) {
   const dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'slopsentral projection ')));
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
@@ -31,7 +39,7 @@ function checksum(files, prefix) {
 }
 
 for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot', '.github/plugin']]) {
-  test(`${harness}: complete deterministic projection, source bytes, modes, and provider compatibility`, native, t => {
+  test(`${harness}: complete deterministic current projection, source bytes, modes, and digests`, native, t => {
     const dir = temporary(t);
     const first = project({ source: root, harness, out: path.join(dir, 'first'), pkl });
     const second = project({ source: root, harness, out: path.join(dir, 'second'), pkl });
@@ -49,12 +57,59 @@ for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot'
         assert.deepEqual(files.get(prefix + '/' + plugin.name + '/skills/' + ref.name + '/' + name), file);
       }
     }
-    for (const [key, value] of tree(path.join(root, 'tools/tests/fixtures/projection-v1', harness)))
-      assert.deepEqual(files.get(key)?.bytes, value.bytes, `pinned provider compatibility: ${key}`);
     if (harness === 'codex') {
       const lock = JSON.parse(files.get(prefix + '/marketplace-lock.json').bytes);
       for (const plugin of lock.plugins) for (const ref of plugin.references)
         assert.equal(ref.sha256, checksum(files, prefix + '/' + plugin.name + '/' + ref.targetPath));
+    }
+  });
+  for (const baseline of compatibilityBaselines) test(`${harness}: ${baseline.name} from pinned source and fixtures`, native, t => {
+    const dir = temporary(t);
+    const repo = path.join(dir, 'historical-source');
+    fs.mkdirSync(repo);
+    const archive = execFileSync('git', ['archive', '--format=tar', baseline.sourceRevision, '--', 'source', 'tools'],
+      { cwd: root, maxBuffer: 32 * 1024 * 1024 });
+    execFileSync('tar', ['-xf', '-', '-C', repo], { input: archive });
+    execFileSync('git', ['init', '-q'], { cwd: repo });
+    execFileSync('git', ['fetch', '--quiet', '--no-tags', '--depth=1', root, baseline.sourceRevision], { cwd: repo });
+    execFileSync('git', ['update-ref', 'HEAD', baseline.sourceRevision], { cwd: repo });
+    assert.equal(execFileSync('git', ['rev-parse', 'HEAD'], { cwd: repo, encoding: 'utf8' }).trim(), baseline.sourceRevision);
+    // Historical source uses its original policy gate. Current uv policy intentionally rejects its old hook commands.
+    // Keep runtime schemas separate so the archived source remains unchanged.
+    const runtime = path.join(dir, 'current-projector');
+    fs.mkdirSync(path.join(runtime, 'source'), { recursive: true });
+    fs.cpSync(path.join(repo, 'tools'), path.join(runtime, 'tools'), { recursive: true });
+    fs.cpSync(path.join(repo, 'source/schemas'), path.join(runtime, 'source/schemas'), { recursive: true });
+    fs.symlinkSync(path.join(root, 'node_modules'), path.join(runtime, 'node_modules'), 'dir');
+    // Copy the current projector unchanged so this proves current mapping compatibility, not an old projector replay.
+    for (const name of ['project-marketplaces.mjs', 'catalog.mjs', 'resource-contract.mjs'])
+      fs.copyFileSync(path.join(root, 'tools', name), path.join(runtime, 'tools', name));
+    fs.cpSync(path.join(root, 'tools/projection'), path.join(runtime, 'tools/projection'), { recursive: true });
+    fs.mkdirSync(path.join(runtime, 'source/schemas/primitives'), { recursive: true });
+    fs.copyFileSync(path.join(root, 'source/schemas/primitives/resource-reference.schema.json'),
+      path.join(runtime, 'source/schemas/primitives/resource-reference.schema.json'));
+    const sourceCheck = spawnSync(process.execPath, [path.join(runtime, 'tools/validate-source-graph.mjs'), '--repo', repo], { encoding: 'utf8' });
+    assert.equal(sourceCheck.status, 0, sourceCheck.stdout + sourceCheck.stderr);
+    const output = execFileSync(process.execPath, [path.join(runtime, 'tools/project-marketplaces.mjs'),
+      '--source', repo, '--harness', harness, '--out', path.join(dir, 'historical-projection'), '--pkl-bin', pkl],
+      { encoding: 'utf8', maxBuffer: 4 * 1024 * 1024 });
+    const result = JSON.parse(output);
+    assert.equal(result.type, 'PROJECTED');
+    const files = tree(result.out);
+    const fixtureRepo = path.join(dir, 'pinned-fixtures');
+    fs.mkdirSync(fixtureRepo);
+    const fixturePath = 'tools/tests/fixtures/projection-v1/' + harness;
+    const fixtureArchive = execFileSync('git', ['archive', '--format=tar', baseline.fixtureRevision, '--', fixturePath],
+      { cwd: root, maxBuffer: 4 * 1024 * 1024 });
+    execFileSync('tar', ['-xf', '-', '-C', fixtureRepo], { input: fixtureArchive });
+    const expected = tree(path.join(fixtureRepo, fixturePath));
+    if (baseline.name === 'uv provider regression') {
+      assert.deepEqual(tree(path.join(root, fixturePath)), expected, 'checked-in uv fixtures must preserve their pinned bytes and modes');
+    }
+    assert.ok(expected.size > 0, 'historical compatibility must compare actual fixtures');
+    for (const [key, value] of expected) {
+      assert.ok(files.has(key), `historical projection must include ${key}`);
+      assert.deepEqual(files.get(key).bytes, value.bytes, `pinned provider compatibility: ${key}`);
     }
   });
 }

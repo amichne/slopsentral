@@ -36,8 +36,10 @@ test("every authored hook has a canonical marketplace identity", () => {
   }
 });
 
-test("source graph automation is selectable apart from authoring workflows", () => {
-  assert.deepEqual(owners.get("source-graph-valid"), ["repository-source-checks"]);
+test("policy hooks remain canonical without automatic selection by shipped plugins", () => {
+  assert.equal(owners.has("source-graph-valid"), false);
   assert.deepEqual(readJson("source/hooks/source-graph-valid.hook.json").dependsOn ?? [], []);
-  assert.deepEqual(owners.get("required-skill-read"), ["skill-read-policy"]);
+  for (const name of ["required-skill-read", "pkl-evaluate-check", "pkl-format-check", "pkl-test-check"]) {
+    assert.equal(owners.has(name), false, `${name} must stay explicitly unselected`);
+  }
 });

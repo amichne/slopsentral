@@ -60,7 +60,7 @@
       "prompt": "Craft a parameterized personal shell utility from reusable building blocks. Include Zsh completion and --teach with exact command source, current directory, recent-command summaries and an optional question.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "personal-cli-authoring"
+        "name": "cli-creator"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

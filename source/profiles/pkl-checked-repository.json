@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "pkl-checked-repository",
-  "description": "Pkl task workflows plus explicitly selected automatic Pkl checks.",
+  "description": "Legacy profile identifier for Pkl guidance. Automatic Pkl checks need an explicit custom hook composition.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -15,8 +15,7 @@
   ],
   "plugins": [
     "software-engineering",
-    "pkl-workflows",
-    "pkl-repository-checks"
+    "developer-tooling"
   ],
   "standaloneSkills": [],
   "hookPolicy": {
