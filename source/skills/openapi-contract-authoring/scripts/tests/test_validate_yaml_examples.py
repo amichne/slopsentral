@@ -1,8 +1,21 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = ["pyyaml==6.0.3", "pytest==8.4.2"]
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 from __future__ import annotations
 
 import importlib.util
 import io
 import os
+import sys
 import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
@@ -59,4 +72,6 @@ class ValidateYamlExamplesTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    import pytest
+
+    raise SystemExit(pytest.main([str(Path(__file__).resolve()), *sys.argv[1:]]))

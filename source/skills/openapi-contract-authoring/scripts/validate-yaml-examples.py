@@ -1,4 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = ["pyyaml==6.0.3"]
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 from __future__ import annotations
 
 import sys
@@ -10,7 +21,7 @@ try:
 except ImportError:
     sys.stderr.write(
         "FAIL PyYAML is required to parse OpenAPI YAML examples. "
-        "Run `uv sync --locked` for checkout dependencies, then use `uv run --locked python`.\n"
+        "Run this file with `uv run --locked --script`.\n"
     )
     sys.exit(1)
 

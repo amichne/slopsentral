@@ -45,10 +45,14 @@ The three bundled YAML fixtures use a non-null contract profile.
 Their helper proves YAML parsing and that fixture policy only.
 It does not prove full OpenAPI acceptance or generated-client behavior.
 
+From this skill's installed directory, run the scripts with uv and their bundled locks:
+
 ```sh
-uv run --locked python source/skills/openapi-contract-authoring/scripts/validate-yaml-examples.py
-uv run --locked python -m pytest source/skills/openapi-contract-authoring/scripts/tests -q
+uv run --locked --script scripts/validate-yaml-examples.py
+uv run --locked --script scripts/tests/test_validate_yaml_examples.py -q
 ```
+
+The scripts declare PyYAML and pytest dependencies without a consumer project configuration.
 
 ## Completion
 
