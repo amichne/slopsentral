@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+  "description": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
   "interface": {
     "brandColor": "#7C3AED",
     "capabilities": [
@@ -17,21 +17,20 @@
     ],
     "developerName": "Amichne",
     "displayName": "Developer Tooling",
-    "longDescription": "Build CLI products, shell integrations, terminal interfaces, and reusable agent workflows.",
+    "longDescription": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Build CLI products, shell integrations, terminal interfaces, and reus...",
+    "shortDescription": "Build typed Python CLIs, terminal interfaces, and reusable agent reso...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
   "keywords": [
     "cli",
     "developer-tooling",
-    "shell",
     "skills",
     "tools"
   ],
   "license": "UNLICENSED",
   "name": "developer-tooling",
   "skills": "./skills/",
-  "version": "1.0.0"
+  "version": "2.0.0"
 }

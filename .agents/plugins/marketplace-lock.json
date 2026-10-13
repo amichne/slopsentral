@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-10T17:57:18-04:00",
+  "generatedAt": "2026-10-13T00:13:43-04:00",
   "plugins": [
     {
       "name": "software-engineering",
       "references": [
         {
           "name": "software-engineering-context",
-          "sha256": "sha256:1e0908fbc990024d257b42363e75370719678a8a2e1fd1247812e38d537cfe89",
+          "sha256": "sha256:0875e5c5f8a04c5d0ec496e1ef597b6eb702a51e7ed05b06040b2c9b34b3430d",
           "sourcePath": "source/hooks/software-engineering-context.hook.json",
           "targetPath": "hooks/software-engineering-context.hooks.json",
           "type": "HOOK"
@@ -19,17 +19,17 @@
           "type": "INSTRUCTION"
         },
         {
+          "name": "engineering-design",
+          "sha256": "sha256:6115727dd4cb243c521d25eccb90b58a7eedafc37f026b8eba2a2c7e193738cd",
+          "sourcePath": "source/instructions/engineering-design.md",
+          "targetPath": "instructions/engineering-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
           "name": "bounded-delegation",
           "sha256": "sha256:5fcef37905fb4f7b2460252a535761956804831805eb0f7314fb49d6a12c78f6",
           "sourcePath": "source/skills/bounded-delegation",
           "targetPath": "skills/bounded-delegation",
-          "type": "SKILL"
-        },
-        {
-          "name": "cli-data-pipelines",
-          "sha256": "sha256:ab15d98a783c0428a919a6f876cbb99284ed4cea1b0dd9ad018e1b910f525dc4",
-          "sourcePath": "source/skills/cli-data-pipelines",
-          "targetPath": "skills/cli-data-pipelines",
           "type": "SKILL"
         },
         {
@@ -55,7 +55,7 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:9518e6e6508c7f9af81db0b4691e52779b39a1b1af7ef2a77dc1b9c4128b4192",
+          "sha256": "sha256:83db3ef7d3de0b19f39f1ac49f29453857b5f48772dd2dbc467423add4aac141",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
@@ -82,6 +82,13 @@
           "type": "SKILL"
         },
         {
+          "name": "python-tooling",
+          "sha256": "sha256:d962544b8c5a0e3110974ccd65dd051fd67e72e0cddf3e8d73de8119ad1978c6",
+          "sourcePath": "source/skills/python-tooling",
+          "targetPath": "skills/python-tooling",
+          "type": "SKILL"
+        },
+        {
           "name": "repository-onboarding",
           "sha256": "sha256:88c2e000d22d019199f7fe143bdf62df29b878e6e48b5a620576b81c878029c6",
           "sourcePath": "source/skills/repository-onboarding",
@@ -89,10 +96,10 @@
           "type": "SKILL"
         },
         {
-          "name": "shell-script-safety",
-          "sha256": "sha256:57672251b7166a3eb46df5611c9c20cd18dcf7ddda26cebf17227a7d5ebf9651",
-          "sourcePath": "source/skills/shell-script-safety",
-          "targetPath": "skills/shell-script-safety",
+          "name": "semantic-ratchet",
+          "sha256": "sha256:9765e2a5ab93f1ab4d9cc8e7465b7694c947e96ba1a12657d865cd811ac2d100",
+          "sourcePath": "source/skills/semantic-ratchet",
+          "targetPath": "skills/semantic-ratchet",
           "type": "SKILL"
         },
         {
@@ -111,63 +118,35 @@
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "1.4.0"
-    },
-    {
-      "name": "engineering-excellence",
-      "references": [
-        {
-          "name": "engineering-excellence-context",
-          "sha256": "sha256:979214583d921a21b8e4d71631d947249455fb65912ae22cb6134a131b0d8f4d",
-          "sourcePath": "source/hooks/engineering-excellence-context.hook.json",
-          "targetPath": "hooks/engineering-excellence-context.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "engineering-design",
-          "sha256": "sha256:dcd6151e64886021b166db36ff0b8099a04de0616f14c10d21690b7804fe008d",
-          "sourcePath": "source/instructions/engineering-design.md",
-          "targetPath": "instructions/engineering-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "semantic-ratchet",
-          "sha256": "sha256:56e79bc6796be8470555baafd201bbea77f909f24ef783f6a53960b5226d5ffa",
-          "sourcePath": "source/skills/semantic-ratchet",
-          "targetPath": "skills/semantic-ratchet",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/engineering-excellence/plugin.json",
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "name": "kotlin-engineering",
       "references": [
         {
           "name": "gradle-check-green",
-          "sha256": "sha256:ed3b32323fecb23e607b1f585d9fa693d62fa9bd29e4c07d48c03f60f7f18e41",
+          "sha256": "sha256:87a1794780ae9af34511b7a9547d3c7e98d4c12f98e19a4b8cfa66254b085e49",
           "sourcePath": "source/hooks/gradle-check-green.hook.json",
           "targetPath": "hooks/gradle-check-green.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "gradle-wrapper-integrity",
-          "sha256": "sha256:e6d43aa5519e70aad41694f9214d415c00cdbc47adbabdb0510d231c223365f6",
+          "sha256": "sha256:1c32b463464cd01d8df92a305dec928741f5cc23df77798d84a8c1874ef6c125",
           "sourcePath": "source/hooks/gradle-wrapper-integrity.hook.json",
           "targetPath": "hooks/gradle-wrapper-integrity.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "kotlin-engineering-context",
-          "sha256": "sha256:fe8a9682d3c09be2571a1ce5e56a20ee7ccc3a8cc9da90a116d7be69968926ef",
+          "sha256": "sha256:17d56904dc15ca87e4cc1a5624b32d5d2369f8ac5821b45648049e4bbc75b3ea",
           "sourcePath": "source/hooks/kotlin-engineering-context.hook.json",
           "targetPath": "hooks/kotlin-engineering-context.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "kotlin-horizontalization-check",
-          "sha256": "sha256:00c8acac88bab71211f97d466e424a5c18da5ca6eae9cbbf2c2cf53ccb3a0c92",
+          "sha256": "sha256:9a41e32930badf7131a3f69e3a515ed3bc501ea0ff0ae5083e6ed467e4b23d95",
           "sourcePath": "source/hooks/kotlin-horizontalization-check.hook.json",
           "targetPath": "hooks/kotlin-horizontalization-check.hooks.json",
           "type": "HOOK"
@@ -201,7 +180,7 @@
         },
         {
           "name": "kotlin-api-surface-design",
-          "sha256": "sha256:9d5b117023c84c96e86cb8db67574eac491fb1b8e2c13296f4f6f17bdce7f7c2",
+          "sha256": "sha256:31224e55fe7be2991618490a68c0eece63bb2a2877188a8b8d06b7c5dbf80adf",
           "sourcePath": "source/skills/kotlin-api-surface-design",
           "targetPath": "skills/kotlin-api-surface-design",
           "type": "SKILL"
@@ -229,7 +208,7 @@
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:67478812961621073673433521836a623c1c1d7e436550c26ecf6943e27a0bbf",
+          "sha256": "sha256:6264cd884104bdec625fe200145c811ce1d6b44d0950f084d6f7bd042dbb1840",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -257,7 +236,7 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "1.5.3"
+      "version": "2.0.0"
     },
     {
       "name": "intellij-plugin-development",
@@ -299,70 +278,7 @@
         }
       ],
       "sourceManifest": "source/plugins/intellij-plugin-development/plugin.json",
-      "version": "1.0.0"
-    },
-    {
-      "name": "pkl-configuration",
-      "references": [
-        {
-          "name": "pkl-evaluate-check",
-          "sha256": "sha256:19cc46d189b9b99b30dcb76da3c7e70a694b62c5e62626313ee17f14b8527240",
-          "sourcePath": "source/hooks/pkl-evaluate-check.hook.json",
-          "targetPath": "hooks/pkl-evaluate-check.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "pkl-format-check",
-          "sha256": "sha256:c3d4c2dd6c8f3d0f755c258db6bb1cbf5e00bfd5435ec2d4e9479ccca0314933",
-          "sourcePath": "source/hooks/pkl-format-check.hook.json",
-          "targetPath": "hooks/pkl-format-check.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "pkl-test-check",
-          "sha256": "sha256:07d5335cd0abd1837048851668227731648656559196d51d832fd062dffc268c",
-          "sourcePath": "source/hooks/pkl-test-check.hook.json",
-          "targetPath": "hooks/pkl-test-check.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "pkl-agent-runtime",
-          "sha256": "sha256:4632abc3f02d8b37086877e6bc403394b9e98a8e09e7c733d76573d4d3e024e3",
-          "sourcePath": "source/skills/pkl-engineering/scripts/pkl_agent",
-          "targetPath": "skills/pkl-engineering/scripts/pkl_agent",
-          "type": "RESOURCE"
-        },
-        {
-          "name": "pkl-engineering",
-          "sha256": "sha256:e78ca89b102c28860a6e848df41becfdf808c667ed54e1e4ea7ce2fc9d6e854c",
-          "sourcePath": "source/skills/pkl-engineering",
-          "targetPath": "skills/pkl-engineering",
-          "type": "SKILL"
-        },
-        {
-          "name": "pkl-pattern-catalogs",
-          "sha256": "sha256:3231b903143f790b8a192a70ddd1b4a77d37d02af0cdcbd74850d3a45c0768a0",
-          "sourcePath": "source/skills/pkl-pattern-catalogs",
-          "targetPath": "skills/pkl-pattern-catalogs",
-          "type": "SKILL"
-        },
-        {
-          "name": "pkl-specification",
-          "sha256": "sha256:e7e47a7899d8709e89466ce14122bcd1e139414563bf174cd5aa36cedc84632a",
-          "sourcePath": "source/skills/pkl-specification",
-          "targetPath": "skills/pkl-specification",
-          "type": "SKILL"
-        },
-        {
-          "name": "pkl-tooling-setup",
-          "sha256": "sha256:1e68781196855272d4ecaec03d7a4128c8af1e64c4d4d589603835957f8109ad",
-          "sourcePath": "source/skills/pkl-tooling-setup",
-          "targetPath": "skills/pkl-tooling-setup",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/pkl-configuration/plugin.json",
-      "version": "1.0.3"
+      "version": "2.0.0"
     },
     {
       "name": "api-contracts",
@@ -383,7 +299,7 @@
         },
         {
           "name": "api-contracts-context",
-          "sha256": "sha256:7ee767918fde3edd2e5058a935d559f80de3c177c9d86be4f78c031d05bf3949",
+          "sha256": "sha256:2aabbdaaa9260cc1d78b271c7e23db71614c1817a5a67dec62a9e33bb8fe0fd5",
           "sourcePath": "source/hooks/api-contracts-context.hook.json",
           "targetPath": "hooks/api-contracts-context.hooks.json",
           "type": "HOOK"
@@ -425,21 +341,21 @@
         }
       ],
       "sourceManifest": "source/plugins/api-contracts/plugin.json",
-      "version": "1.1.0"
+      "version": "2.0.0"
     },
     {
       "name": "repository-knowledge",
       "references": [
         {
           "name": "code-knowledge-drift",
-          "sha256": "sha256:ff9d2ba29c715c79c93a5658598f7551ae46b9644a5cb3e43a09dff20f06ea19",
+          "sha256": "sha256:a1c0e6647dda09ae080fe3ee4e5b3646deebe64727351c0bb62ffa56ee4e2ad4",
           "sourcePath": "source/hooks/code-knowledge-drift.hook.json",
           "targetPath": "hooks/code-knowledge-drift.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "knowledge-overlay",
-          "sha256": "sha256:89ad9b8a0bb39b07d00c8f960cabd42ec3253d143511246da24a136904d30930",
+          "sha256": "sha256:47969bc90cee3af00a4fbffdc8069dd760879ede57ecea60dc363f0230067643",
           "sourcePath": "source/hooks/knowledge-overlay.hook.json",
           "targetPath": "hooks/knowledge-overlay.hooks.json",
           "type": "HOOK"
@@ -495,126 +411,21 @@
         }
       ],
       "sourceManifest": "source/plugins/repository-knowledge/plugin.json",
-      "version": "1.2.0"
-    },
-    {
-      "name": "personal-setup",
-      "references": [
-        {
-          "name": "source-graph-valid",
-          "sha256": "sha256:f8b1d52364e51d66ed4fda1d551cfcb95a5ed90a0479554b2285b95ca40f42e4",
-          "sourcePath": "source/hooks/source-graph-valid.hook.json",
-          "targetPath": "hooks/source-graph-valid.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "agent-profile-authoring",
-          "sha256": "sha256:f3be4b0b7fb8d01eadb5384216a2e4bfb2fb1a62501a973a8e5326f0289cb741",
-          "sourcePath": "source/skills/agent-profile-authoring",
-          "targetPath": "skills/agent-profile-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "cli-creator",
-          "sha256": "sha256:8d3d4997c61045a806b987be9e837d9d76d229ac3480915dc6ce3f599394fe85",
-          "sourcePath": "source/skills/cli-creator",
-          "targetPath": "skills/cli-creator",
-          "type": "SKILL"
-        },
-        {
-          "name": "hook-primitive-authoring",
-          "sha256": "sha256:dbc248da1e58f937b0a5923b187691e1439b9643fed8a8e240a9dcb6a9d31b1c",
-          "sourcePath": "source/skills/hook-primitive-authoring",
-          "targetPath": "skills/hook-primitive-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "manage-json-schemas",
-          "sha256": "sha256:1ba45c30fad35aa0f13779909d65951a19d1943cbb3f65b80a8d040fdda1485e",
-          "sourcePath": "source/skills/manage-json-schemas",
-          "targetPath": "skills/manage-json-schemas",
-          "type": "SKILL"
-        },
-        {
-          "name": "personal-cli-authoring",
-          "sha256": "sha256:7f35741b9400e9609a7f8a76ee5378f10ebdd487e33ade1c690f461dab45334c",
-          "sourcePath": "source/skills/personal-cli-authoring",
-          "targetPath": "skills/personal-cli-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "personal-setup-management",
-          "sha256": "sha256:ce5b6b51c2bcd10cb927c231815a0c0c81486a82d8abfa74800c082dfbf95e59",
-          "sourcePath": "source/skills/personal-setup-management",
-          "targetPath": "skills/personal-setup-management",
-          "type": "SKILL"
-        },
-        {
-          "name": "plugin-composition-authoring",
-          "sha256": "sha256:609a77e416e1cc4d94c01ce9a3a63aaf97455d253cc63a37c1b812ba3debc06f",
-          "sourcePath": "source/skills/plugin-composition-authoring",
-          "targetPath": "skills/plugin-composition-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "primitive-routing-evaluation",
-          "sha256": "sha256:6e32753d8b68c6e803667d7d3bea58a3756e08f2ead3bd6f487d9bf0592d79c7",
-          "sourcePath": "source/skills/primitive-routing-evaluation",
-          "targetPath": "skills/primitive-routing-evaluation",
-          "type": "SKILL"
-        },
-        {
-          "name": "repo-instruction-topology",
-          "sha256": "sha256:460501640fe5ceeea13ea7654f4ec09f0a3a63ed8cf0f4c1cd30472d75015a09",
-          "sourcePath": "source/skills/repo-instruction-topology",
-          "targetPath": "skills/repo-instruction-topology",
-          "type": "SKILL"
-        },
-        {
-          "name": "shell-script-safety",
-          "sha256": "sha256:57672251b7166a3eb46df5611c9c20cd18dcf7ddda26cebf17227a7d5ebf9651",
-          "sourcePath": "source/skills/shell-script-safety",
-          "targetPath": "skills/shell-script-safety",
-          "type": "SKILL"
-        },
-        {
-          "name": "shell-session-integration",
-          "sha256": "sha256:24c0729c60d56b9ae5868f33bad929a5a0771d7785e4f45a041fd9362298c876",
-          "sourcePath": "source/skills/shell-session-integration",
-          "targetPath": "skills/shell-session-integration",
-          "type": "SKILL"
-        },
-        {
-          "name": "skill-primitive-authoring",
-          "sha256": "sha256:21df9199af11f449d66b5d7326d567eec3c8af2cda1729c8e507041b7336dd82",
-          "sourcePath": "source/skills/skill-primitive-authoring",
-          "targetPath": "skills/skill-primitive-authoring",
-          "type": "SKILL"
-        },
-        {
-          "name": "terminal-ui-design",
-          "sha256": "sha256:74be38329038516eb1036fb4b058d6ab11c945a4f8da4f4ff51fb1f877593eb2",
-          "sourcePath": "source/skills/terminal-ui-design",
-          "targetPath": "skills/terminal-ui-design",
-          "type": "SKILL"
-        }
-      ],
-      "sourceManifest": "source/plugins/personal-setup/plugin.json",
-      "version": "0.3.1"
+      "version": "2.0.0"
     },
     {
       "name": "skill-read-policy",
       "references": [
         {
           "name": "required-skill-read",
-          "sha256": "sha256:b4efa31dfe23ef3bf94f850d599e2537f83a5737bcd825188fd9f740b1f2157b",
+          "sha256": "sha256:9a05a7264f7462b3ba664ebc6622131b1612bb0bd6255166b2ab4329cdb57952",
           "sourcePath": "source/hooks/required-skill-read.hook.json",
           "targetPath": "hooks/required-skill-read.hooks.json",
           "type": "HOOK"
         }
       ],
       "sourceManifest": "source/plugins/skill-read-policy/plugin.json",
-      "version": "1.0.1"
+      "version": "2.0.0"
     },
     {
       "name": "developer-tooling",
@@ -628,7 +439,7 @@
         },
         {
           "name": "cli-creator",
-          "sha256": "sha256:8d3d4997c61045a806b987be9e837d9d76d229ac3480915dc6ce3f599394fe85",
+          "sha256": "sha256:bd2b333bd7ce746a8b8f82fd09deea7ae595981e18a44863f89c0d5e0e66e044",
           "sourcePath": "source/skills/cli-creator",
           "targetPath": "skills/cli-creator",
           "type": "SKILL"
@@ -662,24 +473,17 @@
           "type": "SKILL"
         },
         {
+          "name": "python-tooling",
+          "sha256": "sha256:d962544b8c5a0e3110974ccd65dd051fd67e72e0cddf3e8d73de8119ad1978c6",
+          "sourcePath": "source/skills/python-tooling",
+          "targetPath": "skills/python-tooling",
+          "type": "SKILL"
+        },
+        {
           "name": "repo-instruction-topology",
           "sha256": "sha256:460501640fe5ceeea13ea7654f4ec09f0a3a63ed8cf0f4c1cd30472d75015a09",
           "sourcePath": "source/skills/repo-instruction-topology",
           "targetPath": "skills/repo-instruction-topology",
-          "type": "SKILL"
-        },
-        {
-          "name": "shell-script-safety",
-          "sha256": "sha256:57672251b7166a3eb46df5611c9c20cd18dcf7ddda26cebf17227a7d5ebf9651",
-          "sourcePath": "source/skills/shell-script-safety",
-          "targetPath": "skills/shell-script-safety",
-          "type": "SKILL"
-        },
-        {
-          "name": "shell-session-integration",
-          "sha256": "sha256:24c0729c60d56b9ae5868f33bad929a5a0771d7785e4f45a041fd9362298c876",
-          "sourcePath": "source/skills/shell-session-integration",
-          "targetPath": "skills/shell-session-integration",
           "type": "SKILL"
         },
         {
@@ -698,56 +502,49 @@
         }
       ],
       "sourceManifest": "source/plugins/developer-tooling/plugin.json",
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "name": "personal-configuration",
       "references": [
         {
           "name": "personal-cli-authoring",
-          "sha256": "sha256:7f35741b9400e9609a7f8a76ee5378f10ebdd487e33ade1c690f461dab45334c",
+          "sha256": "sha256:85ee9985d2365ce1829b9515f4b85ab9a4e9bb860b1019ee07d832d98108a59d",
           "sourcePath": "source/skills/personal-cli-authoring",
           "targetPath": "skills/personal-cli-authoring",
           "type": "SKILL"
         },
         {
           "name": "personal-setup-management",
-          "sha256": "sha256:ce5b6b51c2bcd10cb927c231815a0c0c81486a82d8abfa74800c082dfbf95e59",
+          "sha256": "sha256:779ab976363c39428ecb3c00d501016368296f8bab6412f9034126adead748ca",
           "sourcePath": "source/skills/personal-setup-management",
           "targetPath": "skills/personal-setup-management",
           "type": "SKILL"
         },
         {
-          "name": "shell-script-safety",
-          "sha256": "sha256:57672251b7166a3eb46df5611c9c20cd18dcf7ddda26cebf17227a7d5ebf9651",
-          "sourcePath": "source/skills/shell-script-safety",
-          "targetPath": "skills/shell-script-safety",
-          "type": "SKILL"
-        },
-        {
-          "name": "shell-session-integration",
-          "sha256": "sha256:24c0729c60d56b9ae5868f33bad929a5a0771d7785e4f45a041fd9362298c876",
-          "sourcePath": "source/skills/shell-session-integration",
-          "targetPath": "skills/shell-session-integration",
+          "name": "python-tooling",
+          "sha256": "sha256:d962544b8c5a0e3110974ccd65dd051fd67e72e0cddf3e8d73de8119ad1978c6",
+          "sourcePath": "source/skills/python-tooling",
+          "targetPath": "skills/python-tooling",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/personal-configuration/plugin.json",
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "name": "repository-source-checks",
       "references": [
         {
           "name": "source-graph-valid",
-          "sha256": "sha256:f8b1d52364e51d66ed4fda1d551cfcb95a5ed90a0479554b2285b95ca40f42e4",
+          "sha256": "sha256:7bc0c52a985766ffa4efb8a69e2237e02e5de7d520cca7c59dd6f4dc03cc7581",
           "sourcePath": "source/hooks/source-graph-valid.hook.json",
           "targetPath": "hooks/source-graph-valid.hooks.json",
           "type": "HOOK"
         }
       ],
       "sourceManifest": "source/plugins/repository-source-checks/plugin.json",
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "name": "pkl-workflows",
@@ -782,28 +579,28 @@
         }
       ],
       "sourceManifest": "source/plugins/pkl-workflows/plugin.json",
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     {
       "name": "pkl-repository-checks",
       "references": [
         {
           "name": "pkl-evaluate-check",
-          "sha256": "sha256:19cc46d189b9b99b30dcb76da3c7e70a694b62c5e62626313ee17f14b8527240",
+          "sha256": "sha256:c7fd1f19c826eb268363f4ae3f76f009a74a295beddbaa3f3fa2e38bd6628680",
           "sourcePath": "source/hooks/pkl-evaluate-check.hook.json",
           "targetPath": "hooks/pkl-evaluate-check.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "pkl-format-check",
-          "sha256": "sha256:c3d4c2dd6c8f3d0f755c258db6bb1cbf5e00bfd5435ec2d4e9479ccca0314933",
+          "sha256": "sha256:9870c07cfac69a6ee4fb2864fb24be08010d6dc4cc65c8eb83fc6b5c41197bd0",
           "sourcePath": "source/hooks/pkl-format-check.hook.json",
           "targetPath": "hooks/pkl-format-check.hooks.json",
           "type": "HOOK"
         },
         {
           "name": "pkl-test-check",
-          "sha256": "sha256:07d5335cd0abd1837048851668227731648656559196d51d832fd062dffc268c",
+          "sha256": "sha256:68efe0fb9eeeda720a578c48dd350e14ab23e5ccd3e83885a4ef804cf93459cc",
           "sourcePath": "source/hooks/pkl-test-check.hook.json",
           "targetPath": "hooks/pkl-test-check.hooks.json",
           "type": "HOOK"
@@ -817,10 +614,10 @@
         }
       ],
       "sourceManifest": "source/plugins/pkl-repository-checks/plugin.json",
-      "version": "1.0.0"
+      "version": "2.0.0"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "c7923c19d4ca5047932fe7ebb7f8bcc157d9288a",
+  "sourceSha": "8d927f3c5a2e97235b9c55b159ef19a311b5d052",
   "type": "HYDRATED_MARKETPLACE"
 }
