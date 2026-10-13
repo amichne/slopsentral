@@ -1,6 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+export function currentSourceLocalPaths(source) {
+  if (source?.type !== 'CURRENT_SOURCE' || !Array.isArray(source.evidenceRefs)) return [];
+  return source.evidenceRefs.filter(ref => typeof ref === 'string'
+    && !/^https?:\/\//.test(ref)
+    && /^(?:\.{1,2}\/|[A-Za-z0-9_.-]+\/)/.test(ref));
+}
+
 // Historical source kinds preserve their recorded paths at capture time.
 export function currentSourceEvidenceFindings(source, repoRoot, owner) {
   if (source?.type !== 'CURRENT_SOURCE') return [];
@@ -9,12 +16,13 @@ export function currentSourceEvidenceFindings(source, repoRoot, owner) {
   }
   const findings = [];
   const root = fs.realpathSync(repoRoot);
+  const localPaths = new Set(currentSourceLocalPaths(source));
   for (const ref of source.evidenceRefs) {
     if (typeof ref !== 'string' || !ref.trim()) {
       findings.push(`${owner}: CURRENT_SOURCE evidenceRefs must contain non-empty strings`);
       continue;
     }
-    if (/^https?:\/\//.test(ref) || !/^(?:\.{1,2}\/|[A-Za-z0-9_.-]+\/)/.test(ref)) continue;
+    if (!localPaths.has(ref)) continue;
     const candidate = path.resolve(root, ref);
     try {
       const real = fs.realpathSync(candidate);

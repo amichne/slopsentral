@@ -7,6 +7,7 @@ import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadCatalog, auditCatalog, pluginClosure } from './catalog.mjs';
+import { currentSourceEvidenceFindings, currentSourceLocalPaths } from './routing-source-evidence.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ignored = new Set(['.git', '.gradle', '.idea', '__pycache__', 'build', 'dist', 'target']);
@@ -72,12 +73,34 @@ function exactKeys(value, allowed, required = allowed) {
   return value && typeof value === 'object' && !Array.isArray(value)
     && Object.keys(value).every(key => allowed.includes(key)) && required.every(key => Object.hasOwn(value, key));
 }
+function snapshotEvidence(repository, files) {
+  const evidence = new Map();
+  for (const key of files.keys()) {
+    if (!key.startsWith('source/evals/') || !key.endsWith('.json')) continue;
+    const payload = readJson(files, key);
+    if (payload.type !== 'ROUTING_CASE_SET') continue;
+    for (const entry of payload.cases ?? []) {
+      const references = currentSourceLocalPaths(entry.source).filter(ref => !ref.startsWith('source/'));
+      if (!references.length) continue;
+      const source = { type: 'CURRENT_SOURCE', evidenceRefs: references };
+      if (currentSourceEvidenceFindings(source, repository, key).length)
+        reject('source', 'SOURCE_REJECTED', 'Current routing evidence is unavailable or invalid');
+      for (const ref of references) {
+        if (evidence.has(ref)) continue;
+        const absolute = beneath(repository, ref);
+        evidence.set(ref, { bytes: fs.readFileSync(absolute), mode: fs.statSync(absolute).mode & 0o777 });
+      }
+    }
+  }
+  return evidence;
+}
 function freezeInput(repository) {
   const sourceRoot = realDirectory(path.join(repository, 'source'));
   const files = snapshot(sourceRoot);
+  const evidence = snapshotEvidence(repository, files);
   const frozenRepository = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'slopsentral-source-')));
   try {
-    for (const [key, file] of files) {
+    for (const [key, file] of [...files, ...evidence]) {
       const destination = beneath(frozenRepository, key);
       fs.mkdirSync(path.dirname(destination), { recursive: true });
       fs.writeFileSync(destination, file.bytes, { mode: file.mode });
@@ -122,15 +145,23 @@ function freezeInput(repository) {
     const input = { name: marketplace.name, owner: marketplace.owner, description: marketplace.description,
       generatedAt, sourceSha: digest(files, 'source', 'sha1'), plugins, phase: 'PLAN', projectedDigests: {} };
     // Validate the exact frozen bytes, then prove the live source still matches.
-    assertUnchanged(repository, files);
-    return { files, input };
+    assertUnchanged(repository, files, evidence);
+    return { files, input, evidence };
   } finally { fs.rmSync(frozenRepository, { recursive: true }); }
 }
-function assertUnchanged(repository, files) {
-  const current = snapshot(path.join(repository, 'source'));
-  if (current.size !== files.size || [...files].some(([key, file]) => !current.has(key)
-    || current.get(key).mode !== file.mode || !current.get(key).bytes.equals(file.bytes)))
-    reject('source', 'INPUT_CHANGED', 'Source changed during projection');
+function sameFiles(expected, current) {
+  return current.size === expected.size && [...expected].every(([key, file]) => current.has(key)
+    && current.get(key).mode === file.mode && current.get(key).bytes.equals(file.bytes));
+}
+function assertUnchanged(repository, files, evidence) {
+  let unchanged;
+  try {
+    unchanged = sameFiles(files, snapshot(path.join(repository, 'source')))
+      && sameFiles(evidence, snapshotEvidence(repository, files));
+  } catch {
+    unchanged = false;
+  }
+  if (!unchanged) reject('source', 'INPUT_CHANGED', 'Source or current routing evidence changed during projection');
 }
 function evaluate(pkl, input, harness, models) {
   let version;
@@ -266,7 +297,7 @@ export function project({ source, harness, out, pkl = process.env.PKL_BIN ?? 'pk
     reject('seal', 'INVALID_PLAN', 'Sealing changed a derived payload');
   for (const p of sealed.plugins) for (const r of p.references) if (r.sha256 !== digest(complete, p.root + '/' + r.targetPath))
     reject('seal', 'INVALID_PLAN', 'A projected provenance hash differs from its payload');
-  assertUnchanged(repository, state.files);
+  assertUnchanged(repository, state.files, state.evidence);
   const staging = fs.mkdtempSync(path.join(parent, '.slopsentral-projection-'));
   try {
     for (const [key, file] of [...complete].sort(([a], [b]) => a.localeCompare(b, 'en'))) {
@@ -275,7 +306,7 @@ export function project({ source, harness, out, pkl = process.env.PKL_BIN ?? 'pk
       fs.writeFileSync(destination, file.bytes, { mode: file.mode });
       fs.chmodSync(destination, file.mode);
     }
-    assertUnchanged(repository, state.files);
+    assertUnchanged(repository, state.files, state.evidence);
     let publication;
     try { publication = JSON.parse(execFileSync('python3', [path.join(root, 'tools/projection/publish_directory.py'), staging, target], { encoding: 'utf8', timeout: 10000, maxBuffer: 1024, stdio: ['ignore', 'pipe', 'pipe'] })); }
     catch { reject('publish', 'ATOMIC_PUBLISH_UNAVAILABLE', 'The atomic publication boundary requires Python 3 and a supported native rename operation'); }

@@ -9,6 +9,7 @@ import { pathToFileURL } from 'node:url';
 import { project } from '../project-marketplaces.mjs';
 import { install } from '../install-projection-pkl.mjs';
 import { loadCatalog, pluginClosure } from '../catalog.mjs';
+import { currentSourceLocalPaths } from '../routing-source-evidence.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const pkl = process.env.PKL_BIN;
@@ -70,6 +71,12 @@ for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot'
     const archive = execFileSync('git', ['archive', '--format=tar', baseline.sourceRevision, '--', 'source', 'tools'],
       { cwd: root, maxBuffer: 32 * 1024 * 1024 });
     execFileSync('tar', ['-xf', '-', '-C', repo], { input: archive });
+    const external = externalEvidencePaths(repo).filter(ref => !fs.existsSync(path.join(repo, ref)));
+    if (external.length) {
+      const evidence = execFileSync('git', ['archive', '--format=tar', baseline.sourceRevision, '--', ...external],
+        { cwd: root, maxBuffer: 32 * 1024 * 1024 });
+      execFileSync('tar', ['-xf', '-', '-C', repo], { input: evidence });
+    }
     execFileSync('git', ['init', '-q'], { cwd: repo });
     execFileSync('git', ['fetch', '--quiet', '--no-tags', '--depth=1', root, baseline.sourceRevision], { cwd: repo });
     execFileSync('git', ['update-ref', 'HEAD', baseline.sourceRevision], { cwd: repo });
@@ -82,7 +89,7 @@ for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot'
     fs.cpSync(path.join(repo, 'source/schemas'), path.join(runtime, 'source/schemas'), { recursive: true });
     fs.symlinkSync(path.join(root, 'node_modules'), path.join(runtime, 'node_modules'), 'dir');
     // Copy the current projector unchanged so this proves current mapping compatibility, not an old projector replay.
-    for (const name of ['project-marketplaces.mjs', 'catalog.mjs', 'resource-contract.mjs'])
+    for (const name of ['project-marketplaces.mjs', 'catalog.mjs', 'resource-contract.mjs', 'routing-source-evidence.mjs'])
       fs.copyFileSync(path.join(root, 'tools', name), path.join(runtime, 'tools', name));
     fs.cpSync(path.join(root, 'tools/projection'), path.join(runtime, 'tools/projection'), { recursive: true });
     fs.mkdirSync(path.join(runtime, 'source/schemas/primitives'), { recursive: true });
@@ -156,10 +163,93 @@ function sourceFixture(t) {
   fs.mkdirSync(repo);
   fs.cpSync(path.join(root, 'source'), path.join(repo, 'source'), { recursive: true,
     filter: p => !p.split(path.sep).some(part => part === '__pycache__') });
+  for (const relative of externalEvidencePaths(repo)) {
+    const destination = path.join(repo, relative);
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    fs.copyFileSync(path.join(root, relative), destination);
+    fs.chmodSync(destination, fs.statSync(path.join(root, relative)).mode & 0o777);
+  }
   execFileSync('git', ['init', '-q'], { cwd: repo });
   execFileSync('git', ['-c', 'user.name=Projection', '-c', 'user.email=projection@example.invalid', 'commit', '--allow-empty', '-qm', 'projection source'], { cwd: repo });
   return { dir, repo };
 }
+function externalEvidencePaths(repo) {
+  const directory = path.join(repo, 'source/evals');
+  const references = new Set();
+  for (const relative of fs.readdirSync(directory, { recursive: true }).filter(name => name.endsWith('.json'))) {
+    const payload = JSON.parse(fs.readFileSync(path.join(directory, relative), 'utf8'));
+    if (payload.type !== 'ROUTING_CASE_SET') continue;
+    for (const entry of payload.cases)
+      for (const ref of currentSourceLocalPaths(entry.source))
+        if (!ref.startsWith('source/')) references.add(ref);
+  }
+  return [...references].sort();
+}
+
+function externalEvidenceFixture(t) {
+  const fixture = sourceFixture(t);
+  const references = ['docs/projection-evidence.txt', 'tools/projection-evidence.txt', '.github/projection-evidence.txt'];
+  for (const relative of references) {
+    const file = path.join(fixture.repo, relative);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, 'PRIVATE EXTERNAL EVIDENCE\n', { mode: 0o640 });
+  }
+  const casesPath = path.join(fixture.repo, 'source/evals/routing/pkl-engineering-workflows.json');
+  const payload = JSON.parse(fs.readFileSync(casesPath, 'utf8'));
+  payload.cases[0].source.evidenceRefs = references;
+  payload.cases[1].source = { type: 'LOCAL_VALIDATION', capturedAt: '2026-10-13',
+    evidenceRefs: ['docs/historical-missing.txt'] };
+  fs.writeFileSync(casesPath, JSON.stringify(payload));
+  // Unreferenced repository files must not enlarge the frozen input.
+  fs.symlinkSync('/etc/passwd', path.join(fixture.repo, 'docs/unreferenced-secret'));
+  const check = spawnSync(process.execPath, [path.join(root, 'tools/validate-source-graph.mjs'), '--repo', fixture.repo], { encoding: 'utf8' });
+  assert.equal(check.status, 0, check.stdout + check.stderr);
+  return { ...fixture, references };
+}
+
+for (const harness of ['codex', 'github-copilot']) {
+  test(`${harness}: external current evidence validates frozen source without entering payloads`, native, t => {
+    const { dir, repo, references } = externalEvidenceFixture(t);
+    const result = project({ source: repo, harness, out: path.join(dir, 'output'), pkl });
+    assert.equal(result.type, 'PROJECTED');
+    for (const [name, file] of tree(result.out)) {
+      assert.ok(references.every(ref => !name.endsWith('/' + ref)), `evidence entered payload: ${name}`);
+      assert.equal(file.bytes.includes(Buffer.from('PRIVATE EXTERNAL EVIDENCE')), false, name);
+    }
+  });
+}
+
+test('missing external current evidence rejects before evaluation or publication', t => {
+  const { dir, repo, references } = externalEvidenceFixture(t);
+  fs.unlinkSync(path.join(repo, references[0]));
+  const out = path.join(dir, 'output');
+  assert.throws(() => project({ source: repo, harness: 'codex', out, pkl: '/absent/evaluator' }),
+    e => e.outcome?.code === 'SOURCE_REJECTED');
+  assert.equal(fs.existsSync(out), false);
+});
+
+for (const mutation of ['bytes', 'mode', 'removal']) {
+  test(`external current evidence ${mutation} mutation rejects the frozen result`, native, t => {
+    const { dir, repo, references } = externalEvidenceFixture(t);
+    const target = path.join(repo, references[0]);
+    const change = mutation === 'bytes' ? `fs.appendFileSync(target, 'changed');`
+      : mutation === 'mode' ? `fs.chmodSync(target, 0o600);`
+        : `if(fs.existsSync(target)) fs.unlinkSync(target);`;
+    const { executable } = fake(t, `
+const fs=require('node:fs');
+const cp=require('node:child_process');
+const target=${JSON.stringify(target)};
+${change}
+const r=cp.spawnSync(${JSON.stringify(pkl)},process.argv.slice(2),{encoding:'utf8',maxBuffer:32*1024*1024});
+process.stdout.write(r.stdout ?? ''); process.stderr.write(r.stderr ?? ''); process.exitCode=r.status ?? 9;
+`);
+    const out = path.join(dir, 'output');
+    assert.throws(() => project({ source: repo, harness: 'codex', out, pkl: executable }),
+      e => { assert.equal(e.outcome?.code, 'INPUT_CHANGED', JSON.stringify(e.outcome)); return true; });
+    assert.equal(fs.existsSync(out), false);
+  });
+}
+
 test('symbolic source fails closed before publication', t => {
   const { dir, repo } = sourceFixture(t);
   fs.symlinkSync('/etc/passwd', path.join(repo, 'source', 'escape'));
