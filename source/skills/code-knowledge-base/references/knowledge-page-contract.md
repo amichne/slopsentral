@@ -91,14 +91,15 @@ Do not require consumers to understand `code_sources` to read the OKF bundle.
 
 ## Format and Source Evidence
 
-Use the repository's locked uv environment for the bundled Python tools.
-The format parser needs PyYAML from declared, locked dependencies.
+Use uv script mode for the format procedure.
+The bundled metadata and adjacent lock supply PyYAML without a repository Python project.
+Keep `validate.py`, `validate.py.lock`, and `okf_common.py` together.
 The source-evidence procedure uses the Python standard library.
 
 Run the format procedure first:
 
 ```sh
-uv run --locked python "<skill-root>/scripts/validate.py" docs --strict
+uv run --locked --script "<skill-root>/scripts/validate.py" docs --strict
 ```
 
 The format procedure uses YAML parsing and distinguishes conformance errors from producer lints.

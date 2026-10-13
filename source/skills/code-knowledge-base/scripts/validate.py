@@ -1,4 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --locked --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = ["pyyaml==6.0.3"]
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 """Validate an Open Knowledge Format (OKF) bundle.
 
 OKF v0.1 conformance (https://github.com/GoogleCloudPlatform/knowledge-catalog):
@@ -15,13 +26,13 @@ Those are NOT spec violations -- consumers MUST tolerate them -- but they still
 fail the --strict gate (exit 1) so producers can keep a bundle tidy.
 
 Usage:
-    python validate.py <bundle-path>
-    python validate.py <bundle-path> --strict
+    uv run --locked --script validate.py <bundle-path>
+    uv run --locked --script validate.py <bundle-path> --strict
 
 Exit code: 0 = conformant, 1 = errors (and, under --strict, any lints),
 2 = bad invocation / PyYAML not installed.
 
-Requires PyYAML for authoritative YAML parsing:  pip install pyyaml
+The adjacent script lock supplies PyYAML for authoritative YAML parsing.
 """
 from __future__ import annotations
 
@@ -66,7 +77,7 @@ def main(argv=None):
 
     if yaml is None:
         print("error: PyYAML is required to validate OKF bundles. "
-              "Install it with: pip install pyyaml", file=sys.stderr)
+              "Run this script with uv run --locked --script", file=sys.stderr)
         return 2
 
     root = Path(args.bundle)
