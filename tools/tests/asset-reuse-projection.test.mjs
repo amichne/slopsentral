@@ -6,7 +6,6 @@ import test from 'node:test';
 const root = path.resolve(import.meta.dirname, '../..');
 const reused = [
   { name: 'python-tooling', plugins: ['software-engineering', 'developer-tooling'] },
-  { name: 'manage-json-schemas', plugins: ['api-contracts', 'developer-tooling'] },
 ];
 
 for (const [provider, variable, tree] of [

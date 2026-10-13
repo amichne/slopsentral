@@ -329,13 +329,12 @@
               "type": "string",
               "minLength": 1,
               "examples": [
-                "personal-configuration"
+                "developer-tooling"
               ]
             },
             "examples": [
               [
                 "developer-tooling",
-                "personal-configuration",
                 "software-engineering"
               ]
             ]
@@ -349,7 +348,6 @@
             "path": "skills/python-tooling",
             "plugins": [
               "developer-tooling",
-              "personal-configuration",
               "software-engineering"
             ]
           }
@@ -364,7 +362,6 @@
             "path": "skills/python-tooling",
             "plugins": [
               "developer-tooling",
-              "personal-configuration",
               "software-engineering"
             ]
           }

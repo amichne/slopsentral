@@ -75,8 +75,8 @@
       "successChecklist": [
         "The selected backend and external owner are named, with missing tools reported rather than guessed.",
         "Changed pages and Claims are verified; pending CI remains pending.",
-        "Copy an upstream OpenWiki skill into local canonical source.",
-        "Create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
+        "Do not copy an upstream OpenWiki skill into local canonical source.",
+        "Do not create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
       ]
     },
     {
@@ -108,14 +108,14 @@
       ],
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "site-docs-authoring"
+        "name": "technical-documentation"
       },
       "userInput": "Update this documentation site navigation and the source-backed architecture page. Preserve generated API reference ownership and verify the changed links and rendered diagram. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
         "The framework validator and broken-link check pass for the changed navigation.",
         "Generated boundaries and source-backed claims are retained, and the rendered result is inspected.",
-        "Hand-edit generated public contracts or omit navigation for a new page.",
-        "Call build success proof of rendered diagram readability without inspecting it."
+        "Do not hand-edit generated public contracts or omit navigation for a new page.",
+        "Do not call build success proof of rendered diagram readability without inspecting it."
       ]
     },
     {
@@ -128,14 +128,14 @@
       ],
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "reference-doc-workflow"
+        "name": "technical-documentation"
       },
       "userInput": "Write a substantial RFC from the supplied source evidence and repository template. Make the reader decision, tradeoffs, failure paths, and verification plan clear in a complete reviewable draft. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
         "Claims, assumptions, decisions, and verification obligations remain distinct.",
         "Reader testing resolves ambiguities that would change the decision.",
-        "Invent a guarantee or require section-by-section approval without a user request.",
-        "Treat polished prose as evidence that technical claims are true."
+        "Do not invent a guarantee or require section-by-section approval without a user request.",
+        "Do not treat polished prose as evidence that technical claims are true."
       ]
     },
     {
@@ -154,8 +154,8 @@
       "successChecklist": [
         "Only the requested prose changes and its meaning is preserved.",
         "The trace contains no marker-driven routing, build, or script-safety activation.",
-        "Load primitive-routing-evaluation, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
-        "Run a build, generate knowledge, or change configuration for this prose-only request."
+        "Do not load skill-primitive-authoring, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
+        "Do not run a build, generate knowledge, or change configuration for this prose-only request."
       ]
     }
   ]

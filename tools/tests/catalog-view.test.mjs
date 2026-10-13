@@ -33,9 +33,9 @@ test('repeated dependency edges inside one plugin are idempotent', () => {
 
 test('a dependency cycle is rejected, not silently truncated', () => {
   const modified = { ...catalog, definitions: new Map(catalog.definitions) };
-  const hook = structuredClone(modified.definitions.get('HOOK/required-skill-read'));
+  const hook = structuredClone(modified.definitions.get('HOOK/software-engineering-context'));
   hook.dependsOn = [structuredClone(hook)];
-  modified.definitions.set('HOOK/required-skill-read', hook);
+  modified.definitions.set('HOOK/software-engineering-context', hook);
   assert.ok(auditCatalog(modified).some(f => /dependency cycle/.test(f)));
 });
 
@@ -51,7 +51,7 @@ test('Astra defaults do not require unrelated skill reads', () => {
 });
 
 test('new standalone skills have bounded procedures and portable local references', () => {
-  for (const name of ['kotlin-branching', 'python-tooling', 'mise-project-tooling', 'delivery-pipeline-design', 'technical-documentation', 'bounded-delegation']) {
+  for (const name of ['python-tooling', 'mise-project-tooling', 'technical-documentation', 'skill-primitive-authoring', 'plugin-composition-authoring', 'cli-creator']) {
     const folder = path.join(root, 'source/skills', name);
     const text = fs.readFileSync(path.join(folder, 'SKILL.md'), 'utf8');
     assert.ok(text.trim().split(/\s+/u).length <= 550, `${name}: move details to references`);
@@ -106,7 +106,7 @@ test('reused assets expose every composing plugin with unique source counts', ()
   const report = catalogReport(catalog);
   assert.equal(report.schemaVersion, 3);
   const shell = report.assets.find(asset => asset.primitiveType === 'SKILL' && asset.name === 'python-tooling');
-  assert.deepEqual(shell.plugins, ['developer-tooling', 'personal-configuration', 'software-engineering']);
+  assert.deepEqual(shell.plugins, ['developer-tooling', 'software-engineering']);
   assert.equal(shell.path, 'skills/python-tooling');
   const shared = catalog.marketplace.instructions.find(ref => ref.name === 'engineering-design');
   const modified = { ...catalog, plugins: catalog.plugins.map(p => p.name !== 'repository-knowledge' ? p : {
@@ -118,7 +118,7 @@ test('reused assets expose every composing plugin with unique source counts', ()
   assert.ok(reused.plugins.reduce((sum, p) => sum + p.instructionWords, 0) > reused.totals.instructionWords);
   const profile = catalogReport(catalog, 'agent-authoring-default');
   assert.deepEqual(profile.assets.find(asset => asset.name === 'python-tooling').plugins,
-    ['developer-tooling', 'personal-configuration', 'software-engineering']);
+    ['developer-tooling', 'software-engineering']);
 });
 
 test('report v3 validates and rejects unknown asset kinds or ambiguous composition', () => {
@@ -142,13 +142,13 @@ test('report v3 validates and rejects unknown asset kinds or ambiguous compositi
 
 test('profile hook activation includes dependencies and fails closed on missing definitions', () => {
   const modified = { ...catalog, definitions: new Map(catalog.definitions) };
-  const sourceHook = catalog.marketplace.hooks.find(ref => ref.name === 'source-graph-valid');
+  const sourceHook = catalog.marketplace.hooks.find(ref => ref.name === 'software-engineering-context');
   const carrier = structuredClone(modified.definitions.get('HOOK/code-knowledge-drift'));
   carrier.dependsOn = [...carrier.dependsOn ?? [], sourceHook];
   modified.definitions.set('HOOK/code-knowledge-drift', carrier);
-  const profile = { name: 'shared-hook', plugins: ['repository-source-checks', 'repository-knowledge'] };
-  assert.match(auditProfileComposition(modified, profile).join('\n'), /activate HOOK\/source-graph-valid multiple times/);
-  modified.definitions.delete('HOOK/source-graph-valid');
+  const profile = { name: 'shared-hook', plugins: ['software-engineering', 'repository-knowledge'] };
+  assert.match(auditProfileComposition(modified, profile).join('\n'), /activate HOOK\/software-engineering-context multiple times/);
+  modified.definitions.delete('HOOK/software-engineering-context');
   assert.match(auditProfileComposition(modified, profile).join('\n'), /missing canonical hook definition/);
 });
 

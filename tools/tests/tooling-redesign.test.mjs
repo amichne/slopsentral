@@ -7,33 +7,39 @@ const catalog = loadCatalog(path.resolve(import.meta.dirname, '../..'));
 function closure(name) {
   return pluginClosure(catalog, catalog.plugins.find(p => p.name === name));
 }
-test('toolmaking and personal setup expose independent installation intents', () => {
+test('developer tooling consolidates explicit authoring without automatic effects', () => {
   const tooling = closure('developer-tooling');
-  const personal = closure('personal-configuration');
-  for (const candidate of [tooling, personal]) {
-    assert.deepEqual(candidate.findings, []);
-    assert.ok([...candidate.refs.values()].every(r => r.type === 'SKILL'));
+  assert.deepEqual(tooling.findings, []);
+  assert.ok([...tooling.refs.values()].every(ref => ['SKILL', 'AGENT'].includes(ref.type)));
+  for (const name of ['cli-creator', 'plugin-composition-authoring', 'personal-setup-management',
+    'openapi-contract-authoring', 'pkl-engineering']) {
+    assert.ok(tooling.refs.has(`SKILL/${name}`));
   }
-  assert.ok(tooling.refs.has('SKILL/cli-creator'));
-  assert.ok(tooling.refs.has('SKILL/plugin-composition-authoring'));
-  assert.ok(!tooling.refs.has('SKILL/personal-setup-management'));
-  assert.ok(personal.refs.has('SKILL/personal-setup-management'));
-  assert.ok(!personal.refs.has('SKILL/plugin-composition-authoring'));
-  for (const name of ['developer-tooling', 'personal-configuration'])
-    assert.ok(!catalog.plugins.find(p => p.name === name).codexMcpServers);
-  assert.equal(catalog.plugins.some(p => p.name === 'personal-setup'), false);
+  for (const name of ['schema-type-enforcer', 'openapi-contract-rater']) assert.ok(tooling.refs.has(`AGENT/${name}`));
+  assert.ok(!catalog.plugins.find(plugin => plugin.name === 'developer-tooling').codexMcpServers);
+  for (const name of ['personal-setup', 'personal-configuration', 'api-contracts', 'pkl-workflows']) {
+    assert.equal(catalog.plugins.some(plugin => plugin.name === name), false);
+  }
 });
-test('source automation carries executable resources without authoring skill dependencies', () => {
-  assert.deepEqual([...closure('repository-source-checks').refs.keys()], ['HOOK/source-graph-valid']);
+test('source automation keeps a standalone identity without an authoring dependency', () => {
+  const hook = catalog.marketplace.hooks.find(ref => ref.name === 'source-graph-valid');
+  assert.ok(hook);
+  assert.deepEqual(catalog.definitions.get('HOOK/source-graph-valid').dependsOn ?? [], []);
+  for (const plugin of catalog.plugins) {
+    assert.equal(pluginClosure(catalog, plugin).refs.has('HOOK/source-graph-valid'), false);
+  }
 });
-test('candidate profiles preserve shared skills and reject overlapping automatic behavior', () => {
-  for (const name of ['developer-tooling-default', 'personal-configuration-default'])
-    assert.deepEqual(auditProfileComposition(catalog, catalog.profiles.find(p => p.name === name)), []);
-  const personal = catalog.profiles.find(p => p.name === 'personal-configuration-default');
-  assert.ok(!personal.plugins.includes('repository-source-checks'));
-  const candidate = catalog.profiles.find(p => p.name === 'developer-tooling-default');
-  const duplicate = { ...catalog, plugins: catalog.plugins.map(p => p.name === 'developer-tooling' ? { ...p, hooks: catalog.plugins.find(p => p.name === 'repository-source-checks').hooks } : p) };
-  const conflict = candidate;
-  assert.match(auditProfileComposition(duplicate, conflict).join('\n'), /HOOK\/source-graph-valid multiple times/);
-  assert.deepEqual(auditProfileComposition(catalog, { name: 'shared-guidance', plugins: ['developer-tooling', 'personal-configuration'] }), []);
+test('profiles preserve shared skills and reject duplicate hook execution', () => {
+  for (const name of ['developer-tooling-default', 'personal-configuration-default']) {
+    assert.deepEqual(auditProfileComposition(catalog, catalog.profiles.find(profile => profile.name === name)), []);
+  }
+  const hook = catalog.marketplace.hooks.find(ref => ref.name === 'source-graph-valid');
+  const fixture = {
+    ...catalog,
+    plugins: catalog.plugins.map(plugin => ['software-engineering', 'developer-tooling'].includes(plugin.name)
+      ? { ...plugin, hooks: [...plugin.hooks, hook] } : plugin),
+  };
+  const selected = { name: 'duplicate-hook-fixture', plugins: ['software-engineering', 'developer-tooling'] };
+  assert.match(auditProfileComposition(fixture, selected).join('\n'), /HOOK\/source-graph-valid multiple times/);
+  assert.deepEqual(auditProfileComposition(catalog, selected), []);
 });

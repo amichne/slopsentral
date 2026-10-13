@@ -1,80 +1,62 @@
 ---
 name: "openapi-contract-authoring"
-description: "Create or revise OpenAPI operations, requests, responses, errors, and security contracts. Use openapi-schema-modeling for component-only changes and openapi-contract-rating for review without edits."
+description: "Create, revise, or review OpenAPI contracts, operations, component schemas, and compatibility. Use for constrained variants, typed errors, schema examples, or evidence-backed contract findings."
 ---
 
 # OpenAPI Contract Authoring
 
-Use this skill when creating or revising an OpenAPI contract that should be a
-first-class boundary assertion, not a loose description of handler behavior.
-
-Read the nearest repository policy. The contract rules and bundled references
-below apply independently of plugin-level context delivery.
-
-## Operating Contract
-
-- Treat the OpenAPI document, its generator, or its typed source model as the
-  API boundary authority.
-- Locate the existing spec owner before editing: source annotations, generated
-  code, checked-in YAML, tests, linter config, or docs pipeline.
-- Prefer OpenAPI 3.1 or newer when the local toolchain supports JSON Schema
-  semantics. If the repository is pinned to OpenAPI 3.0, state that profile and
-  use the closest supported representation intentionally.
-- Move domain facts into schemas: required fields, variants, formats, numeric
-  bounds, collection cardinality, nullability, examples, deprecation, and error
-  shapes.
-- Keep reusable domain concepts in `components/schemas`; do not duplicate the
-  same primitive constraints across operations.
-- Require explicit request, response, error, security, and status-code models
-  for every public operation.
-- Validate the spec and any generated docs or clients before calling the change
-  complete.
+Use the specification or its typed generator as the API contract authority.
+Use one workflow for operations, component schemas, and contract review.
+A review request authorizes inspection and evidence collection, not implementation.
 
 ## Workflow
 
-1. Find the authority.
-   Identify whether the spec is hand-authored or generated, where schemas live,
-   and which command validates or regenerates the contract.
+1. Find the owning source, callers, existing specification, schemas, generator, and repository policy.
+2. Name the OpenAPI version, schema dialect, supported keywords, and acceptance command.
+3. Define domain concepts, finite variants, constraints, legal transitions, and expected failures.
+4. Reuse named components for shared identifiers, envelopes, errors, and variant families.
+5. Model each operation's parameters, body, response, headers, status codes, security, and examples.
+6. Choose the strongest supported schema construct for each invariant.
+7. Exercise valid examples and the nearest illegal payload with the repository's validator or generated consumer.
+8. For review, report evidence-backed findings before scores or uncertain conclusions.
+9. For authorized edits, change the canonical owner and regenerate its consumers.
 
-2. Set the OpenAPI profile.
-   Record the OpenAPI version, supported schema dialect, validator, generator,
-   and any local rules that constrain keywords.
+## Schema Contract
 
-3. Model domain shapes first.
-   Name the domain concepts, finite variants, constrained primitives, state
-   transitions, nullable states, and extension points before writing paths.
+Use `oneOf` for exclusive variants and a required discriminator for finite families.
+Use `type` as the discriminator unless an established contract names another field.
+Use `allOf` for intersections and `anyOf` only for intentional overlap.
+Close object shapes unless the extension point has typed keys and values.
+Constrain strings, numbers, arrays, maps, and finite codes.
+Keep absent, null, empty, blank, and invalid values distinct.
+Use null only when the domain defines its meaning.
+Preserve the repository's OpenAPI profile and generator limits.
 
-4. Author operations from typed boundaries.
-   For each operation, define parameters, request body, response bodies,
-   headers, errors, security requirements, examples, and operation metadata.
+## References
 
-5. Tighten the schemas.
-   Replace raw strings, loose objects, and prose-only invariants with reusable
-   component schemas, discriminated variants, closed objects, and constraints.
+- Read [operation contracts](references/operation-contracts.md) for requests, responses, errors, and security.
+- Read [component ownership](references/component-ownership.md) for reusable schemas and generated models.
+- Read [subtypes and constraints](references/subtypes-and-constraints.md) for schema keywords and profile differences.
+- Read [invariant examples](references/invariant-examples.md) for variants, constrained values, collections, and forbidden payloads.
+- Read [rating rubric](references/rating-rubric.md) for a requested score or review severity.
+- Read [evidence and output](references/evidence-and-output.md) for findings and evidence limits.
 
-6. Prove the contract.
-   Run the local validator, generator, docs build, client generation, tests, or
-   lint command that proves the OpenAPI artifact is accepted by the repo.
+The three bundled YAML fixtures use a non-null contract profile.
+Their helper proves YAML parsing and that fixture policy only.
+It does not prove full OpenAPI acceptance or generated-client behavior.
 
-## Reference Routing
+From this skill's installed directory, run the scripts with uv and their bundled locks:
 
-- Load [operation-contracts.md](references/operation-contracts.md) when shaping
-  paths, parameters, request bodies, responses, status codes, errors, and
-  security.
-- Load [component-ownership.md](references/component-ownership.md) when deciding
-  what belongs in `components/schemas`, reusable parameters, responses, headers,
-  examples, or generated models.
-- Use the `openapi-schema-modeling` skill when schema subtype, union, constraint,
-  or example modeling is the central work.
-- Use the `openapi-contract-rating` skill when the task is to score or review an
-  existing specification.
+```sh
+uv run --locked --script scripts/validate-yaml-examples.py
+uv run --locked --script scripts/tests/test_validate_yaml_examples.py -q
+```
 
-## Completion Criteria
+The scripts declare PyYAML and pytest dependencies without a consumer project configuration.
 
-- The spec has a clear owning source and validation path.
-- Every operation has typed request, response, error, and security behavior.
-- Reusable domain constraints live in components or a generated typed source.
-- Finite families use explicit variants rather than raw tag strings.
-- Meaningful schemas include examples that demonstrate their constraints.
-- Local validation, generation, or linting has run, or the missing command is
-  named as residual risk.
+## Completion
+
+Name the source authority, protected invariant, accepted example, rejected example, and commands that ran.
+Distinguish schema acceptance, generated-consumer compilation, runtime behavior, and inspection-only findings.
+For review, name each admitted invalid state, file location, evidence, confidence, and concrete correction.
+Use `unknown` when evidence cannot support a rating axis.

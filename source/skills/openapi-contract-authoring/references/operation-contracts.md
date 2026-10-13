@@ -58,9 +58,8 @@ Use this reference when paths and operations are the main OpenAPI work.
 
 ## Evolution
 
-- Adding a required request field, removing a response field, changing a
-  discriminator, tightening a format, or changing the meaning of a stable schema
-  is a breaking contract change.
+- A new required request field or a removed response field breaks compatibility.
+- A changed discriminator, stricter format, or changed schema meaning also breaks compatibility.
 - Adding an optional response field is usually compatible, but only when clients
   are contractually required to tolerate it.
 - Adding a union variant is compatible only when the consumer contract includes

@@ -90,7 +90,7 @@
       ],
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "ide-diagnostics-mcp"
+        "name": "intellij-platform-testing"
       },
       "userInput": "Use IntelliJ Plugin Development read-only diagnostics to compare a running IDE before and during one completion slowdown, then emit one concrete method trace plan. Do not edit VM options, install software, or otherwise modify remote state.",
       "successChecklist": [
@@ -128,7 +128,7 @@
       ],
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-platform-integrations"
+        "name": "intellij-plugin-delivery"
       },
       "userInput": "Use IntelliJ Plugin Development in this isolated worktree. Implement idempotent External System import plus one external task execution and prove reimport, removal, cancellation, and failure boundaries. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [

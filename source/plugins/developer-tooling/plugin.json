@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "developer-tooling",
-  "version": "2.0.0",
-  "description": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
+  "version": "3.0.0",
+  "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -34,26 +34,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/terminal-ui-design",
-      "name": "terminal-ui-design"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/skill-primitive-authoring",
       "name": "skill-primitive-authoring"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/agent-profile-authoring",
-      "name": "agent-profile-authoring"
     },
     {
       "type": "SKILL",
@@ -70,46 +52,65 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/primitive-routing-evaluation",
-      "name": "primitive-routing-evaluation"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/hook-primitive-authoring",
-      "name": "hook-primitive-authoring"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/repo-instruction-topology",
-      "name": "repo-instruction-topology"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/manage-json-schemas",
       "name": "manage-json-schemas"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/openapi-contract-authoring",
+      "name": "openapi-contract-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/personal-setup-management",
+      "name": "personal-setup-management"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-engineering",
+      "name": "pkl-engineering"
     }
   ],
-  "agents": [],
+  "agents": [
+    {
+      "type": "AGENT",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "agents/schema-type-enforcer.agent.md",
+      "name": "schema-type-enforcer"
+    },
+    {
+      "type": "AGENT",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "agents/openapi/openapi-contract-rater.agent.md",
+      "name": "openapi-contract-rater"
+    }
+  ],
   "instructions": [],
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
-    "notFor": "Personal dotfiles maintenance, application implementation, automatic setup, or publication.",
+    "dailyDriver": "Use for a requested tool, contract, agent resource, or configuration change.",
+    "notFor": "Automatic source checks, skill-read policy, or unrequested personal configuration changes.",
     "role": "specialty",
-    "scope": "Build typed Python CLIs, terminal interfaces, and reusable agent resources.",
+    "scope": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
     "workstream": "developer-tooling",
     "owner": "developer-tooling"
   }

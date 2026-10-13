@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "intellij-plugin-development",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
@@ -25,24 +25,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/ide-diagnostics-mcp",
-      "name": "ide-diagnostics-mcp"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/intellij-psi-indexing",
-      "name": "intellij-psi-indexing"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/intellij-platform-testing",
       "name": "intellij-platform-testing"
     },
@@ -52,8 +34,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/intellij-platform-integrations",
-      "name": "intellij-platform-integrations"
+      "path": "skills/intellij-psi-indexing",
+      "name": "intellij-psi-indexing"
     }
   ],
   "agents": [],

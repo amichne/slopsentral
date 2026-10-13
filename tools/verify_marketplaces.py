@@ -1,9 +1,10 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env -S uv run --locked --script
 # /// script
 # requires-python = ">=3.12,<3.14"
 # dependencies = []
 # [tool.uv]
 # no-build = true
+# required-version = ">=0.12.9"
 # [[tool.uv.index]]
 # name = "pypi"
 # url = "https://pypi.org/simple"
@@ -67,12 +68,28 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
                 "--test",
                 "tools/tests/gradle-check-green.test.mjs",
                 "tools/tests/gradle-wrapper-integrity.test.mjs",
+                "tools/tests/openapi-installed-commands.test.mjs",
+                "tools/tests/okf-validator-isolation.test.mjs",
+                "tools/tests/okf-visualizer-isolation.test.mjs",
+                "tools/tests/pkl-installed-entrypoints.test.mjs",
             ],
             cwd=root,
             env=dict(
                 os.environ,
                 SLOPSENTRAL_GRADLE_HOOK_ROOT=str(
                     base / harness / plugin_tree / "kotlin-engineering"
+                ),
+                SLOPSENTRAL_OPENAPI_SKILL_ROOT=str(
+                    base
+                    / harness
+                    / plugin_tree
+                    / "developer-tooling/skills/openapi-contract-authoring"
+                ),
+                SLOPSENTRAL_OKF_SKILL_ROOT=str(
+                    base / harness / plugin_tree / "repository-knowledge/skills/code-knowledge-base"
+                ),
+                SLOPSENTRAL_PKL_SKILL_ROOT=str(
+                    base / harness / plugin_tree / "developer-tooling/skills/pkl-engineering"
                 ),
             ),
             check=False,

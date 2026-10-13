@@ -7,6 +7,7 @@ import path from "node:path";
 import process from "node:process";
 import { validateFieldObservations, fieldObservationFindings } from "./routing-field-observations.mjs";
 import { validateWorkflowProfile } from "./validate-profile-contracts.mjs";
+import { currentSourceEvidenceFindings } from "./routing-source-evidence.mjs";
 
 const args = process.argv.slice(2);
 const repoArgIndex = args.indexOf("--repo");
@@ -137,6 +138,25 @@ function listFiles(relativePath, predicate = () => true) {
 
 function relativeToRepo(absolutePath) {
   return path.relative(repoRoot, absolutePath).split(path.sep).join("/");
+}
+
+// Portable consumers carry the existing project minimum without an ambient project.
+for (const root of ["source", "tools"]) {
+  for (const file of listFiles(root, file => !file.split(path.sep).includes("__pycache__"))) {
+    const script = fs.readFileSync(file, "utf8");
+    if (!script.startsWith("#!") || !script.includes("# /// script\n")) continue;
+    const metadata = script.match(/^# \/\/\/ script\n([\s\S]*?)^# \/\/\/$/m)?.[1];
+    if (!metadata || !/^# required-version = ">=0\.12\.9"$/m.test(metadata)) {
+      fail(`${relativeToRepo(file)}: portable uv script must declare the existing uv >=0.12.9 minimum`);
+    }
+    if ((fs.statSync(file).mode & 0o111) !== 0
+        && !script.startsWith("#!/usr/bin/env -S uv run --locked --script\n")) {
+      fail(`${relativeToRepo(file)}: direct portable uv script must use a locked script launcher`);
+    }
+    if (!fs.existsSync(file + ".lock")) {
+      fail(`${relativeToRepo(file)}: portable uv script must have an adjacent lock`);
+    }
+  }
 }
 
 function parseFrontmatter(relativePath) {
@@ -1003,6 +1023,7 @@ function validateRoutingSource(owner, source) {
   if (!["CODEX_SESSION", "CURRENT_SOURCE", "MEMORY_INDEX", "USER_CLARIFICATION", "LOCAL_VALIDATION"].includes(source.type)) {
     fail(`${owner}: source.type is invalid`);
   }
+  for (const finding of currentSourceEvidenceFindings(source, repoRoot, owner)) fail(finding);
   if (typeof source.capturedAt !== "string" || !source.capturedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
     fail(`${owner}: source.capturedAt must be YYYY-MM-DD`);
   }

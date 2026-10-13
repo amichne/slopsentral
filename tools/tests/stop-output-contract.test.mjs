@@ -9,10 +9,10 @@ const repo = path.resolve(import.meta.dirname, '../..');
 const projection = process.env.STOP_MARKETPLACE_ROOT;
 const owners = {
   'code-knowledge-drift': 'repository-knowledge',
-  'source-graph-valid': 'repository-source-checks',
-  'pkl-evaluate-check': 'pkl-repository-checks',
-  'pkl-format-check': 'pkl-repository-checks',
-  'pkl-test-check': 'pkl-repository-checks',
+  'source-graph-valid': null,
+  'pkl-evaluate-check': null,
+  'pkl-format-check': null,
+  'pkl-test-check': null,
 };
 const quote = value => `'${value.replaceAll("'", "'\\''")}'`;
 
@@ -20,10 +20,11 @@ function run(t, name, prepare = () => {}, options = {}) {
   const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'stop-output-'));
   t.after(() => fs.rmSync(cwd, { recursive: true, force: true }));
   prepare(cwd);
-  const root = projection ? path.join(projection, '.agents/plugins', owners[name]) : path.join(repo, 'source');
-  const config = path.join(root, projection ? 'hooks' : 'hooks/codex', `${name}.hooks.json`);
+  const packaged = projection && owners[name];
+  const root = packaged ? path.join(projection, '.agents/plugins', owners[name]) : path.join(repo, 'source');
+  const config = path.join(root, packaged ? 'hooks' : 'hooks/codex', `${name}.hooks.json`);
   let command = JSON.parse(fs.readFileSync(config)).hooks.Stop[0].hooks[0].command;
-  if (!projection) command = command.replace(/\bhooks\/[\w.-]+/g, value => quote(path.join(root, value)));
+  if (!packaged) command = command.replace(/\bhooks\/[\w.-]+/g, value => quote(path.join(root, value)));
   if (options.commandPrefix) command = options.commandPrefix + command;
   const env = { ...process.env, ...options.env, PLUGIN_ROOT: root, INTELLIGENCE_CHANGED_FILES: '' };
   // This oracle measures the configured hook, independently of personal startup files.

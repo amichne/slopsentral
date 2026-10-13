@@ -10,16 +10,16 @@
       "type": "COVERAGE_GAP",
       "source": {
         "type": "CURRENT_SOURCE",
-        "capturedAt": "2026-10-10",
+        "capturedAt": "2026-10-12",
         "evidenceRefs": [
-          "source/plugins/pkl-workflows/plugin.json",
-          "docs/workflow-resources.md"
+          "source/plugins/developer-tooling/plugin.json",
+          "source/MIGRATION.md"
         ]
       },
-      "prompt": "Audit Pkl Workflows. Prove the package exposes the existing Pkl workflows without hooks or MCP connections.",
+      "prompt": "Audit Pkl Engineering within Developer Tooling. Prove the bundle has one Pkl procedure and no automatic Pkl hooks.",
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "pkl-workflows"
+        "name": "developer-tooling"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -49,16 +49,16 @@
       "type": "COVERAGE_GAP",
       "source": {
         "type": "CURRENT_SOURCE",
-        "capturedAt": "2026-10-10",
+        "capturedAt": "2026-10-12",
         "evidenceRefs": [
-          "source/plugins/pkl-repository-checks/plugin.json",
+          "source/hooks/pkl-evaluate-check.hook.json",
           "docs/workflow-resources.md"
         ]
       },
-      "prompt": "Audit Pkl Repository Checks. Prove automatic checks carry the required executable without publishing a SKILL.md workflow.",
+      "prompt": "Audit a disposable custom composition of the standalone Pkl hooks. Prove it carries the executable resource without a SKILL.md discovery entry.",
       "expectedPrimitive": {
-        "type": "PLUGIN",
-        "name": "pkl-repository-checks"
+        "type": "HOOK",
+        "name": "pkl-evaluate-check"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

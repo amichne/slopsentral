@@ -1,202 +1,86 @@
-# Catalog Architecture
+# Catalog architecture
 
-A plugin packages a recognizable job and composes canonical primitives;
-a profile selects several plugins for a broader workflow. Each primitive has
-one canonical source. Several plugins may compose the same source identity.
+Five plugins compose 28 canonical skills. Each skill owns one procedure and routes specialized details to local references.
+A plugin groups related procedures for installation. It does not grant authority or duplicate their implementation.
 
-## Primitive Responsibilities
+## Owners
 
-| Primitive | Owns | Does not own |
-| --- | --- | --- |
-| Concept | A portable invariant and its rationale | Repository-specific commands or workflow orchestration |
-| Instruction | A concise policy dependency delivered through an explicit host capability | An assumed automatic load from a plugin directory |
-| Skill | A triggered procedure and completion evidence | Automatic authority to publish, deploy, or change unrelated state |
-| Agent | A bounded delegated result and review criteria | An assumed model, unavailable tool, or competing write owner |
-| Hook | A deterministic event check or explicit advisory | Proof that the model obeyed guidance, or a portable security boundary |
-| Resource | One executable or data file with a checked identity | A discoverable skill procedure or directory copy |
-| Plugin | Install composition and routing boundary | Payload copies or competing canonical definitions |
-| Profile | Selection of plugin compositions | Duplicate hook activation or a second implementation |
-| Evaluation | A test contract or an observed result, labeled distinctly | An invented behavioral measurement |
+| Owner | Responsibility |
+| --- | --- |
+| Software Engineering | Shared invariants, proof, scoped execution, uv Python, Git, PRs, and CI |
+| Kotlin Engineering | Kotlin syntax, constrained values, closed outcomes, review, compiler proof, and Gradle |
+| IntelliJ Plugin Development | Delivery, PSI/indexing, platform tests, and live diagnostics |
+| Developer Tooling | Tools, agent resources, JSON Schema, OpenAPI, Pkl, and explicit personal configuration |
+| Repository Knowledge | Source-backed knowledge, navigation, technical documents, and prose assessment |
 
-## Selection and layering
+Software Engineering remains the single default.
+Kotlin profiles add Kotlin Engineering. IntelliJ profiles add the IntelliJ specialty.
+Python Tooling has one source and appears in Software Engineering and Developer Tooling.
+All other current skills appear in one bundle.
 
-Software Engineering is the single default: the engineering baseline,
-Semantic Ratchet, Python Tooling, implementation, tests, local Git, hosted
-issues, PRs, CI, and delivery design. Engineering Excellence is folded into it;
-there is one baseline context hook, not two independently selected policies.
+## Proof and scope
 
-Language and domain specialties refine that baseline. Kotlin owns Kotlin syntax,
-sealed/value-class enforcement, Gradle, and platform constraints. Python Tooling
-owns uv setup, PEP 723 scripts, strict Pyright, Ruff, pytest, and refactoring.
-Semantic Ratchet owns the language-neutral invariant and API design process.
-Developer Tooling owns reusable CLIs and agent resources. Personal Configuration
-owns verified configuration installation and personal utilities. The combined
-Personal Setup bundle is retired. Pkl Workflows and opt-in Pkl Repository Checks
-replace Pkl Configuration; source checks remain separately selected effects.
+`instructions/engineering-design.md` owns the shared engineering policy.
+Semantic Ratchet owns proof preservation and API design.
+TDD owns the executable oracle, planning-only mode, scope, and bounded delegation.
+Planning alone grants no execution authority.
 
-Shell authoring and data-pipeline skills are retired. New transformations,
-branching, setup, subprocess handling, and cleanup live in Python. Keep a minimal
-host launcher only where the host requires it or a parent shell owns the state.
-Native compilers, schema validators, and the Pkl projector remain explicit tools;
-Python dependency management does not replace their authority.
+Kotlin Design Practices combines API ownership, branches, and cross-module implementation.
+Kotlin Review remains read-only unless the user authorizes a repair.
+Negative Capability Proof keeps compiler-backed rejection separate from ordinary review.
+Gradle Validation owns task evidence. Gradle Performance Engineering owns measured build experiments.
 
-`AGENTS.md` references `instructions/engineering-design.md` as the canonical
-baseline. The same instruction is delivered by the software-engineering context
-hook. Skills remain independently usable. Automatic instruction delivery is a
-host capability, not something a generated plugin index can establish.
+Python Tooling owns uv, PEP 723, locks, strict Pyright, Ruff, and pytest guidance.
+Pure decisions receive explicit effect results. Process adapters use argument arrays and preserve finite failure outcomes.
+Shell remains limited to host launchers and parent-owned session state.
+Older Python modules keep their focused tests. Only the explicit static-analysis scope carries strict Pyright and Ruff evidence.
 
-The uv project pins checking and refactoring dependencies with no source builds.
-Portable scripts declare PEP 723 environments and adjacent locks. Hook manifests
-require `uv run --locked --script`; projection copies both source and lock.
-Strict checking covers new and migrated boundaries explicitly. Retained Python
-suites are collected by pytest; passing them is not a claim that legacy modules
-meet every new static rule. Negative type tests require a specific diagnostic
-and nonempty file analysis, never merely an unsuccessful process.
+## Graph and projection
 
-## Composition and Evidence
+`adaptable.marketplace.json` declares canonical identities.
+`plugins/*/plugin.json` composes references to those identities.
+`catalog.mjs` resolves dependencies and produces `CATALOG.md`.
+The graph rejects conflicting identities, missing paths, dependency cycles, and duplicate hook selection in a profile.
 
-`plugin.json` is the only composition authority. `catalog.mjs` reads those
-manifests, follows dependencies, rejects conflicting identities and cycles,
-and renders CATALOG.md. Shared references keep the same canonical identity.
-It has no provider-specific projection rules.
-The repository-local Pkl modules under `tools/projection` own Codex and GitHub
-Copilot shapes. `tools/project-marketplaces.mjs` owns frozen reads, resource
-copying, digest sealing, and staged publication; it contains no manifest mapping.
+Pkl modules under `tools/projection` own provider shapes.
+`tools/project-marketplaces.mjs` freezes inputs, copies resources, seals digests, and stages output.
+Provider output and installed caches remain consumers. Never edit them as source.
 
-An optional `codexMcpServers` declaration references a plugin-adjacent
-`.mcp.json` packaging file. The projector copies it into the Codex plugin and
-records its digest. The server executable and its installation remain owned by
-the server's project.
+A `RESOURCE` names one executable or data file. It cannot name a directory, symlink, `SKILL.md`, or destination alias.
+Resources carry no skill discovery entry. Their dependencies can reference only resources.
+A runtime resource does not need its entire authoring workflow.
+Focused fixtures keep the runtime-only projection contract under test after the policy-only plugins retire.
 
-Marketplace-listed assets may stand alone or appear in several plugins.
-A v2 profile installs a standalone skill when it declares that skill `PRESENT`.
-`ABSENT` disables its stable user path without deleting it.
-`PRESERVE` leaves it out of the overlay. Dependencies may reuse assets already composed by other plugins.
-Repeated references inside one plugin closure are idempotent.
+## Hooks and explicit effects
 
-Profiles may share skills, agents, and instructions across their selected plugins.
-The graph gate and checkout-local profile planner reject repeated hook identities
-across selected closures, including hooks reached only through dependencies.
-A shared hook is valid in alternative bundles. Select one such bundle in a profile.
-Provider bundles remain separate; the catalog does not claim that a host merges
-skill listings, instruction context, or hook execution across installed plugins.
-Manual host selections outside declared profiles need the same hook review.
+Software Engineering and Kotlin Engineering compose their concise context hooks.
+Kotlin also keeps Gradle checks and wrapper integrity.
+Repository Knowledge keeps its bounded knowledge hooks.
+Developer Tooling and IntelliJ Plugin Development add no automatic hooks.
 
-The generated catalog lists reused assets. `--profile <name> --json` reports the
-selected closure and which plugins compose each asset. Report schema v3 includes
-`RESOURCE` in the closed asset-kind union. The v2 `assets` array and unique
-counts in `totals.instructionWords` remain.
-Per-plugin instruction counts still describe each separate bundle.
-These counts do not measure prompt loading, tokens, or route quality.
-Tests prove accepted reuse and reject conflicting definitions, cycles, and repeated hook activation.
-The existing golden routing fixtures remain expected contracts; they are not new
-model runs. New behavioral scenarios are explicitly unobserved until executed.
+Source-graph, Pkl, API-context, and required-skill-read hooks remain standalone canonical primitives.
+No shipped plugin composes those hooks.
+A custom repository composition can select them explicitly under the same graph rules.
+The source and projection tests exercise their contracts with disposable fixtures.
 
-## Model Guidance
+Hook output proves an adapter result. It does not prove host consumption, model behavior, or user authorization.
+The host owns plugin selection, trust, hook discovery, and context consumption.
+Skills keep their own rules and resources so they remain useful without context hooks.
 
-The execution policy is in `instructions/agent-execution.md`, owned by
-software-engineering. It addresses follow-through, genuine approval boundaries,
-skill precedence, bounded delegation, proportionate verification, and direct prose.
-It changes task guidance, not the host's policy or the user's authority.
+## Evidence and migration
 
-The portable concept in `concepts/evidence-calibrated-execution/core.md` explains
-the invariant independently. It is not another automatically loaded instruction.
-Tool-specific details remain in skills and references. Explicit user instructions
-win over generic skill guidance within higher-priority policy.
+The uv foundation at `774716ce2cdee28133d463ae865f4c67bef68fb4` contains 11 plugins and 61 marketplace skills.
+This catalog contains five plugins and 28 skills.
+The test in `tools/tests/catalog-budget.test.mjs` enforces at most five plugins and 30 skills.
+It also rejects hidden skill entry points and protects the Kotlin default selection.
+These are distribution counts. They do not measure tokens, latency, or model quality.
 
-Software Engineering owns `instructions/engineering-design.md` and its
-merged policy delivery.
-Its concise policy requires proof in consumer contracts; Semantic Ratchet owns
-the procedure and selectively routed rationale and representative examples.
+The [migration map](MIGRATION.md) records merges and removals.
+Unique executable assets and proof cases move to their surviving owner.
+Unrelated frontend, payment, host-migration, and duplicate generic workflows leave the distribution.
+Git history preserves the previous source.
 
-## Hook Policy
-
-The required-skill-read adapter belongs to the opt-in skill-read-policy plugin,
-not general engineering, agent authoring, or Kotlin defaults. Its default
-requirements are empty and advisory. A consuming repository must explicitly
-name required skills and select the policy plugin; missing optional configuration
-does not become a reason to start a hook for every tool. Schema-read tracking is
-not proof that the model understood or applied a schema.
-
-Software Engineering, API Contracts, and Kotlin Engineering deliver concise
-instruction dependencies through their read-only context hooks. Codex's
-documented `SessionStart` output adds `additionalContext` as developer context;
-the adapters cover startup, resume, clear, and compact. Each invocation emits
-the complete current bundle. No transcript fingerprint or timer claims that
-previous output is still loaded. Full semantic concepts remain deferred references.
-The former AGENTS.md turn tracker is retired. Native observations showed that
-it wrote `.agent-turn/` during read-only proof audits and prose edits, then
-checked repository state on every stop. Applicable instruction discovery stays
-with the host; explicit instruction-topology work stays with its skill.
-
-The host owns plugin selection, hook discovery, trust, and context consumption.
-Installing files or generating a plugin-level `AGENTS.md` index does not prove
-that the model receives them. Untrusted, disabled, or unsupported hooks do not
-deliver policy. Skills must carry their own relevant rules and skill-local
-references without depending on a plugin or an unspecified repository substitute.
-No Slopsentral binary or repository-profile startup hook installs plugins, launches the host,
-or rewrites repository configuration. Profiles describe explicit selections;
-the checkout-local lifecycle tool remains available for maintenance and rollback
-of saved transactions.
-
-The Gradle and wrapper hooks retain their executable checks and Kotlin-specific
-dependencies. Their old TDD and shell-safety dependencies were reading guidance,
-not runtime dependencies, and no longer duplicate those skills into Kotlin.
-Repository-specific required checks remain mandatory. Generic skill instructions
-must not invent broader tests, universal review ceremonies, or repeated approvals.
-
-## Delivery Evidence
-
-The source graph verifies that context-hook arguments match their canonical
-instruction dependencies and cover all supported lifecycle sources. Python
-checks exercise complete output and closed failures, including missing policy,
-invalid events, escaping paths, and size limits. The same Node integration check
-runs the generated command outside the plugin root to prove package resolution.
-These checks prove hook output, not host consumption or model obedience.
-
-For native evidence, install the projected package through the host, start a
-fresh conversation, inspect hook completion and developer-context delivery,
-then run representative direct, indirect, negative, and boundary requests.
-Preserve actual results and usage separately from expected routing fixtures.
-Do not claim a model-quality improvement from a schema check or skill read.
-
-The September 29 native checks observed all four canonical policies in developer
-context at startup. Task replays loaded TDD for an empty-test-selection audit,
-controlled technical writing for prose in a Pkl-marked repository, and OpenAPI
-schema modeling for a component-only change. The replays left no `.agent-turn/`
-state. Independent Ajv checks accepted three intended schema payloads and rejected
-twelve invalid payloads; unrelated OpenAPI fields were unchanged. These are
-bounded observations on gpt-6-astra, not a broad accuracy or token-cost claim.
-Native resume, clear, and compact consumption remain unobserved; the adapter
-and output checks cover those sources. Sanitized routing misses and replays stay
-in `evals/routing/field-observations.json`, including an explicit absent route.
-
-The official [skill guidance](https://developers.openai.com/plugins/build/skills),
-[plugin packaging](https://developers.openai.com/plugins/build/plugins), and
-[hooks contract](https://learn.chatgpt.com/docs/hooks) govern provider behavior.
-The current projector emits the supported Codex compatibility manifest. Portable
-root manifests require a typed target and host qualification in the local
-projector; never emulate that migration by patching generated output.
-
-## Updating
-
-Edit the canonical primitive and manifest, update relevant scenarios, run the
-source graph gate, regenerate CATALOG.md, and run required tests and both pinned
-projections. Add a plugin only for a distinct installable workstream. Prefer a
-focused reference or a narrower trigger over another overlapping skill.
-
-## Consolidation and storage migration
-
-CLI Development and Agent Tooling move to Developer Tooling; Technical Writing
-moves to Repository Knowledge. Canonical skill paths remain stable. Profiles
-and proposed benchmark routes use the surviving owners; recorded field
-observations retain their historical provider and plugin identities. Install
-the surviving bundles and disable the retired bundles when reconciling a host.
-This source change does not modify installed plugin caches.
-
-The optional knowledge manifest selects TRACKED storage inside the source or
-INVISIBLE storage in a separate Git repository. SessionStart loads bounded
-registered guidance; Stop uses the same OKF source-impact checker against the
-selected documents. Neither hook writes into the source repository. OpenWiki
-keeps its external lifecycle and provenance; sibling OKF storage does not
-establish external OpenWiki generation support.
+Golden routing fixtures describe expected routes after consolidation.
+Historical field records preserve original route names and evidence.
+A retired route receives `NEEDS_REPLAY_CASE` status without a fabricated replacement success.
+Native host consumption and live model outcomes need separate evidence.

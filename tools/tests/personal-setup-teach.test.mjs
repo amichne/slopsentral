@@ -8,7 +8,7 @@ import test from 'node:test';
 import Ajv from 'ajv/dist/2020.js';
 
 const root = path.resolve(import.meta.dirname, '../..');
-const skill = path.join(root, 'source/skills/personal-cli-authoring');
+const skill = path.join(root, 'source/skills/cli-creator');
 const helper = path.join(skill, 'scripts/teach.mjs');
 function fixture(t) {
   const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'personal teach '));

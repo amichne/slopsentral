@@ -10,6 +10,8 @@ function checks(t, mutate, expected) {
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'catalog-contract-'));
   t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
   fs.cpSync(path.join(root, 'source'), path.join(fixture, 'source'), { recursive: true });
+  for (const entry of ['tools', 'docs', '.github'])
+    fs.cpSync(path.join(root, entry), path.join(fixture, entry), { recursive: true });
   const edit = (relative, transform) => {
     const file = path.join(fixture, relative);
     const value = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -43,10 +45,10 @@ test('accepts cross-plugin reuse through a hook dependency', t => {
 
 test('accepts canonical agent reuse in a profile', t => {
   checks(t, edit => {
-    edit('source/plugins/developer-tooling/plugin.json', plugin => {
+    edit('source/plugins/repository-knowledge/plugin.json', plugin => {
       plugin.agents.push({ type: 'AGENT', name: 'schema-type-enforcer', path: 'agents/schema-type-enforcer.agent.md', source: { type: 'LOCAL_SOURCE', path: './' } });
     });
-    edit('source/profiles/agent-authoring-default.json', profile => profile.plugins.push('api-contracts'));
+    edit('source/profiles/agent-authoring-default.json', profile => profile.plugins.push('repository-knowledge'));
   });
 });
 
@@ -58,6 +60,9 @@ test('hooks can be reused across alternative bundles', t => {
 
 test('rejects duplicate hook activation in a profile', t => {
   rejects(t, edit => {
+    edit('source/plugins/developer-tooling/plugin.json', plugin => {
+      plugin.hooks.push({ type: 'HOOK', name: 'source-graph-valid', path: 'hooks/source-graph-valid.hook.json', source: { type: 'LOCAL_SOURCE', path: './' } });
+    });
     edit('source/plugins/repository-knowledge/plugin.json', plugin => {
       plugin.hooks.push({ type: 'HOOK', name: 'source-graph-valid', path: 'hooks/source-graph-valid.hook.json', source: { type: 'LOCAL_SOURCE', path: './' } });
     });
@@ -75,7 +80,8 @@ test('checkout-local planning rejects duplicate hook activation before any host 
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'profile-composition-'));
   t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
   fs.cpSync(path.join(root, 'source'), path.join(fixture, 'source'), { recursive: true });
-  fs.cpSync(path.join(root, 'tools'), path.join(fixture, 'tools'), { recursive: true });
+  for (const entry of ['tools', 'docs', '.github'])
+    fs.cpSync(path.join(root, entry), path.join(fixture, entry), { recursive: true });
   fs.symlinkSync(path.join(root, 'node_modules'), path.join(fixture, 'node_modules'));
   const file = path.join(fixture, 'source/plugins/developer-tooling/plugin.json');
   const plugin = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -129,6 +135,8 @@ test('field observations preserve a missing route without inventing success', t 
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'routing-field-contract-'));
   t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
   fs.cpSync(path.join(root, 'source'), path.join(fixture, 'source'), { recursive: true });
+  for (const entry of ['tools', 'docs', '.github'])
+    fs.cpSync(path.join(root, entry), path.join(fixture, entry), { recursive: true });
   const file = path.join(fixture, 'source/evals/routing/field-observations.json');
   const payload = JSON.parse(fs.readFileSync(file, 'utf8'));
   payload.observations[0].route = { type: 'NO_PRIMITIVE_ROUTE' };

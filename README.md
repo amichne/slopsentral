@@ -1,35 +1,32 @@
 # Slopsentral
 
-Slopsentral is the canonical marketplace for reusable local AI tooling skills,
-plugins, hooks, agents, concepts, and workflow profiles.
+Slopsentral ships five plugins and 28 skills for Kotlin-first engineering.
+The shared rules prioritize safety, correctness, proof, scope, pure functions, and atomic units.
+New automation uses locked uv Python environments.
 
-## Choose a Plugin
+## Choose a plugin
 
-Start with **Software Engineering** for typed domain design, Python automation,
-refactoring, tests, Git, PRs, and CI. Engineering Excellence is now part of this
-shared baseline. Add a specialty when the task needs one:
+Start with Software Engineering and Kotlin Engineering for Kotlin work.
+Add a specialty only for the requested task.
 
-| Task | Add or choose |
-| --- | --- |
-| Invariant representation, proof preservation, and closed failures | Software Engineering: Semantic Ratchet and the shared engineering baseline |
-| Kotlin and Gradle | Kotlin Engineering |
-| IntelliJ Platform plugins | IntelliJ Plugin Development, plus Kotlin Engineering for Kotlin code |
-| Pkl configuration | Pkl Workflows; optional Pkl Repository Checks |
-| OpenAPI or JSON Schema | API Contracts |
-| Docs, proposals, runbooks, sites, and source-backed knowledge | Repository Knowledge |
-| Skills, agents, hooks, and plugins | Developer Tooling |
-| Typed Python CLI products and TUIs | Developer Tooling |
-| Personal shell-config setup and utilities with `--teach` | Personal Configuration |
-| Automatic Slopsentral source-graph checks | Repository Source Checks; explicit opt-in |
+| Plugin | Purpose | Skills |
+| --- | --- | --- |
+| Software Engineering | Proof-preserving design, tests, Python automation, Git, PRs, and CI | 8 |
+| Kotlin Engineering | Kotlin design, review, application libraries, compiler proof, and Gradle | 6 |
+| IntelliJ Plugin Development | Plugin delivery, PSI/indexing, and platform tests with live diagnostics | 3 |
+| Developer Tooling | CLIs, agent resources, schemas, OpenAPI, Pkl, and personal configuration | 8 |
+| Repository Knowledge | Source-backed knowledge, navigation, technical documents, and prose assessment | 4 |
 
-Developer Tooling and Personal Configuration are the focused replacements for
-Personal Setup. Pkl Workflows and opt-in Pkl Repository Checks replace the
-combined Pkl Configuration bundle. The migration changes source selections only;
-installed caches and host configuration are not modified.
+Python Tooling appears in two bundles. The marketplace has 28 unique skills.
+The [catalog](source/CATALOG.md) gives exact identifiers and composition.
+The [migration map](source/MIGRATION.md) lists every retired skill and its replacement.
 
-## Python automation
+Installation makes a skill available. It grants no authority to publish, deploy, or change personal configuration.
+Developer Tooling adds no automatic hooks. Repository Knowledge remains optional for Kotlin work.
 
-Install **uv 0.12.9 or newer** first, then run:
+## Automation
+
+Install uv 0.12.9 or newer. Run the checkout setup and its gates:
 
 ```text
 uv run --locked tools/setup.py
@@ -37,214 +34,92 @@ uv run --locked tools/check.py
 npm run verify
 ```
 
-The Python path declares Pyright (including its Node runtime), Ruff, pytest,
-coverage tooling, PyYAML, and the optional LibCST refactor group in `pyproject.toml`.
-Dependencies and the public index are locked; source builds are disabled.
-Python Tooling includes a standalone PEP 723 example, adjacent lock, project
-configuration, scaffolder, and an isolated self-test command. Editor clients can
-run `uv run --locked pyright-langserver --stdio` against the same environment.
+The project locks Pyright, Ruff, pytest, PyYAML, and the optional LibCST group.
+Portable Python scripts declare PEP 723 metadata and adjacent locks.
+The configuration disables source builds with `tool.uv.no-build = true`.
 
-New and migrated Python boundaries pass strict type and lint checks. Retained
-Python utilities run through pytest; they are not all retroactively certified
-strict. The explicit include list in `pyproject.toml` records that boundary.
-Node schema/catalog tooling, Pkl projection, Kotlin compilation, and the small
-parent-shell history adapter retain their native contracts. Python owns new
-orchestration and replaces the former shell check/setup scripts.
+New automation uses strict types, finite outcomes, literal argument arrays, and focused tests.
+The explicit include lists in `pyproject.toml` define strict Pyright and Ruff coverage.
+Older Python helpers retain their tests but do not all meet that strict coverage.
+Kotlin compilers, Pkl evaluation, and Node schema tools keep their own contracts.
+The parent-shell history adapter remains because a child process cannot read that state.
 
-Describe the result you want. The agent selects the relevant skills from those
-plugins; you do not need to name each skill. Installation does not authorize a
-push, PR, or deployment. Required Skill Read Policy is an advanced opt-in.
+For one skill without a plugin, use:
 
-See the [generated catalog](source/CATALOG.md) for exact plugin IDs and contents,
-the [migration guide](source/MIGRATION.md) before replacing older installations,
-and the [architecture](source/ARCHITECTURE.md) for ownership contracts.
-[Upstream provenance](source/UPSTREAM.md) records the guidance behind the design.
+```text
+uv run --locked tools/install_skill.py pkl-engineering
+```
 
-For automatic worktree setup and checks, add the upstream Worktrunk plugin
-alongside Software Engineering. This repository runs locked dependency setup
-on creation, source checks before Worktrunk commits, and complete marketplace
-verification through `wt verify` or `npm run verify`. See
-[Worktrunk automation](docs/worktrunk-automation.md) for setup and scope.
+The installer rejects conflicting local content. It copies no generated plugin payload into authored source.
 
-Inspect a profile without installing or executing anything:
+## Source and delivery
 
-```bash
+Author skills, hooks, concepts, agents, schemas, and plugin references under `source/`.
+Keep shared maintenance tools under `tools/`.
+Plugins reference canonical primitives. They do not own copies of those primitives.
+Installed caches and generated provider trees remain consumers.
+
+Software Engineering and Kotlin Engineering deliver concise policies through their context hooks.
+Those hooks cover startup, resume, clear, and compact.
+Their output does not prove that the host consumed the policy or that a model obeyed it.
+Full procedures and examples remain in task-selected skills and references.
+
+Standalone source, Pkl, API-context, and skill-read hooks remain explicit primitives.
+The five plugin bundles do not select those hooks.
+A repository must explicitly compose a hook before it can use that automatic behavior.
+The historical `pkl-checked-repository` profile now selects guidance only.
+
+Profiles select plugins without implicit installation or startup mutation.
+Inspect the Kotlin selection with:
+
+```text
 node tools/catalog.mjs --profile kotlin-repo-default --json
 ```
 
-## Instruction Delivery
+Use the [profile lifecycle](docs/profile-lifecycle.md) for explicit setup and saved transaction rollback.
+Use the upstream Worktrunk plugin for worktree automation.
+The [Worktrunk procedure](docs/worktrunk-automation.md) describes project setup and gates.
 
-Install and select plugins through the host's marketplace interface. Slopsentral
-has no global binary or launch wrapper. Three read-only context hooks deliver
-canonical instruction dependencies through Codex `SessionStart.additionalContext`.
-They cover startup, resume, clear, and compaction, without installing plugins,
-rewriting configuration, or recording transcript-based deduplication state.
-Software Engineering supplies execution and engineering-design guidance,
-Kotlin Engineering adds Kotlin guidance, and API
-Contracts adds schema guidance.
+The local Pkl projector creates Codex and GitHub Copilot output from authored source.
+Publication updates `.agents/plugins` and `.github/plugin` on `main` and the corresponding harness branches.
+Local edits and temporary projections do not publish those trees or change installed caches.
+Read the [architecture](source/ARCHITECTURE.md) for ownership and evidence limits.
 
-Review new or changed hook definitions through the host's `/hooks` interface.
-Installation is not hook trust: an untrusted or disabled hook does not deliver
-policy. If an enabled hook cannot load its complete bounded policy bundle, it
-reports the failure and requests that the turn stop instead of emitting partial
-guidance. Skills retain their own task rules and bundled references so they also
-work when context hooks are unavailable. See the official [hooks contract](https://learn.chatgpt.com/docs/hooks).
+## Local evidence
 
-The generated plugin `AGENTS.md` is a reference index, not proof of runtime
-loading. Source validation proves composition; projected-hook tests prove output;
-native host observations and task evaluations prove delivery and behavior
-separately. See [architecture](source/ARCHITECTURE.md).
+The projector needs Node.js 20.11 or later, locked dependencies, and Pkl 0.32.0.
+Install its pinned runtime explicitly:
 
-The former `repository-profile` startup hook is retired. Starting or resuming a
-session no longer installs plugins or rewrites repository configuration. Select
-Software Engineering and Kotlin Engineering for Kotlin
-work through the host.
-Plugin selection makes skills available; the task determines which skills to use.
-
-Workflow profiles remain declarative plugin selections. Maintainers can use the
-optional [repository-local profile lifecycle](docs/profile-lifecycle.md) for
-explicit setup and rollback of saved transactions. Normal plugin use needs no
-Slopsentral npm installation. See [migration](source/MIGRATION.md#retiring-the-global-cli)
-for existing global installations and configuration backups.
-
-## Source Of Truth
-
-- Edit authored primitives under `source/`.
-- Keep routing and quality evaluation cases under `source/evals/`; they are
-  source evidence, not generated marketplace output.
-- Keep source-graph schemas under `source/schemas/` and reusable validation
-  utilities under `tools/`.
-- Regenerate provider output with the local Pkl projector from authored source. Both
-  marketplaces are published on `main` and the dedicated harness branches.
-- Prefer this repository over installed plugin caches such as
-  `~/.codex/plugins/cache`.
-- Do not re-own first-party or system skills here. Reference upstream
-  distributions or author local rewrites with non-colliding names.
-
-## Published Harnesses
-
-| Harness | Branch | Marketplace entrypoint |
-|---|---|---|
-| Codex | `main` and [`harness/codex`](https://github.com/amichne/slopsentral/tree/harness/codex) | `.agents/plugins/marketplace.json` |
-| GitHub Copilot | `main` and [`harness/github-copilot`](https://github.com/amichne/slopsentral/tree/harness/github-copilot) | `.github/plugin/marketplace.json` |
-
-The `Publish Harnesses` workflow projects validated source with the local Pkl projector and
-publishes each dedicated output branch, then commits both generated trees to
-`main` together. Authored files are preserved. Each publication commit records
-the source commit in a `Source-Commit` trailer. Stale runs skip publication;
-normal fast-forward pushes prevent overwriting concurrent source changes.
-Generated-only pushes do not trigger another publication run.
-
-## Standalone Skills
-
-Install one marketplace-listed skill into `${CODEX_HOME:-$HOME/.codex}/skills`
-without installing a plugin:
-
-```bash
-tools/install_skill.py pkl-engineering
-tools/install_skill.py pkl-tooling-setup
-tools/install_skill.py pkl-specification
-tools/install_skill.py pkl-pattern-catalogs
-```
-
-The command copies a real skill directory and is an idempotent no-op when the
-installed copy is current. It refuses to overwrite a different existing copy;
-use `--force` only when replacement is intentional.
-
-## Pkl Engineering Plugin
-
-Install Pkl workflows from the configured `slopsentral`
-marketplace:
-
-```bash
-codex plugin add pkl-workflows@slopsentral
-```
-
-The plugin composes independently installable skills for engineering,
-toolchain/LSP setup, specification and official-source navigation, and pattern
-catalogs. Add `pkl-repository-checks@slopsentral` for Pkl format,
-explicit-entrypoint evaluation, and sandboxed test hooks. Repositories using the evaluation hook declare directly
-evaluable modules one per line in `.intelligence/pkl-entrypoints`.
-Checks need uv and a separate Pkl `>=0.31.1,<0.34.0` installation,
-selected through `PKL_BIN` or `PATH`. They skip without relevant changes;
-evaluation also needs explicit roots, and testing needs project or test files.
-The former `pkl-configuration` bundle is retired. Select both focused bundles
-or the new packages to avoid duplicate hooks. See
-[workflow resources](docs/workflow-resources.md) for the pilot and evidence.
-
-## Kast MCP in Kotlin Engineering
-
-Kotlin Engineering includes a Codex MCP connection to the locally installed
-Kast runtime. Install Kast first using its [installation guide](https://kast.michne.com/start/),
-then refresh and install `kotlin-engineering@slopsentral`. The plugin launches
-`kast-mcp-complete` from Kast's selected user installation. The sidecar leaves
-`cwd` unset so terminal Codex can pass its session directory to Kast for
-Gradle-root discovery; desktop working-directory behavior still needs a native
-test. A missing Kast installation causes server startup to fail; plugin
-installation does not install Kast.
-
-Kast's current installer also registers a global server named `kast`. Codex
-selects that global entry when both are configured. To test the plugin-owned
-connection, first inspect `codex mcp list --json` and confirm the global `kast`
-command points to your Kast installation. Remove that entry with
-`codex mcp remove kast`, start a fresh Codex session in a Kotlin Gradle
-repository, and ask Kast to find a known class. Re-running the Kast installer
-restores its global registration if needed.
-
-## Validation
-
-Use a Git checkout with a resolvable HEAD. The local projector requires Node.js
-20.11 or later, locked Node dependencies, Python 3, and exactly Pkl 0.32.0.
-Install the checksum-locked runtime explicitly, then select it:
-
-```bash
+```text
 npm ci
 node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
-export PKL_BIN=/tmp/slopsentral-pkl/pkl
 ```
 
-Choose fresh output directories for every projection. The projector rejects
-existing destinations. See [Pkl projection](docs/pkl-projection.md) for the typed
-mapping, supported inputs, provenance, and publication checks.
+Set `PKL_BIN` to that executable in the process environment.
+Use fresh output paths for each projection.
 
-```bash
+```text
 node tools/validate-source-graph.mjs
 node tools/catalog.mjs --check
-node tools/run-routing-evals.mjs
 node tools/run-routing-evals.mjs --require-all-fixtures
-tools/compile_kotlin_concepts.py
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+uv run --locked tools/compile_kotlin_concepts.py
+uv run --locked tools/verify_marketplaces.py
 git diff --check
 ```
 
-The routing runner reports golden fixture consistency and real field coverage
-separately. `--require-all-fixtures` fails when a case lacks a golden contract
-fixture; it does not require or prove model execution. The previous
-`--require-all-observed` spelling is a deprecated alias for this fixture gate.
-Record real rollout and session evidence in
-`source/evals/routing/field-observations.json`; source validation checks that
-each observation points at an existing routing case and remains sanitized. The
-v3 field contract requires activation evidence and a separate complete,
-incomplete, or unassessed proof state. Retained summaries remain reported routes;
-they are not promoted to raw trace proof. A route PASS can have pending CI or
-installed verification. Earlier drift remains alongside successful replays.
+The catalog test caps the distribution at five plugins and 30 skills.
+It also rejects hidden discoverable skill directories and unrelated hooks in Kotlin defaults.
+Graph and projection tests reject duplicate identities, conflicting paths, cycles, and duplicate hook selection.
+Compiler and schema examples exercise legal values and forbidden calls.
 
-Each marketplace plugin has one benchmark definition in
-`source/evals/plugin-benchmarks/`. Source validation requires a matching file,
-a routed scenario, a disposable workspace, and non-interactive local approval.
-These files are published benchmark definitions. They are not benchmark
-results.
+Golden routing fixtures express expected contracts. They do not record model behavior.
+Field records keep historical route identities and evidence.
+Records whose skills retired need a fresh replay before they support the replacement route.
+Each plugin benchmark defines a disposable local scenario. No live model benchmark runs during the normal gates.
 
-Run live benchmarks manually. Plugin Eval 0.1.2 starts a real `codex exec` and
-does not have a dry-run mode. CI validates the definitions but does not execute
-them. Use a temporary materialized plugin target and keep usage, result, log,
-and report files in a temporary directory. Do not commit `.plugin-eval/` or raw
-benchmark files. Raw files can contain prompts, response identifiers, commands,
-and local paths. Do not permit remote writes unless the user approved a
-disposable remote target for that run. `approvalPolicy: never` does not grant
-remote-write authority.
+## Kast
 
-After an authorized run, pass only its generated token-usage JSONL to
-`plugin-eval analyze --observed-usage`. Chat-history demand counts are routing
-evidence, not observed token usage.
+Kotlin Engineering retains its existing Kast MCP connection.
+Kast owns runtime installation and workspace discovery.
+Examine the configured server and use a fresh semantic query before a claim of installed readiness.
+Plugin installation alone proves neither runtime availability nor workspace enrollment.

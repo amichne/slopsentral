@@ -18,7 +18,7 @@
       "prompt": "Audit these plugins against completed tasks and actual skill activations. Explain uncovered flows and distinguish fixture scores, skill reads, useful outcomes, incomplete verification, and observed skill-list limits.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "primitive-routing-evaluation"
+        "name": "skill-primitive-authoring"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -55,7 +55,7 @@
       "prompt": "Qualify this installed tool end to end: pin the source and artifact, verify discovery in a fresh client, invoke a known semantic operation, and exercise recovery in the disposable target.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "delivery-pipeline-design"
+        "name": "github-ci-operations"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -203,7 +203,7 @@
       "prompt": "Update this documentation site navigation and the source-backed architecture page. Preserve generated API reference ownership and verify the changed links and rendered diagram.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "site-docs-authoring"
+        "name": "technical-documentation"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -240,7 +240,7 @@
       "prompt": "Write a substantial RFC from the supplied source evidence and repository template. Make the reader decision, tradeoffs, failure paths, and verification plan clear in a complete reviewable draft.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "reference-doc-workflow"
+        "name": "technical-documentation"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -314,7 +314,7 @@
       "prompt": "Review this OpenAPI specification and rate the operations, schemas, failures, and security boundaries with evidence. Explain the highest priority fixes without changing source.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "openapi-contract-rating"
+        "name": "openapi-contract-authoring"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -401,7 +401,7 @@
         "Leave unrelated code, scripts, generated output, and validation workflows idle."
       ],
       "forbiddenActions": [
-        "Load primitive-routing-evaluation, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
+        "Load skill-primitive-authoring, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
         "Run a build, generate knowledge, or change configuration for this prose-only request."
       ],
       "recoveryExpectation": "Retain proven stages and identify the precise missing evidence; reuse the current owner before adding behavior.",

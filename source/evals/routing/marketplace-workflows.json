@@ -53,7 +53,7 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
-          "source/skills/primitive-routing-evaluation/SKILL.md",
+          "source/skills/skill-primitive-authoring/SKILL.md",
           "source/evals/routing/fixtures/golden-routing-observations.json",
           "tools/run-routing-evals.mjs"
         ]
@@ -61,7 +61,7 @@
       "prompt": "Turn a marketplace routing miss into a durable eval case and prove the routing corpus still passes.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "primitive-routing-evaluation"
+        "name": "skill-primitive-authoring"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -149,7 +149,7 @@
       "prompt": "Set up a repository to consume this marketplace, install plugins, and keep the resolved marketplace state locked and validated.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "repository-onboarding"
+        "name": "git-change-flow"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -160,7 +160,7 @@
       "allowedActions": [
         "Prefer the current intelligence CLI for marketplace import, install, inspect, and validate workflows.",
         "Treat slopsentral source files as canonical marketplace content.",
-        "Use repository-onboarding for consumer-repo setup and baseline marketplace guidance."
+        "Use git-change-flow for consumer-repo setup and baseline marketplace guidance."
       ],
       "forbiddenActions": [
         "Route current setup through deprecated APM, NPM, Node, Python, or wrapper-era implementation paths.",
@@ -189,7 +189,7 @@
       "prompt": "Install a slopsentral plugin globally, but the configured marketplace cache reports a missing plugin manifest.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "repository-onboarding"
+        "name": "git-change-flow"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -265,7 +265,7 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-20",
         "evidenceRefs": [
-          "source/plugins/api-contracts/plugin.json",
+          "source/plugins/developer-tooling/plugin.json",
           "source/skills/manage-json-schemas/SKILL.md",
           "source/skills/openapi-contract-authoring/SKILL.md"
         ]
@@ -273,7 +273,7 @@
       "prompt": "Design persisted JSON and OpenAPI contracts with discriminated variants, typed errors, examples, and validation evidence.",
       "expectedPrimitive": {
         "type": "PLUGIN",
-        "name": "api-contracts"
+        "name": "developer-tooling"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -285,7 +285,7 @@
         ]
       },
       "allowedActions": [
-        "Use api-contracts for JSON Schema and OpenAPI boundary design.",
+        "Use developer-tooling for JSON Schema and OpenAPI boundary design.",
         "Use manage-json-schemas as a shared primitive inside the broader API contract workflow.",
         "Validate examples, variant constraints, and operation contracts."
       ],
@@ -294,12 +294,12 @@
         "Stop at standalone JSON Schema maintenance when OpenAPI operation contracts are in scope.",
         "Promote unconstrained primitives where the schema can encode invalid states."
       ],
-      "recoveryExpectation": "Shared schema skills should remain allowed overlap, but API contract prompts should load the api-contracts plugin when OpenAPI or operation boundaries are mentioned.",
+      "recoveryExpectation": "Shared schema skills should remain allowed overlap, but API contract prompts should load the developer-tooling plugin when OpenAPI or operation boundaries are mentioned.",
       "notes": "This protects a deliberate overlap from becoming an ownership ambiguity.",
       "productiveOutcome": "API boundary work produces schema and OpenAPI contracts that encode invariants and examples at the correct boundary.",
       "verificationEvidence": [
         "JSON Schema and OpenAPI examples or constraints are validated.",
-        "The api-contracts plugin owns the workflow when persisted API boundaries are in scope."
+        "The developer-tooling plugin owns the workflow when persisted API boundaries are in scope."
       ]
     },
     {
