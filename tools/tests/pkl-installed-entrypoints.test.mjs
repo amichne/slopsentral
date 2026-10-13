@@ -3,18 +3,30 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import test from 'node:test';
+import test, { after } from 'node:test';
 
 const repo = path.resolve(import.meta.dirname, '../..');
 const skill = path.resolve(process.env.SLOPSENTRAL_PKL_SKILL_ROOT
   ?? path.join(repo, 'source/skills/pkl-engineering'));
+const readinessRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'legacy-uv-readiness-'));
+after(() => fs.rmSync(readinessRoot, { recursive: true, force: true }));
+const readinessEnvironment = Object.fromEntries(Object.entries(process.env)
+  .filter(([key]) => !key.startsWith('UV_') && !key.startsWith('PYTHON') && key !== 'VIRTUAL_ENV'));
+Object.assign(readinessEnvironment, { UV_NO_CONFIG: '1', UV_PYTHON: '3.12', UV_PYTHON_DOWNLOADS: 'never',
+  UV_CACHE_DIR: path.join(readinessRoot, 'cache'), PYTHONNOUSERSITE: '1' });
 const legacyProbe = spawnSync('uv', ['run', '--locked', '--script',
   path.join(repo, 'tools/tests/fixtures/uv-legacy-probe.py')], {
-  cwd: repo, encoding: 'utf8', timeout: 60000,
+  cwd: readinessRoot, env: readinessEnvironment, encoding: 'utf8', timeout: 60000,
 });
 assert.equal(legacyProbe.status, 0, legacyProbe.stderr);
 const legacyUv = legacyProbe.stdout.trim();
 assert.ok(path.isAbsolute(legacyUv));
+const offlineProbe = spawnSync('uv', ['run', '--locked', '--script',
+  path.join(repo, 'tools/tests/fixtures/uv-legacy-probe.py')], {
+  cwd: readinessRoot, env: { ...readinessEnvironment, UV_OFFLINE: '1' }, encoding: 'utf8', timeout: 60000,
+});
+assert.equal(offlineProbe.status, 0, offlineProbe.stderr);
+assert.equal(offlineProbe.stdout.trim(), legacyUv);
 
 test('legacy uv reproduces the missing-script-lock risk without the minimum-version guard', t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'uv-missing-lock-control-'));

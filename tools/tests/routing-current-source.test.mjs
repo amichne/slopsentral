@@ -5,12 +5,27 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 import { currentSourceLocalPaths, currentSourceEvidenceFindings } from '../routing-source-evidence.mjs';
-import { validPaths, invalidPaths, wrappedPaths, nonlocalReferences } from './fixtures/current-source-paths.mjs';
+import { validPaths, invalidPaths, wrappedPaths, nonlocalReferences, controlReferences } from './fixtures/current-source-paths.mjs';
 
 const repo = path.resolve(import.meta.dirname, '../..');
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const rootEvidence = validPaths;
 const invalidEvidence = [...invalidPaths, ...wrappedPaths];
+
+test('current evidence rejects the control-character matrix before reference-file lookup', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'routing-control-source-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, 'docs'));
+  fs.writeFileSync(path.join(root, 'docs/\nREADME.md'), 'existing newline filename\n');
+  const references = [...controlReferences, 'docs/\nREADME.md'];
+  const source = { type: 'CURRENT_SOURCE', evidenceRefs: references };
+  assert.deepEqual(currentSourceLocalPaths(source), references, 'freezing must admit every malformed reference for rejection');
+  const findings = currentSourceEvidenceFindings(source, root, 'fixture');
+  assert.equal(findings.length, references.length);
+  assert.ok(findings.every(finding => finding.includes('unsupported control characters')));
+  for (const type of ['CODEX_SESSION', 'MEMORY_INDEX', 'USER_CLARIFICATION', 'LOCAL_VALIDATION'])
+    assert.deepEqual(currentSourceEvidenceFindings({ ...source, type }, root, 'fixture'), []);
+});
 
 test('current Astra scenarios route to surviving skills', () => {
   const document = fs.readFileSync(path.join(repo, 'source/evals/astra-workstreams.md'), 'utf8');
@@ -68,8 +83,14 @@ for (const script of ['validate-source-graph.mjs', 'run-routing-evals.mjs']) {
       fs.writeFileSync(file, JSON.stringify(corpus));
       const rejected = run();
       assert.equal(rejected.status, 1, `${ref}: ${rejected.stdout}${rejected.stderr}`);
-      assert.ok((rejected.stdout + rejected.stderr).includes(`CURRENT_SOURCE evidence path is invalid: ${ref}`));
+      assert.match(rejected.stdout + rejected.stderr, /CURRENT_SOURCE evidence (?:path is invalid|reference has unsupported control characters)/);
     }
+    fs.writeFileSync(path.join(root, 'docs/\nREADME.md'), 'existing newline filename\n');
+    corpus.cases[0].source.evidenceRefs = [...controlReferences, 'docs/\nREADME.md'];
+    fs.writeFileSync(file, JSON.stringify(corpus));
+    const controls = run();
+    assert.equal(controls.status, 1, controls.stdout + controls.stderr);
+    assert.match(controls.stdout + controls.stderr, /unsupported control characters/);
   });
 
   test(`${script} rejects missing current evidence and preserves historical evidence`, t => {
@@ -107,8 +128,9 @@ test('root evidence uses the same canonical path rules as nested evidence', t =>
   fs.writeFileSync(path.join(root, '..directory/evidence'), 'evidence\n');
   fs.writeFileSync(path.join(root, 'README.md'), 'evidence\n');
   for (const ref of invalidEvidence) {
-    assert.deepEqual(currentSourceEvidenceFindings({ type: 'CURRENT_SOURCE', evidenceRefs: [ref] }, root, 'fixture'),
-      [`fixture: CURRENT_SOURCE evidence path is invalid: ${ref}`]);
+    const findings = currentSourceEvidenceFindings({ type: 'CURRENT_SOURCE', evidenceRefs: [ref] }, root, 'fixture');
+    assert.equal(findings.length, 1);
+    assert.match(findings[0], /CURRENT_SOURCE evidence (?:path is invalid|reference has unsupported control characters)/);
   }
   assert.deepEqual(currentSourceEvidenceFindings({ type: 'CURRENT_SOURCE',
     evidenceRefs: ['..directory/evidence'] }, root, 'fixture'), []);

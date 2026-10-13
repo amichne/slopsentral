@@ -10,7 +10,7 @@ import { project } from '../project-marketplaces.mjs';
 import { install } from '../install-projection-pkl.mjs';
 import { loadCatalog, pluginClosure } from '../catalog.mjs';
 import { currentSourceLocalPaths } from '../routing-source-evidence.mjs';
-import { validPaths, invalidPaths, wrappedPaths, nonlocalReferences } from './fixtures/current-source-paths.mjs';
+import { validPaths, invalidPaths, wrappedPaths, nonlocalReferences, effectControlReferences } from './fixtures/current-source-paths.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const pkl = process.env.PKL_BIN;
@@ -228,6 +228,17 @@ process.stdout.write(r.stdout ?? ''); process.stderr.write(r.stderr ?? ''); proc
       e => { assert.equal(e.outcome?.code, 'SOURCE_REJECTED', `${JSON.stringify(ref)}: ${e}`); return true; });
     assert.equal(fs.existsSync(out), false);
     assert.equal(fs.existsSync(marker), false, `${JSON.stringify(ref)} must not reach the evaluator`);
+  }
+  fs.mkdirSync(path.join(repo, 'docs'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'docs/\nREADME.md'), 'existing newline filename\n');
+  for (const ref of [...effectControlReferences, 'docs/\nREADME.md']) {
+    payload.cases[0].source.evidenceRefs = [ref];
+    fs.writeFileSync(casesPath, JSON.stringify(payload));
+    const out = path.join(dir, 'controls-output');
+    assert.throws(() => project({ source: repo, harness: 'codex', out, pkl: executable }),
+      e => e.outcome?.code === 'SOURCE_REJECTED');
+    assert.equal(fs.existsSync(marker), false);
+    assert.equal(fs.existsSync(out), false);
   }
 });
 

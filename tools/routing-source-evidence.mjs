@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+const unsupportedControls = /[\p{Cc}\p{Zl}\p{Zp}]/u;
 
 export function currentSourceLocalPaths(source) {
   if (source?.type !== 'CURRENT_SOURCE' || !Array.isArray(source.evidenceRefs)) return [];
@@ -7,6 +8,7 @@ export function currentSourceLocalPaths(source) {
   // Keep URI references and descriptive sentences outside the file contract.
   return source.evidenceRefs.filter(ref => {
     if (typeof ref !== 'string') return false;
+    if (unsupportedControls.test(ref)) return true;
     const candidate = ref.trim();
     return path.win32.parse(candidate).root !== ''
       || (!/^[A-Za-z][A-Za-z0-9+.-]*:/.test(candidate)
@@ -24,7 +26,17 @@ export function currentSourceEvidenceFindings(source, repoRoot, owner) {
   const root = fs.realpathSync(repoRoot);
   const localPaths = new Set(currentSourceLocalPaths(source));
   for (const ref of source.evidenceRefs) {
-    if (typeof ref !== 'string' || !ref.trim()) {
+    if (typeof ref !== 'string') {
+      findings.push(`${owner}: CURRENT_SOURCE evidenceRefs must contain non-empty strings`);
+      continue;
+    }
+    if (unsupportedControls.test(ref)) {
+      const shown = JSON.stringify(ref).replace(/[\p{Cc}\p{Zl}\p{Zp}]/gu,
+        character => `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`);
+      findings.push(`${owner}: CURRENT_SOURCE evidence reference has unsupported control characters: ${shown}`);
+      continue;
+    }
+    if (!ref.trim()) {
       findings.push(`${owner}: CURRENT_SOURCE evidenceRefs must contain non-empty strings`);
       continue;
     }

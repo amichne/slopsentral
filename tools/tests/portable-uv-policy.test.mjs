@@ -11,8 +11,35 @@ test('every executable portable launcher rejects missing and stale locks before 
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const environment = Object.fromEntries(Object.entries(process.env)
     .filter(([key]) => !key.startsWith('UV_') && !key.startsWith('PYTHON') && key !== 'VIRTUAL_ENV'));
-  Object.assign(environment, { UV_NO_CONFIG: '1', UV_PYTHON: '3.12', UV_OFFLINE: '1',
-    UV_PYTHON_DOWNLOADS: 'never', PYTHONNOUSERSITE: '1' });
+  Object.assign(environment, { UV_NO_CONFIG: '1', UV_PYTHON: '3.12',
+    UV_CACHE_DIR: path.join(root, 'cache'), UV_PYTHON_DOWNLOADS: 'never', PYTHONNOUSERSITE: '1' });
+  assert.equal(fs.existsSync(environment.UV_CACHE_DIR), false, 'the readiness cache must start empty');
+  const prepared = spawnSync('uv', ['run', '--locked', '--script',
+    path.join(repo, 'tools/tests/fixtures/uv-legacy-probe.py')], {
+    cwd: root, env: environment, encoding: 'utf8', timeout: 60000,
+  });
+  assert.equal(prepared.status, 0, prepared.stdout + prepared.stderr);
+  const control = path.join(root, 'valid-control.py');
+  const original = path.join(repo, 'source/skills/python-tooling/assets/standalone.py');
+  fs.copyFileSync(original, control);
+  fs.copyFileSync(`${original}.lock`, `${control}.lock`);
+  fs.chmodSync(control, fs.statSync(original).mode & 0o777);
+  const readinessScript = path.join(root, 'legacy-readiness.py');
+  const originalReadiness = path.join(repo, 'tools/tests/fixtures/uv-legacy-probe.py');
+  fs.copyFileSync(originalReadiness, readinessScript);
+  fs.copyFileSync(`${originalReadiness}.lock`, `${readinessScript}.lock`);
+  for (const script of [control, readinessScript]) {
+    const before = fs.readFileSync(`${script}.lock`);
+    const resolved = spawnSync('uv', ['lock', '--script', script, '--refresh'], {
+      cwd: root, env: environment, encoding: 'utf8', timeout: 60000,
+    });
+    assert.equal(resolved.status, 0, resolved.stdout + resolved.stderr);
+    assert.deepEqual(fs.readFileSync(`${script}.lock`), before, 'cache readiness must preserve each declared lock');
+  }
+  environment.UV_OFFLINE = '1';
+  const valid = spawnSync(control, ['--self-test'], { cwd: root, env: environment, encoding: 'utf8', timeout: 60000 });
+  assert.equal(valid.status, 0, valid.stdout + valid.stderr);
+  assert.match(valid.stdout, /passed/);
   let count = 0;
   for (const base of ['source', 'tools']) for (const relative of fs.readdirSync(path.join(repo, base), { recursive: true })) {
     const file = path.join(repo, base, relative);
