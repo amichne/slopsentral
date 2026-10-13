@@ -12,6 +12,8 @@ function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'routing-evidence-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   fs.cpSync(path.join(repo, 'source'), path.join(root, 'source'), { recursive: true });
+  for (const entry of ['tools', 'docs', '.github'])
+    fs.cpSync(path.join(repo, entry), path.join(root, entry), { recursive: true });
   const file = path.join(root, 'source/evals/routing/field-observations.json');
   const payload = read(file);
   const run = () => spawnSync(process.execPath, [path.join(repo, 'tools/run-routing-evals.mjs'), '--repo', root, '--json', '--require-all-fixtures'], { encoding: 'utf8' });

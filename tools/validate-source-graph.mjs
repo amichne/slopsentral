@@ -7,6 +7,7 @@ import path from "node:path";
 import process from "node:process";
 import { validateFieldObservations, fieldObservationFindings } from "./routing-field-observations.mjs";
 import { validateWorkflowProfile } from "./validate-profile-contracts.mjs";
+import { currentSourceEvidenceFindings } from "./routing-source-evidence.mjs";
 
 const args = process.argv.slice(2);
 const repoArgIndex = args.indexOf("--repo");
@@ -1003,6 +1004,7 @@ function validateRoutingSource(owner, source) {
   if (!["CODEX_SESSION", "CURRENT_SOURCE", "MEMORY_INDEX", "USER_CLARIFICATION", "LOCAL_VALIDATION"].includes(source.type)) {
     fail(`${owner}: source.type is invalid`);
   }
+  for (const finding of currentSourceEvidenceFindings(source, repoRoot, owner)) fail(finding);
   if (typeof source.capturedAt !== "string" || !source.capturedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
     fail(`${owner}: source.capturedAt must be YYYY-MM-DD`);
   }

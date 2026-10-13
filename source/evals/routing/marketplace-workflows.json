@@ -53,7 +53,7 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
-          "source/skills/primitive-routing-evaluation/SKILL.md",
+          "source/skills/skill-primitive-authoring/SKILL.md",
           "source/evals/routing/fixtures/golden-routing-observations.json",
           "tools/run-routing-evals.mjs"
         ]
@@ -265,7 +265,7 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-20",
         "evidenceRefs": [
-          "source/plugins/api-contracts/plugin.json",
+          "source/plugins/developer-tooling/plugin.json",
           "source/skills/manage-json-schemas/SKILL.md",
           "source/skills/openapi-contract-authoring/SKILL.md"
         ]

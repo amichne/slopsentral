@@ -10,6 +10,8 @@ function checks(t, mutate, expected) {
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'catalog-contract-'));
   t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
   fs.cpSync(path.join(root, 'source'), path.join(fixture, 'source'), { recursive: true });
+  for (const entry of ['tools', 'docs', '.github'])
+    fs.cpSync(path.join(root, entry), path.join(fixture, entry), { recursive: true });
   const edit = (relative, transform) => {
     const file = path.join(fixture, relative);
     const value = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -78,7 +80,8 @@ test('checkout-local planning rejects duplicate hook activation before any host 
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'profile-composition-'));
   t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
   fs.cpSync(path.join(root, 'source'), path.join(fixture, 'source'), { recursive: true });
-  fs.cpSync(path.join(root, 'tools'), path.join(fixture, 'tools'), { recursive: true });
+  for (const entry of ['tools', 'docs', '.github'])
+    fs.cpSync(path.join(root, entry), path.join(fixture, entry), { recursive: true });
   fs.symlinkSync(path.join(root, 'node_modules'), path.join(fixture, 'node_modules'));
   const file = path.join(fixture, 'source/plugins/developer-tooling/plugin.json');
   const plugin = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -132,6 +135,8 @@ test('field observations preserve a missing route without inventing success', t 
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'routing-field-contract-'));
   t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
   fs.cpSync(path.join(root, 'source'), path.join(fixture, 'source'), { recursive: true });
+  for (const entry of ['tools', 'docs', '.github'])
+    fs.cpSync(path.join(root, entry), path.join(fixture, entry), { recursive: true });
   const file = path.join(fixture, 'source/evals/routing/field-observations.json');
   const payload = JSON.parse(fs.readFileSync(file, 'utf8'));
   payload.observations[0].route = { type: 'NO_PRIMITIVE_ROUTE' };

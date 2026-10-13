@@ -52,8 +52,8 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-10-06",
         "evidenceRefs": [
-          "source/skills/personal-cli-authoring/SKILL.md",
-          "source/skills/personal-cli-authoring/scripts/teach.mjs",
+          "source/skills/cli-creator/SKILL.md",
+          "source/skills/cli-creator/scripts/teach.mjs",
           "tools/tests/personal-setup-teach.test.mjs"
         ]
       },

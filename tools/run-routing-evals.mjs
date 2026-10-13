@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { validateFieldObservations, fieldObservationFindings, summarizeFieldObservations } from './routing-field-observations.mjs';
+import { currentSourceEvidenceFindings } from './routing-source-evidence.mjs';
 
 const args = process.argv.slice(2);
 const repoArgIndex = args.indexOf("--repo");
@@ -83,6 +84,8 @@ function loadRoutingCases() {
       continue;
     }
     for (const routingCase of payload.cases ?? []) {
+      for (const finding of currentSourceEvidenceFindings(routingCase.source, repoRoot,
+        `${relativeToRepo(file)}:${routingCase.id ?? "<missing-id>"}`)) fail(finding);
       assertNoPrivateLocalStrings(`${relativeToRepo(file)}:${routingCase.id ?? "<missing-id>"}`, routingCase);
       if (cases.has(routingCase.id)) {
         fail(`${relativeToRepo(file)}: duplicate routing case id ${routingCase.id}`);

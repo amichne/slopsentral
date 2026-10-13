@@ -82,6 +82,8 @@ for (const [harness, tree] of [['codex', '.agents/plugins'], ['github-copilot', 
     fs.mkdirSync(repo);
     fs.cpSync(path.join(root, 'source'), path.join(repo, 'source'), { recursive: true,
       filter: source => !source.split(path.sep).includes('__pycache__') });
+    for (const entry of ['tools', 'docs', '.github'])
+      fs.cpSync(path.join(root, entry), path.join(repo, entry), { recursive: true });
     const pluginDirectory = path.join(repo, 'source/plugins', fixtureName);
     fs.mkdirSync(pluginDirectory);
     fs.writeFileSync(path.join(pluginDirectory, 'plugin.json'), JSON.stringify(fixturePlugin));

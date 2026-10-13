@@ -12,7 +12,6 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-06-22",
         "evidenceRefs": [
-          "source/skills/kotlin-agentic-correctness/SKILL.md",
           "source/skills/kotlin-design-practices/SKILL.md"
         ]
       },
@@ -145,7 +144,7 @@
         "evidenceRefs": [
           "source/concepts/kotlin-repository-engineering/core.md",
           "source/concepts/kotlin-code-correctness/core.md",
-          "source/skills/kotlin-agentic-correctness/SKILL.md",
+          "source/skills/kotlin-design-practices/SKILL.md",
           "source/skills/tdd/references/isolation.md"
         ]
       },
