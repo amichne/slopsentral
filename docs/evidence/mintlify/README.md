@@ -22,14 +22,15 @@ The documentation entry in the root README and the glossary scope also changed.
 | Provider projections | not run | No marketplace or plugin composition changed |
 | Full Python gate | not run | No Python implementation changed |
 | Human reader review | not run | No independent reader feedback |
-| Hosted Slopsentral deployment | created | `slopsentral.mintlify.site` exists. The Git source points to the prepared documentation. |
-| Hosted documentation | not run | Mintlify reports `Docs repo inaccessible` because its GitHub app excludes `slopsentral`. |
+| Hosted Slopsentral deployment | passed | Mintlify reports a successful manual update with 16 pages in its live snapshot. |
+| Hosted documentation | passed | All 16 public paths returned HTTP 200 with their expected page titles. |
 
 The signed-in Mintlify dashboard created the separate `slopsentral` deployment.
-The deployment currently serves the Mintlify starter content.
+The deployment serves the authored Slopsentral documentation.
 The Git source uses `amichne/slopsentral`, `feature/slopsentral-docs`, and `docs/public` during review.
-Mintlify's GitHub app currently covers `kast` and `okai`.
-The app must also include `slopsentral` before the deployment can read the prepared documentation.
+Mintlify's GitHub app covers `kast`, `okai`, and `slopsentral`.
+The user granted access to `slopsentral` through the app's selected repositories.
+The live maintainer page contains the current documentation branch and content directory.
 The existing Kast deployment keeps its Git source and content.
 
 ## Prose assessment
@@ -101,5 +102,6 @@ This review supplies no independent human evidence.
 | Does a grade estimate prove comprehension? | No. A fresh reader result remains necessary. |
 | How does the site connect to Mintlify? | Use `amichne/slopsentral`, branch `feature/slopsentral-docs`, and content directory `docs/public` during PR review. |
 
-The remaining external step is GitHub app access to `amichne/slopsentral`.
+No external step remains for the requested deployment.
+The separate documentation PR still awaits review and merge into `main`.
 Actual agent host consumption, fresh installation, and human comprehension remain unproved.

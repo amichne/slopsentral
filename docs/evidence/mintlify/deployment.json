@@ -12,9 +12,10 @@
   },
   "pullRequest": "https://github.com/amichne/slopsentral/pull/69",
   "hostedDocumentation": {
-    "type": "BLOCKED",
-    "stage": "GITHUB_APP_ACCESS",
-    "message": "Docs repo inaccessible",
-    "selectedRepositories": ["kast", "okai"]
+    "type": "LIVE",
+    "update": "Successful",
+    "snapshotPages": 16,
+    "httpPages": 16,
+    "selectedRepositories": ["kast", "okai", "slopsentral"]
   }
 }

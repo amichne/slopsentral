@@ -1,0 +1,103 @@
+{
+  "type": "LIVE_PAGES_PASSED",
+  "site": "https://slopsentral.mintlify.site",
+  "expectedSourceRevision": "f55e4702f398baba73061f9724e01bab3e5c5b4f",
+  "pages": [
+    {
+      "path": "index",
+      "url": "https://slopsentral.mintlify.site/",
+      "status": 200,
+      "title": "Slopsentral"
+    },
+    {
+      "path": "guides/install",
+      "url": "https://slopsentral.mintlify.site/guides/install",
+      "status": 200,
+      "title": "Install Slopsentral"
+    },
+    {
+      "path": "guides/choose-plugins",
+      "url": "https://slopsentral.mintlify.site/guides/choose-plugins",
+      "status": 200,
+      "title": "Choose plugins"
+    },
+    {
+      "path": "guides/controlled-writing",
+      "url": "https://slopsentral.mintlify.site/guides/controlled-writing",
+      "status": 200,
+      "title": "Write technical prose"
+    },
+    {
+      "path": "guides/troubleshooting",
+      "url": "https://slopsentral.mintlify.site/guides/troubleshooting",
+      "status": 200,
+      "title": "Troubleshoot Slopsentral"
+    },
+    {
+      "path": "plugins/software-engineering",
+      "url": "https://slopsentral.mintlify.site/plugins/software-engineering",
+      "status": 200,
+      "title": "Software Engineering"
+    },
+    {
+      "path": "plugins/kotlin-engineering",
+      "url": "https://slopsentral.mintlify.site/plugins/kotlin-engineering",
+      "status": 200,
+      "title": "Kotlin Engineering"
+    },
+    {
+      "path": "plugins/intellij-plugin-development",
+      "url": "https://slopsentral.mintlify.site/plugins/intellij-plugin-development",
+      "status": 200,
+      "title": "IntelliJ Plugin Development"
+    },
+    {
+      "path": "plugins/developer-tooling",
+      "url": "https://slopsentral.mintlify.site/plugins/developer-tooling",
+      "status": 200,
+      "title": "Developer Tooling"
+    },
+    {
+      "path": "plugins/repository-knowledge",
+      "url": "https://slopsentral.mintlify.site/plugins/repository-knowledge",
+      "status": 200,
+      "title": "Repository Knowledge"
+    },
+    {
+      "path": "reference/architecture",
+      "url": "https://slopsentral.mintlify.site/reference/architecture",
+      "status": 200,
+      "title": "Source and delivery"
+    },
+    {
+      "path": "reference/profiles",
+      "url": "https://slopsentral.mintlify.site/reference/profiles",
+      "status": 200,
+      "title": "Profiles"
+    },
+    {
+      "path": "reference/glossary",
+      "url": "https://slopsentral.mintlify.site/reference/glossary",
+      "status": 200,
+      "title": "Glossary"
+    },
+    {
+      "path": "maintainers/contribute",
+      "url": "https://slopsentral.mintlify.site/maintainers/contribute",
+      "status": 200,
+      "title": "Contribute"
+    },
+    {
+      "path": "maintainers/projection",
+      "url": "https://slopsentral.mintlify.site/maintainers/projection",
+      "status": 200,
+      "title": "Project provider output"
+    },
+    {
+      "path": "maintainers/documentation",
+      "url": "https://slopsentral.mintlify.site/maintainers/documentation",
+      "status": 200,
+      "title": "Maintain the site"
+    }
+  ]
+}
