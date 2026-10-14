@@ -22,11 +22,14 @@ The documentation entry in the root README and the glossary scope also changed.
 | Provider projections | not run | No marketplace or plugin composition changed |
 | Full Python gate | not run | No Python implementation changed |
 | Human reader review | not run | No independent reader feedback |
-| Hosted Slopsentral deployment | created | `slopsentral.mintlify.site` exists. The prepared documentation still needs its Git connection. |
+| Hosted Slopsentral deployment | created | `slopsentral.mintlify.site` exists. The Git source points to the prepared documentation. |
+| Hosted documentation | not run | Mintlify reports `Docs repo inaccessible` because its GitHub app excludes `slopsentral`. |
 
 The signed-in Mintlify dashboard created the separate `slopsentral` deployment.
 The deployment currently serves the Mintlify starter content.
-The prepared documentation will use `feature/slopsentral-docs` and `docs/public` during review.
+The Git source uses `amichne/slopsentral`, `feature/slopsentral-docs`, and `docs/public` during review.
+Mintlify's GitHub app currently covers `kast` and `okai`.
+The app must also include `slopsentral` before the deployment can read the prepared documentation.
 The existing Kast deployment keeps its Git source and content.
 
 ## Prose assessment
@@ -96,7 +99,7 @@ This review supplies no independent human evidence.
 | Where does a maintainer change a skill? | Its canonical directory under `source/skills`. |
 | Does installation prove a model used a skill? | No. The pages state that limit. |
 | Does a grade estimate prove comprehension? | No. A fresh reader result remains necessary. |
-| How does the site connect to Mintlify? | Use `amichne/slopsentral`, branch `main`, and content directory `docs/public`. |
+| How does the site connect to Mintlify? | Use `amichne/slopsentral`, branch `feature/slopsentral-docs`, and content directory `docs/public` during PR review. |
 
-The remaining external step is the connection to the published documentation branch.
+The remaining external step is GitHub app access to `amichne/slopsentral`.
 Actual agent host consumption, fresh installation, and human comprehension remain unproved.

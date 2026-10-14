@@ -45,14 +45,18 @@ Do not invent a synonym to remove a finding.
 ## Connect Mintlify
 
 A separate Slopsentral deployment keeps this site's source and identity explicit.
-After the docs reach the chosen Git branch, connect the deployment with these settings:
+The first deployment targets the documentation branch during PR review.
+Its public URL is [slopsentral.mintlify.site](https://slopsentral.mintlify.site).
 
 | Setting | Value |
 | --- | --- |
 | Repository | `amichne/slopsentral` |
-| Deploy branch | `main` |
+| Deploy branch | `feature/slopsentral-docs` |
 | Content directory | `docs/public` |
 | Configuration | `docs/public/docs.json` |
+
+After the documentation PR merges, set the deploy branch to `main`.
+The Mintlify GitHub app must include `amichne/slopsentral` in its selected repositories.
 
 In Git Settings, set the documentation subdirectory to `/docs/public`.
 Do not include a trailing slash.

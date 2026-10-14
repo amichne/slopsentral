@@ -196,14 +196,14 @@
     {
       "findings": [],
       "metrics": {
-        "estimatedSyllables": 419,
-        "fleschKincaidGrade": 7.27,
-        "sentences": 31,
-        "words": 251,
-        "wordsPerSentence": 8.1
+        "estimatedSyllables": 467,
+        "fleschKincaidGrade": 7.66,
+        "sentences": 34,
+        "words": 274,
+        "wordsPerSentence": 8.06
       },
       "path": "docs/public/maintainers/documentation.mdx",
-      "sourceSha256": "f50ba9305310804fafd8d4bd7937f2910de698bc39e47934e2875db36745139b",
+      "sourceSha256": "e168935ec1b1bc23904ccc727cae930c242e5c77371f3a18ef3ffd09da67f910",
       "terminology": {
         "type": "IN_SCOPE"
       },
@@ -475,7 +475,7 @@
         {
           "category": "READABILITY",
           "line": 1,
-          "message": "Estimated Flesch-Kincaid grade 8.25 exceeds the shared advisory target of 8.",
+          "message": "Estimated Flesch-Kincaid grade 8.01 exceeds the shared advisory target of 8.",
           "rule": "Slopsentral.Grade",
           "severity": "warning",
           "span": [
@@ -486,14 +486,14 @@
         }
       ],
       "metrics": {
-        "estimatedSyllables": 458,
-        "fleschKincaidGrade": 8.25,
-        "sentences": 30,
-        "words": 265,
-        "wordsPerSentence": 8.83
+        "estimatedSyllables": 479,
+        "fleschKincaidGrade": 8.01,
+        "sentences": 32,
+        "words": 280,
+        "wordsPerSentence": 8.75
       },
       "path": "docs/evidence/mintlify/README.md",
-      "sourceSha256": "444cb1d2a7e3e57c8f9e74a092079428726af93ce7d5bf20edf34ebeeea78a3f",
+      "sourceSha256": "b301797e6dd48ef2599f4872d950fb8428d9f09c128e36e565fbbdf6f7ad6fa8",
       "terminology": {
         "type": "IN_SCOPE"
       },

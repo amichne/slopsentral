@@ -1,0 +1,20 @@
+{
+  "type": "GIT_SOURCE_CONFIGURED",
+  "subdomain": "slopsentral",
+  "url": "https://slopsentral.mintlify.site",
+  "gitSource": {
+    "type": "github",
+    "owner": "amichne",
+    "repo": "slopsentral",
+    "deployBranch": "feature/slopsentral-docs",
+    "contentDirectory": "docs/public",
+    "isPrivate": false
+  },
+  "pullRequest": "https://github.com/amichne/slopsentral/pull/69",
+  "hostedDocumentation": {
+    "type": "BLOCKED",
+    "stage": "GITHUB_APP_ACCESS",
+    "message": "Docs repo inaccessible",
+    "selectedRepositories": ["kast", "okai"]
+  }
+}
