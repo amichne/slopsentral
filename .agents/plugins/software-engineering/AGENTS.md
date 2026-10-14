@@ -39,4 +39,5 @@ Design proof-preserving boundaries and implement, verify, and deliver software w
 
 ## Hook Primitives
 
+- `agents-md-scope`: `hooks/agents-md-scope.hooks.json` (source: `source/hooks/agents-md-scope.hook.json`)
 - `software-engineering-context`: `hooks/software-engineering-context.hooks.json` (source: `source/hooks/software-engineering-context.hook.json`)
