@@ -24,6 +24,7 @@ The documentation entry in the root README and the glossary scope also changed.
 | Human reader review | not run | No independent reader feedback |
 | Hosted Slopsentral deployment | passed | Mintlify reports a successful manual update with 16 pages in its live snapshot. |
 | Hosted documentation | passed | All 16 public paths returned HTTP 200 with their expected page titles. |
+| Custom domain | passed | Squarespace DNS supplies the CNAME and two TXT records. Mintlify reports active SSL. All 16 HTTPS routes passed. |
 
 The signed-in Mintlify dashboard created the separate `slopsentral` deployment.
 The deployment serves the authored Slopsentral documentation.
@@ -33,6 +34,11 @@ Mintlify's GitHub app covers `kast`, `okai`, and `slopsentral`.
 The user granted access to `slopsentral` through the app's selected repositories.
 The live maintainer page contains the current documentation branch and content directory.
 The existing Kast deployment keeps its Git source and content.
+
+The public URL is [slopsentral.michne.com](https://slopsentral.michne.com).
+The `slopsentral` CNAME points to `cname.mintlify.builders`.
+The two TXT records establish domain ownership and certificate authorization.
+The custom-domain receipt records the DNS target, SSL state, and page assertions.
 
 ## Prose assessment
 

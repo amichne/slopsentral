@@ -26,7 +26,7 @@
         "wordsPerSentence": 9.39
       },
       "path": "README.md",
-      "sourceSha256": "968c76809e9645f84364108138c551e67b3006c51a2bff67b6f94f99a5268ced",
+      "sourceSha256": "7981b4dd4813c9c95378f9156b7a8551d92b774dd1e516c55b84fde1cb20db68",
       "terminology": {
         "type": "IN_SCOPE"
       },
@@ -196,14 +196,14 @@
     {
       "findings": [],
       "metrics": {
-        "estimatedSyllables": 467,
-        "fleschKincaidGrade": 7.66,
+        "estimatedSyllables": 466,
+        "fleschKincaidGrade": 7.62,
         "sentences": 34,
         "words": 274,
         "wordsPerSentence": 8.06
       },
       "path": "docs/public/maintainers/documentation.mdx",
-      "sourceSha256": "e168935ec1b1bc23904ccc727cae930c242e5c77371f3a18ef3ffd09da67f910",
+      "sourceSha256": "314eb70cb82254663a0a6996f4030bbbd5944ba704cb7cb2769d11f54d9f9264",
       "terminology": {
         "type": "IN_SCOPE"
       },
@@ -475,7 +475,7 @@
         {
           "category": "READABILITY",
           "line": 1,
-          "message": "Estimated Flesch-Kincaid grade 8.38 exceeds the shared advisory target of 8.",
+          "message": "Estimated Flesch-Kincaid grade 8.36 exceeds the shared advisory target of 8.",
           "rule": "Slopsentral.Grade",
           "severity": "warning",
           "span": [
@@ -486,14 +486,14 @@
         }
       ],
       "metrics": {
-        "estimatedSyllables": 516,
-        "fleschKincaidGrade": 8.38,
-        "sentences": 34,
-        "words": 296,
-        "wordsPerSentence": 8.71
+        "estimatedSyllables": 575,
+        "fleschKincaidGrade": 8.36,
+        "sentences": 38,
+        "words": 330,
+        "wordsPerSentence": 8.68
       },
       "path": "docs/evidence/mintlify/README.md",
-      "sourceSha256": "ee23551fde03f556a9720e84719364b635a963825f596ea1885c2350ca4c2da7",
+      "sourceSha256": "429291ccf64c7ef1065beffc81c8fe157e37075c731699a3739c103b9b07e09f",
       "terminology": {
         "type": "IN_SCOPE"
       },

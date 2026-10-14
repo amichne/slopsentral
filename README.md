@@ -6,7 +6,7 @@ New automation uses locked uv Python environments.
 
 ## Documentation
 
-The [documentation site](docs/public/index.mdx) covers installation, plugin selection, technical prose, and maintenance.
+The [documentation site](https://slopsentral.michne.com) covers installation, plugin selection, technical prose, and maintenance.
 Its Mintlify configuration is [docs/public/docs.json](docs/public/docs.json).
 Use the [site procedure](docs/public/maintainers/documentation.mdx) for a local preview and deployment setup.
 

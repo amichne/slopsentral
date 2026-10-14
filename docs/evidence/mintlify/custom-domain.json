@@ -1,0 +1,117 @@
+{
+  "type": "CUSTOM_DOMAIN_PASSED",
+  "checkedAt": "2026-10-14T04:37:03.812Z",
+  "site": "https://slopsentral.michne.com",
+  "expectedSourceRevision": "1d06d663e11309de611db17d9fabff2a02840da6",
+  "dns": {
+    "provider": "Squarespace Domains",
+    "name": "slopsentral.michne.com",
+    "type": "CNAME",
+    "target": "cname.mintlify.builders",
+    "authoritativeNameserver": "ns-cloud-e1.googledomains.com",
+    "validationRecordNames": [
+      "_acme-challenge.slopsentral.michne.com",
+      "_cf-custom-hostname.slopsentral.michne.com"
+    ]
+  },
+  "hostnameStatus": "active",
+  "sslStatus": "active",
+  "pages": [
+    {
+      "path": "index",
+      "url": "https://slopsentral.michne.com/",
+      "status": 200,
+      "title": "Slopsentral"
+    },
+    {
+      "path": "guides/install",
+      "url": "https://slopsentral.michne.com/guides/install",
+      "status": 200,
+      "title": "Install Slopsentral"
+    },
+    {
+      "path": "guides/choose-plugins",
+      "url": "https://slopsentral.michne.com/guides/choose-plugins",
+      "status": 200,
+      "title": "Choose plugins"
+    },
+    {
+      "path": "guides/controlled-writing",
+      "url": "https://slopsentral.michne.com/guides/controlled-writing",
+      "status": 200,
+      "title": "Write technical prose"
+    },
+    {
+      "path": "guides/troubleshooting",
+      "url": "https://slopsentral.michne.com/guides/troubleshooting",
+      "status": 200,
+      "title": "Troubleshoot Slopsentral"
+    },
+    {
+      "path": "plugins/software-engineering",
+      "url": "https://slopsentral.michne.com/plugins/software-engineering",
+      "status": 200,
+      "title": "Software Engineering"
+    },
+    {
+      "path": "plugins/kotlin-engineering",
+      "url": "https://slopsentral.michne.com/plugins/kotlin-engineering",
+      "status": 200,
+      "title": "Kotlin Engineering"
+    },
+    {
+      "path": "plugins/intellij-plugin-development",
+      "url": "https://slopsentral.michne.com/plugins/intellij-plugin-development",
+      "status": 200,
+      "title": "IntelliJ Plugin Development"
+    },
+    {
+      "path": "plugins/developer-tooling",
+      "url": "https://slopsentral.michne.com/plugins/developer-tooling",
+      "status": 200,
+      "title": "Developer Tooling"
+    },
+    {
+      "path": "plugins/repository-knowledge",
+      "url": "https://slopsentral.michne.com/plugins/repository-knowledge",
+      "status": 200,
+      "title": "Repository Knowledge"
+    },
+    {
+      "path": "reference/architecture",
+      "url": "https://slopsentral.michne.com/reference/architecture",
+      "status": 200,
+      "title": "Source and delivery"
+    },
+    {
+      "path": "reference/profiles",
+      "url": "https://slopsentral.michne.com/reference/profiles",
+      "status": 200,
+      "title": "Profiles"
+    },
+    {
+      "path": "reference/glossary",
+      "url": "https://slopsentral.michne.com/reference/glossary",
+      "status": 200,
+      "title": "Glossary"
+    },
+    {
+      "path": "maintainers/contribute",
+      "url": "https://slopsentral.michne.com/maintainers/contribute",
+      "status": 200,
+      "title": "Contribute"
+    },
+    {
+      "path": "maintainers/projection",
+      "url": "https://slopsentral.michne.com/maintainers/projection",
+      "status": 200,
+      "title": "Project provider output"
+    },
+    {
+      "path": "maintainers/documentation",
+      "url": "https://slopsentral.michne.com/maintainers/documentation",
+      "status": 200,
+      "title": "Maintain the site"
+    }
+  ]
+}

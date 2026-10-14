@@ -1,7 +1,15 @@
 {
   "type": "GIT_SOURCE_CONFIGURED",
   "subdomain": "slopsentral",
-  "url": "https://slopsentral.mintlify.site",
+  "url": "https://slopsentral.michne.com",
+  "mintlifyUrl": "https://slopsentral.mintlify.site",
+  "customDomain": {
+    "hostname": "slopsentral.michne.com",
+    "dnsProvider": "Squarespace Domains",
+    "cnameTarget": "cname.mintlify.builders",
+    "hostnameStatus": "active",
+    "sslStatus": "active"
+  },
   "gitSource": {
     "type": "github",
     "owner": "amichne",
