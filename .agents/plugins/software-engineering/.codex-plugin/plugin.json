@@ -4,6 +4,7 @@
   },
   "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
   "hooks": [
+    "./hooks/agents-md-scope.hooks.json",
     "./hooks/software-engineering-context.hooks.json"
   ],
   "interface": {
@@ -62,5 +63,5 @@
   "license": "UNLICENSED",
   "name": "software-engineering",
   "skills": "./skills/",
-  "version": "3.0.0"
+  "version": "3.1.0"
 }
