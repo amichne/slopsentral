@@ -19,9 +19,10 @@ The fixed policy reports:
   document metric tokenizer; do not imply that these counters are identical.
 - Diction findings from the fixed local substitution list and Google excessive
   claims rule. Suggestions require a meaning-preserving review, not blind edits.
-- Terminology findings for declared glossary aliases, noncanonical casing,
-  and glossary markers outside the glossary. The existing glossary checker
-  owns entry grammar, definitions, references, and lexical shadowing checks.
+- Terminology findings from the JSON contract's scoped replacement and review targets.
+  Each document reports its terminology scope.
+  Existing Markdown contracts keep their alias, casing, and marker rules.
+  The glossary owner supplies both formats without implicit migration.
 
 Grade 8 and 25 words are shared advisory defaults inherited from Vale resources,
 not calibrated audience cutoffs or scientifically validated comprehension
@@ -39,7 +40,7 @@ install binaries or download style packages during assessment.
 From the skill directory:
 
 ```sh
-uv run --locked python scripts/assess_text.py --glossary /path/to/GLOSSARY.md /path/to/README.md /path/to/runbook.md
+uv run --locked --script scripts/assess_text.py --glossary /path/to/glossary.json /path/to/README.md /path/to/runbook.md
 ```
 
 Use `--vale-bin /absolute/path/to/vale` when the pinned executable is not on
@@ -92,13 +93,27 @@ action, prerequisites, and result from the document alone. Check those answers
 against the authoritative source. Record who or what performed the test and
 its unresolved questions; simulated reader review is not observed human proof.
 
+## JSON Terminology
+
+Read the [glossary contract](glossary-contract.md) for structured entries and scope rules.
+The wrapper parses the JSON source once and uses its immutable glossary for rule generation.
+It generates `Terminology.yml` for replacement targets and `TerminologyReview.yml` for context review.
+Review targets have no replacement action.
+The wrapper never fetches citation URLs.
+The generated Markdown view remains a reader artifact, not another editable contract.
+
+The assessment uses `assets/vale/assessment.ini` for its fixed measurements.
+The distributed `.vale.ini` supplies commit and Diataxis defaults for direct CLI use.
+Both configurations use the same locked local resources.
+Do not treat the specialized CLI defaults as a different readability formula.
+
 ## Resource Maintenance
 
 The bundled policy reuses `vale-cli/readability`, `vale-cli/Std`, and selected
 `vale-cli/Google` material. Read [provenance](provenance.md) for revisions and
 licenses. Do not run `vale sync` with unpinned package names, load the full Google
 style, or copy upstream agent skills into this repository. Direct Vale/editor
-integration may preview the bundled `.vale.ini`, but only the wrapper verifies
+integration can preview the bundled `.vale.ini`, but only the wrapper examines
 integrity and loads the glossary; editor previews are not completion evidence.
 
 Change the canonical policy, its lock digests, provenance, schema, fixtures,

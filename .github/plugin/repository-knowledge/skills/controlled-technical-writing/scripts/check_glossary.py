@@ -1,4 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --locked --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = ["jsonschema==4.26.0"]
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 
 import argparse
 import re
@@ -296,6 +307,9 @@ def main():
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("glossary", nargs="?", type=Path)
     parser.add_argument("documents", nargs="*", type=Path)
+    parser.add_argument("--render", type=Path, help="Generate a Markdown view of a JSON glossary")
+    parser.add_argument("--check-render", type=Path, help="Reject a stale Markdown view")
+    parser.add_argument("--vale-dir", type=Path, help="Generate glossary rules in a new local directory")
     args = parser.parse_args()
 
     if args.self_test:
@@ -304,6 +318,12 @@ def main():
         return 0
     if args.glossary is None:
         parser.error("the following arguments are required: glossary")
+
+    if args.glossary.suffix.lower() == ".json":
+        from glossary_json import command
+        return command(args.glossary, args.documents, args.render, args.check_render, args.vale_dir)
+    if args.render or args.check_render or args.vale_dir:
+        parser.error("Structured output needs a JSON glossary")
 
     try:
         entries, errors = check(args.glossary, args.documents)
