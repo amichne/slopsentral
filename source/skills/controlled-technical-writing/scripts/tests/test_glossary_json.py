@@ -2,6 +2,7 @@
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -213,7 +214,7 @@ def test_generated_view_drift_is_rejected(tmp_path: Path) -> None:
 
 
 def test_real_assessment_uses_json_rules_and_preserves_scope(tmp_path: Path) -> None:
-    binary = os.environ.get("VALE_BIN")
+    binary = os.environ.get("VALE_BIN") or shutil.which("vale")
     assert binary is not None, "Set VALE_BIN to pinned Vale 3.24.0 for the real consumer check."
     data = fixture_payload()
     entry = fixture_entries(data)[0]
