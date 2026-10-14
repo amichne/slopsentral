@@ -51,6 +51,18 @@ test('every executable portable launcher rejects missing and stale locks before 
     fs.copyFileSync(file, installed);
     fs.chmodSync(installed, fs.statSync(file).mode & 0o777);
     const lock = fs.readFileSync(`${file}.lock`, 'utf8');
+    // Resolve each declared dependency before the offline forbidden-path checks.
+    // An empty cache cannot distinguish a missing lock from absent metadata.
+    fs.writeFileSync(`${installed}.lock`, lock);
+    const readinessEnvironment = { ...environment };
+    delete readinessEnvironment.UV_OFFLINE;
+    const readiness = spawnSync('uv', ['lock', '--script', installed, '--refresh'], {
+      cwd: root, env: readinessEnvironment, encoding: 'utf8', timeout: 60000,
+    });
+    assert.equal(readiness.status, 0, readiness.stdout + readiness.stderr);
+    assert.equal(fs.readFileSync(`${installed}.lock`, 'utf8'), lock,
+      'dependency readiness must preserve the declared lock');
+    fs.rmSync(`${installed}.lock`);
     for (const present of [false, true]) {
       const stale = lock.replace(/^requires-python = ".*"$/m, 'requires-python = "==3.12.0"');
       assert.notEqual(stale, lock, file);

@@ -40,7 +40,7 @@ test('real Vale reports conform to the result contract', () => {
     const glossary = path.join(directory, 'GLOSSARY.md');
     const document = path.join(directory, 'README.md');
     writeFileSync(glossary, '- \u00a7REQUEST\u00a7: A unit of work.\n  - Known synonyms: job\n');
-    const command = ['python3', [path.join(skill, 'scripts/assess_text.py'),
+    const command = ['uv', ['run', '--locked', '--script', path.join(skill, 'scripts/assess_text.py'),
       '--vale-bin', process.env.VALE_BIN || 'vale']];
     const cases = [
       ['The cat sat on the mat.\n', true, 0, 'ASSESSED'],
