@@ -1,111 +1,133 @@
 # Glossary Contract
 
-Load this contract when a repository defines controlled terms or prose contains
-an `ALL CAPS` word or phrase.
+## Canonical Source
 
-## Lookup
+Use `glossary.json` as the source for a new glossary.
+The [JSON Schema](glossary.schema.json) declares its record shape.
+The [entry example](../assets/glossary-entry.json) supplies an established concept without invented replacement targets.
+A generated `GLOSSARY.md` gives readers the same definitions.
+Edit the JSON source, then regenerate that view.
 
-Written documentation uses bare `ALL CAPS` terms. Each such term is a lookup
-signal:
+Each concept has a stable identifier and a separate display term.
+The display term keeps its established domain spelling.
+The contract does not force uppercase or section-sign markers on ordinary domain words.
+Keep code identifiers, commands, UI labels, quotations, and public names exact.
 
-1. Search from the document's directory toward the repository root for
-   `GLOSSARY.md` or `glossary.md`.
-2. If neither file exists, search Markdown headings for a repository glossary.
-3. Search the glossary for the exact marked term.
-4. If the term exists, use its definition as the sole meaning in the
-   repository.
-5. If it does not exist, do not invent a definition. Treat it as an ordinary
-   acronym unless the task requires a new glossary entry.
+Each entry records:
 
-An `ALL CAPS` candidate is not automatically a glossary term.
+- The established term, standalone definition, and local scope.
+- A concrete example and the nearest distinct concept.
+- External usage with a URL, source location, examination date, and supported meaning.
+- Local source paths and their locations.
+- A plain-text justification for the name.
+- References to related concept identifiers.
+- Explicit rejected forms, including an empty list when no target passes review.
 
-```markdown
-The SOURCE OF TRUTH owns generated copies.
-```
+The first glossary remains provisional because independent reader review is absent.
+A provisional glossary does not authorize a repository-wide rename.
 
-## Internal Marker
+## Rejected Forms
 
-Use `§TERM§` only inside the glossary. The marker grammar is:
+`REPLACE` records a form that is incorrect throughout the declared document scope.
+Its evidence must establish the intended referent and the canonical replacement.
+A misspelling needs spelling evidence.
+A deprecated name needs version and scope evidence.
+An incorrect synonym needs evidence of the same concept in the same scope.
 
-```text
-§[A-Z][A-Z0-9]*(?:[ -][A-Z0-9]+)*§
-```
+`REVIEW` records a form whose meaning needs context.
+The generated Vale rule reports it without a replacement action.
+Do not move a review target into the replacement set merely to remove a finding.
+Related concepts belong in `related` or `distinction`, not in the replacement set.
 
-Examples:
+Every rejected form needs a reason and evidence.
+Evidence can cite external usage or record a plain-text justification.
+A justification records the author's claim and does not prove external agreement.
+An empty `rejectedForms` list means that no alternate label passed this review.
+It does not claim that the wider domain has no alternate labels.
 
-- `§REQUEST§`
-- `§SOURCE OF TRUTH§`
-- `§HTTP-2§`
+The parser rejects duplicate identifiers, conflicting labels, identical definitions, and unknown or self-referential related concepts.
+A rejected form cannot equal another concept's canonical term.
+That restriction also prevents replacement chains through registered canonical terms.
+The parser does not decide semantic equivalence from textual similarity.
 
-The section sign is not CommonMark syntax. Vertical pipes are not suitable
-because Markdown uses them for tables.
+## Document Scope
 
-## Entry
+`scope.root` is a POSIX path relative to the JSON file's directory.
+`scope.include` and `scope.exclude` contain literal document globs.
+`*` matches within one path segment, `**` crosses segments, and `?` matches one character.
+Exclusions take precedence.
+The root can name the repository with `..` when the JSON source resides under `docs/`.
+Citation paths remain repository-relative and cannot contain `..`.
 
-Each entry requires one non-empty definition and one known-synonyms field:
+The occurrence traversal uses case-insensitive literal matching at word limits.
+It chooses the longest label when matches overlap.
+List each rejected inflection explicitly.
+The tool does not infer a word family.
+The traversal preserves line numbers and reports canonical, replacement, and review occurrences.
+It excludes common code spans, fenced blocks, frontmatter, link destinations, and comments.
+This lexical view does not implement every Markdown or MDX construct.
+Use Vale assessment for native markup interpretation.
 
-```markdown
-- §SOURCE OF TRUTH§: The only authored location from which generated copies derive.
-  - Known synonyms: canonical source, authoritative source
-```
+The assessment reports each document as `IN_SCOPE`, `OUT_OF_SCOPE`, or `NOT_PROVIDED` for terminology.
+An out-of-scope document receives the fixed prose measurements without glossary substitutions.
+Neither occurrence counts nor an `ASSESSED` result prove reader comprehension or semantic correctness.
 
-Write `Known synonyms: none` when no synonyms are known. Synonyms are
-comma-separated lookup and migration inputs. They are not permitted alternate
-names.
+## Commands
 
-The glossary definition is the sole meaning of that term in the repository:
-
-- Do not redefine a marked term in another file or local section.
-- If one phrase needs two meanings, give the meanings different terms.
-- Use the bare uppercase term in written documentation.
-- Preserve the exact uppercase spelling in prose and inside every marker.
-- Mark references inside other glossary definitions.
-- Keep known synonyms only in their entry's `Known synonyms` field.
-- Do not put glossary markers in documentation outside the glossary.
-- Do not mark code identifiers, command syntax, or literal values inside code
-  spans or fenced code blocks.
-
-## Synonym Kickback
-
-When prose uses a known synonym:
-
-1. Compare its use with the canonical definition.
-2. If the meanings match, replace it with the bare canonical `ALL CAPS` term.
-3. If the meanings differ or remain uncertain, return the conflict to the user
-   or calling LLM for clarification.
-4. Do not register a new term to bypass the conflict.
-
-## Registration
-
-Before adding an entry, compare its proposed term, synonyms, and definition
-with every existing entry:
-
-- Reject a term or synonym that normalizes to an existing term or synonym.
-- Reject an identical definition under a different term.
-- Have the LLM compare non-identical definitions for semantic overlap.
-- If an existing definition covers the proposal, migrate to that canonical
-  term.
-- If the boundary is unclear, request clarification before editing the
-  glossary.
-- Register the entry only when it represents a distinct semantic reference.
-
-Different spelling does not create a different meaning. Glossary registration
-must preserve disambiguation and cannot create semantic shadowing.
-
-## Check
-
-For a full prose assessment, run the shared procedure from the skill directory:
+From the skill directory, examine the contract and requested documents:
 
 ```sh
-python3 scripts/assess_text.py --glossary /path/to/GLOSSARY.md /path/to/document.md
+uv run --locked --script scripts/check_glossary.py /path/to/glossary.json /path/to/docs
 ```
 
-The procedure reuses `check_glossary.py` for glossary registration validation
-and Vale for markup-aware prose checks. The registration check fails for missing
-definitions or synonym fields, invalid internal
-markers, duplicate entries or synonyms, lexical shadowing, identical
-definitions, undefined internal references, bare glossary-internal references,
-known synonyms in glossary definitions. The Vale assessment reports known
-synonyms, casing conflicts, and markers in document prose. The standalone
-`check_glossary.py` command remains available for registration checks; it is not
-an alternate readability or text-complexity procedure.
+Generate the reader view:
+
+```sh
+uv run --locked --script scripts/check_glossary.py /path/to/glossary.json --render /path/to/GLOSSARY.md
+```
+
+Reject a stale reader view:
+
+```sh
+uv run --locked --script scripts/check_glossary.py /path/to/glossary.json --check-render /path/to/GLOSSARY.md
+```
+
+Generate Vale rules in a new directory:
+
+```sh
+uv run --locked --script scripts/check_glossary.py /path/to/glossary.json --vale-dir /path/to/new-rules
+```
+
+The assessment loads these rules automatically from the same parsed contract:
+
+```sh
+uv run --locked --script scripts/assess_text.py --glossary /path/to/glossary.json /path/to/document.md
+```
+
+The traversal returns a JSON report with the source digest, entry count, target counts, document scope, and located occurrences.
+Exit 0 means that the contract passes and the requested prose contains no recorded incorrect or review form.
+Exit 1 means that replacement or review occurrences remain.
+Exit 2 means that the input, local files, or generated view failed.
+The traversal and assessment never change source prose.
+
+## Existing Markdown Contracts
+
+Repositories that already use marked `GLOSSARY.md` entries keep their current grammar and casing contract.
+The same entry point accepts that format without implicit conversion.
+Its existing parser supplies the assessment's legacy literal rules.
+Do not assess a generated reader view as an independently authored Markdown glossary.
+Use the JSON source for a structured glossary.
+
+## Evidence Limits and Local Operation
+
+JSON Schema establishes record shape.
+The typed parser establishes lexical ownership, references, and supported scope syntax.
+Vale reports configured prose forms.
+These mechanisms do not establish current source truth, accepted domain meaning, factual accuracy, or reader comprehension.
+Use the [authoring protocol](glossary-authoring.md) for those judgments.
+
+All glossary operations use local files.
+The tools treat external URLs as citations and never fetch them.
+Do not connect to Vale CMS or Vale MCP servers.
+Do not upload project prose or register a server.
+A separate research task can examine public domain sources.
