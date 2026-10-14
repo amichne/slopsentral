@@ -20,7 +20,7 @@ Outside this plugin: Language and platform syntax beyond the shared baseline; ad
 
 **Skills:** [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [python-tooling](skills/python-tooling/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [tdd](skills/tdd/SKILL.md).
 
-**Hooks:** [software-engineering-context](hooks/software-engineering-context.hook.json).
+**Hooks:** [agents-md-scope](hooks/agents-md-scope.hook.json), [software-engineering-context](hooks/software-engineering-context.hook.json).
 
 **Instructions:** [agent-execution](instructions/agent-execution.md), [engineering-design](instructions/engineering-design.md).
 

@@ -64,6 +64,9 @@ Those hooks cover startup, resume, clear, and compact.
 Their output does not prove that the host consumed the policy or that a model obeyed it.
 Full procedures and examples remain in task-selected skills and references.
 
+Software Engineering also composes [scope maintenance for `AGENTS.md`](docs/agents-md-scope.md).
+That hook requests source-backed instruction updates and permits a documented no-change review.
+
 Standalone source, Pkl, API-context, and skill-read hooks remain explicit primitives.
 The five plugin bundles do not select those hooks.
 A repository must explicitly compose a hook before it can use that automatic behavior.
