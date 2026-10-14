@@ -193,14 +193,14 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-08-10",
         "evidenceRefs": [
-          "source/skills/ide-diagnostics-mcp/SKILL.md",
-          "source/skills/ide-diagnostics-mcp/references/ide-perf.md"
+          "source/skills/intellij-platform-testing/SKILL.md",
+          "source/skills/intellij-platform-testing/references/ide-perf.md"
         ]
       },
       "prompt": "Diagnose which running IntelliJ thread causes a repeatable CPU spike during completion, then plan one bounded method trace.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "ide-diagnostics-mcp"
+        "name": "intellij-platform-testing"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -278,14 +278,14 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-08-10",
         "evidenceRefs": [
-          "source/skills/intellij-platform-integrations/SKILL.md",
-          "source/skills/intellij-platform-integrations/references/run-and-external-system.md"
+          "source/skills/intellij-plugin-delivery/SKILL.md",
+          "source/skills/intellij-plugin-delivery/references/run-and-external-system.md"
         ]
       },
       "prompt": "Implement idempotent External System project import plus execution of one discovered external task.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-platform-integrations"
+        "name": "intellij-plugin-delivery"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

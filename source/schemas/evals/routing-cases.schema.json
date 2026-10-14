@@ -75,7 +75,8 @@
             "LOADED_BYPASSED",
             "ADAPTER_DRIFT",
             "SCHEMA_FRICTION",
-            "SETUP_FRICTION"
+            "SETUP_FRICTION",
+            "COVERAGE_GAP"
           ]
         },
         "source": {

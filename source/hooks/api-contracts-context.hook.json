@@ -1,0 +1,20 @@
+{
+  "type": "HOOK",
+  "source": {
+    "type": "LOCAL_SOURCE",
+    "path": "./"
+  },
+  "path": "hooks/codex/api-contracts-context.hooks.json",
+  "name": "api-contracts-context",
+  "dependsOn": [
+    {
+      "type": "INSTRUCTION",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "instructions/api-contract-design.md",
+      "name": "api-contract-design"
+    }
+  ]
+}

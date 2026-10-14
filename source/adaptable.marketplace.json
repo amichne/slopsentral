@@ -5,7 +5,7 @@
   "owner": {
     "name": "Amichne"
   },
-  "description": "Start with Software Engineering, then add task-specific plugins for your language, platform, or deliverable.",
+  "description": "Kotlin-first engineering with proof-preserving design, focused tests, and locked uv Python automation.",
   "management": {
     "type": "MANAGEMENT_POLICY",
     "mode": "CURATED"
@@ -21,9 +21,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "1.0.1"
+        "version": "3.0.0"
       },
-      "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+      "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
       "tags": [
         "actions",
         "automation",
@@ -48,16 +48,12 @@
         "mise",
         "onboarding",
         "optimization",
-        "proof",
         "pull-requests",
         "release",
         "schemas",
-        "semantic-design",
-        "shell",
         "skills",
         "tdd",
         "testing",
-        "typestate",
         "workflow-graph"
       ]
     },
@@ -71,7 +67,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "1.4.1"
+        "version": "3.0.0"
       },
       "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "tags": [
@@ -117,7 +113,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/intellij-plugin-development"
         },
-        "version": "1.0.0"
+        "version": "3.0.0"
       },
       "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
       "tags": [
@@ -137,83 +133,6 @@
     },
     {
       "type": "PLUGIN_ENTRY",
-      "name": "pkl-configuration",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "pkl-configuration",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/pkl-configuration"
-        },
-        "version": "1.0.0"
-      },
-      "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
-      "tags": [
-        "configuration",
-        "hooks",
-        "lsp",
-        "patterns",
-        "pkl",
-        "rendering",
-        "resources",
-        "schemas",
-        "skills",
-        "testing",
-        "tooling",
-        "type-safety",
-        "validation"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "api-contracts",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "api-contracts",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/api-contracts"
-        },
-        "version": "1.0.1"
-      },
-      "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
-      "tags": [
-        "agents",
-        "api",
-        "boundary",
-        "contracts",
-        "governance",
-        "openapi",
-        "schemas",
-        "skills",
-        "validation"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "technical-writing",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "technical-writing",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/technical-writing"
-        },
-        "version": "1.0.0"
-      },
-      "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
-      "tags": [
-        "controlled-language",
-        "docs",
-        "glossary",
-        "prose",
-        "semantics",
-        "technical-writing",
-        "terminology"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
       "name": "repository-knowledge",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
@@ -222,94 +141,47 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/repository-knowledge"
         },
-        "version": "1.1.0"
+        "version": "3.0.0"
       },
-      "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+      "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
       "tags": [
+        "controlled-language",
         "docs",
         "generation",
+        "glossary",
         "gradle",
         "hooks",
         "impact",
         "knowledge-base",
         "kotlin",
         "okf",
+        "prose",
         "repository",
+        "semantics",
         "signatures",
         "skills",
         "source-backed",
+        "technical-writing",
+        "terminology",
         "validation"
       ]
     },
     {
       "type": "PLUGIN_ENTRY",
-      "name": "agent-tooling",
+      "name": "developer-tooling",
       "plugin": {
         "type": "PLUGIN_REFERENCE",
-        "name": "agent-tooling",
+        "name": "developer-tooling",
         "source": {
           "type": "LOCAL_SOURCE",
-          "path": "./plugins/agent-tooling"
+          "path": "./plugins/developer-tooling"
         },
-        "version": "1.0.0"
+        "version": "3.0.0"
       },
-      "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
+      "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
       "tags": [
-        "agents",
-        "authoring",
-        "governance",
-        "hooks",
-        "marketplace",
-        "plugins",
-        "proof",
-        "repository",
-        "routing",
-        "skills",
-        "workflow"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "cli-development",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "cli-development",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/cli-development"
-        },
-        "version": "1.0.1"
-      },
-      "description": "Build command-line tools, shell completions, and terminal interfaces.",
-      "tags": [
-        "accessibility",
         "cli",
-        "completion",
-        "design",
-        "shell",
-        "terminal",
-        "tui",
-        "user-interface"
-      ]
-    },
-    {
-      "type": "PLUGIN_ENTRY",
-      "name": "skill-read-policy",
-      "plugin": {
-        "type": "PLUGIN_REFERENCE",
-        "name": "skill-read-policy",
-        "source": {
-          "type": "LOCAL_SOURCE",
-          "path": "./plugins/skill-read-policy"
-        },
-        "version": "1.0.1"
-      },
-      "description": "Advanced: enforce repository-declared required skill reads.",
-      "tags": [
-        "governance",
-        "hooks",
-        "policy",
-        "repository",
+        "tools",
         "skills"
       ]
     }
@@ -321,47 +193,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/repository-onboarding",
-      "name": "repository-onboarding"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/semantic-ratchet",
       "name": "semantic-ratchet"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/define-goal",
-      "name": "define-goal"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/reference-doc-workflow",
-      "name": "reference-doc-workflow"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/grill-me-with-docs",
-      "name": "grill-me-with-docs",
-      "expectedResources": [
-        "SKILL.md"
-      ]
     },
     {
       "type": "SKILL",
@@ -378,53 +211,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/agent-profile-authoring",
-      "name": "agent-profile-authoring"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/plugin-composition-authoring",
       "name": "plugin-composition-authoring"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/hook-primitive-authoring",
-      "name": "hook-primitive-authoring"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/shell-script-safety",
-      "name": "shell-script-safety"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/repo-instruction-topology",
-      "name": "repo-instruction-topology"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/repository-signature-indexing",
-      "name": "repository-signature-indexing"
     },
     {
       "type": "SKILL",
@@ -443,15 +231,6 @@
       },
       "path": "skills/local-repository-navigation",
       "name": "local-repository-navigation"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/site-docs-authoring",
-      "name": "site-docs-authoring"
     },
     {
       "type": "SKILL",
@@ -504,24 +283,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/kotlin-api-surface-design",
-      "name": "kotlin-api-surface-design"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/kotlin-observability-design",
-      "name": "kotlin-observability-design"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/kotlin-application-stack",
       "name": "kotlin-application-stack"
     },
@@ -549,15 +310,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/kotlin-agentic-correctness",
-      "name": "kotlin-agentic-correctness"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/kotlin-review",
       "name": "kotlin-review"
     },
@@ -576,15 +328,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/openapi-schema-modeling",
-      "name": "openapi-schema-modeling"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/openapi-contract-authoring",
       "name": "openapi-contract-authoring"
     },
@@ -594,26 +337,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/openapi-contract-rating",
-      "name": "openapi-contract-rating"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/tdd",
       "name": "tdd"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/agents-sdk",
-      "name": "agents-sdk"
     },
     {
       "type": "SKILL",
@@ -639,114 +364,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/pkl-tooling-setup",
-      "name": "pkl-tooling-setup"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/pkl-specification",
-      "name": "pkl-specification"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/pkl-pattern-catalogs",
-      "name": "pkl-pattern-catalogs"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/frontend-design",
-      "name": "frontend-design"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/terminal-ui-design",
-      "name": "terminal-ui-design"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/migrate-to-codex",
-      "name": "migrate-to-codex"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/primitive-routing-evaluation",
-      "name": "primitive-routing-evaluation"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/react-best-practices",
-      "name": "react-best-practices"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/refactor",
-      "name": "refactor"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/stripe-best-practices",
-      "name": "stripe-best-practices"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/web-artifacts-builder",
-      "name": "web-artifacts-builder"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/workflow",
-      "name": "workflow"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/controlled-technical-writing",
       "name": "controlled-technical-writing"
     },
@@ -758,15 +375,6 @@
       },
       "path": "skills/intellij-plugin-delivery",
       "name": "intellij-plugin-delivery"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/ide-diagnostics-mcp",
-      "name": "ide-diagnostics-mcp"
     },
     {
       "type": "SKILL",
@@ -792,53 +400,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/intellij-platform-integrations",
-      "name": "intellij-platform-integrations"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/kotlin-branching",
-      "name": "kotlin-branching"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/cli-data-pipelines",
-      "name": "cli-data-pipelines"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/shell-session-integration",
-      "name": "shell-session-integration"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/mise-project-tooling",
       "name": "mise-project-tooling"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/delivery-pipeline-design",
-      "name": "delivery-pipeline-design"
     },
     {
       "type": "SKILL",
@@ -855,8 +418,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/bounded-delegation",
-      "name": "bounded-delegation"
+      "path": "skills/gradle-performance-engineering",
+      "name": "gradle-performance-engineering"
     },
     {
       "type": "SKILL",
@@ -864,8 +427,17 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/gradle-performance-engineering",
-      "name": "gradle-performance-engineering"
+      "path": "skills/personal-setup-management",
+      "name": "personal-setup-management"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/python-tooling",
+      "name": "python-tooling"
     }
   ],
   "agents": [
@@ -927,15 +499,6 @@
     }
   ],
   "hooks": [
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/agents-md-turn-refresh.hook.json",
-      "name": "agents-md-turn-refresh"
-    },
     {
       "type": "HOOK",
       "source": {
@@ -1023,11 +586,69 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "hooks/repository-profile.hook.json",
-      "name": "repository-profile"
+      "path": "hooks/software-engineering-context.hook.json",
+      "name": "software-engineering-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/kotlin-engineering-context.hook.json",
+      "name": "kotlin-engineering-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/api-contracts-context.hook.json",
+      "name": "api-contracts-context"
+    },
+    {
+      "type": "HOOK",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "hooks/knowledge-overlay.hook.json",
+      "name": "knowledge-overlay"
     }
   ],
   "metadata": {
     "exposurePolicy": "project-agnostic-primitives"
-  }
+  },
+  "resources": [
+    {
+      "type": "RESOURCE",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-engineering/scripts/pkl_agent",
+      "name": "pkl-agent-runtime",
+      "dependsOn": [
+        {
+          "type": "RESOURCE",
+          "source": {
+            "type": "LOCAL_SOURCE",
+            "path": "./"
+          },
+          "path": "skills/pkl-engineering/scripts/pkl_agent.lock",
+          "name": "pkl-agent-runtime-lock"
+        }
+      ]
+    },
+    {
+      "type": "RESOURCE",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-engineering/scripts/pkl_agent.lock",
+      "name": "pkl-agent-runtime-lock"
+    }
+  ]
 }

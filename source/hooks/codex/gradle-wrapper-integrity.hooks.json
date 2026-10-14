@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/codex-stop.py -- bash hooks/gradle-wrapper-integrity.sh --repo .",
+            "command": "uv run --locked --script hooks/codex-stop.py -- uv run --locked --script hooks/gradle-wrapper-integrity.py --repo .",
             "timeout": 30,
             "statusMessage": "Checking Gradle wrapper integrity"
           }

@@ -24,18 +24,22 @@ for (const pluginName of pluginNames) {
   }
 }
 
-test("every authored hook has an explicit ownership policy", () => {
+test("every authored hook has a canonical marketplace identity", () => {
   const hookNames = fs.readdirSync(path.join(repoRoot, "source/hooks"))
     .filter((name) => name.endsWith(".hook.json"))
     .map((name) => name.slice(0, -".hook.json".length));
 
   for (const hookName of hookNames) {
-    const actualOwners = [...(owners.get(hookName) ?? [])].sort();
-    assert.equal(actualOwners.length, 1, `${hookName} must have one plugin owner`);
+    const refs = readJson("source/adaptable.marketplace.json").hooks.filter(ref => ref.name === hookName);
+    assert.equal(refs.length, 1, `${hookName} must have one canonical reference`);
+    assert.equal(refs[0].path, `hooks/${hookName}.hook.json`);
   }
 });
 
-test("agent platform authoring owns source graph validation", () => {
-  assert.deepEqual(owners.get("source-graph-valid"), ["agent-tooling"]);
-  assert.deepEqual(owners.get("required-skill-read"), ["skill-read-policy"]);
+test("policy hooks remain canonical without automatic selection by shipped plugins", () => {
+  assert.equal(owners.has("source-graph-valid"), false);
+  assert.deepEqual(readJson("source/hooks/source-graph-valid.hook.json").dependsOn ?? [], []);
+  for (const name of ["required-skill-read", "pkl-evaluate-check", "pkl-format-check", "pkl-test-check"]) {
+    assert.equal(owners.has(name), false, `${name} must stay explicitly unselected`);
+  }
 });

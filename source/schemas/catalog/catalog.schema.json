@@ -11,7 +11,8 @@
     "measurement",
     "plugins",
     "totals",
-    "standaloneSkills"
+    "standaloneSkills",
+    "assets"
   ],
   "properties": {
     "type": {
@@ -26,10 +27,10 @@
     "schemaVersion": {
       "type": "integer",
       "enum": [
-        1
+        3
       ],
       "examples": [
-        1
+        3
       ]
     },
     "selection": {
@@ -137,7 +138,7 @@
             "type": "string",
             "minLength": 1,
             "examples": [
-              "writing"
+              "repository-knowledge"
             ]
           },
           "description": {
@@ -180,7 +181,7 @@
         "examples": [
           {
             "type": "CATALOG_PLUGIN",
-            "name": "writing",
+            "name": "repository-knowledge",
             "description": "Source-grounded prose and technical documentation.",
             "notFor": "Code implementation.",
             "primitives": [
@@ -194,7 +195,7 @@
         [
           {
             "type": "CATALOG_PLUGIN",
-            "name": "writing",
+            "name": "repository-knowledge",
             "description": "Source-grounded prose and technical documentation.",
             "notFor": "Code implementation.",
             "primitives": [
@@ -243,7 +244,8 @@
           "minimum": 0,
           "examples": [
             0
-          ]
+          ],
+          "description": "Unique source instruction words across the selected plugin closures."
         }
       },
       "examples": [
@@ -269,12 +271,108 @@
           "grill-me-with-docs"
         ]
       ]
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "primitiveType",
+          "name",
+          "path",
+          "plugins"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "CATALOG_ASSET"
+            ],
+            "examples": [
+              "CATALOG_ASSET"
+            ]
+          },
+          "primitiveType": {
+            "type": "string",
+            "enum": [
+              "SKILL",
+              "AGENT",
+              "HOOK",
+              "INSTRUCTION",
+              "RESOURCE"
+            ],
+            "examples": [
+              "SKILL"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "python-tooling"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "examples": [
+              "skills/python-tooling"
+            ]
+          },
+          "plugins": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "examples": [
+                "developer-tooling"
+              ]
+            },
+            "examples": [
+              [
+                "developer-tooling",
+                "software-engineering"
+              ]
+            ]
+          }
+        },
+        "examples": [
+          {
+            "type": "CATALOG_ASSET",
+            "primitiveType": "SKILL",
+            "name": "python-tooling",
+            "path": "skills/python-tooling",
+            "plugins": [
+              "developer-tooling",
+              "software-engineering"
+            ]
+          }
+        ]
+      },
+      "examples": [
+        [
+          {
+            "type": "CATALOG_ASSET",
+            "primitiveType": "SKILL",
+            "name": "python-tooling",
+            "path": "skills/python-tooling",
+            "plugins": [
+              "developer-tooling",
+              "software-engineering"
+            ]
+          }
+        ]
+      ]
     }
   },
   "examples": [
     {
       "type": "CATALOG_REPORT",
-      "schemaVersion": 1,
+      "schemaVersion": 3,
       "selection": {
         "type": "ALL_PLUGINS"
       },
@@ -282,7 +380,7 @@
       "plugins": [
         {
           "type": "CATALOG_PLUGIN",
-          "name": "writing",
+          "name": "repository-knowledge",
           "description": "Source-grounded prose and technical documentation.",
           "notFor": "Code implementation.",
           "primitives": [
@@ -299,6 +397,17 @@
       },
       "standaloneSkills": [
         "grill-me-with-docs"
+      ],
+      "assets": [
+        {
+          "type": "CATALOG_ASSET",
+          "primitiveType": "SKILL",
+          "name": "controlled-technical-writing",
+          "path": "skills/controlled-technical-writing",
+          "plugins": [
+            "repository-knowledge"
+          ]
+        }
       ]
     }
   ]

@@ -8,13 +8,13 @@
   "name": "pkl-test-check",
   "dependsOn": [
     {
-      "type": "SKILL",
+      "type": "RESOURCE",
       "source": {
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/pkl-engineering",
-      "name": "pkl-engineering"
+      "path": "skills/pkl-engineering/scripts/pkl_agent",
+      "name": "pkl-agent-runtime"
     }
   ]
 }

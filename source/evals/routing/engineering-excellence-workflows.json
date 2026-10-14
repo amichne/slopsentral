@@ -1,0 +1,169 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 2,
+  "name": "engineering-excellence-workflows",
+  "description": "Proposed routes for invariant representation, proof preservation, closed failures, and scoped evidence.",
+  "cases": [
+    {
+      "id": "proof-preservation-requires-strong-consumers",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "USER_CLARIFICATION",
+        "capturedAt": "2026-10-08",
+        "evidenceRefs": [
+          "Engineering Excellence expectations in the current user request",
+          "source/skills/semantic-ratchet/references/proof-discipline.md"
+        ]
+      },
+      "prompt": "This application checks an identifier and an authorization condition, then passes the original primitive values to another module. Change the contracts so downstream operations require those established facts. Keep the work local.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Proposed routing contract from user expectations; no live model observation is recorded.",
+        "risk": "A plausible implementation could discard established facts or overstate its proof boundary.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Identify the existing invariant owner, resolved consumers, and proof-loss boundary before editing.",
+        "Require refined values and closed outcomes at consumer contracts; keep construction controlled.",
+        "Demonstrate a legal path and a forbidden call rejected by the compiler or strongest available check."
+      ],
+      "forbiddenActions": [
+        "Add wrappers with unchecked public construction or immediately unpack them in application code.",
+        "Repeat runtime guards deep in the application instead of preserving their proof.",
+        "Claim current authorization or one-time capability consumption from ordinary static types."
+      ],
+      "recoveryExpectation": "Use Semantic Ratchet for proof preservation, then a production language or schema skill where needed. Preserve the requested authority and evidence boundary.",
+      "productiveOutcome": "Established knowledge survives in required consumer contracts and reported evidence stays within its scope.",
+      "verificationEvidence": [
+        "A named misuse fails for the intended type or contract reason.",
+        "The legal path retains the stronger representation through downstream consumers."
+      ],
+      "notes": "Unobserved behavioral scenario. Golden fixtures are expected contracts, not observed model behavior."
+    },
+    {
+      "id": "api-variants-retain-domain-proof",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "USER_CLARIFICATION",
+        "capturedAt": "2026-10-08",
+        "evidenceRefs": [
+          "Engineering Excellence expectations in the current user request",
+          "source/skills/semantic-ratchet/references/proof-discipline.md"
+        ]
+      },
+      "prompt": "A JSON API represents verification success and failure with a free-form status and nullable fields. Encode the legal shapes before implementing the parser, and show that mixed-case and missing-evidence payloads are rejected. Keep the work local.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Proposed routing contract from user expectations; no live model observation is recorded.",
+        "risk": "A plausible implementation could discard established facts or overstate its proof boundary.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Define closed exclusive variants with required type tags in CAPS_CASE and case-owned required fields.",
+        "Reuse canonical schemas through references and map parsed transport values into domain representations.",
+        "Exercise valid cases and invalid null, unknown-tag, extra-field, and mixed-variant cases."
+      ],
+      "forbiddenActions": [
+        "Use a discriminator hint without exclusive constrained variant schemas.",
+        "Allow nullable sentinel fields, arbitrary error strings, or permissive shapes to make invalid examples pass.",
+        "Claim schema validation proves generated-model correctness or external service agreement."
+      ],
+      "recoveryExpectation": "Use Semantic Ratchet for proof preservation, then a production language or schema skill where needed. Preserve the requested authority and evidence boundary.",
+      "productiveOutcome": "Established knowledge survives in required consumer contracts and reported evidence stays within its scope.",
+      "verificationEvidence": [
+        "The schema validator accepts the intended shapes and rejects each named illegal payload.",
+        "The mapping preserves the facts required by the application consumer."
+      ],
+      "notes": "Unobserved behavioral scenario. Golden fixtures are expected contracts, not observed model behavior."
+    },
+    {
+      "id": "shell-failure-preserves-transition-contract",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "USER_CLARIFICATION",
+        "capturedAt": "2026-10-08",
+        "evidenceRefs": [
+          "Engineering Excellence expectations in the current user request",
+          "source/skills/semantic-ratchet/references/proof-discipline.md"
+        ]
+      },
+      "prompt": "This shell workflow verifies an artifact and then publishes it. Make the stage outcomes explicit, ensure verification failure cannot reach publication, and retain the same bytes between verification and publication. Keep the work local.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Proposed routing contract from user expectations; no live model observation is recorded.",
+        "risk": "A plausible implementation could discard established facts or overstate its proof boundary.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Centralize ingress and stage transitions with an explicit finite status and output contract.",
+        "Use a controlled snapshot and expose effect failures without claiming unproved rollback.",
+        "Inject verification, publication, and cleanup failures and inspect the later-stage effects."
+      ],
+      "forbiddenActions": [
+        "Swallow command failures with an unconditional success fallback.",
+        "Treat strict shell flags or tagged variable names as static type proof.",
+        "Verify one file and publish a later mutable reread while claiming the verification transfers."
+      ],
+      "recoveryExpectation": "Use Semantic Ratchet for proof preservation, then a production language or schema skill where needed. Preserve the requested authority and evidence boundary.",
+      "productiveOutcome": "Established knowledge survives in required consumer contracts and reported evidence stays within its scope.",
+      "verificationEvidence": [
+        "Failed verification prevents publication and emits a supported failure outcome.",
+        "Publication and cleanup failures cannot produce an unqualified success result."
+      ],
+      "notes": "Unobserved behavioral scenario. Golden fixtures are expected contracts, not observed model behavior."
+    },
+    {
+      "id": "proof-loss-review-names-model-obligations",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "USER_CLARIFICATION",
+        "capturedAt": "2026-10-08",
+        "evidenceRefs": [
+          "Engineering Excellence expectations in the current user request",
+          "source/skills/semantic-ratchet/references/proof-discipline.md"
+        ]
+      },
+      "prompt": "Review this checked value crossing a module boundary. Distinguish a declared proof obligation carried only by local control flow from a boundary whose obligation is not modeled. Explain the evidence and limits without changing code.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Proposed routing contract from user expectations; no live model observation is recorded.",
+        "risk": "A plausible implementation could discard established facts or overstate its proof boundary.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Trace predicate identity, value flow, the boundary obligation, and proof materialization using semantic evidence where available.",
+        "Report witnessed proof loss separately from an undeclared obligation or incomplete flow model.",
+        "Keep the scope read-only and the claimed guarantee relative to the available model."
+      ],
+      "forbiddenActions": [
+        "Infer a correctness defect or complete proof from a textual pattern alone.",
+        "Claim absence of proof loss when resolution, flow, or boundary modeling is incomplete.",
+        "Implement a proof-loss analyzer or modify code during a read-only review."
+      ],
+      "recoveryExpectation": "Use Semantic Ratchet for proof preservation, then a production language or schema skill where needed. Preserve the requested authority and evidence boundary.",
+      "productiveOutcome": "Established knowledge survives in required consumer contracts and reported evidence stays within its scope.",
+      "verificationEvidence": [
+        "Each finding identifies its predicate, flow path, boundary obligation, and materialization evidence or the specific missing model.",
+        "The handoff does not upgrade a modeling question into a proven runtime bug."
+      ],
+      "notes": "Unobserved behavioral scenario. Golden fixtures are expected contracts, not observed model behavior."
+    }
+  ]
+}

@@ -1,18 +1,26 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "bash": "uv run --locked --script \"$PLUGIN_ROOT/hooks/inject-instruction-context.py\" --instruction kotlin-engineering",
+        "matcher": "^(startup|resume|clear|compact)$",
+        "timeoutSec": 10,
+        "type": "command"
+      }
+    ],
     "Stop": [
       {
-        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- bash \"$PLUGIN_ROOT/hooks/gradle-check-green.sh\" --repo .",
+        "bash": "uv run --locked --script \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- uv run --locked --script \"$PLUGIN_ROOT/hooks/gradle-check-green.py\" --repo .",
         "timeoutSec": 1800,
         "type": "command"
       },
       {
-        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- bash \"$PLUGIN_ROOT/hooks/gradle-wrapper-integrity.sh\" --repo .",
+        "bash": "uv run --locked --script \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- uv run --locked --script \"$PLUGIN_ROOT/hooks/gradle-wrapper-integrity.py\" --repo .",
         "timeoutSec": 30,
         "type": "command"
       },
       {
-        "bash": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" --advisory -- python3 \"$PLUGIN_ROOT/hooks/kotlin-horizontalization-check\" --repo . --summary",
+        "bash": "uv run --locked --script \"$PLUGIN_ROOT/hooks/codex-stop.py\" --advisory -- uv run --locked --script \"$PLUGIN_ROOT/hooks/kotlin-horizontalization-check\" --repo . --summary",
         "timeoutSec": 30,
         "type": "command"
       }

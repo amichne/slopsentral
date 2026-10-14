@@ -1,76 +1,83 @@
-# Task-Oriented Plugin Migration
+# Kotlin-focused consolidation
 
-This is a breaking catalog change. Old plugin IDs are retired without aliases.
-Canonical skills, agents, hooks, and instructions keep their identities and
-remain owned once. Publication and installed-session activation are separate
-from editing or projecting this source catalog.
+The uv foundation at `774716ce2cdee28133d463ae865f4c67bef68fb4` ships 11 plugins and 61 skills.
+The new catalog ships five plugins and 28 skills.
+The reductions equal 55% of plugins and 54% of marketplace skills after rounding.
 
-## Plugin choices
+## Plugin replacements
 
-| Previous plugin | Replacement |
+| Retired plugin | Replacement |
 | --- | --- |
-| engineering-baseline | software-engineering |
-| effective-delivery | software-engineering |
-| developer-tools | software-engineering for everyday Git, shell safety, data queries, and mise; cli-development for CLI authoring and shell integration |
-| terminal-ui-design | cli-development |
-| agent-platform-authoring | agent-tooling |
-| code-knowledge-base | repository-knowledge |
-| intellij-engineering | intellij-plugin-development |
-| pkl-engineering | pkl-configuration |
-| writing | technical-writing |
-| kotlin-engineering, api-contracts | Same IDs; clearer task descriptions |
-| skill-read-policy | Same ID; advanced opt-in, outside ordinary task choices |
+| `api-contracts`, `personal-configuration`, `pkl-workflows` | `developer-tooling` |
+| `pkl-repository-checks`, `repository-source-checks`, `skill-read-policy` | Explicit standalone hooks for a custom repository composition |
 
-Software Engineering includes local implementation and delivery capabilities.
-A local edit, ticket, or linked deliverable does not itself authorize a push or
-PR. Publication follows the user's requested end state or applicable repository
-policy. RED/GREEN checkpoints do not require commits or remote publication.
+Software Engineering, Kotlin Engineering, IntelliJ Plugin Development, Developer Tooling, and Repository Knowledge keep their identifiers.
+Each changed bundle receives a major version increase.
+Developer Tooling contains no hooks. The consolidation adds no automatic source, Pkl, API-context, or skill-read behavior.
 
-## Profiles
+## Skill replacements
 
-| Profile | Selected plugins |
+| Retired skill | Owner |
 | --- | --- |
-| local-development-default | software-engineering |
-| kotlin-repo-default | software-engineering + kotlin-engineering |
-| intellij-plugin-default | software-engineering + kotlin-engineering + intellij-plugin-development |
-| documentation-default | technical-writing |
-| agent-authoring-default | software-engineering + agent-tooling |
+| `agent-profile-authoring` | `skill-primitive-authoring` |
+| `bounded-delegation` | `tdd` |
+| `define-goal` | `tdd` |
+| `delivery-pipeline-design` | `github-ci-operations` |
+| `hook-primitive-authoring` | `plugin-composition-authoring` |
+| `ide-diagnostics-mcp` | `intellij-platform-testing` |
+| `intellij-platform-integrations` | `intellij-plugin-delivery` |
+| `kotlin-agentic-correctness` | `kotlin-design-practices` |
+| `kotlin-api-surface-design` | `kotlin-design-practices` |
+| `kotlin-branching` | `kotlin-design-practices` |
+| `kotlin-observability-design` | `kotlin-application-stack` |
+| `okf` | `code-knowledge-base` |
+| `okf-refactor` | `code-knowledge-base` |
+| `openapi-contract-rating` | `openapi-contract-authoring` |
+| `openapi-schema-modeling` | `openapi-contract-authoring` |
+| `personal-cli-authoring` | `cli-creator` |
+| `pkl-pattern-catalogs` | `pkl-engineering` |
+| `pkl-specification` | `pkl-engineering` |
+| `pkl-tooling-setup` | `pkl-engineering` |
+| `primitive-routing-evaluation` | `skill-primitive-authoring` |
+| `reference-doc-workflow` | `technical-documentation` |
+| `repo-instruction-topology` | `plugin-composition-authoring` |
+| `repository-onboarding` | `git-change-flow` |
+| `repository-signature-indexing` | `code-knowledge-base` |
+| `site-docs-authoring` | `technical-documentation` |
+| `terminal-ui-design` | `cli-creator` |
+| `validation-first` | `tdd` |
 
-Repository Knowledge is optional. Documentation alone no longer installs
-engineering hooks. Profiles retain their names so callers can select the same
-workflow; their plugin compositions change deliberately.
+Merged skills keep their distinct contracts as task-routed references, scripts, fixtures, or focused procedures.
+Compiler proof, negative cases, OpenAPI examples, CLI contracts, diagnostics, and OKF helpers remain under their new owners.
 
-After the new provider marketplace is published, refresh it and install the
-replacement IDs. Disable retired IDs in every applicable user, project, and
-named-profile configuration, then re-apply the desired profile and review its
-hooks. The profile lifecycle reconciles the current catalog; it does not migrate
-retired IDs in unrelated configuration layers. Repository context activation
-preserves unselected plugins and therefore does not retire old installations.
-Old and replacement plugins should not remain enabled together.
+## Removed distribution
 
-No installed cache, user configuration, hook trust state, or remote marketplace
-is changed by this source migration. Standalone skill installation remains an
-advanced alternative, not a prerequisite for the normal plugin chooser.
+The catalog removes `agents-sdk`, `frontend-design`, `grill-me-with-docs`, `migrate-to-codex`, `react-best-practices`, `refactor`, `stripe-best-practices`, and `workflow`.
+These surfaces duplicate general procedures or target work outside the Kotlin-first scope.
+Git history preserves their source and provenance.
 
-## Earlier primitive migrations
+The previous uv foundation already retired shell authoring and shell data-pipeline skills.
+Automation remains Python with uv, PEP 723, locks, strict Pyright, Ruff, and pytest.
+The parent-shell adapter stays only for history that its child process cannot read.
 
-The earlier git-ci-operations plugin is superseded by Software Engineering.
-Primitive migrations remain: gh-fix-ci to github-ci-operations; doc-coauthoring
-to technical-documentation; skill-creator to skill-primitive-authoring;
-jira-resolve-ticket to issue-tracker-operations. Prose-only edits use
-controlled-technical-writing. Required skill reads belong only to the opt-in
-skill-read-policy plugin. Placeholder migration skills stay retired.
+## Consumer changes
 
-## Evidence
+Profiles now select the surviving bundles.
+The `pkl-checked-repository` profile keeps its identifier for callers but selects guidance only.
+Custom automatic Pkl checks need an explicit hook composition.
+The default Kotlin selection remains `software-engineering` plus `kotlin-engineering`.
 
-The composition preserves all 69 direct primitive references including the newly integrated Gradle performance skill from the previous
-12 plugins in 10 plugins: one default, eight specialties, and one advanced policy.
-Regression checks cover the task selections, unique ownership, profile lifecycle,
-and provider inputs. Renamed routing fixtures remain expected contracts, not
-fresh model observations. Benchmark scenarios are retained under their new
-plugin owners; authored additions require live execution before behavior claims.
+After authorized publication, install the replacement bundles through the host.
+Disable retired bundles before a fresh session.
+Reapply selected profiles and examine hook trust.
+Older installed caches and unrelated configuration layers do not change through this source edit.
 
-Use Plugin Eval on the projected Codex plugins, where its manifest format applies.
-Its static budget estimates and heuristic findings do not establish runtime
-loading or token savings. Keep generated output and raw evaluator reports outside
-the source branch. See [upstream guidance](UPSTREAM.md) for the design rationale.
+Golden fixtures name the new routes. They do not prove model behavior.
+Historical records keep their original identities and evidence.
+Two historical routes receive `NEEDS_REPLAY_CASE` status because their replacement skills lack a fresh replay.
+
+## Reversal
+
+Use the recorded foundation revision to recover the previous catalog.
+Keep source manifests, skill paths, profiles, and generated projections on the same revision.
+Do not combine old installed bundles with their replacements.

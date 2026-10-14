@@ -1,4 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = []
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 """Adapt a check's exit status to Codex Stop without forwarding its payload.
 
 Hook commands name both this adapter and the owning script so projections bundle
@@ -33,8 +44,8 @@ class Advisory:
 
 def response(outcome: Outcome | Advisory) -> dict[str, str]:
     if isinstance(outcome, Advisory):
-        return {"systemMessage": f"kotlin-stop: stage=check outcome=completed advisory-findings={outcome.count}; review layout with the checker only when relevant. These heuristics do not prove a semantic defect."}
-    evidence = f"kotlin-stop: stage=check outcome={outcome.value}"
+        return {"systemMessage": f"codex-stop: stage=check outcome=completed advisory-findings={outcome.count}; review layout with the checker only when relevant. These heuristics do not prove a semantic defect."}
+    evidence = f"codex-stop: stage=check outcome={outcome.value}"
     match outcome:
         case Outcome.COMPLETED:
             return {"systemMessage": evidence + "; command completed (may have skipped); no additional build proof claimed."}

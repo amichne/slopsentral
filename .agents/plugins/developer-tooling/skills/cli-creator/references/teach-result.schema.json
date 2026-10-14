@@ -1,0 +1,503 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.local/schemas/personal-cli/teach-result.schema.json",
+  "title": "Personal CLI Teach Result",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "schemaVersion",
+        "command",
+        "question",
+        "directory",
+        "history",
+        "sources"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "TEACH_CONTEXT"
+        },
+        "schemaVersion": {
+          "type": "integer",
+          "const": 1
+        },
+        "command": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,63}$"
+        },
+        "question": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "INFER_FROM_CONTEXT"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "text"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "PROVIDED"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              }
+            }
+          ]
+        },
+        "directory": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "entries",
+            "coverage"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "entries": {
+              "type": "array",
+              "maxItems": 40,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "coverage": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "type"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "COMPLETE"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "type",
+                    "limit"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "BOUNDED"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "const": 40
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "history": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "reason"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "UNAVAILABLE"
+                },
+                "reason": {
+                  "type": "string",
+                  "const": "PARENT_SHELL_NOT_CONNECTED"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "commands"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "COMMAND_NAMES"
+                },
+                "commands": {
+                  "type": "array",
+                  "maxItems": 20,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256",
+              "content"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "content": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 131072
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "INVALID_ARGUMENTS"
+        },
+        "stage": {
+          "type": "string",
+          "const": "PARSE"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "SOURCE_UNREADABLE"
+        },
+        "stage": {
+          "type": "string",
+          "const": "READ_SOURCE"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "SOURCE_TOO_LARGE"
+        },
+        "stage": {
+          "type": "string",
+          "const": "READ_SOURCE"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "SOURCE_INVALID_TEXT"
+        },
+        "stage": {
+          "type": "string",
+          "const": "READ_SOURCE"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "HISTORY_UNREADABLE"
+        },
+        "stage": {
+          "type": "string",
+          "const": "READ_HISTORY"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "HISTORY_TOO_LARGE"
+        },
+        "stage": {
+          "type": "string",
+          "const": "READ_HISTORY"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "HISTORY_INVALID_TEXT"
+        },
+        "stage": {
+          "type": "string",
+          "const": "READ_HISTORY"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "DIRECTORY_UNREADABLE"
+        },
+        "stage": {
+          "type": "string",
+          "const": "READ_DIRECTORY"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "ASSISTANT_UNAVAILABLE"
+        },
+        "stage": {
+          "type": "string",
+          "const": "ASK"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "ASSISTANT_TIMEOUT"
+        },
+        "stage": {
+          "type": "string",
+          "const": "ASK"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "ASSISTANT_OUTPUT_TOO_LARGE"
+        },
+        "stage": {
+          "type": "string",
+          "const": "ASK"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "ASSISTANT_INTERRUPTED"
+        },
+        "stage": {
+          "type": "string",
+          "const": "ASK"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "ASSISTANT_EMPTY"
+        },
+        "stage": {
+          "type": "string",
+          "const": "ASK"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "stage",
+        "exitCode"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "ASSISTANT_FAILED"
+        },
+        "stage": {
+          "type": "string",
+          "const": "ASK"
+        },
+        "exitCode": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "type": "TEACH_CONTEXT",
+      "schemaVersion": 1,
+      "command": "personal-size",
+      "question": {
+        "type": "PROVIDED",
+        "text": "Find large files here"
+      },
+      "directory": {
+        "path": "/workspace/project",
+        "entries": [
+          "build",
+          "src"
+        ],
+        "coverage": {
+          "type": "COMPLETE"
+        }
+      },
+      "history": {
+        "type": "COMMAND_NAMES",
+        "commands": [
+          "git",
+          "rg"
+        ]
+      },
+      "sources": [
+        {
+          "path": "/tools/personal-size.mjs",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "content": "// Exact command source is supplied here.\n"
+        }
+      ]
+    },
+    {
+      "type": "SOURCE_UNREADABLE",
+      "stage": "READ_SOURCE"
+    },
+    {
+      "type": "ASSISTANT_FAILED",
+      "stage": "ASK",
+      "exitCode": 7
+    }
+  ]
+}

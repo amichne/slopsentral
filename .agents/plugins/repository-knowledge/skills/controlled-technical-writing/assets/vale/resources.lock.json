@@ -1,0 +1,34 @@
+{
+  "type": "VALE_POLICY_LOCK",
+  "schemaVersion": 1,
+  "valeVersion": "3.24.0",
+  "files": {
+    ".vale.ini": "3b3d1c47ae29aa4e69f51f76d7e58242e4e2785217d905aeb81bb90267806f57",
+    "licenses/Google/LICENSE": "f661986be23c000812a439e03dfed8d16ff23117e8d1219fc2beb7cd01393640",
+    "licenses/Std/LICENSE": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074",
+    "licenses/Std/NOTICE": "7dfb553d84f2641d8fee959532f0f74d3c98fdd4011d4e5dfda87be312f8f121",
+    "licenses/readability/LICENSE": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074",
+    "styles/Google/ExcessiveClaims.yml": "9587449c33f9f00f1508e935094c4c817050e886ff18b70422db42278c3f7388",
+    "styles/Readability/FleschKincaid.yml": "1dae60f0d0e9e0a6ed96dedd799900fcb9495efa0afcc995588413d09a1fda21",
+    "styles/Slopsentral/Claims.yml": "249319ce4c1b5ee78208f03a009a6e57a70b7997f82d94590eb6e4c925fbd4b1",
+    "styles/Slopsentral/Diction.yml": "d98a14dbc276aa81a1591a08d7222b30d9c212f97d859dfa6024852663c4adf4",
+    "styles/Slopsentral/GlossaryMarker.yml": "a39a2e950a628dade7e1f340ed0d630c1d1386fe75f26a91a92c8ea2c8f4e3eb",
+    "styles/Slopsentral/Grade.yml": "2c050700d919486ed3ad515c775864b30f6634a451d644f3ec4814be702d5a81",
+    "styles/Slopsentral/LongSentence.yml": "9e6bfd8a005699310ae559d8b3068239ddf05bf792f2c295c719b7a7e6c4c1ec",
+    "styles/Std/Readability/SentenceLength.yml": "1b8073531ff09bd4bf26c8844d71e0e6aef467d3803738d3533b478ace40f9fb"
+  },
+  "upstream": [
+    {
+      "repository": "vale-cli/Std",
+      "revision": "5ce764fb447663c3eca000978c4fbab2aeb2b41c"
+    },
+    {
+      "repository": "vale-cli/readability",
+      "revision": "20b367bc5febf7ec9b83e176b8e611d230855838"
+    },
+    {
+      "repository": "vale-cli/Google",
+      "revision": "9e2483e2f09e7f623bacbbc154adb9627bed563b"
+    }
+  ]
+}

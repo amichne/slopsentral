@@ -1,0 +1,23 @@
+{
+  "agents": "./agents",
+  "author": {
+    "name": "Amichne"
+  },
+  "category": "Productivity",
+  "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
+  "keywords": [
+    "cli",
+    "developer-tooling",
+    "skills",
+    "tools"
+  ],
+  "license": "UNLICENSED",
+  "name": "developer-tooling",
+  "skills": "./skills",
+  "tags": [
+    "cli",
+    "tools",
+    "skills"
+  ],
+  "version": "3.0.0"
+}

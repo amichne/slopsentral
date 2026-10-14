@@ -1,0 +1,120 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import test from 'node:test';
+
+const repo = path.resolve(import.meta.dirname, '../..');
+const projection = process.env.STOP_MARKETPLACE_ROOT;
+const owners = {
+  'code-knowledge-drift': 'repository-knowledge',
+  'source-graph-valid': null,
+  'pkl-evaluate-check': null,
+  'pkl-format-check': null,
+  'pkl-test-check': null,
+};
+const quote = value => `'${value.replaceAll("'", "'\\''")}'`;
+
+function run(t, name, prepare = () => {}, options = {}) {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'stop-output-'));
+  t.after(() => fs.rmSync(cwd, { recursive: true, force: true }));
+  prepare(cwd);
+  const packaged = projection && owners[name];
+  const root = packaged ? path.join(projection, '.agents/plugins', owners[name]) : path.join(repo, 'source');
+  const config = path.join(root, packaged ? 'hooks' : 'hooks/codex', `${name}.hooks.json`);
+  let command = JSON.parse(fs.readFileSync(config)).hooks.Stop[0].hooks[0].command;
+  if (!packaged) command = command.replace(/\bhooks\/[\w.-]+/g, value => quote(path.join(root, value)));
+  if (options.commandPrefix) command = options.commandPrefix + command;
+  const env = { ...process.env, ...options.env, PLUGIN_ROOT: root, INTELLIGENCE_CHANGED_FILES: '' };
+  // This oracle measures the configured hook, independently of personal startup files.
+  delete env.BASH_ENV;
+  delete env.ENV;
+  const result = spawnSync('bash', ['--noprofile', '--norc', '-c', command], {
+    cwd, env,
+    input: JSON.stringify({ hook_event_name: 'Stop', stop_hook_active: false, session_id: 'contract', cwd }),
+    encoding: 'utf8',
+  });
+  assert.equal(result.status, 0, result.stderr);
+  const output = JSON.parse(result.stdout);
+  assert.ok(output && typeof output === 'object' && !Array.isArray(output));
+  assert.ok(Object.keys(output).every(key => ['systemMessage', 'decision', 'reason'].includes(key)), 'stdout must contain the host response, not a CLI report');
+  assert.ok(result.stdout.length < 1024, 'hook feedback must stay bounded');
+  return { ...result, output, cwd };
+}
+
+for (const name of Object.keys(owners)) {
+  test(`${name} configured Stop command returns host JSON on skipped or unavailable checks`, t => {
+    const result = run(t, name);
+    assert.equal(Object.hasOwn(result.output, 'decision'), false);
+    assert.equal(typeof result.output.systemMessage, 'string');
+  });
+}
+
+function bundle(cwd) {
+  fs.mkdirSync(path.join(cwd, 'docs'));
+  fs.writeFileSync(path.join(cwd, 'App.kt'), 'class App\n');
+  fs.writeFileSync(path.join(cwd, 'docs/app.md'), '---\ntype: Kotlin Type\ncode_sources:\n  - path: App.kt\n---\n');
+}
+
+test('knowledge Stop retains advisory drift counts without forwarding paths', t => {
+  const result = run(t, 'code-knowledge-drift', cwd => {
+    bundle(cwd);
+    assert.equal(spawnSync('git', ['init', '-q', cwd]).status, 0);
+  });
+  assert.match(result.output.systemMessage, /outcome=ok.*impacted-concepts=1/);
+  assert.equal(Object.hasOwn(result.output, 'decision'), false);
+  assert.doesNotMatch(result.stdout + result.stderr, /App\.kt|app\.md|stop-output-/);
+});
+
+test('knowledge Stop keeps metadata and tooling failures observable and advisory', t => {
+  const invalid = run(t, 'code-knowledge-drift', cwd => {
+    bundle(cwd);
+    fs.writeFileSync(path.join(cwd, 'docs/app.md'), '# Private source payload\n');
+    assert.equal(spawnSync('git', ['init', '-q', cwd]).status, 0);
+  });
+  assert.match(invalid.output.systemMessage, /outcome=invalid.*metadata-issues=1/);
+  assert.equal(Object.hasOwn(invalid.output, 'decision'), false);
+  assert.doesNotMatch(invalid.stdout + invalid.stderr, /Private source payload|app\.md/);
+  assert.equal(JSON.parse(invalid.stderr).outcome, 'invalid');
+  const failed = run(t, 'code-knowledge-drift', bundle);
+  assert.match(failed.output.systemMessage, /outcome=error.*code=git-status-failed/);
+  assert.equal(Object.hasOwn(failed.output, 'decision'), false);
+  assert.equal(JSON.parse(failed.stderr).code, 'git-status-failed');
+});
+
+test('source graph Stop preserves a failed required check as continuation feedback', t => {
+  const result = run(t, 'source-graph-valid', cwd => {
+    fs.mkdirSync(path.join(cwd, 'source'));
+    fs.writeFileSync(path.join(cwd, 'source/adaptable.marketplace.json'), '{}');
+  });
+  assert.equal(result.output.decision, 'block');
+  assert.match(result.output.reason, /outcome=check-failed/);
+});
+
+test('hook protocol checks isolate inherited shell startup stderr', t => {
+  const startup = fs.mkdtempSync(path.join(os.tmpdir(), 'noisy-startup-'));
+  t.after(() => fs.rmSync(startup, { recursive: true, force: true }));
+  const envFile = path.join(startup, 'startup.sh');
+  fs.writeFileSync(envFile, "printf 'inherited-shell-noise\\n' >&2\n");
+  const result = run(t, 'code-knowledge-drift', cwd => {
+    bundle(cwd);
+    fs.writeFileSync(path.join(cwd, 'docs/app.md'), '# Invalid metadata\n');
+    assert.equal(spawnSync('git', ['init', '-q', cwd]).status, 0);
+  }, { env: { BASH_ENV: envFile } });
+  assert.doesNotMatch(result.stderr, /inherited-shell-noise/);
+  assert.equal(JSON.parse(result.stderr).outcome, 'invalid');
+});
+
+test('shell isolation does not accept extra stdout from the configured hook command', t => {
+  assert.throws(() => run(t, 'code-knowledge-drift', () => {}, {
+    commandPrefix: "printf 'unexpected-hook-output\\n'; ",
+  }), SyntaxError);
+});
+
+test('shell isolation does not discard extra stderr from the configured hook command', t => {
+  const result = run(t, 'code-knowledge-drift', () => {}, {
+    commandPrefix: "printf 'unexpected-hook-diagnostic\\n' >&2; ",
+  });
+  assert.throws(() => JSON.parse(result.stderr), SyntaxError);
+});

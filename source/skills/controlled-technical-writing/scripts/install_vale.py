@@ -154,6 +154,7 @@ class _File:
 @dataclass(frozen=True, slots=True)
 class _VerifiedBundle:
     files: tuple[_File, ...]
+    policy_sha256: str
 
 
 def _object_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -176,11 +177,12 @@ def _is_list(value: object) -> TypeGuard[list[object]]:
 def load_bundle(root: Path) -> _VerifiedBundle | Failure:
     """Parse the closed lock contract and preserve the exact approved bytes."""
     try:
+        lock_bytes = (root / "resources.lock.json").read_bytes()
         lock: object = json.loads(
-            (root / "resources.lock.json").read_text(encoding="utf-8"),
+            lock_bytes,
             object_pairs_hook=_object_pairs,
         )
-        if not _is_mapping(lock) or set(lock) != {"type", "schemaVersion", "valeVersion", "files"}:
+        if not _is_mapping(lock) or set(lock) != {"type", "schemaVersion", "valeVersion", "files", "upstream"}:
             return Failure(FailureCode.INVALID_BUNDLE)
         if (
             lock["type"] != "VALE_POLICY_LOCK"
@@ -188,6 +190,19 @@ def load_bundle(root: Path) -> _VerifiedBundle | Failure:
             or lock["schemaVersion"] != 1
             or lock["valeVersion"] != VERSION
         ):
+            return Failure(FailureCode.INVALID_BUNDLE)
+        upstream: object = lock["upstream"]
+        if not _is_list(upstream):
+            return Failure(FailureCode.INVALID_BUNDLE)
+        repositories: list[str] = []
+        for item in upstream:
+            if not _is_mapping(item) or set(item) != {"repository", "revision"}:
+                return Failure(FailureCode.INVALID_BUNDLE)
+            repository, revision = item["repository"], item["revision"]
+            if not isinstance(repository, str) or not isinstance(revision, str) or re.fullmatch(r"[a-f0-9]{40}", revision) is None:
+                return Failure(FailureCode.INVALID_BUNDLE)
+            repositories.append(repository)
+        if sorted(repositories) != ["jdkato/commits", "jdkato/diataxis", "vale-cli/Google", "vale-cli/Std", "vale-cli/readability"]:
             return Failure(FailureCode.INVALID_BUNDLE)
         entries: object = lock["files"]
         if not _is_mapping(entries) or ".vale.ini" not in entries:
@@ -207,7 +222,7 @@ def load_bundle(root: Path) -> _VerifiedBundle | Failure:
                 or "\\" in relative
                 or ":" in relative
                 or str(path) != relative
-                or path.parts[0] not in {".vale.ini", "styles", "licenses"}
+                or path.parts[0] not in {".vale.ini", "assessment.ini", "styles", "licenses"}
             ):
                 return Failure(FailureCode.INVALID_BUNDLE)
             source = root / path
@@ -224,7 +239,7 @@ def load_bundle(root: Path) -> _VerifiedBundle | Failure:
         }
         if actual != set(entries):
             return Failure(FailureCode.INVALID_BUNDLE)
-        return _VerifiedBundle(tuple(files))
+        return _VerifiedBundle(tuple(files), hashlib.sha256(lock_bytes).hexdigest())
     except (OSError, ValueError, UnicodeError):
         return Failure(FailureCode.INVALID_BUNDLE)
 

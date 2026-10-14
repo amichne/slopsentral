@@ -7,7 +7,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const publisher = path.join(repoRoot, ".github/scripts/publish-harness-branch");
+const publisher = path.join(repoRoot, "tools/publish.py");
 
 function git(cwd, ...args) {
   return execFileSync("git", args, {
@@ -54,7 +54,7 @@ function createProjection(root, relativeManifest, marker) {
 function publish(checkout, projection, targetBranch, sourceBranch, sourceSha) {
   return execFileSync(
     publisher,
-    [projection, targetBranch, sourceBranch, sourceSha],
+    ["harness", projection, targetBranch, sourceBranch, sourceSha],
     {
       cwd: checkout,
       encoding: "utf8",
@@ -155,7 +155,7 @@ test("publishes only the Copilot subtree and rejects projection leakage", (t) =>
   fs.writeFileSync(path.join(projection, "secret.txt"), "must not publish\n");
   const leaking = spawnSync(
     publisher,
-    [projection, "harness/github-copilot", "main", fixture.sourceSha],
+    ["harness", projection, "harness/github-copilot", "main", fixture.sourceSha],
     { cwd: fixture.checkout, encoding: "utf8" },
   );
   assert.notEqual(leaking.status, 0);
@@ -221,7 +221,7 @@ test("refuses to roll a harness branch back to an older source commit", (t) => {
   );
   const rollback = spawnSync(
     publisher,
-    [olderProjection, "harness/codex", "main", olderSourceSha],
+    ["harness", olderProjection, "harness/codex", "main", olderSourceSha],
     { cwd: fixture.checkout, encoding: "utf8" },
   );
   assert.notEqual(rollback.status, 0);
@@ -243,7 +243,7 @@ test("fails closed for an unsupported target or stale source commit", (t) => {
 
   const unsupported = spawnSync(
     publisher,
-    [projection, "harness/other", "main", fixture.sourceSha],
+    ["harness", projection, "harness/other", "main", fixture.sourceSha],
     { cwd: fixture.checkout, encoding: "utf8" },
   );
   assert.notEqual(unsupported.status, 0);

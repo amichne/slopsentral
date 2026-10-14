@@ -1,0 +1,117 @@
+{
+  "type": "PLUGIN",
+  "schemaVersion": 1,
+  "name": "developer-tooling",
+  "version": "3.0.0",
+  "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
+  "interface": {
+    "websiteURL": "https://github.com/amichne/slopsentral",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral"
+  },
+  "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/python-tooling",
+      "name": "python-tooling"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/cli-creator",
+      "name": "cli-creator"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/skill-primitive-authoring",
+      "name": "skill-primitive-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/plugin-composition-authoring",
+      "name": "plugin-composition-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/manage-json-schemas",
+      "name": "manage-json-schemas"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/openapi-contract-authoring",
+      "name": "openapi-contract-authoring"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/personal-setup-management",
+      "name": "personal-setup-management"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/pkl-engineering",
+      "name": "pkl-engineering"
+    }
+  ],
+  "agents": [
+    {
+      "type": "AGENT",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "agents/schema-type-enforcer.agent.md",
+      "name": "schema-type-enforcer"
+    },
+    {
+      "type": "AGENT",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "agents/openapi/openapi-contract-rater.agent.md",
+      "name": "openapi-contract-rater"
+    }
+  ],
+  "instructions": [],
+  "hooks": [],
+  "metadata": {
+    "composition": "referential",
+    "dailyDriver": "Use for a requested tool, contract, agent resource, or configuration change.",
+    "notFor": "Automatic source checks, skill-read policy, or unrequested personal configuration changes.",
+    "role": "specialty",
+    "scope": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
+    "workstream": "developer-tooling",
+    "owner": "developer-tooling"
+  }
+}

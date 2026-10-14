@@ -20,7 +20,7 @@ This file applies to authored marketplace source under `source/`.
 
 - A plugin is an installable composition surface, not a primitive owner.
 - `source/plugins/*/plugin.json` may describe plugin metadata and reference
-  skills, agents, hooks, and instructions that already exist under `source/`.
+  skills, agents, hooks, instructions, and resources that already exist under `source/`.
 - Do not put the only copy of a skill, agent, hook, instruction, concept, or
   schema inside a plugin directory.
 - If a plugin needs packaging-only resources, keep them clearly
@@ -45,7 +45,7 @@ This file applies to authored marketplace source under `source/`.
 ## Generated Boundaries
 
 - Edit `source/` as authored source.
-- Do not hand-edit generated provider output. projeKtor publishes Codex output
+- Do not hand-edit generated provider output. The local Pkl projector publishes Codex output
   to `.agents/plugins` and GitHub Copilot output to `.github/plugin` on `main`,
   as well as `harness/codex` and `harness/github-copilot`, from validated source.
 
@@ -57,10 +57,20 @@ This file applies to authored marketplace source under `source/`.
 - For marketplace publication proof, run the full root `AGENTS.md` marketplace
   validation set.
 
-## Workstream Ownership
+## Asset Reuse
 
-Each installed primitive has one plugin owner, including hook dependencies and
-instructions. Profiles compose plugins. Do not reintroduce overlap exceptions or
-copy payloads into plugin directories. Regenerate `source/CATALOG.md` with
+Use `RESOURCE` for one executable or data file when a consumer does not need
+the skill's procedure. Keep the file in its authored skill `scripts/` or
+`assets/`, or in `source/schemas/`. Resource references exclude skill entry
+points, directories, symlinks, and destination aliases. Their dependencies
+may contain only resources. See [workflow resources](../docs/workflow-resources.md).
+
+Each primitive has one canonical source identity. Any plugin may compose that
+identity, including through dependencies. Plugins are consumers of assets.
+Profiles may select shared skills, agents, and instructions. A profile must
+select each hook through one plugin; shared hook packaging does not prove that
+a host will execute it once. Check the full dependency closure for that rule.
+Keep marketplace identities unique and reject conflicting paths or cycles.
+Do not copy payloads into plugin directories. Regenerate `source/CATALOG.md` with
 `node tools/catalog.mjs --write` after composition changes. See
 `source/ARCHITECTURE.md` for the primitive responsibilities and evidence limits.

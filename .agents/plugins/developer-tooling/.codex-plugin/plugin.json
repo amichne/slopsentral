@@ -1,0 +1,36 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Developer Tooling for this task.",
+      "Review this repo with Developer Tooling.",
+      "Show the Developer Tooling workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Developer Tooling",
+    "longDescription": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Author typed Python tools, schemas, Pkl contracts, agent resources, a...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "cli",
+    "developer-tooling",
+    "skills",
+    "tools"
+  ],
+  "license": "UNLICENSED",
+  "name": "developer-tooling",
+  "skills": "./skills/",
+  "version": "3.0.0"
+}

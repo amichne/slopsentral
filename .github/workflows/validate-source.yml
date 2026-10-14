@@ -3,8 +3,7 @@ name: Validate Source
 on:
   pull_request:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -18,145 +17,34 @@ jobs:
   validate:
     name: Validate marketplace source
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "21"
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           cache: npm
-
-      - name: Install schema validation dependencies
-        run: npm ci
-
-      - name: Validate source graph and evals
-        run: |
-          set -euo pipefail
-
-          node tools/validate-source-graph.mjs
-          node tools/catalog.mjs --check
-          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
-            policy --schema source/schemas/catalog/catalog.schema.json
-          node tools/run-routing-evals.mjs --require-all-observed
-          node --test tools/tests/*.test.mjs
-          source/skills/shell-script-safety/scripts/check_shell_safety \
-            tools/compile-kotlin-concepts
-          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
-            policy \
-            --schema source/schemas/evals/routing-field-observations.schema.json
-          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
-            profile \
-            --schema source/schemas/evals/routing-cases.schema.json
-          node source/skills/manage-json-schemas/scripts/schema-contracts.js \
-            policy \
-            --schema source/skills/issue-tracker-operations/references/issue-backend-result.schema.json
-
-      - name: Run Python unit checks
-        run: |
-          set -euo pipefail
-
-          python3 -m pip install --disable-pip-version-check --no-input PyYAML==6.0.3
-          for test_dir in \
-            source/hooks/tests \
-            source/skills/code-knowledge-base/scripts/tests \
-            source/skills/github-ci-operations/scripts/tests \
-            source/skills/issue-tracker-operations/scripts/tests \
-            source/skills/openapi-schema-modeling/scripts/tests \
-            source/skills/pkl-specification/scripts/tests \
-            source/skills/pkl-tooling-setup/scripts/tests \
-            source/skills/controlled-technical-writing/scripts/tests
-          do
-            python3 -m unittest discover -s "$test_dir" -p 'test_*.py' -v
-          done
-
-      - name: Compile Kotlin concept examples
-        run: |
-          set -euo pipefail
-
-          compiler_zip="${RUNNER_TEMP}/kotlin-compiler-2.4.10.zip"
-          curl --fail --location --silent --show-error \
-            --output "$compiler_zip" \
-            https://github.com/JetBrains/kotlin/releases/download/v2.4.10/kotlin-compiler-2.4.10.zip
-          echo "473dd66c7a3ef4b182065b3da670466c1bf2773a9dbb0ed8b33a39fe9d4f876d  $compiler_zip" \
-            | sha256sum --check
-          unzip -q "$compiler_zip" -d "${RUNNER_TEMP}/kotlin-compiler"
-          tools/compile-kotlin-concepts \
-            "${RUNNER_TEMP}/kotlin-compiler/kotlinc/bin/kotlinc"
-
-      - name: Validate Pkl engineering facade
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.9"
+          enable-cache: true
+      - name: Set up locked Python and schema tools
+        run: uv run --locked tools/setup.py
+      - name: Install checksum-verified native tools
+        run: uv run --locked tools/ci.py native
+      - name: Validate source, Python, schemas, and retained contracts
+        run: uv run --locked tools/ci.py validate
+      - name: Run all Python unit checks
+        run: uv run --locked tools/ci.py unit
+      - name: Compile Kotlin concepts and forbidden calls
+        run: uv run --locked tools/ci.py kotlin
+      - name: Validate Pkl facade against native Pkl
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-
-          python3 -m unittest discover \
-            -s source/skills/pkl-engineering/scripts/tests \
-            -p 'test_*.py' \
-            -v
-
-          pkl_dir="${RUNNER_TEMP}/pkl-0.32.0"
-          mkdir -p "${pkl_dir}"
-          gh release download 0.32.0 \
-            --repo apple/pkl \
-            --pattern jpkl \
-            --dir "${pkl_dir}"
-          chmod +x "${pkl_dir}/jpkl"
-
-          facade="source/skills/pkl-engineering/scripts/pkl_agent"
-          fixture="${RUNNER_TEMP}/pkl-agent-fixture"
-          mkdir -p "${fixture}"
-          cp -R source/skills/pkl-engineering/scripts/tests/fixtures/project/. "${fixture}/"
-          common=(--workspace "${fixture}" --pkl-bin "${pkl_dir}/jpkl")
-
-          home_toon="${RUNNER_TEMP}/pkl-agent-home.toon"
-          "${facade}" "${common[@]}" > "${home_toon}"
-          "${facade}" "${common[@]}" format check --all
-          "${facade}" "${common[@]}" imports config.pkl
-          "${facade}" "${common[@]}" module validate config.pkl
-          "${facade}" "${common[@]}" module inspect config.pkl --expression service.port
-          "${facade}" "${common[@]}" module render config.pkl \
-            --format json \
-            --out build/config.json
-          "${facade}" "${common[@]}" test run
-          "${facade}" "${common[@]}" project resolve
-          "${facade}" "${common[@]}" package verify
-          python3 -m json.tool "${fixture}/build/config.json" > /dev/null
-
-          npx --yes @toon-format/cli@2.3.0 \
-            "${home_toon}" \
-            --output "${RUNNER_TEMP}/pkl-agent-home.json"
-          python3 -m json.tool "${RUNNER_TEMP}/pkl-agent-home.json" > /dev/null
-
-      - name: Project Codex marketplace
-        id: codex_projection
-        uses: amichne/projeKtor@eb3799c2bc60b4803c84fded0b6f4cd587bd0702 # v1.2.1
-        with:
-          source: .
-          harness: codex
-          version: v1.2.1
-
-      - name: Project GitHub Copilot marketplace
-        id: github_copilot_projection
-        uses: amichne/projeKtor@eb3799c2bc60b4803c84fded0b6f4cd587bd0702 # v1.2.1
-        with:
-          source: .
-          harness: github-copilot
-          version: v1.2.1
-
-      - name: Validate marketplace projections
-        env:
-          CODEX_PROJECTION: ${{ steps.codex_projection.outputs.projection-path }}
-          GITHUB_COPILOT_PROJECTION: ${{ steps.github_copilot_projection.outputs.projection-path }}
-        run: |
-          set -euo pipefail
-
-          test -d "${CODEX_PROJECTION}/.agents/plugins"
-          test -d "${GITHUB_COPILOT_PROJECTION}/.github/plugin"
+        run: uv run --locked tools/ci.py pkl
+      - name: Project both providers and execute projected hook contracts
+        run: uv run --locked tools/verify_marketplaces.py

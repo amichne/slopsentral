@@ -1,0 +1,111 @@
+// Dynamic values exist only at the JSON parsing boundary. Refine every nested value.
+module slopsentral.projection.Decode
+
+import "Schema.pkl"
+
+function checked(raw: Dynamic, keys: List<String>): Dynamic =
+  if (raw.toMap().keys.every((k) -> keys.contains(k)))
+    raw
+  else
+    throw("Unknown projection input field")
+
+function primitive(raw: Dynamic): Schema.Primitive = (
+  checked(raw, List("type", "name", "source", "path", "dependsOn"))
+    .toTyped(if (raw.type == "RESOURCE") Schema.ResourcePrimitive else Schema.Primitive)
+) {
+  source = checked(raw.source, List("type", "path")).toTyped(Schema.LocalSource)
+  dependsOn = new Listing<Schema.Primitive> {
+    for (p in raw.getPropertyOrNull("dependsOn") ?? new Dynamic {}) { primitive(p) }
+  }
+}
+
+function hook(raw: Dynamic): Schema.HookDefinition = (
+  checked(raw, List("type", "name", "source", "path", "dependsOn", "adapter"))
+    .toTyped(Schema.HookDefinition)
+) {
+  source = checked(raw.source, List("type", "path")).toTyped(Schema.LocalSource)
+  dependsOn = new Listing<Schema.Primitive> {
+    for (p in raw.getPropertyOrNull("dependsOn") ?? new Dynamic {}) { primitive(p) }
+  }
+  adapter = new {
+    hooks {
+      for (event, groups in checked(raw.adapter, List("hooks")).hooks.toMap()) {
+        [event] {
+          for (group in groups) {
+            (checked(group, List("matcher", "hooks")).toTyped(Schema.HookGroup)) {
+              hooks = new Listing<Schema.Command> {
+                for (c in group.hooks) {
+                  checked(
+                    c,
+                    List(
+                      "type",
+                      "command",
+                      "commandWindows",
+                      "matcher",
+                      "timeout",
+                      "statusMessage",
+                      "additionalContextLimit",
+                    ),
+                  ).toTyped(Schema.Command)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function reference(raw: Dynamic): Schema.Asset =
+  if (raw.type == "SKILL")
+    checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.SkillReference)
+  else if (raw.type == "RESOURCE")
+    checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.ResourceReference)
+  else if (raw.type == "INSTRUCTION")
+    checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.InstructionReference)
+  else if (raw.type == "AGENT")
+    checked(raw, List("type", "name", "sourcePath", "sha256", "text"))
+      .toTyped(Schema.AgentReference)
+  else if (raw.type == "HOOK")
+    (
+      checked(raw, List("type", "name", "sourcePath", "sha256", "hook"))
+        .toTyped(Schema.HookReference)
+    ) {
+      hook = module.hook(raw.hook)
+    }
+  else
+    throw("Unsupported canonical asset kind")
+
+function plugin(raw: Dynamic): Schema.Plugin = (
+  checked(raw, List("name", "version", "description", "interface", "tags", "references", "mcp"))
+    .toTyped(Schema.Plugin)
+) {
+  interface =
+    checked(raw.interface, List("websiteURL", "privacyPolicyURL", "termsOfServiceURL"))
+      .toTyped(Schema.Interface)
+  tags = raw.tags.toList()
+  references = raw.references.toList().map((r) -> reference(r))
+}
+
+function input(raw: Dynamic): Schema.Input = (
+  checked(
+    raw,
+    List(
+      "name",
+      "owner",
+      "description",
+      "generatedAt",
+      "sourceSha",
+      "plugins",
+      "phase",
+      "projectedDigests",
+    ),
+  ).toTyped(Schema.Input)
+) {
+  owner = checked(raw.owner, List("name", "email", "url")).toTyped(Schema.Person)
+  plugins = new Listing<Schema.Plugin> { for (p in raw.plugins) { plugin(p) } }
+  projectedDigests = new Mapping<String, Schema.Digest> {
+    for (key, value in raw.projectedDigests.toMap()) { [key] = value }
+  }
+}

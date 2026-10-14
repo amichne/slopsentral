@@ -4,11 +4,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { ProfileContractError, validateWorkflowProfile } from "../validate-profile-contracts.mjs";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
 const lifecycle = path.join(repoRoot, "tools/profile-lifecycle.mjs");
 
-const { installSkill, plannedSkillInstalls, renderProfile } = await import("../profile-lifecycle.mjs");
+const { commitMutation, desiredImage, fileImage, installSkill, plannedSkillInstalls, renderProfile } = await import("../profile-lifecycle.mjs");
 
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "profile-lifecycle-test-"));
@@ -25,16 +26,15 @@ const home = process.env.CODEX_HOME;
 const statePath = path.join(home, "fake-codex-state.json");
 const callsPath = path.join(path.dirname(home), "fake-codex-calls.jsonl");
 const plugins = ${JSON.stringify([
-  "agent-tooling",
+  "personal-setup",
   "api-contracts",
-  "cli-development",
   "intellij-plugin-development",
   "kotlin-engineering",
-  "pkl-configuration",
+  "pkl-workflows",
   "repository-knowledge",
   "skill-read-policy",
   "software-engineering",
-  "technical-writing"
+  "engineering-excellence"
 ])};
 const readState = () => fs.existsSync(statePath)
   ? JSON.parse(fs.readFileSync(statePath, "utf8"))
@@ -127,15 +127,63 @@ test("authored profiles use executable v2 desired-state policies", () => {
   }
 });
 
+test("retired automatic activation is rejected instead of silently ignored", () => {
+  const profile = JSON.parse(fs.readFileSync(
+    path.join(repoRoot, "source/profiles/kotlin-repo-default.json"), "utf8",
+  ));
+  validateWorkflowProfile(profile);
+  assert.throws(() => validateWorkflowProfile({
+    ...profile,
+    activation: { type: "REPOSITORY_ROOT_FILE", path: "settings.gradle.kts" },
+  }), (error) => error instanceof ProfileContractError && error.validationErrors.some(
+    ({ keyword, params }) => keyword === "additionalProperties" && params.additionalProperty === "activation",
+  ));
+});
+
+for (const existed of [false, true]) {
+  test(`saved repository-profile transactions remain reversible (existing config: ${existed})`, (t) => {
+    const context = fixture(t);
+    const repositoryRoot = path.join(path.dirname(context.codexHome), "repository with spaces");
+    const target = path.join(repositoryRoot, ".codex/config.toml");
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    const original = '# User configuration\nmodel = "example"\n';
+    if (existed) fs.writeFileSync(target, original, { mode: 0o640 });
+    const after = `${existed ? original : ""}\n[plugins."kotlin-engineering@slopsentral"]\nenabled = true\n`;
+    const transaction = commitMutation({
+      backupRoot: context.backupRoot,
+      operation: { type: "APPLY_REPOSITORY_PROFILE", profileName: "kotlin-repo-default", repositoryRoot },
+      target,
+      before: fileImage(target),
+      desired: desiredImage(Buffer.from(after), 0o640),
+    });
+
+    fs.appendFileSync(target, "# Subsequent user edit\n");
+    const conflict = run(context, "rollback", "--transaction", transaction.manifestPath);
+    assert.equal(conflict.status, 3, conflict.stderr || conflict.stdout);
+    assert.equal(fs.readFileSync(target, "utf8"), `${after}# Subsequent user edit\n`);
+
+    fs.writeFileSync(target, after);
+    const restored = run(context, "rollback", "--transaction", transaction.manifestPath);
+    assert.equal(restored.status, 0, restored.stderr || restored.stdout);
+    assert.equal(restored.output.type, "PROFILE_ROLLED_BACK");
+    assert.equal(fs.existsSync(target), existed);
+    if (existed) {
+      assert.equal(fs.readFileSync(target, "utf8"), original);
+      assert.equal(fs.statSync(target).mode & 0o777, 0o640);
+    }
+    assert.deepEqual(codexCalls(context), []);
+  });
+}
+
 test("standalone skill states render stable profile-local activation", () => {
   const profile = {
     name: "skill-state-fixture",
     marketplaces: [{ name: "slopsentral" }],
     plugins: [],
     standaloneSkills: [
-      { name: "reference-doc-workflow", state: "PRESENT" },
+      { name: "technical-documentation", state: "PRESENT" },
       { name: "semantic-ratchet", state: "ABSENT" },
-      { name: "repository-onboarding", state: "PRESERVE" },
+      { name: "git-change-flow", state: "PRESERVE" },
     ],
     hookPolicy: { mode: "ADVISORY" },
     reconciliation: { unselected: "PRESERVE" },
@@ -143,9 +191,9 @@ test("standalone skill states render stable profile-local activation", () => {
 
   const rendered = renderProfile(profile, [], "/tmp/codex-home").toString("utf8");
 
-  assert.match(rendered, /\[\[skills\.config\]\]\npath = "\/tmp\/codex-home\/skills\/reference-doc-workflow\/SKILL\.md"\nenabled = true/u);
+  assert.match(rendered, /\[\[skills\.config\]\]\npath = "\/tmp\/codex-home\/skills\/technical-documentation\/SKILL\.md"\nenabled = true/u);
   assert.match(rendered, /\[\[skills\.config\]\]\npath = "\/tmp\/codex-home\/skills\/semantic-ratchet\/SKILL\.md"\nenabled = false/u);
-  assert.doesNotMatch(rendered, /repository-onboarding/u);
+  assert.doesNotMatch(rendered, /git-change-flow/u);
 });
 
 test("standalone PRESENT installs idempotently and conflicting content fails closed", (t) => {
@@ -153,21 +201,21 @@ test("standalone PRESENT installs idempotently and conflicting content fails clo
   const codexHome = path.join(root, "codex");
   fs.mkdirSync(codexHome);
   const profile = {
-    standaloneSkills: [{ name: "reference-doc-workflow", state: "PRESENT" }],
+    standaloneSkills: [{ name: "technical-documentation", state: "PRESENT" }],
   };
-  const skills = new Map([["reference-doc-workflow", { path: "skills/reference-doc-workflow" }]]);
+  const skills = new Map([["technical-documentation", { path: "skills/technical-documentation" }]]);
 
   const planned = plannedSkillInstalls(profile, skills, codexHome);
   assert.deepEqual(planned, [{
     type: "SKILL_INSTALL_PLANNED",
-    name: "reference-doc-workflow",
-    destination: path.join(codexHome, "skills/reference-doc-workflow"),
+    name: "technical-documentation",
+    destination: path.join(codexHome, "skills/technical-documentation"),
   }]);
 
-  installSkill({ codexHome }, "reference-doc-workflow");
+  installSkill({ codexHome }, "technical-documentation");
   assert.deepEqual(plannedSkillInstalls(profile, skills, codexHome), []);
 
-  fs.appendFileSync(path.join(codexHome, "skills/reference-doc-workflow/SKILL.md"), "\nchanged\n");
+  fs.appendFileSync(path.join(codexHome, "skills/technical-documentation/SKILL.md"), "\nchanged\n");
   assert.throws(
     () => plannedSkillInstalls(profile, skills, codexHome),
     (error) => error.reason?.type === "SKILL_CONTENT_MISMATCH",
@@ -204,7 +252,7 @@ test("plan and apply reconcile the marketplace and selected plugins", (t) => {
   assert.equal(applied.status, 0, diagnostic(applied));
   assert.equal(applied.output.type, "PROFILE_APPLIED");
   assert.equal(applied.output.hookReview.type, "HOOK_REVIEW_REQUIRED");
-  assert.deepEqual(applied.output.hookReview.hooks, ["agents-md-turn-refresh", "repository-profile"]);
+  assert.deepEqual(applied.output.hookReview.hooks, ["software-engineering-context"]);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(context.codexHome, "fake-codex-state.json"), "utf8")), {
     marketplace: true,
     installed: ["software-engineering"],
@@ -214,7 +262,7 @@ test("plan and apply reconcile the marketplace and selected plugins", (t) => {
     "utf8",
   );
   assert.match(generated, /\[plugins\."software-engineering@slopsentral"\]\nenabled = true/);
-  assert.match(generated, /\[plugins\."pkl-configuration@slopsentral"\]\nenabled = false/);
+  assert.match(generated, /\[plugins\."developer-tooling@slopsentral"\]\nenabled = false/);
 });
 
 test("profile operations fail closed on unsupported Codex versions", (t) => {

@@ -63,7 +63,7 @@ Organize the bundle for progressive disclosure rather than mirroring every
 source directory:
 
 ```text
-okf/
+code-knowledge-base/
 ├── index.md
 ├── modules/
 │   ├── index.md

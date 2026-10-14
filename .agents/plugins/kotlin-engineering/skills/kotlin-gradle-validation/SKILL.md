@@ -1,6 +1,6 @@
 ---
 name: "kotlin-gradle-validation"
-description: "Diagnose and verify Kotlin or JVM Gradle builds with focused tasks and native reports. Use for failing tests, compiler diagnostics, build reports, coverage, or incremental-build problems."
+description: "Diagnose and verify Kotlin or JVM Gradle builds with focused tasks and native reports. Use for failing tests, compiler diagnostics, coverage, or incremental-build problems; not prose edits or runtime latency measurement."
 ---
 
 # Kotlin Gradle Validation
@@ -42,7 +42,7 @@ needs a durable machine-readable handoff.
    ./gradlew :module:test --tests 'com.example.FocusedTest'
    ```
 
-   Use `scripts/run_gradle_task.sh` only when the result must survive an
+   Use `scripts/run_gradle_task.py` only when the result must survive an
    interruption or cross-process handoff. Use `--stacktrace` only when native
    reports are insufficient.
 
@@ -94,7 +94,7 @@ runner JSON and copied logs are optional transport, not stronger proof.
   must not be treated as a complete aggregate.
 - `scripts/parse/jacoco_report`: JaCoCo XML coverage summary.
 - `scripts/parse/kotlin_build_report`: Kotlin build report summary.
-- `scripts/run_gradle_task.sh`: optional durable capture for a long-running or
+- `scripts/run_gradle_task.py`: optional durable capture for a long-running or
   transferred Gradle command.
 
 ## Optional Automatic Checks

@@ -25,6 +25,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.9"
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -58,13 +62,29 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.sha }}
 
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.9"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+
+      - name: Install schema validation dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Set up pinned projection runtime
+        run: |
+          node tools/install-projection-pkl.mjs --out "$RUNNER_TEMP/projection-pkl/pkl"
+          echo "PKL_BIN=$RUNNER_TEMP/projection-pkl/pkl" >> "$GITHUB_ENV"
+
       - name: Project ${{ matrix.harness }} marketplace
         id: projection
-        uses: amichne/projeKtor@eb3799c2bc60b4803c84fded0b6f4cd587bd0702 # v1.2.1
-        with:
-          source: .
-          harness: ${{ matrix.harness }}
-          version: v1.2.1
+        run: |
+          projection_path="$RUNNER_TEMP/projected-${{ matrix.harness }}"
+          node tools/project-marketplaces.mjs --source . --harness '${{ matrix.harness }}' --out "$projection_path"
+          echo "projection-path=$projection_path" >> "$GITHUB_OUTPUT"
 
       - name: Publish ${{ matrix.branch }}
         env:
@@ -72,7 +92,7 @@ jobs:
           TARGET_BRANCH: ${{ matrix.branch }}
         run: |
           set -euo pipefail
-          .github/scripts/publish-harness-branch \
+          uv run --locked tools/publish.py harness \
             "${PROJECTION_PATH}" \
             "${TARGET_BRANCH}" \
             main \
@@ -105,6 +125,10 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.sha }}
 
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.9"
+
       - name: Download this run's projections
         uses: actions/download-artifact@v4
         with:
@@ -121,4 +145,4 @@ jobs:
       - name: Publish generated trees to main
         env:
           PROJECTION_PATH: ${{ runner.temp }}/marketplaces
-        run: .github/scripts/publish-marketplaces-main "$PROJECTION_PATH" "$GITHUB_SHA"
+        run: uv run --locked tools/publish.py main "$PROJECTION_PATH" "$GITHUB_SHA"

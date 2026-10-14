@@ -2,10 +2,9 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+  "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
   "hooks": [
-    "./hooks/agents-md-turn-refresh.hooks.json",
-    "./hooks/repository-profile.hooks.json"
+    "./hooks/software-engineering-context.hooks.json"
   ],
   "interface": {
     "brandColor": "#0F766E",
@@ -21,9 +20,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Software Engineering",
-    "longDescription": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+    "longDescription": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Implement, test, review, and deliver code with Git, PR, and CI workfl...",
+    "shortDescription": "Design proof-preserving boundaries and implement, verify, and deliver...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -51,21 +50,17 @@
     "mise",
     "onboarding",
     "optimization",
-    "proof",
     "pull-requests",
     "release",
     "schemas",
-    "semantic-design",
-    "shell",
     "skills",
     "software-engineering",
     "tdd",
     "testing",
-    "typestate",
     "workflow-graph"
   ],
   "license": "UNLICENSED",
   "name": "software-engineering",
   "skills": "./skills/",
-  "version": "1.0.1"
+  "version": "3.0.0"
 }

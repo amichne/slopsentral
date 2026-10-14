@@ -56,15 +56,15 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-07-14",
         "evidenceRefs": [
-          "source/skills/pkl-tooling-setup/SKILL.md",
-          "source/skills/pkl-tooling-setup/references/installation-and-lsp.md",
-          "source/skills/pkl-tooling-setup/scripts/pkl_tooling"
+          "source/skills/pkl-engineering/SKILL.md",
+          "source/skills/pkl-engineering/references/installation-and-lsp.md",
+          "source/skills/pkl-engineering/scripts/pkl_tooling"
         ]
       },
       "prompt": "Set up Pkl and the LSP for this repository in VS Code, then explain the available JSON/YAML rendering and build tooling.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "pkl-tooling-setup"
+        "name": "pkl-engineering"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -101,15 +101,15 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-07-14",
         "evidenceRefs": [
-          "source/skills/pkl-specification/SKILL.md",
-          "source/skills/pkl-specification/references/specification-and-resources.md",
-          "source/skills/pkl-specification/references/official-source-map.md"
+          "source/skills/pkl-engineering/SKILL.md",
+          "source/skills/pkl-engineering/references/specification-and-resources.md",
+          "source/skills/pkl-engineering/references/official-source-map.md"
         ]
       },
       "prompt": "Specify a Pkl model that reads external YAML resources, emits JSON, and tell me which official repositories define the relevant APIs and examples.",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "pkl-specification"
+        "name": "pkl-engineering"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
@@ -146,15 +146,15 @@
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-07-14",
         "evidenceRefs": [
-          "source/skills/pkl-pattern-catalogs/SKILL.md",
-          "source/skills/pkl-pattern-catalogs/references/best-practices.md",
-          "source/skills/pkl-pattern-catalogs/references/advanced-patterns.md"
+          "source/skills/pkl-engineering/SKILL.md",
+          "source/skills/pkl-engineering/references/best-practices.md",
+          "source/skills/pkl-engineering/references/advanced-patterns.md"
         ]
       },
       "prompt": "Which Pkl pattern should I use for a package API with extension points, multiple output files, and a custom renderer?",
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "pkl-pattern-catalogs"
+        "name": "pkl-engineering"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",

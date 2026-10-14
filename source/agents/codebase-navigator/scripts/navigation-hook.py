@@ -1,4 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --locked --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = []
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 """Install or run the advisory navigation hook; summaries remain reviewable Git files."""
 import argparse
 import importlib.util
@@ -18,7 +29,7 @@ LEGACY_EXCLUDES = {
 
 def install(exclude: Path, hook: Path, mode: str):
     existing = hook.read_text() if hook.exists() else '#!/usr/bin/env bash\n'
-    command = f'python3 {shlex.quote(str(Path(__file__).resolve()))} run --mode {mode}'
+    command = f'uv run --locked --script {shlex.quote(str(Path(__file__).resolve()))} run --mode {mode}'
     fragment = f'{BEGIN}\n{command} || echo "navigation: refresh failed; review hook diagnostics" >&2\n{END}'
     if BEGIN in existing:
         pattern = re.compile(re.escape(BEGIN) + r'.*?' + re.escape(END), re.S)

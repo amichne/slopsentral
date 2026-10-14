@@ -3,17 +3,15 @@
   "type": "ROUTING_REPLAY_SET",
   "schemaVersion": 1,
   "name": "daily-driver-golden-routing-observations",
-  "description": "Golden provider-neutral replay observations for the daily-driver routing cases.",
+  "description": "Expected routing contracts after consolidation. Synthetic fixtures do not record model behavior.",
   "requiredCaseIds": [
     "active-goal-continuation-keeps-original-scope",
-    "source-graph-edits-use-canonical-source-and-gates",
     "shell-check-tdd-uses-stable-red-green-proof",
     "push-request-means-branch-commit-push-pr",
     "issue-backend-selection-preserves-native-dependencies",
     "dirty-worktree-uses-scoped-git-change-flow",
     "ci-failure-triage-uses-remote-check-evidence",
     "plugin-install-recovery-proves-installed-state",
-    "production-sharing-requires-quality-audit-evidence",
     "terminal-ui-work-preserves-cli-contracts",
     "technical-prose-uses-controlled-terms",
     "intellij-full-delivery-uses-default-profile",
@@ -21,7 +19,25 @@
     "intellij-mixed-language-psi-targets-filter-before-access",
     "intellij-ui-testing-uses-starter-driver-contract",
     "kotlin-repository-work-preserves-task-and-topology-proof",
-    "kotlin-application-stack-keeps-library-bindings-private"
+    "kotlin-application-stack-keeps-library-bindings-private",
+    "plugin-history-audit-separates-evidence",
+    "installed-discovery-recovery-keeps-stage-proof",
+    "runtime-performance-matches-semantic-workloads",
+    "openwiki-refresh-preserves-backend-authority",
+    "cli-finite-json-errors-preserve-exit-status",
+    "docs-site-nav-preserves-generated-boundaries",
+    "technical-rfc-keeps-reader-decision-source-backed",
+    "openapi-operations-preserve-request-response-security",
+    "openapi-review-requires-validator-evidence",
+    "pr-feedback-repair-rechecks-current-head",
+    "prose-only-edit-keeps-validation-skills-idle",
+    "proof-preservation-requires-strong-consumers",
+    "api-variants-retain-domain-proof",
+    "shell-failure-preserves-transition-contract",
+    "proof-loss-review-names-model-obligations",
+    "pkl-workflows-do-not-install-automation",
+    "pkl-checks-carry-runtime-without-workflow-discovery",
+    "pkl-checks-preserve-runtime-contract"
   ],
   "observations": [
     {
@@ -29,7 +45,7 @@
       "caseId": "active-goal-continuation-keeps-original-scope",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "define-goal"
+        "name": "tdd"
       },
       "satisfiedAllowedActions": [
         "Preserve the original objective and derive concrete requirements before claiming completion.",
@@ -46,29 +62,6 @@
         "Skip current-state inspection because earlier context sounds familiar."
       ],
       "notes": "A passing continuation keeps the active objective intact and reports incomplete rollout evidence instead of claiming done."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
-      "caseId": "source-graph-edits-use-canonical-source-and-gates",
-      "routedPrimitive": {
-        "type": "PLUGIN",
-        "name": "agent-tooling"
-      },
-      "satisfiedAllowedActions": [
-        "Edit source-owned primitives, plugin manifests, schemas, evals, or source validation tools.",
-        "Regenerate provider output only from source when publication proof is required.",
-        "Run the source graph gate before broader marketplace validation."
-      ],
-      "satisfiedVerificationEvidence": [
-        "Changed structured source files are covered by schema or source graph validation.",
-        "Provider output proof, when needed, comes from materialization rather than hand edits."
-      ],
-      "avoidedForbiddenActions": [
-        "Patch generated provider output as the primary fix.",
-        "Treat installed caches as source material.",
-        "Add marketplace content without schema or validator coverage for structured data."
-      ],
-      "notes": "A passing source-graph run edits canonical source and uses provider materialization only as proof."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -240,33 +233,10 @@
     },
     {
       "type": "ROUTING_OBSERVATION",
-      "caseId": "ci-shell-automation-uses-safe-reusable-scripts",
-      "routedPrimitive": {
-        "type": "SKILL",
-        "name": "shell-script-safety"
-      },
-      "satisfiedAllowedActions": [
-        "Move shared CI logic into a versioned repo script when it is reused or stateful.",
-        "Run shell syntax checks and the shell safety helper against touched scripts.",
-        "Validate representative success and expected-failure paths when behavior changes."
-      ],
-      "satisfiedVerificationEvidence": [
-        "The run includes bash -n for touched shell scripts.",
-        "The run includes check_shell_safety output for touched shell scripts."
-      ],
-      "avoidedForbiddenActions": [
-        "Duplicate long inline shell across workflow files.",
-        "Skip strict mode and input validation for CI-owned Bash scripts.",
-        "Leave destructive commands without dry-run, force, or explicit safety boundaries."
-      ],
-      "notes": "A passing run proves this route by delivering: CI shell logic becomes reusable automation that agents can test locally before relying on remote workflows."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
       "caseId": "plugin-install-recovery-proves-installed-state",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "repository-onboarding"
+        "name": "git-change-flow"
       },
       "satisfiedAllowedActions": [
         "Validate source and materialized marketplace output before retrying install.",
@@ -286,33 +256,10 @@
     },
     {
       "type": "ROUTING_OBSERVATION",
-      "caseId": "production-sharing-requires-quality-audit-evidence",
-      "routedPrimitive": {
-        "type": "PLUGIN",
-        "name": "agent-tooling"
-      },
-      "satisfiedAllowedActions": [
-        "Review the concrete primitive, plugin, or eval family against a baseline.",
-        "Record evidence for capability boundary, trigger clarity, independence, schema coverage, provenance, executable proof, and runtime safety.",
-        "Defer production-sharing claims when evidence is thin or validation does not cover the changed surface."
-      ],
-      "satisfiedVerificationEvidence": [
-        "The review names the target, baseline, findings, validation, residual risks, and next action.",
-        "Structured artifacts changed by the workflow pass the source graph and marketplace validation gates."
-      ],
-      "avoidedForbiddenActions": [
-        "Treat new eval cases alone as production readiness.",
-        "Share primitives that are not independently usable outside a plugin composition.",
-        "Claim production readiness without reproducible validation and explicit residual risks."
-      ],
-      "notes": "A passing readiness run keeps rollout claims bounded by reproducible evidence."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
       "caseId": "kotlin-invariant-work-uses-semantic-evidence",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "kotlin-agentic-correctness"
+        "name": "kotlin-design-practices"
       },
       "satisfiedAllowedActions": [
         "Frame the trusted domain shape before editing.",
@@ -339,10 +286,12 @@
       },
       "satisfiedAllowedActions": [
         "Discover the Gradle module and choose a targeted task.",
+        "Use native Gradle reports and the kotlin-gradle-validation parsers when they improve diagnosis.",
         "Read JUnit XML, Gradle problem reports, or Kotlin build reports when present.",
         "Report the exact successful Gradle command and relevant report path."
       ],
       "satisfiedVerificationEvidence": [
+        "The run uses native Gradle reports or parser output when console output is insufficient.",
         "The diagnosis cites JUnit XML, problem reports, Kotlin build reports, or their absence.",
         "The final result includes the smallest successful relevant Gradle command."
       ],
@@ -383,7 +332,7 @@
       "caseId": "kotlin-repository-work-preserves-task-and-topology-proof",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "kotlin-agentic-correctness"
+        "name": "kotlin-design-practices"
       },
       "satisfiedAllowedActions": [
         "Derive project membership and ownership from Gradle settings and current repository instructions.",
@@ -467,29 +416,6 @@
     },
     {
       "type": "ROUTING_OBSERVATION",
-      "caseId": "source-over-generated-provider-output",
-      "routedPrimitive": {
-        "type": "PLUGIN",
-        "name": "agent-tooling"
-      },
-      "satisfiedAllowedActions": [
-        "Inspect source/adaptable.marketplace.json, source/plugins, source/skills, source/agents, source/hooks, source/profiles, and source validation contracts.",
-        "Use materialization only as proof after source quality checks pass.",
-        "Add source-owned validation when overlap or routing quality is the failure mode."
-      ],
-      "satisfiedVerificationEvidence": [
-        "The changed files are under source or validation tooling unless provider publication is explicitly in scope.",
-        "Validation includes the source graph gate and, when provider output matters, materialization from source."
-      ],
-      "avoidedForbiddenActions": [
-        "Patch .agents or .github provider output by hand.",
-        "Treat installed plugin cache payloads as canonical source.",
-        "Report generated provider drift as the primary answer when the source graph is the target."
-      ],
-      "notes": "A passing run proves this route by delivering: Source-graph audits spend time on canonical authored material and only touch provider output through regeneration, reducing churn and review noise."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
       "caseId": "referential-plugin-composition-uses-focused-proof",
       "routedPrimitive": {
         "type": "SKILL",
@@ -516,7 +442,7 @@
       "caseId": "routing-miss-becomes-full-corpus-replay",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "primitive-routing-evaluation"
+        "name": "skill-primitive-authoring"
       },
       "satisfiedAllowedActions": [
         "Classify one primary routing miss type.",
@@ -559,19 +485,19 @@
         "Route Kotlin type-safety review through generic Git/CI primitives.",
         "Let two selected plugins provide the same hook or agent in a profile."
       ],
-      "notes": "A passing run proves this route by delivering: Baseline TDD, Kotlin semantic work, local Git mechanics, and Software Engineering compose cleanly without duplicate owners or bloated plugin prompts."
+      "notes": "A passing run proves this route by delivering: Baseline TDD, Kotlin semantic work, local Git mechanics, and Software Engineering compose cleanly with canonical asset reuse and focused plugin context."
     },
     {
       "type": "ROUTING_OBSERVATION",
       "caseId": "repository-consumer-setup-uses-current-marketplace-cli",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "repository-onboarding"
+        "name": "git-change-flow"
       },
       "satisfiedAllowedActions": [
         "Prefer the current intelligence CLI for marketplace import, install, inspect, and validate workflows.",
         "Treat slopsentral source files as canonical marketplace content.",
-        "Use repository-onboarding for consumer-repo setup and baseline marketplace guidance."
+        "Use git-change-flow for consumer-repo setup and baseline marketplace guidance."
       ],
       "satisfiedVerificationEvidence": [
         "Commands refer to the current intelligence marketplace workflow.",
@@ -589,7 +515,7 @@
       "caseId": "plugin-install-cache-failure-is-setup-friction",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "repository-onboarding"
+        "name": "git-change-flow"
       },
       "satisfiedAllowedActions": [
         "Inspect configured marketplace/cache state and confirm installed plugin state with the provider CLI.",
@@ -635,16 +561,16 @@
       "caseId": "api-boundary-work-belongs-to-api-contracts",
       "routedPrimitive": {
         "type": "PLUGIN",
-        "name": "api-contracts"
+        "name": "developer-tooling"
       },
       "satisfiedAllowedActions": [
-        "Use api-contracts for JSON Schema and OpenAPI boundary design.",
+        "Use developer-tooling for JSON Schema and OpenAPI boundary design.",
         "Use manage-json-schemas as a shared primitive inside the broader API contract workflow.",
         "Validate examples, variant constraints, and operation contracts."
       ],
       "satisfiedVerificationEvidence": [
         "JSON Schema and OpenAPI examples or constraints are validated.",
-        "The api-contracts plugin owns the workflow when persisted API boundaries are in scope."
+        "The developer-tooling plugin owns the workflow when persisted API boundaries are in scope."
       ],
       "avoidedForbiddenActions": [
         "Route API boundary design to Kotlin implementation because both mention types.",
@@ -678,29 +604,6 @@
     },
     {
       "type": "ROUTING_OBSERVATION",
-      "caseId": "placeholder-skills-are-quality-audit-not-marketplace-products",
-      "routedPrimitive": {
-        "type": "PLUGIN",
-        "name": "agent-tooling"
-      },
-      "satisfiedAllowedActions": [
-        "Quarantine placeholder-only skills from marketplace exposure.",
-        "Delete placeholder-only skills when a substantive rewrite is not justified.",
-        "Fail validation if marketplace-visible skills expose placeholder migration descriptions."
-      ],
-      "satisfiedVerificationEvidence": [
-        "Marketplace-visible skills have routeable descriptions rather than placeholder migration text.",
-        "Unfinished primitive candidates are rewritten or excluded from the source marketplace."
-      ],
-      "avoidedForbiddenActions": [
-        "Keep placeholder-only skills in the standalone marketplace catalog.",
-        "Replace a real canonical skill with a placeholder duplicate.",
-        "Treat syntactic validity as quality readiness."
-      ],
-      "notes": "A passing run proves this route by delivering: Team-shared marketplace listings contain usable primitives, while unfinished migration placeholders stay out of daily-driver routing."
-    },
-    {
-      "type": "ROUTING_OBSERVATION",
       "caseId": "pkl-implementation-proves-evaluated-contract",
       "routedPrimitive": {
         "type": "SKILL",
@@ -729,7 +632,7 @@
       "caseId": "pkl-setup-routes-to-versioned-official-integration",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "pkl-tooling-setup"
+        "name": "pkl-engineering"
       },
       "satisfiedAllowedActions": [
         "Run the non-mutating tooling doctor.",
@@ -747,14 +650,14 @@
         "Treat standalone pkl-lsp as the preferred end-user surface when an official editor plugin exists.",
         "Hard-code a Java or LSP version without checking current official documentation."
       ],
-      "notes": "A passing replay routes to pkl-tooling-setup and preserves the Pkl workflow capability and proof boundaries."
+      "notes": "A passing replay routes to pkl-engineering and preserves the Pkl workflow capability and proof boundaries."
     },
     {
       "type": "ROUTING_OBSERVATION",
       "caseId": "pkl-specification-records-resource-capabilities-and-provenance",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "pkl-specification"
+        "name": "pkl-engineering"
       },
       "satisfiedAllowedActions": [
         "Inventory consumers, entry modules, templates, resources, outputs, and proof.",
@@ -772,14 +675,14 @@
         "Allow broad environment, filesystem, HTTPS, or reader access without naming it.",
         "Copy upstream documentation into the local skill as canonical policy."
       ],
-      "notes": "A passing replay routes to pkl-specification and preserves the Pkl workflow capability and proof boundaries."
+      "notes": "A passing replay routes to pkl-engineering and preserves the Pkl workflow capability and proof boundaries."
     },
     {
       "type": "ROUTING_OBSERVATION",
       "caseId": "pkl-pattern-selection-loads-only-the-relevant-catalog",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "pkl-pattern-catalogs"
+        "name": "pkl-engineering"
       },
       "satisfiedAllowedActions": [
         "Load only the advanced-pattern catalog for this request.",
@@ -797,7 +700,7 @@
         "Apply open extension points or custom converters without a stated need.",
         "Present a proposal from pkl-evolution as already-shipped behavior."
       ],
-      "notes": "A passing replay routes to pkl-pattern-catalogs and preserves the Pkl workflow capability and proof boundaries."
+      "notes": "A passing replay routes to pkl-engineering and preserves the Pkl workflow capability and proof boundaries."
     },
     {
       "type": "ROUTING_OBSERVATION",
@@ -927,7 +830,7 @@
       "caseId": "terminal-ui-work-preserves-cli-contracts",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "terminal-ui-design"
+        "name": "cli-creator"
       },
       "satisfiedAllowedActions": [
         "Inspect the existing terminal framework, command behavior, audience, and reachable interface states.",
@@ -975,7 +878,7 @@
       "caseId": "intellij-live-freeze-uses-diagnostics-mcp-before-profiler",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "ide-diagnostics-mcp"
+        "name": "intellij-platform-testing"
       },
       "satisfiedAllowedActions": [
         "Capture bounded diagnostics MCP samples before and during the named action.",
@@ -1021,7 +924,7 @@
       "caseId": "intellij-external-system-import-routes-to-integrations",
       "routedPrimitive": {
         "type": "SKILL",
-        "name": "intellij-platform-integrations"
+        "name": "intellij-plugin-delivery"
       },
       "satisfiedAllowedActions": [
         "Keep external identity, model acquisition, IntelliJ model translation, and task execution as explicit boundaries.",
@@ -1038,6 +941,509 @@
         "Collapse External System tasks into an unrelated run configuration abstraction."
       ],
       "notes": "A passing replay preserves External System import and task boundaries across repeated synchronization."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "plugin-history-audit-separates-evidence",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "skill-primitive-authoring"
+      },
+      "satisfiedAllowedActions": [
+        "Deduplicate root sessions and retain bounded prompt, read-trace, outcome, and limitation references.",
+        "Report fixture consistency separately from field coverage and retain drift alongside replays."
+      ],
+      "avoidedForbiddenActions": [
+        "Treat golden fixtures or a SKILL.md read as successful model behavior.",
+        "Attribute an absent read to a numeric cap without the actual advertised list or host evidence."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The report separates golden coverage, trace-supported routes, useful outcomes, and pending proof.",
+        "Explicit-only policies and observed list omissions are identified separately."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "installed-discovery-recovery-keeps-stage-proof",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "satisfiedAllowedActions": [
+        "Reuse the existing installer, lifecycle controls, IDE delivery owner, and native schema discovery.",
+        "Record package, installation, discovery, invocation, and recovery evidence at their actual revisions."
+      ],
+      "avoidedForbiddenActions": [
+        "Claim a fresh-client invocation from an enabled entry or passing unit tests.",
+        "Restart or replace a live installation outside the authorized disposable target."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Artifact identity and fresh discovery/invocation evidence refer to the same installed candidate.",
+        "Recovery repeats the semantic operation, or the missing recovery evidence remains explicit."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "runtime-performance-matches-semantic-workloads",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "satisfiedAllowedActions": [
+        "Use existing replay reports and bounded stage measurements for equivalent baseline/candidate workloads.",
+        "Retain unmatched attempts and negative reduced-work signals."
+      ],
+      "avoidedForbiddenActions": [
+        "Call fewer rows, incomplete coverage, or a changed query a speed improvement.",
+        "Infer less native work from lower public latency or lessWork=false."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Paired reports establish workload equivalence before aggregating timings.",
+        "The handoff names measured dimensions, exact revisions, samples, and remaining limitations."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "openwiki-refresh-preserves-backend-authority",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "code-knowledge-base"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve the existing backend and hand off OpenWiki execution to its external skill/tooling.",
+        "Preserve citations and validate refresh or migration through the destination backend and repository gates."
+      ],
+      "avoidedForbiddenActions": [
+        "Copy an upstream OpenWiki skill into local canonical source.",
+        "Create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The selected backend and external owner are named, with missing tools reported rather than guessed.",
+        "Changed pages and Claims are verified; pending CI remains pending."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "cli-finite-json-errors-preserve-exit-status",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "cli-creator"
+      },
+      "satisfiedAllowedActions": [
+        "Validate inputs once and use the current command owner and structured output contract.",
+        "Exercise success, invalid input, unavailable target, redirected output, and cancellation where applicable."
+      ],
+      "avoidedForbiddenActions": [
+        "Encode expected failures as arbitrary strings, null, booleans, or exceptions.",
+        "Print a progress banner into machine-readable stdout or return zero for a failed operation."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Success and every expected failure payload pass the canonical schema.",
+        "Failure paths preserve nonzero exit status and stream separation."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "docs-site-nav-preserves-generated-boundaries",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "technical-documentation"
+      },
+      "satisfiedAllowedActions": [
+        "Inspect the existing docs framework, navigation, authored roots, and reference generators.",
+        "Edit authored pages or generator inputs, regenerate references only through their owner, and check links/rendering."
+      ],
+      "avoidedForbiddenActions": [
+        "Hand-edit generated public contracts or omit navigation for a new page.",
+        "Call build success proof of rendered diagram readability without inspecting it."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The framework validator and broken-link check pass for the changed navigation.",
+        "Generated boundaries and source-backed claims are retained, and the rendered result is inspected."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "technical-rfc-keeps-reader-decision-source-backed",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "technical-documentation"
+      },
+      "satisfiedAllowedActions": [
+        "Use the supplied audience, source evidence, and repository template to draft the authorized document.",
+        "Test whether a reader can make the intended decision from the document alone."
+      ],
+      "avoidedForbiddenActions": [
+        "Invent a guarantee or require section-by-section approval without a user request.",
+        "Treat polished prose as evidence that technical claims are true."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Claims, assumptions, decisions, and verification obligations remain distinct.",
+        "Reader testing resolves ambiguities that would change the decision."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "openapi-operations-preserve-request-response-security",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-authoring"
+      },
+      "satisfiedAllowedActions": [
+        "Use the operation authoring owner and reuse canonical components.",
+        "Validate request/response, status mapping, security requirements, and counterexamples."
+      ],
+      "avoidedForbiddenActions": [
+        "Treat a component-only edit as a complete operation contract.",
+        "Allow ambiguous failure strings or permissive extra fields without an intentional extension point."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The operation has source-backed request, response, failure, and security contracts.",
+        "Validator-backed examples reject the invalid combinations."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "openapi-review-requires-validator-evidence",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "openapi-contract-authoring"
+      },
+      "satisfiedAllowedActions": [
+        "Run the existing contract validator and cite specific schema/operation locations.",
+        "Separate validator findings, type-safety rubric judgments, and unverified runtime behavior."
+      ],
+      "avoidedForbiddenActions": [
+        "Give an unsupported overall quality score or rewrite the specification during a read-only review.",
+        "Treat a passing schema validator as complete runtime or security proof."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The rating cites the concrete contract boundaries and observed validator results.",
+        "Recommended fixes follow from the rubric and remain within the read-only scope."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pr-feedback-repair-rechecks-current-head",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "pull-request-lifecycle"
+      },
+      "satisfiedAllowedActions": [
+        "Check the review claim against source and an executable oracle before repairing it.",
+        "Re-review after repair and reacquire the PR head and structured required checks after a push when authorized."
+      ],
+      "avoidedForbiddenActions": [
+        "Implement speculative review advice or merge with required checks pending, cancelled, or stale.",
+        "Reuse a passing check or review from an older PR head."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The handoff separates valid repair, local re-review, external review, and exact-head CI proof.",
+        "Pending or unavailable external checks remain explicit."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "prose-only-edit-keeps-validation-skills-idle",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "controlled-technical-writing"
+      },
+      "satisfiedAllowedActions": [
+        "Apply the focused prose workflow when available and inspect the scoped diff.",
+        "Leave unrelated code, scripts, generated output, and validation workflows idle."
+      ],
+      "avoidedForbiddenActions": [
+        "Load skill-primitive-authoring, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
+        "Run a build, generate knowledge, or change configuration for this prose-only request."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Only the requested prose changes and its meaning is preserved.",
+        "The trace contains no marker-driven routing, build, or script-safety activation."
+      ],
+      "notes": "Golden contract fixture only; no model execution or field outcome is asserted."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "personal-setup-verifies-current-dotfiles-authority",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "personal-setup-management"
+      },
+      "satisfiedAllowedActions": [
+        "Verify the current wrapper, exact origin, Git directory, worktree and core.bare before dependent writes.",
+        "Use tracked public paths and the existing link installer owner.",
+        "Preserve unrelated source changes, index entries and private overrides."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The handoff names the verified source and consumer boundary.",
+        "A focused fixture check proves the edited installation or command invariant."
+      ],
+      "avoidedForbiddenActions": [
+        "Recreate historical ~/.cfg or use it as an automatic fallback.",
+        "Bulk-stage HOME or recursively read private setup state.",
+        "Claim installed behavior from a source-only check."
+      ],
+      "notes": "Synthetic golden contract fixture. This checks replay consistency only; no live model routing or guidance quality was observed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "personal-cli-composition-and-source-backed-teach",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "cli-creator"
+      },
+      "satisfiedAllowedActions": [
+        "Reuse cohesive parsing, selection, effect and presentation owners.",
+        "Generate offline completion from authoritative option definitions.",
+        "Supply explicit complete source files, bounded directory names, history summaries and a provided or inferred question to --teach.",
+        "Prove preview and success/failure transport with a deterministic adapter."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Normal operation, help, completion and teach preview pass focused checks.",
+        "Source and assistant failure paths are typed and nonzero."
+      ],
+      "avoidedForbiddenActions": [
+        "Invent options or infer complete implementation from a thin launcher.",
+        "Read raw private history databases to fill missing parent-shell context.",
+        "Execute teaching suggestions automatically.",
+        "Present adapter tests as observed model guidance quality."
+      ],
+      "notes": "Synthetic golden contract fixture. This checks replay consistency only; no live model routing or guidance quality was observed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "proof-preservation-requires-strong-consumers",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "satisfiedAllowedActions": [
+        "Identify the existing invariant owner, resolved consumers, and proof-loss boundary before editing.",
+        "Require refined values and closed outcomes at consumer contracts; keep construction controlled.",
+        "Demonstrate a legal path and a forbidden call rejected by the compiler or strongest available check."
+      ],
+      "satisfiedVerificationEvidence": [
+        "A named misuse fails for the intended type or contract reason.",
+        "The legal path retains the stronger representation through downstream consumers."
+      ],
+      "avoidedForbiddenActions": [
+        "Add wrappers with unchecked public construction or immediately unpack them in application code.",
+        "Repeat runtime guards deep in the application instead of preserving their proof.",
+        "Claim current authorization or one-time capability consumption from ordinary static types."
+      ],
+      "notes": "Expected contract fixture only; this scenario has no observed model run."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "api-variants-retain-domain-proof",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "satisfiedAllowedActions": [
+        "Define closed exclusive variants with required type tags in CAPS_CASE and case-owned required fields.",
+        "Reuse canonical schemas through references and map parsed transport values into domain representations.",
+        "Exercise valid cases and invalid null, unknown-tag, extra-field, and mixed-variant cases."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The schema validator accepts the intended shapes and rejects each named illegal payload.",
+        "The mapping preserves the facts required by the application consumer."
+      ],
+      "avoidedForbiddenActions": [
+        "Use a discriminator hint without exclusive constrained variant schemas.",
+        "Allow nullable sentinel fields, arbitrary error strings, or permissive shapes to make invalid examples pass.",
+        "Claim schema validation proves generated-model correctness or external service agreement."
+      ],
+      "notes": "Expected contract fixture only; this scenario has no observed model run."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "shell-failure-preserves-transition-contract",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "satisfiedAllowedActions": [
+        "Centralize ingress and stage transitions with an explicit finite status and output contract.",
+        "Use a controlled snapshot and expose effect failures without claiming unproved rollback.",
+        "Inject verification, publication, and cleanup failures and inspect the later-stage effects."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Failed verification prevents publication and emits a supported failure outcome.",
+        "Publication and cleanup failures cannot produce an unqualified success result."
+      ],
+      "avoidedForbiddenActions": [
+        "Swallow command failures with an unconditional success fallback.",
+        "Treat strict shell flags or tagged variable names as static type proof.",
+        "Verify one file and publish a later mutable reread while claiming the verification transfers."
+      ],
+      "notes": "Expected contract fixture only; this scenario has no observed model run."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "proof-loss-review-names-model-obligations",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "semantic-ratchet"
+      },
+      "satisfiedAllowedActions": [
+        "Trace predicate identity, value flow, the boundary obligation, and proof materialization using semantic evidence where available.",
+        "Report witnessed proof loss separately from an undeclared obligation or incomplete flow model.",
+        "Keep the scope read-only and the claimed guarantee relative to the available model."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Each finding identifies its predicate, flow path, boundary obligation, and materialization evidence or the specific missing model.",
+        "The handoff does not upgrade a modeling question into a proven runtime bug."
+      ],
+      "avoidedForbiddenActions": [
+        "Infer a correctness defect or complete proof from a textual pattern alone.",
+        "Claim absence of proof loss when resolution, flow, or boundary modeling is incomplete.",
+        "Implement a proof-loss analyzer or modify code during a read-only review."
+      ],
+      "notes": "Expected contract fixture only; this scenario has no observed model run."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "developer-tooling-keeps-personal-effects-explicit",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "developer-tooling"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve each canonical skill and agent reference in Developer Tooling.",
+        "Keep personal configuration changes subject to the requested task scope."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The source graph and focused composition checks pass.",
+        "The package closure has no hooks or MCP declaration."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected fixture only; this is not a field observation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "personal-configuration-keeps-authoring-outside",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "developer-tooling"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve personal setup and CLI procedures from canonical source.",
+        "Keep unrelated authoring procedures idle for a personal configuration task."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The source graph and focused composition checks pass.",
+        "The closure includes personal setup management and has no hooks."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected fixture only; this is not a field observation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "source-check-integration-needs-no-authoring-skill",
+      "routedPrimitive": {
+        "type": "HOOK",
+        "name": "source-graph-valid"
+      },
+      "satisfiedAllowedActions": [
+        "Compose the source hook explicitly in one disposable test bundle.",
+        "Preserve the source validator and Stop output adapter."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The source graph and focused composition checks pass.",
+        "The integration closure contains the hook and no skill dependencies."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected fixture only; this is not a field observation."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-workflows-do-not-install-automation",
+      "routedPrimitive": {
+        "type": "PLUGIN",
+        "name": "developer-tooling"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected contract fixture only; no field observation is claimed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-checks-carry-runtime-without-workflow-discovery",
+      "routedPrimitive": {
+        "type": "HOOK",
+        "name": "pkl-evaluate-check"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected contract fixture only; no field observation is claimed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "pkl-checks-preserve-runtime-contract",
+      "routedPrimitive": {
+        "type": "HOOK",
+        "name": "pkl-evaluate-check"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve canonical references and inspect discovery entries.",
+        "Execute only a supplied disposable fixture with explicit configuration."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Source and both projections preserve the declared payload and selection boundaries.",
+        "Focused native resource and Pkl hook regression checks pass."
+      ],
+      "avoidedForbiddenActions": [
+        "Patch generated provider output by hand.",
+        "Change installed caches or live personal configuration.",
+        "Treat static composition checks as observed model routing or useful outcomes."
+      ],
+      "notes": "Expected contract fixture only; no field observation is claimed."
     }
   ]
 }

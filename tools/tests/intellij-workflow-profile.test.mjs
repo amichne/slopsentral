@@ -17,10 +17,8 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
   const intellij = plugin("intellij-plugin-development");
   assert.deepEqual(intellij.skills.map(({ name }) => name), [
     "intellij-plugin-delivery",
-    "ide-diagnostics-mcp",
-    "intellij-psi-indexing",
     "intellij-platform-testing",
-    "intellij-platform-integrations",
+    "intellij-psi-indexing",
   ]);
   assert.deepEqual(intellij.instructions, []);
   assert.deepEqual(intellij.hooks, []);
@@ -50,10 +48,10 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
     [],
   );
   assert.deepEqual([...hookOwners.keys()].sort(), [
-    "agents-md-turn-refresh",
     "gradle-check-green",
     "gradle-wrapper-integrity",
+    "kotlin-engineering-context",
     "kotlin-horizontalization-check",
-    "repository-profile",
+    "software-engineering-context",
   ]);
 });

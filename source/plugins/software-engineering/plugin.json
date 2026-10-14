@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "software-engineering",
-  "version": "1.0.1",
-  "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+  "version": "3.0.0",
+  "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -16,8 +16,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/repository-onboarding",
-      "name": "repository-onboarding"
+      "path": "skills/semantic-ratchet",
+      "name": "semantic-ratchet"
     },
     {
       "type": "SKILL",
@@ -25,8 +25,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/semantic-ratchet",
-      "name": "semantic-ratchet"
+      "path": "skills/python-tooling",
+      "name": "python-tooling"
     },
     {
       "type": "SKILL",
@@ -43,44 +43,8 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/bounded-delegation",
-      "name": "bounded-delegation"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/define-goal",
-      "name": "define-goal"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/git-change-flow",
       "name": "git-change-flow"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/shell-script-safety",
-      "name": "shell-script-safety"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/cli-data-pipelines",
-      "name": "cli-data-pipelines"
     },
     {
       "type": "SKILL",
@@ -117,38 +81,10 @@
       },
       "path": "skills/pull-request-lifecycle",
       "name": "pull-request-lifecycle"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/delivery-pipeline-design",
-      "name": "delivery-pipeline-design"
     }
   ],
   "agents": [],
-  "instructions": [
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "instructions/agent-execution.md",
-      "name": "agent-execution"
-    },
-    {
-      "type": "INSTRUCTION",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "instructions/engineering-design.md",
-      "name": "engineering-design"
-    }
-  ],
+  "instructions": [],
   "hooks": [
     {
       "type": "HOOK",
@@ -156,26 +92,17 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "hooks/agents-md-turn-refresh.hook.json",
-      "name": "agents-md-turn-refresh"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/repository-profile.hook.json",
-      "name": "repository-profile"
+      "path": "hooks/software-engineering-context.hook.json",
+      "name": "software-engineering-context"
     }
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Start here for everyday code changes, debugging, tests, Git, issues, pull requests, and CI. Publication follows the requested end state.",
-    "notFor": "Language-specific design, building CLI products, knowledge generation, and documentation production.",
+    "dailyDriver": "Start here for typed design, invariant decomposition, Python automation, testing, refactoring, Git, PRs, and CI.",
+    "notFor": "Language and platform syntax beyond the shared baseline; add the relevant specialty.",
     "owner": "software-engineering",
     "role": "default",
-    "scope": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+    "scope": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
     "workstream": "software-engineering"
   }
 }

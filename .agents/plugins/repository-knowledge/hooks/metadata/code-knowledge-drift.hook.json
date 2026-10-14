@@ -8,15 +8,6 @@
         "type": "LOCAL_SOURCE"
       },
       "type": "SKILL"
-    },
-    {
-      "name": "repository-signature-indexing",
-      "path": "skills/repository-signature-indexing",
-      "source": {
-        "path": "./",
-        "type": "LOCAL_SOURCE"
-      },
-      "type": "SKILL"
     }
   ],
   "name": "code-knowledge-drift",

@@ -28,13 +28,9 @@ Design, verify, review, and optimize Kotlin and Gradle changes.
 ## Skill Primitives
 
 - `gradle-performance-engineering`: `skills/gradle-performance-engineering` (source: `source/skills/gradle-performance-engineering`)
-- `kotlin-agentic-correctness`: `skills/kotlin-agentic-correctness` (source: `source/skills/kotlin-agentic-correctness`)
-- `kotlin-api-surface-design`: `skills/kotlin-api-surface-design` (source: `source/skills/kotlin-api-surface-design`)
 - `kotlin-application-stack`: `skills/kotlin-application-stack` (source: `source/skills/kotlin-application-stack`)
-- `kotlin-branching`: `skills/kotlin-branching` (source: `source/skills/kotlin-branching`)
 - `kotlin-design-practices`: `skills/kotlin-design-practices` (source: `source/skills/kotlin-design-practices`)
 - `kotlin-gradle-validation`: `skills/kotlin-gradle-validation` (source: `source/skills/kotlin-gradle-validation`)
-- `kotlin-observability-design`: `skills/kotlin-observability-design` (source: `source/skills/kotlin-observability-design`)
 - `kotlin-review`: `skills/kotlin-review` (source: `source/skills/kotlin-review`)
 - `negative-capability-proof`: `skills/negative-capability-proof` (source: `source/skills/negative-capability-proof`)
 
@@ -42,4 +38,5 @@ Design, verify, review, and optimize Kotlin and Gradle changes.
 
 - `gradle-check-green`: `hooks/gradle-check-green.hooks.json` (source: `source/hooks/gradle-check-green.hook.json`)
 - `gradle-wrapper-integrity`: `hooks/gradle-wrapper-integrity.hooks.json` (source: `source/hooks/gradle-wrapper-integrity.hook.json`)
+- `kotlin-engineering-context`: `hooks/kotlin-engineering-context.hooks.json` (source: `source/hooks/kotlin-engineering-context.hook.json`)
 - `kotlin-horizontalization-check`: `hooks/kotlin-horizontalization-check.hooks.json` (source: `source/hooks/kotlin-horizontalization-check.hook.json`)

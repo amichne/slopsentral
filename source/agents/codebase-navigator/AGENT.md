@@ -66,13 +66,13 @@ queues the nearest existing guide for source changes, including root changes.
 
 ### Bootstrapping a repo (first run)
 
-1. Confirm `setup-local-nav.sh` has been run:
+1. Confirm `setup-local-nav.py` has been run:
    ```bash
   test -f AGENTS.md && echo "OK" || echo "Run setup first"
    ```
    If not present, run it:
    ```bash
-   bash <agent-root>/scripts/setup-local-nav.sh
+   uv run --locked --script <agent-root>/scripts/setup-local-nav.py
    ```
 2. Generate the root summary, then walk one level deep:
    ```bash

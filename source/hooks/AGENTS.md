@@ -13,6 +13,9 @@ This file applies to reusable hook assets under `source/hooks/`.
 - Keep executable scripts at the hook root unless they are adapter-specific.
 - Reference related skills, agents, or concepts through `dependsOn` in the hook
   metadata rather than embedding their full guidance.
+- Use a `RESOURCE` dependency for one executable or data file. Keep a `SKILL`
+  dependency when its procedure is required; a runtime helper alone does not
+  require the full workflow. See [workflow resources](../../docs/workflow-resources.md).
 - For Codex context injection, use a `SessionStart` adapter and emit
   `hookSpecificOutput.additionalContext`. Read bundled dependencies through
   `PLUGIN_ROOT`; do not assume the repository source tree is present at runtime.
@@ -23,5 +26,5 @@ This file applies to reusable hook assets under `source/hooks/`.
 
 ## Verify
 
-- Run both `projeKtor project` harness projections after changing hook metadata.
+- Run both local Pkl harness projections from root `AGENTS.md` after changing hook metadata.
 - Run syntax checks for every executable hook implementation touched.

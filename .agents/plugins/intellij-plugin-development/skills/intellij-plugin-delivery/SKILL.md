@@ -1,54 +1,54 @@
 ---
-name: "intellij-plugin-delivery"
-description: "Use when developing, verifying, packaging, or delivering an existing IntelliJ Platform plugin through plugin.xml, services, lifecycle, Gradle, Plugin Verifier, sandboxes, archives, signing, or publication boundaries."
+name: intellij-plugin-delivery
+description: "Use for IntelliJ plugin descriptors, service lifecycles, run configurations, External System integration, packaging, Plugin Verifier, installation, and authorized publication."
 ---
 
 # IntelliJ Plugin Delivery
 
-Use the repository's existing plugin architecture and delivery authority. Do
-not scaffold over an established project or replace pinned platform, Gradle,
-Kotlin, or JDK versions merely because newer versions exist.
+Use the existing plugin architecture and publication authority.
+Keep pinned Platform, Gradle, Kotlin, and JDK versions unless the task changes them.
 
 ## Workflow
 
-1. Read the nearest repository instructions and inspect Git status before
-   changing anything. Treat unrelated changes as user work.
-2. Discover the current plugin contract from the wrapper, settings and build
-   scripts, version catalog, `plugin.xml`, module dependencies, tests, and
-   release workflows.
-3. Keep this skill at the descriptor, service lifecycle, build compatibility,
-   verifier, packaging, runtime installation, and publication boundary. Route
-   PSI/indexing, testing, diagnostics, or integrations to their focused skills.
-4. Fix the owning boundary. Keep extension instances stateless, put state and
-   lifetime in services, and preserve disposal and dynamic-unload contracts.
-5. Use focused TDD and Gradle evidence. Broaden from the affected test or task
-   to plugin packaging, compatibility verification, sandbox execution, or CI
-   only when the changed surface requires it.
-6. Follow repository-owned installation and publication paths. A successful
-   ZIP build is not proof that a running IDE uses it, and a local sandbox is not
-   publication proof.
+1. Read repository instructions and inspect Git status. Preserve unrelated work.
+2. Inspect the wrapper, build scripts, catalog, `plugin.xml`, module graph, tests, and release workflows.
+   Use resolved SDK contracts for extension IDs and lifecycle decisions.
+3. Identify the descriptor, service, run configuration, External System, or artifact that owns the change.
+   Use `intellij-psi-indexing` for PSI and indexes.
+   Use `intellij-platform-testing` for fixtures, UI automation, and live IDE diagnosis.
+4. Keep extension instances stateless. Put state and lifetime in services.
+   Preserve disposal, cancellation, coroutine lifetime, and dynamic-unload contracts.
+5. For run configurations, separate type/factory identity, persisted state, editor behavior, execution environment, and the process lifecycle.
+   Preserve settings rejection and editor reset/apply behavior.
+   Reuse equivalent configurations through semantic context comparison.
+6. For External System, keep project identity stable.
+   Separate external model acquisition, pure translation, and mutation through Platform services.
+   Reconcile imports idempotently without deletion of another integration's state.
+   Use External System task APIs for task execution.
+7. Run focused tests for the changed contract.
+   Cover serialization, invalid settings, import/reimport/removal, task execution, cancellation, failure mapping, and disposal when the change reaches them.
+8. Expand to packaging, Plugin Verifier, sandbox execution, or CI only when the changed surface needs that evidence.
+9. Use repository-owned installation and authorized publication paths.
+   Examine the running IDE's artifact identity before an installed-behavior claim.
+   A ZIP build, sandbox result, and publication result establish different facts.
 
-Use `kotlin-agentic-correctness`, `kotlin-gradle-validation`, `tdd`,
-`git-change-flow`, `github-ci-operations`, and `pull-request-lifecycle` when
-they are installed; this skill owns the IntelliJ-specific decisions.
+Use `kotlin-design-practices` for Kotlin contracts and `kotlin-gradle-validation`
+for Gradle diagnosis. Use `tdd` for focused acceptance proof. Keep Git, CI, and
+pull-request operations with their existing workflow owners.
 
 ## Reference Routing
 
-- Read [platform-contracts.md](references/platform-contracts.md) for
-  `plugin.xml`, dependencies, services, extension lifecycles, coroutines,
-  disposal, cancellation, or dynamic unload.
-- Read [build-and-verification.md](references/build-and-verification.md) for
-  Gradle Plugin 2.x configuration, platform/JDK compatibility, focused tests,
-  Plugin Verifier, sandbox runs, packaging, signing, or publication boundaries.
-- Read [sources.md](references/sources.md) when updating this skill, checking
-  provenance, or reconciling its guidance with upstream material.
+- For descriptors, dependencies, services, coroutines, disposal, or dynamic unload,
+  read [Platform contracts](references/platform-contracts.md).
+- For run configuration factories, editors, producers, execution state, or external imports,
+  read [run configurations and External System](references/run-and-external-system.md).
+- For compatibility, Plugin Verifier, sandboxes, archives, or publication,
+  read [build and verification](references/build-and-verification.md).
+- For source attribution or upstream reconciliation, read [sources](references/sources.md).
 
-## Completion Criteria
+## Completion
 
-- The change follows the repository's pinned platform and ownership contracts.
-- IntelliJ lifecycle, disposal, and dynamic-unload risks affected by the
-  change have focused evidence.
-- The narrowest relevant test succeeds, and broader packaging, verifier,
-  runtime, or delivery claims have their own successful proof.
-- Remaining typed readiness, compatibility, restart, or publication blockers
-  are reported without unsupported fallback.
+The change obeys pinned Platform contracts. Focused tests cover changed lifecycle
+and integration behavior. Packaging, compatibility, installed behavior, and
+publication claims each have their own evidence. Report readiness, restart,
+compatibility, or publication blockers without an unsupported fallback.

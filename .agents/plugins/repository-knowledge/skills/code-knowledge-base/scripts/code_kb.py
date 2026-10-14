@@ -335,19 +335,19 @@ def write_output(payload: dict[str, Any], output_format: str) -> None:
         print(json.dumps(payload, indent=2, sort_keys=True))
         return
     if payload["status"] == "error":
-        print(f"okf {payload['command']}: unavailable ({payload['error']['code']})")
+        print(f"code-knowledge-base {payload['command']}: unavailable ({payload['error']['code']})")
         return
     command = payload.get("command")
     if command == "check":
         print(
-            f"okf check: {payload['concepts']} concept(s), "
+            f"code-knowledge-base check: {payload['concepts']} concept(s), "
             f"{payload['reservedFiles']} reserved file(s), {payload['issueCount']} issue(s)"
         )
         for issue in payload["issues"]:
             print(f"- {issue['path']}: {issue['message']}")
     elif command == "impact":
         print(
-            f"okf impact: {len(payload['changedFiles'])} changed file(s), "
+            f"code-knowledge-base impact: {len(payload['changedFiles'])} changed file(s), "
             f"{len(payload['impactedPages'])} impacted concept(s)"
         )
         for page in payload["impactedPages"]:

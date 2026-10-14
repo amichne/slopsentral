@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "agent-authoring-default",
-  "description": "Reusable agent tooling with everyday engineering checks and source-graph validation.",
+  "description": "Agent resource authoring with scoped engineering guidance. Source checks remain explicit commands.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -15,7 +15,7 @@
   ],
   "plugins": [
     "software-engineering",
-    "agent-tooling"
+    "developer-tooling"
   ],
   "standaloneSkills": [],
   "hookPolicy": {
@@ -30,8 +30,8 @@
     "type": "WORKFLOW_VALIDATION",
     "commands": [
       "node tools/validate-source-graph.mjs",
-      "projeKtor project --source . --harness codex --out /tmp/slopsentral-codex",
-      "projeKtor project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+      "node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex",
+      "node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
     ]
   }
 }

@@ -63,6 +63,7 @@ Use this reference when creating or editing `.github/workflows/*.yml`.
   [workflow-graph-optimization.md](workflow-graph-optimization.md). Gate on
   median-modeled critical path and proof-output equivalence; keep observed mean
   and runner wall time as report evidence.
-- Run `python3 source/skills/shell-script-safety/scripts/check_shell_safety`
-  on touched Bash CI scripts and `bash -n` on the same scripts.
+- Use uv-managed Python for workflow orchestration. Require strict Pyright, Ruff,
+  pytest, locked dependency setup, and explicit argv process boundaries.
+
 - For docs or generated-output jobs, run the generator before local tests.

@@ -15,3 +15,19 @@ test("tools and source are sibling roots", () => {
   assert.equal(fs.existsSync(path.join(sourceRoot, "tools")), false);
   assert.equal(fs.existsSync(path.join(toolsRoot, "validate-source-graph.mjs")), true);
 });
+
+test("plugin consumption has no Slopsentral CLI or automatic profile hook", () => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8"));
+  const lock = JSON.parse(fs.readFileSync(path.join(repoRoot, "package-lock.json"), "utf8"));
+  assert.equal(manifest.bin, undefined);
+  assert.equal(lock.packages[""].bin, undefined);
+  for (const retired of [
+    "tools/slopsentral.mjs",
+    "tools/repository-context.mjs",
+    "source/hooks/repository-profile.py",
+    "source/hooks/repository-profile.hook.json",
+    "source/hooks/codex/repository-profile.hooks.json",
+  ]) {
+    assert.equal(fs.existsSync(path.join(repoRoot, retired)), false, retired);
+  }
+});

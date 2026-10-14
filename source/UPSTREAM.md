@@ -18,12 +18,19 @@ account setting, or live deployment setting is changed by this catalog.
 | chrisbanes/skills | `84c2c53a26614236e644b3ea9eaf891c44704417` | Kotlin API ownership, branching, and grounded writing |
 | oakoss/agent-skills | `85e3a3919d9e0ec7f7302a5143ec4b3e66f5f6ad` | CLI pipelines, shell integration, Git, Actions, CI/CD, mise, and technical docs |
 | amichne/projeKtor | `v1.2.1`, action commit `eb3799c2bc60b4803c84fded0b6f4cd587bd0702` | Required provider projection contract |
+| max-sixty/worktrunk | `dea4029c593a89a39fb141da9d0849e4d10dae19`, reviewed 2026-10-06 | External Codex plugin; original Git workflow guidance and project automation checked with `wt v0.53.0` |
 
 Chris Banes's distribution uses Apache-2.0; the relevant standalone skills
 include the license and modification notice. Oakoss skill frontmatter declares
 MIT. The Oakoss-inspired local procedures copy no upstream source files,
 scripts, examples, or templates. Future literal imports must retain the actual
 upstream license and applicable notices.
+
+Worktrunk's plugin remains an upstream distribution with MIT OR Apache-2.0
+licensing. Its skill and hooks are installed from its own marketplace; no
+payload is copied into the Slopsentral source graph. The local Git procedure
+adds task ownership, current-base verification, and staging guidance through
+original wording. Project automation uses the existing repository checks.
 
 ## Adaptation Decisions
 

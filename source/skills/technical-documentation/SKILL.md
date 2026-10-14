@@ -1,41 +1,51 @@
 ---
 name: technical-documentation
-description: "Use when creating or updating a repository README, how-to, architecture decision, runbook, onboarding guide, or source-backed diagram; not for prose-only edits or site navigation."
+description: "Create or revise repository documents, proposals, specifications, runbooks, source-backed diagrams, or documentation sites. Use for document structure, source coverage, site navigation, and reader comprehension."
 ---
 
 # Technical Documentation
 
-Create the document that lets its reader complete one concrete task. This skill
-owns document purpose and source coverage. Prose revision belongs to
-controlled-technical-writing, site configuration to site-docs-authoring, and
-signature-backed knowledge bundles to code-knowledge-base.
+Write the smallest document that supports one reader action or decision.
+This skill owns document structure, source coverage, and documentation sites.
+Use controlled-technical-writing for prose assessment and code-knowledge-base for source-backed OKF bundles.
 
 ## Workflow
 
-1. Identify the reader, decision or action, artifact type, and authoritative source.
-   Inspect changed code, schemas, commands, configuration, tests, and existing docs.
-2. Inventory the claims needed for the task. Classify each as observed behavior,
-   an accepted decision, a proposal, or an unresolved gap. Keep those states distinct.
-3. Choose a focused structure: prerequisites and steps for a how-to; context,
-   decision, and consequences for an ADR; symptoms, diagnosis, recovery, and
-   escalation for a runbook. Do not turn every request into a long template.
-4. Generate API and command reference from the authoritative registry when one
-   exists. Write interpretation and examples without introducing a competing schema.
-5. Derive diagrams from real components, calls, state transitions, or data schemas.
-   Label omissions and proposed behavior. Do not invent nodes to make a diagram neat.
-6. Verify commands, links, examples, and changed documented defaults against the
-   source. Run the repository's relevant documentation checks. Update discoverability
-   when required, handing site navigation to its owner rather than duplicating it.
+1. Identify the reader, action or decision, artifact, source material, and destination.
+   Resolve routine choices from repository conventions. Ask only when missing information changes the document's purpose or authority.
+2. Inspect code, schemas, commands, configuration, tests, and existing documents before prose.
+   Label each claim as current behavior, an accepted decision, a proposal, or an unresolved gap.
+3. Choose a focused structure with [document-contracts.md](references/document-contracts.md).
+   For a substantial specification, establish the decision and evidence before introductions.
+   Draft in small sections when the user requests that workflow.
+4. If the artifact belongs to a site, identify its configuration, navigation owner, dialect, and generated pages.
+   Change pages, navigation, assets, and links as one scoped unit.
+   Preserve the current framework unless the user requests a migration.
+5. Generate API and command references from their authoritative registry when one exists.
+   Change the generator for generated pages. Derive diagrams from real components, states, calls, or schemas.
+6. Examine commands, examples, defaults, links, and page claims against their sources.
+   Run the repository's documentation build after navigation, configuration, layout, link, or generated-page changes.
+7. Run controlled-technical-writing's shared assessment for changed prose and keep its report.
+   Resolve findings or record their location and technical reason.
+8. For a substantial document, use [reader-testing.md](references/reader-testing.md) to assess comprehension without conversation context.
+   Report unresolved reader questions and distinguish a simulated review from human evidence.
 
-## References
+## Site References
 
-Read [document contracts](references/document-contracts.md) for artifact selection,
-source coverage, runbook safety, and executable example expectations.
+- For `zensical.toml`, read [zensical.md](references/zensical.md).
+- For `mkdocs.yml` or `mkdocs.yaml`, read [mkdocs.md](references/mkdocs.md).
+- For new pages or navigation changes, read [page-structures.md](references/page-structures.md).
+- For site conventions or agent reference material, read [prose-structure.md](references/prose-structure.md).
 
-## Completion Criteria
+For Mintlify, inspect local `docs.json` and the requested deployment before a deployment change.
+A request to edit documentation does not authorize publication.
 
-The reader can perform the intended task. Material claims have identifiable
-sources, generated boundaries remain intact, and any unexecuted example or
-unverified operational step is labeled rather than presented as tested.
+## Completion
 
-Read [provenance](references/provenance.md) when updating this skill.
+The document states its reader action and supports material claims with sources.
+Site navigation reaches the changed pages, and generated content keeps its source owner.
+Report commands as passed, failed, skipped, or not run.
+Separate a successful build, prose measurements, and reader comprehension.
+Label examples that did not run and operational steps without runtime evidence.
+
+Read [provenance.md](references/provenance.md) before an upstream import.

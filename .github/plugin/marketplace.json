@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "description": "Start with Software Engineering, then add task-specific plugins for your language, platform, or deliverable.",
+    "description": "Kotlin-first engineering with proof-preserving design, focused tests, and locked uv Python automation.",
     "pluginRoot": ".github/plugin"
   },
   "name": "slopsentral",
@@ -13,7 +13,7 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Implement, test, review, and deliver code with Git, PR, and CI workflows.",
+      "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
       "keywords": [
         "actions",
         "automation",
@@ -38,17 +38,13 @@
         "mise",
         "onboarding",
         "optimization",
-        "proof",
         "pull-requests",
         "release",
         "schemas",
-        "semantic-design",
-        "shell",
         "skills",
         "software-engineering",
         "tdd",
         "testing",
-        "typestate",
         "workflow-graph"
       ],
       "license": "UNLICENSED",
@@ -79,19 +75,15 @@
         "mise",
         "onboarding",
         "optimization",
-        "proof",
         "pull-requests",
         "release",
         "schemas",
-        "semantic-design",
-        "shell",
         "skills",
         "tdd",
         "testing",
-        "typestate",
         "workflow-graph"
       ],
-      "version": "1.0.1"
+      "version": "3.0.0"
     },
     {
       "author": {
@@ -168,7 +160,7 @@
         "type-safety",
         "validation"
       ],
-      "version": "1.4.1"
+      "version": "3.0.0"
     },
     {
       "author": {
@@ -209,136 +201,34 @@
         "ui-testing",
         "verification"
       ],
-      "version": "1.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Model, validate, format, and maintain Pkl configuration and tooling.",
-      "keywords": [
-        "configuration",
-        "hooks",
-        "lsp",
-        "patterns",
-        "pkl",
-        "pkl-configuration",
-        "rendering",
-        "resources",
-        "schemas",
-        "skills",
-        "testing",
-        "tooling",
-        "type-safety",
-        "validation"
-      ],
-      "license": "UNLICENSED",
-      "name": "pkl-configuration",
-      "source": "pkl-configuration",
-      "strict": true,
-      "tags": [
-        "configuration",
-        "hooks",
-        "lsp",
-        "patterns",
-        "pkl",
-        "rendering",
-        "resources",
-        "schemas",
-        "skills",
-        "testing",
-        "tooling",
-        "type-safety",
-        "validation"
-      ],
-      "version": "1.0.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Author and review OpenAPI specifications and JSON Schema contracts.",
-      "keywords": [
-        "agents",
-        "api",
-        "api-contracts",
-        "boundary",
-        "contracts",
-        "governance",
-        "openapi",
-        "schemas",
-        "skills",
-        "validation"
-      ],
-      "license": "UNLICENSED",
-      "name": "api-contracts",
-      "source": "api-contracts",
-      "strict": true,
-      "tags": [
-        "agents",
-        "api",
-        "boundary",
-        "contracts",
-        "governance",
-        "openapi",
-        "schemas",
-        "skills",
-        "validation"
-      ],
-      "version": "1.0.1"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Productivity",
-      "description": "Write and revise technical docs, proposals, runbooks, and documentation sites.",
-      "keywords": [
-        "controlled-language",
-        "docs",
-        "glossary",
-        "prose",
-        "semantics",
-        "technical-writing",
-        "terminology"
-      ],
-      "license": "UNLICENSED",
-      "name": "technical-writing",
-      "source": "technical-writing",
-      "strict": true,
-      "tags": [
-        "controlled-language",
-        "docs",
-        "glossary",
-        "prose",
-        "semantics",
-        "technical-writing",
-        "terminology"
-      ],
-      "version": "1.0.0"
+      "version": "3.0.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Coding",
-      "description": "Generate and maintain code indexes, knowledge documents, and navigation maps.",
+      "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
       "keywords": [
+        "controlled-language",
         "docs",
         "generation",
+        "glossary",
         "gradle",
         "hooks",
         "impact",
         "knowledge-base",
         "kotlin",
         "okf",
+        "prose",
         "repository",
         "repository-knowledge",
+        "semantics",
         "signatures",
         "skills",
         "source-backed",
+        "technical-writing",
+        "terminology",
         "validation"
       ],
       "license": "UNLICENSED",
@@ -346,120 +236,50 @@
       "source": "repository-knowledge",
       "strict": true,
       "tags": [
+        "controlled-language",
         "docs",
         "generation",
+        "glossary",
         "gradle",
         "hooks",
         "impact",
         "knowledge-base",
         "kotlin",
         "okf",
+        "prose",
         "repository",
+        "semantics",
         "signatures",
         "skills",
         "source-backed",
+        "technical-writing",
+        "terminology",
         "validation"
       ],
-      "version": "1.1.0"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Create and improve skills, agents, hooks, plugins, and repository instructions.",
-      "keywords": [
-        "agent-tooling",
-        "agents",
-        "authoring",
-        "governance",
-        "hooks",
-        "marketplace",
-        "plugins",
-        "proof",
-        "repository",
-        "routing",
-        "skills",
-        "workflow"
-      ],
-      "license": "UNLICENSED",
-      "name": "agent-tooling",
-      "source": "agent-tooling",
-      "strict": true,
-      "tags": [
-        "agents",
-        "authoring",
-        "governance",
-        "hooks",
-        "marketplace",
-        "plugins",
-        "proof",
-        "repository",
-        "routing",
-        "skills",
-        "workflow"
-      ],
-      "version": "1.0.0"
+      "version": "3.0.0"
     },
     {
       "author": {
         "name": "Amichne"
       },
       "category": "Productivity",
-      "description": "Build command-line tools, shell completions, and terminal interfaces.",
+      "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
       "keywords": [
-        "accessibility",
         "cli",
-        "cli-development",
-        "completion",
-        "design",
-        "shell",
-        "terminal",
-        "tui",
-        "user-interface"
+        "developer-tooling",
+        "skills",
+        "tools"
       ],
       "license": "UNLICENSED",
-      "name": "cli-development",
-      "source": "cli-development",
+      "name": "developer-tooling",
+      "source": "developer-tooling",
       "strict": true,
       "tags": [
-        "accessibility",
         "cli",
-        "completion",
-        "design",
-        "shell",
-        "terminal",
-        "tui",
-        "user-interface"
-      ],
-      "version": "1.0.1"
-    },
-    {
-      "author": {
-        "name": "Amichne"
-      },
-      "category": "Engineering",
-      "description": "Advanced: enforce repository-declared required skill reads.",
-      "keywords": [
-        "governance",
-        "hooks",
-        "policy",
-        "repository",
-        "skill-read-policy",
+        "tools",
         "skills"
       ],
-      "license": "UNLICENSED",
-      "name": "skill-read-policy",
-      "source": "skill-read-policy",
-      "strict": true,
-      "tags": [
-        "governance",
-        "hooks",
-        "policy",
-        "repository",
-        "skills"
-      ],
-      "version": "1.0.1"
+      "version": "3.0.0"
     }
   ]
 }

@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
-const installer = path.join(repoRoot, "tools/install-skill");
+const installer = path.join(repoRoot, "tools/install_skill.py");
 const sourceSkill = path.join(repoRoot, "source/skills/pkl-engineering");
 
 function run(codexHome, ...args) {
@@ -98,6 +98,6 @@ test("rejects unknown options without prompting", (t) => {
   const result = run(codexHome, "--surprise");
 
   assert.equal(result.status, 2);
-  assert.match(result.stdout, /error: unknown option --surprise/);
-  assert.match(result.stdout, /help: .*--codex-home.*--force/);
+  assert.match(result.stderr, /error: unrecognized arguments: --surprise/);
+  assert.match(result.stderr, /--codex-home.*--force/);
 });

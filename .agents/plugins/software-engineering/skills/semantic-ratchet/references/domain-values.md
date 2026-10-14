@@ -5,6 +5,12 @@ escapes a tiny private scope. Good candidates include identifiers, normalized or
 non-empty text, bounded quantities, money, dates, paths, versions, tokens,
 correlation keys, and constrained collections.
 
+Prefer a representation that excludes the illegal shape intrinsically. A
+non-empty collection with a required head and a tail carries usable structure;
+a public wrapper around an arbitrary list does not. An opaque scalar parser
+establishes its predicate only through its trusted construction boundary.
+Preserve that distinction in the claimed proof.
+
 ## Rules
 
 - Keep unchecked construction private to the owning boundary.

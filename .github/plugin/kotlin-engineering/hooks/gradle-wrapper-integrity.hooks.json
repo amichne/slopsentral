@@ -4,7 +4,7 @@
       {
         "hooks": [
           {
-            "command": "python3 \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- bash \"$PLUGIN_ROOT/hooks/gradle-wrapper-integrity.sh\" --repo .",
+            "command": "uv run --locked --script \"$PLUGIN_ROOT/hooks/codex-stop.py\" -- uv run --locked --script \"$PLUGIN_ROOT/hooks/gradle-wrapper-integrity.py\" --repo .",
             "statusMessage": "Checking Gradle wrapper integrity",
             "timeout": 30,
             "type": "command"

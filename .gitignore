@@ -109,3 +109,5 @@ gen
 # Local Git worktrees
 .worktrees/
 node_modules/
+
+.venv/

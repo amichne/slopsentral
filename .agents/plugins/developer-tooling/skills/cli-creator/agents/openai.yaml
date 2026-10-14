@@ -1,0 +1,4 @@
+interface:
+  display_name: "CLI Creator"
+  short_description: "Create composable commands and terminal interfaces"
+  default_prompt: "Use $cli-creator to implement the requested command with explicit inputs, finite failures, pure decisions, and focused evidence."

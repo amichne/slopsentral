@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { auditProfileComposition, loadCatalog, pluginClosure } from "./catalog.mjs";
 import {
   ProfileContractError,
   validateProfileTransaction,
@@ -49,7 +50,6 @@ function parseWorkflowProfile(value, expectedName) {
       "hookPolicy",
       "reconciliation",
       "validation",
-      "activation",
     ],
     `profile ${expectedName}`,
   );
@@ -94,11 +94,13 @@ function loadInputs(profileName) {
     throw new UsageError(`profile references unknown standalone skills: ${unknownSkills.map(({ name }) => name).join(", ")}`);
   }
   const skills = new Map((marketplace.skills ?? []).map((entry) => [entry.name, Object.freeze({ ...entry })]));
-  const plugins = new Map(available.map((name) => [
-    name,
-    readJson(path.join(repoRoot, "source/plugins", name, "plugin.json")),
-  ]));
-  return { profile, available, plugins, skills };
+  const catalog = loadCatalog(repoRoot);
+  const compositionFindings = auditProfileComposition(catalog, rawProfile);
+  if (compositionFindings.length) throw new UsageError(compositionFindings.join("; "));
+  const hooks = ordered(new Set(catalog.plugins.filter(plugin => profile.plugins.includes(plugin.name))
+    .flatMap(plugin => [...pluginClosure(catalog, plugin).refs.values()]
+      .filter(ref => ref.type === "HOOK").map(ref => ref.name))));
+  return { profile, available, skills, hooks };
 }
 
 function codexEnvironment(options) {
@@ -287,7 +289,7 @@ function plannedSkillInstalls(profile, skills, codexHome) {
 }
 
 function installSkill(options, name) {
-  const installer = path.join(repoRoot, "tools/install-skill");
+  const installer = path.join(repoRoot, "tools/install_skill.py");
   const result = spawnSync(installer, [name, "--codex-home", options.codexHome], {
     cwd: repoRoot,
     encoding: "utf8",
@@ -439,7 +441,7 @@ function desiredImage(content, mode) {
 }
 
 function profileContext(options) {
-  const { profile, available, plugins, skills } = loadInputs(requiredOption(options, "profile"));
+  const { profile, available, skills, hooks } = loadInputs(requiredOption(options, "profile"));
   const target = path.join(options.codexHome, `${profile.name}.config.toml`);
   const before = fileImage(target);
   const content = preserveCodexHookState(
@@ -449,7 +451,6 @@ function profileContext(options) {
   );
   const mode = before.type === "FILE_CONTENT" ? before.mode : 0o600;
   const desired = desiredImage(content, mode);
-  const hooks = ordered(profile.plugins.flatMap((name) => (plugins.get(name)?.hooks ?? []).map((hook) => hook.name)));
   if (profile.hookPolicy.mode === "OFF" && hooks.length > 0) {
     throw new UsageError(`profile ${profile.name} selects hook-bearing plugins while hook policy is OFF`);
   }

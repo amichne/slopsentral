@@ -1,0 +1,125 @@
+module slopsentral.projection.Targets
+
+import "Schema.pkl"
+
+class CodexInterface {
+  displayName: String
+  shortDescription: String
+  longDescription: String
+  developerName: String
+  category: Category
+  capabilities: List<"Interactive" | "Write">
+  websiteURL: String? = null
+  privacyPolicyURL: String? = null
+  termsOfServiceURL: String? = null
+  brandColor: String
+  defaultPrompt: List<String>
+}
+
+typealias Category = "Coding" | "Engineering" | "Productivity"
+
+class CodexPlugin {
+  name: Schema.Identity
+  version: String
+  description: String
+  author: Schema.Person
+  license: "UNLICENSED" = "UNLICENSED"
+  keywords: List<String>
+  skills: "./skills/"? = null
+  hooks: List<Schema.RelativePath>? = null
+  mcpServers: "./.mcp.json"? = null
+  interface: CodexInterface
+}
+
+class LocalPluginSource {
+  source: "local" = "local"
+  path: Schema.RelativePath
+}
+
+class Policy {
+  installation: "AVAILABLE" = "AVAILABLE"
+  authentication: "ON_INSTALL" = "ON_INSTALL"
+}
+
+class CodexEntry {
+  name: Schema.Identity
+  source: LocalPluginSource
+  policy: Policy = new {}
+  category: Category
+}
+
+class MarketplaceInterface {
+  displayName: String
+}
+
+class CodexMarketplace {
+  name: Schema.Identity
+  interface: MarketplaceInterface
+  plugins: List<CodexEntry>
+}
+
+open class CopilotPlugin {
+  name: Schema.Identity
+  description: String
+  version: String
+  author: Schema.Person
+  license: "UNLICENSED" = "UNLICENSED"
+  keywords: List<String>
+  category: Category
+  tags: List<String>
+  agents: "./agents"? = null
+  skills: "./skills"? = null
+  hooks: "./hooks.json"? = null
+}
+
+class CopilotEntry extends CopilotPlugin {
+  source: Schema.Identity
+  strict: Boolean(this) = true
+}
+
+class CopilotMetadata {
+  description: String
+  pluginRoot: ".github/plugin" = ".github/plugin"
+}
+
+class CopilotMarketplace {
+  name: Schema.Identity
+  owner: Schema.Person
+  metadata: CopilotMetadata
+  plugins: List<CopilotEntry>
+}
+
+class CopilotCommand {
+  type: "command" = "command"
+  bash: String
+  matcher: String? = null
+  timeoutSec: Int(isPositive)? = null
+}
+
+class CopilotHooks {
+  version: Int(this == 1) = 1
+  hooks: Mapping<String, List<CopilotCommand>>
+}
+
+class LockedPlugin {
+  name: Schema.Identity
+  version: String
+  sourceManifest: Schema.RelativePath
+  references: List<Schema.LockReference>
+}
+
+class Lock {
+  type: "HYDRATED_MARKETPLACE" = "HYDRATED_MARKETPLACE"
+  schemaVersion: Int(this == 1) = 1
+  generatedAt: String
+  sourceSha: String
+  plugins: List<LockedPlugin>
+}
+
+class Primitive {
+  type: Schema.Kind
+  source: Schema.LocalSource
+  path: Schema.RelativePath
+  name: Schema.Identity
+  dependsOn: List<Primitive>? = null
+}

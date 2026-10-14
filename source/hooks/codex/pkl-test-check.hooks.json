@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 hooks/pkl-check.py --repo . --check test",
+            "command": "uv run --locked --script hooks/codex-stop.py -- uv run --locked --script hooks/pkl-check.py --repo . --check test",
             "timeout": 900,
             "statusMessage": "Running Pkl assertions and examples"
           }

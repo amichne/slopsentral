@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import { validateResourceReference } from "./resource-contract.mjs";
 import { auditCatalog, loadCatalog } from "./catalog.mjs";
 import path from "node:path";
 import process from "node:process";
+import { validateFieldObservations, fieldObservationFindings } from "./routing-field-observations.mjs";
 import { validateWorkflowProfile } from "./validate-profile-contracts.mjs";
+import { currentSourceEvidenceFindings } from "./routing-source-evidence.mjs";
 
 const args = process.argv.slice(2);
 const repoArgIndex = args.indexOf("--repo");
@@ -17,6 +20,7 @@ const sourceRoot = path.join(repoRoot, "source");
 
 
 const routingCaseTypes = new Set([
+  "COVERAGE_GAP",
   "TRIGGER_MISS",
   "WRONG_PRIMITIVE",
   "LOADED_BYPASSED",
@@ -136,6 +140,25 @@ function relativeToRepo(absolutePath) {
   return path.relative(repoRoot, absolutePath).split(path.sep).join("/");
 }
 
+// Portable consumers carry the existing project minimum without an ambient project.
+for (const root of ["source", "tools"]) {
+  for (const file of listFiles(root, file => !file.split(path.sep).includes("__pycache__"))) {
+    const script = fs.readFileSync(file, "utf8");
+    if (!script.startsWith("#!") || !script.includes("# /// script\n")) continue;
+    const metadata = script.match(/^# \/\/\/ script\n([\s\S]*?)^# \/\/\/$/m)?.[1];
+    if (!metadata || !/^# required-version = ">=0\.12\.9"$/m.test(metadata)) {
+      fail(`${relativeToRepo(file)}: portable uv script must declare the existing uv >=0.12.9 minimum`);
+    }
+    if ((fs.statSync(file).mode & 0o111) !== 0
+        && !script.startsWith("#!/usr/bin/env -S uv run --locked --script\n")) {
+      fail(`${relativeToRepo(file)}: direct portable uv script must use a locked script launcher`);
+    }
+    if (!fs.existsSync(file + ".lock")) {
+      fail(`${relativeToRepo(file)}: portable uv script must have an adjacent lock`);
+    }
+  }
+}
+
 function parseFrontmatter(relativePath) {
   const absolutePath = path.join(repoRoot, relativePath);
   if (!fs.existsSync(absolutePath)) {
@@ -196,6 +219,14 @@ function validatePrimitiveRef(ref, owner) {
     return;
   }
 
+  if (ref.type === "RESOURCE") {
+    const refined = validateResourceReference(ref);
+    if (refined.type !== 'RESOURCE_REFERENCE_VALID') {
+      fail(`${owner}: RESOURCE reference violates its schema`);
+      return;
+    }
+    ref = refined.reference;
+  }
   const relativePath = `source/${ref.path}`;
   const absolutePath = path.join(repoRoot, relativePath);
   if (!fs.existsSync(absolutePath)) {
@@ -223,7 +254,17 @@ function validatePrimitiveRef(ref, owner) {
     if (hook?.path && !fs.existsSync(path.join(sourceRoot, hook.path))) {
       fail(`${owner}: hook ${ref.name} adapter path source/${hook.path} is missing`);
     }
-    if (hook?.path) validateHookAdapter(ref.name, hook.path);
+    if (hook?.path) {
+      validateHookAdapter(ref.name, hook.path);
+      validateInstructionContext(hook);
+    }
+  } else if (ref.type === "RESOURCE") {
+    let candidate = absolutePath;
+    while (candidate !== sourceRoot) {
+      if (fs.lstatSync(candidate).isSymbolicLink()) { fail(`${owner}: resource path must not follow symbolic links`); break; }
+      candidate = path.dirname(candidate);
+    }
+    if (!fs.lstatSync(absolutePath).isFile()) fail(`${owner}: resource must name one regular file`);
   } else if (ref.type === "INSTRUCTION") {
     if (!fs.statSync(absolutePath).isFile()) {
       fail(`${owner}: instruction ${ref.name} must point at a file`);
@@ -234,6 +275,40 @@ function validatePrimitiveRef(ref, owner) {
 
   for (const dependency of ref.dependsOn ?? []) {
     validatePrimitiveRef(dependency, `${owner} dependency of ${ref.name}`);
+  }
+}
+
+function validateInstructionContext(metadata) {
+  const adapter = readJson(`source/${metadata.path}`);
+  if (!adapter?.hooks) return;
+  for (const [event, groups] of Object.entries(adapter.hooks)) {
+    if (!Array.isArray(groups)) continue;
+    for (const group of groups) {
+      if (!Array.isArray(group?.hooks)) continue;
+      for (const handler of group.hooks) {
+        if (typeof handler?.command !== 'string' ||
+            !handler.command.startsWith('uv run --locked --script hooks/inject-instruction-context.py')) continue;
+        const args = handler.command.split(/\s+/u).slice(5);
+        const selected = args.filter((_, index) => index % 2 === 1);
+        const declarations = (metadata.dependsOn ?? []).filter(ref => ref.type === 'INSTRUCTION');
+        const names = declarations.map(ref => ref.name);
+        if (args.length === 0 || args.length % 2 ||
+            args.some((arg, index) => index % 2 === 0 && arg !== '--instruction') ||
+            new Set(selected).size !== selected.length ||
+            JSON.stringify(sorted(selected)) !== JSON.stringify(sorted(names))) {
+          fail(`${metadata.name}: instruction arguments must exactly match canonical instruction dependencies`);
+        }
+        if (declarations.some(ref => ref.path !== `instructions/${ref.name}.md`)) {
+          fail(`${metadata.name}: context policies must use canonical instructions/<name>.md paths`);
+        }
+        if (event !== 'SessionStart' || group.matcher !== '^(startup|resume|clear|compact)$') {
+          fail(`${metadata.name}: instruction context must cover the complete SessionStart lifecycle`);
+        }
+        if (handler.additionalContextLimit !== 8192) {
+          fail(`${metadata.name}: instruction context requires the bounded 8192 token host budget`);
+        }
+      }
+    }
   }
 }
 
@@ -248,36 +323,20 @@ function validateHookAdapter(hookName, adapterPath) {
     fail(`${relativePath}: hook adapter ${hookName} does not define any command hooks`);
   }
   for (const command of commands) {
-    const match = command.match(/^(bash|python3)\s+hooks\/([A-Za-z0-9_.-]+)(?:\s|$)/);
+    const match = command.match(/^uv run --locked --script hooks\/([A-Za-z0-9_.-]+)(?:\s|$)/);
     if (!match) {
-      fail(`${relativePath}: hook command must call bash/python3 hooks/<script>: ${command}`);
+      fail(`${relativePath}: hook command must call uv run --locked --script hooks/<script>: ${command}`);
       continue;
     }
-    const runner = match[1];
-    const scriptName = match[2];
-    const scriptPath = path.join(sourceRoot, "hooks", scriptName);
-    if (!fs.existsSync(scriptPath)) {
-      fail(`${relativePath}: hook command points at missing source/hooks/${scriptName}`);
-      continue;
-    }
-    if (runner === "bash") {
-      const mode = fs.statSync(scriptPath).mode;
-      if (!scriptName.endsWith(".sh")) {
-        fail(`${relativePath}: bash command should target a .sh script: ${scriptName}`);
-      }
-      if ((mode & 0o111) === 0) {
-        fail(`${relativePath}: bash script source/hooks/${scriptName} must be executable`);
-      }
-    }
-    if (runner === "python3") {
-      const mode = fs.statSync(scriptPath).mode;
-      const firstLine = fs.readFileSync(scriptPath, "utf8").split(/\r?\n/, 1)[0] ?? "";
-      if (scriptName.endsWith(".py")) {
+    for (const found of command.matchAll(/\bhooks\/[A-Za-z0-9_.-]+/g)) {
+      const scriptPath = path.join(sourceRoot, found[0]);
+      if (!fs.existsSync(scriptPath) || !fs.existsSync(scriptPath + '.lock')) {
+        fail(`${relativePath}: missing uv script or adjacent lock: ${found[0]}`);
         continue;
       }
-      if ((mode & 0o111) === 0 || !firstLine.includes("python")) {
-        fail(`${relativePath}: python3 command should target a .py script or executable Python script: ${scriptName}`);
-      }
+      const script = fs.readFileSync(scriptPath, 'utf8');
+      if (!script.includes('# /// script\n') || !script.includes('# no-build = true'))
+        fail(`${relativePath}: uv hook must declare PEP 723 metadata and no-build: ${found[0]}`);
     }
   }
 }
@@ -437,6 +496,10 @@ for (const ref of marketplace.skills ?? []) {
 for (const ref of marketplace.agents ?? []) validatePrimitiveRef(ref, "source/adaptable.marketplace.json");
 for (const ref of marketplace.hooks ?? []) validatePrimitiveRef(ref, "source/adaptable.marketplace.json");
 for (const ref of marketplace.instructions ?? []) validatePrimitiveRef(ref, "source/adaptable.marketplace.json");
+for (const ref of marketplace.resources ?? []) {
+  if (ref.type !== 'RESOURCE') fail('source/adaptable.marketplace.json: resources must contain RESOURCE references');
+  validatePrimitiveRef(ref, "source/adaptable.marketplace.json");
+}
 
 const skillOwners = new Map();
 const agentOwners = new Map();
@@ -452,6 +515,8 @@ for (const [pluginName, manifest] of pluginManifests) {
   assertUniqueRefs(owner, "skill", manifest.skills);
   assertUniqueRefs(owner, "agent", manifest.agents);
   assertUniqueRefs(owner, "hook", manifest.hooks);
+  assertUniqueRefs(owner, "instruction", manifest.instructions);
+  assertUniqueRefs(owner, "resource", manifest.resources);
   for (const ref of manifest.skills ?? []) {
     validatePrimitiveRef(ref, owner);
     addOwner(skillOwners, ref.name, pluginName);
@@ -468,29 +533,25 @@ for (const [pluginName, manifest] of pluginManifests) {
     addOwner(hookOwners, ref.name, pluginName);
   }
   for (const ref of manifest.instructions ?? []) validatePrimitiveRef(ref, owner);
+  for (const ref of manifest.resources ?? []) {
+    if (ref.type !== 'RESOURCE') fail(`${owner}: resources must contain RESOURCE references`);
+    validatePrimitiveRef(ref, owner);
+  }
 }
 
-// Catalog closure includes hook dependencies and instruction ownership.
-// Do not introduce per-plugin overlap exceptions.
+// Canonical closure permits reuse; profile selection checks hook activation.
 try {
   for (const finding of auditCatalog(loadCatalog(repoRoot))) fail(finding);
 } catch (error) {
   fail(`catalog: ${error.message}`);
 }
 
-for (const [agentName, owners] of agentOwners) {
-  if (owners.length > 1) {
-    fail(`agent ${agentName} is shared by plugins [${sorted(owners).join(", ")}]; agents should have one plugin owner`);
-  }
-}
-
 for (const hookPath of listFiles("source/hooks", (file) => file.endsWith(".hook.json"))) {
   const relativePath = relativeToRepo(hookPath);
   const hook = readJson(relativePath);
   if (!hook?.name) continue;
-  const owners = hookOwners.get(hook.name) ?? [];
-  if (owners.length !== 1) {
-    fail(`${relativePath}: hook ${hook.name} must have exactly one plugin owner, found [${sorted(owners).join(", ")}]`);
+  if (!(marketplace.hooks ?? []).some(ref => ref.name === hook.name && ref.path === path.relative(sourceRoot, hookPath))) {
+    fail(`${relativePath}: hook ${hook.name} must have a canonical marketplace reference`);
   }
 }
 
@@ -511,37 +572,6 @@ for (const profilePath of listFiles("source/profiles", (file) => file.endsWith("
   for (const pluginName of selectedPlugins) {
     if (!pluginManifests.has(pluginName)) {
       fail(`${relativePath}: profile references missing plugin ${pluginName}`);
-    }
-  }
-  const profileSkills = new Map();
-  const profileAgents = new Map();
-  const profileHooks = new Map();
-  for (const pluginName of selectedPlugins) {
-    const manifest = pluginManifests.get(pluginName);
-    if (!manifest) continue;
-    for (const ref of manifest.skills ?? []) addOwner(profileSkills, ref.name, pluginName);
-    for (const ref of manifest.agents ?? []) addOwner(profileAgents, ref.name, pluginName);
-    for (const ref of manifest.hooks ?? []) addOwner(profileHooks, ref.name, pluginName);
-  }
-  for (const [skillName, owners] of profileSkills) {
-    if (owners.length > 1) {
-      fail(`${relativePath}: selected plugins duplicate skill ${skillName} via [${sorted(owners).join(", ")}]`);
-    }
-  }
-  for (const [agentName, owners] of profileAgents) {
-    if (owners.length > 1) {
-      fail(`${relativePath}: selected plugins duplicate agent ${agentName} via [${sorted(owners).join(", ")}]`);
-    }
-  }
-  for (const [hookName, owners] of profileHooks) {
-    if (owners.length > 1) {
-      fail(`${relativePath}: selected plugins duplicate hook ${hookName} via [${sorted(owners).join(", ")}]`);
-    }
-  }
-  for (const hook of profile.hooks ?? []) {
-    const owners = profileHooks.get(hook.name) ?? [];
-    if (owners.length !== 1) {
-      fail(`${relativePath}: profile hook ${hook.name} has invalid selected owners [${owners.join(", ")}]`);
     }
   }
   if (!(profile.validation?.commands ?? []).includes("node tools/validate-source-graph.mjs")) {
@@ -763,54 +793,11 @@ function validateRoutingFieldObservationSet(relativePath, routingCases) {
   if (!payload) return;
   if (payload.type !== "ROUTING_FIELD_OBSERVATION_SET") return;
 
-  validateNoPrivateLocalStrings(relativePath, payload);
   validateSchemaLink(relativePath, payload.$schema);
-  if (payload.schemaVersion !== 1) fail(`${relativePath}: schemaVersion must be 1`);
-  for (const field of ["name", "description"]) {
-    if (typeof payload[field] !== "string" || !payload[field].trim()) fail(`${relativePath}: ${field} is required`);
-  }
-  if (!Array.isArray(payload.observations) || payload.observations.length === 0) {
-    fail(`${relativePath}: observations must be a non-empty array`);
-    return;
-  }
-
-  const ids = new Set();
-  const sourceTypes = new Set(["LIVE_SESSION", "PR_VALIDATION", "RUNTIME_VERIFICATION", "TEAM_FEEDBACK"]);
-  const outcomes = new Set(["PASS", "DRIFT", "BLOCKED", "NEEDS_REPLAY_CASE"]);
-  for (const [index, observation] of payload.observations.entries()) {
-    const owner = `${relativePath}: observations[${index}]`;
-    if (observation.type !== "ROUTING_FIELD_OBSERVATION") fail(`${owner}: type must be ROUTING_FIELD_OBSERVATION`);
-    if (typeof observation.id !== "string" || !observation.id.match(/^[a-z0-9][a-z0-9-]+$/)) {
-      fail(`${owner}: id must be kebab-case`);
-    } else if (ids.has(observation.id)) {
-      fail(`${owner}: duplicate id ${observation.id}`);
-    } else {
-      ids.add(observation.id);
-    }
-    if (typeof observation.capturedAt !== "string" || !observation.capturedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      fail(`${owner}: capturedAt must be YYYY-MM-DD`);
-    }
-    if (!sourceTypes.has(observation.sourceType)) fail(`${owner}: sourceType is invalid`);
-    if (!outcomes.has(observation.outcome)) fail(`${owner}: outcome is invalid`);
-    const routingCase = routingCases.get(observation.caseId);
-    if (!routingCase) {
-      fail(`${owner}: caseId ${observation.caseId ?? "<missing>"} does not exist in routing corpus`);
-    } else if (
-      observation.routedPrimitive?.type !== routingCase.expectedPrimitive?.type ||
-      observation.routedPrimitive?.name !== routingCase.expectedPrimitive?.name
-    ) {
-      fail(
-        `${owner}: routedPrimitive ${observation.routedPrimitive?.type ?? "<missing>"}/${
-          observation.routedPrimitive?.name ?? "<missing>"
-        } does not match routing case expected ${routingCase.expectedPrimitive?.type}/${routingCase.expectedPrimitive?.name}`,
-      );
-    }
-    validateNonEmptyStringArray(`${owner}: evidenceRefs`, observation.evidenceRefs);
-    validateNonEmptyStringArray(`${owner}: limitations`, observation.limitations);
-    for (const field of ["productiveOutcomeObserved", "followUpAction"]) {
-      if (typeof observation[field] !== "string" || !observation[field].trim()) fail(`${owner}: ${field} is required`);
-    }
-  }
+  const schema = readJson("source/schemas/evals/routing-field-observations.schema.json");
+  if (!schema) return;
+  const result = validateFieldObservations(payload, schema, routingCases);
+  for (const finding of fieldObservationFindings(result)) fail(`${relativePath}: ${finding}`);
 }
 
 function validatePluginEvalBenchmark(relativePath, routingCases) {
@@ -1036,6 +1023,7 @@ function validateRoutingSource(owner, source) {
   if (!["CODEX_SESSION", "CURRENT_SOURCE", "MEMORY_INDEX", "USER_CLARIFICATION", "LOCAL_VALIDATION"].includes(source.type)) {
     fail(`${owner}: source.type is invalid`);
   }
+  for (const finding of currentSourceEvidenceFindings(source, repoRoot, owner)) fail(finding);
   if (typeof source.capturedAt !== "string" || !source.capturedAt.match(/^\d{4}-\d{2}-\d{2}$/)) {
     fail(`${owner}: source.capturedAt must be YYYY-MM-DD`);
   }
