@@ -1,4 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --locked --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = ["jsonschema==4.26.0"]
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 """Assess English prose with one pinned Vale policy and the canonical glossary."""
 
 import argparse
@@ -16,6 +27,7 @@ from pathlib import Path
 
 from check_glossary import check
 from install_vale import Failure as InstallFailure, load_bundle
+from glossary_json import Rejected as GlossaryRejected, in_scope, load_glossary, vale_rules
 
 
 SKILL = Path(__file__).resolve().parents[1]
@@ -129,7 +141,7 @@ def verify_policy():
     bundle = load_bundle(POLICY)
     if isinstance(bundle, InstallFailure):
         return Rejected(Failure.POLICY_DRIFT, Stage.POLICY)
-    return bundle.policy_sha256
+    return bundle
 
 
 def glossary_rules(entries):
@@ -148,6 +160,7 @@ def glossary_rules(entries):
 CATEGORIES = {"Slopsentral.Grade": "READABILITY", "Slopsentral.LongSentence": "STRUCTURE",
               "Slopsentral.Diction": "DICTION", "Slopsentral.Claims": "DICTION",
               "Slopsentral.Terminology": "TERMINOLOGY",
+              "Slopsentral.TerminologyReview": "TERMINOLOGY",
               "Slopsentral.GlossaryMarker": "TERMINOLOGY"}
 
 
@@ -183,9 +196,10 @@ def parse_findings(payload, expected_path):
 
 
 def assess(paths, glossary, binary):
-    policy_digest = verify_policy()
-    if isinstance(policy_digest, Rejected):
-        return policy_digest
+    policy_bundle = verify_policy()
+    if isinstance(policy_bundle, Rejected):
+        return policy_bundle
+    policy_digest = policy_bundle.policy_sha256
     resolved_binary = shutil.which(binary)
     if resolved_binary is None:
         return Rejected(Failure.VALE_UNAVAILABLE, Stage.VERSION)
@@ -197,6 +211,8 @@ def assess(paths, glossary, binary):
         return Rejected(Failure.VALE_VERSION_MISMATCH, Stage.VERSION)
 
     entries = {}
+    structured_glossary = None
+    scope_root = None
     glossary_digest = None
     documents = []
     with tempfile.TemporaryDirectory(prefix="text-assessment-") as directory:
@@ -205,17 +221,28 @@ def assess(paths, glossary, binary):
             try:
                 glossary_bytes = glossary.read_bytes()
                 glossary_bytes.decode("utf-8", errors="strict")
-                frozen_glossary = root / "GLOSSARY.md"
+                frozen_glossary = root / ("glossary.json" if glossary.suffix.lower() == ".json" else "GLOSSARY.md")
                 frozen_glossary.write_bytes(glossary_bytes)
-                entries, errors = check(frozen_glossary, [])
+                if glossary.suffix.lower() == ".json":
+                    parsed = load_glossary(frozen_glossary)
+                    if isinstance(parsed, GlossaryRejected):
+                        return Rejected(Failure.INVALID_GLOSSARY, Stage.GLOSSARY)
+                    structured_glossary = parsed
+                    scope_root = (glossary.parent / parsed.scope.root).resolve()
+                    errors = []
+                else:
+                    entries, errors = check(frozen_glossary, [])
             except (OSError, UnicodeError):
                 return Rejected(Failure.INVALID_GLOSSARY, Stage.GLOSSARY)
             if errors:
                 return Rejected(Failure.INVALID_GLOSSARY, Stage.GLOSSARY)
             glossary_digest = hashlib.sha256(glossary_bytes).hexdigest()
-        shutil.copytree(POLICY / "styles", root / "styles")
+        for resource in policy_bundle.files:
+            target = root / resource.relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(resource.contents)
         config = root / ".vale.ini"
-        config.write_bytes((POLICY / "assessment.ini").read_bytes())
+        config.write_bytes(policy_bundle.assessment_config)
         if entries:
             (root / "styles/Slopsentral/Terminology.yml").write_text(
                 glossary_rules(entries), encoding="utf-8")
@@ -228,6 +255,15 @@ def assess(paths, glossary, binary):
                 return Rejected(Failure.INVALID_INPUT, Stage.INPUT)
             if re.search(r"<!--\s*vale\b", text, re.IGNORECASE):
                 return Rejected(Failure.POLICY_OVERRIDE, Stage.INPUT)
+            terminology = "NOT_PROVIDED" if glossary is None else "IN_SCOPE"
+            if structured_glossary is not None:
+                for name in ("Terminology.yml", "TerminologyReview.yml"):
+                    (root / "styles/Slopsentral" / name).unlink(missing_ok=True)
+                if in_scope(structured_glossary, path.resolve(), scope_root):
+                    for name, content in vale_rules(structured_glossary):
+                        (root / "styles/Slopsentral" / name).write_text(content, encoding="utf-8")
+                else:
+                    terminology = "OUT_OF_SCOPE"
             # Freeze the input once; metrics and findings must assess the same bytes.
             snapshot = root / ("input" + path.suffix.lower())
             snapshot.write_bytes(text.encode("utf-8"))
@@ -255,10 +291,11 @@ def assess(paths, glossary, binary):
                 return findings
             documents.append({"type": "DOCUMENT_ASSESSMENT", "path": str(path),
                               "sourceSha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
-                              "metrics": metrics.report(), "findings": findings})
+                              "metrics": metrics.report(), "findings": findings,
+                              "terminology": {"type": terminology}})
     return {"type": "ASSESSED" if glossary is not None else "INCOMPLETE", "schemaVersion": 1,
             "engine": {"type": "VALE", "version": VERSION, "policySha256": policy_digest},
-            "glossary": ({"type": "CHECKED", "entries": len(entries),
+            "glossary": ({"type": "CHECKED", "entries": (len(structured_glossary.entries) if structured_glossary is not None else len(entries)),
                           "sourceSha256": glossary_digest} if glossary is not None
                          else {"type": "NOT_PROVIDED"}),
             "comprehension": {"type": "NOT_ASSESSED"}, "documents": documents}

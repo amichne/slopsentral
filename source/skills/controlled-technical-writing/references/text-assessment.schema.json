@@ -462,6 +462,31 @@
               }
             ]
           ]
+        },
+        "terminology": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "IN_SCOPE",
+                "OUT_OF_SCOPE",
+                "NOT_PROVIDED"
+              ],
+              "examples": [
+                "IN_SCOPE"
+              ]
+            }
+          },
+          "examples": [
+            {
+              "type": "IN_SCOPE"
+            }
+          ]
         }
       },
       "examples": [

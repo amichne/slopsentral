@@ -147,3 +147,12 @@ The configuration uses the standalone CLI shape from [Vale quickstart](https://v
 It replaces runtime package downloads with bundled, pinned rules.
 The installer uses [Vale 3.24.0](https://github.com/vale-cli/vale/releases/tag/v3.24.0).
 Read the skill [provenance](provenance.md) for rule versions, licenses, and local changes.
+
+## Structured Glossaries
+
+Use the [JSON contract](glossary-contract.md) to store definitions and evidence.
+The assessment consumes that source and generates scoped literal rules.
+The standalone installer supplies product spellings without a project-specific glossary.
+Use the assessment when a project glossary controls the prose.
+Exported Vale rules need the same document scope in the consumer's local configuration.
+A direct editor preview does not prove that its scope matches the JSON contract.

@@ -141,7 +141,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/repository-knowledge"
         },
-        "version": "3.0.0"
+        "version": "3.1.0"
       },
       "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
       "tags": [

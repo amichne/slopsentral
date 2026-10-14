@@ -28,7 +28,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from http.client import HTTPException, HTTPMessage
 from pathlib import Path, PurePosixPath
-from typing import IO, TypeGuard, assert_never
+from typing import IO, TypeGuard, assert_never, override
 from urllib.parse import urlsplit
 
 VERSION = "3.24.0"
@@ -119,6 +119,7 @@ def allowed_download(url: str) -> bool:
 
 
 class _GitHubRedirects(urllib.request.HTTPRedirectHandler):
+    @override
     def redirect_request(
         self,
         req: urllib.request.Request,
@@ -155,6 +156,8 @@ class _File:
 class _VerifiedBundle:
     files: tuple[_File, ...]
     policy_sha256: str
+    cli_config: bytes
+    assessment_config: bytes
 
 
 def _object_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -182,7 +185,13 @@ def load_bundle(root: Path) -> _VerifiedBundle | Failure:
             lock_bytes,
             object_pairs_hook=_object_pairs,
         )
-        if not _is_mapping(lock) or set(lock) != {"type", "schemaVersion", "valeVersion", "files", "upstream"}:
+        if not _is_mapping(lock) or set(lock) != {
+            "type",
+            "schemaVersion",
+            "valeVersion",
+            "files",
+            "upstream",
+        }:
             return Failure(FailureCode.INVALID_BUNDLE)
         if (
             lock["type"] != "VALE_POLICY_LOCK"
@@ -199,13 +208,23 @@ def load_bundle(root: Path) -> _VerifiedBundle | Failure:
             if not _is_mapping(item) or set(item) != {"repository", "revision"}:
                 return Failure(FailureCode.INVALID_BUNDLE)
             repository, revision = item["repository"], item["revision"]
-            if not isinstance(repository, str) or not isinstance(revision, str) or re.fullmatch(r"[a-f0-9]{40}", revision) is None:
+            if (
+                not isinstance(repository, str)
+                or not isinstance(revision, str)
+                or re.fullmatch(r"[a-f0-9]{40}", revision) is None
+            ):
                 return Failure(FailureCode.INVALID_BUNDLE)
             repositories.append(repository)
-        if sorted(repositories) != ["jdkato/commits", "jdkato/diataxis", "vale-cli/Google", "vale-cli/Std", "vale-cli/readability"]:
+        if sorted(repositories) != [
+            "jdkato/commits",
+            "jdkato/diataxis",
+            "vale-cli/Google",
+            "vale-cli/Std",
+            "vale-cli/readability",
+        ]:
             return Failure(FailureCode.INVALID_BUNDLE)
         entries: object = lock["files"]
-        if not _is_mapping(entries) or ".vale.ini" not in entries:
+        if not _is_mapping(entries) or not {".vale.ini", "assessment.ini"}.issubset(entries):
             return Failure(FailureCode.INVALID_BUNDLE)
         files: list[_File] = []
         for relative, expected in entries.items():
@@ -239,7 +258,13 @@ def load_bundle(root: Path) -> _VerifiedBundle | Failure:
         }
         if actual != set(entries):
             return Failure(FailureCode.INVALID_BUNDLE)
-        return _VerifiedBundle(tuple(files), hashlib.sha256(lock_bytes).hexdigest())
+        configs = {str(file.relative): file.contents for file in files}
+        return _VerifiedBundle(
+            tuple(files),
+            hashlib.sha256(lock_bytes).hexdigest(),
+            configs[".vale.ini"],
+            configs["assessment.ini"],
+        )
     except (OSError, ValueError, UnicodeError):
         return Failure(FailureCode.INVALID_BUNDLE)
 
@@ -421,13 +446,15 @@ class _Arguments(argparse.Namespace):
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
+    _ = parser.add_argument(
         "--destination", type=Path, help="New directory for the CLI and configuration"
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "--archive", type=Path, help="Pinned release archive for offline installation"
     )
-    parser.add_argument("--self-test", action="store_true", help="Examine bundled policy integrity")
+    _ = parser.add_argument(
+        "--self-test", action="store_true", help="Examine bundled policy integrity"
+    )
     args = parser.parse_args(namespace=_Arguments())
     if args.self_test:
         bundle = load_bundle(BUNDLE)

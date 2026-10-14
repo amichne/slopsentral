@@ -156,6 +156,9 @@ def native(temporary: Path) -> int:
         return status
     with Path(os.environ["GITHUB_ENV"]).open("a") as output:
         _ = output.write(f"PKL_BIN={pkl}\n")
+        _ = output.write(
+            f"TEST_VALE_ARCHIVE={temporary / 'vale/vale_3.24.0_Linux_64-bit.tar.gz'}\n"
+        )
     # Only the retained parent-session adapter needs Zsh; no shell authoring suite.
     return commands((("sudo", "apt-get", "update"), ("sudo", "apt-get", "install", "--yes", "zsh")))
 
@@ -232,6 +235,7 @@ def main() -> int:
                 "source/schemas/primitives/resource-reference.schema.json",
                 "source/schemas/evals/routing-field-observations.schema.json",
                 "source/skills/issue-tracker-operations/references/issue-backend-result.schema.json",
+                "source/skills/controlled-technical-writing/references/glossary.schema.json",
             )
             return commands(
                 (

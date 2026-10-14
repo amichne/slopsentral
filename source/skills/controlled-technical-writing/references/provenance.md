@@ -6,14 +6,14 @@ The upstream distribution uses Apache-2.0; a copy is in [Apache-2.0.txt](Apache-
 
 Local changes: narrower routing, explicit completion evidence, repository-version
 checks, and no assumed provider-specific agent. Examples and wording are locally
-authored; upstream scripts and templates are not imported. For writing, retain
+authored; upstream scripts and templates are not imported. For writing, keep
 the user's voice and terminology rather than the upstream author's style profile.
 
 ## Vale Text Assessment
 
 Reviewed 2026-10-08. The engine is
 [vale-cli/vale v3.24.0](https://github.com/vale-cli/vale/releases/tag/v3.24.0).
-The bundled files retain upstream copyright, MIT licenses, and Std's NOTICE:
+The bundled files keep upstream copyright, MIT licenses, and Std's NOTICE:
 
 - [vale-cli/readability, 20b367bc5febf7ec9b83e176b8e611d230855838](https://github.com/vale-cli/readability/tree/20b367bc5febf7ec9b83e176b8e611d230855838):
   `Readability/FleschKincaid.yml`; license in `assets/vale/licenses/readability/`.
@@ -33,12 +33,12 @@ from the existing registration checker, not fetched from another style package.
 The workflow uses the official [CLI](https://docs.vale.sh/topics/cli),
 [metric](https://docs.vale.sh/checks/metric), and
 [scope](https://docs.vale.sh/topics/scopes) contracts. It does not import or
-rebrand upstream agent skills. The shared thresholds retain the upstream
+rebrand upstream agent skills. The shared thresholds keep the upstream
 advisory defaults; they are not a new empirical calibration.
 
 ## Complexity Research Boundary
 
-The Safari reading and added repository informed the choice, not additional
+The Safari reading and added repository informed the choice, not more
 runtime modes. [Ladderpath complexity](https://arxiv.org/html/2606.11531v1) and
 [morphological complexity](https://www.lingref.com/cpp/wccfl/26/paper1657.pdf)
 address different properties from a technical reader's task comprehension.
@@ -90,3 +90,13 @@ The ISO 704:2022 overview supplies scope information only, not a claim of full a
 The glossary's domain sources support the chosen names. Repository contracts determine Slopsentral's local meaning.
 Vale's pinned source and local behavior support lexical tooling only.
 No upstream protocol, remote server, or terminology service is imported.
+
+## Structured glossary contract
+
+The JSON Schema, immutable parser, traversal, and reader-view generator are local work.
+The same skill owns the structured contract and the existing Markdown parser.
+External usage URLs remain inert citations.
+The [jsonschema documentation](https://python-jsonschema.readthedocs.io/en/stable/validate/) supplies the local schema-validation API.
+The contract uses the [W3C SKOS distinctions](https://www.w3.org/TR/skos-primer/) between concept identity, labels, relationships, and scope notes.
+It does not implement SKOS or claim that a lexical match proves semantic equivalence.
+The first eight entries remain provisional and contain no invented replacement targets.

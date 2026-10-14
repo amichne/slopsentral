@@ -82,21 +82,21 @@ def test_rejected_destination_never_downloads(
 @pytest.mark.parametrize("damage", ["changed", "extra", "duplicate", "traversal", "boolean"])
 def test_bundle_rejects_policy_drift(tmp_path: Path, damage: str) -> None:
     bundle = tmp_path / "bundle"
-    shutil.copytree(SKILL / "assets/vale", bundle)
+    _ = shutil.copytree(SKILL / "assets/vale", bundle)
     lock = bundle / "resources.lock.json"
     text = lock.read_text()
     if damage == "changed":
-        (bundle / ".vale.ini").write_text("Packages = Microsoft\n")
+        _ = (bundle / ".vale.ini").write_text("Packages = Microsoft\n")
     elif damage == "extra":
-        (bundle / "styles/untracked.yml").write_text("extends: existence\n")
+        _ = (bundle / "styles/untracked.yml").write_text("extends: existence\n")
     elif damage == "duplicate":
-        lock.write_text(
+        _ = lock.write_text(
             text.replace('"schemaVersion": 1', '"schemaVersion": 1, "schemaVersion": 1')
         )
     elif damage == "traversal":
-        lock.write_text(text.replace('".vale.ini":', '"../.vale.ini":'))
+        _ = lock.write_text(text.replace('".vale.ini":', '"../.vale.ini":'))
     elif damage == "boolean":
-        lock.write_text(text.replace('"schemaVersion": 1', '"schemaVersion": true'))
+        _ = lock.write_text(text.replace('"schemaVersion": 1', '"schemaVersion": true'))
     assert installer.load_bundle(bundle) == installer.Failure(installer.FailureCode.INVALID_BUNDLE)
 
 
@@ -166,7 +166,7 @@ def lint(installed: installer.Installed, path: str, text: str) -> tuple[int, set
 def test_archive_mismatch_has_no_install_effect(tmp_path: Path, archive_path: Path) -> None:
     damaged = tmp_path / "damaged.tar.gz"
     raw = archive_path.read_bytes()
-    damaged.write_bytes(raw[:-1] + bytes([raw[-1] ^ 1]))
+    _ = damaged.write_bytes(raw[:-1] + bytes([raw[-1] ^ 1]))
     destination = tmp_path / "install"
     assert installer.setup(destination, damaged) == installer.Failure(
         installer.FailureCode.DIGEST_MISMATCH
@@ -254,7 +254,7 @@ def test_explicit_config_ignores_global_policy(
 ) -> None:
     monkeypatch.setenv("HOME", str(tmp_path))
     monkeypatch.setenv("XDG_CONFIG_HOME", str(tmp_path))
-    (tmp_path / ".vale.ini").write_text("[*]\nBasedOnStyles = DoesNotExist\n")
+    _ = (tmp_path / ".vale.ini").write_text("[*]\nBasedOnStyles = DoesNotExist\n")
     assert lint(installed, "review-comment.md", "Use the file.\n") == (0, set())
 
 

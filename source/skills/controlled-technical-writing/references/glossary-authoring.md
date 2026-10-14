@@ -59,7 +59,7 @@ A component and its container are different concepts.
 A broader category and its subtype are different concepts.
 An earlier name needs version and scope evidence before a migration rule can use it.
 A misspelling needs spelling evidence and does not become a semantic synonym.
-Use `Known synonyms: none` when no alternate label passes this review.
+Keep `rejectedForms` empty when no alternate label passes this review.
 
 For example, a skill and a plugin share an agent-tooling context, but their source contracts describe different kinds of package.
 Likewise, a hook responds to an event, so the event and the hook do not name the same thing.
@@ -67,19 +67,41 @@ These examples come from [Agent Skills](https://agentskills.io/specification) an
 
 ## Record and Review
 
-1. Use the [entry template](../assets/glossary-entry.md) to keep source evidence with the definition.
+1. Use the [JSON entry example](../assets/glossary-entry.json) to keep source evidence with the definition.
 2. Compare the proposal with every existing label, synonym, and definition.
 3. Examine whether a domain reader can predict the concept from the label without the drafting conversation.
 4. Ask a new reader to distinguish the example from the nearest different concept with only the definition.
 5. Record actual reader feedback separately from an author's review or an LLM simulation.
 6. Run the [registration check](glossary-contract.md#check).
-7. Review the resulting prose with local Vale.
+7. Generate the Markdown reader view from the JSON source.
+8. Assess the resulting prose with the JSON contract and local Vale.
 
-Use the repository's existing entry grammar and casing rules.
-Internal uppercase markers are lookup syntax and do not establish a new domain meaning.
+Use the [JSON Schema](glossary.schema.json) for the record shape.
+Keep an existing Markdown contract intact unless the task authorizes its conversion.
+Do not use artificial uppercase names to compensate for an ambiguous definition.
 Keep initial entries provisional until the evidence and reader review support adoption.
 A provisional entry does not authorize a repository-wide rename.
 If a source or contract changes, review the affected entry and its migration rules.
+
+## Record Structured Evidence
+
+The contract separates concept identity, display spelling, evidence, and matching behavior.
+Use `id` for a stable concept reference and `term` for its established display name.
+Keep the definition independent of the identifier.
+Use `related` for relationships between distinct concepts.
+Keep a broader term or a component name outside another concept's replacement set.
+
+1. Record the source URL, precise location, examination date, and meaning in `usage`.
+2. Record the repository path and source location in `localSources`.
+3. Explain the chosen name in `justification` without presenting that explanation as external evidence.
+4. Add a `REPLACE` target only when the complete document scope supports the substitution.
+5. If context controls the meaning, record a `REVIEW` target instead.
+6. Examine each target's evidence before you generate Vale rules.
+
+The schema and parser reject malformed records and lexical conflicts.
+They cannot establish that a source actually supports the author's claim.
+A URL is a citation, not permission for the glossary tool to contact that service.
+The entry example is a valid record, not a request for a prose-based shape.
 
 ## Local Vale Support
 
