@@ -28,6 +28,7 @@ The documentation entry in the root README and the glossary scope also changed.
 The signed-in Mintlify dashboard created the separate `slopsentral` deployment.
 The deployment serves the authored Slopsentral documentation.
 The Git source uses `amichne/slopsentral`, `feature/slopsentral-docs`, and `docs/public` during review.
+
 Mintlify's GitHub app covers `kast`, `okai`, and `slopsentral`.
 The user granted access to `slopsentral` through the app's selected repositories.
 The live maintainer page contains the current documentation branch and content directory.
