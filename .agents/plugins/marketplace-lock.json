@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T02:36:08-04:00",
+  "generatedAt": "2026-10-13T20:25:15-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -229,7 +229,7 @@
         },
         {
           "name": "controlled-technical-writing",
-          "sha256": "sha256:016f8f73d277798a7af6917f516b81599afae6bc4e121eb376c1e27433d662c5",
+          "sha256": "sha256:a4ca71b2aa8c6d53dc3b788e58ea6b970db9eaa9c052de6af569286afb4cd99c",
           "sourcePath": "source/skills/controlled-technical-writing",
           "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
@@ -250,7 +250,7 @@
         }
       ],
       "sourceManifest": "source/plugins/repository-knowledge/plugin.json",
-      "version": "3.0.0"
+      "version": "3.1.0"
     },
     {
       "name": "developer-tooling",
@@ -331,6 +331,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "32122197a1c6b1cbc8f7f69915eae1f9e59a99b7",
+  "sourceSha": "8bc8bd1c6f53a1b0f3fbf73aa2a44ac6fc7e6c39",
   "type": "HYDRATED_MARKETPLACE"
 }

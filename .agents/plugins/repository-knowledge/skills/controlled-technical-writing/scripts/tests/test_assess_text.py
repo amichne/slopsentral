@@ -187,6 +187,26 @@ class AssessTextTest(unittest.TestCase):
         self.assertEqual(report["documents"][0]["findings"], [])
         self.assertTrue(report["documents"][1]["findings"])
 
+    def test_assessment_keeps_the_bytes_that_passed_integrity(self):
+        import assess_text
+        copy = self.root / "policy"
+        shutil.copytree(assess_text.POLICY, copy)
+        document = self.root / "guide.md"
+        document.write_text("The cat sat on the mat.\n")
+        original = assess_text.verify_policy
+
+        def change_after_acceptance():
+            result = original()
+            (copy / "assessment.ini").write_text("StylesPath = /missing\n[*]\nBasedOnStyles = Missing\n")
+            return result
+
+        with mock.patch.object(assess_text, "POLICY", copy), mock.patch.object(
+                assess_text, "verify_policy", side_effect=change_after_acceptance):
+            result = assess_text.assess([document], self.glossary, VALE)
+        self.assertIsInstance(result, dict)
+        self.assertEqual(result["type"], "ASSESSED")
+        self.assertEqual(result["documents"][0]["findings"], [])
+
     def test_every_resource_is_integrity_checked(self):
         skill = Path(__file__).parents[2]
         copy = self.root / "skill"
