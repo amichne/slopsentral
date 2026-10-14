@@ -108,9 +108,6 @@ Examine the six-sentence paragraph limit, verb forms, condition order, and conte
 
 The built-in spelling rules use local dictionaries.
 Add source-backed product names to `styles/config/vocabularies/Slopsentral/accept.txt` in the installed copy.
-The vocabulary does not replace the repository glossary.
-Use the bundled `check_glossary.py` command when a repository glossary exists.
-For glossary creation and term selection, read [glossary authoring](glossary-authoring.md).
 Use established domain terms and evidence-backed meanings before adding vocabulary entries or substitution rules.
 Keep unresolved findings with their rule, location, and technical reason.
 
@@ -148,11 +145,8 @@ It replaces runtime package downloads with bundled, pinned rules.
 The installer uses [Vale 3.24.0](https://github.com/vale-cli/vale/releases/tag/v3.24.0).
 Read the skill [provenance](provenance.md) for rule versions, licenses, and local changes.
 
-## Structured Glossaries
+## Prose Assessment
 
-Use the [JSON contract](glossary-contract.md) to store definitions and evidence.
-The assessment consumes that source and generates scoped literal rules.
-The standalone installer supplies product spellings without a project-specific glossary.
-Use the assessment when a project glossary controls the prose.
-Exported Vale rules need the same document scope in the consumer's local configuration.
-A direct editor preview does not prove that its scope matches the JSON contract.
+Use [the assessment procedure](text-assessment.md) to get metrics and prose findings from explicit files.
+The procedure needs only the files and the pinned engine.
+Keep the JSON report as completion evidence.

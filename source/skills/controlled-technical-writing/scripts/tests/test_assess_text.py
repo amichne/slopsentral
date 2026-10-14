@@ -25,23 +25,42 @@ class AssessTextTest(unittest.TestCase):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name)
-        self.glossary = self.root / "GLOSSARY.md"
-        self.glossary.write_text(
-            "- \u00a7REQUEST\u00a7: A unit of work.\n"
-            "  - Known synonyms: work request, job\n", encoding="utf-8"
-        )
 
-    def run_assessment(self, text, name="README.md", glossary=True, extra=()):
+    def run_assessment(self, text, name="README.md", extra=()):
         document = self.root / name
         document.write_text(text, encoding="utf-8")
         command = [sys.executable, str(SCRIPT), "--vale-bin", VALE]
-        if glossary:
-            command.extend(["--glossary", str(self.glossary)])
         command.extend(extra)
         command.append(str(document))
         result = subprocess.run(command, capture_output=True, text=True, cwd=self.root)
         self.assertTrue(result.stdout, result.stderr)
         return result.returncode, json.loads(result.stdout), result.stdout
+
+    def test_assessment_needs_only_prose(self):
+        code, result, _ = self.run_assessment("The cat sat on the mat.\n")
+        self.assertEqual(code, 0, result)
+        self.assertEqual(result["type"], "ASSESSED")
+        self.assertNotIn("glossary", result)
+
+    def test_core_language_rules_run_without_glossary(self):
+        code, result, _ = self.run_assessment("We could use the tool. It isn't hard.\n")
+        rules = {finding["rule"] for finding in result["documents"][0]["findings"]}
+        self.assertEqual(rules, {"Slopsentral.Modals", "Slopsentral.Contractions"})
+        self.assertEqual(code, 1, result)
+
+    def test_source_terms_need_no_registration(self):
+        code, result, _ = self.run_assessment("Send the request.\n")
+        self.assertEqual(code, 0, result)
+        self.assertNotIn("terminology", result["documents"][0])
+
+    def test_removed_glossary_option_is_rejected(self):
+        document = self.root / "README.md"
+        document.write_text("The cat sat on the mat.\n")
+        result = subprocess.run([sys.executable, str(SCRIPT), "--vale-bin", VALE,
+                                 "--glossary", "unused.json", str(document)],
+                                capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("unrecognized arguments", result.stderr)
 
     def test_independent_counts_and_readability_formula(self):
         code, result, _ = self.run_assessment("The cat sat on the mat.\n")
@@ -68,25 +87,13 @@ class AssessTextTest(unittest.TestCase):
         self.assertEqual(ordinary["documents"][0]["metrics"], scrambled["documents"][0]["metrics"])
         self.assertEqual(scrambled["comprehension"]["type"], "NOT_ASSESSED")
 
-    def test_diction_and_alias_findings_have_locations(self):
+    def test_diction_findings_have_locations(self):
         code, result, _ = self.run_assessment("Use the job in order to start.\n")
         self.assertEqual(code, 1, result)
         findings = result["documents"][0]["findings"]
-        self.assertEqual({f["category"] for f in findings}, {"DICTION", "TERMINOLOGY"})
+        self.assertEqual({f["category"] for f in findings}, {"DICTION"})
         self.assertTrue(all(f["line"] == 1 and len(f["span"]) == 2 for f in findings))
 
-    def test_canonical_case_and_literal_aliases(self):
-        code, result, _ = self.run_assessment("Send the REQUEST.\n")
-        self.assertEqual(code, 0, result)
-        code, result, _ = self.run_assessment("Send the request.\n")
-        self.assertEqual(code, 1, result)
-        self.assertEqual(result["documents"][0]["findings"][0]["category"], "TERMINOLOGY")
-        self.glossary.write_text(
-            "- \u00a7REQUEST\u00a7: A unit of work.\n  - Known synonyms: job.v2\n")
-        code, result, _ = self.run_assessment("Send the jobXv2.\n")
-        self.assertEqual(code, 0, result)
-        code, result, _ = self.run_assessment("Send the job.v2.\n")
-        self.assertEqual(code, 1, result)
 
     def test_shared_advisories_fire_without_switching_policy(self):
         sentence = "The cat " + "sat on the mat and " * 6 + "slept.\n"
@@ -130,29 +137,14 @@ class AssessTextTest(unittest.TestCase):
 
     def test_headings_and_quoted_prose_are_checked(self):
         code, result, _ = self.run_assessment(
-            "# job\n\nThe cat sat on the mat.\n\n> job\n")
+            "# Utilize\n\nThe cat sat on the mat.\n\n> Utilize\n")
         self.assertEqual(code, 1, result)
-        aliases = [f for f in result["documents"][0]["findings"]
-                   if f["rule"] == "Slopsentral.Terminology"]
-        self.assertEqual([f["line"] for f in aliases], [1, 5])
+        diction = [f for f in result["documents"][0]["findings"]
+                   if f["rule"] == "Slopsentral.Diction"]
+        self.assertEqual([f["line"] for f in diction], [1, 5])
 
-    def test_glossary_markers_are_not_document_terms(self):
-        code, result, _ = self.run_assessment("Send the \u00a7REQUEST\u00a7.\n")
-        self.assertEqual(code, 1, result)
-        self.assertIn("Slopsentral.GlossaryMarker",
-                      [f["rule"] for f in result["documents"][0]["findings"]])
 
-    def test_missing_glossary_remains_unassessed(self):
-        code, result, _ = self.run_assessment("The cat sat on the mat.\n", glossary=False)
-        self.assertEqual(code, 2, result)
-        self.assertEqual(result["glossary"]["type"], "NOT_PROVIDED")
-        self.assertEqual(result["type"], "INCOMPLETE")
 
-    def test_invalid_glossary_is_rejected_by_existing_owner(self):
-        self.glossary.write_text("- \u00a7REQUEST\u00a7: A unit of work.\n", encoding="utf-8")
-        code, result, _ = self.run_assessment("The cat sat on the mat.\n")
-        self.assertEqual(code, 2, result)
-        self.assertEqual(result["failure"]["type"], "INVALID_GLOSSARY")
 
     def test_empty_code_only_and_missing_files_fail_closed(self):
         for text in ("", "```text\nThe cat sat on the mat.\n```\n"):
@@ -177,9 +169,9 @@ class AssessTextTest(unittest.TestCase):
         first = self.root / "README.md"
         second = self.root / "runbook.md"
         first.write_text("The cat sat on the mat.\n")
-        second.write_text("Send the job.\n")
+        second.write_text("Utilize the tool.\n")
         result = subprocess.run([sys.executable, str(SCRIPT), "--vale-bin", VALE,
-                                 "--glossary", str(self.glossary), str(first), str(second)],
+                                 str(first), str(second)],
                                 capture_output=True, text=True)
         report = json.loads(result.stdout)
         self.assertEqual(result.returncode, 1, report)
@@ -202,7 +194,7 @@ class AssessTextTest(unittest.TestCase):
 
         with mock.patch.object(assess_text, "POLICY", copy), mock.patch.object(
                 assess_text, "verify_policy", side_effect=change_after_acceptance):
-            result = assess_text.assess([document], self.glossary, VALE)
+            result = assess_text.assess([document], VALE)
         self.assertIsInstance(result, dict)
         self.assertEqual(result["type"], "ASSESSED")
         self.assertEqual(result["documents"][0]["findings"], [])

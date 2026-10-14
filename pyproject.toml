@@ -5,7 +5,7 @@ requires-python = ">=3.12,<3.14"
 dependencies = []
 
 [dependency-groups]
-dev = ["ruff==0.14.0", "pyright[nodejs]==1.1.407", "pytest==8.4.2", "pytest-cov==7.0.0", "pyyaml==6.0.3", "jsonschema==4.26.0", "types-jsonschema==4.26.0.20261006"]
+dev = ["ruff==0.14.0", "pyright[nodejs]==1.1.407", "pytest==8.4.2", "pytest-cov==7.0.0", "pyyaml==6.0.3"]
 refactor = ["libcst==1.8.5"]
 
 [tool.uv]
@@ -23,7 +23,7 @@ default = true
 extraPaths = ["source/skills/kotlin-gradle-validation/scripts", "source/skills/controlled-technical-writing/scripts"]
 pythonVersion = "3.12"
 typeCheckingMode = "strict"
-include = ["tools/python_checks", "tools/check.py", "tools/setup.py", "tools/ci.py", "tools/publish.py", "tools/verify_marketplaces.py", "tools/install_skill.py", "tools/compile_kotlin_concepts.py", "source/skills/python-tooling", "source/hooks/gradle-check-green.py", "source/hooks/gradle-wrapper-integrity.py", "source/hooks/source-graph-valid.py", "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.py", "source/skills/kotlin-gradle-validation/scripts/gradle_repository.py", "source/agents/codebase-navigator/scripts/setup-local-nav.py", "source/skills/controlled-technical-writing/scripts/install_vale.py", "source/skills/controlled-technical-writing/scripts/glossary_json.py", "source/skills/controlled-technical-writing/scripts/tests/test_glossary_json.py", "source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py"]
+include = ["tools/python_checks", "tools/check.py", "tools/setup.py", "tools/ci.py", "tools/publish.py", "tools/verify_marketplaces.py", "tools/install_skill.py", "tools/compile_kotlin_concepts.py", "source/skills/python-tooling", "source/hooks/gradle-check-green.py", "source/hooks/gradle-wrapper-integrity.py", "source/hooks/source-graph-valid.py", "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.py", "source/skills/kotlin-gradle-validation/scripts/gradle_repository.py", "source/agents/codebase-navigator/scripts/setup-local-nav.py", "source/skills/controlled-technical-writing/scripts/install_vale.py", "source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py"]
 exclude = ["**/fixtures", "**/.venv"]
 reportMatchNotExhaustive = "error"
 reportUnnecessaryTypeIgnoreComment = "error"

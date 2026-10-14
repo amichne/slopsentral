@@ -30,27 +30,26 @@ test('text assessment schema passes the canonical policy', () => {
     { ...complete, glossary: { type: 'NOT_PROVIDED' } },
     { ...complete, comprehension: { type: 'VALIDATED' } },
     { ...complete, surprise: true },
-    { type: 'REJECTED', schemaVersion: 1, failure: { type: 'NO_PROSE', stage: 'VERSION' } },
+    { ...complete, schemaVersion: 1 },
+    { type: 'REJECTED', schemaVersion: 2, failure: { type: 'NO_PROSE', stage: 'VERSION' } },
   ]) assert.equal(validate(invalid), false);
 });
 
 test('real Vale reports conform to the result contract', () => {
   const directory = mkdtempSync(path.join(tmpdir(), 'text-contract-'));
   try {
-    const glossary = path.join(directory, 'GLOSSARY.md');
     const document = path.join(directory, 'README.md');
-    writeFileSync(glossary, '- \u00a7REQUEST\u00a7: A unit of work.\n  - Known synonyms: job\n');
     const command = ['uv', ['run', '--locked', '--script', path.join(skill, 'scripts/assess_text.py'),
       '--vale-bin', process.env.VALE_BIN || 'vale']];
     const cases = [
-      ['The cat sat on the mat.\n', true, 0, 'ASSESSED'],
-      ['Send the job.\n', true, 1, 'ASSESSED'],
-      ['The cat sat on the mat.\n', false, 2, 'INCOMPLETE'],
-      ['', true, 2, 'REJECTED'],
+      ['The cat sat on the mat.\n', 0, 'ASSESSED'],
+      ['Utilize the tool.\n', 1, 'ASSESSED'],
+      ["We could use the tool. It isn't hard.\n", 1, 'ASSESSED'],
+      ['', 2, 'REJECTED'],
     ];
-    for (const [content, useGlossary, exit, type] of cases) {
+    for (const [content, exit, type] of cases) {
       writeFileSync(document, content);
-      const args = [...command[1], ...(useGlossary ? ['--glossary', glossary] : []), document];
+      const args = [...command[1], document];
       const result = spawnSync(command[0], args, { encoding: 'utf8' });
       const report = JSON.parse(result.stdout);
       assert.equal(result.status, exit, JSON.stringify(report));
