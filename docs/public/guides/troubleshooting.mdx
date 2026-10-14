@@ -1,0 +1,64 @@
+---
+title: "Troubleshoot Slopsentral"
+description: "Find the responsible source, host, or tool when a capability is absent."
+icon: "life-ring"
+---
+
+Start with the exact error, command, provider, and installed plugin version.
+Separate a source failure from an installation failure or absent host evidence.
+
+## A plugin is absent
+
+Examine the marketplace and installed plugin inventory with the [installation commands](/guides/install).
+The provider source must match its published branch.
+Codex uses `harness/codex`.
+GitHub Copilot uses `harness/github-copilot`.
+
+If the plugin name comes from an older catalog, consult the [migration map](https://github.com/amichne/slopsentral/blob/main/source/MIGRATION.md).
+A retired name does not prove that the current plugin failed.
+
+## A skill does not run
+
+State the concrete task and the skill when explicit selection matters.
+Start a fresh session after installation changes.
+Examine whether the host enabled the plugin.
+Do not infer skill consumption from installed files alone.
+
+The [plugin reference](/plugins/repository-knowledge) lists the procedures that each plugin supplies.
+
+## A hook produces no result
+
+Examine the selected plugin's hook declaration and the host's trust state.
+Developer Tooling and IntelliJ Plugin Development add no automatic hooks.
+No shipped plugin selects the standalone source-graph, Pkl, API-context, or required-skill-read hooks.
+
+A hook adapter result proves its output.
+It does not prove that a host delivered the event or consumed the output.
+The [architecture](/reference/architecture) names these owners.
+
+## Vale rejects an assessment
+
+Use Vale 3.24.0 with the bundled assessment script.
+A newer executable does not supply the pinned engine.
+Examine the report's failure and stage.
+
+If the glossary is absent, keep the `INCOMPLETE` result explicit.
+If terminology is outside the glossary scope, do not claim a terminology assessment for that artifact.
+Use the [prose procedure](/guides/controlled-writing) for installation and report meanings.
+
+## Projection fails
+
+Use Pkl 0.32.0 and a fresh output path outside the checkout.
+Projection rejects an existing tree.
+It does not download a missing runtime.
+
+Examine the `PROJECTION_REJECTED` stage and code.
+Use the [projection procedure](/maintainers/projection) for the pinned setup and supported providers.
+
+## Kast tools are absent
+
+Examine Kast's configured server and workspace enrollment.
+Run a fresh semantic query before a claim of installed readiness.
+Slopsentral installation alone does not prove Kast runtime availability.
+
+Kast supplies its own [documentation](https://kast.michne.com).

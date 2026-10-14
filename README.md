@@ -4,6 +4,12 @@ Slopsentral ships five plugins and 28 skills for Kotlin-first engineering.
 The shared rules prioritize safety, correctness, proof, scope, pure functions, and atomic units.
 New automation uses locked uv Python environments.
 
+## Documentation
+
+The [documentation site](docs/public/index.mdx) covers installation, plugin selection, technical prose, and maintenance.
+Its Mintlify configuration is [docs/public/docs.json](docs/public/docs.json).
+Use the [site procedure](docs/public/maintainers/documentation.mdx) for a local preview and deployment setup.
+
 ## Choose a plugin
 
 Start with Software Engineering and Kotlin Engineering for Kotlin work.
@@ -40,7 +46,7 @@ The configuration disables source builds with `tool.uv.no-build = true`.
 
 New automation uses strict types, finite outcomes, literal argument arrays, and focused tests.
 The explicit include lists in `pyproject.toml` define strict Pyright and Ruff coverage.
-Older Python helpers retain their tests but do not all meet that strict coverage.
+Older Python helpers keep their tests but do not all meet that strict coverage.
 Kotlin compilers, Pkl evaluation, and Node schema tools keep their own contracts.
 The parent-shell history adapter remains because a child process cannot read that state.
 

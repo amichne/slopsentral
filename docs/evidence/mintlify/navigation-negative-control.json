@@ -1,0 +1,5 @@
+{
+  "type": "MISSING_PAGE_REJECTED",
+  "exitCode": 1,
+  "output": "⠋ validating build...\n\u001b[2K\u001b[1A\u001b[2K\u001b[G⠙ validating build...\n\u001b[2K\u001b[1A\u001b[2K\u001b[G⠹ validating build...\n\u001b[2K\u001b[1A\u001b[2K\u001b[G⠸ validating build...\n\u001b[2K\u001b[1A\u001b[2K\u001b[Gwarning - \"missing-page-negative-control\" is referenced in the docs.json navigation but the file does not exist.\n⠸ validating build...\n\u001b[2K\u001b[1A\u001b[2K\u001b[Gerror Build validation failed with 1 warning(s). See above for details.\n"
+}

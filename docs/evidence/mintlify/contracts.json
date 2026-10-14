@@ -1,0 +1,14 @@
+{
+  "type": "PASSED",
+  "plugins": 5,
+  "uniqueSkills": 28,
+  "navigationPages": 16,
+  "assessment": {
+    "type": "ASSESSED",
+    "documents": 18,
+    "gradeAdvisories": 16,
+    "hashes": "MATCH",
+    "schema": "PASSED",
+    "terminology": "ALL_IN_SCOPE"
+  }
+}

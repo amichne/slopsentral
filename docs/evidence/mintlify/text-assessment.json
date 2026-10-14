@@ -1,0 +1,515 @@
+{
+  "comprehension": {
+    "type": "NOT_ASSESSED"
+  },
+  "documents": [
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.87 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 1197,
+        "fleschKincaidGrade": 9.87,
+        "sentences": 69,
+        "words": 648,
+        "wordsPerSentence": 9.39
+      },
+      "path": "README.md",
+      "sourceSha256": "968c76809e9645f84364108138c551e67b3006c51a2bff67b6f94f99a5268ced",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [],
+      "metrics": {
+        "estimatedSyllables": 229,
+        "fleschKincaidGrade": 7.4,
+        "sentences": 17,
+        "words": 136,
+        "wordsPerSentence": 8.0
+      },
+      "path": "docs/public/guides/choose-plugins.mdx",
+      "sourceSha256": "18c6d837b14d43748161b25db882fb3404437f713ca9fa55c959ad596d3bbfc2",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.42 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 553,
+        "fleschKincaidGrade": 8.42,
+        "sentences": 35,
+        "words": 319,
+        "wordsPerSentence": 9.11
+      },
+      "path": "docs/public/guides/controlled-writing.mdx",
+      "sourceSha256": "5252d1e2befa4d0507e92778b393412837ff425d6fe9e470eb96b7537282e286",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.88 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 349,
+        "fleschKincaidGrade": 9.88,
+        "sentences": 25,
+        "words": 182,
+        "wordsPerSentence": 7.28
+      },
+      "path": "docs/public/guides/install.mdx",
+      "sourceSha256": "4494ebe8faa0587c76d1a3e8dcfc71e40c965342197aca8d5104cc2bd9607c37",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.33 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 535,
+        "fleschKincaidGrade": 8.33,
+        "sentences": 34,
+        "words": 310,
+        "wordsPerSentence": 9.12
+      },
+      "path": "docs/public/guides/troubleshooting.mdx",
+      "sourceSha256": "dc18ea0da0ddc0b866f33c151ce32f624849a9b463bcf43fa01f3aa8ddac18fe",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.90 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 283,
+        "fleschKincaidGrade": 8.9,
+        "sentences": 19,
+        "words": 157,
+        "wordsPerSentence": 8.26
+      },
+      "path": "docs/public/index.mdx",
+      "sourceSha256": "51edc9bcbc162c35bc554010061916709e8bc2c6cc701890a878089f126d969c",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.95 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 425,
+        "fleschKincaidGrade": 8.95,
+        "sentences": 28,
+        "words": 236,
+        "wordsPerSentence": 8.43
+      },
+      "path": "docs/public/maintainers/contribute.mdx",
+      "sourceSha256": "c53cf50c374fba87132a5a0a25d929a429519630c437cbac623533ebd72408ef",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [],
+      "metrics": {
+        "estimatedSyllables": 419,
+        "fleschKincaidGrade": 7.27,
+        "sentences": 31,
+        "words": 251,
+        "wordsPerSentence": 8.1
+      },
+      "path": "docs/public/maintainers/documentation.mdx",
+      "sourceSha256": "f50ba9305310804fafd8d4bd7937f2910de698bc39e47934e2875db36745139b",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.42 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 364,
+        "fleschKincaidGrade": 8.42,
+        "sentences": 23,
+        "words": 210,
+        "wordsPerSentence": 9.13
+      },
+      "path": "docs/public/maintainers/projection.mdx",
+      "sourceSha256": "16fb5b668787b6aef1c528bc60e1115c6c2c4447374608369029a34bcf11d960",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.44 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 157,
+        "fleschKincaidGrade": 10.44,
+        "sentences": 10,
+        "words": 81,
+        "wordsPerSentence": 8.1
+      },
+      "path": "docs/public/plugins/developer-tooling.mdx",
+      "sourceSha256": "33d2b9dee764edbb1319360c9cce86447f9c4833d2a3c40432f8fcb0c5a274ac",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.86 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 167,
+        "fleschKincaidGrade": 8.86,
+        "sentences": 10,
+        "words": 95,
+        "wordsPerSentence": 9.5
+      },
+      "path": "docs/public/plugins/intellij-plugin-development.mdx",
+      "sourceSha256": "ca21d6b3aa55af09e533a97e3796587929dd5d9c3e61b30540a2be3a571f15ff",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 11.29 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 263,
+        "fleschKincaidGrade": 11.29,
+        "sentences": 16,
+        "words": 131,
+        "wordsPerSentence": 8.19
+      },
+      "path": "docs/public/plugins/kotlin-engineering.mdx",
+      "sourceSha256": "4ee55eda51a2dbed3fac4a128c4edc6a620ba04b7ff1ee0fda73ff0b914c72a2",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.99 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 266,
+        "fleschKincaidGrade": 8.99,
+        "sentences": 16,
+        "words": 150,
+        "wordsPerSentence": 9.38
+      },
+      "path": "docs/public/plugins/repository-knowledge.mdx",
+      "sourceSha256": "bb830cdf514df7f4295fbcbbd2a4bbbd7c0f3ec227c1c7a8e337177f58075958",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.77 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 258,
+        "fleschKincaidGrade": 9.77,
+        "sentences": 17,
+        "words": 137,
+        "wordsPerSentence": 8.06
+      },
+      "path": "docs/public/plugins/software-engineering.mdx",
+      "sourceSha256": "768f7e9c4d5a231e180aef38a86c4ebb6c727d1d43f6d94c65ebcccda521c85d",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.09 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 279,
+        "fleschKincaidGrade": 10.09,
+        "sentences": 19,
+        "words": 145,
+        "wordsPerSentence": 7.63
+      },
+      "path": "docs/public/reference/architecture.mdx",
+      "sourceSha256": "7a1d21e6338e6deae08ca82359e17ede68356b9f63885393b7b7f7ae370d78be",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.87 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 271,
+        "fleschKincaidGrade": 9.87,
+        "sentences": 16,
+        "words": 146,
+        "wordsPerSentence": 9.12
+      },
+      "path": "docs/public/reference/glossary.mdx",
+      "sourceSha256": "5ab6f3e7ccb2ac7118cef250048f60197bf9789e883380e82f550c022bfc1839",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.07 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 378,
+        "fleschKincaidGrade": 10.07,
+        "sentences": 22,
+        "words": 202,
+        "wordsPerSentence": 9.18
+      },
+      "path": "docs/public/reference/profiles.mdx",
+      "sourceSha256": "aa390de9f7a8b67577eceaffb92b98738f8fe8edadd750191652f1121f9590ac",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.25 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 458,
+        "fleschKincaidGrade": 8.25,
+        "sentences": 30,
+        "words": 265,
+        "wordsPerSentence": 8.83
+      },
+      "path": "docs/evidence/mintlify/README.md",
+      "sourceSha256": "444cb1d2a7e3e57c8f9e74a092079428726af93ce7d5bf20edf34ebeeea78a3f",
+      "terminology": {
+        "type": "IN_SCOPE"
+      },
+      "type": "DOCUMENT_ASSESSMENT"
+    }
+  ],
+  "engine": {
+    "policySha256": "987e81b299dd7578f0c1a3853de96d69ce3ab418ee6e87f6c91ad91a7f6a2669",
+    "type": "VALE",
+    "version": "3.24.0"
+  },
+  "glossary": {
+    "entries": 8,
+    "sourceSha256": "5f343ef5f9bb826b497e48f70d37f6523afde0e853a885ffb1493983e8492462",
+    "type": "CHECKED"
+  },
+  "schemaVersion": 1,
+  "type": "ASSESSED"
+}

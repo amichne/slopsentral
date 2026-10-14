@@ -1,0 +1,72 @@
+---
+title: "Maintain the site"
+description: "Preview the Mintlify source, assess changed prose, and connect the deployment."
+icon: "browser"
+---
+
+`docs/public` contains the authored Mintlify site.
+`docs/public/docs.json` owns navigation, colors, and assets.
+The canonical plugin contracts remain under `source/`.
+
+## Preview locally
+
+Use Node.js 20.17.0 or later for the Mintlify CLI.
+This site uses CLI version 4.2.879 for local evidence.
+
+From the repository root, run:
+
+```bash
+cd docs/public
+npx --yes mint@4.2.879 dev --no-open
+```
+
+Open the local URL that the command reports.
+Examine the Guide, Reference, and Maintainers tabs.
+Make sure that each page supports its stated reader action.
+
+## Examine a change
+
+From `docs/public`, run:
+
+```bash
+npx --yes mint@4.2.879 validate
+npx --yes mint@4.2.879 broken-links
+```
+
+Strict validation rejects warnings and errors.
+The [Mintlify CLI reference](https://www.mintlify.com/docs/cli/commands) defines these commands.
+A successful build does not prove the page's source claims or reader understanding.
+
+Assess each changed prose artifact with the [writing procedure](/guides/controlled-writing).
+Keep the report and input hashes outside the public site.
+If a term changes, examine `docs/glossary.json` and its generated reader view.
+Do not invent a synonym to remove a finding.
+
+## Connect Mintlify
+
+A separate Slopsentral deployment keeps this site's source and identity explicit.
+After the docs reach the chosen Git branch, connect the deployment with these settings:
+
+| Setting | Value |
+| --- | --- |
+| Repository | `amichne/slopsentral` |
+| Deploy branch | `main` |
+| Content directory | `docs/public` |
+| Configuration | `docs/public/docs.json` |
+
+In Git Settings, set the documentation subdirectory to `/docs/public`.
+Do not include a trailing slash.
+The [Mintlify monorepo guide](https://www.mintlify.com/docs/deploy/monorepo) describes this setup.
+The [quickstart](https://www.mintlify.com/docs/quickstart) describes site creation.
+
+## Use Mintlify MCP
+
+List the deployments that the connection permits.
+Select Slopsentral's subdomain and inspect its Git source before edits.
+Use a checkout branch for a reviewable change.
+Examine the diff before the save operation.
+
+The current MCP tools manage existing deployments.
+Site creation needs the Mintlify dashboard.
+The deployment URL comes from that dashboard after setup.
+Do not claim a live site from a local preview alone.

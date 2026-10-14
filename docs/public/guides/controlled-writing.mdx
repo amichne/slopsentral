@@ -1,0 +1,80 @@
+---
+title: "Write technical prose"
+description: "Draft from evidence and assess prose with local Vale and the repository glossary."
+icon: "pen"
+---
+
+Controlled Technical Writing gives technical prose one shared assessment procedure.
+Technical Documentation supplies page structure and source coverage.
+Both skills belong to Repository Knowledge.
+
+The procedure uses local Vale 3.24.0 and bundled rules.
+It does not send prose to Vale CMS or a hosted assessment service.
+
+## Draft from source
+
+1. Name the reader and the action that the page supports.
+2. Examine the owning code, contracts, commands, and current documents.
+3. Consult the repository glossary before a domain term choice.
+4. Write one action or fact in each sentence.
+5. Keep identifiers, commands, error text, and quotations exact.
+6. Separate current behavior from proposals and unknown results.
+
+Use one name for each concept.
+Do not invent a first-person experience or a measured result.
+Keep an accurate passage when it already serves the reader.
+
+## Install the local engine
+
+Use uv 0.12.9 or later and Python 3.12 or 3.13.
+Run these commands from a Slopsentral checkout.
+Choose a destination that does not exist.
+
+```bash
+cd source/skills/controlled-technical-writing
+uv run --locked --script scripts/install_vale.py \
+  --destination /tmp/slopsentral-vale
+```
+
+The installer examines the pinned archive digest and bundled rules.
+It does not change PATH or global configuration.
+
+## Assess each changed artifact
+
+From the same skill directory, supply explicit document paths and the glossary.
+Replace `/path/to/slopsentral` with your checkout path.
+
+```bash
+uv run --locked --script scripts/assess_text.py \
+  --vale-bin /tmp/slopsentral-vale/bin/vale \
+  --glossary /path/to/slopsentral/docs/glossary.json \
+  /path/to/slopsentral/docs/public/guides/install.mdx \
+  > /tmp/slopsentral-prose-report.json
+```
+
+Keep the JSON report and input hashes.
+Resolve findings without changing facts or domain meaning.
+After an edit, assess the changed artifact again.
+If precision needs a flagged phrase, record its rule, location, and reason separately.
+
+| Result | Meaning |
+| --- | --- |
+| `ASSESSED` | Measurements and glossary processing ran. Findings can remain. |
+| `INCOMPLETE` | Measurements ran without a supplied glossary. |
+| `REJECTED` | A named failure stopped the assessment. |
+
+Each document also reports `IN_SCOPE`, `OUT_OF_SCOPE`, or `NOT_PROVIDED` for terminology.
+An out-of-scope document gets prose measurements without glossary substitutions.
+Exit `0` means that an assessed report contains no automated findings.
+Exit `1` means that findings remain.
+Exit `2` means rejection or an incomplete result.
+
+## Examine reader understanding
+
+Grade 8 and 25 words are advisories.
+A score does not prove accuracy or comprehension.
+Ask a fresh reader to identify the next action, prerequisites, and expected result.
+Keep actual reader feedback separate from an author's simulated review.
+
+The [assessment contract](https://github.com/amichne/slopsentral/blob/main/source/skills/controlled-technical-writing/references/text-assessment.md) defines the report and its limits.
+The [glossary reference](/reference/glossary) describes canonical terms.

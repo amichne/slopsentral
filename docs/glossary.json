@@ -9,7 +9,9 @@
   "scope": {
     "root": "..",
     "include": [
+      "README.md",
       "docs/**/*.md",
+      "docs/public/**/*.mdx",
       "source/skills/controlled-technical-writing/references/**/*.md"
     ],
     "exclude": [
