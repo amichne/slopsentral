@@ -98,6 +98,7 @@ function input(raw: Dynamic): Schema.Input = (
       "generatedAt",
       "sourceSha",
       "plugins",
+      "profiles",
       "phase",
       "projectedDigests",
     ),
@@ -105,6 +106,14 @@ function input(raw: Dynamic): Schema.Input = (
 ) {
   owner = checked(raw.owner, List("name", "email", "url")).toTyped(Schema.Person)
   plugins = new Listing<Schema.Plugin> { for (p in raw.plugins) { plugin(p) } }
+  profiles =
+    (raw.getPropertyOrNull("profiles")?.toList() ?? List()).map((p) -> (
+      checked(p, List("name", "description", "plugins", "hookPolicy", "focusSkills"))
+        .toTyped(Schema.Profile)
+    ) {
+      plugins = p.plugins.toList()
+      focusSkills = p.getPropertyOrNull("focusSkills")?.toList()
+    })
   projectedDigests = new Mapping<String, Schema.Digest> {
     for (key, value in raw.projectedDigests.toMap()) { [key] = value }
   }

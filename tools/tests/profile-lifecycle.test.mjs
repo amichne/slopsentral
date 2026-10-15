@@ -118,7 +118,8 @@ test("authored profiles use executable v2 desired-state policies", () => {
     const profile = JSON.parse(fs.readFileSync(path.join(repoRoot, "source/profiles", filename), "utf8"));
     assert.equal(profile.schemaVersion, 2, filename);
     assert.equal("hooks" in profile, false, filename);
-    assert.deepEqual(profile.hookPolicy, { type: "HOOK_POLICY", mode: "ADVISORY" }, filename);
+    const focusedDesign = ["kotlin-type-design", "type-design"].includes(profile.name);
+    assert.deepEqual(profile.hookPolicy, { type: "HOOK_POLICY", mode: focusedDesign ? "OFF" : "ADVISORY" }, filename);
     assert.deepEqual(profile.reconciliation, {
       type: "PLUGIN_RECONCILIATION",
       unselected: "DISABLE_UNSELECTED",

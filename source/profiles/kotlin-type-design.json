@@ -1,0 +1,43 @@
+{
+  "type": "WORKFLOW_PROFILE",
+  "schemaVersion": 2,
+  "name": "kotlin-type-design",
+  "description": "Kotlin domain proofs, constrained APIs, and forbidden-call evidence.",
+  "marketplaces": [
+    {
+      "type": "WORKFLOW_MARKETPLACE",
+      "name": "slopsentral",
+      "provider": "codex",
+      "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+      "entrypoint": ".agents/plugins/marketplace.json",
+      "scope": "plugins in this workflow profile"
+    }
+  ],
+  "plugins": [
+    "software-engineering",
+    "kotlin-engineering"
+  ],
+  "standaloneSkills": [],
+  "hookPolicy": {
+    "type": "HOOK_POLICY",
+    "mode": "OFF"
+  },
+  "reconciliation": {
+    "type": "PLUGIN_RECONCILIATION",
+    "unselected": "DISABLE_UNSELECTED"
+  },
+  "validation": {
+    "type": "WORKFLOW_VALIDATION",
+    "commands": [
+      "node tools/validate-source-graph.mjs",
+      "node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex",
+      "node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+    ]
+  },
+  "focusSkills": [
+    "semantic-ratchet",
+    "negative-capability-proof",
+    "kotlin-design-practices",
+    "kotlin-review"
+  ]
+}

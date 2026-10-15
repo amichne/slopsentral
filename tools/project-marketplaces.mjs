@@ -143,7 +143,10 @@ function freezeInput(repository) {
         ...(manifest.codexMcpServers ? { mcp: 'source/plugins/' + manifest.name + '/.mcp.json' } : {}) };
     });
     const input = { name: marketplace.name, owner: marketplace.owner, description: marketplace.description,
-      generatedAt, sourceSha: digest(files, 'source', 'sha1'), plugins, phase: 'PLAN', projectedDigests: {} };
+      generatedAt, sourceSha: digest(files, 'source', 'sha1'), plugins,
+      profiles: catalog.profiles.map(p => ({ name: p.name, description: p.description, plugins: p.plugins,
+        hookPolicy: p.hookPolicy.mode, ...(p.focusSkills ? { focusSkills: p.focusSkills } : {}) })),
+      phase: 'PLAN', projectedDigests: {} };
     // Validate the exact frozen bytes, then prove the live source still matches.
     assertUnchanged(repository, files, evidence);
     return { files, input, evidence };
@@ -196,10 +199,11 @@ function outputBytes(file) {
   catch { reject('plan', 'INVALID_PLAN', 'A projected JSON file is not valid JSON'); }
 }
 function operations(plan, files, harness, input) {
-  if (!exactKeys(plan, ['type', 'schemaVersion', 'harness', 'plugins', 'files']) || plan.type !== 'PROJECTION_PLAN'
-    || plan.schemaVersion !== 1 || plan.harness !== harness || !Array.isArray(plan.plugins) || !Array.isArray(plan.files))
+  if (!exactKeys(plan, ['type', 'schemaVersion', 'harness', 'plugins', 'files', 'copies'], ['type', 'schemaVersion', 'harness', 'plugins', 'files']) || plan.type !== 'PROJECTION_PLAN'
+    || plan.schemaVersion !== 1 || plan.harness !== harness || !Array.isArray(plan.plugins) || !Array.isArray(plan.files)
+    || (plan.copies !== undefined && !Array.isArray(plan.copies)))
     reject('plan', 'INVALID_PLAN', 'The evaluator did not return a complete typed plan');
-  const tree = harness === 'codex' ? '.agents/plugins' : '.github/plugin';
+  const tree = harness === 'codex' ? '.agents/plugins' : harness === 'pi' ? '.pi/slopsentral' : '.github/plugin';
   if (plan.plugins.length !== input.plugins.length || new Set(plan.plugins.map(p => p.name)).size !== plan.plugins.length
     || plan.plugins.some(p => !input.plugins.some(expected => expected.name === p.name)))
     reject('plan', 'INVALID_PLAN', 'The plan does not cover every selected plugin exactly once');
@@ -223,7 +227,7 @@ function operations(plan, files, harness, input) {
       reject('plan', 'INVALID_PLAN', 'A plugin plan is incomplete');
     const expected = input.plugins.find(p => p.name === plugin.name);
     const identities = expected.references.map(r => r.type + '/' + r.name);
-    if (harness === 'codex' && expected.mcp) identities.push('MCP_CONFIGURATION/');
+    if (['codex', 'pi'].includes(harness) && expected.mcp) identities.push('MCP_CONFIGURATION/');
     const actual = plugin.references.map(r => r.type + '/' + (r.name ?? ''));
     if (actual.length !== identities.length || new Set(actual).size !== actual.length || actual.some(id => !identities.includes(id)))
       reject('plan', 'INVALID_PLAN', 'A plugin plan omitted or invented a canonical asset');
@@ -258,7 +262,16 @@ function operations(plan, files, harness, input) {
       }
     }
   }
+  for (const operation of plan.copies ?? []) {
+    const runtime = { 'source/hooks/pi/slopsentral.ts': 'extensions/slopsentral.ts', 'source/hooks/pi/runtime.ts': 'extensions/runtime.ts' };
+    if (harness !== 'pi' || !exactKeys(operation, ['source', 'target']) || runtime[operation.source] !== operation.target)
+      reject('plan', 'INVALID_PLAN', 'A package runtime copy differs from its source owner');
+    copy(operation.source, tree + '/' + operation.target);
+  }
   for (const file of plan.files) add(file.path, outputBytes(file), 0o644);
+  if (harness === 'pi' && ((plan.copies ?? []).length !== 2
+    || !['package.json', 'profiles.json', 'extensions/slopsentral.ts', 'extensions/runtime.ts'].every(name => output.has(tree + '/' + name))))
+    reject('plan', 'INVALID_PLAN', 'Projection omitted its complete Pi package runtime');
   if (!output.has(tree + '/marketplace.json')) reject('plan', 'INVALID_PLAN', 'Projection omitted its marketplace entrypoint');
   return output;
 }
@@ -272,7 +285,7 @@ function projectedDigests(plan, output) {
 }
 
 export function project({ source, harness, out, pkl = process.env.PKL_BIN ?? 'pkl' }) {
-  if (!['codex', 'github-copilot'].includes(harness) || !source || !out) reject('invocation', 'INVALID_INVOCATION', 'Use --source <repo> --harness codex|github-copilot --out <new-directory>');
+  if (!['codex', 'github-copilot', 'pi'].includes(harness) || !source || !out) reject('invocation', 'INVALID_INVOCATION', 'Use --source <repo> --harness codex|github-copilot|pi --out <new-directory>');
   const repository = realDirectory(path.resolve(source));
   const requested = path.resolve(out);
   const parent = fs.realpathSync(path.dirname(requested));
@@ -292,7 +305,8 @@ export function project({ source, harness, out, pkl = process.env.PKL_BIN ?? 'pk
   const initial = operations(first, state.files, harness, state.input);
   const sealed = evaluate(pkl, { ...state.input, phase: 'SEALED', projectedDigests: projectedDigests(first, initial) }, harness, models);
   const complete = operations(sealed, state.files, harness, state.input);
-  if (harness === 'codex' && !complete.has('.agents/plugins/marketplace-lock.json')) reject('seal', 'INVALID_PLAN', 'Projection omitted sealed provenance');
+  const lockRoot = harness === 'pi' ? '.pi/slopsentral' : '.agents/plugins';
+  if (harness !== 'github-copilot' && !complete.has(lockRoot + '/marketplace-lock.json')) reject('seal', 'INVALID_PLAN', 'Projection omitted sealed provenance');
   for (const [key, file] of initial) if (!complete.has(key) || !file.bytes.equals(complete.get(key).bytes) || file.mode !== complete.get(key).mode)
     reject('seal', 'INVALID_PLAN', 'Sealing changed a derived payload');
   for (const p of sealed.plugins) for (const r of p.references) if (r.sha256 !== digest(complete, p.root + '/' + r.targetPath))
@@ -326,7 +340,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const options = {};
     for (let i = 0; i < args.length; i += 2) {
       if (!['--source', '--harness', '--out', '--pkl-bin'].includes(args[i]) || !args[i + 1] || Object.hasOwn(options, args[i]))
-        reject('invocation', 'INVALID_INVOCATION', 'Use --source <repo> --harness codex|github-copilot --out <new-directory> [--pkl-bin <path>]');
+        reject('invocation', 'INVALID_INVOCATION', 'Use --source <repo> --harness codex|github-copilot|pi --out <new-directory> [--pkl-bin <path>]');
       options[args[i]] = args[i + 1];
     }
     console.log(JSON.stringify(project({ source: options['--source'], harness: options['--harness'], out: options['--out'], pkl: options['--pkl-bin'] })));

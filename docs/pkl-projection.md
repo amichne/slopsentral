@@ -6,8 +6,10 @@ point. See [workflow resources](workflow-resources.md) for the contract and
 the Pkl workflow/check split. Existing provider compatibility fixtures remain fixed.
 
 This document guides maintainers changing a provider mapping or generating a
-marketplace. The projector supports the existing Codex and GitHub Copilot
-shapes. Authored assets remain under `source/`; plugins compose them by reference.
+marketplace. The projector supports Codex, GitHub Copilot, and an installable Pi package.
+Authored assets remain under `source/`.
+Plugins compose them by reference.
+See [the Pi harness guide](pi-harness.md) for its native extension contract and trial procedure.
 
 ## Evaluate, seal, publish
 
@@ -28,7 +30,7 @@ shapes. Authored assets remain under `source/`; plugins compose them by referenc
    exactly one complete tree. Failure removes only the owned staging directory.
 
 Pkl evaluation cannot fetch remote modules, read ambient environment variables,
-or use project settings. Its module root is an isolated copy of the four models.
+or use project settings. Its module root is an isolated copy of the versioned models.
 Its resource allowlist permits only the frozen input and two explicit properties.
 It has a 60-second limit. Projection never downloads a runtime.
 The CLI restrictions follow [Pkl's evaluator controls](https://pkl-lang.org/main/0.32.0/pkl-cli/index.html).
@@ -42,7 +44,7 @@ and [Linux rename documentation](https://man7.org/linux/man-pages/man2/rename.2.
 ## Runtime and commands
 
 Use a Git checkout with a resolvable HEAD and install locked Node dependencies.
-Node.js 20.11 or later, Python 3, and Pkl 0.32.0 are required. The runtime lock
+The repository tools need Node.js 22.19 or later, Python 3, and Pkl 0.32.0. The runtime lock
 records SHA-256 digests for macOS and Linux on ARM64 and x64. Setup verifies the
 bytes before publishing the executable. It rejects an existing destination.
 
@@ -52,6 +54,7 @@ node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
 export PKL_BIN=/tmp/slopsentral-pkl/pkl
 node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/codex-new
 node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/copilot-new
+node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/pi-new
 npm run verify
 ```
 

@@ -83,14 +83,15 @@ Use the [profile lifecycle](docs/profile-lifecycle.md) for explicit setup and sa
 Use the upstream Worktrunk plugin for worktree automation.
 The [Worktrunk procedure](docs/worktrunk-automation.md) describes project setup and gates.
 
-The local Pkl projector creates Codex and GitHub Copilot output from authored source.
+The local Pkl projector creates Codex, GitHub Copilot, and Pi output from authored source.
+The [Pi guide](docs/pi-harness.md) covers local installation, profile commands, native events, and the first trial.
 Publication updates `.agents/plugins` and `.github/plugin` on `main` and the corresponding harness branches.
 Local edits and temporary projections do not publish those trees or change installed caches.
 Read the [architecture](source/ARCHITECTURE.md) for ownership and evidence limits.
 
 ## Local evidence
 
-The projector needs Node.js 20.11 or later, locked dependencies, and Pkl 0.32.0.
+The repository tools need Node.js 22.19 or later, locked dependencies, and Pkl 0.32.0.
 Install its pinned runtime explicitly:
 
 ```text

@@ -10,7 +10,7 @@
 # url = "https://pypi.org/simple"
 # default = true
 # ///
-"""Project and check both providers in a managed temporary directory."""
+"""Project all three harnesses in a managed temporary directory."""
 
 import os
 import subprocess
@@ -20,7 +20,7 @@ from pathlib import Path
 root = Path(__file__).resolve().parents[1]
 with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary:
     base = Path(temporary)
-    for harness in ("codex", "github-copilot"):
+    for harness in ("codex", "github-copilot", "pi"):
         result = subprocess.run(
             [
                 "node",
@@ -33,6 +33,18 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
                 str(base / harness),
             ],
             cwd=root,
+            check=False,
+        )
+        if result.returncode:
+            raise SystemExit(result.returncode)
+    for command in (
+        ["npm", "run", "check:pi"],
+        ["node", "--test", "tools/tests/pi-host.test.mjs"],
+    ):
+        result = subprocess.run(
+            command,
+            cwd=root,
+            env=dict(os.environ, SLOPSENTRAL_PI_PACKAGE=str(base / "pi/.pi/slopsentral")),
             check=False,
         )
         if result.returncode:

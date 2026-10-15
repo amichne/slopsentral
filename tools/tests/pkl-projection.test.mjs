@@ -362,7 +362,7 @@ test('atomic publication preserves existing empty directories and admits one com
 // Exercise the native typed boundary, independently of the source graph gate.
 test('Pkl rejects impossible asset variants and unknown nested input fields', native, t => {
   const dir = temporary(t);
-  for (const name of ['Schema.pkl', 'Decode.pkl', 'Targets.pkl', 'Project.pkl'])
+  for (const name of ['Schema.pkl', 'Decode.pkl', 'Targets.pkl', 'Pi.pkl', 'Project.pkl'])
     fs.copyFileSync(path.join(root, 'tools/projection', name), path.join(dir, name));
   const base = { type: 'SKILL', name: 'fixture', sourcePath: 'source/skills/fixture', sha256: 'sha256:' + 'a'.repeat(64) };
   const references = [

@@ -1,0 +1,184 @@
+module slopsentral.projection.Pi
+
+import "Schema.pkl"
+
+class Link {
+  name: Schema.Identity
+  path: Schema.RelativePath
+}
+
+class Action {
+  name: Schema.Identity
+  event: "SessionStart" | "PreToolUse" | "Stop"
+  plugin: Schema.Identity
+  argv: List<String>(!isEmpty)
+  matcher: String? = null
+  timeout: Int(isPositive)
+}
+
+class Profile {
+  name: Schema.Identity
+  description: String
+  skills: List<Link>
+  instructions: List<Link>
+  agents: List<Link>
+  hooks: List<Action>
+  hookPolicy: "OFF" | "ADVISORY" | "ENFORCING"
+}
+
+class Config {
+  schemaVersion: Int(this == 1) = 1
+  defaultProfile: "local-development-default" = "local-development-default"
+  profiles: List<Profile>(!isEmpty)
+}
+
+class Catalog {
+  name: Schema.Identity
+  plugins: List<Link>
+}
+
+class Resources {
+  extensions: List<String> = List("./extensions/slopsentral.ts")
+  skills: List<String>
+}
+
+class Package {
+  name: "slopsentral-pi" = "slopsentral-pi"
+  version: "0.1.0" = "0.1.0"
+  description: String
+  type: "module" = "module"
+  keywords: List<String> = List("pi-package")
+  engines: Mapping<String, String> = new { ["node"] = ">=22.19.0" }
+  peerDependencies: Mapping<String, String> = new { ["@earendil-works/pi-coding-agent"] = "*" }
+  pi: Resources
+}
+
+function target(ref: Schema.Asset): String =
+  if (ref.type == "SKILL")
+    "skills/" + ref.name + "/SKILL.md"
+  else if (ref.type == "AGENT")
+    "agents/" + ref.sourcePath.split("/").last
+  else
+    "instructions/" + ref.name + "." + ref.sourcePath.split(".").last
+
+function links(plugins: List<Schema.Plugin>, kind: Schema.Kind): List<Link> =
+  let (
+    names =
+      plugins
+        .flatMap((p) ->
+          p.references
+            .filter((r) -> r.type == kind)
+            .map((r) -> r.name)
+        )
+        .distinct
+        .sort()
+  )
+    names.map((identity) ->
+      let (
+        plugin = plugins.find((p) -> p.references.any((r) -> r.type == kind && r.name == identity))
+      )
+        new Link {
+          name = identity
+          path =
+            plugin.name
+              + "/"
+              + target(plugin.references.find((r) -> r.type == kind && r.name == identity))
+        })
+
+function actions(p: Schema.Plugin): List<Action> =
+  p.references
+    .filter((r) -> r is Schema.HookReference)
+    .flatMap((r) ->
+      let (ref = r as Schema.HookReference)
+        ref.hook.adapter.hooks
+          .toMap()
+          .entries
+          .toList()
+          .flatMap((entry) ->
+            entry.value
+              .toList()
+              .flatMap((group) ->
+                group.hooks
+                  .toList()
+                  .flatMap((command) ->
+                    if (!List("SessionStart", "PreToolUse", "Stop").contains(entry.key))
+                      throw("Unsupported Pi hook event")
+                    else if (
+                      !command.command.matches(Regex("[A-Za-z0-9_./:-]+( [A-Za-z0-9_./:-]+)*"))
+                        || command.commandWindows != null
+                    )
+                      throw("Unsupported Pi hook command")
+                    else if (
+                      command.command.matches(
+                        Regex(
+                          "uv run --locked --script hooks/inject-instruction-context\\.py( --instruction [a-z][a-z0-9-]*)+",
+                        ),
+                      ) && entry.key == "SessionStart"
+                    )
+                      List()
+                    else
+                      List(new Action {
+                        name = ref.name
+                        event = entry.key
+                        plugin = p.name
+                        argv = command.command.split(" ")
+                        matcher = command.matcher ?? group.matcher
+                        timeout = command.timeout ?? 30
+                      })
+                  )
+              )
+          )
+    )
+
+function config(input: Schema.Input): Config = new {
+  profiles =
+    input.profiles.map((profile) ->
+      let (
+        selected = profile.plugins.map((name) -> input.plugins.toList().find((p) -> p.name == name))
+      )
+        new Profile {
+          name = profile.name
+          description = profile.description
+          local selectedNames = links(selected, "SKILL").map((r) -> r.name)
+          skills =
+            links(input.plugins.toList(), "SKILL")
+              .filter((r) ->
+                selectedNames.contains(r.name)
+                  && (profile.focusSkills == null || profile.focusSkills!!.contains(r.name))
+              )
+          instructions = links(selected, "INSTRUCTION")
+          agents = links(selected, "AGENT")
+          hooks = selected.flatMap((p) -> actions(p))
+          hookPolicy = profile.hookPolicy
+        })
+}
+
+function manifest(input: Schema.Input): Package = new {
+  description = input.description
+  pi = new {
+    skills = links(input.plugins.toList(), "SKILL").map((r) -> "./" + r.path.dropLast(9))
+  }
+}
+
+function catalog(input: Schema.Input): Catalog = new {
+  name = input.name
+  plugins =
+    input.plugins
+      .toList()
+      .map((p) -> new Link {
+        name = p.name
+        path = p.name
+      })
+}
+
+function copies(): List<Schema.Copy> =
+  List(
+    new Schema.Copy {
+      source = "source/hooks/pi/slopsentral.ts"
+      target = "extensions/slopsentral.ts"
+    },
+    new Schema.Copy {
+      source = "source/hooks/pi/runtime.ts"
+      target = "extensions/runtime.ts"
+    },
+  )
