@@ -1,0 +1,59 @@
+name: Release Pi package
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-pi
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.12.9'
+      - run: npm ci --ignore-scripts
+      - name: Install pinned Pkl
+        run: |
+          node tools/install-projection-pkl.mjs --out "$RUNNER_TEMP/pkl/pkl"
+          echo "PKL_BIN=$RUNNER_TEMP/pkl/pkl" >> "$GITHUB_ENV"
+      - name: Project the Pi package from this source revision
+        run: node tools/project-marketplaces.mjs --source . --harness pi --out "$RUNNER_TEMP/projected-pi"
+      - name: Examine native host contracts
+        run: |
+          npm run check:pi
+          node --test tools/tests/pi-host.test.mjs tools/tests/pi-runtime.test.mjs tools/tests/pi-projection.test.mjs
+      - name: Package without npm build or lifecycle scripts
+        id: package
+        run: uv run --locked tools/package_pi.py "$RUNNER_TEMP/projected-pi/.pi/slopsentral" "$RUNNER_TEMP/pi-release" --github-output "$GITHUB_OUTPUT"
+      - name: Install the archive through the native Pi CLI
+        env:
+          SLOPSENTRAL_PI_ARCHIVE: ${{ steps.package.outputs.archive }}
+        run: node --test tools/tests/pi-install.test.mjs
+      - name: Publish the versioned Pi release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ steps.package.outputs.version }}
+          ARCHIVE: ${{ steps.package.outputs.archive }}
+        run: |
+          git push origin "$GITHUB_SHA:refs/tags/pi-v$VERSION"
+          gh release create "pi-v$VERSION" "$ARCHIVE" "$RUNNER_TEMP/pi-release/SHA256SUMS" \
+            --verify-tag --latest=false \
+            --title "Slopsentral Pi $VERSION" \
+            --notes "Pi package projected from source commit $GITHUB_SHA. See docs/pi-harness.md for installation and profile commands."

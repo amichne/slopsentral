@@ -84,7 +84,13 @@ Use the upstream Worktrunk plugin for worktree automation.
 The [Worktrunk procedure](docs/worktrunk-automation.md) describes project setup and gates.
 
 The local Pkl projector creates Codex, GitHub Copilot, and Pi output from authored source.
-The [Pi guide](docs/pi-harness.md) covers local installation, profile commands, native events, and the first trial.
+Install the published Pi package without a source checkout or npm build:
+
+```bash
+pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.0/slopsentral-pi-0.1.0.tgz
+```
+
+The [Pi guide](docs/pi-harness.md) covers installation, profile commands, native events, and the first trial.
 Publication updates `.agents/plugins` and `.github/plugin` on `main` and the corresponding harness branches.
 Local edits and temporary projections do not publish those trees or change installed caches.
 Read the [architecture](source/ARCHITECTURE.md) for ownership and evidence limits.

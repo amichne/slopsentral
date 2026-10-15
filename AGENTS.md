@@ -23,7 +23,9 @@ by hand when the authored source can be fixed instead.
 - Pi packages project into `.pi/slopsentral` for local installation.
   The Pi adapter lives under `source/hooks/pi/`.
   `tools/projection/Pi.pkl` owns its package shape.
-  Hosted Pi publication remains outside the current workflow.
+  `.github/workflows/release-pi.yml` publishes versioned Pi archives through
+  GitHub Releases. `tools/package_pi.py` owns archive contents and checksums.
+  Release archives need no repository clone or local npm build for installation.
 
 ## First-Party Material
 
