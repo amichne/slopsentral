@@ -65,10 +65,11 @@ export default function slopsentral(pi: ExtensionAPI): void {
   });
 
   const payload = (ctx: ExtensionContext, event: string) => ({ hook_event_name: event, cwd: ctx.cwd, session_id: ctx.sessionManager.getSessionId() });
-  pi.on("input", async (_event, ctx) => {
+  pi.on("input", async (event, ctx) => {
     if (selection.type === "rejected") { ctx.ui.notify(`Slopsentral profile unavailable: ${selection.code}`, "error"); return { action: "handled" }; }
     if (selection.type === "off" || selection.profile.hookPolicy === "OFF") return { action: "continue" };
-    const runs = await runHooks(root, selection.profile, "UserPromptSubmit", ctx.cwd, payload(ctx, "UserPromptSubmit"), signal(ctx));
+    const runs = await runHooks(root, selection.profile, "UserPromptSubmit", ctx.cwd,
+      { ...payload(ctx, "UserPromptSubmit"), prompt: event.text, source: event.source }, signal(ctx));
     const reason = failures(runs);
     const context = [...runs.flatMap(run => run.result.type === "completed" ? [run.result.context] : []), notices(runs), reason].filter(Boolean).join("\n\n");
     if (reason) ctx.ui.notify(`Slopsentral prompt hooks:\n${reason}`, "warning");

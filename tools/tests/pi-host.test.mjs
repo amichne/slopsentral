@@ -177,3 +177,17 @@ test('native prompt and post-tool adapters preserve context and original tool ev
   assert.ok(notifications.some(message => message.includes('Run the scope review command before completion.')));
   assert.deepEqual(errors, []);
 });
+
+test('native prompt hooks receive the current text and input source before any model turn', async t => {
+  const action = { name: 'prompt', event: 'UserPromptSubmit', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 2 };
+  const f = fixture(t, [action]);
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync(0,'utf8')); console.log(JSON.stringify({hookSpecificOutput:{hookEventName:'UserPromptSubmit',additionalContext:JSON.stringify({prompt:p.prompt,source:p.source})}}));`);
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  const images = [{ type: 'image', data: 'controlled-image', mimeType: 'image/png' }];
+  for (const [text, source] of [['Fix Kotlin "quoted" code\n$HOME $(no-command)', 'interactive'], ['A different RPC request', 'rpc']]) {
+    assert.deepEqual(await session.extensionRunner.emitInput(text, images, source), { action: 'continue' });
+    const entry = session.sessionManager.getBranch().findLast(e => e.type === 'custom_message' && e.customType === 'slopsentral-prompt-hooks');
+    assert.deepEqual(JSON.parse(entry.content), { prompt: text, source });
+  }
+  assert.deepEqual(errors, []);
+});
