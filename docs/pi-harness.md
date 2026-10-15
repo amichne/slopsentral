@@ -10,6 +10,16 @@ Use an existing Pi installation with Node.js 22.19 or later.
 Run this command without a source checkout, Pkl, or npm build:
 
 ```bash
+curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | sh
+```
+
+The launcher needs `pi` on `PATH`.
+It delegates package download and installation to Pi.
+It selects the published `v0.1.0` package.
+
+For the direct Pi command, use:
+
+```bash
 pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.0/slopsentral-pi-0.1.0.tgz
 ```
 

@@ -87,7 +87,7 @@ The local Pkl projector creates Codex, GitHub Copilot, and Pi output from author
 Install the published Pi package without a source checkout or npm build:
 
 ```bash
-pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.0/slopsentral-pi-0.1.0.tgz
+curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | sh
 ```
 
 The [Pi guide](docs/pi-harness.md) covers installation, profile commands, native events, and the first trial.
