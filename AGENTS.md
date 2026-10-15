@@ -26,6 +26,8 @@ by hand when the authored source can be fixed instead.
   `.github/workflows/release-pi.yml` publishes versioned Pi archives through
   GitHub Releases. `tools/package_pi.py` owns archive contents and checksums.
   Release archives need no repository clone or local npm build for installation.
+- `tools/install-pi.sh` is a thin POSIX host launcher for the published package.
+  Keep installation logic in Pi's package manager.
 
 ## First-Party Material
 
