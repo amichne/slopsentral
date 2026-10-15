@@ -9,7 +9,7 @@ class Link {
 
 class Action {
   name: Schema.Identity
-  event: "SessionStart" | "PreToolUse" | "Stop"
+  event: "SessionStart" | "UserPromptSubmit" | "PreToolUse" | "PostToolUse" | "Stop"
   plugin: Schema.Identity
   argv: List<String>(!isEmpty)
   matcher: String? = null
@@ -101,7 +101,10 @@ function actions(p: Schema.Plugin): List<Action> =
                 group.hooks
                   .toList()
                   .flatMap((command) ->
-                    if (!List("SessionStart", "PreToolUse", "Stop").contains(entry.key))
+                    if (
+                      !List("SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop")
+                        .contains(entry.key)
+                    )
                       throw("Unsupported Pi hook event")
                     else if (
                       !command.command.matches(Regex("[A-Za-z0-9_./:-]+( [A-Za-z0-9_./:-]+)*"))

@@ -5,7 +5,7 @@ import path from "node:path";
 export interface Link { readonly name: string; readonly path: string }
 export interface Action {
   readonly name: string;
-  readonly event: "SessionStart" | "PreToolUse" | "Stop";
+  readonly event: "SessionStart" | "UserPromptSubmit" | "PreToolUse" | "PostToolUse" | "Stop";
   readonly plugin: string;
   readonly argv: readonly string[];
   readonly matcher?: string;
@@ -26,8 +26,9 @@ export interface Config {
   readonly profiles: readonly Profile[];
 }
 export type Selection = { readonly type: "off" } | { readonly type: "selected"; readonly profile: Profile };
-type RejectionCode = "INVALID_CONFIG" | "UNKNOWN_PROFILE" | "INVALID_OUTPUT" | "BLOCKED" | "EXIT_FAILED" | "LAUNCH_FAILED" | "TIMED_OUT" | "ABORTED" | "OUTPUT_LIMIT";
-export interface Rejected { readonly type: "rejected"; readonly code: RejectionCode }
+type FailureCode = "INVALID_CONFIG" | "UNKNOWN_PROFILE" | "INVALID_OUTPUT" | "EXIT_FAILED" | "LAUNCH_FAILED" | "TIMED_OUT" | "ABORTED" | "OUTPUT_LIMIT";
+export type Rejected = { readonly type: "rejected"; readonly code: FailureCode }
+  | { readonly type: "rejected"; readonly code: "BLOCKED"; readonly reason: string };
 export type HookResult = Rejected | { readonly type: "completed"; readonly context: string; readonly notice: string };
 export type HookRun = { readonly action: Action; readonly result: HookResult };
 const identity = /^[a-z][a-z0-9-]*$/;
@@ -52,7 +53,7 @@ function action(value: unknown): value is Action {
   if (!record(value) || !keys(value, ["name", "event", "plugin", "argv", "matcher", "timeout"])) return false;
   if (typeof value.name !== "string" || !identity.test(value.name)
     || typeof value.plugin !== "string" || !identity.test(value.plugin)
-    || !(value.event === "SessionStart" || value.event === "PreToolUse" || value.event === "Stop")
+    || !(value.event === "SessionStart" || value.event === "UserPromptSubmit" || value.event === "PreToolUse" || value.event === "PostToolUse" || value.event === "Stop")
     || !Array.isArray(value.argv) || value.argv.length === 0
     || !value.argv.every((arg: unknown) => typeof arg === "string" && token.test(arg))
     || typeof value.timeout !== "number" || !Number.isSafeInteger(value.timeout) || value.timeout <= 0) return false;
@@ -112,18 +113,23 @@ export function scopedSkills<T extends { filePath: string }>(root: string, selec
   return skills.filter(skill => !path.resolve(skill.filePath).startsWith(path.resolve(root) + path.sep) || selected.has(path.resolve(skill.filePath)));
 }
 
-export function decodeHook(stdout: string, exitCode: number): HookResult {
+export function decodeHook(stdout: string, exitCode: number, event: Action["event"] = "SessionStart"): HookResult {
   if (exitCode !== 0) return { type: "rejected", code: "EXIT_FAILED" };
   if (!stdout.trim()) return { type: "completed", context: "", notice: "" };
   let value: unknown;
   try { value = JSON.parse(stdout); } catch { return { type: "rejected", code: "INVALID_OUTPUT" }; }
   if (!record(value)) return { type: "rejected", code: "INVALID_OUTPUT" };
   const specific = value.hookSpecificOutput;
-  if (value.decision === "block" || value.continue === false || (record(specific) && specific.permissionDecision === "deny"))
-    return { type: "rejected", code: "BLOCKED" };
+  if (value.decision === "block" || value.continue === false || (record(specific) && specific.permissionDecision === "deny")) {
+    const reason = typeof value.reason === "string" ? value.reason
+      : typeof value.stopReason === "string" ? value.stopReason
+      : record(specific) && typeof specific.permissionDecisionReason === "string" ? specific.permissionDecisionReason
+      : "The hook blocked this operation.";
+    return { type: "rejected", code: "BLOCKED", reason: reason.slice(0, 32768) };
+  }
   if (!keys(value, ["systemMessage", "hookSpecificOutput"]) || (value.systemMessage !== undefined && typeof value.systemMessage !== "string"))
     return { type: "rejected", code: "INVALID_OUTPUT" };
-  if (specific !== undefined && (!record(specific) || specific.hookEventName !== "SessionStart" || typeof specific.additionalContext !== "string"))
+  if (specific !== undefined && (!record(specific) || specific.hookEventName !== event || typeof specific.additionalContext !== "string"))
     return { type: "rejected", code: "INVALID_OUTPUT" };
   return { type: "completed", context: record(specific) && typeof specific.additionalContext === "string" ? specific.additionalContext : "",
     notice: typeof value.systemMessage === "string" ? value.systemMessage : "" };
@@ -141,7 +147,7 @@ export function runAction(root: string, action: Action, cwd: string, payload: Re
     const chunks: Buffer[] = [];
     let bytes = 0;
     let rejection: Rejected | undefined;
-    const stop = (code: RejectionCode) => {
+    const stop = (code: FailureCode) => {
       if (rejection) return;
       rejection = { type: "rejected", code };
       const kill = (signalName: NodeJS.Signals) => {
@@ -164,7 +170,7 @@ export function runAction(root: string, action: Action, cwd: string, payload: Re
     child.on("close", code => {
       clearTimeout(timer);
       signal?.removeEventListener("abort", abort);
-      resolve(rejection ?? decodeHook(Buffer.concat(chunks).toString("utf8"), code ?? -1));
+      resolve(rejection ?? decodeHook(Buffer.concat(chunks).toString("utf8"), code ?? -1, action.event));
     });
     child.stdin.end(JSON.stringify(payload));
   });
@@ -172,7 +178,7 @@ export function runAction(root: string, action: Action, cwd: string, payload: Re
 
 export async function runHooks(root: string, selected: Profile, event: Action["event"], cwd: string, payload: Readonly<Record<string, unknown>>, signal?: AbortSignal): Promise<HookRun[]> {
   const runs: HookRun[] = [];
-  const subject = event === "PreToolUse" ? String(payload.tool_name) : String(payload.source);
+  const subject = event === "PreToolUse" || event === "PostToolUse" ? String(payload.tool_name) : String(payload.source);
   for (const action of selected.hooks) {
     if (signal?.aborted) break;
     if (action.event !== event || (action.matcher && action.matcher !== "*" && !new RegExp(action.matcher).test(subject))) continue;
@@ -182,7 +188,8 @@ export async function runHooks(root: string, selected: Profile, event: Action["e
 }
 
 export function failures(runs: readonly HookRun[]): string {
-  return runs.filter(run => run.result.type === "rejected").map(run => `${run.action.name}: ${run.result.type === "rejected" ? run.result.code : ""}`).join("\n");
+  return runs.flatMap(({ action, result }) => result.type === "rejected"
+    ? [`${action.name}: ${result.code}${result.code === "BLOCKED" ? "\n" + result.reason : ""}`] : []).join("\n");
 }
 
 export function notices(runs: readonly HookRun[]): string {

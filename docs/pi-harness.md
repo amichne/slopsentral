@@ -86,13 +86,19 @@ An absent tool or stale lock is a prerequisite failure, not a successful gate.
 | Source event | Pi event | Purpose |
 | --- | --- | --- |
 | `SessionStart` | `before_agent_start` | Run deferred session hooks before the first prompt. |
+| `UserPromptSubmit` | `input` | Compare source changes and add a hidden context message. |
 | `PreToolUse` | `tool_call` | Examine a proposed tool call. |
+| `PostToolUse` | `tool_result` | Append scope context to the original tool evidence. |
 | Prompt instructions | `before_agent_start` | Add the selected structured prompt section. |
 | `Stop` | `agent_before_settle` | Assess final work before Pi settles. |
 
 The adapter runs canonical hook commands with structured argument arrays.
 It supplies `PLUGIN_ROOT` for each plugin payload.
 It translates supported Codex JSON responses into Pi event results.
+Prompt hooks keep the submitted text and images unchanged.
+They add context messages without a model request.
+Post-tool hooks keep `content`, `structuredContent`, `details`, `isError`, and `usage` from the original result.
+Blocked responses keep the review instructions in their `reason`.
 It reports bounded failures and does not log environment values.
 Hook processes receive the ordinary process environment, including its existing credentials.
 

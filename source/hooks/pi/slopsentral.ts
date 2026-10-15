@@ -65,6 +65,17 @@ export default function slopsentral(pi: ExtensionAPI): void {
   });
 
   const payload = (ctx: ExtensionContext, event: string) => ({ hook_event_name: event, cwd: ctx.cwd, session_id: ctx.sessionManager.getSessionId() });
+  pi.on("input", async (_event, ctx) => {
+    if (selection.type === "rejected") { ctx.ui.notify(`Slopsentral profile unavailable: ${selection.code}`, "error"); return { action: "handled" }; }
+    if (selection.type === "off" || selection.profile.hookPolicy === "OFF") return { action: "continue" };
+    const runs = await runHooks(root, selection.profile, "UserPromptSubmit", ctx.cwd, payload(ctx, "UserPromptSubmit"), signal(ctx));
+    const reason = failures(runs);
+    const context = [...runs.flatMap(run => run.result.type === "completed" ? [run.result.context] : []), notices(runs), reason].filter(Boolean).join("\n\n");
+    if (reason) ctx.ui.notify(`Slopsentral prompt hooks:\n${reason}`, "warning");
+    if (reason && selection.profile.hookPolicy === "ENFORCING") return { action: "handled" };
+    if (context) pi.sendMessage({ customType: "slopsentral-prompt-hooks", content: context, display: false }, { triggerTurn: false });
+    return { action: "continue" };
+  });
   pi.on("before_agent_start", async (event, ctx) => {
     if (selection.type === "rejected") {
       event.systemPromptOptions.sections.slopsentral = `Slopsentral profile unavailable: ${selection.code}. Select a valid profile before another run.`;
@@ -102,6 +113,24 @@ export default function slopsentral(pi: ExtensionAPI): void {
     if (selection.profile.hookPolicy === "ENFORCING") return { block: true, reason: `Slopsentral hooks rejected this call:\n${reason}` };
     ctx.ui.notify(`Slopsentral hooks:\n${reason}`, "warning");
   });
+  pi.on("tool_result", async (event, ctx) => {
+    if (selection.type !== "selected" || selection.profile.hookPolicy === "OFF") return;
+    const runs = await runHooks(root, selection.profile, "PostToolUse", ctx.cwd, {
+      ...payload(ctx, "PostToolUse"), tool_name: event.toolName, tool_call_id: event.toolCallId,
+    }, signal(ctx));
+    const reason = failures(runs);
+    const context = [...runs.flatMap(run => run.result.type === "completed" ? [run.result.context] : []), notices(runs), reason].filter(Boolean).join("\n\n");
+    if (!context) return;
+    if (reason) ctx.ui.notify(`Slopsentral post-tool hooks:\n${reason}`, "warning");
+    if (reason && selection.profile.hookPolicy === "ENFORCING") ctx.abort();
+    return {
+      content: [...event.content, { type: "text", text: context }],
+      details: event.details,
+      isError: event.isError,
+      ...(event.structuredContent === undefined ? {} : { structuredContent: event.structuredContent }),
+      ...(event.usage === undefined ? {} : { usage: event.usage }),
+    };
+  });
   pi.on("agent_before_settle", async (event, ctx) => {
     if (event.outcome !== "completed" || ctx.signal?.aborted || selection.type !== "selected" || selection.profile.hookPolicy === "OFF") return;
     const branch = ctx.sessionManager.getBranch();
@@ -131,7 +160,9 @@ export default function slopsentral(pi: ExtensionAPI): void {
       if (!ctx.isIdle()) { ctx.ui.notify("Run completion gates after the current run ends.", "warning"); return; }
       if (selection.type !== "selected") { ctx.ui.notify("Select a Slopsentral profile first.", "info"); return; }
       const runs = await runHooks(root, selection.profile, "Stop", ctx.cwd, { ...payload(ctx, "Stop"), stop_hook_active: false }, signal(ctx));
-      const lines = runs.map(({ action, result }) => `${action.name}: ${result.type === "rejected" ? result.code : result.notice || "command completed"}`);
+      const lines = runs.map(run => run.result.type === "rejected"
+        ? failures([run])
+        : `${run.action.name}: ${run.result.notice || "command completed"}`);
       ctx.ui.notify(lines.join("\n") || "This profile has no completion gates.", failures(runs) ? "warning" : "info");
     },
   });

@@ -151,3 +151,29 @@ test('native completion adapter preserves notices and permits only one enforceme
   assert.ok(advisory.entries.some(e => e.type === 'custom_message' && e.content.includes('advisory findings: 2')));
   assert.deepEqual(errors, []);
 });
+
+test('native prompt and post-tool adapters preserve context and original tool evidence', async t => {
+  const hooks = ['UserPromptSubmit', 'PostToolUse', 'Stop'].map(event => ({ name: 'scope', event, plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 2 }));
+  const f = fixture(t, hooks, 'ADVISORY');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync(0,'utf8')); if(!p.session_id||p.cwd!==process.cwd())process.exit(3); console.log(JSON.stringify(p.hook_event_name==='Stop'?{decision:'block',reason:'Run the scope review command before completion.'}:{hookSpecificOutput:{hookEventName:p.hook_event_name,additionalContext:p.hook_event_name+' scope guidance'}}));`);
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  const input = await session.extensionRunner.emitInput('Examine source changes', undefined, 'interactive');
+  assert.deepEqual(input, { action: 'continue' });
+  assert.ok(session.sessionManager.getBranch().some(entry => entry.type === 'custom_message' && entry.content.includes('UserPromptSubmit scope guidance')));
+  const original = { type: 'tool_result', toolName: 'custom_probe', toolCallId: 'probe-1', input: {}, content: [{ type: 'text', text: 'Original tool evidence' }], details: { receipt: 7 }, structuredContent: { state: 'recorded' }, isError: true, usage: { input: 1, output: 2 } };
+  const result = await session.extensionRunner.emitToolResult(original);
+  assert.deepEqual(result.content[0], original.content[0]);
+  assert.ok(result.content.some(part => part.type === 'text' && part.text.includes('PostToolUse scope guidance')));
+  assert.deepEqual(result.details, original.details);
+  assert.deepEqual(result.structuredContent, original.structuredContent);
+  assert.equal(result.isError, true);
+  assert.deepEqual(result.usage, original.usage);
+  const completion = await session.extensionRunner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, entries => ({ contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: entries.some(e => e.type === 'custom_message') }));
+  assert.ok(completion.entries.some(entry => entry.type === 'custom_message' && entry.content.includes('Run the scope review command before completion.')));
+  assert.equal(completion.continue, false);
+  const notifications = [];
+  session.extensionRunner.setUIContext({ notify: message => notifications.push(message), setStatus: () => {} });
+  await session.prompt('/slopsentral-check');
+  assert.ok(notifications.some(message => message.includes('Run the scope review command before completion.')));
+  assert.deepEqual(errors, []);
+});
