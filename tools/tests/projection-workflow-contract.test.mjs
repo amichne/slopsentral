@@ -12,11 +12,13 @@ function read(relativePath) {
 const validateWorkflow = read(".github/workflows/validate-source.yml");
 const publicationWorkflow = read(".github/workflows/publish-harnesses.yml");
 
-test("source validation projects both harnesses through pinned local Pkl", () => {
+test("source validation projects three harnesses through pinned local Pkl", () => {
   assert.match(validateWorkflow, /uv run --locked tools\/verify_marketplaces.py/);
   assert.match(validateWorkflow, /uv run --locked tools\/ci.py native/);
   const verifier = read("tools/verify_marketplaces.py");
   assert.match(verifier, /"codex", "github-copilot"/);
+  assert.match(verifier, /"codex", "github-copilot", "pi"/);
+  assert.match(verifier, /tools\/tests\/pi-host.test.mjs/);
   assert.match(verifier, /tools\/project-marketplaces.mjs/);
   assert.match(read("tools/ci.py"), /tools\/install-projection-pkl.mjs/);
   assert.ok(validateWorkflow.indexOf('Install checksum-verified native tools') < validateWorkflow.indexOf('Validate source, Python'));

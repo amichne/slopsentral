@@ -1,6 +1,6 @@
 module slopsentral.projection.Schema
 
-typealias Harness = "codex" | "github-copilot"
+typealias Harness = "codex" | "github-copilot" | "pi"
 typealias Kind = "SKILL" | "AGENT" | "INSTRUCTION" | "HOOK" | "RESOURCE"
 typealias RelativePath =
   String(!isEmpty && !startsWith("/") && !contains("\\") && !split("/").contains(".."))
@@ -125,8 +125,17 @@ class Input {
   generatedAt: String
   sourceSha: String(matches(Regex("[a-f0-9]{40}")))
   plugins: Listing<Plugin>
+  profiles: List<Profile> = List()
   phase: "PLAN" | "SEALED" = "PLAN"
   projectedDigests: Mapping<String, Digest> = new {}
+}
+
+class Profile {
+  name: Identity
+  description: String(!isEmpty)
+  plugins: List<Identity>(!isEmpty)
+  hookPolicy: "OFF" | "ADVISORY" | "ENFORCING"
+  focusSkills: List<Identity>? = null
 }
 
 class Copy {
@@ -162,4 +171,5 @@ class Plan {
   harness: Harness
   plugins: List<PluginPlan>
   files: List<TextFile>
+  copies: List<Copy> = List()
 }

@@ -26,5 +26,7 @@ This file applies to reusable hook assets under `source/hooks/`.
 
 ## Verify
 
-- Run both local Pkl harness projections from root `AGENTS.md` after changing hook metadata.
+- Run all three local Pkl projections from root `AGENTS.md` after hook metadata changes.
+- Pi uses TypeScript because its host loads TypeScript extensions.
+  Run `npm run check:pi` and the Pi tests under `tools/tests/` after Pi adapter changes.
 - Run syntax checks for every executable hook implementation touched.

@@ -98,6 +98,13 @@ export function auditProfileComposition(catalog, profile) {
   for (const ref of profile.hooks ?? []) {
     if (!hooks.has(key(ref))) findings.push(`${profile.name}: profile hook ${ref.name} is not composed by a selected plugin`);
   }
+  const selectedSkills = new Set(profile.plugins.flatMap(name => {
+    const plugin = catalog.plugins.find(p => p.name === name);
+    return plugin ? [...pluginClosure(catalog, plugin).refs.values()].filter(r => r.type === 'SKILL').map(r => r.name) : [];
+  }));
+  for (const name of profile.focusSkills ?? []) {
+    if (!selectedSkills.has(name)) findings.push(`${profile.name}: focus skill ${name} is not composed by a selected plugin`);
+  }
   return ordered(new Set(findings));
 }
 

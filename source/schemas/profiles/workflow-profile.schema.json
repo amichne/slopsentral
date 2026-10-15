@@ -74,6 +74,14 @@
         "state": "PRESERVE"
       }]]
     },
+    "focusSkills": {
+      "type": "array",
+      "description": "Suggested skills from selected plugins for runtime prompt scope. Installation and authority stay unchanged.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$", "examples": ["semantic-ratchet"]},
+      "examples": [["semantic-ratchet", "kotlin-design-practices"]]
+    },
     "hookPolicy": {"$ref": "#/$defs/HookPolicy"},
     "reconciliation": {"$ref": "#/$defs/PluginReconciliation"},
     "validation": {"$ref": "#/$defs/WorkflowValidation"}

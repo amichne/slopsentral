@@ -1,0 +1,47 @@
+{
+  "type": "WORKFLOW_PROFILE",
+  "schemaVersion": 2,
+  "name": "type-design",
+  "description": "Domain proofs and typed contracts across Kotlin, JSON Schema, OpenAPI, and Pkl.",
+  "marketplaces": [
+    {
+      "type": "WORKFLOW_MARKETPLACE",
+      "name": "slopsentral",
+      "provider": "codex",
+      "source": "https://github.com/amichne/slopsentral/tree/harness/codex",
+      "entrypoint": ".agents/plugins/marketplace.json",
+      "scope": "plugins in this workflow profile"
+    }
+  ],
+  "plugins": [
+    "software-engineering",
+    "kotlin-engineering",
+    "developer-tooling"
+  ],
+  "standaloneSkills": [],
+  "hookPolicy": {
+    "type": "HOOK_POLICY",
+    "mode": "OFF"
+  },
+  "reconciliation": {
+    "type": "PLUGIN_RECONCILIATION",
+    "unselected": "DISABLE_UNSELECTED"
+  },
+  "validation": {
+    "type": "WORKFLOW_VALIDATION",
+    "commands": [
+      "node tools/validate-source-graph.mjs",
+      "node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex",
+      "node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+    ]
+  },
+  "focusSkills": [
+    "semantic-ratchet",
+    "negative-capability-proof",
+    "kotlin-design-practices",
+    "kotlin-review",
+    "manage-json-schemas",
+    "openapi-contract-authoring",
+    "pkl-engineering"
+  ]
+}

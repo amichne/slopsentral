@@ -74,3 +74,7 @@ Keep marketplace identities unique and reject conflicting paths or cycles.
 Do not copy payloads into plugin directories. Regenerate `source/CATALOG.md` with
 `node tools/catalog.mjs --write` after composition changes. See
 `source/ARCHITECTURE.md` for the primitive responsibilities and evidence limits.
+
+`WORKFLOW_PROFILE.focusSkills` selects advertised skills from the selected plugin closures.
+The catalog rejects a focus skill outside those closures.
+Pi uses this optional scope without a change to installation state or user authority.
