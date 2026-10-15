@@ -20,7 +20,7 @@ Outside this plugin: Language and platform syntax beyond the shared baseline; ad
 
 **Skills:** [git-change-flow](skills/git-change-flow/SKILL.md), [github-ci-operations](skills/github-ci-operations/SKILL.md), [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md), [mise-project-tooling](skills/mise-project-tooling/SKILL.md), [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md), [python-tooling](skills/python-tooling/SKILL.md), [semantic-ratchet](skills/semantic-ratchet/SKILL.md), [tdd](skills/tdd/SKILL.md).
 
-**Hooks:** [software-engineering-context](hooks/software-engineering-context.hook.json).
+**Hooks:** [agents-md-scope](hooks/agents-md-scope.hook.json), [software-engineering-context](hooks/software-engineering-context.hook.json).
 
 **Instructions:** [agent-execution](instructions/agent-execution.md), [engineering-design](instructions/engineering-design.md).
 
@@ -88,6 +88,8 @@ Outside this plugin: Automatic knowledge generation during ordinary code tasks o
 
 - [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 833 instruction words.
 
+- [kotlin-type-design](profiles/kotlin-type-design.json): software-engineering + kotlin-engineering. 833 instruction words.
+
 - [local-development-default](profiles/local-development-default.json): software-engineering. 697 instruction words.
 
 - [personal-configuration-default](profiles/personal-configuration-default.json): developer-tooling. 0 instruction words.
@@ -95,6 +97,8 @@ Outside this plugin: Automatic knowledge generation during ordinary code tasks o
 - [pkl-checked-repository](profiles/pkl-checked-repository.json): software-engineering + developer-tooling. 697 instruction words.
 
 - [pkl-workflow-default](profiles/pkl-workflow-default.json): software-engineering + developer-tooling. 697 instruction words.
+
+- [type-design](profiles/type-design.json): software-engineering + kotlin-engineering + developer-tooling. 833 instruction words.
 
 ## Reused assets
 

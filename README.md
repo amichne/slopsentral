@@ -64,6 +64,9 @@ Those hooks cover startup, resume, clear, and compact.
 Their output does not prove that the host consumed the policy or that a model obeyed it.
 Full procedures and examples remain in task-selected skills and references.
 
+Software Engineering also composes [scope maintenance for `AGENTS.md`](docs/agents-md-scope.md).
+That hook requests source-backed instruction updates and permits a documented no-change review.
+
 Standalone source, Pkl, API-context, and skill-read hooks remain explicit primitives.
 The five plugin bundles do not select those hooks.
 A repository must explicitly compose a hook before it can use that automatic behavior.
@@ -80,14 +83,21 @@ Use the [profile lifecycle](docs/profile-lifecycle.md) for explicit setup and sa
 Use the upstream Worktrunk plugin for worktree automation.
 The [Worktrunk procedure](docs/worktrunk-automation.md) describes project setup and gates.
 
-The local Pkl projector creates Codex and GitHub Copilot output from authored source.
+The local Pkl projector creates Codex, GitHub Copilot, and Pi output from authored source.
+Install the published Pi package without a source checkout or npm build:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | sh
+```
+
+The [Pi guide](docs/pi-harness.md) covers installation, profile commands, native events, and the first trial.
 Publication updates `.agents/plugins` and `.github/plugin` on `main` and the corresponding harness branches.
 Local edits and temporary projections do not publish those trees or change installed caches.
 Read the [architecture](source/ARCHITECTURE.md) for ownership and evidence limits.
 
 ## Local evidence
 
-The projector needs Node.js 20.11 or later, locked dependencies, and Pkl 0.32.0.
+The repository tools need Node.js 22.19 or later, locked dependencies, and Pkl 0.32.0.
 Install its pinned runtime explicitly:
 
 ```text

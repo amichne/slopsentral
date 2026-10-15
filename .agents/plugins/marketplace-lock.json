@@ -1,9 +1,16 @@
 {
-  "generatedAt": "2026-10-13T20:25:15-04:00",
+  "generatedAt": "2026-10-15T12:51:02-04:00",
   "plugins": [
     {
       "name": "software-engineering",
       "references": [
+        {
+          "name": "agents-md-scope",
+          "sha256": "sha256:028d8dc66d0ef7b7fec5b033320ff370a801f0f04d95b8d4cf2df3cb7d7e83d7",
+          "sourcePath": "source/hooks/agents-md-scope.hook.json",
+          "targetPath": "hooks/agents-md-scope.hooks.json",
+          "type": "HOOK"
+        },
         {
           "name": "software-engineering-context",
           "sha256": "sha256:0875e5c5f8a04c5d0ec496e1ef597b6eb702a51e7ed05b06040b2c9b34b3430d",
@@ -83,7 +90,7 @@
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "3.0.0"
+      "version": "3.1.0"
     },
     {
       "name": "kotlin-engineering",
@@ -331,6 +338,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "8bc8bd1c6f53a1b0f3fbf73aa2a44ac6fc7e6c39",
+  "sourceSha": "ec21ce99cd6cfbc923dc924908898e9cf20300a7",
   "type": "HYDRATED_MARKETPLACE"
 }

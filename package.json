@@ -4,7 +4,7 @@
   "description": "Source contracts and validation tooling for the Slopsentral plugin marketplace",
   "private": true,
   "engines": {
-    "node": ">=20.11"
+    "node": ">=22.19"
   },
   "scripts": {
     "test": "node --test tools/tests/*.test.mjs",
@@ -12,10 +12,17 @@
     "verify:marketplaces": "uv run --locked tools/verify_marketplaces.py",
     "verify": "npm run check:python && npm run check:source && npm test && npm run verify:marketplaces",
     "validate:profile-contracts": "node tools/validate-profile-contracts.mjs",
-    "check:python": "uv run --locked tools/check.py"
+    "check:python": "uv run --locked tools/check.py",
+    "check:pi": "tsc --project tools/pi-tsconfig.json"
   },
   "dependencies": {
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "1.2.0",
+    "@types/node": "26.6.5",
+    "tsx": "4.20.6",
+    "typescript": "7.0.2"
   }
 }

@@ -5,9 +5,10 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash source/hooks/agents-md-turn-refresh.sh start --repo .",
-            "timeout": 10,
-            "statusMessage": "Starting AGENTS.md turn tracking"
+            "command": "uv run --locked --script \"$(git rev-parse --show-toplevel)/source/hooks/agents-md-scope.py\"",
+            "timeout": 30,
+            "additionalContextLimit": 32768,
+            "statusMessage": "Examine instruction scopes"
           }
         ]
       }
@@ -17,9 +18,10 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash source/hooks/agents-md-turn-refresh.sh record --repo .",
-            "timeout": 10,
-            "statusMessage": "Recording AGENTS.md turn edits"
+            "command": "uv run --locked --script \"$(git rev-parse --show-toplevel)/source/hooks/agents-md-scope.py\"",
+            "timeout": 30,
+            "additionalContextLimit": 32768,
+            "statusMessage": "Examine scope changes"
           }
         ]
       }
@@ -29,9 +31,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash source/hooks/agents-md-turn-refresh.sh stop --repo .",
+            "command": "uv run --locked --script \"$(git rev-parse --show-toplevel)/source/hooks/agents-md-scope.py\"",
             "timeout": 30,
-            "statusMessage": "Checking affected AGENTS.md files"
+            "statusMessage": "Examine instruction maintenance"
           }
         ]
       }

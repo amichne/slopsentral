@@ -95,7 +95,7 @@ function verify(t, failedHarness) {
   for (const directory of [path.join(repo, 'tools'), bin, temp]) fs.mkdirSync(directory, { recursive: true });
   fs.copyFileSync(path.join(repoRoot, 'tools/verify_marketplaces.py'), path.join(repo, 'tools/verify_marketplaces.py'));
   const log = path.join(root, 'commands.jsonl');
-  for (const command of ['node']) {
+  for (const command of ['node', 'npm']) {
     fs.writeFileSync(path.join(bin, command), `#!${process.execPath}
 const fs = require('node:fs');
 const args = process.argv.slice(2);
@@ -110,6 +110,7 @@ fs.appendFileSync(process.env.VERIFY_TEST_LOG, JSON.stringify({
   openapiSkillRoot: process.env.SLOPSENTRAL_OPENAPI_SKILL_ROOT,
   okfSkillRoot: process.env.SLOPSENTRAL_OKF_SKILL_ROOT,
   pklSkillRoot: process.env.SLOPSENTRAL_PKL_SKILL_ROOT,
+  piPackageRoot: process.env.SLOPSENTRAL_PI_PACKAGE,
 }) + '\\n');
 if (args.includes('--out')) fs.mkdirSync(args[args.indexOf('--out') + 1], { recursive: true });
 if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
@@ -133,26 +134,30 @@ if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
   return { result, commands };
 }
 
-test('verification projects both providers and checks the generated Codex hooks', t => {
+test('verification projects all three harnesses and examines the generated host contracts', t => {
   const { result, commands } = verify(t);
   assert.equal(result.status, 0, result.stderr);
-  assert.deepEqual(commands.map(({ command }) => command), Array(8).fill('node'));
-  assert.deepEqual(commands.slice(0, 2).map(({ args }) => args.slice(0, 5)), [
+  assert.deepEqual(commands.map(({ command }) => command), ['node', 'node', 'node', 'npm', ...Array(7).fill('node')]);
+  assert.deepEqual(commands.slice(0, 3).map(({ args }) => args.slice(0, 5)), [
     ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'codex'],
     ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'github-copilot'],
+    ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'pi'],
   ]);
   const codexRoot = commands[0].args[6];
   assert.notEqual(codexRoot, commands[1].args[6]);
-  assert.equal(commands[2].reuseCodexRoot, codexRoot);
-  assert.equal(commands[2].reuseCopilotRoot, commands[1].args[6]);
-  assert.deepEqual(commands[2].args, ['--test', 'tools/tests/asset-reuse-projection.test.mjs']);
-  assert.equal(commands[3].instructionRoot, codexRoot);
-  assert.equal(commands[4].stopRoot, codexRoot);
-  assert.equal(commands[5].knowledgeRoot, codexRoot);
-  assert.deepEqual(commands[3].args, ['--test', 'tools/tests/instruction-delivery.test.mjs']);
-  assert.deepEqual(commands[4].args, ['--test', 'tools/tests/stop-output-contract.test.mjs']);
-  assert.deepEqual(commands[5].args, ['--test', 'tools/tests/knowledge-overlay-contract.test.mjs']);
-  for (const [index, projection, tree] of [[6, codexRoot, '.agents/plugins'], [7, commands[1].args[6], '.github/plugin']]) {
+  assert.deepEqual(commands[3].args, ['run', 'check:pi']);
+  assert.equal(commands[4].piPackageRoot, path.join(commands[2].args[6], '.pi/slopsentral'));
+  assert.deepEqual(commands[4].args, ['--test', 'tools/tests/pi-host.test.mjs']);
+  assert.equal(commands[5].reuseCodexRoot, codexRoot);
+  assert.equal(commands[5].reuseCopilotRoot, commands[1].args[6]);
+  assert.deepEqual(commands[5].args, ['--test', 'tools/tests/asset-reuse-projection.test.mjs']);
+  assert.equal(commands[6].instructionRoot, codexRoot);
+  assert.equal(commands[7].stopRoot, codexRoot);
+  assert.equal(commands[8].knowledgeRoot, codexRoot);
+  assert.deepEqual(commands[6].args, ['--test', 'tools/tests/instruction-delivery.test.mjs']);
+  assert.deepEqual(commands[7].args, ['--test', 'tools/tests/stop-output-contract.test.mjs']);
+  assert.deepEqual(commands[8].args, ['--test', 'tools/tests/knowledge-overlay-contract.test.mjs']);
+  for (const [index, projection, tree] of [[9, codexRoot, '.agents/plugins'], [10, commands[1].args[6], '.github/plugin']]) {
     assert.deepEqual(commands[index].args, ['--test', 'tools/tests/gradle-check-green.test.mjs', 'tools/tests/gradle-wrapper-integrity.test.mjs', 'tools/tests/openapi-installed-commands.test.mjs', 'tools/tests/okf-validator-isolation.test.mjs', 'tools/tests/okf-visualizer-isolation.test.mjs', 'tools/tests/pkl-installed-entrypoints.test.mjs']);
     assert.equal(commands[index].gradleHookRoot, path.join(projection, tree, 'kotlin-engineering'));
     assert.equal(commands[index].openapiSkillRoot, path.join(projection, tree, 'developer-tooling/skills/openapi-contract-authoring'));
@@ -161,10 +166,10 @@ test('verification projects both providers and checks the generated Codex hooks'
   }
 });
 
-for (const failedHarness of ['codex', 'github-copilot']) {
+for (const [failedHarness, count] of [['codex', 1], ['github-copilot', 2], ['pi', 3]]) {
   test(`a failed ${failedHarness} projection prevents downstream verification`, t => {
     const { result, commands } = verify(t, failedHarness);
     assert.equal(result.status, 37, result.stderr);
-    assert.equal(commands.length, failedHarness === 'codex' ? 1 : 2);
+    assert.equal(commands.length, count);
   });
 }

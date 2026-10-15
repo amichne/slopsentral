@@ -23,7 +23,7 @@ default = true
 extraPaths = ["source/skills/kotlin-gradle-validation/scripts", "source/skills/controlled-technical-writing/scripts"]
 pythonVersion = "3.12"
 typeCheckingMode = "strict"
-include = ["tools/python_checks", "tools/check.py", "tools/setup.py", "tools/ci.py", "tools/publish.py", "tools/verify_marketplaces.py", "tools/install_skill.py", "tools/compile_kotlin_concepts.py", "source/skills/python-tooling", "source/hooks/gradle-check-green.py", "source/hooks/gradle-wrapper-integrity.py", "source/hooks/source-graph-valid.py", "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.py", "source/skills/kotlin-gradle-validation/scripts/gradle_repository.py", "source/agents/codebase-navigator/scripts/setup-local-nav.py", "source/skills/controlled-technical-writing/scripts/install_vale.py", "source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py"]
+include = ["tools/python_checks", "tools/check.py", "tools/setup.py", "tools/ci.py", "tools/publish.py", "tools/package_pi.py", "tools/verify_marketplaces.py", "tools/install_skill.py", "tools/install_agents_hook.py", "source/hooks/agents-md-scope.py", "tools/compile_kotlin_concepts.py", "source/skills/python-tooling", "source/hooks/gradle-check-green.py", "source/hooks/gradle-wrapper-integrity.py", "source/hooks/source-graph-valid.py", "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.py", "source/skills/kotlin-gradle-validation/scripts/gradle_repository.py", "source/agents/codebase-navigator/scripts/setup-local-nav.py", "source/skills/controlled-technical-writing/scripts/install_vale.py", "source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py"]
 exclude = ["**/fixtures", "**/.venv"]
 reportMatchNotExhaustive = "error"
 reportUnnecessaryTypeIgnoreComment = "error"
@@ -34,7 +34,7 @@ reportPrivateUsage = "error"
 [tool.ruff]
 target-version = "py312"
 line-length = 100
-include = ["tools/python_checks/**/*.py", "tools/check.py", "tools/setup.py", "tools/ci.py", "tools/publish.py", "tools/verify_marketplaces.py", "tools/install_skill.py", "tools/compile_kotlin_concepts.py", "source/skills/python-tooling/**/*.py", "source/hooks/gradle-*.py", "source/hooks/source-graph-valid.py", "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.py", "source/skills/kotlin-gradle-validation/scripts/gradle_repository.py", "source/agents/codebase-navigator/scripts/setup-local-nav.py"]
+include = ["tools/python_checks/**/*.py", "tools/check.py", "tools/setup.py", "tools/ci.py", "tools/publish.py", "tools/package_pi.py", "tools/verify_marketplaces.py", "tools/install_skill.py", "tools/install_agents_hook.py", "source/hooks/agents-md-scope.py", "tools/compile_kotlin_concepts.py", "source/skills/python-tooling/**/*.py", "source/hooks/gradle-*.py", "source/hooks/source-graph-valid.py", "source/skills/kotlin-gradle-validation/scripts/run_gradle_task.py", "source/skills/kotlin-gradle-validation/scripts/gradle_repository.py", "source/agents/codebase-navigator/scripts/setup-local-nav.py"]
 extend-exclude = ["**/fixtures"]
 
 [tool.ruff.lint]

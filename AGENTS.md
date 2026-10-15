@@ -20,6 +20,14 @@ by hand when the authored source can be fixed instead.
   hand-edit them. Publication updates both trees on `main` in one commit and
   preserves all authored files.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
+- Pi packages project into `.pi/slopsentral` for local installation.
+  The Pi adapter lives under `source/hooks/pi/`.
+  `tools/projection/Pi.pkl` owns its package shape.
+  `.github/workflows/release-pi.yml` publishes versioned Pi archives through
+  GitHub Releases. `tools/package_pi.py` owns archive contents and checksums.
+  Release archives need no repository clone or local npm build for installation.
+- `tools/install-pi.sh` is a thin POSIX host launcher for the published package.
+  Keep installation logic in Pi's package manager.
 
 ## First-Party Material
 
@@ -35,6 +43,8 @@ composition edits, run:
 node tools/validate-source-graph.mjs
 node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
 node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi
+npm run check:pi
 git diff --check
 ```
 
