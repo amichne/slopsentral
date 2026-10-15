@@ -4,6 +4,34 @@ Project Slopsentral into one Pi package with native commands, prompt instruction
 The compatibility target is Pi 1.2.0.
 The package uses Pi's TypeScript extension API.
 
+## Install the published package
+
+Use an existing Pi installation with Node.js 22.19 or later.
+Run this command without a source checkout, Pkl, or npm build:
+
+```bash
+pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.0/slopsentral-pi-0.1.0.tgz
+```
+
+Start `pi` in your project.
+Select `/slopsentral-kotlin-type-design` for a first trial without automatic hooks.
+The other source profiles remain available through `/slopsentral-profile`.
+Hook actions need their documented tools, including uv for Python hooks.
+
+Pi downloads the archive through npm and keeps it in its managed package directory.
+The package has no install scripts or runtime dependencies.
+Pi supplies its own host APIs.
+The [release](https://github.com/amichne/slopsentral/releases/tag/pi-v0.1.0) includes `SHA256SUMS` and the exact source commit.
+
+The URL selects one release.
+To change releases, install the named package with the new release URL.
+`pi update --extensions` does not discover newer GitHub release URLs.
+To remove the package, run:
+
+```bash
+pi remove npm:slopsentral-pi
+```
+
 ## Local trial
 
 Use Node.js 22.19 or later, uv 0.12.9 or later, and Pkl 0.32.0.
@@ -140,7 +168,11 @@ The extension does not connect MCP servers or change tool sets.
 Automatic agents and MCP connections remain explicit gaps relative to Codex.
 Source profiles do not supply connection consent or ownership for a server lifecycle.
 
-This first pass does not change hosted publication workflows or existing installed packages.
+The manual `Release Pi package` workflow publishes a versioned archive and checksum file from `main`.
+The archive uses the generated package version from `tools/projection/Pi.pkl`.
+It rejects lifecycle scripts, runtime dependencies, symlinks, and local caches.
+An existing release causes publication to fail instead of replacement.
+Pi releases do not replace the marketplace's latest release designation.
 Projection alone does not prove installed-host behavior or improved model decisions.
 The handoff report records the checks that ran and the gaps that remain.
 
