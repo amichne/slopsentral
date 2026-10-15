@@ -124,7 +124,7 @@ An absent tool or stale lock is a prerequisite failure, not a successful gate.
 | Source event | Pi event | Purpose |
 | --- | --- | --- |
 | `SessionStart` | `before_agent_start` | Run deferred session hooks before the first prompt. |
-| `UserPromptSubmit` | `input` | Compare source changes and add a hidden context message. |
+| `UserPromptSubmit` | `input` | Forward current text, select guidance, and add hidden context. |
 | `PreToolUse` | `tool_call` | Examine a proposed tool call. |
 | `PostToolUse` | `tool_result` | Append scope context to the original tool evidence. |
 | Prompt instructions | `before_agent_start` | Add the selected structured prompt section. |
@@ -135,6 +135,25 @@ It supplies `PLUGIN_ROOT` for each plugin payload.
 It translates supported Codex JSON responses into Pi event results.
 Prompt hooks keep the submitted text and images unchanged.
 They add context messages without a model request.
+Prompt hooks receive the current Pi event text as `prompt` and its input origin as `source`.
+Pi defines three origins: `interactive`, `rpc`, and `extension`.
+Earlier Pi input extensions can transform that text before this adapter receives it.
+
+The pure resolver in `source/hooks/pi/runtime.ts` matches authored terms at word boundaries, without case sensitivity.
+Kotlin and Gradle select Kotlin guidance and its engineering dependency.
+Testing, proof, Git, and delivery terms select their existing skill owners.
+Dependencies precede their consumers, and each reference appears once per event.
+Repeated input events resolve independently; a nonmatch adds no guidance message.
+References include the bundled path, canonical source path, and dependency chain.
+They do not repeat policy text from the `SessionStart` prompt section or expand advertised skills.
+Quoted or external text can match a term, but matches grant no action or publication authority.
+Selection executes no commands or network calls and changes no profile, tools, or permissions.
+Existing profile hooks still run under their authored policy.
+The `OFF` policy and the `off` profile suppress automatic routing.
+
+The resolver rejects malformed text, input above 64 KiB, invalid rules, missing dependencies, and cycles.
+Its authored graph permits at most 16 rules and eight bounded terms per rule.
+Missing bundled owners and context above 8 KiB produce a bounded warning without partial guidance.
 Post-tool hooks keep `content`, `structuredContent`, `details`, `isError`, and `usage` from the original result.
 Blocked responses keep the review instructions in their `reason`.
 It reports bounded failures and does not log environment values.
