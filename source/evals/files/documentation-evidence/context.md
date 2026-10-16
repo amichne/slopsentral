@@ -7,9 +7,62 @@ description of a real product. Preserve this file during a replay.
 
 Repository: `example/query-tool`. Selected worktree revision: `bbbbbbbb`.
 The supplied export and its citations identify revision `aaaaaaaa`.
-The source diff changes `query.limit` from 30 to 60. The current command registry
-owns that default. A matching filename and a recent export date do not remove
-this mismatch.
+Inspect the registry artifacts and diff below before updating a claim.
+The command registry owns defaults. A matching filename and a recent export
+date do not remove this revision mismatch.
+
+## Registry snapshots
+
+These are synthetic `command-registry.json` artifacts from the two revisions.
+They are source inputs, not observed command output.
+
+```json command-registry@aaaaaaaa
+{
+  "commands": {
+    "query": {
+      "parameters": {
+        "limit": {
+          "type": "integer",
+          "default": 30,
+          "minimum": 1,
+          "maximum": 100
+        }
+      }
+    }
+  }
+}
+```
+
+```json command-registry@bbbbbbbb
+{
+  "commands": {
+    "query": {
+      "parameters": {
+        "limit": {
+          "type": "integer",
+          "default": 60,
+          "minimum": 1,
+          "maximum": 100
+        }
+      }
+    }
+  }
+}
+```
+
+Their source diff:
+
+```diff
+@@ -4,7 +4,7 @@
+       "parameters": {
+         "limit": {
+           "type": "integer",
+-          "default": 30,
++          "default": 60,
+           "minimum": 1,
+           "maximum": 100
+         }
+```
 
 ## Export and live inventory
 
@@ -45,7 +98,10 @@ The site uses Mintlify `docs.json` and hosted MDX. Its command registry generate
 `reference/commands.mdx`; that page carries a generated marker. The page claims
 the old limit of 30. `architecture/execution.mdx` explains query completion.
 `guides/first-query.mdx` owns the first-result procedure. No request authorizes
-deployment or installing software on the host.
+deployment or installing software on the host. The hosted renderer forbids
+third-party npm imports and supports build-time assets.
+
+## Proposed MDX
 
 The proposed guide fragment contains an unsupported import and a hidden caveat:
 

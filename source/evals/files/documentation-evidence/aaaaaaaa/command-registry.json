@@ -1,0 +1,14 @@
+{
+  "commands": {
+    "query": {
+      "parameters": {
+        "limit": {
+          "type": "integer",
+          "default": 30,
+          "minimum": 1,
+          "maximum": 100
+        }
+      }
+    }
+  }
+}

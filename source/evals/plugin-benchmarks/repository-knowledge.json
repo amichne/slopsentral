@@ -35,7 +35,7 @@
     "Astra-targeted definition; static validation and golden replay are not a live model benchmark result.",
     "New core-flow prompts omit plugin-name hints. Supply a pinned local fixture before running; checklists are review rubrics, not observed activation or outcome results.",
     "Consolidated scenarios retained from the former technical-writing plugin.",
-    "The seven docs-* candidate cases use source/evals/files/documentation-evidence/context.md and the independent review assertions in source/evals/documentation-evidence.md. Copy those inputs into the disposable workspace before replay; no live replay is part of normal gates."
+    "The seven documentation candidate cases embed their required evidence and concrete review assertions. They need no authored eval files or manual fixture copy in the disposable workspace. Their canonical inputs and consistency checks are maintained in this repository; no live replay is part of normal gates."
   ],
   "setupQuestions": [
     "Which bounded Kotlin or Gradle concept should become a source-backed OKF bundle?"
@@ -163,7 +163,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "docs-export-completeness",
       "title": "Audit an incomplete export",
-      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "purpose": "Candidate regression with self-contained source evidence and concrete review assertions. No model result is implied.",
       "routingCaseIds": [
         "okf-knowledge-work-is-not-generic-doc-authoring"
       ],
@@ -171,9 +171,11 @@
         "type": "PLUGIN",
         "name": "repository-knowledge"
       },
-      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Audit the export and live inventory before migration. Report page and diagram completeness, recovered assets, parse failures, and unsupported architecture claims. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "This is a self-contained synthetic documentation case. Supplied artifacts do not establish a live runtime or architecture review.\n\n## Task\n\nAudit the export and live inventory before migration. Report page and diagram completeness, recovered assets, parse failures, and unsupported architecture claims.\n\n## Supplied evidence\n\n### Source identity\n\nRepository: `example/query-tool`. Selected worktree revision: `bbbbbbbb`.\nThe supplied export and its citations identify revision `aaaaaaaa`.\nInspect the registry artifacts and diff below before updating a claim.\nThe command registry owns defaults. A matching filename and a recent export\ndate do not remove this revision mismatch.\n\n### Export and live inventory\n\nBoth inventories list page IDs `start`, `execution`, and `limits`.\nThe export includes only diagram `execution-1`.\nThe live inventory includes `execution-1` and `limits-1`.\nThe export's three matching page IDs therefore leave one diagram missing.\nNo live runtime test or architecture review has been supplied.\n\nExact recovered `execution-1` source:\n\n```mermaid\nflowchart LR\n  Request --> Check\n  Check -->|complete| Answer\n  Check -->|partial| Recovery\n```\n\nExact recovered `limits-1` source, which the renderer rejects:\n\n```text\nflowchart LR\n  Limit[Budget --> Stop\n```\n\nPreserve both originals. A repaired render of `limits-1` needs a separate source\nfile and a recorded syntax correction. Removing the partial branch from\n`execution-1` changes its meaning.\n\nUse only the supplied evidence and a disposable workspace. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
-        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Page ID sets match 3/3; the export is missing diagram limits-1.",
+        "Both recovered diagram sources and the failed limits-1 parse remain identified.",
+        "Recovered content, rendered assets, and source-verified claims stay separate.",
         "Missing runtime, rendered, or human evidence remains explicitly unverified."
       ]
     },
@@ -181,7 +183,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "docs-source-revision",
       "title": "Refresh stale source identity",
-      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "purpose": "Candidate regression with self-contained source evidence and concrete review assertions. No model result is implied.",
       "routingCaseIds": [
         "openwiki-refresh-preserves-backend-authority"
       ],
@@ -189,9 +191,11 @@
         "type": "SKILL",
         "name": "code-knowledge-base"
       },
-      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Refresh the stale limit claim against the selected source revision. Preserve the old snapshot and identify what current evidence does and does not prove. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "This is a self-contained synthetic documentation case. Supplied artifacts do not establish a live runtime or architecture review.\n\n## Task\n\nRefresh the stale limit claim against the selected source revision. Preserve the old snapshot and identify what current evidence does and does not prove.\n\n## Supplied evidence\n\n### Source identity\n\nRepository: `example/query-tool`. Selected worktree revision: `bbbbbbbb`.\nThe supplied export and its citations identify revision `aaaaaaaa`.\nInspect the registry artifacts and diff below before updating a claim.\nThe command registry owns defaults. A matching filename and a recent export\ndate do not remove this revision mismatch.\n\n### Registry snapshots\n\nThese are synthetic `command-registry.json` artifacts from the two revisions.\nThey are source inputs, not observed command output.\n\n```json command-registry@aaaaaaaa\n{\n  \"commands\": {\n    \"query\": {\n      \"parameters\": {\n        \"limit\": {\n          \"type\": \"integer\",\n          \"default\": 30,\n          \"minimum\": 1,\n          \"maximum\": 100\n        }\n      }\n    }\n  }\n}\n```\n\n```json command-registry@bbbbbbbb\n{\n  \"commands\": {\n    \"query\": {\n      \"parameters\": {\n        \"limit\": {\n          \"type\": \"integer\",\n          \"default\": 60,\n          \"minimum\": 1,\n          \"maximum\": 100\n        }\n      }\n    }\n  }\n}\n```\n\nTheir source diff:\n\n```diff\n@@ -4,7 +4,7 @@\n       \"parameters\": {\n         \"limit\": {\n           \"type\": \"integer\",\n-          \"default\": 30,\n+          \"default\": 60,\n           \"minimum\": 1,\n           \"maximum\": 100\n         }\n```\n\nUse only the supplied evidence and a disposable workspace. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
-        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Compare the two supplied registry artifacts and their diff; the current query.limit default is 60.",
+        "Cite the bbbbbbbb command registry as the current owner and preserve aaaaaaaa as historical source.",
+        "A stale export is not treated as runtime readiness or verified architecture.",
         "Missing runtime, rendered, or human evidence remains explicitly unverified."
       ]
     },
@@ -199,7 +203,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "docs-fact-ownership",
       "title": "Keep canonical fact owners",
-      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "purpose": "Candidate regression with self-contained source evidence and concrete review assertions. No model result is implied.",
       "routingCaseIds": [
         "docs-site-nav-preserves-generated-boundaries"
       ],
@@ -207,9 +211,11 @@
         "type": "SKILL",
         "name": "technical-documentation"
       },
-      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Place the default, completion mechanism, and first-query procedure in their canonical homes. Specify the owning-source change and cross-links. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "This is a self-contained synthetic documentation case. Supplied artifacts do not establish a live runtime or architecture review.\n\n## Task\n\nPlace the default, completion mechanism, and first-query procedure in their canonical homes. Specify the owning-source change and cross-links.\n\n## Supplied evidence\n\n### Source identity\n\nRepository: `example/query-tool`. Selected worktree revision: `bbbbbbbb`.\nThe supplied export and its citations identify revision `aaaaaaaa`.\nInspect the registry artifacts and diff below before updating a claim.\nThe command registry owns defaults. A matching filename and a recent export\ndate do not remove this revision mismatch.\n\n### Registry snapshots\n\nThese are synthetic `command-registry.json` artifacts from the two revisions.\nThey are source inputs, not observed command output.\n\n```json command-registry@aaaaaaaa\n{\n  \"commands\": {\n    \"query\": {\n      \"parameters\": {\n        \"limit\": {\n          \"type\": \"integer\",\n          \"default\": 30,\n          \"minimum\": 1,\n          \"maximum\": 100\n        }\n      }\n    }\n  }\n}\n```\n\n```json command-registry@bbbbbbbb\n{\n  \"commands\": {\n    \"query\": {\n      \"parameters\": {\n        \"limit\": {\n          \"type\": \"integer\",\n          \"default\": 60,\n          \"minimum\": 1,\n          \"maximum\": 100\n        }\n      }\n    }\n  }\n}\n```\n\nTheir source diff:\n\n```diff\n@@ -4,7 +4,7 @@\n       \"parameters\": {\n         \"limit\": {\n           \"type\": \"integer\",\n-          \"default\": 30,\n+          \"default\": 60,\n           \"minimum\": 1,\n           \"maximum\": 100\n         }\n```\n\n### Site ownership\n\nThe site uses Mintlify `docs.json` and hosted MDX. Its command registry generates\n`reference/commands.mdx`; that page carries a generated marker. The page claims\nthe old limit of 30. `architecture/execution.mdx` explains query completion.\n`guides/first-query.mdx` owns the first-result procedure. No request authorizes\ndeployment or installing software on the host. The hosted renderer forbids\nthird-party npm imports and supports build-time assets.\n\nUse only the supplied evidence and a disposable workspace. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
-        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Exact defaults belong to the registry and generated Reference, mechanisms to Architecture, and procedures to Guides.",
+        "The changed default is 60, justified by the supplied registry diff.",
+        "Propose the owning-source/generator change and cross-links; do not patch generated output alone.",
         "Missing runtime, rendered, or human evidence remains explicitly unverified."
       ]
     },
@@ -217,7 +223,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "docs-supported-primitive",
       "title": "Repair unsupported hosted MDX",
-      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "purpose": "Candidate regression with self-contained source evidence and concrete review assertions. No model result is implied.",
       "routingCaseIds": [
         "docs-site-nav-preserves-generated-boundaries"
       ],
@@ -225,9 +231,11 @@
         "type": "SKILL",
         "name": "technical-documentation"
       },
-      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Repair the proposed hosted MDX fragment using supported primitives. Retain visible critical caveats and describe the narrow compatibility check. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "This is a self-contained synthetic documentation case. Supplied artifacts do not establish a live runtime or architecture review.\n\n## Task\n\nRepair the proposed hosted MDX fragment using supported primitives. Retain visible critical caveats and describe the narrow compatibility check.\n\n## Supplied evidence\n\n### Site ownership\n\nThe site uses Mintlify `docs.json` and hosted MDX. Its command registry generates\n`reference/commands.mdx`; that page carries a generated marker. The page claims\nthe old limit of 30. `architecture/execution.mdx` explains query completion.\n`guides/first-query.mdx` owns the first-result procedure. No request authorizes\ndeployment or installing software on the host. The hosted renderer forbids\nthird-party npm imports and supports build-time assets.\n\n### Proposed MDX\n\nThe proposed guide fragment contains an unsupported import and a hidden caveat:\n\n```mdx\nimport { renderMermaidSVG } from 'beautiful-mermaid';\n\n<Accordion title=\"Details\">\n  Partial evidence does not prove that the query covered all declarations.\n</Accordion>\n\n<Prompt>Find the callers of demo.</Prompt>\n```\n\nUse only the supplied evidence and a disposable workspace. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
-        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Remove the unsupported third-party npm import under the supplied hosted constraint.",
+        "Choose supported components or a build-time asset and keep the result limit visible.",
+        "Verify current official component signatures or report that compatibility evidence as missing; do not invent a hosted run.",
         "Missing runtime, rendered, or human evidence remains explicitly unverified."
       ]
     },
@@ -235,7 +243,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "docs-diagram-fidelity",
       "title": "Preserve diagram source and meaning",
-      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "purpose": "Candidate regression with self-contained source evidence and concrete review assertions. No model result is implied.",
       "routingCaseIds": [
         "docs-site-nav-preserves-generated-boundaries"
       ],
@@ -243,9 +251,11 @@
         "type": "SKILL",
         "name": "technical-documentation"
       },
-      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Prepare both recovered diagrams for rendering. Preserve exact originals, separate syntax corrections and semantic changes, and expose any remaining failure. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "This is a self-contained synthetic documentation case. Supplied artifacts do not establish a live runtime or architecture review.\n\n## Task\n\nPrepare both recovered diagrams for rendering. Preserve exact originals, separate syntax corrections and semantic changes, and expose any remaining failure.\n\n## Supplied evidence\n\n### Export and live inventory\n\nBoth inventories list page IDs `start`, `execution`, and `limits`.\nThe export includes only diagram `execution-1`.\nThe live inventory includes `execution-1` and `limits-1`.\nThe export's three matching page IDs therefore leave one diagram missing.\nNo live runtime test or architecture review has been supplied.\n\nExact recovered `execution-1` source:\n\n```mermaid\nflowchart LR\n  Request --> Check\n  Check -->|complete| Answer\n  Check -->|partial| Recovery\n```\n\nExact recovered `limits-1` source, which the renderer rejects:\n\n```text\nflowchart LR\n  Limit[Budget --> Stop\n```\n\nPreserve both originals. A repaired render of `limits-1` needs a separate source\nfile and a recorded syntax correction. Removing the partial branch from\n`execution-1` changes its meaning.\n\nUse only the supplied evidence and a disposable workspace. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
-        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Preserve both exact originals; execution-1 keeps Request, Check, Answer, Recovery and both Check outcomes.",
+        "Keep the rejected limits-1 source and identify its page; record syntax repair separately from semantic edits and styling.",
+        "Do not delete branches or call a successful parse proof of source truth or embedded readability.",
         "Missing runtime, rendered, or human evidence remains explicitly unverified."
       ]
     },
@@ -253,7 +263,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "docs-rendering-gap",
       "title": "Diagnose a visual verification gap",
-      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "purpose": "Candidate regression with self-contained source evidence and concrete review assertions. No model result is implied.",
       "routingCaseIds": [
         "docs-site-nav-preserves-generated-boundaries"
       ],
@@ -261,9 +271,11 @@
         "type": "SKILL",
         "name": "technical-documentation"
       },
-      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Assess the supplied renderer observations. Name failed and unverified checks and the smallest next validation. Do not claim a new browser run from these supplied observations. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "This is a self-contained synthetic documentation case. Supplied artifacts do not establish a live runtime or architecture review.\n\n## Task\n\nAssess the supplied renderer observations. Name failed and unverified checks and the smallest next validation. Do not claim a new browser run from these supplied observations.\n\n## Supplied evidence\n\n### Renderer observations\n\nA successful build and a successful XML parse are supplied.\nAt 1440 px in light mode the standalone SVG shows all four nodes.\nAt 375 px in dark mode the page screenshot shows an empty diagram panel.\nThe SVG contains an external font `@import`.\nThe copied prompt before hydration is empty; after hydration it is\n`Find the callers of demo.\\n`. Its final LF is literal clipboard data.\nThe mobile menu remains open after the second page navigation.\nNo keyboard or screen-reader check has been supplied.\n\nUse only the supplied evidence and a disposable workspace. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
-        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Keep build/XML success separate from the empty 375 px dark panel, external font dependency, and stuck mobile menu.",
+        "Report the copied final LF, missing keyboard evidence, and second-navigation behavior.",
+        "Specify the smallest repair and repeat-render checks without claiming a new browser run.",
         "Missing runtime, rendered, or human evidence remains explicitly unverified."
       ]
     },
@@ -271,7 +283,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "docs-compact-first-result",
       "title": "Write a compact first-result guide",
-      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "purpose": "Candidate regression with self-contained source evidence and concrete review assertions. No model result is implied.",
       "routingCaseIds": [
         "docs-site-nav-preserves-generated-boundaries"
       ],
@@ -279,9 +291,11 @@
         "type": "SKILL",
         "name": "technical-documentation"
       },
-      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Write one first-query guide from the compact task facts. Keep the reader path complete and bounded; cross-link mechanism and exact contracts. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "This is a self-contained synthetic documentation case. Supplied artifacts do not establish a live runtime or architecture review.\n\n## Task\n\nWrite one first-query guide from the compact task facts. Keep the reader path complete and bounded; cross-link mechanism and exact contracts.\n\n## Supplied evidence\n\n### Site ownership\n\nThe site uses Mintlify `docs.json` and hosted MDX. Its command registry generates\n`reference/commands.mdx`; that page carries a generated marker. The page claims\nthe old limit of 30. `architecture/execution.mdx` explains query completion.\n`guides/first-query.mdx` owns the first-result procedure. No request authorizes\ndeployment or installing software on the host. The hosted renderer forbids\nthird-party npm imports and supports build-time assets.\n\n### Compact task\n\nWrite one first-query guide, using only these facts.\nThe reader has installed the tool and connected an agent. The known declaration\nis `demo`. A useful result contains its signature and source location.\nThe reader then asks for callers. Partial evidence requires a narrower retry;\nan empty result does not prove absence. Link the exact contract from Reference\nand the mechanism from Architecture. Do not invent installation commands.\n\nUse only the supplied evidence and a disposable workspace. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
-        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Give the installed-and-connected prerequisite, a demo query, expected signature/source location, and a caller query.",
+        "Keep the partial-result limit and narrower retry visible; an empty result does not prove absence.",
+        "Link Reference for exact contracts and Architecture for the mechanism. Do not invent setup commands or redesign the site.",
         "Missing runtime, rendered, or human evidence remains explicitly unverified."
       ]
     }

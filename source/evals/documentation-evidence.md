@@ -9,6 +9,12 @@ model runs, observed routing, or measured task success.
 Use the same [synthetic input](files/documentation-evidence/context.md) for both
 revisions. The runnable scenario definitions extend the existing
 [Repository Knowledge benchmark](plugin-benchmarks/repository-knowledge.json).
+Each new scenario embeds its needed evidence and concrete review assertions.
+The disposable workspace needs no authored eval files or manual fixture copy.
+The [old registry](files/documentation-evidence/aaaaaaaa/command-registry.json)
+and [current registry](files/documentation-evidence/bbbbbbbb/command-registry.json)
+are independently inspectable source artifacts. Their diff is included in the
+revision case; tests compare its hunk with the actual artifact diff.
 Keep raw replay output outside packaged skills. No paid inference runs in normal gates.
 
 ## Existing owners
@@ -113,6 +119,7 @@ remain under their repository's tooling owner.
 
 The parallel Kast task reported [draft PR 1051](https://github.com/amichne/kast/pull/1051),
 branch `docs/guides-architecture-reference`, from base `3ffe57068`.
+Its later reported candidate is `71eeb11f60488bfd8b34a029e51e62dcdc8fe785`.
 Its trace on 16 October 2026 reports three mentors: uv First steps, Temporal
 Workflow Execution, and Stripe Authentication. Public text from those pages and
 the official Mintlify component constraints was also read for this change.
@@ -124,6 +131,9 @@ imported an external Google font. It reports mobile menu, Back/Forward, clipboar
 320 px diagram checks after repairs. These are attributed observations from
 the docs task, not independent browser checks or a replay of these skill cases.
 They informed the clipboard, hydration, theme, and embedded-asset procedures.
+That task later reports keyboard scrolling in the phone diagram region and
+reflow without page overflow at actual 200% browser zoom. These remain
+attributed observations, separate from measured behavior on the skill cases.
 
 ## Static evaluation limits
 
@@ -138,6 +148,21 @@ task success, routing, actual token usage, or reader comprehension.
 
 The seven new cases remain candidates. A fresh model comparison and independent
 human reader assessment have not run. Normal validation performs no paid inference.
+
+## Codex review follow-up
+
+The [Codex review of `cc1a429`](https://github.com/amichne/slopsentral/pull/79#pullrequestreview-5548835181)
+found two P2 defects in the evaluation setup:
+[missing workspace inputs](https://github.com/amichne/slopsentral/pull/79#discussion_r4295476191)
+and [missing revision artifacts](https://github.com/amichne/slopsentral/pull/79#discussion_r4295476202).
+Both were valid. The scenarios previously depended on files outside the
+provisioned workspace and narrated a default change without supplying its source.
+
+Two focused tests failed on those exact gaps before repair. All seven cases now
+carry their relevant evidence and review assertions. The revision case contains
+both registry snapshots and their actual diff. Both new tests pass in the same
+test command. They prove fixture delivery and consistency, not model behavior.
+The existing three benchmark-contract checks also pass.
 
 ## Validation record
 
