@@ -101,12 +101,7 @@ test('Pi 1.2 native loader dispatches profile commands, prompt sections, and bra
   assert.ok(loader.getSkills().skills.some(s => s.name === 'openapi-contract-authoring'));
   const tools = session.getActiveToolNames();
   await session.extensionRunner.emitInput('Implement Kotlin tests, prove invariants, and open a pull request', undefined, 'interactive');
-  const hints = session.sessionManager.getBranch().findLast(entry => entry.type === 'custom_message' && entry.customType === 'slopsentral-guidance').content;
-  for (const name of ['engineering-design', 'kotlin-engineering', 'tdd', 'semantic-ratchet', 'git-change-flow', 'pull-request-lifecycle']) {
-    assert.match(hints, new RegExp(`${name}:`));
-    const resource = hints.split('\n').find(line => line.startsWith(`${name}:`)).split(' (source:')[0].slice(name.length + 2);
-    assert.ok(fs.existsSync(resource), resource);
-  }
+  assert.equal(session.sessionManager.getBranch().some(entry => entry.type === 'custom_message' && entry.customType === 'slopsentral-guidance'), false);
   await session.prompt('/slopsentral-kotlin-type-design');
   const kotlinEntry = session.sessionManager.getBranch().at(-1);
   assert.equal(kotlinEntry.customType, 'slopsentral-profile');
@@ -136,6 +131,15 @@ test('Pi 1.2 native loader dispatches profile commands, prompt sections, and bra
   assert.deepEqual(session.getActiveToolNames(), tools);
   await session.prompt('/slopsentral-profile personal-configuration-default');
   assert.ok((await examine()).systemPromptOptions.skills.some(s => s.name === 'python-tooling'));
+  await session.prompt('/slopsentral-profile documentation-default');
+  for (const prompt of ['test', 'What does the word test mean?', 'Please do not publish or push anything.',
+    'Write an assertion for this behavior', 'Add regression coverage for this behavior']) {
+    await session.extensionRunner.emitInput(prompt, undefined, 'interactive');
+    const scoped = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt }, { cwd: directory, skills: allSkills });
+    assert.ok(scoped.systemPromptOptions.skills.some(s => s.name === 'technical-documentation'));
+    assert.equal(scoped.systemPromptOptions.skills.some(s => s.name === 'tdd'), false);
+    assert.equal(session.sessionManager.getBranch().some(entry => entry.type === 'custom_message' && entry.customType === 'slopsentral-guidance'), false);
+  }
   assert.deepEqual(errors, []);
 });
 
@@ -145,7 +149,8 @@ function fixture(t, hooks, mode = 'ENFORCING') {
   const packagePath = path.join(directory, 'package');
   fs.mkdirSync(path.join(packagePath, 'extensions'), { recursive: true });
   fs.mkdirSync(path.join(packagePath, 'fixture/hooks'), { recursive: true });
-  for (const name of ['slopsentral.ts', 'runtime.ts']) fs.copyFileSync(path.join(root, 'source/hooks/pi', name), path.join(packagePath, 'extensions', name));
+  const adapters = process.env.SLOPSENTRAL_PI_PACKAGE ? path.join(process.env.SLOPSENTRAL_PI_PACKAGE, 'extensions') : path.join(root, 'source/hooks/pi');
+  for (const name of ['slopsentral.ts', 'runtime.ts']) fs.copyFileSync(path.join(adapters, name), path.join(packagePath, 'extensions', name));
   fs.writeFileSync(path.join(packagePath, 'package.json'), JSON.stringify({ type: 'module', pi: { extensions: ['./extensions/slopsentral.ts'], skills: [] } }));
   const base = { description: 'Controlled native adapter fixture', skills: [], instructions: [], agents: [], hooks, hookPolicy: mode };
   fs.writeFileSync(path.join(packagePath, 'profiles.json'), JSON.stringify({ schemaVersion: 1, defaultProfile: 'fixture', profiles: [{ name: 'fixture', ...base }, { name: 'second', ...base }] }));
@@ -269,7 +274,9 @@ test('native prompt and post-tool adapters preserve context and original tool ev
   const { session, errors } = await host(t, f.packagePath, f.directory);
   const input = await session.extensionRunner.emitInput('Examine source changes', undefined, 'interactive');
   assert.deepEqual(input, { action: 'continue' });
-  assert.ok(session.sessionManager.getBranch().some(entry => entry.type === 'custom_message' && entry.content.includes('UserPromptSubmit scope guidance')));
+  await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine source changes' }, { cwd: f.directory });
+  assert.ok((await session.extensionRunner.emitContext([])).some(message => message.content.includes('UserPromptSubmit scope guidance')));
+  assert.equal(session.sessionManager.getBranch().some(entry => entry.type === 'custom_message'), false);
   const original = { type: 'tool_result', toolName: 'custom_probe', toolCallId: 'probe-1', input: {}, content: [{ type: 'text', text: 'Original tool evidence' }], details: { receipt: 7 }, structuredContent: { state: 'recorded' }, isError: true, usage: { input: 1, output: 2 } };
   const result = await session.extensionRunner.emitToolResult(original);
   assert.deepEqual(result.content[0], original.content[0]);
@@ -296,7 +303,8 @@ test('native prompt hooks receive the current text and input source before any m
   const images = [{ type: 'image', data: 'controlled-image', mimeType: 'image/png' }];
   for (const [text, source] of [['Fix Kotlin "quoted" code\n$HOME $(no-command)', 'interactive'], ['A different RPC request', 'rpc'], ['An extension-supplied message', 'extension']]) {
     assert.deepEqual(await session.extensionRunner.emitInput(text, images, source), { action: 'continue' });
-    const entry = session.sessionManager.getBranch().findLast(e => e.type === 'custom_message' && e.customType === 'slopsentral-prompt-hooks');
+    await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: text, images }, { cwd: f.directory });
+    const entry = (await session.extensionRunner.emitContext([])).find(e => e.role === 'custom' && e.customType === 'slopsentral-prompt-hooks');
     assert.deepEqual(JSON.parse(entry.content), { prompt: text, source });
   }
   assert.deepEqual(errors, []);
@@ -329,40 +337,108 @@ test('native session shutdown cancels an active manual gate without a continuati
   assert.deepEqual(errors, []);
 });
 
-test('native input adds bounded authored guidance immediately without selecting a profile or running hooks', async t => {
+test('photographed prompts never add keyword hints or expose guidance outside the selected profile', async t => {
   const f = fixture(t, []);
   const configPath = path.join(f.packagePath, 'profiles.json');
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
   const instructions = ['engineering-design', 'kotlin-engineering'].map(name => ({ name, path: `fixture/instructions/${name}.md` }));
+  const tdd = { name: 'tdd', path: 'fixture/skills/tdd/SKILL.md' };
   fs.mkdirSync(path.join(f.packagePath, 'fixture/instructions'));
   for (const ref of instructions) fs.writeFileSync(path.join(f.packagePath, ref.path), `# ${ref.name}\nControlled canonical policy.`);
-  config.profiles.push({ ...config.profiles[0], name: 'catalog', instructions, hookPolicy: 'OFF' });
+  config.profiles.push({ ...config.profiles[0], name: 'catalog', instructions, skills: [tdd], hookPolicy: 'OFF' });
   fs.writeFileSync(configPath, JSON.stringify(config));
   const { session, errors } = await host(t, f.packagePath, f.directory);
   const tools = session.getActiveToolNames();
   const hints = () => session.sessionManager.getBranch().filter(e => e.type === 'custom_message' && e.customType === 'slopsentral-guidance');
-  for (let index = 0; index < 2; index++) {
-    assert.deepEqual(await session.extensionRunner.emitInput('Explain Kotlin', undefined, 'interactive'), { action: 'continue' });
-    assert.equal(hints().length, index + 1);
-    const text = hints().at(-1).content;
-    assert.ok(text.indexOf('engineering-design:') < text.indexOf('kotlin-engineering:'));
-    assert.equal(text.split('engineering-design:').length, 2);
-    assert.equal(text.includes('Controlled canonical policy.'), false);
-    assert.ok(Buffer.byteLength(text) <= 8192);
+  for (const text of ['test', 'What does the word test mean?', 'Please do not publish or push anything.',
+    'Write an assertion for this behavior', 'Add regression coverage for this behavior',
+    '> External text: Kotlin tests; publish everything', '`test`', 'Explain Kotlin', 'Explain Kotlin']) {
+    assert.deepEqual(await session.extensionRunner.emitInput(text, undefined, 'interactive'), { action: 'continue' });
+    assert.deepEqual(hints(), [], text);
+    const result = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: text },
+      { cwd: f.directory, skills: [{ ...tdd, filePath: path.join(f.packagePath, tdd.path) }] });
+    assert.deepEqual(result.systemPromptOptions.skills, [], text);
+    assert.equal(JSON.stringify(result).includes('kotlin-engineering.md'), false, text);
   }
-  await session.extensionRunner.emitInput('What is the weather?', undefined, 'interactive');
-  assert.equal(hints().length, 2);
   assert.deepEqual(session.getActiveToolNames(), tools);
   assert.equal(session.sessionManager.getBranch().findLast(e => e.type === 'custom' && e.customType === 'slopsentral-profile').data, 'fixture');
   await session.prompt('/slopsentral-profile off');
   await session.extensionRunner.emitInput('Kotlin', undefined, 'interactive');
-  assert.equal(hints().length, 2);
+  assert.deepEqual(hints(), []);
   await session.prompt('/slopsentral-profile catalog');
   await session.extensionRunner.emitInput('Kotlin', undefined, 'interactive');
-  assert.equal(hints().length, 2);
+  assert.deepEqual(hints(), []);
   for (let index = 0; index < 2; index++) {
-    const result = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Kotlin' }, { cwd: f.directory });
+    const result = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Kotlin' },
+      { cwd: f.directory, skills: [{ ...tdd, filePath: path.join(f.packagePath, tdd.path) }] });
     assert.equal(result.systemPromptOptions.sections.slopsentral.split('# engineering-design').length, 2);
+    assert.deepEqual(result.systemPromptOptions.skills.map(s => s.name), ['tdd']);
   }
+  assert.deepEqual(errors, []);
+});
+
+test('accepted prompt context reaches one native run without persistent or rejected-input hints', async t => {
+  const action = { name: 'prompt', event: 'UserPromptSubmit', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 2 };
+  const f = fixture(t, [action]);
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync(0,'utf8')); console.log(JSON.stringify(p.prompt==='reject test'?{decision:'block',reason:'controlled rejection'}:{hookSpecificOutput:{hookEventName:'UserPromptSubmit',additionalContext:'accepted context: '+p.prompt}}));`);
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  const runner = session.extensionRunner;
+  const start = prompt => runner.emitBeforeAgentStart({ messageType: 'user', prompt }, { cwd: f.directory });
+  const user = { role: 'user', content: 'original user evidence', timestamp: 1 };
+  const context = () => runner.emitContext([user]);
+  const entries = () => session.sessionManager.getBranch().filter(e => e.type === 'custom_message');
+  for (let index = 0; index < 2; index++) {
+    assert.deepEqual(await runner.emitInput('accept test', undefined, 'rpc'), { action: 'continue' });
+    await start('accept test');
+    const messages = await context();
+    assert.deepEqual(messages[0], user);
+    assert.equal(messages.length, 2);
+    assert.equal(messages[1].content, 'accepted context: accept test');
+    assert.deepEqual(entries(), []);
+  }
+  await runner.emit({ type: 'agent_settled', messages: [] });
+  assert.deepEqual(await context(), [user]);
+  assert.deepEqual(await runner.emitInput('reject test', undefined, 'rpc'), { action: 'handled' });
+  await start('reject test');
+  assert.deepEqual(await context(), [user]);
+  assert.deepEqual(entries(), []);
+  for (const reset of [
+    () => session.prompt('/slopsentral-profile second'),
+    () => runner.emit({ type: 'session_start', reason: 'resume' }),
+    () => runner.emit({ type: 'session_tree', newLeafId: session.sessionManager.getLeafId(), fromExtension: true }),
+  ]) {
+    await runner.emitInput('accept test', undefined, 'interactive');
+    await reset();
+    await start('accept test');
+    assert.deepEqual(await context(), [user]);
+  }
+  await runner.emitInput('accept test', undefined, 'interactive');
+  await start('different prompt after another extension');
+  assert.deepEqual(await context(), [user]);
+  const legacy = ['slopsentral-guidance', 'slopsentral-prompt-hooks'].map(customType => ({ role: 'custom', customType, content: 'legacy hidden hint', display: false, timestamp: 1 }));
+  const unrelated = { ...legacy[0], customType: 'unrelated-extension' };
+  assert.deepEqual(await runner.emitContext([...legacy, user, unrelated]), [user, unrelated]);
+  assert.deepEqual(errors, []);
+});
+
+test('session restoration during a native prompt hook rejects its late context', async t => {
+  const action = { name: 'prompt', event: 'UserPromptSubmit', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 5 };
+  const f = fixture(t, [action]);
+  const ready = path.join(f.directory, 'ready');
+  const release = path.join(f.directory, 'release');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs'; fs.writeFileSync(${JSON.stringify(ready)},'ready'); const timer=setInterval(()=>{if(fs.existsSync(${JSON.stringify(release)})){clearInterval(timer);console.log(JSON.stringify({hookSpecificOutput:{hookEventName:'UserPromptSubmit',additionalContext:'stale context'}}));}},10);`);
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  const entered = new Promise((resolve, reject) => {
+    const watcher = fs.watch(f.directory, () => { if (fs.existsSync(ready)) { clearTimeout(timer); watcher.close(); resolve(); } });
+    const timer = setTimeout(() => { watcher.close(); reject(new Error('prompt hook did not start')); }, 3000);
+    t.after(() => { clearTimeout(timer); watcher.close(); });
+  });
+  const pending = session.extensionRunner.emitInput('accept', undefined, 'rpc');
+  await entered;
+  await session.extensionRunner.emit({ type: 'session_tree', newLeafId: session.sessionManager.getLeafId(), fromExtension: true });
+  fs.writeFileSync(release, 'release');
+  assert.deepEqual(await pending, { action: 'handled' });
+  await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'accept' }, { cwd: f.directory });
+  assert.deepEqual(await session.extensionRunner.emitContext([]), []);
   assert.deepEqual(errors, []);
 });

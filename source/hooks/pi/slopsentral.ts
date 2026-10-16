@@ -1,10 +1,14 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { failures, guidanceContext, instructions, notices, parseConfig, readText, resolveGuidance, runHooks, scopedSkills, select, selectionName, type Rejected, type Selection } from "./runtime.ts";
+import { failures, instructions, notices, parseConfig, readText, runHooks, scopedSkills, select, selectionName, type Rejected, type Selection } from "./runtime.ts";
 
 const stateType = "slopsentral-profile";
 const continuationType = "slopsentral-stop-continuation";
+type PromptContext = { readonly type: "empty" }
+  | { readonly type: "examining"; readonly prompt: string }
+  | { readonly type: "accepted"; readonly prompt: string; readonly context: string }
+  | { readonly type: "active"; readonly context: string };
 
 export default function slopsentral(pi: ExtensionAPI): void {
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -17,9 +21,11 @@ export default function slopsentral(pi: ExtensionAPI): void {
   const displaySelection = () => selection.type === "rejected" ? selection.code : selectionName(selection);
   let startup: { type: "pending" } | { type: "ready"; context: string } | { type: "rejected"; reason: string } = { type: "pending" };
   let lifecycle = new AbortController();
+  let promptContext: PromptContext = { type: "empty" };
   const signal = (ctx: ExtensionContext) => ctx.signal ? AbortSignal.any([ctx.signal, lifecycle.signal]) : lifecycle.signal;
 
   const restore = (ctx: ExtensionContext) => {
+    promptContext = { type: "empty" };
     const latest = ctx.sessionManager.getBranch().findLast(entry => entry.type === "custom" && entry.customType === stateType);
     const data: unknown = latest?.type === "custom" ? latest.data : undefined;
     const flag = pi.getFlag("slopsentral-profile");
@@ -36,8 +42,18 @@ export default function slopsentral(pi: ExtensionAPI): void {
     lifecycle = new AbortController();
     restore(ctx);
   });
-  pi.on("session_shutdown", () => lifecycle.abort());
+  pi.on("session_shutdown", () => { promptContext = { type: "empty" }; lifecycle.abort(); });
   pi.on("session_tree", (_event, ctx) => restore(ctx));
+  pi.on("agent_settled", () => { promptContext = { type: "empty" }; });
+  pi.on("context", event => ({
+    // Old releases persisted these hints. Preserve the transcript, exclude them from requests.
+    messages: [
+      ...event.messages.filter(message => message.role !== "custom"
+        || (message.customType !== "slopsentral-guidance" && message.customType !== "slopsentral-prompt-hooks")),
+      ...(promptContext.type === "active" ? [{ role: "custom" as const, customType: "slopsentral-prompt-hooks",
+        content: promptContext.context, display: false, timestamp: 0 }] : []),
+    ],
+  }));
 
   const choose = (name: string, ctx: ExtensionContext) => {
     if (!ctx.isIdle()) { ctx.ui.notify("Select a profile after the current run ends.", "warning"); return; }
@@ -66,21 +82,25 @@ export default function slopsentral(pi: ExtensionAPI): void {
 
   const payload = (ctx: ExtensionContext, event: string) => ({ hook_event_name: event, cwd: ctx.cwd, session_id: ctx.sessionManager.getSessionId() });
   pi.on("input", async (event, ctx) => {
+    promptContext = { type: "empty" };
     if (selection.type === "rejected") { ctx.ui.notify(`Slopsentral profile unavailable: ${selection.code}`, "error"); return { action: "handled" }; }
     if (selection.type === "off" || selection.profile.hookPolicy === "OFF") return { action: "continue" };
-    const guidance = guidanceContext(root, config, resolveGuidance(event.text));
-    if (guidance.type === "rejected") ctx.ui.notify(`Slopsentral guidance unavailable: ${guidance.code}`, "warning");
-    else if (guidance.context) pi.sendMessage({ customType: "slopsentral-guidance", content: guidance.context, display: false }, { triggerTurn: false });
+    const submission: PromptContext = { type: "examining", prompt: event.text };
+    promptContext = submission;
     const runs = await runHooks(root, selection.profile, "UserPromptSubmit", ctx.cwd,
       { ...payload(ctx, "UserPromptSubmit"), prompt: event.text, source: event.source }, signal(ctx));
+    if (promptContext !== submission || signal(ctx).aborted) return { action: "handled" };
+    promptContext = { type: "empty" };
     const reason = failures(runs);
     const context = [...runs.flatMap(run => run.result.type === "completed" ? [run.result.context] : []), notices(runs), reason].filter(Boolean).join("\n\n");
     if (reason) ctx.ui.notify(`Slopsentral prompt hooks:\n${reason}`, "warning");
     if (reason && selection.profile.hookPolicy === "ENFORCING") return { action: "handled" };
-    if (context) pi.sendMessage({ customType: "slopsentral-prompt-hooks", content: context, display: false }, { triggerTurn: false });
+    if (context) promptContext = { type: "accepted", prompt: event.text, context };
     return { action: "continue" };
   });
   pi.on("before_agent_start", async (event, ctx) => {
+    const accepted = promptContext;
+    promptContext = { type: "empty" };
     if (selection.type === "rejected") {
       event.systemPromptOptions.sections.slopsentral = `Slopsentral profile unavailable: ${selection.code}. Select a valid profile before another run.`;
       event.systemPromptOptions.skills = scopedSkills(root, { type: "off" }, event.systemPromptOptions.skills);
@@ -102,6 +122,8 @@ export default function slopsentral(pi: ExtensionAPI): void {
     else delete event.systemPromptOptions.sections.slopsentral;
     event.systemPromptOptions.skills = scopedSkills(root, selection, event.systemPromptOptions.skills);
     if (startup.type === "rejected") ctx.abort();
+    else if (accepted.type === "accepted" && event.messageType === "user" && event.prompt === accepted.prompt)
+      promptContext = { type: "active", context: accepted.context };
   });
   pi.on("tool_call", async (event, ctx) => {
     if (selection.type === "rejected") return { block: true, reason: `Slopsentral profile unavailable: ${selection.code}` };

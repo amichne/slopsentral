@@ -66,9 +66,22 @@ jobs:
           BUILD_SHA: ${{ steps.candidate.outputs.source_revision }}
           VERSION: ${{ steps.candidate.outputs.version }}
           ARCHIVE: ${{ steps.candidate.outputs.archive }}
-        run: >-
-          gh release create "pi-v$VERSION" "$ARCHIVE"
-          "$RUNNER_TEMP/pi-candidate/SHA256SUMS" "$RUNNER_TEMP/pi-candidate/candidate.json"
-          "$RUNNER_TEMP/promotion.json" --verify-tag --latest=false
-          --title "Slopsentral Pi $VERSION"
-          --notes "Pi archive tested from source $BUILD_SHA and admitted for main commit $SOURCE_SHA. See docs/pi-harness.md for installation and provenance."
+        run: |
+          printf '%s\n' \
+            'Install this Pi package without a source checkout:' \
+            '' \
+            '```bash' \
+            "pi install npm:slopsentral-pi@https://github.com/$GH_REPO/releases/download/pi-v$VERSION/slopsentral-pi-$VERSION.tgz" \
+            '```' \
+            '' \
+            "[Pi guide](https://github.com/$GH_REPO/blob/pi-v$VERSION/docs/pi-harness.md) | [README](https://github.com/$GH_REPO/blob/pi-v$VERSION/README.md)" \
+            '' \
+            "CI passed for [source $BUILD_SHA](https://github.com/$GH_REPO/commit/$BUILD_SHA)." \
+            "The release tag targets [main commit $SOURCE_SHA](https://github.com/$GH_REPO/commit/$SOURCE_SHA)." \
+            "The release includes \`SHA256SUMS\`, \`candidate.json\`, and \`promotion.json\` for archive identity and source provenance." \
+            > "$RUNNER_TEMP/pi-release-notes.md"
+          gh release create "pi-v$VERSION" "$ARCHIVE" \
+            "$RUNNER_TEMP/pi-candidate/SHA256SUMS" "$RUNNER_TEMP/pi-candidate/candidate.json" \
+            "$RUNNER_TEMP/promotion.json" --verify-tag --latest \
+            --title "Slopsentral Pi $VERSION" \
+            --notes-file "$RUNNER_TEMP/pi-release-notes.md"
