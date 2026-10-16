@@ -151,9 +151,11 @@ Skill advertisement does not prove model selection or use.
 Prompt hooks still run under the selected profile's hook policy.
 Only accepted prompt output can reach the matching user run.
 Repeated inputs replace pending context rather than append hidden messages.
+Queued steering and follow-up inputs keep the current context until the latest accepted input reaches a request.
+Its text and a new saved user entry must both match before its hook output replaces current context.
 Rejected inputs add no prompt context.
 Profile changes, session restoration, tree navigation, shutdown, and settlement discard that context.
-If another extension changes the accepted text afterward, Slopsentral discards its pending context.
+For a new run, later text changes from another extension discard pending context.
 The next run needs its own accepted input.
 
 The `context` adapter excludes legacy `slopsentral-guidance` and `slopsentral-prompt-hooks` messages from model requests.

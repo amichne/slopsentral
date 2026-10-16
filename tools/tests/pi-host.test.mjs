@@ -442,3 +442,51 @@ test('session restoration during a native prompt hook rejects its late context',
   assert.deepEqual(await session.extensionRunner.emitContext([]), []);
   assert.deepEqual(errors, []);
 });
+
+test('session restoration during native startup cannot restore accepted prompt context', async t => {
+  const actions = ['UserPromptSubmit', 'SessionStart'].map(event => ({ name: 'gate', event, plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 5 }));
+  const f = fixture(t, actions);
+  const ready = path.join(f.directory, 'ready');
+  const release = path.join(f.directory, 'release');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs';const p=JSON.parse(fs.readFileSync(0,'utf8'));if(p.hook_event_name==='UserPromptSubmit'){console.log(JSON.stringify({hookSpecificOutput:{hookEventName:p.hook_event_name,additionalContext:'stale accepted context'}}));}else{fs.writeFileSync(${JSON.stringify(ready)},'ready');const timer=setInterval(()=>{if(fs.existsSync(${JSON.stringify(release)})){clearInterval(timer);console.log('{}');}},10);}`);
+  const { session, errors, aborts } = await host(t, f.packagePath, f.directory);
+  await session.extensionRunner.emitInput('accept', undefined, 'rpc');
+  const entered = new Promise((resolve, reject) => {
+    const watcher = fs.watch(f.directory, () => { if (fs.existsSync(ready)) { clearTimeout(timer); watcher.close(); resolve(); } });
+    const timer = setTimeout(() => { watcher.close(); reject(new Error('startup hook did not start')); }, 3000);
+    t.after(() => { clearTimeout(timer); watcher.close(); });
+  });
+  const pending = session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'accept' }, { cwd: f.directory });
+  await entered;
+  await session.extensionRunner.emit({ type: 'session_tree', newLeafId: session.sessionManager.getLeafId(), fromExtension: true });
+  fs.writeFileSync(release, 'release');
+  await pending;
+  assert.deepEqual(await session.extensionRunner.emitContext([]), []);
+  assert.equal(aborts(), 1);
+  assert.deepEqual(errors, []);
+});
+
+test('native steering and follow-up keep context until the accepted input reaches a request', async t => {
+  const action = { name: 'prompt', event: 'UserPromptSubmit', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 2 };
+  const f = fixture(t, [action]);
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync(0,'utf8')); console.log(JSON.stringify({hookSpecificOutput:{hookEventName:p.hook_event_name,additionalContext:'context for '+p.prompt}}));`);
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  const runner = session.extensionRunner;
+  const original = { role: 'user', content: 'original', timestamp: 1 };
+  await runner.emitInput('original', undefined, 'rpc');
+  session.sessionManager.appendMessage(original);
+  await runner.emitBeforeAgentStart({ messageType: 'user', prompt: 'original' }, { cwd: f.directory });
+  let messages = [original];
+  let expected = 'context for original';
+  for (const method of ['steer', 'followUp']) {
+    assert.equal(await session[method]('queued '+method, undefined, { source: 'rpc' }), 'queued');
+    assert.equal((await runner.emitContext(messages)).at(-1).content, expected, 'a queued input must not erase or precede active context');
+    const delivered = { role: 'user', content: 'queued '+method, timestamp: 2 };
+    session.sessionManager.appendMessage(delivered);
+    messages = [...messages, delivered];
+    expected = 'context for queued '+method;
+    assert.equal((await runner.emitContext(messages)).at(-1).content, expected);
+    assert.equal(session.sessionManager.getBranch().some(e => e.type === 'custom_message'), false);
+  }
+  assert.deepEqual(errors, []);
+});
