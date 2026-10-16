@@ -15,7 +15,7 @@ The adapters preserve shared source ownership without a claim of feature parity.
 Generated Codex and GitHub Copilot trees also appear on `main`.
 Pi users install a release archive through Pi's package manager.
 That installation needs no repository clone or local npm build.
-The [README](../README.md#use-slopsentral-in-pi) supplies a released install command.
+The [README](../README.md#use-slopsentral-in-pi) links the latest release and its pinned install command.
 
 ## Shared source and adaptations
 

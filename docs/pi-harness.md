@@ -8,39 +8,23 @@ The [harness overview](agent-marketplaces.md) compares this adapter with Codex a
 ## Install the published package
 
 Use an existing Pi installation with Node.js 22.19 or later.
-Install the published `0.1.212` package in your personal Pi settings:
-
-```bash
-pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.212/slopsentral-pi-0.1.212.tgz
-```
-
-For a project declaration in `.pi/settings.json`, use `--local` instead:
-
-```bash
-pi install --local npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.212/slopsentral-pi-0.1.212.tgz
-```
-
-Pi loads project packages after project trust.
+Open the [latest Pi release](https://github.com/amichne/slopsentral/releases/latest).
+Copy its pinned `pi install` command into your terminal.
+For project scope, add `--local` after `pi install`.
 Choose one installation scope.
+Pi loads project packages after project trust.
 The package needs no source checkout, Pkl, or npm build.
 
-The optional host launcher delegates to the same Pi command.
-It needs `pi` on `PATH`.
-Set its version explicitly to use this release:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | SLOPSENTRAL_PI_VERSION=0.1.212 sh
-```
-
-Without `SLOPSENTRAL_PI_VERSION`, the launcher selects `0.1.0`.
-The example names a fixed release, not a moving latest version.
-Find other `pi-v` versions in [GitHub Releases](https://github.com/amichne/slopsentral/releases).
+Each release supplies an install command with its exact version and archive URL.
+The [Pi release history](https://github.com/amichne/slopsentral/releases?q=tag%3Api-v) filters earlier versions.
+The optional [host launcher](../tools/install-pi.sh) accepts an explicit `SLOPSENTRAL_PI_VERSION` and delegates to Pi.
+Its historical default remains `0.1.0`, so use an explicit version for later releases.
 Hook actions need their documented tools, including uv for Python hooks.
 
 Pi downloads the archive through npm and keeps it in its managed package directory.
 The package has no install scripts or runtime dependencies.
 Pi supplies its own host APIs.
-The [release](https://github.com/amichne/slopsentral/releases/tag/pi-v0.1.212) includes `SHA256SUMS`, the tested candidate record, and its promotion record.
+Each release includes `SHA256SUMS`, the tested candidate record, and its promotion record.
 
 ## Start a workflow
 
@@ -65,7 +49,7 @@ An existing branch's saved selection takes precedence during session reload or t
 
 ## Update or remove the package
 
-The URL selects one release.
+The install command selects one release.
 To change releases, install the named package with the new release URL.
 Keep the same personal or project installation scope.
 `pi update --extensions` does not discover newer GitHub release URLs.
@@ -140,7 +124,8 @@ An initial baseline cannot prove coverage for earlier edits.
 | Source event | Pi event | Purpose |
 | --- | --- | --- |
 | `SessionStart` | `before_agent_start` | Run deferred session hooks before the first prompt. |
-| `UserPromptSubmit` | `input` | Forward current text, select guidance, and add hidden context. |
+| `UserPromptSubmit` | `input` | Examine current text before acceptance. |
+| Accepted prompt context | `context` | Add hook output to requests within one run. |
 | `PreToolUse` | `tool_call` | Examine a proposed tool call. |
 | `PostToolUse` | `tool_result` | Append scope context to the original tool evidence. |
 | Prompt instructions | `before_agent_start` | Add the selected structured prompt section. |
@@ -150,27 +135,35 @@ The adapter runs canonical hook commands with structured argument arrays.
 It supplies `PLUGIN_ROOT` for each plugin payload.
 It translates supported Codex JSON responses into Pi event results.
 Prompt hooks keep the submitted text and images unchanged.
-They add context messages without a model request.
+Accepted hook output enters request context without a saved conversation message.
 Prompt hooks receive the current Pi event text as `prompt` and its input origin as `source`.
 Pi defines three origins: `interactive`, `rpc`, and `extension`.
 Earlier Pi input extensions can transform that text before this adapter receives it.
 
-The pure resolver in `source/hooks/pi/runtime.ts` matches authored terms at word boundaries, without case sensitivity.
-Kotlin and Gradle select Kotlin guidance and its engineering dependency.
-Testing, proof, Git, and delivery terms select their existing skill owners.
-Dependencies precede their consumers, and each reference appears once per event.
-Repeated input events resolve independently.
-A nonmatch adds no guidance message.
-References include the bundled path, canonical source path, and dependency chain.
-They do not repeat policy text from the `SessionStart` prompt section or expand advertised skills.
-Quoted or external text can match a term, but matches grant no action or publication authority.
-Selection executes no commands or network calls and changes no profile, tools, or permissions.
-Existing profile hooks still run under their authored policy.
-The `OFF` policy and the `off` profile suppress automatic routing.
+Pi receives the skills selected by the current profile.
+Slopsentral does not infer task intent from prompt keywords or search other profiles for guidance.
+A question, quotation, negated action, or bare word such as `test` adds no routing hint.
+A request such as `Add regression coverage for this behavior` uses the same advertised skill catalog.
+Pi can select an advertised skill from its description.
+The user can also request a skill with Pi's explicit `/skill:name` command.
+Skill advertisement does not prove model selection or use.
 
-The resolver rejects malformed text, input above 64 KiB, invalid rules, missing dependencies, and cycles.
-Its authored graph permits at most 16 rules and eight bounded terms per rule.
-Missing bundled owners and context above 8 KiB produce a bounded warning without partial guidance.
+Prompt hooks still run under the selected profile's hook policy.
+Only accepted prompt output can reach the matching user run.
+Repeated inputs replace pending context rather than append hidden messages.
+Queued steering and follow-up inputs keep the current context until the latest accepted input reaches a request.
+Its text and a new saved user entry must both match before its hook output replaces current context.
+Rejected inputs add no prompt context.
+Profile changes, session restoration, tree navigation, shutdown, and settlement discard that context.
+For a new run, later text changes from another extension discard pending context.
+The next run needs its own accepted input.
+
+The `context` adapter excludes legacy `slopsentral-guidance` and `slopsentral-prompt-hooks` messages from model requests.
+It keeps the saved transcript and messages from other extensions.
+New prompt context never enters saved conversation messages or their compaction input.
+Old summaries can contain earlier hints that no longer have a distinct message identity.
+Start a new session to exclude that historical summary content.
+
 Post-tool hooks keep `content`, `structuredContent`, `details`, `isError`, and `usage` from the original result.
 Blocked responses keep the review instructions in their `reason`.
 It reports bounded failures and does not log environment values.
@@ -252,7 +245,9 @@ The promotion record binds that candidate to the successful main run and merged 
 The tag targets the merged commit.
 The [provenance schemas](../source/schemas/pi/) define both record shapes.
 Existing tags or releases cause publication to fail instead of replacement.
-Pi releases keep the marketplace's latest release designation unchanged.
+Each new Pi release receives GitHub's Latest designation.
+The repository has one Latest release across all components.
+Earlier marketplace and component releases keep their existing tags and download URLs.
 
 For a manual publication retry, select `Release Pi package` on `main` and supply the successful main run's `run_id`.
 The workflow uses that run's exact commit, even after main advances.

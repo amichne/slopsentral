@@ -1,150 +1,112 @@
 # Slopsentral
 
-Slopsentral ships five plugins and 28 skills for Kotlin-first engineering.
-The shared rules prioritize safety, correctness, proof, scope, pure functions, and atomic units.
-New automation uses locked uv Python environments.
+Slopsentral supplies Kotlin-first skills and engineering rules for Pi, Codex, and GitHub Copilot.
+Its five plugin bundles cover software design, Kotlin, IntelliJ plugins, developer tools, and repository knowledge.
 
-## Choose a plugin
-
-Start with Software Engineering and Kotlin Engineering for Kotlin work.
-Add a specialty only for the requested task.
-
-| Plugin | Purpose | Skills |
-| --- | --- | --- |
-| Software Engineering | Proof-preserving design, tests, Python automation, Git, PRs, and CI | 8 |
-| Kotlin Engineering | Kotlin design, review, application libraries, compiler proof, and Gradle | 6 |
-| IntelliJ Plugin Development | Plugin delivery, PSI/indexing, and platform tests with live diagnostics | 3 |
-| Developer Tooling | CLIs, agent resources, schemas, OpenAPI, Pkl, and personal configuration | 8 |
-| Repository Knowledge | Source-backed knowledge, navigation, technical documents, and prose assessment | 4 |
-
-Python Tooling appears in two bundles. The marketplace has 28 unique skills.
-The [catalog](source/CATALOG.md) gives exact identifiers and composition.
-The [migration map](source/MIGRATION.md) lists every retired skill and its replacement.
-
-Installation makes a skill available. It grants no authority to publish, deploy, or change personal configuration.
-Developer Tooling adds no automatic hooks. Repository Knowledge remains optional for Kotlin work.
+[**Get the latest Pi release**](https://github.com/amichne/slopsentral/releases/latest) · [Pi guide](docs/pi-harness.md) · [Skill catalog](source/CATALOG.md)
 
 ## Use Slopsentral in Pi
 
-Use Pi with Node.js 22.19 or later.
-Install the published `0.1.212` package.
-Then start Pi in your project:
+Use Pi 1.2.0 with Node.js 22.19 or later.
+The package needs no repository clone, Pkl, or local npm build.
+
+1. Open the [latest Pi release](https://github.com/amichne/slopsentral/releases/latest).
+2. Run the `pi install` command from its release notes.
+3. From your project, start Pi with the Kotlin design profile:
 
 ```bash
-pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.212/slopsentral-pi-0.1.212.tgz
 pi --slopsentral-profile kotlin-type-design
 ```
 
-This workflow profile supplies Kotlin instructions and skills with automatic hooks set to `OFF`.
-Inside Pi, use `/slopsentral-profile` to examine profiles or `/slopsentral-check` to run completion gates explicitly.
-For advisory hooks, select `/slopsentral-profile kotlin-repo-default`.
+The release command selects an exact archive version in your personal Pi settings.
+For a project installation, add `--local` after `pi install`.
+Choose one installation scope.
+To update, use the command from a newer release in the same scope.
+`pi update --extensions` does not discover newer GitHub release URLs.
+
+The Kotlin design profile supplies Kotlin instructions and selected skills with automatic hooks set to `OFF`.
+Inside Pi, use these commands:
+
+| Command | Result |
+| --- | --- |
+| `/slopsentral-profile` | Show the current profile and available choices. |
+| `/slopsentral-profile kotlin-type-design` | Select Kotlin design skills with automatic hooks set to `OFF`. |
+| `/slopsentral-profile type-design` | Add schema, OpenAPI, and Pkl skills with automatic hooks set to `OFF`. |
+| `/slopsentral-profile kotlin-repo-default` | Select Kotlin and Software Engineering with `ADVISORY` hooks. |
+| `/slopsentral-check` | Run the selected completion gates explicitly. |
+| `/slopsentral-profile off` | Turn off Slopsentral prompt instructions, advertised skills, and automatic hooks. |
+
+Change profiles after the current run ends.
+The selection persists on the active session branch.
+A new session without a profile choice uses `local-development-default` with `ADVISORY` hooks.
 Hook commands need their own tools, including uv for Python hooks.
-The package needs no source checkout, Pkl, or npm build.
+Profiles keep the current model and tool set.
 
-The [Pi guide](docs/pi-harness.md) covers project installation, profile selection, hooks, updates, and adapter limits.
-The [harness overview](docs/agent-marketplaces.md) explains how shared source becomes Codex, GitHub Copilot, and Pi resources.
+The [Pi guide](docs/pi-harness.md) covers installation scopes, updates, removal, hook policies, and adapter limits.
+Each release includes `SHA256SUMS`, `candidate.json`, and `promotion.json` beside the archive.
 
-## Automation
+## Use Codex or GitHub Copilot
 
-Install uv 0.12.9 or newer. Run the checkout setup and its gates:
+Install the `slopsentral` marketplace for your host.
+Start with Software Engineering for code work.
+Add Kotlin Engineering for Kotlin work, then select specialties for the task.
 
-```text
+| Host | Marketplace source | Guide |
+| --- | --- | --- |
+| Codex | [`harness/codex`](https://github.com/amichne/slopsentral/tree/harness/codex) | [Codex profiles and explicit setup](docs/profile-lifecycle.md) |
+| GitHub Copilot | [`harness/github-copilot`](https://github.com/amichne/slopsentral/tree/harness/github-copilot) | [Harnesses and delivery paths](docs/agent-marketplaces.md) |
+
+| Plugin | Use it for |
+| --- | --- |
+| Software Engineering | Typed design, tests, Python automation, Git, pull requests, and CI. |
+| Kotlin Engineering | Kotlin APIs, compiler proof, libraries, review, and Gradle. |
+| IntelliJ Plugin Development | IntelliJ lifecycle, PSI, platform tests, and IDE diagnostics. |
+| Developer Tooling | CLIs, schemas, OpenAPI, Pkl, agent resources, and personal configuration. |
+| Repository Knowledge | Source-backed knowledge, navigation, technical documents, and prose assessment. |
+
+The [catalog](source/CATALOG.md) lists exact skill names and plugin contents.
+The [migration map](source/MIGRATION.md) maps retired skills to their replacements.
+Installation supplies capabilities. User requests and repository instructions control each action.
+
+Kotlin Engineering declares a Kast MCP connection for Codex.
+Pi keeps that configuration as reference material without a server connection.
+Kast owns runtime installation and workspace discovery.
+Plugin installation alone does not prove that Kast serves the current workspace.
+
+## Contribute
+
+Use Node.js 22.19 or later and uv 0.12.9 or later.
+The tools need Python 3.12 or 3.13 and Pkl 0.32.0.
+Run the explicit checkout setup:
+
+```bash
 uv run --locked tools/setup.py
-uv run --locked tools/check.py
+```
+
+The setup installs locked Python and Node dependencies.
+If you need the pinned Pkl executable, use a fresh output path:
+
+```bash
+node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
+export PKL_BIN=/tmp/slopsentral-pkl/pkl
+```
+
+Run the repository gates:
+
+```bash
 npm run verify
 ```
 
-The project locks Pyright, Ruff, pytest, PyYAML, and the optional LibCST group.
-Portable Python scripts declare PEP 723 metadata and adjacent locks.
-The configuration disables source builds with `tool.uv.no-build = true`.
+For a focused change, use the checks in [AGENTS.md](AGENTS.md) and the affected source scope.
+The [projection guide](docs/pkl-projection.md) describes fresh output paths and provider contracts.
 
-New automation uses strict types, finite outcomes, literal argument arrays, and focused tests.
-The explicit include lists in `pyproject.toml` define strict Pyright and Ruff coverage.
-Older Python helpers retain their tests but do not all meet that strict coverage.
-Kotlin compilers, Pkl evaluation, and Node schema tools keep their own contracts.
-The parent-shell history adapter remains because a child process cannot read that state.
+Author skills, hooks, instructions, agents, profiles, and schemas under `source/`.
+Keep shared tools under `tools/`.
+Plugins reference canonical primitives.
+Generated provider trees and installed caches remain consumers.
+New Python automation uses uv, locked dependencies, strict Pyright, Ruff, pytest, and `tool.uv.no-build = true`.
 
-For one skill without a plugin, use:
-
-```text
-uv run --locked tools/install_skill.py pkl-engineering
-```
-
-The installer rejects conflicting local content. It copies no generated plugin payload into authored source.
-
-## Source and delivery
-
-Author skills, hooks, concepts, agents, schemas, and plugin references under `source/`.
-Keep shared maintenance tools under `tools/`.
-Plugins reference canonical primitives. They do not own copies of those primitives.
-Installed caches and generated provider trees remain consumers.
-
-Software Engineering and Kotlin Engineering deliver concise policies through their context hooks.
-Those hooks cover startup, resume, clear, and compact.
-Their output does not prove that the host consumed the policy or that a model obeyed it.
-Full procedures and examples remain in task-selected skills and references.
-
-Software Engineering also composes [scope maintenance for `AGENTS.md`](docs/agents-md-scope.md).
-That hook requests source-backed instruction updates and permits a documented no-change review.
-
-Standalone source, Pkl, API-context, and skill-read hooks remain explicit primitives.
-The five plugin bundles do not select those hooks.
-A repository must explicitly compose a hook before it can use that automatic behavior.
-The historical `pkl-checked-repository` profile now selects guidance only.
-
-Profiles select plugins without implicit installation or startup mutation.
-Inspect the Kotlin selection with:
-
-```text
-node tools/catalog.mjs --profile kotlin-repo-default --json
-```
-
-Use the [Codex profile lifecycle](docs/profile-lifecycle.md) for explicit setup and saved transaction rollback.
-Use the upstream Worktrunk plugin for worktree automation.
-The [Worktrunk procedure](docs/worktrunk-automation.md) describes project setup and gates.
-
-The local Pkl projector creates Codex, GitHub Copilot, and Pi output from authored source.
-Publication updates `.agents/plugins` and `.github/plugin` on `main` and the corresponding harness branches.
-Pi releases publish a tested archive through GitHub Releases.
-Local edits and temporary projections do not publish those trees or change installed caches.
-Read the [architecture](source/ARCHITECTURE.md) for ownership and evidence limits.
-
-## Local evidence
-
-The repository tools need Node.js 22.19 or later, locked dependencies, and Pkl 0.32.0.
-Install its pinned runtime explicitly:
-
-```text
-npm ci
-node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
-```
-
-Set `PKL_BIN` to that executable in the process environment.
-Use fresh output paths for each projection.
-
-```text
-node tools/validate-source-graph.mjs
-node tools/catalog.mjs --check
-node tools/run-routing-evals.mjs --require-all-fixtures
-uv run --locked tools/compile_kotlin_concepts.py
-uv run --locked tools/verify_marketplaces.py
-git diff --check
-```
-
-The catalog test caps the distribution at five plugins and 30 skills.
-It also rejects hidden discoverable skill directories and unrelated hooks in Kotlin defaults.
-Graph and projection tests reject duplicate identities, conflicting paths, cycles, and duplicate hook selection.
-Compiler and schema examples exercise legal values and forbidden calls.
-
-Golden routing fixtures express expected contracts. They do not record model behavior.
-Field records keep historical route identities and evidence.
-Records whose skills retired need a fresh replay before they support the replacement route.
-Each plugin benchmark defines a disposable local scenario. No live model benchmark runs during the normal gates.
-
-## Kast
-
-The Codex projection of Kotlin Engineering declares its existing Kast MCP connection.
-The Pi package keeps that configuration as reference material and does not connect the server.
-Kast owns runtime installation and workspace discovery.
-Examine the configured server and use a fresh semantic query before a claim of installed readiness.
-Plugin installation alone proves neither runtime availability nor workspace enrollment.
+Publication updates the generated Codex and GitHub Copilot trees on `main` and their harness branches.
+Pi releases promote one tested archive through GitHub Releases.
+The [architecture](source/ARCHITECTURE.md) explains source ownership and proof limits.
+Native host tests cover adapter behavior. They do not prove that a model obeys instructions or selects the intended skill.
