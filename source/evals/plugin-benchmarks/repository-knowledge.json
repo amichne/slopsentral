@@ -34,7 +34,8 @@
     "The benchmark may change only local documentation evidence and must not publish or modify remote state.",
     "Astra-targeted definition; static validation and golden replay are not a live model benchmark result.",
     "New core-flow prompts omit plugin-name hints. Supply a pinned local fixture before running; checklists are review rubrics, not observed activation or outcome results.",
-    "Consolidated scenarios retained from the former technical-writing plugin."
+    "Consolidated scenarios retained from the former technical-writing plugin.",
+    "The seven docs-* candidate cases use source/evals/files/documentation-evidence/context.md and the independent review assertions in source/evals/documentation-evidence.md. Copy those inputs into the disposable workspace before replay; no live replay is part of normal gates."
   ],
   "setupQuestions": [
     "Which bounded Kotlin or Gradle concept should become a source-backed OKF bundle?"
@@ -156,6 +157,132 @@
         "The trace contains no marker-driven routing, build, or script-safety activation.",
         "Do not load skill-primitive-authoring, kotlin-gradle-validation, or shell-script-safety solely because repository markers exist.",
         "Do not run a build, generate knowledge, or change configuration for this prose-only request."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "docs-export-completeness",
+      "title": "Audit an incomplete export",
+      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "routingCaseIds": [
+        "okf-knowledge-work-is-not-generic-doc-authoring"
+      ],
+      "expectedPrimitive": {
+        "type": "PLUGIN",
+        "name": "repository-knowledge"
+      },
+      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Audit the export and live inventory before migration. Report page and diagram completeness, recovered assets, parse failures, and unsupported architecture claims. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Missing runtime, rendered, or human evidence remains explicitly unverified."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "docs-source-revision",
+      "title": "Refresh stale source identity",
+      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "routingCaseIds": [
+        "openwiki-refresh-preserves-backend-authority"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "code-knowledge-base"
+      },
+      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Refresh the stale limit claim against the selected source revision. Preserve the old snapshot and identify what current evidence does and does not prove. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Missing runtime, rendered, or human evidence remains explicitly unverified."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "docs-fact-ownership",
+      "title": "Keep canonical fact owners",
+      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "routingCaseIds": [
+        "docs-site-nav-preserves-generated-boundaries"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "technical-documentation"
+      },
+      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Place the default, completion mechanism, and first-query procedure in their canonical homes. Specify the owning-source change and cross-links. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Missing runtime, rendered, or human evidence remains explicitly unverified."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "docs-supported-primitive",
+      "title": "Repair unsupported hosted MDX",
+      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "routingCaseIds": [
+        "docs-site-nav-preserves-generated-boundaries"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "technical-documentation"
+      },
+      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Repair the proposed hosted MDX fragment using supported primitives. Retain visible critical caveats and describe the narrow compatibility check. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Missing runtime, rendered, or human evidence remains explicitly unverified."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "docs-diagram-fidelity",
+      "title": "Preserve diagram source and meaning",
+      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "routingCaseIds": [
+        "docs-site-nav-preserves-generated-boundaries"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "technical-documentation"
+      },
+      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Prepare both recovered diagrams for rendering. Preserve exact originals, separate syntax corrections and semantic changes, and expose any remaining failure. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Missing runtime, rendered, or human evidence remains explicitly unverified."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "docs-rendering-gap",
+      "title": "Diagnose a visual verification gap",
+      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "routingCaseIds": [
+        "docs-site-nav-preserves-generated-boundaries"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "technical-documentation"
+      },
+      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Assess the supplied renderer observations. Name failed and unverified checks and the smallest next validation. Do not claim a new browser run from these supplied observations. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Missing runtime, rendered, or human evidence remains explicitly unverified."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "docs-compact-first-result",
+      "title": "Write a compact first-result guide",
+      "purpose": "Candidate regression; use the matching assertions in source/evals/documentation-evidence.md. No model result is implied.",
+      "routingCaseIds": [
+        "docs-site-nav-preserves-generated-boundaries"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "technical-documentation"
+      },
+      "userInput": "Use the supplied synthetic source/evals/files/documentation-evidence/context.md and only the relevant facts. Write one first-query guide from the compact task facts. Keep the reader path complete and bounded; cross-link mechanism and exact contracts. Use only a disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "successChecklist": [
+        "The matching case assertions in source/evals/documentation-evidence.md are satisfied with cited fixture evidence.",
+        "Missing runtime, rendered, or human evidence remains explicitly unverified."
       ]
     }
   ]
