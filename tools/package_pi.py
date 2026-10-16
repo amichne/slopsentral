@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import gzip
 import hashlib
+import io
 import json
 import re
 import tarfile
@@ -92,13 +93,16 @@ def inspect(root: Path) -> _Package | Rejected:
     return _Package(root, version, files)
 
 
-def package(root: Path, output: Path) -> Packed | Rejected:
+def package(root: Path, output: Path, *, version: str | None = None) -> Packed | Rejected:
     try:
         inspected = inspect(root)
         if isinstance(inspected, Rejected):
             return inspected
+        selected = inspected.version if version is None else version
+        if not re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)", selected):
+            return Rejected(Code.INVALID_PACKAGE)
         output.mkdir(parents=True, exist_ok=False)
-        archive = output / f"slopsentral-pi-{inspected.version}.tgz"
+        archive = output / f"slopsentral-pi-{selected}.tgz"
         with (
             archive.open("xb") as stream,
             gzip.GzipFile(fileobj=stream, mode="wb", filename="", mtime=0) as compressed,
@@ -110,6 +114,15 @@ def package(root: Path, output: Path) -> Packed | Rejected:
                 )
                 info.uid = info.gid = info.mtime = 0
                 info.uname = info.gname = ""
+                if file == inspected.root / "package.json" and version is not None:
+                    manifest: object = json.loads(file.read_bytes())
+                    if not mapping(manifest):
+                        return Rejected(Code.INVALID_PACKAGE)
+                    manifest["version"] = selected
+                    data = (json.dumps(manifest, indent=2) + "\n").encode()
+                    info.size = len(data)
+                    packed.addfile(info, io.BytesIO(data))
+                    continue
                 with file.open("rb") as payload:
                     packed.addfile(info, payload)
         with archive.open("rb") as payload:
@@ -119,7 +132,7 @@ def package(root: Path, output: Path) -> Packed | Rejected:
         return Rejected(Code.INVALID_PACKAGE)
     except (OSError, tarfile.TarError):
         return Rejected(Code.IO_FAILED)
-    return Packed(inspected.version, archive, digest)
+    return Packed(selected, archive, digest)
 
 
 def main() -> int:
@@ -127,11 +140,13 @@ def main() -> int:
     _ = parser.add_argument("package", type=Path)
     _ = parser.add_argument("out", type=Path)
     _ = parser.add_argument("--github-output", type=Path)
+    _ = parser.add_argument("--version")
     args = parser.parse_args()
     root: Path = args.package
     output: Path = args.out
     github_output: Path | None = args.github_output
-    result = package(root, output)
+    version: str | None = args.version
+    result = package(root, output, version=version)
     if isinstance(result, Rejected):
         print(json.dumps({"type": "REJECTED", "code": result.code}))
         return 1

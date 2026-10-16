@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/pi/promotion.schema.json",
+  "title": "Pi promotion record",
+  "description": "An immutable Pi promotion record with source and artifact identity.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "enum": [
+        1
+      ],
+      "examples": [
+        1
+      ]
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$",
+      "examples": [
+        "amichne/slopsentral"
+      ]
+    },
+    "source_revision": {
+      "type": "string",
+      "pattern": "^(?!0{40}$)[0-9a-f]{40}$",
+      "examples": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ]
+    },
+    "merged_revision": {
+      "type": "string",
+      "pattern": "^(?!0{40}$)[0-9a-f]{40}$",
+      "examples": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ]
+    },
+    "source_tree": {
+      "type": "string",
+      "pattern": "^(?!0{40}$)[0-9a-f]{40}$",
+      "examples": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^0\\.1\\.[1-9][0-9]*$",
+      "examples": [
+        "0.1.123"
+      ]
+    },
+    "build_run_id": {
+      "type": "integer",
+      "minimum": 1,
+      "examples": [
+        123
+      ]
+    },
+    "build_run_attempt": {
+      "type": "integer",
+      "minimum": 1,
+      "examples": [
+        123
+      ]
+    },
+    "main_run_id": {
+      "type": "integer",
+      "minimum": 1,
+      "examples": [
+        123
+      ]
+    },
+    "main_run_attempt": {
+      "type": "integer",
+      "minimum": 1,
+      "examples": [
+        123
+      ]
+    },
+    "candidate_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "examples": [
+        "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      ]
+    },
+    "archive_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "examples": [
+        "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "repository",
+    "source_revision",
+    "merged_revision",
+    "source_tree",
+    "version",
+    "build_run_id",
+    "build_run_attempt",
+    "main_run_id",
+    "main_run_attempt",
+    "candidate_sha256",
+    "archive_sha256"
+  ],
+  "examples": [
+    {
+      "schema_version": 1,
+      "repository": "amichne/slopsentral",
+      "source_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "merged_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "source_tree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "version": "0.1.123",
+      "build_run_id": 123,
+      "build_run_attempt": 123,
+      "main_run_id": 123,
+      "main_run_attempt": 123,
+      "candidate_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "archive_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  ]
+}

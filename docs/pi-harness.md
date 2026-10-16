@@ -17,6 +17,14 @@ The launcher needs `pi` on `PATH`.
 It delegates package download and installation to Pi.
 It selects the published `v0.1.0` package.
 
+The default stays pinned to `0.1.0`.
+To select an automatic release, find its `pi-v` tag in [GitHub Releases](https://github.com/amichne/slopsentral/releases).
+Replace `0.1.123` with that published version:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | SLOPSENTRAL_PI_VERSION=0.1.123 sh
+```
+
 For the direct Pi command, use:
 
 ```bash
@@ -168,6 +176,12 @@ The adapter uses the host cancellation signal when Pi supplies one.
 Pi does not supply that signal at each lifecycle stage.
 Escape cancellation during startup, settlement, and manual gates remains unproved.
 
+The native-host tests use Pi's real extension runner and the packaged `agents-md-scope` hook in an isolated Git repository.
+They exercise scope notices, the review receipt, and completion gates under the shipped `ADVISORY` policy.
+That policy reports failed gates without a block on completion.
+Deterministic cases also cover `OFF`, `ENFORCING`, process failure, cancellation, and session shutdown.
+These cases do not prove model compliance or interactive Escape behavior.
+
 | Hook policy | Failure behavior |
 | --- | --- |
 | `ADVISORY` | Report the failure without an automatic continuation. |
@@ -197,13 +211,46 @@ The extension does not connect MCP servers or change tool sets.
 Automatic agents and MCP connections remain explicit gaps relative to Codex.
 Source profiles do not supply connection consent or ownership for a server lifecycle.
 
-The manual `Release Pi package` workflow publishes a versioned archive and checksum file from `main`.
-The archive uses the generated package version from `tools/projection/Pi.pkl`.
-It rejects lifecycle scripts, runtime dependencies, symlinks, and local caches.
-An existing release causes publication to fail instead of replacement.
-Pi releases do not replace the marketplace's latest release designation.
 Projection alone does not prove installed-host behavior or improved model decisions.
 The handoff report records the checks that ran and the gaps that remain.
+
+## Automatic releases
+
+`Validate Source` runs the full source suite before its Pi candidate job.
+That job examines every Pi contract, packages one archive, and installs that archive through Pi's native CLI.
+Only a successful installation permits the candidate record.
+The version is `0.1.<Validate Source run number>`.
+The archive manifest receives that version without a change to the authored package or projected tree.
+The packager rejects lifecycle scripts, runtime dependencies, symlinks, and local caches.
+
+After a merge, the main run can reuse the successful PR candidate.
+Reuse needs a merged PR from this repository, the exact producer identity, and complete Git-tree equality.
+Missing or expired candidates cause a fresh main package and installation.
+A different merge tree also causes a fresh main candidate.
+A corrupt candidate or foreign producer stops the operation.
+The retained artifacts expire after 30 days.
+
+`Release Pi package` starts automatically after a successful `Validate Source` push run on `main`.
+It admits that main run, the original producer, both source trees, and the archive digest and version.
+The workflow uploads the same archive bytes without another package build or installation.
+PR jobs receive read-only permissions.
+The publisher treats candidate files as data and never extracts the tar archive or starts its scripts.
+It admits only the three expected, bounded ZIP members before it copies the artifact files.
+
+Each `pi-v<version>` release contains the archive, `SHA256SUMS`, `candidate.json`, and `promotion.json`.
+The candidate record identifies the tested source commit, tree, producer run, run attempt, version, and archive digest.
+The promotion record binds that candidate to the successful main run and merged commit.
+The tag targets the merged commit.
+The [provenance schemas](../source/schemas/pi/) define both record shapes.
+Existing tags or releases cause publication to fail instead of replacement.
+Pi releases keep the marketplace's latest release designation unchanged.
+
+For a manual publication retry, select `Release Pi package` on `main` and supply the successful main run's `run_id`.
+The workflow uses that run's exact commit, even after main advances.
+A failed run, wrong workflow, non-main branch, missing artifact, or changed producer attempt stops publication.
+If a failed publication leaves a tag, examine its source and release state before a manual recovery.
+Local tests exercise these admission rules and archive identity.
+A hosted workflow run remains necessary to prove GitHub artifact transport and release publication.
 
 ## Optional persistent installation
 

@@ -1,10 +1,20 @@
 name: Release Pi package
 
 on:
+  workflow_run:
+    workflows: [Validate Source]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful main Validate Source run whose retained archive to publish
+        required: true
+        type: string
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: release-pi
@@ -12,48 +22,53 @@ concurrency:
 
 jobs:
   release:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      (github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.conclusion == 'success') ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: npm
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
       - uses: astral-sh/setup-uv@v7
         with:
           version: '0.12.9'
-      - run: npm ci --ignore-scripts
-      - name: Install pinned Pkl
-        run: |
-          node tools/install-projection-pkl.mjs --out "$RUNNER_TEMP/pkl/pkl"
-          echo "PKL_BIN=$RUNNER_TEMP/pkl/pkl" >> "$GITHUB_ENV"
-      - name: Project the Pi package from this source revision
-        run: node tools/project-marketplaces.mjs --source . --harness pi --out "$RUNNER_TEMP/projected-pi"
-      - name: Examine native host contracts
-        run: |
-          npm run check:pi
-          node --test tools/tests/pi-host.test.mjs tools/tests/pi-runtime.test.mjs tools/tests/pi-projection.test.mjs
-      - name: Package without npm build or lifecycle scripts
-        id: package
-        run: uv run --locked tools/package_pi.py "$RUNNER_TEMP/projected-pi/.pi/slopsentral" "$RUNNER_TEMP/pi-release" --github-output "$GITHUB_OUTPUT"
-      - name: Install the archive through the native Pi CLI
+      - name: Admit the successful main run and original producer
+        id: candidate
         env:
-          SLOPSENTRAL_PI_ARCHIVE: ${{ steps.package.outputs.archive }}
-        run: node --test tools/tests/pi-install.test.mjs
-      - name: Publish the versioned Pi release
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ github.event.workflow_run.head_sha }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || inputs.run_id }}
+        run: >-
+          uv run --locked --script tools/pi_candidate.py promote
+          --repository "$GITHUB_REPOSITORY" --revision "$SOURCE_SHA"
+          --run-id "$SOURCE_RUN_ID" --bundle "$RUNNER_TEMP/pi-candidate"
+          --promotion-record "$RUNNER_TEMP/promotion.json" --github-output "$GITHUB_OUTPUT"
+      - name: Create the tag at the admitted merged commit without replacement
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ steps.candidate.outputs.merged_revision }}
+          VERSION: ${{ steps.candidate.outputs.version }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs"
+          -f "ref=refs/tags/pi-v$VERSION" -f "sha=$SOURCE_SHA"
+      - name: Publish the retained archive without replacement
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          VERSION: ${{ steps.package.outputs.version }}
-          ARCHIVE: ${{ steps.package.outputs.archive }}
-        run: |
-          git push origin "$GITHUB_SHA:refs/tags/pi-v$VERSION"
-          gh release create "pi-v$VERSION" "$ARCHIVE" "$RUNNER_TEMP/pi-release/SHA256SUMS" \
-            --verify-tag --latest=false \
-            --title "Slopsentral Pi $VERSION" \
-            --notes "Pi package projected from source commit $GITHUB_SHA. See docs/pi-harness.md for installation and profile commands."
+          SOURCE_SHA: ${{ steps.candidate.outputs.merged_revision }}
+          BUILD_SHA: ${{ steps.candidate.outputs.source_revision }}
+          VERSION: ${{ steps.candidate.outputs.version }}
+          ARCHIVE: ${{ steps.candidate.outputs.archive }}
+        run: >-
+          gh release create "pi-v$VERSION" "$ARCHIVE"
+          "$RUNNER_TEMP/pi-candidate/SHA256SUMS" "$RUNNER_TEMP/pi-candidate/candidate.json"
+          "$RUNNER_TEMP/promotion.json" --verify-tag --latest=false
+          --title "Slopsentral Pi $VERSION"
+          --notes "Pi archive tested from source $BUILD_SHA and admitted for main commit $SOURCE_SHA. See docs/pi-harness.md for installation and provenance."

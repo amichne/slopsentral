@@ -95,3 +95,24 @@ def test_symlinks_and_missing_payloads_are_rejected(tmp_path: Path) -> None:
     link.unlink()
     (root / "profiles.json").unlink()
     assert package(root, tmp_path / "output") == Rejected(Code.INVALID_PACKAGE)
+
+
+def test_ci_version_is_in_the_archive_without_a_source_edit(tmp_path: Path) -> None:
+    root = fixture(tmp_path / "package")
+    before = (root / "package.json").read_bytes()
+    result = package(root, tmp_path / "output", version="0.1.123")
+    assert isinstance(result, Packed)
+    assert result.version == "0.1.123"
+    assert result.archive.name == "slopsentral-pi-0.1.123.tgz"
+    with tarfile.open(result.archive) as packed:
+        manifest = packed.extractfile("package/package.json")
+        assert manifest is not None
+        assert json.loads(manifest.read())["version"] == "0.1.123"
+    assert (root / "package.json").read_bytes() == before
+
+
+@pytest.mark.parametrize("version", ["../escape", "0.1.1\ninjected=value", "0.1.-1"])
+def test_ci_version_rejects_paths_and_output_injection(tmp_path: Path, version: str) -> None:
+    root = fixture(tmp_path / "package")
+    assert package(root, tmp_path / "output", version=version) == Rejected(Code.INVALID_PACKAGE)
+    assert not (tmp_path / "output").exists()

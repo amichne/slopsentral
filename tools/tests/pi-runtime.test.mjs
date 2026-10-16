@@ -6,7 +6,7 @@ import test from 'node:test';
 import { tsImport } from 'tsx/esm/api';
 
 const runtime = await tsImport('../../source/hooks/pi/runtime.ts', import.meta.url);
-const { decodeHook, parseConfig, scopedSkills, select, runAction } = runtime.default ?? runtime;
+const { decodeHook, parseConfig, scopedSkills, select, runAction, runHooks } = runtime.default ?? runtime;
 const profile = { name: 'fixture', description: 'Fixture', skills: [{ name: 'chosen', path: 'plugin/skills/chosen/SKILL.md' }], instructions: [], agents: [], hooks: [], hookPolicy: 'ADVISORY' };
 const config = { schemaVersion: 1, defaultProfile: 'fixture', profiles: [profile] };
 
@@ -87,4 +87,34 @@ test('timeout escalates against descendants even after the process leader ends',
   t.after(() => { try { process.kill(pid, 'SIGKILL'); } catch (error) { if (error.code !== 'ESRCH') throw error; } });
   await new Promise(resolve => setTimeout(resolve, 400));
   assert.throws(() => process.kill(pid, 0), error => error.code === 'ESRCH');
+});
+
+test('active cancellation stops a real hook and prevents later actions', { skip: process.platform === 'win32', timeout: 15000 }, async t => {
+  const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi-active-abort-')));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(directory, 'fixture/hooks'), { recursive: true });
+  const pidPath = path.join(directory, 'ready');
+  const laterPath = path.join(directory, 'must-not-run');
+  fs.writeFileSync(path.join(directory, 'fixture/hooks/slow.mjs'), `import fs from 'node:fs';process.on('SIGTERM',()=>{});fs.writeFileSync(${JSON.stringify(pidPath + '.tmp')},String(process.pid));fs.renameSync(${JSON.stringify(pidPath + '.tmp')},${JSON.stringify(pidPath)});setInterval(()=>{},1000);`);
+  fs.writeFileSync(path.join(directory, 'fixture/hooks/later.mjs'), `import fs from 'node:fs';fs.writeFileSync(${JSON.stringify(laterPath)},'ran');console.log('{}');`);
+  const ready = new Promise((resolve, reject) => {
+    const watcher = fs.watch(directory, () => { if (fs.existsSync(pidPath)) { clearTimeout(timer); watcher.close(); resolve(); } });
+    const timer = setTimeout(() => { watcher.close(); reject(new Error('hook never reached its ready stage')); }, 10000);
+    t.after(() => { clearTimeout(timer); watcher.close(); });
+  });
+  const controller = new AbortController();
+  const actions = ['slow', 'later'].map(name => ({ name, event: 'Stop', plugin: 'fixture', argv: [process.execPath, `hooks/${name}.mjs`], timeout: 30 }));
+  const pending = runHooks(directory, { ...profile, hooks: actions }, 'Stop', directory, {}, controller.signal);
+  t.after(() => controller.abort());
+  await ready;
+  const pid = Number(fs.readFileSync(pidPath, 'utf8'));
+  t.after(() => { try { process.kill(pid, 'SIGKILL'); } catch (error) { if (error.code !== 'ESRCH') throw error; } });
+  process.kill(pid, 0);
+  controller.abort();
+  const runs = await pending;
+  assert.equal(runs.length, 1);
+  assert.equal(runs[0].action.name, 'slow');
+  assert.deepEqual(runs[0].result, { type: 'rejected', code: 'ABORTED' });
+  assert.throws(() => process.kill(pid, 0), error => error.code === 'ESRCH');
+  assert.equal(fs.existsSync(laterPath), false);
 });

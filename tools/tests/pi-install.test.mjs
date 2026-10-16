@@ -52,3 +52,22 @@ test('Pi installs a release archive and loads persisted profiles without registr
   assert.ok(result.systemPromptOptions.sections.slopsentral.includes('# Kotlin Engineering'));
   assert.deepEqual(errors, []);
 });
+
+for (const version of [undefined, '0.1.123']) {
+  test(`published Pi launcher selects ${version ?? 'the pinned default'} and preserves literal arguments`, async t => {
+    const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi launcher ')));
+    t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+    const executable = path.join(directory, 'pi');
+    fs.writeFileSync(executable, '#!/bin/sh\nprintf "%s\\n" "$@"\n', { mode: 0o755 });
+    const env = { ...process.env, PATH: `${directory}:${process.env.PATH}` };
+    delete env.SLOPSENTRAL_PI_VERSION;
+    if (version) env.SLOPSENTRAL_PI_VERSION = version;
+    const launcher = path.resolve(import.meta.dirname, '../install-pi.sh');
+    const { stdout } = await execute('/bin/sh', [launcher, '--local', 'literal $HOME; argument'], { env });
+    const selected = version ?? '0.1.0';
+    assert.deepEqual(stdout.trimEnd().split('\n'), [
+      'install', `npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v${selected}/slopsentral-pi-${selected}.tgz`,
+      '--local', 'literal $HOME; argument',
+    ]);
+  });
+}
