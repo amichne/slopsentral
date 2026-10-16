@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -8,9 +9,11 @@ import { project } from '../project-marketplaces.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 
-async function host(t, packagePath, directory, flag) {
+async function host(t, packagePath, directory, flag, agentDir = path.join(directory, 'agent')) {
+  const previousHome = process.env.CODEX_HOME;
+  process.env.CODEX_HOME = path.join(path.dirname(agentDir), 'codex');
+  t.after(() => { if (previousHome === undefined) delete process.env.CODEX_HOME; else process.env.CODEX_HOME = previousHome; });
   const settingsManager = SettingsManager.inMemory({ packages: [] });
-  const agentDir = path.join(directory, 'agent');
   fs.mkdirSync(agentDir);
   const loader = new DefaultResourceLoader({ cwd: directory, agentDir, settingsManager,
     additionalExtensionPaths: [packagePath], noExtensions: true, noSkills: true, noPromptTemplates: true, noThemes: true, noContextFiles: true });
@@ -27,6 +30,60 @@ async function host(t, packagePath, directory, flag) {
   await session.bindExtensions({ mode: 'print', onError: error => errors.push(error), abortHandler: () => { aborts++; } });
   return { session, loader, errors, aborts: () => aborts };
 }
+
+test('projected scope hook reports real edits until an explicit review resolves its gate', { skip: !process.env.PKL_BIN && !process.env.SLOPSENTRAL_PI_PACKAGE }, async t => {
+  const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi scope lifecycle ')));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const cwd = path.join(directory, 'consumer');
+  fs.mkdirSync(path.join(cwd, 'module'), { recursive: true });
+  fs.writeFileSync(path.join(cwd, 'AGENTS.md'), '# Fixture\nThe root instructions own the module.\n');
+  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'original\n');
+  const git = (...args) => execFileSync('git', ['-C', cwd, '-c', 'core.hooksPath=/dev/null', ...args], { encoding: 'utf8' });
+  git('init', '--quiet');
+  git('add', '.');
+  git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '--quiet', '--no-gpg-sign', '-m', 'fixture');
+  let packagePath = process.env.SLOPSENTRAL_PI_PACKAGE;
+  if (!packagePath) {
+    project({ source: root, harness: 'pi', out: path.join(directory, 'projection') });
+    packagePath = path.join(directory, 'projection/.pi/slopsentral');
+  }
+  const { session, errors, aborts } = await host(t, packagePath, cwd, undefined, path.join(directory, 'agent'));
+  const settle = () => session.extensionRunner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, entries => ({
+    contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: entries.some(entry => entry.type === 'custom_message'),
+  }));
+  assert.deepEqual(await session.extensionRunner.emitInput('Examine the fixture.', undefined, 'interactive'), { action: 'continue' });
+  assert.deepEqual((await settle()).entries, []);
+  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'changed-source-must-stay-private\n');
+  const original = { type: 'tool_result', toolName: 'write', toolCallId: 'edit-1', input: {}, content: [{ type: 'text', text: 'Native edit receipt' }], details: { receipt: 1 }, structuredContent: { saved: true }, isError: false, usage: { input: 1, output: 1 } };
+  const recorded = await session.extensionRunner.emitToolResult(original);
+  assert.deepEqual(recorded.content[0], original.content[0]);
+  assert.deepEqual(recorded.structuredContent, original.structuredContent);
+  assert.deepEqual(recorded.details, original.details);
+  assert.deepEqual(recorded.usage, original.usage);
+  assert.equal(recorded.isError, false);
+  assert.ok(recorded.content.some(part => part.type === 'text' && part.text.includes('module/main.py') && part.text.includes('AGENTS.md')));
+  assert.equal(JSON.stringify(recorded).includes('changed-source-must-stay-private'), false);
+  const blocked = await settle();
+  assert.equal(blocked.continue, false, 'the shipped advisory policy must not continue the run');
+  assert.ok(blocked.entries.some(entry => entry.type === 'custom_message' && entry.content.includes('agents-md-scope: BLOCKED') && entry.content.includes('review')));
+  const script = path.join(packagePath, 'software-engineering/hooks/agents-md-scope.py');
+  const reviewed = JSON.parse(execFileSync('uv', ['run', '--locked', '--script', script, 'review', '--cwd', cwd,
+    '--session-id', session.sessionManager.getSessionId(), '--note', 'The root instructions still describe the module.'], { cwd: directory, encoding: 'utf8' }));
+  assert.equal(reviewed.type, 'REVIEW_RECORDED');
+  assert.deepEqual((await settle()).entries, []);
+  const store = path.join(process.env.CODEX_HOME, 'state/agents-md-scope');
+  const snapshot = () => fs.readdirSync(store).filter(name => name.endsWith('.json')).map(name => fs.readFileSync(path.join(store, name), 'utf8'));
+  const saved = snapshot();
+  assert.equal(saved.length, 1);
+  await session.prompt('/slopsentral-profile off');
+  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'changed while off\n');
+  await session.extensionRunner.emitInput('Examine the fixture.', undefined, 'interactive');
+  assert.equal(await session.extensionRunner.emitToolResult(original), undefined);
+  assert.deepEqual((await settle()).entries, []);
+  assert.deepEqual(snapshot(), saved, 'the off profile must not write hook state');
+  assert.equal(aborts(), 0);
+  assert.deepEqual(errors, []);
+});
 
 test('Pi 1.2 native loader dispatches profile commands, prompt sections, and branch restoration without a provider', { skip: !process.env.PKL_BIN && !process.env.SLOPSENTRAL_PI_PACKAGE }, async t => {
   const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'slopsentral-pi-host-')));
@@ -104,6 +161,52 @@ test('native flag choice persists and remains stable on session restoration', as
   await session.extensionRunner.emit({ type: 'session_start', reason: 'resume' });
   assert.equal(session.sessionManager.getBranch().at(-1).data, 'second');
   assert.deepEqual(errors, []);
+});
+
+test('native hook policies distinguish disabled, advisory, and enforcing failures across each event', async t => {
+  for (const mode of ['OFF', 'ADVISORY', 'ENFORCING']) await t.test(mode, async t => {
+    const hooks = ['UserPromptSubmit', 'PreToolUse', 'PostToolUse', 'Stop'].map(event => ({
+      name: 'gate', event, plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 2,
+      ...(event === 'PreToolUse' ? { matcher: '^read_file$' } : {}),
+    }));
+    const f = fixture(t, hooks, mode);
+    const ledger = path.join(f.directory, 'events.jsonl');
+    fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync(0,'utf8')); fs.appendFileSync(${JSON.stringify(ledger)},p.hook_event_name+'\\n'); console.log(JSON.stringify({decision:'block',reason:'controlled '+p.hook_event_name+' rejection'}));`);
+    const { session, errors, aborts } = await host(t, f.packagePath, f.directory);
+    const notifications = [];
+    session.extensionRunner.setUIContext({ notify: message => notifications.push(message), setStatus: () => {} });
+    session.sessionManager.appendMessage({ role: 'user', content: 'Examine the fixture.', timestamp: 0 });
+    await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine the fixture.' }, { cwd: f.directory });
+    assert.deepEqual(await session.extensionRunner.emitInput('Examine the fixture.', undefined, 'rpc'), { action: mode === 'ENFORCING' ? 'handled' : 'continue' });
+    const call = { type: 'tool_call', toolName: 'read', toolCallId: 'read-1', input: { path: 'fixture.txt' } };
+    assert.equal(await session.extensionRunner.emitToolCall({ ...call, toolName: 'write' }), undefined, 'an unmatched tool must not run the gate');
+    const permission = await session.extensionRunner.emitToolCall(call);
+    if (mode === 'ENFORCING') {
+      assert.equal(permission.block, true);
+      assert.match(permission.reason, /controlled PreToolUse rejection/);
+    } else assert.equal(permission, undefined);
+    const original = { type: 'tool_result', toolName: 'read', toolCallId: 'read-1', input: {}, content: [{ type: 'text', text: 'original evidence' }], details: { receipt: 1 }, isError: false };
+    const result = await session.extensionRunner.emitToolResult(original);
+    if (mode === 'OFF') assert.equal(result, undefined);
+    else {
+      assert.deepEqual(result.content[0], original.content[0]);
+      assert.match(result.content.at(-1).text, /controlled PostToolUse rejection/);
+    }
+    assert.equal(aborts(), mode === 'ENFORCING' ? 1 : 0);
+    const settle = await session.extensionRunner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, entries => ({
+      contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: entries.some(entry => entry.type === 'custom_message'),
+    }));
+    assert.equal(settle.continue, mode === 'ENFORCING');
+    if (mode === 'OFF') assert.deepEqual(settle.entries, []);
+    else assert.ok(settle.entries.some(entry => entry.type === 'custom_message' && entry.content.includes('controlled Stop rejection')));
+    const events = () => fs.existsSync(ledger) ? fs.readFileSync(ledger, 'utf8').trim().split('\n') : [];
+    assert.deepEqual(events(), mode === 'OFF' ? [] : ['UserPromptSubmit', 'PreToolUse', 'PostToolUse', 'Stop']);
+    const prior = notifications.length;
+    await session.prompt('/slopsentral-check');
+    assert.equal(events().at(-1), 'Stop', 'explicit gates must also run with the OFF policy');
+    assert.ok(notifications.slice(prior).some(message => message.includes('controlled Stop rejection')));
+    assert.deepEqual(errors, []);
+  });
 });
 
 test('invalid native startup and branch selections abort until a valid command repairs state', async t => {
@@ -196,6 +299,33 @@ test('native prompt hooks receive the current text and input source before any m
     const entry = session.sessionManager.getBranch().findLast(e => e.type === 'custom_message' && e.customType === 'slopsentral-prompt-hooks');
     assert.deepEqual(JSON.parse(entry.content), { prompt: text, source });
   }
+  assert.deepEqual(errors, []);
+});
+
+test('native session shutdown cancels an active manual gate without a continuation', { skip: process.platform === 'win32', timeout: 15000 }, async t => {
+  const action = { name: 'gate', event: 'Stop', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 30 };
+  const f = fixture(t, [action]);
+  const pidPath = path.join(f.directory, 'ready');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs';process.on('SIGTERM',()=>{});fs.writeFileSync(${JSON.stringify(pidPath + '.tmp')},String(process.pid));fs.renameSync(${JSON.stringify(pidPath + '.tmp')},${JSON.stringify(pidPath)});setInterval(()=>{},1000);`);
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  const notifications = [];
+  session.extensionRunner.setUIContext({ notify: message => notifications.push(message), setStatus: () => {} });
+  const ready = new Promise((resolve, reject) => {
+    const watcher = fs.watch(f.directory, () => { if (fs.existsSync(pidPath)) { clearTimeout(timer); watcher.close(); resolve(); } });
+    const timer = setTimeout(() => { watcher.close(); reject(new Error('manual gate never reached its ready stage')); }, 10000);
+    t.after(() => { clearTimeout(timer); watcher.close(); });
+  });
+  const pending = session.prompt('/slopsentral-check');
+  t.after(() => session.extensionRunner.emit({ type: 'session_shutdown', reason: 'quit' }));
+  await ready;
+  const pid = Number(fs.readFileSync(pidPath, 'utf8'));
+  t.after(() => { try { process.kill(pid, 'SIGKILL'); } catch (error) { if (error.code !== 'ESRCH') throw error; } });
+  process.kill(pid, 0);
+  await session.extensionRunner.emit({ type: 'session_shutdown', reason: 'quit' });
+  await pending;
+  assert.ok(notifications.some(message => message.includes('gate: ABORTED')));
+  assert.throws(() => process.kill(pid, 0), error => error.code === 'ESRCH');
+  assert.equal(session.sessionManager.getBranch().some(entry => entry.type === 'custom' && entry.customType === 'slopsentral-stop-continuation'), false);
   assert.deepEqual(errors, []);
 });
 

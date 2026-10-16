@@ -23,8 +23,11 @@ by hand when the authored source can be fixed instead.
 - Pi packages project into `.pi/slopsentral` for local installation.
   The Pi adapter lives under `source/hooks/pi/`.
   `tools/projection/Pi.pkl` owns its package shape.
-  `.github/workflows/release-pi.yml` publishes versioned Pi archives through
-  GitHub Releases. `tools/package_pi.py` owns archive contents and checksums.
+  `Validate Source` keeps a tested Pi candidate before release.
+  `.github/workflows/release-pi.yml` publishes those bytes through GitHub Releases.
+  `tools/package_pi.py` owns archive contents, version overrides, and checksums.
+  `tools/pi_candidate.py` owns producer admission, source identity, candidate reuse,
+  and promotion records. `source/schemas/pi/` owns the public provenance shapes.
   Release archives need no repository clone or local npm build for installation.
 - `tools/install-pi.sh` is a thin POSIX host launcher for the published package.
   Keep installation logic in Pi's package manager.
@@ -46,6 +49,13 @@ node tools/project-marketplaces.mjs --source . --harness github-copilot --out /t
 node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi
 npm run check:pi
 git diff --check
+```
+
+For Pi release changes, run the focused release checks:
+
+```bash
+uv run --locked pytest tools/python_checks/test_package_pi.py tools/python_checks/test_pi_candidate.py tools/python_checks/test_pi_release_workflows.py
+actionlint .github/workflows/validate-source.yml .github/workflows/release-pi.yml
 ```
 
 The projector requires Pkl 0.32.0 (`PKL_BIN` may select an explicit executable).
