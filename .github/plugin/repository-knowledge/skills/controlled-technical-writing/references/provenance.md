@@ -24,11 +24,9 @@ The bundled files keep upstream copyright, MIT licenses, and Std's NOTICE:
 
 Local Slopsentral rules inherit those three rules, normalize their severity to
 warning, and clarify the grade estimate's message. The diction substitutions
-and glossary-marker rule are locally authored. Only selected Google guidance
+are locally authored. Only selected Google guidance
 is imported: its full word list includes domain/product substitutions that
-could change meaning. Glossary-specific literal rules are generated per run
-from the existing registration checker, not fetched from another style package.
-`assets/vale/resources.lock.json` records exact revisions and local file digests.
+can change meaning. `assets/vale/resources.lock.json` records exact revisions and local file digests.
 
 The workflow uses the official [CLI](https://docs.vale.sh/topics/cli),
 [metric](https://docs.vale.sh/checks/metric), and
@@ -78,25 +76,3 @@ Slopsentral owns the installer, configuration, vocabulary, and rules under `styl
 The local rules use the supplied writing guidance for diction, modal verbs, contractions, sentence limits, and commit limits.
 The shared sentence-length and grade adapters also exist in Slopsentral's assessment source at `bb930bd`.
 This setup reuses the existing local assessment engine and does not import a hosted service.
-
-## Glossary protocol
-
-The glossary protocol and template are local work based on the user's naming requirements.
-They need current domain usage, standalone definitions, and evidence of equivalence before synonym registration.
-They do not treat conceptual similarity as equivalence.
-The [authoring reference](glossary-authoring.md#prior-work) cites the terminology sources examined on 2026-10-13.
-It uses Microsoft's domain-language guidance, Google's audience guidance, and W3C SKOS's distinctions between labels and concepts.
-The ISO 704:2022 overview supplies scope information only, not a claim of full access or compliance.
-The glossary's domain sources support the chosen names. Repository contracts determine Slopsentral's local meaning.
-Vale's pinned source and local behavior support lexical tooling only.
-No upstream protocol, remote server, or terminology service is imported.
-
-## Structured glossary contract
-
-The JSON Schema, immutable parser, traversal, and reader-view generator are local work.
-The same skill owns the structured contract and the existing Markdown parser.
-External usage URLs remain inert citations.
-The [jsonschema documentation](https://python-jsonschema.readthedocs.io/en/stable/validate/) supplies the local schema-validation API.
-The contract uses the [W3C SKOS distinctions](https://www.w3.org/TR/skos-primer/) between concept identity, labels, relationships, and scope notes.
-It does not implement SKOS or claim that a lexical match proves semantic equivalence.
-The first eight entries remain provisional and contain no invented replacement targets.

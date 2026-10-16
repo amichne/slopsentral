@@ -18,17 +18,16 @@
       ],
       "enum": [
         "ASSESSED",
-        "INCOMPLETE",
         "REJECTED"
       ]
     },
     "schemaVersion": {
       "type": "integer",
       "enum": [
-        1
+        2
       ],
       "examples": [
-        1
+        2
       ]
     },
     "engine": {
@@ -61,29 +60,6 @@
         ]
       ]
     },
-    "glossary": {
-      "oneOf": [
-        {
-          "$ref": "#/$defs/checked"
-        },
-        {
-          "$ref": "#/$defs/notProvided"
-        }
-      ],
-      "discriminator": {
-        "propertyName": "type"
-      },
-      "examples": [
-        {
-          "type": "CHECKED",
-          "entries": 1,
-          "sourceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        },
-        {
-          "type": "NOT_PROVIDED"
-        }
-      ]
-    },
     "failure": {
       "$ref": "#/$defs/failure"
     }
@@ -91,9 +67,6 @@
   "oneOf": [
     {
       "$ref": "#/$defs/assessed"
-    },
-    {
-      "$ref": "#/$defs/incomplete"
     },
     {
       "$ref": "#/$defs/rejected"
@@ -149,68 +122,6 @@
           "type": "VALE",
           "version": "3.24.0",
           "policySha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        }
-      ]
-    },
-    "checked": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "entries",
-        "sourceSha256"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "minLength": 1,
-          "examples": [
-            "CHECKED"
-          ],
-          "enum": [
-            "CHECKED"
-          ]
-        },
-        "entries": {
-          "type": "integer",
-          "minimum": 1,
-          "examples": [
-            1
-          ]
-        },
-        "sourceSha256": {
-          "$ref": "#/$defs/digest"
-        }
-      },
-      "examples": [
-        {
-          "type": "CHECKED",
-          "entries": 1,
-          "sourceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        }
-      ]
-    },
-    "notProvided": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "type"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "minLength": 1,
-          "examples": [
-            "NOT_PROVIDED"
-          ],
-          "enum": [
-            "NOT_PROVIDED"
-          ]
-        }
-      },
-      "examples": [
-        {
-          "type": "NOT_PROVIDED"
         }
       ]
     },
@@ -326,8 +237,7 @@
           "enum": [
             "READABILITY",
             "STRUCTURE",
-            "DICTION",
-            "TERMINOLOGY"
+            "DICTION"
           ]
         },
         "rule": {
@@ -341,8 +251,8 @@
             "Slopsentral.LongSentence",
             "Slopsentral.Diction",
             "Slopsentral.Claims",
-            "Slopsentral.Terminology",
-            "Slopsentral.GlossaryMarker"
+            "Slopsentral.Modals",
+            "Slopsentral.Contractions"
           ]
         },
         "severity": {
@@ -462,31 +372,6 @@
               }
             ]
           ]
-        },
-        "terminology": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "type"
-          ],
-          "properties": {
-            "type": {
-              "type": "string",
-              "enum": [
-                "IN_SCOPE",
-                "OUT_OF_SCOPE",
-                "NOT_PROVIDED"
-              ],
-              "examples": [
-                "IN_SCOPE"
-              ]
-            }
-          },
-          "examples": [
-            {
-              "type": "IN_SCOPE"
-            }
-          ]
         }
       },
       "examples": [
@@ -540,42 +425,6 @@
             {
               "type": "INVALID_INPUT",
               "stage": "INPUT"
-            }
-          ]
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "type",
-            "stage"
-          ],
-          "properties": {
-            "type": {
-              "type": "string",
-              "minLength": 1,
-              "examples": [
-                "INVALID_GLOSSARY"
-              ],
-              "enum": [
-                "INVALID_GLOSSARY"
-              ]
-            },
-            "stage": {
-              "type": "string",
-              "minLength": 1,
-              "examples": [
-                "GLOSSARY"
-              ],
-              "enum": [
-                "GLOSSARY"
-              ]
-            }
-          },
-          "examples": [
-            {
-              "type": "INVALID_GLOSSARY",
-              "stage": "GLOSSARY"
             }
           ]
         },
@@ -854,8 +703,7 @@
         "schemaVersion",
         "engine",
         "comprehension",
-        "documents",
-        "glossary"
+        "documents"
       ],
       "properties": {
         "type": {
@@ -871,10 +719,10 @@
         "schemaVersion": {
           "type": "integer",
           "enum": [
-            1
+            2
           ],
           "examples": [
-            1
+            2
           ]
         },
         "engine": {
@@ -906,122 +754,16 @@
               }
             ]
           ]
-        },
-        "glossary": {
-          "$ref": "#/$defs/checked"
         }
       },
       "examples": [
         {
           "type": "ASSESSED",
-          "schemaVersion": 1,
+          "schemaVersion": 2,
           "engine": {
             "type": "VALE",
             "version": "3.24.0",
             "policySha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-          },
-          "glossary": {
-            "type": "CHECKED",
-            "entries": 1,
-            "sourceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-          },
-          "comprehension": {
-            "type": "NOT_ASSESSED"
-          },
-          "documents": [
-            {
-              "type": "DOCUMENT_ASSESSMENT",
-              "path": "README.md",
-              "sourceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-              "metrics": {
-                "words": 6,
-                "sentences": 1,
-                "estimatedSyllables": 6,
-                "wordsPerSentence": 6,
-                "fleschKincaidGrade": -1.45
-              },
-              "findings": []
-            }
-          ]
-        }
-      ]
-    },
-    "incomplete": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "schemaVersion",
-        "engine",
-        "comprehension",
-        "documents",
-        "glossary"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "minLength": 1,
-          "examples": [
-            "INCOMPLETE"
-          ],
-          "enum": [
-            "INCOMPLETE"
-          ]
-        },
-        "schemaVersion": {
-          "type": "integer",
-          "enum": [
-            1
-          ],
-          "examples": [
-            1
-          ]
-        },
-        "engine": {
-          "$ref": "#/$defs/engine"
-        },
-        "comprehension": {
-          "$ref": "#/$defs/comprehension"
-        },
-        "documents": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/document"
-          },
-          "minItems": 1,
-          "examples": [
-            [
-              {
-                "type": "DOCUMENT_ASSESSMENT",
-                "path": "README.md",
-                "sourceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                "metrics": {
-                  "words": 6,
-                  "sentences": 1,
-                  "estimatedSyllables": 6,
-                  "wordsPerSentence": 6,
-                  "fleschKincaidGrade": -1.45
-                },
-                "findings": []
-              }
-            ]
-          ]
-        },
-        "glossary": {
-          "$ref": "#/$defs/notProvided"
-        }
-      },
-      "examples": [
-        {
-          "type": "INCOMPLETE",
-          "schemaVersion": 1,
-          "engine": {
-            "type": "VALE",
-            "version": "3.24.0",
-            "policySha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-          },
-          "glossary": {
-            "type": "NOT_PROVIDED"
           },
           "comprehension": {
             "type": "NOT_ASSESSED"
@@ -1066,10 +808,10 @@
         "schemaVersion": {
           "type": "integer",
           "enum": [
-            1
+            2
           ],
           "examples": [
-            1
+            2
           ]
         },
         "failure": {
@@ -1079,7 +821,7 @@
       "examples": [
         {
           "type": "REJECTED",
-          "schemaVersion": 1,
+          "schemaVersion": 2,
           "failure": {
             "type": "NO_PROSE",
             "stage": "METRICS"
@@ -1091,46 +833,11 @@
   "examples": [
     {
       "type": "ASSESSED",
-      "schemaVersion": 1,
+      "schemaVersion": 2,
       "engine": {
         "type": "VALE",
         "version": "3.24.0",
         "policySha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-      },
-      "glossary": {
-        "type": "CHECKED",
-        "entries": 1,
-        "sourceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-      },
-      "comprehension": {
-        "type": "NOT_ASSESSED"
-      },
-      "documents": [
-        {
-          "type": "DOCUMENT_ASSESSMENT",
-          "path": "README.md",
-          "sourceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-          "metrics": {
-            "words": 6,
-            "sentences": 1,
-            "estimatedSyllables": 6,
-            "wordsPerSentence": 6,
-            "fleschKincaidGrade": -1.45
-          },
-          "findings": []
-        }
-      ]
-    },
-    {
-      "type": "INCOMPLETE",
-      "schemaVersion": 1,
-      "engine": {
-        "type": "VALE",
-        "version": "3.24.0",
-        "policySha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-      },
-      "glossary": {
-        "type": "NOT_PROVIDED"
       },
       "comprehension": {
         "type": "NOT_ASSESSED"
@@ -1153,7 +860,7 @@
     },
     {
       "type": "REJECTED",
-      "schemaVersion": 1,
+      "schemaVersion": 2,
       "failure": {
         "type": "NO_PROSE",
         "stage": "METRICS"
