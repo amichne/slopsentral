@@ -16,7 +16,8 @@ command is unsafe when the data model has moved forward.
 
 For changed exports, defaults, commands, and error states, find affected docs and
 examples. A string match is a coverage lead, not proof of semantic correctness.
-A documentation build proves rendering and selected checks, not truth of claims.
+A documentation build proves compilation and selected checks. Inspect the actual
+rendered page for visibility and usability. Verify claims against their sources.
 
 Use code blocks with the actual language. Verify examples in a disposable fixture
 when possible. Keep placeholders unmistakable and do not invent successful output.

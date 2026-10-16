@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T01:53:50-04:00",
+  "generatedAt": "2026-10-16T09:55:16-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -229,7 +229,7 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:81837b5151dfb1809afd3e11ff12d0ecb4784efe1dd939d9401ea2ac8a48363c",
+          "sha256": "sha256:939e1a7ff309f49058341d03f0161c1599f3711bc7309f549d2cb33b16bb30ed",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
@@ -250,7 +250,7 @@
         },
         {
           "name": "technical-documentation",
-          "sha256": "sha256:df2044e566c7d56d447f6124c06a038e6dc7e6ffdb94a6fec50b47d36200e5e6",
+          "sha256": "sha256:bbcc23f99da1c9e3267b6d9095766591445fc6d7b11026df1c71250f61b9aa43",
           "sourcePath": "source/skills/technical-documentation",
           "targetPath": "skills/technical-documentation",
           "type": "SKILL"
@@ -338,6 +338,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "7b33e04fd3cba408a8830c4916a6d2b55b4a2f59",
+  "sourceSha": "d7ef26718fb84e2eaafea76eeb5d00c7149b1ae8",
   "type": "HYDRATED_MARKETPLACE"
 }

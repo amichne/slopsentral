@@ -1,6 +1,6 @@
 ---
 name: code-knowledge-base
-description: "Create or refresh source-backed OKF concepts, migrate notes, assess source drift, or generate deterministic signature indexes. Use for knowledge bundles and backend handoffs."
+description: "Use when creating or refreshing source-backed OKF concepts, migrating notes or exports, auditing knowledge coverage and source drift, or generating signature indexes. Preserve existing backend ownership."
 ---
 
 # Code Knowledge Base
@@ -16,6 +16,7 @@ Treat indexes as navigation aids whose claims still need source evidence.
 2. Select the smallest operation: read, create, refresh, migrate, assess impact, or generate signatures.
    For a query, start at `index.md` and read only concepts that answer the question.
 3. Gather source paths, symbols, schemas, and module facts before prose.
+   Use [source-evidence.md](references/source-evidence.md) to bind claims to revisions and reconcile imported page, diagram, and citation coverage.
    Use compiler tools, LSP, Gradle metadata, or current signatures when they exist.
 4. Define stable concept paths and links before new pages.
    Keep source facts, accepted decisions, proposals, and unresolved gaps distinct.
@@ -43,3 +44,4 @@ Changed sources map to affected concepts or a reported coverage gap.
 Missing documents and unavailable Git are failures, never proof of no drift.
 Signature output is deterministic, and unknown syntax has an explicit outcome.
 Keep generated provider output separate from authored source.
+Report recovered content, parsed or rendered assets, and source-verified claims as separate results.
