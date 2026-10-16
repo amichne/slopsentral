@@ -1,88 +1,86 @@
 # Pi harness
 
-Project Slopsentral into one Pi package with native commands, prompt instructions, skills, and event handlers.
+Use Slopsentral in Pi through one package with native commands, prompt instructions, skills, and event handlers.
 The compatibility target is Pi 1.2.0.
 The package uses Pi's TypeScript extension API.
+The [harness overview](agent-marketplaces.md) compares this adapter with Codex and GitHub Copilot.
 
 ## Install the published package
 
 Use an existing Pi installation with Node.js 22.19 or later.
-Run this command without a source checkout, Pkl, or npm build:
+Install the published `0.1.212` package in your personal Pi settings:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | sh
+pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.212/slopsentral-pi-0.1.212.tgz
 ```
 
-The launcher needs `pi` on `PATH`.
-It delegates package download and installation to Pi.
-It selects the published `v0.1.0` package.
-
-The default stays pinned to `0.1.0`.
-To select an automatic release, find its `pi-v` tag in [GitHub Releases](https://github.com/amichne/slopsentral/releases).
-Replace `0.1.123` with that published version:
+For a project declaration in `.pi/settings.json`, use `--local` instead:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | SLOPSENTRAL_PI_VERSION=0.1.123 sh
+pi install --local npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.212/slopsentral-pi-0.1.212.tgz
 ```
 
-For the direct Pi command, use:
+Pi loads project packages after project trust.
+Choose one installation scope.
+The package needs no source checkout, Pkl, or npm build.
+
+The optional host launcher delegates to the same Pi command.
+It needs `pi` on `PATH`.
+Set its version explicitly to use this release:
 
 ```bash
-pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.0/slopsentral-pi-0.1.0.tgz
+curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | SLOPSENTRAL_PI_VERSION=0.1.212 sh
 ```
 
-Start `pi` in your project.
-Select `/slopsentral-kotlin-type-design` for a first trial without automatic hooks.
-The other source profiles remain available through `/slopsentral-profile`.
+Without `SLOPSENTRAL_PI_VERSION`, the launcher selects `0.1.0`.
+The example names a fixed release, not a moving latest version.
+Find other `pi-v` versions in [GitHub Releases](https://github.com/amichne/slopsentral/releases).
 Hook actions need their documented tools, including uv for Python hooks.
 
 Pi downloads the archive through npm and keeps it in its managed package directory.
 The package has no install scripts or runtime dependencies.
 Pi supplies its own host APIs.
-The [release](https://github.com/amichne/slopsentral/releases/tag/pi-v0.1.0) includes `SHA256SUMS` and the exact source commit.
+The [release](https://github.com/amichne/slopsentral/releases/tag/pi-v0.1.212) includes `SHA256SUMS`, the tested candidate record, and its promotion record.
+
+## Start a workflow
+
+From your project, start a new session with the Kotlin design profile:
+
+```bash
+pi --slopsentral-profile kotlin-type-design
+```
+
+This profile supplies Kotlin instructions and its advertised skills with automatic hooks set to `OFF`.
+The extension keeps the current model, tools, and thinking level.
+Use Pi's existing authentication and model configuration for a model-backed trial.
+
+To select a profile inside Pi, enter `/slopsentral-kotlin-type-design` or `/slopsentral-profile kotlin-type-design`.
+Use `/slopsentral-profile` to examine the current selection and available choices.
+For Kotlin implementation with advisory hooks, select `/slopsentral-profile kotlin-repo-default`.
+Change profiles after the current run ends.
+
+Without a startup choice, a new session uses `local-development-default` with `ADVISORY` hooks.
+The startup flag supplies the initial choice only.
+An existing branch's saved selection takes precedence during session reload or tree navigation.
+
+## Update or remove the package
 
 The URL selects one release.
 To change releases, install the named package with the new release URL.
+Keep the same personal or project installation scope.
 `pi update --extensions` does not discover newer GitHub release URLs.
-To remove the package, run:
+Use `pi list` to examine package declarations.
+
+To remove a personal declaration, run:
 
 ```bash
 pi remove npm:slopsentral-pi
 ```
 
-## Local trial
-
-Use Node.js 22.19 or later, uv 0.12.9 or later, and Pkl 0.32.0.
-Install the locked Node dependencies with `npm ci`.
-If the pinned executable is absent, use the [Pkl setup procedure](pkl-projection.md#runtime-and-commands).
-Keep the selected hook scripts, adjacent lock files, and their tool prerequisites together.
-The package does not install these tools.
-
-From the source checkout, select a fresh output path:
+To remove a project declaration, run:
 
 ```bash
-export PKL_BIN=/absolute/path/to/pkl-0.32.0
-node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi-trial-01
-```
-
-The package path is `/tmp/slopsentral-pi-trial-01/.pi/slopsentral`.
-Projection rejects an existing output path.
-
-Start Pi from the repository that needs the extension:
-
-```bash
-pi -e /tmp/slopsentral-pi-trial-01/.pi/slopsentral
-```
-
-This command loads the package for one invocation.
-The default workflow profile is `local-development-default`.
-The extension keeps the current model, tools, and thinking level.
-Use Pi's existing authentication and model configuration for a model-backed trial.
-
-To select a profile at startup, use the extension flag:
-
-```bash
-pi -e /tmp/slopsentral-pi-trial-01/.pi/slopsentral --slopsentral-profile kotlin-type-design
+pi remove --local npm:slopsentral-pi
 ```
 
 ## Profiles and commands
@@ -92,8 +90,9 @@ pi -e /tmp/slopsentral-pi-trial-01/.pi/slopsentral --slopsentral-profile kotlin-
 | `/slopsentral-profile` | Show the current workflow profile and available choices. |
 | `/slopsentral-profile kotlin-type-design` | Select Kotlin design guidance and its skill subset. |
 | `/slopsentral-profile type-design` | Select broader type-design guidance, including schemas, OpenAPI, and Pkl. |
-| `/slopsentral-profile off` | Turn off Slopsentral prompt additions and hooks. |
-| `/slopsentral-kotlin-type-design` | Select the named agent profile directly. |
+| `/slopsentral-profile kotlin-repo-default` | Select Kotlin and Software Engineering with `ADVISORY` hooks. |
+| `/slopsentral-profile off` | Turn off Slopsentral prompt additions, advertised skills, and automatic hooks. |
+| `/slopsentral-kotlin-type-design` | Select the named workflow profile directly. |
 | `/slopsentral-check` | Run the selected completion gates, including when automatic hooks use `OFF`. |
 
 Each source profile also gets a `/slopsentral-<profile-name>` command.
@@ -107,6 +106,8 @@ The optional `focusSkills` field selects a smaller advertised skill subset withi
 `type-design` includes schema, OpenAPI, and Pkl guidance.
 Both design profiles use `OFF` for automatic hooks.
 `/slopsentral-check` accepts no arguments and reports notices without an automatic continuation.
+It needs a selected workflow profile and an idle session.
+The `off` selection removes that profile, so manual gates do not run.
 
 The subset controls the skills that Pi advertises to the model.
 Explicit `/skill:name` commands still reach the complete package skill catalog.
@@ -120,12 +121,19 @@ Skills from other packages keep their existing visibility.
 4. Examine whether its response uses the selected instructions and skills.
 5. Select `/slopsentral-profile type-design`.
 6. Ask for a schema or OpenAPI design comparison without edits.
-7. If the repository has the necessary gate tools, run `/slopsentral-check`.
-8. Select `/slopsentral-profile off`.
+7. Select `/slopsentral-profile kotlin-repo-default`.
+8. Ask Pi to explain a local function and examine the hook notices.
+9. If the repository has the necessary gate tools, run `/slopsentral-check`.
+10. Select `/slopsentral-profile off`.
 
 A command response proves command dispatch, not model compliance.
 A model-backed trial needs separate evidence for instruction use, skill choice, and hook behavior.
 An absent tool or stale lock is a prerequisite failure, not a successful gate.
+
+Software Engineering profiles include the [scope hook for `AGENTS.md`](agents-md-scope.md).
+Its notices name the source-backed review and receipt commands.
+After edits, examine the affected instruction scopes and record an update or a documented no-change review.
+An initial baseline cannot prove coverage for earlier edits.
 
 ## Event adapters
 
@@ -151,7 +159,8 @@ The pure resolver in `source/hooks/pi/runtime.ts` matches authored terms at word
 Kotlin and Gradle select Kotlin guidance and its engineering dependency.
 Testing, proof, Git, and delivery terms select their existing skill owners.
 Dependencies precede their consumers, and each reference appears once per event.
-Repeated input events resolve independently; a nonmatch adds no guidance message.
+Repeated input events resolve independently.
+A nonmatch adds no guidance message.
 References include the bundled path, canonical source path, and dependency chain.
 They do not repeat policy text from the `SessionStart` prompt section or expand advertised skills.
 Quoted or external text can match a term, but matches grant no action or publication authority.
@@ -212,7 +221,7 @@ Automatic agents and MCP connections remain explicit gaps relative to Codex.
 Source profiles do not supply connection consent or ownership for a server lifecycle.
 
 Projection alone does not prove installed-host behavior or improved model decisions.
-The handoff report records the checks that ran and the gaps that remain.
+The [native-host suite](../tools/tests/pi-host.test.mjs) supplies separate runtime evidence.
 
 ## Automatic releases
 
@@ -250,7 +259,34 @@ The workflow uses that run's exact commit, even after main advances.
 A failed run, wrong workflow, non-main branch, missing artifact, or changed producer attempt stops publication.
 If a failed publication leaves a tag, examine its source and release state before a manual recovery.
 Local tests exercise these admission rules and archive identity.
-A hosted workflow run remains necessary to prove GitHub artifact transport and release publication.
+The first [automatic release](https://github.com/amichne/slopsentral/releases/tag/pi-v0.1.212) used this path.
+Its public archive matched the tested candidate and installed through Pi's native package manager.
+That evidence applies to the named release.
+
+## Local trial from source
+
+Use Node.js 22.19 or later, uv 0.12.9 or later, and Pkl 0.32.0.
+Install the locked Node dependencies with `npm ci`.
+If the pinned executable is absent, use the [Pkl setup procedure](pkl-projection.md#runtime-and-commands).
+Keep the selected hook scripts, adjacent lock files, and their tool prerequisites together.
+The package does not install these tools.
+
+From the source checkout, select a fresh output path:
+
+```bash
+export PKL_BIN=/absolute/path/to/pkl-0.32.0
+node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi-trial-01
+```
+
+The package path is `/tmp/slopsentral-pi-trial-01/.pi/slopsentral`.
+Projection rejects an existing output path.
+Start Pi from the repository that needs the extension:
+
+```bash
+pi -e /tmp/slopsentral-pi-trial-01/.pi/slopsentral --slopsentral-profile kotlin-type-design
+```
+
+This command loads the package for one invocation without a saved package declaration.
 
 ## Optional persistent installation
 
@@ -269,7 +305,7 @@ To remove the declaration, use the same path:
 pi remove /absolute/output/.pi/slopsentral
 ```
 
-The implementation task does not install the package in personal settings.
+The published archive remains the normal installation path for users.
 
 ## Upstream references
 

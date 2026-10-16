@@ -24,6 +24,26 @@ The [migration map](source/MIGRATION.md) lists every retired skill and its repla
 Installation makes a skill available. It grants no authority to publish, deploy, or change personal configuration.
 Developer Tooling adds no automatic hooks. Repository Knowledge remains optional for Kotlin work.
 
+## Use Slopsentral in Pi
+
+Use Pi with Node.js 22.19 or later.
+Install the published `0.1.212` package.
+Then start Pi in your project:
+
+```bash
+pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v0.1.212/slopsentral-pi-0.1.212.tgz
+pi --slopsentral-profile kotlin-type-design
+```
+
+This workflow profile supplies Kotlin instructions and skills with automatic hooks set to `OFF`.
+Inside Pi, use `/slopsentral-profile` to examine profiles or `/slopsentral-check` to run completion gates explicitly.
+For advisory hooks, select `/slopsentral-profile kotlin-repo-default`.
+Hook commands need their own tools, including uv for Python hooks.
+The package needs no source checkout, Pkl, or npm build.
+
+The [Pi guide](docs/pi-harness.md) covers project installation, profile selection, hooks, updates, and adapter limits.
+The [harness overview](docs/agent-marketplaces.md) explains how shared source becomes Codex, GitHub Copilot, and Pi resources.
+
 ## Automation
 
 Install uv 0.12.9 or newer. Run the checkout setup and its gates:
@@ -79,19 +99,13 @@ Inspect the Kotlin selection with:
 node tools/catalog.mjs --profile kotlin-repo-default --json
 ```
 
-Use the [profile lifecycle](docs/profile-lifecycle.md) for explicit setup and saved transaction rollback.
+Use the [Codex profile lifecycle](docs/profile-lifecycle.md) for explicit setup and saved transaction rollback.
 Use the upstream Worktrunk plugin for worktree automation.
 The [Worktrunk procedure](docs/worktrunk-automation.md) describes project setup and gates.
 
 The local Pkl projector creates Codex, GitHub Copilot, and Pi output from authored source.
-Install the published Pi package without a source checkout or npm build:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | sh
-```
-
-The [Pi guide](docs/pi-harness.md) covers installation, profile commands, native events, and the first trial.
 Publication updates `.agents/plugins` and `.github/plugin` on `main` and the corresponding harness branches.
+Pi releases publish a tested archive through GitHub Releases.
 Local edits and temporary projections do not publish those trees or change installed caches.
 Read the [architecture](source/ARCHITECTURE.md) for ownership and evidence limits.
 
@@ -129,7 +143,8 @@ Each plugin benchmark defines a disposable local scenario. No live model benchma
 
 ## Kast
 
-Kotlin Engineering retains its existing Kast MCP connection.
+The Codex projection of Kotlin Engineering declares its existing Kast MCP connection.
+The Pi package keeps that configuration as reference material and does not connect the server.
 Kast owns runtime installation and workspace discovery.
 Examine the configured server and use a fresh semantic query before a claim of installed readiness.
 Plugin installation alone proves neither runtime availability nor workspace enrollment.
