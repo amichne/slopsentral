@@ -72,9 +72,9 @@ No keyboard or screen-reader check has been supplied.
 
 ## Compact task
 
-Write one first-query guide, using only these facts:
-the reader has installed the tool and connected an agent; the known declaration
-is `demo`; a useful result contains its signature and source location.
+Write one first-query guide, using only these facts.
+The reader has installed the tool and connected an agent. The known declaration
+is `demo`. A useful result contains its signature and source location.
 The reader then asks for callers. Partial evidence requires a narrower retry;
 an empty result does not prove absence. Link the exact contract from Reference
 and the mechanism from Architecture. Do not invent installation commands.

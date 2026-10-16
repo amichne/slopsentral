@@ -7,7 +7,8 @@ Preserve source meaning and metadata. Keep the input unchanged.
 
 1. Identify the source and a separate output directory before a write.
    Use the destination that the user requests. State the chosen destination if none exists.
-2. Inventory each source item, its facts, and its supported relationships.
+2. Run [source-evidence.md](source-evidence.md) to record source identity and reconcile export coverage.
+   Inventory each source item, its facts, and its supported relationships.
 3. Map every item to a stable concept path and non-empty `type`.
    Split multi-topic notes. Keep a source-to-concept map to expose omissions and duplicates.
 4. Copy supported metadata into standard fields or explicit producer extensions.

@@ -11,6 +11,20 @@ revisions. The runnable scenario definitions extend the existing
 [Repository Knowledge benchmark](plugin-benchmarks/repository-knowledge.json).
 Keep raw replay output outside packaged skills. No paid inference runs in normal gates.
 
+## Existing owners
+
+Slopsentral's authored `source/skills` owns these procedures. Its checked-in
+`.agents/plugins` and `.github/plugin` trees are projector output. Installed
+plugin caches are consumers. The Kast checkout inspected at `e1445ca5` has a
+marketplace reference under `.agents`, not a competing local documentation skill.
+That setup reference retains older plugin identities and hook descriptions;
+current Slopsentral source and manifests own this change. It was not edited.
+
+Technical Documentation owns structure, sites, and diagrams. Code Knowledge
+Base owns imported knowledge evidence and backend handoff. Controlled Technical
+Writing keeps prose rules and assessment. The existing Mintlify skill supplies
+framework details. This boundary avoids another documentation or renderer skill.
+
 The Kast documentation task motivated the cases. Its export had 59 numbered
 pages but one Mermaid source. A live pass recovered 173 sources: 161 rendered
 and 12 failed to parse across six pages. These historical counts establish the
@@ -18,7 +32,7 @@ failure shape. They are not universal skill rules or verified architecture.
 
 ## Cases and decisive review assertions
 
-Review each assertion independently against the output and fixture. Retain a
+Review each assertion independently against the output and fixture. Keep a
 failure or missing evidence; do not award success from polished prose.
 
 | Case | Requested output | Validator and expected result |
@@ -75,3 +89,74 @@ Do not copy volatile Kast implementation facts into universal guidance.
 Before publication, run the source graph, benchmark schema checks, routing
 fixtures, local prose assessment, and supported projections. Record commands,
 results, candidate guidance locations, and any unavailable renderer or replay.
+
+## Candidate guidance assessment
+
+This source review applies the same seven assertions to the changed guidance.
+It establishes explicit coverage, not model compliance or a successful replay.
+
+| Cases | Candidate procedure | Coverage result |
+| --- | --- | --- |
+| Export completeness; source revision | Code Knowledge Base: [source evidence](../skills/code-knowledge-base/references/source-evidence.md) | Separate page/asset inventories, revision comparison, claim verification, and unresolved IDs are explicit. |
+| Fact ownership; compact first result | Technical Documentation: [site reader path](../skills/technical-documentation/references/documentation-sites.md#reader-path-and-fact-ownership) | Canonical roles, linked facts, prerequisites, expected results, limits, and recovery are explicit. Small prose edits keep their scope. |
+| Unsupported primitive | Technical Documentation: [framework support](../skills/technical-documentation/references/documentation-sites.md#confirm-framework-support) | Current official API checks and hosted npm restrictions precede component use. Asset builds remain separate. |
+| Diagram fidelity | Technical Documentation: [diagrams](../skills/technical-documentation/references/diagrams.md) | Exact originals, separate repair types, branch preservation, failure identities, and embedded inspection are explicit. |
+| Rendering gap | Technical Documentation: [rendered checks](../skills/technical-documentation/references/documentation-sites.md#check-the-rendered-result) | Actual screenshot inspection, hydration, clipboard bytes, keyboard access, repeated navigation, themes, and evidence limits are explicit. |
+
+The two existing skill owners remain. No new skills, hooks, glossary APIs,
+runtime installation, or changes to controlled-technical-writing are needed.
+No new general-purpose script is justified by these cases. Existing validators
+cover formats and projections; site-specific inventories and browser checks
+remain under their repository's tooling owner.
+
+## Implementation checkpoint
+
+The parallel Kast task reported [draft PR 1051](https://github.com/amichne/kast/pull/1051),
+branch `docs/guides-architecture-reference`, from base `3ffe57068`.
+Its trace on 16 October 2026 reports three mentors: uv First steps, Temporal
+Workflow Execution, and Stripe Authentication. Public text from those pages and
+the official Mintlify component constraints was also read for this change.
+That text review does not establish a visual review of the mentor sites here.
+
+The implementation trace reports three concrete failures. JSX-wrapped Prompt
+text copied braces and quotes. The dark accent lacked contrast. Diagram SVGs
+imported an external Google font. It reports mobile menu, Back/Forward, clipboard, and
+320 px diagram checks after repairs. These are attributed observations from
+the docs task, not independent browser checks or a replay of these skill cases.
+They informed the clipboard, hydration, theme, and embedded-asset procedures.
+
+## Static evaluation limits
+
+Plugin Eval's local analyzer was run on both baseline skills and candidates.
+The baseline active estimates were 883 tokens for Technical Documentation and
+759 for Code Knowledge Base. Initial candidate estimates were 1,059 and 835.
+Both trigger warnings cleared. Technical Documentation gained a deferred-budget
+warning as optional site and diagram procedures grew. Code Knowledge Base kept
+its pre-existing deferred-budget error and Python complexity warnings.
+No helper implementation changed. These structural signals do not measure
+task success, routing, actual token usage, or reader comprehension.
+
+The seven new cases remain candidates. A fresh model comparison and independent
+human reader assessment have not run. Normal validation performs no paid inference.
+
+## Validation record
+
+- Source graph and generated catalog checks passed.
+- All 60 existing golden routing fixtures remain consistent. Field coverage
+  remains 10/60; one drift and six incomplete proofs remain visible.
+- The focused contract suite passed 61 tests with no skips. It covers native
+  Pkl determinism, source bytes, modes, digests, benchmark definitions, catalog
+  ownership, current-source routing, and honest field-evidence reporting.
+- Codex, GitHub Copilot, and Pi projection completed with Pkl 0.32.0.
+  Pi TypeScript checks passed. Both checked-in provider trees were regenerated
+  from the supported projector output; installed caches were not changed.
+  All 60 files in the two skills match authored bytes and modes in each harness.
+- Seventeen more projection and native-host checks passed in the sandbox.
+  The Pi session-shutdown check failed at `fs.watch` with macOS `EMFILE`.
+  The isolated check passed outside the filesystem sandbox with model networking
+  disabled. No production or test source changed for that environment failure.
+- The shared prose assessment ran over all nine changed Markdown artifacts.
+  Its remaining Grade advisories are at line 1 of both skill entry points,
+  the five changed skill references, and this evaluation record. Technical
+  vocabulary and precise evidence limits remain. Raw reports are local run
+  artifacts; `ASSESSED` is not a clean prose or comprehension result.
