@@ -857,21 +857,21 @@
         "name": "controlled-technical-writing"
       },
       "satisfiedAllowedActions": [
-        "Load the source facts, nearby writing rules, and repository glossary before revising prose.",
-        "Use one canonical name per concept and migrate only clear known synonyms.",
-        "Run the glossary checker and the smallest rendered or documentation check for the changed surface."
+        "Read the source facts and nearby rules before you revise prose.",
+        "Keep the terms that the source uses and flag ambiguous meaning for review.",
+        "Run the local prose assessment and the smallest documentation check for the changed surface."
       ],
       "satisfiedVerificationEvidence": [
         "Every material claim remains traceable to the source documentation or code contract.",
-        "The repository glossary check passes when a glossary is present.",
+        "The local prose assessment runs without a glossary and records findings or typed failures.",
         "The changed rendered documentation is inspected when presentation affects the deliverable."
       ],
       "avoidedForbiddenActions": [
         "Invent behavior, guarantees, or product scope not supported by source evidence.",
-        "Register an ambiguous synonym or shadow an existing glossary term.",
+        "Invent a definition or change an established term without source evidence.",
         "Apply prose rules to code identifiers, command syntax, or machine-readable contracts."
       ],
-      "notes": "A passing replay preserves meaning, canonical terms, glossary checks, and rendered-document verification."
+      "notes": "A passing replay keeps source meaning and records prose assessment and rendered-document evidence."
     },
     {
       "type": "ROUTING_OBSERVATION",

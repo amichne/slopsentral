@@ -235,7 +235,7 @@ def main() -> int:
                 "source/schemas/primitives/resource-reference.schema.json",
                 "source/schemas/evals/routing-field-observations.schema.json",
                 "source/skills/issue-tracker-operations/references/issue-backend-result.schema.json",
-                "source/skills/controlled-technical-writing/references/glossary.schema.json",
+                "source/skills/controlled-technical-writing/references/text-assessment.schema.json",
             )
             return commands(
                 (

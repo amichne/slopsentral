@@ -83,7 +83,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "controlled-technical-prose",
       "title": "Controlled technical prose",
-      "purpose": "Measure whether a prose revision preserves source meaning and enforces stable repository terminology with executable checks.",
+      "purpose": "Measure whether a prose revision preserves source meaning and records findings from the local prose engine.",
       "routingCaseIds": [
         "technical-prose-uses-controlled-terms"
       ],
@@ -91,10 +91,10 @@
         "type": "SKILL",
         "name": "controlled-technical-writing"
       },
-      "userInput": "Use Controlled Technical Writing in this isolated repository worktree. Rewrite one bounded published technical document with direct language and stable repository terminology, then run the glossary checker and the smallest relevant documentation check. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Controlled Technical Writing in this isolated repository worktree. Rewrite one bounded published technical document with direct language and stable repository terminology, then run the local prose assessment and the smallest documentation check. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "Every material claim remains traceable to the source contract.",
-        "One canonical term is used per concept and the repository glossary check passes when a glossary exists.",
+        "The prose keeps source terms and records an assessment without a glossary.",
         "The smallest relevant rendered or documentation check passes for the changed surface."
       ]
     },

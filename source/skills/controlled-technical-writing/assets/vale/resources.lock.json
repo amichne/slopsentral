@@ -4,7 +4,7 @@
   "valeVersion": "3.24.0",
   "files": {
     ".vale.ini": "1d0c5184a807a038537de2ae47695b700dbce1d6c87601631b9d405db0e0a5fa",
-    "assessment.ini": "f20ba19d6c7b22d03f21de4dbe1afe65334449f977f03c20358bca74ddb27afc",
+    "assessment.ini": "b7f6693208adaa778abcdc7635f44f42c7d795f280dd2e3226312a553034e134",
     "licenses/Commits/LICENSE": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074",
     "licenses/Commits/NOTICE": "59f50430ab07c2ce3ada06ce613cf6b3ae80fff1ce3a646a0deb3279cdb42284",
     "licenses/Diataxis/LICENSE": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074",
@@ -51,7 +51,6 @@
     "styles/Slopsentral/CommitWrap.yml": "e193e8c8a32f24fd1a7afb0bb49e26bafe7dd8053c06fb2b2584e9a3259f0241",
     "styles/Slopsentral/Contractions.yml": "b85e04d8607eacc001639fbdf7dfa74e2518ac28de8a646415f9a4339cb14a76",
     "styles/Slopsentral/Diction.yml": "4510a075da23a9dabe61d37aa4b4c0ece5fccc6214937e994330f66ed42a6035",
-    "styles/Slopsentral/GlossaryMarker.yml": "a39a2e950a628dade7e1f340ed0d630c1d1386fe75f26a91a92c8ea2c8f4e3eb",
     "styles/Slopsentral/Grade.yml": "2c050700d919486ed3ad515c775864b30f6634a451d644f3ec4814be702d5a81",
     "styles/Slopsentral/LongSentence.yml": "9e6bfd8a005699310ae559d8b3068239ddf05bf792f2c295c719b7a7e6c4c1ec",
     "styles/Slopsentral/Modals.yml": "efdaa0a56fcfa30755dbe06575900328cd783c30fc293bd8cc2382e0726de827",
