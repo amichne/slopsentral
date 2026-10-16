@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { failures, instructions, notices, parseConfig, readText, runHooks, scopedSkills, select, selectionName, type Rejected, type Selection } from "./runtime.ts";
+import { failures, guidanceContext, instructions, notices, parseConfig, readText, resolveGuidance, runHooks, scopedSkills, select, selectionName, type Rejected, type Selection } from "./runtime.ts";
 
 const stateType = "slopsentral-profile";
 const continuationType = "slopsentral-stop-continuation";
@@ -65,10 +65,14 @@ export default function slopsentral(pi: ExtensionAPI): void {
   });
 
   const payload = (ctx: ExtensionContext, event: string) => ({ hook_event_name: event, cwd: ctx.cwd, session_id: ctx.sessionManager.getSessionId() });
-  pi.on("input", async (_event, ctx) => {
+  pi.on("input", async (event, ctx) => {
     if (selection.type === "rejected") { ctx.ui.notify(`Slopsentral profile unavailable: ${selection.code}`, "error"); return { action: "handled" }; }
     if (selection.type === "off" || selection.profile.hookPolicy === "OFF") return { action: "continue" };
-    const runs = await runHooks(root, selection.profile, "UserPromptSubmit", ctx.cwd, payload(ctx, "UserPromptSubmit"), signal(ctx));
+    const guidance = guidanceContext(root, config, resolveGuidance(event.text));
+    if (guidance.type === "rejected") ctx.ui.notify(`Slopsentral guidance unavailable: ${guidance.code}`, "warning");
+    else if (guidance.context) pi.sendMessage({ customType: "slopsentral-guidance", content: guidance.context, display: false }, { triggerTurn: false });
+    const runs = await runHooks(root, selection.profile, "UserPromptSubmit", ctx.cwd,
+      { ...payload(ctx, "UserPromptSubmit"), prompt: event.text, source: event.source }, signal(ctx));
     const reason = failures(runs);
     const context = [...runs.flatMap(run => run.result.type === "completed" ? [run.result.context] : []), notices(runs), reason].filter(Boolean).join("\n\n");
     if (reason) ctx.ui.notify(`Slopsentral prompt hooks:\n${reason}`, "warning");

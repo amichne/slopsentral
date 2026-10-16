@@ -43,6 +43,13 @@ test('Pi 1.2 native loader dispatches profile commands, prompt sections, and bra
   assert.ok(commands.includes('slopsentral-check'));
   assert.ok(loader.getSkills().skills.some(s => s.name === 'openapi-contract-authoring'));
   const tools = session.getActiveToolNames();
+  await session.extensionRunner.emitInput('Implement Kotlin tests, prove invariants, and open a pull request', undefined, 'interactive');
+  const hints = session.sessionManager.getBranch().findLast(entry => entry.type === 'custom_message' && entry.customType === 'slopsentral-guidance').content;
+  for (const name of ['engineering-design', 'kotlin-engineering', 'tdd', 'semantic-ratchet', 'git-change-flow', 'pull-request-lifecycle']) {
+    assert.match(hints, new RegExp(`${name}:`));
+    const resource = hints.split('\n').find(line => line.startsWith(`${name}:`)).split(' (source:')[0].slice(name.length + 2);
+    assert.ok(fs.existsSync(resource), resource);
+  }
   await session.prompt('/slopsentral-kotlin-type-design');
   const kotlinEntry = session.sessionManager.getBranch().at(-1);
   assert.equal(kotlinEntry.customType, 'slopsentral-profile');
@@ -175,5 +182,57 @@ test('native prompt and post-tool adapters preserve context and original tool ev
   session.extensionRunner.setUIContext({ notify: message => notifications.push(message), setStatus: () => {} });
   await session.prompt('/slopsentral-check');
   assert.ok(notifications.some(message => message.includes('Run the scope review command before completion.')));
+  assert.deepEqual(errors, []);
+});
+
+test('native prompt hooks receive the current text and input source before any model turn', async t => {
+  const action = { name: 'prompt', event: 'UserPromptSubmit', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 2 };
+  const f = fixture(t, [action]);
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync(0,'utf8')); console.log(JSON.stringify({hookSpecificOutput:{hookEventName:'UserPromptSubmit',additionalContext:JSON.stringify({prompt:p.prompt,source:p.source})}}));`);
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  const images = [{ type: 'image', data: 'controlled-image', mimeType: 'image/png' }];
+  for (const [text, source] of [['Fix Kotlin "quoted" code\n$HOME $(no-command)', 'interactive'], ['A different RPC request', 'rpc'], ['An extension-supplied message', 'extension']]) {
+    assert.deepEqual(await session.extensionRunner.emitInput(text, images, source), { action: 'continue' });
+    const entry = session.sessionManager.getBranch().findLast(e => e.type === 'custom_message' && e.customType === 'slopsentral-prompt-hooks');
+    assert.deepEqual(JSON.parse(entry.content), { prompt: text, source });
+  }
+  assert.deepEqual(errors, []);
+});
+
+test('native input adds bounded authored guidance immediately without selecting a profile or running hooks', async t => {
+  const f = fixture(t, []);
+  const configPath = path.join(f.packagePath, 'profiles.json');
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const instructions = ['engineering-design', 'kotlin-engineering'].map(name => ({ name, path: `fixture/instructions/${name}.md` }));
+  fs.mkdirSync(path.join(f.packagePath, 'fixture/instructions'));
+  for (const ref of instructions) fs.writeFileSync(path.join(f.packagePath, ref.path), `# ${ref.name}\nControlled canonical policy.`);
+  config.profiles.push({ ...config.profiles[0], name: 'catalog', instructions, hookPolicy: 'OFF' });
+  fs.writeFileSync(configPath, JSON.stringify(config));
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  const tools = session.getActiveToolNames();
+  const hints = () => session.sessionManager.getBranch().filter(e => e.type === 'custom_message' && e.customType === 'slopsentral-guidance');
+  for (let index = 0; index < 2; index++) {
+    assert.deepEqual(await session.extensionRunner.emitInput('Explain Kotlin', undefined, 'interactive'), { action: 'continue' });
+    assert.equal(hints().length, index + 1);
+    const text = hints().at(-1).content;
+    assert.ok(text.indexOf('engineering-design:') < text.indexOf('kotlin-engineering:'));
+    assert.equal(text.split('engineering-design:').length, 2);
+    assert.equal(text.includes('Controlled canonical policy.'), false);
+    assert.ok(Buffer.byteLength(text) <= 8192);
+  }
+  await session.extensionRunner.emitInput('What is the weather?', undefined, 'interactive');
+  assert.equal(hints().length, 2);
+  assert.deepEqual(session.getActiveToolNames(), tools);
+  assert.equal(session.sessionManager.getBranch().findLast(e => e.type === 'custom' && e.customType === 'slopsentral-profile').data, 'fixture');
+  await session.prompt('/slopsentral-profile off');
+  await session.extensionRunner.emitInput('Kotlin', undefined, 'interactive');
+  assert.equal(hints().length, 2);
+  await session.prompt('/slopsentral-profile catalog');
+  await session.extensionRunner.emitInput('Kotlin', undefined, 'interactive');
+  assert.equal(hints().length, 2);
+  for (let index = 0; index < 2; index++) {
+    const result = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Kotlin' }, { cwd: f.directory });
+    assert.equal(result.systemPromptOptions.sections.slopsentral.split('# engineering-design').length, 2);
+  }
   assert.deepEqual(errors, []);
 });
