@@ -87,7 +87,8 @@ process to their own visibility, exhaustiveness, and platform mechanisms.
 - Read [state-and-capability-modeling.md](references/state-and-capability-modeling.md)
   for lifecycle protocols, authorization, and discharged preconditions.
 - Read [module-boundaries.md](references/module-boundaries.md) for public APIs,
-  services, repositories, adapters, generated models, or persistence seams.
+  services, repositories, adapters, generated models, persistence seams, or an
+  illustration of modules that own proof construction and exclude capabilities.
 - Read [audit-checklist.md](references/audit-checklist.md) when reviewing code or
   planning a ratchet.
 - Read [refactor-playbook.md](references/refactor-playbook.md) when implementing

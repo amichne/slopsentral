@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run --locked --script
 # /// script
 # requires-python = ">=3.12,<3.14"
-# dependencies = ["jsonschema==4.26.0"]
+# dependencies = []
 # [tool.uv]
 # no-build = true
 # required-version = ">=0.12.9"
@@ -10,7 +10,7 @@
 # url = "https://pypi.org/simple"
 # default = true
 # ///
-"""Assess English prose with one pinned Vale policy and the canonical glossary."""
+"""Assess English prose with one pinned, local Vale policy."""
 
 import argparse
 import hashlib
@@ -25,19 +25,17 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
-from check_glossary import check
 from install_vale import Failure as InstallFailure, load_bundle
-from glossary_json import Rejected as GlossaryRejected, in_scope, load_glossary, vale_rules
 
 
 SKILL = Path(__file__).resolve().parents[1]
 POLICY = SKILL / "assets/vale"
 VERSION = "3.24.0"
+SCHEMA_VERSION = 2
 
 
 class Failure(Enum):
     INVALID_INPUT = "INVALID_INPUT"
-    INVALID_GLOSSARY = "INVALID_GLOSSARY"
     POLICY_DRIFT = "POLICY_DRIFT"
     POLICY_OVERRIDE = "POLICY_OVERRIDE"
     VALE_UNAVAILABLE = "VALE_UNAVAILABLE"
@@ -49,7 +47,6 @@ class Failure(Enum):
 
 class Stage(Enum):
     INPUT = "INPUT"
-    GLOSSARY = "GLOSSARY"
     POLICY = "POLICY"
     VERSION = "VERSION"
     METRICS = "METRICS"
@@ -63,7 +60,7 @@ class Rejected:
     stage: Stage
 
     def report(self):
-        return {"type": "REJECTED", "schemaVersion": 1,
+        return {"type": "REJECTED", "schemaVersion": SCHEMA_VERSION,
                 "failure": {"type": self.failure.value, "stage": self.stage.value}}
 
 
@@ -144,24 +141,9 @@ def verify_policy():
     return bundle
 
 
-def glossary_rules(entries):
-    swaps = {}
-    for term, entry in entries.items():
-        swaps[re.escape(term)] = term
-        for synonym in entry["synonyms"]:
-            swaps[re.escape(synonym)] = term
-    # JSON flow mappings are valid YAML and preserve literal, argument-safe terms.
-    return ("extends: substitution\nlevel: error\nignorecase: true\n"
-            "action:\n  name: replace\n"
-            "message: \"Use the canonical spelling '%s' instead of '%s', or clarify its meaning.\"\n"
-            "swap: " + json.dumps(swaps, ensure_ascii=True) + "\n")
-
-
 CATEGORIES = {"Slopsentral.Grade": "READABILITY", "Slopsentral.LongSentence": "STRUCTURE",
               "Slopsentral.Diction": "DICTION", "Slopsentral.Claims": "DICTION",
-              "Slopsentral.Terminology": "TERMINOLOGY",
-              "Slopsentral.TerminologyReview": "TERMINOLOGY",
-              "Slopsentral.GlossaryMarker": "TERMINOLOGY"}
+              "Slopsentral.Modals": "DICTION", "Slopsentral.Contractions": "DICTION"}
 
 
 def parse_findings(payload, expected_path):
@@ -195,7 +177,7 @@ def parse_findings(payload, expected_path):
     return sorted(findings, key=lambda item: (item["line"], item["span"], item["rule"]))
 
 
-def assess(paths, glossary, binary):
+def assess(paths, binary):
     policy_bundle = verify_policy()
     if isinstance(policy_bundle, Rejected):
         return policy_bundle
@@ -210,42 +192,15 @@ def assess(paths, glossary, binary):
     if version.strip() != "vale version " + VERSION:
         return Rejected(Failure.VALE_VERSION_MISMATCH, Stage.VERSION)
 
-    entries = {}
-    structured_glossary = None
-    scope_root = None
-    glossary_digest = None
     documents = []
     with tempfile.TemporaryDirectory(prefix="text-assessment-") as directory:
         root = Path(directory)
-        if glossary is not None:
-            try:
-                glossary_bytes = glossary.read_bytes()
-                glossary_bytes.decode("utf-8", errors="strict")
-                frozen_glossary = root / ("glossary.json" if glossary.suffix.lower() == ".json" else "GLOSSARY.md")
-                frozen_glossary.write_bytes(glossary_bytes)
-                if glossary.suffix.lower() == ".json":
-                    parsed = load_glossary(frozen_glossary)
-                    if isinstance(parsed, GlossaryRejected):
-                        return Rejected(Failure.INVALID_GLOSSARY, Stage.GLOSSARY)
-                    structured_glossary = parsed
-                    scope_root = (glossary.parent / parsed.scope.root).resolve()
-                    errors = []
-                else:
-                    entries, errors = check(frozen_glossary, [])
-            except (OSError, UnicodeError):
-                return Rejected(Failure.INVALID_GLOSSARY, Stage.GLOSSARY)
-            if errors:
-                return Rejected(Failure.INVALID_GLOSSARY, Stage.GLOSSARY)
-            glossary_digest = hashlib.sha256(glossary_bytes).hexdigest()
         for resource in policy_bundle.files:
             target = root / resource.relative
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(resource.contents)
         config = root / ".vale.ini"
         config.write_bytes(policy_bundle.assessment_config)
-        if entries:
-            (root / "styles/Slopsentral/Terminology.yml").write_text(
-                glossary_rules(entries), encoding="utf-8")
         for path in paths:
             try:
                 if not path.is_file() or path.suffix.lower() not in (".md", ".mdx", ".txt"):
@@ -255,15 +210,6 @@ def assess(paths, glossary, binary):
                 return Rejected(Failure.INVALID_INPUT, Stage.INPUT)
             if re.search(r"<!--\s*vale\b", text, re.IGNORECASE):
                 return Rejected(Failure.POLICY_OVERRIDE, Stage.INPUT)
-            terminology = "NOT_PROVIDED" if glossary is None else "IN_SCOPE"
-            if structured_glossary is not None:
-                for name in ("Terminology.yml", "TerminologyReview.yml"):
-                    (root / "styles/Slopsentral" / name).unlink(missing_ok=True)
-                if in_scope(structured_glossary, path.resolve(), scope_root):
-                    for name, content in vale_rules(structured_glossary):
-                        (root / "styles/Slopsentral" / name).write_text(content, encoding="utf-8")
-                else:
-                    terminology = "OUT_OF_SCOPE"
             # Freeze the input once; metrics and findings must assess the same bytes.
             snapshot = root / ("input" + path.suffix.lower())
             snapshot.write_bytes(text.encode("utf-8"))
@@ -291,32 +237,26 @@ def assess(paths, glossary, binary):
                 return findings
             documents.append({"type": "DOCUMENT_ASSESSMENT", "path": str(path),
                               "sourceSha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
-                              "metrics": metrics.report(), "findings": findings,
-                              "terminology": {"type": terminology}})
-    return {"type": "ASSESSED" if glossary is not None else "INCOMPLETE", "schemaVersion": 1,
+                              "metrics": metrics.report(), "findings": findings})
+    return {"type": "ASSESSED", "schemaVersion": SCHEMA_VERSION,
             "engine": {"type": "VALE", "version": VERSION, "policySha256": policy_digest},
-            "glossary": ({"type": "CHECKED", "entries": (len(structured_glossary.entries) if structured_glossary is not None else len(entries)),
-                          "sourceSha256": glossary_digest} if glossary is not None
-                         else {"type": "NOT_PROVIDED"}),
             "comprehension": {"type": "NOT_ASSESSED"}, "documents": documents}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--vale-bin", default="vale", help="Vale 3.24.0 executable")
-    parser.add_argument("--glossary", type=Path, help="Canonical repository glossary")
     parser.add_argument("documents", type=Path, nargs="+")
     args = parser.parse_args()
     try:
-        result = assess(args.documents, args.glossary, args.vale_bin)
+        result = assess(args.documents, args.vale_bin)
     except OSError:
         result = Rejected(Failure.VALE_FAILED, Stage.WORKSPACE)
     if isinstance(result, Rejected):
         report, code = result.report(), 2
     else:
         report = result
-        code = (2 if result["type"] == "INCOMPLETE" else
-                1 if any(document["findings"] for document in result["documents"]) else 0)
+        code = 1 if any(document["findings"] for document in result["documents"]) else 0
     print(json.dumps(report, ensure_ascii=True, sort_keys=True, indent=2, allow_nan=False))
     return code
 

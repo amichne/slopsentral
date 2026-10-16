@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T12:51:02-04:00",
+  "generatedAt": "2026-10-15T20:05:21-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -76,7 +76,7 @@
         },
         {
           "name": "semantic-ratchet",
-          "sha256": "sha256:9765e2a5ab93f1ab4d9cc8e7465b7694c947e96ba1a12657d865cd811ac2d100",
+          "sha256": "sha256:380a28726c9aecd034c66288a039d1dfaca2b8e99a43d2411ee823d4acb444ad",
           "sourcePath": "source/skills/semantic-ratchet",
           "targetPath": "skills/semantic-ratchet",
           "type": "SKILL"
@@ -236,7 +236,7 @@
         },
         {
           "name": "controlled-technical-writing",
-          "sha256": "sha256:a4ca71b2aa8c6d53dc3b788e58ea6b970db9eaa9c052de6af569286afb4cd99c",
+          "sha256": "sha256:d5b0056494815bbd82f532f692b69701a0b1a7c28bc098fe8dd8beffe681dc91",
           "sourcePath": "source/skills/controlled-technical-writing",
           "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
@@ -338,6 +338,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "ec21ce99cd6cfbc923dc924908898e9cf20300a7",
+  "sourceSha": "3f72e3fcd25a9fe5f0c76629c3f0db83180c9f29",
   "type": "HYDRATED_MARKETPLACE"
 }
