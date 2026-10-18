@@ -33,6 +33,9 @@ test('Pi installs a release archive and loads persisted profiles without registr
   await execute(process.execPath, [cli, 'install', source], { cwd: directory, env });
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(agentDir, 'settings.json'))).packages, [source]);
   assert.deepEqual(fs.readdirSync(path.join(agentDir, 'npm/node_modules')).filter(name => !name.startsWith('.')), ['slopsentral-pi']);
+  const previousAgentDir = process.env.PI_CODING_AGENT_DIR;
+  process.env.PI_CODING_AGENT_DIR = agentDir;
+  t.after(() => { if (previousAgentDir === undefined) delete process.env.PI_CODING_AGENT_DIR; else process.env.PI_CODING_AGENT_DIR = previousAgentDir; });
   const settingsManager = SettingsManager.create(directory, agentDir);
   const loader = new DefaultResourceLoader({ cwd: directory, agentDir, settingsManager, noContextFiles: true });
   await loader.reload();
@@ -71,3 +74,25 @@ for (const version of [undefined, '0.1.123']) {
     ]);
   });
 }
+
+test('the real Pi JSON command returns structured settings without a model request', { timeout: 15000 }, async t => {
+  const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi-print-settings-')));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const packagePath = path.join(directory, 'package');
+  fs.mkdirSync(path.join(packagePath, 'extensions'), { recursive: true });
+  const source = path.resolve(import.meta.dirname, '../../source/hooks/pi');
+  for (const name of fs.readdirSync(source).filter(name => name.endsWith('.ts'))) fs.copyFileSync(path.join(source, name), path.join(packagePath, 'extensions', name));
+  fs.writeFileSync(path.join(packagePath, 'package.json'), JSON.stringify({ type: 'module', pi: { extensions: ['./extensions/slopsentral.ts'], skills: [] } }));
+  fs.writeFileSync(path.join(packagePath, 'profiles.json'), JSON.stringify({ schemaVersion: 1, defaultProfile: 'fixture', profiles: [{ name: 'fixture', description: 'Print fixture', skills: [], instructions: [], agents: [], hooks: [], hookPolicy: 'ADVISORY' }] }));
+  const pending = execute(process.execPath, [cli, '--offline', '--no-extensions', '--no-skills', '--no-prompt-templates', '--no-themes', '-e', packagePath, '--mode', 'json', '/slopsentral state'], {
+    cwd: directory, env: { ...process.env, PI_CODING_AGENT_DIR: path.join(directory, 'agent'), PI_OFFLINE: '1' },
+    timeout: 10000,
+  });
+  pending.child.stdin.end();
+  t.after(() => { if (pending.child.exitCode === null) pending.child.kill('SIGKILL'); });
+  const { stdout } = await pending;
+  const events = stdout.trim().split('\n').map(line => JSON.parse(line));
+  const state = events.find(event => event.type === 'message_end' && event.message.customType === 'slopsentral-result').message.details;
+  assert.equal(state.effective.profile, 'fixture');
+  assert.deepEqual(state.journal.pending, []);
+});

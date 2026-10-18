@@ -1,0 +1,92 @@
+{
+  "comprehension": {
+    "type": "NOT_ASSESSED"
+  },
+  "documents": [
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.58 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 3462,
+        "fleschKincaidGrade": 9.58,
+        "sentences": 196,
+        "words": 1912,
+        "wordsPerSentence": 9.76
+      },
+      "path": "docs/pi-harness.md",
+      "sourceSha256": "309bef57c699c3fe4b84d24a7ef8c43f38756c964aa520ca62af133a8675572c",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 11.24 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 1547,
+        "fleschKincaidGrade": 11.24,
+        "sentences": 76,
+        "words": 804,
+        "wordsPerSentence": 10.58
+      },
+      "path": "docs/pi-implementation-evidence.md",
+      "sourceSha256": "3c2d04e977be9d19c336a0f5c4794f8bdca247db483ebb181fdd318db9433a3c",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.73 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 512,
+        "fleschKincaidGrade": 10.73,
+        "sentences": 25,
+        "words": 274,
+        "wordsPerSentence": 10.96
+      },
+      "path": "tools/tests/fixtures/PROVENANCE.md",
+      "sourceSha256": "668a829d839f0277213bb4fc769dfc4b999d3f4b14ed213aa452c9a600079904",
+      "type": "DOCUMENT_ASSESSMENT"
+    }
+  ],
+  "engine": {
+    "policySha256": "0a7cc8bb61ff2eb3ea13957b54d752e90d48cf41d936de789143b650d55ea277",
+    "type": "VALE",
+    "version": "3.24.0"
+  },
+  "schemaVersion": 2,
+  "type": "ASSESSED"
+}

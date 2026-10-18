@@ -26,10 +26,10 @@ export interface Config {
   readonly profiles: readonly Profile[];
 }
 export type Selection = { readonly type: "off" } | { readonly type: "selected"; readonly profile: Profile };
-type FailureCode = "INVALID_CONFIG" | "UNKNOWN_PROFILE" | "INVALID_OUTPUT" | "EXIT_FAILED" | "LAUNCH_FAILED" | "TIMED_OUT" | "ABORTED" | "OUTPUT_LIMIT";
+type FailureCode = "INVALID_CONFIG" | "UNKNOWN_PROFILE" | "INVALID_OUTPUT" | "EXIT_FAILED" | "LAUNCH_FAILED" | "TIMED_OUT" | "ABORTED" | "OUTPUT_LIMIT" | "QUEUE_FULL" | "STALE_CONTEXT" | "ADAPTER_FAILED" | "CANCEL_FAILED";
 export type Rejected = { readonly type: "rejected"; readonly code: FailureCode }
-  | { readonly type: "rejected"; readonly code: "BLOCKED"; readonly reason: string };
-export type HookResult = Rejected | { readonly type: "completed"; readonly context: string; readonly notice: string };
+  | { readonly type: "rejected"; readonly code: "BLOCKED"; readonly reason: string; readonly assessment?: "ASSESSED" | "FAILED" };
+export type HookResult = (Rejected | { readonly type: "completed"; readonly context: string; readonly notice: string }) & { readonly diagnostics?: string };
 export type HookRun = { readonly action: Action; readonly result: HookResult };
 const identity = /^[a-z][a-z0-9-]*$/;
 const token = /^[A-Za-z0-9_./:-]+$/;
@@ -125,7 +125,10 @@ export function decodeHook(stdout: string, exitCode: number, event: Action["even
       : typeof value.stopReason === "string" ? value.stopReason
       : record(specific) && typeof specific.permissionDecisionReason === "string" ? specific.permissionDecisionReason
       : "The hook blocked this operation.";
-    return { type: "rejected", code: "BLOCKED", reason: reason.slice(0, 32768) };
+    if (value.assessment !== undefined && value.assessment !== "ASSESSED" && value.assessment !== "FAILED")
+      return { type: "rejected", code: "INVALID_OUTPUT" };
+    return { type: "rejected", code: "BLOCKED", reason: reason.slice(0, 32768),
+      ...(value.assessment === undefined ? {} : { assessment: value.assessment }) };
   }
   if (!keys(value, ["systemMessage", "hookSpecificOutput"]) || (value.systemMessage !== undefined && typeof value.systemMessage !== "string"))
     return { type: "rejected", code: "INVALID_OUTPUT" };
@@ -143,19 +146,25 @@ export function runAction(root: string, action: Action, cwd: string, payload: Re
   const [command, ...args] = argv;
   if (!command) return Promise.resolve({ type: "rejected", code: "INVALID_CONFIG" });
   return new Promise(resolve => {
-    const child = spawn(command, args, { cwd, env: { ...process.env, PLUGIN_ROOT: pluginRoot }, detached: process.platform !== "win32", stdio: ["pipe", "pipe", "ignore"] });
+    const child = spawn(command, args, { cwd, env: { ...process.env, PLUGIN_ROOT: pluginRoot }, detached: process.platform !== "win32", stdio: ["pipe", "pipe", "pipe"] });
     const chunks: Buffer[] = [];
+    const stderr: Buffer[] = [];
     let bytes = 0;
     let rejection: Rejected | undefined;
+    let escalation: Promise<void> = Promise.resolve();
     const stop = (code: FailureCode) => {
       if (rejection) return;
       rejection = { type: "rejected", code };
       const kill = (signalName: NodeJS.Signals) => {
         try { if (child.pid && process.platform !== "win32") process.kill(-child.pid, signalName); else child.kill(signalName); }
-        catch (error) { if (!record(error) || error.code !== "ESRCH") throw error; }
+        catch (error) {
+          if (record(error) && error.code === "ESRCH") return;
+          rejection = { type: "rejected", code: record(error) && error.code === "EPERM" ? "CANCEL_FAILED" : "ADAPTER_FAILED" };
+          try { child.kill(signalName); } catch { rejection = { type: "rejected", code: "ADAPTER_FAILED" }; }
+        }
       };
       kill("SIGTERM");
-      setTimeout(() => kill("SIGKILL"), 250);
+      escalation = new Promise(done => { setTimeout(() => { kill("SIGKILL"); done(); }, 250); });
     };
     const abort = () => stop("ABORTED");
     const timer = setTimeout(() => stop("TIMED_OUT"), action.timeout * 1000);
@@ -165,12 +174,19 @@ export function runAction(root: string, action: Action, cwd: string, payload: Re
       bytes += chunk.length;
       if (bytes > limit) stop("OUTPUT_LIMIT"); else chunks.push(chunk);
     });
+    child.stderr.on("data", (chunk: Buffer) => {
+      bytes += chunk.length;
+      if (bytes > limit) stop("OUTPUT_LIMIT"); else stderr.push(chunk);
+    });
     child.stdin.on("error", (error: NodeJS.ErrnoException) => { if (error.code !== "EPIPE") stop("LAUNCH_FAILED"); });
-    child.on("error", () => { rejection = { type: "rejected", code: "LAUNCH_FAILED" }; });
-    child.on("close", code => {
+    child.on("error", () => { rejection ??= { type: "rejected", code: "LAUNCH_FAILED" }; });
+    child.on("close", async code => {
       clearTimeout(timer);
       signal?.removeEventListener("abort", abort);
-      resolve(rejection ?? decodeHook(Buffer.concat(chunks).toString("utf8"), code ?? -1, action.event));
+      await escalation;
+      const result = rejection ?? decodeHook(Buffer.concat(chunks).toString("utf8"), code ?? -1, action.event);
+      const diagnostics = Buffer.concat(stderr).toString("utf8").slice(0, 16384);
+      resolve(diagnostics ? { ...result, diagnostics } : result);
     });
     child.stdin.end(JSON.stringify(payload));
   });

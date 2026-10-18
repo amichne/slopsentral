@@ -4,13 +4,40 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { createAgentSession, DefaultResourceLoader, ModelRuntime, SessionManager, SettingsManager } from '@earendil-works/pi-coding-agent';
+import { createAgentSession, createWriteToolDefinition, DefaultResourceLoader, initTheme, ModelRuntime, SessionManager, SettingsManager } from '@earendil-works/pi-coding-agent';
+import { AssistantMessageEventStream } from '@earendil-works/pi-ai';
+import { Input, TuiMainScreen, visibleWidth } from '@earendil-works/pi-tui';
+import { tsImport } from 'tsx/esm/api';
 import { project } from '../project-marketplaces.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 
-async function host(t, packagePath, directory, flag, agentDir = path.join(directory, 'agent')) {
+async function host(t, packagePath, directory, flag, agentDir = path.join(directory, 'agent'), customTools = []) {
+  const catalogFile = path.join(packagePath, 'capabilities.json');
+  if (!fs.existsSync(catalogFile)) {
+    // Controlled fixture actions have no dependencies. Projected packages carry real source edges.
+    const config = JSON.parse(fs.readFileSync(path.join(packagePath, 'profiles.json'), 'utf8'));
+    const caps = new Map();
+    for (const profile of config.profiles) {
+      for (const [type, refs] of [['SKILL', profile.skills], ['INSTRUCTION', profile.instructions], ['AGENT', profile.agents]]) for (const ref of refs) {
+        const id = `${type.toLowerCase()}:${ref.name}`;
+        const previous = caps.get(id);
+        caps.set(id, { id, type, name: ref.name, path: ref.path, dependencies: [], profiles: [...new Set([...(previous?.profiles ?? []), profile.name])] });
+      }
+      for (const action of profile.hooks) {
+        const id = `hook:${action.name}`;
+        const previous = caps.get(id);
+        const actions = [...(previous?.actions ?? [])];
+        if (!actions.some(item => JSON.stringify(item) === JSON.stringify(action))) actions.push(action);
+        caps.set(id, { id, type: 'HOOK', name: action.name, dependencies: [], profiles: [...new Set([...(previous?.profiles ?? []), profile.name])], actions });
+      }
+    }
+    fs.writeFileSync(catalogFile, JSON.stringify({ schemaVersion: 1, capabilities: [...caps.values()] }));
+  }
   const previousHome = process.env.CODEX_HOME;
+  const previousAgentDir = process.env.PI_CODING_AGENT_DIR;
+  process.env.PI_CODING_AGENT_DIR = agentDir;
+  t.after(() => { if (previousAgentDir === undefined) delete process.env.PI_CODING_AGENT_DIR; else process.env.PI_CODING_AGENT_DIR = previousAgentDir; });
   process.env.CODEX_HOME = path.join(path.dirname(agentDir), 'codex');
   t.after(() => { if (previousHome === undefined) delete process.env.CODEX_HOME; else process.env.CODEX_HOME = previousHome; });
   const settingsManager = SettingsManager.inMemory({ packages: [] });
@@ -22,13 +49,39 @@ async function host(t, packagePath, directory, flag, agentDir = path.join(direct
   const modelRuntime = await ModelRuntime.create({ authPath: path.join(agentDir, 'auth.json'), modelsPath: null,
     modelsStorePath: path.join(agentDir, 'models-cache.json'), allowModelNetwork: false, refreshOnCreate: false });
   const { session } = await createAgentSession({ cwd: directory, agentDir, resourceLoader: loader, modelRuntime,
-    settingsManager, sessionManager: SessionManager.inMemory(directory) });
+    settingsManager, sessionManager: SessionManager.inMemory(directory), customTools });
   t.after(() => session.dispose());
   const errors = [];
   let aborts = 0;
   if (flag) session.extensionRunner.setFlagValue('slopsentral-profile', flag);
   await session.bindExtensions({ mode: 'print', onError: error => errors.push(error), abortHandler: () => { aborts++; } });
-  return { session, loader, errors, aborts: () => aborts };
+  return { session, loader, modelRuntime, errors, aborts: () => aborts };
+}
+
+async function jsonCommand(session, text) {
+  const chunks = [];
+  const native = session.extensionRunner.createCommandContext();
+  const command = session.extensionRunner.getCommand('slopsentral');
+  assert.ok(command);
+  await command.handler(text, { ...native, mode: 'rpc', ui: { ...native.ui, notify: message => chunks.push(message) } });
+  return JSON.parse(chunks.at(-1));
+}
+
+async function until(predicate, label, timeout = 5000) {
+  const deadline = Date.now() + timeout;
+  while (!predicate()) {
+    if (Date.now() > deadline) throw new Error(`Timed out: ${label}`);
+    await new Promise(resolve => setTimeout(resolve, 10));
+  }
+}
+async function afterJobs(session) {
+  const deadline = Date.now() + 5000;
+  while (true) {
+    const state = await jsonCommand(session, 'state');
+    if (!state.jobs.length) return state;
+    assert.ok(Date.now() < deadline, 'native background jobs did not finish');
+    await new Promise(resolve => setTimeout(resolve, 10));
+  }
 }
 
 test('projected scope hook reports real edits until an explicit review resolves its gate', { skip: !process.env.PKL_BIN && !process.env.SLOPSENTRAL_PI_PACKAGE }, async t => {
@@ -48,44 +101,40 @@ test('projected scope hook reports real edits until an explicit review resolves 
     packagePath = path.join(directory, 'projection/.pi/slopsentral');
   }
   const { session, errors, aborts } = await host(t, packagePath, cwd, undefined, path.join(directory, 'agent'));
+  const notifications = [];
+  session.extensionRunner.setUIContext({ notify: message => notifications.push(message), setStatus: () => {} });
   const settle = () => session.extensionRunner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, entries => ({
     contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: entries.some(entry => entry.type === 'custom_message'),
   }));
-  assert.deepEqual(await session.extensionRunner.emitInput('Examine the fixture.', undefined, 'interactive'), { action: 'continue' });
-  assert.deepEqual((await settle()).entries, []);
-  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'changed-source-must-stay-private\n');
-  const original = { type: 'tool_result', toolName: 'write', toolCallId: 'edit-1', input: {}, content: [{ type: 'text', text: 'Native edit receipt' }], details: { receipt: 1 }, structuredContent: { saved: true }, isError: false, usage: { input: 1, output: 1 } };
-  const recorded = await session.extensionRunner.emitToolResult(original);
-  assert.deepEqual(recorded.content[0], original.content[0]);
-  assert.deepEqual(recorded.structuredContent, original.structuredContent);
-  assert.deepEqual(recorded.details, original.details);
-  assert.deepEqual(recorded.usage, original.usage);
-  assert.equal(recorded.isError, false);
-  assert.ok(recorded.content.some(part => part.type === 'text' && part.text.includes('module/main.py') && part.text.includes('AGENTS.md')));
-  assert.equal(JSON.stringify(recorded).includes('changed-source-must-stay-private'), false);
-  const blocked = await settle();
-  assert.equal(blocked.continue, false, 'the shipped advisory policy must not continue the run');
-  assert.ok(blocked.entries.some(entry => entry.type === 'custom_message' && entry.content.includes('agents-md-scope: BLOCKED') && entry.content.includes('review')));
-  const script = path.join(packagePath, 'software-engineering/hooks/agents-md-scope.py');
-  const reviewed = JSON.parse(execFileSync('uv', ['run', '--locked', '--script', script, 'review', '--cwd', cwd,
-    '--session-id', session.sessionManager.getSessionId(), '--note', 'The root instructions still describe the module.'], { cwd: directory, encoding: 'utf8' }));
-  assert.equal(reviewed.type, 'REVIEW_RECORDED');
-  assert.deepEqual((await settle()).entries, []);
-  const store = path.join(process.env.CODEX_HOME, 'state/agents-md-scope');
-  const snapshot = () => fs.readdirSync(store).filter(name => name.endsWith('.json')).map(name => fs.readFileSync(path.join(store, name), 'utf8'));
-  const saved = snapshot();
-  assert.equal(saved.length, 1);
-  await session.prompt('/slopsentral-profile off');
-  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'changed while off\n');
   await session.extensionRunner.emitInput('Examine the fixture.', undefined, 'interactive');
-  assert.equal(await session.extensionRunner.emitToolResult(original), undefined);
   assert.deepEqual((await settle()).entries, []);
-  assert.deepEqual(snapshot(), saved, 'the off profile must not write hook state');
+  await session.extensionRunner.emit({ type: 'tool_execution_start', toolName: 'write', toolCallId: 'edit-1', args: { path: 'module/main.py' } });
+  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'changed-source-must-stay-private\n');
+  const original = { type: 'tool_result', toolName: 'write', toolCallId: 'edit-1', input: { path: 'module/main.py' }, content: [{ type: 'text', text: 'Native edit receipt' }], details: { receipt: 1 }, structuredContent: { saved: true }, isError: false, usage: { input: 1, output: 1 } };
+  const recorded = await session.extensionRunner.emitToolResult(original) ?? original;
+  assert.deepEqual(recorded, original);
+  assert.deepEqual((await settle()).entries, []);
+  await session.extensionRunner.emit({ type: 'agent_settled', aborted: false });
+  await until(() => notifications.some(message => message.includes('module/main.py')), 'scope assessment');
+  assert.equal(JSON.stringify(notifications).includes('changed-source-must-stay-private'), false);
+  const journal = () => session.sessionManager.getBranch().findLast(entry => entry.type === 'custom' && entry.customType === 'slopsentral-mutations').data;
+  assert.deepEqual(journal().pending, ['module/main.py']);
+  assert.equal(journal().assessedRevision, journal().revision);
+  await session.prompt('/slopsentral-check');
+  assert.ok(notifications.some(message => message.includes('Pending scope review')));
+  await session.prompt('/slopsentral review The root instructions still describe the module.');
+  assert.deepEqual(journal().pending, []);
+  await session.prompt('/slopsentral-profile off');
+  await session.extensionRunner.emit({ type: 'tool_execution_start', toolName: 'write', toolCallId: 'edit-2', args: { path: 'module/main.py' } });
+  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'changed while off\n');
+  assert.equal(await session.extensionRunner.emitToolResult(original), undefined);
+  assert.deepEqual(journal().pending, ['module/main.py'], 'disabled assessment preserves mutation evidence');
+  assert.equal(fs.existsSync(path.join(process.env.CODEX_HOME, 'state/agents-md-scope')), false);
   assert.equal(aborts(), 0);
   assert.deepEqual(errors, []);
 });
 
-test('Pi 1.2 native loader dispatches profile commands, prompt sections, and branch restoration without a provider', { skip: !process.env.PKL_BIN && !process.env.SLOPSENTRAL_PI_PACKAGE }, async t => {
+test('Pi native loader dispatches profile commands, prompt sections, and branch restoration without a provider', { skip: !process.env.PKL_BIN && !process.env.SLOPSENTRAL_PI_PACKAGE }, async t => {
   const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'slopsentral-pi-host-')));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
   let packagePath = process.env.SLOPSENTRAL_PI_PACKAGE;
@@ -150,13 +199,71 @@ function fixture(t, hooks, mode = 'ENFORCING') {
   fs.mkdirSync(path.join(packagePath, 'extensions'), { recursive: true });
   fs.mkdirSync(path.join(packagePath, 'fixture/hooks'), { recursive: true });
   const adapters = process.env.SLOPSENTRAL_PI_PACKAGE ? path.join(process.env.SLOPSENTRAL_PI_PACKAGE, 'extensions') : path.join(root, 'source/hooks/pi');
-  for (const name of ['slopsentral.ts', 'runtime.ts']) fs.copyFileSync(path.join(adapters, name), path.join(packagePath, 'extensions', name));
+  for (const name of fs.readdirSync(adapters).filter(name => name.endsWith('.ts'))) fs.copyFileSync(path.join(adapters, name), path.join(packagePath, 'extensions', name));
   fs.writeFileSync(path.join(packagePath, 'package.json'), JSON.stringify({ type: 'module', pi: { extensions: ['./extensions/slopsentral.ts'], skills: [] } }));
   const base = { description: 'Controlled native adapter fixture', skills: [], instructions: [], agents: [], hooks, hookPolicy: mode };
   fs.writeFileSync(path.join(packagePath, 'profiles.json'), JSON.stringify({ schemaVersion: 1, defaultProfile: 'fixture', profiles: [{ name: 'fixture', ...base }, { name: 'second', ...base }] }));
   fs.writeFileSync(path.join(packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync(0,'utf8')); if(p.cwd!==process.cwd()||!p.session_id)process.exit(3);console.log(JSON.stringify({decision:'block',reason:'controlled rejection'}));`);
   return { directory, packagePath };
 }
+
+async function nativeTools(session, modelRuntime, calls) {
+  const model = modelRuntime.getModels('openai')[0];
+  assert.ok(model, 'the bundled model catalog supplies a fixture identity');
+  await modelRuntime.setRuntimeApiKey('openai', 'isolated-fixture-key');
+  await session.setModel(model);
+  let turn = 0;
+  session.agent.streamFunction = () => {
+    const content = turn++ === 0 ? calls.map((call, index) => ({ type: 'toolCall', id: `native-${index}`, name: call.name, arguments: call.args }))
+      : [{ type: 'text', text: 'Fixture complete.' }];
+    const message = { role: 'assistant', content, api: model.api, provider: model.provider, model: model.id,
+      usage: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, totalTokens: 0, cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 } },
+      stopReason: turn === 1 ? 'toolUse' : 'stop', timestamp: Date.now() };
+    const stream = new AssistantMessageEventStream();
+    stream.push({ type: 'done', reason: message.stopReason, message });
+    stream.end();
+    return stream;
+  };
+  await session.prompt('Apply the exact fixture tool calls.');
+}
+
+test('native mutation path batches first-run edits with zero per-tool subprocesses and no Git', { timeout: 15000 }, async t => {
+  const action = { name: 'agents-md-scope', event: 'Stop', plugin: 'fixture', argv: ['uv', 'run', '--locked', '--script', 'hooks/agents-md-scope.py'], timeout: 5 };
+  const f = fixture(t, ['UserPromptSubmit', 'PostToolUse', 'Stop'].map(event => ({ ...action, event })), 'ADVISORY');
+  fs.copyFileSync(path.join(root, 'source/hooks/agents-md-scope.py'), path.join(f.packagePath, 'fixture/hooks/agents-md-scope.py'));
+  fs.copyFileSync(path.join(root, 'source/hooks/agents-md-scope.py.lock'), path.join(f.packagePath, 'fixture/hooks/agents-md-scope.py.lock'));
+  fs.writeFileSync(path.join(f.directory, 'AGENTS.md'), 'Use fixture rules.\n');
+  const bin = path.join(f.directory, 'bin'); fs.mkdirSync(bin);
+  const gitLedger = path.join(f.directory, 'git-called');
+  const hookLedger = path.join(f.directory, 'hook-called');
+  const realUv = execFileSync('which', ['uv'], { encoding: 'utf8' }).trim();
+  fs.writeFileSync(path.join(bin, 'git'), `#!/bin/sh\necho called >> '${gitLedger}'\nexit 99\n`, { mode: 0o755 });
+  fs.writeFileSync(path.join(bin, 'uv'), `#!/bin/sh\necho called >> '${hookLedger}'\nexec '${realUv}' "$@"\n`, { mode: 0o755 });
+  const previousPath = process.env.PATH;
+  process.env.PATH = bin + path.delimiter + previousPath;
+  t.after(() => { process.env.PATH = previousPath; });
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory);
+  const notices = [];
+  session.extensionRunner.setUIContext({ notify: message => notices.push(message), setStatus: () => {} });
+  const countsDuringTools = [];
+  session.subscribe(event => { if (event.type === 'tool_execution_end') countsDuringTools.push(fs.existsSync(hookLedger) ? fs.readFileSync(hookLedger, 'utf8').trim().split('\n').length : 0); });
+  await nativeTools(session, modelRuntime, [
+    { name: 'write', args: { path: 'module/new.py', content: 'first\n' } },
+    { name: 'edit', args: { path: 'module/new.py', oldText: 'first', newText: 'second' } },
+  ]);
+  assert.equal(fs.readFileSync(path.join(f.directory, 'module/new.py'), 'utf8'), 'second\n');
+  assert.deepEqual(countsDuringTools, [0, 0]);
+  await new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('background assessment did not deliver')), 5000);
+    const poll = () => notices.some(message => message.includes('module/new.py')) ? (clearTimeout(timer), resolve()) : setTimeout(poll, 10);
+    poll();
+  });
+  assert.equal(fs.readFileSync(hookLedger, 'utf8').trim().split('\n').length, 1);
+  assert.equal(fs.existsSync(gitLedger), false);
+  const state = session.sessionManager.getBranch().findLast(entry => entry.type === 'custom' && entry.customType === 'slopsentral-mutations');
+  assert.deepEqual(state.data.pending, ['module/new.py']);
+  assert.deepEqual(errors, []);
+});
 
 test('native flag choice persists and remains stable on session restoration', async t => {
   const f = fixture(t, []);
@@ -192,11 +299,8 @@ test('native hook policies distinguish disabled, advisory, and enforcing failure
     } else assert.equal(permission, undefined);
     const original = { type: 'tool_result', toolName: 'read', toolCallId: 'read-1', input: {}, content: [{ type: 'text', text: 'original evidence' }], details: { receipt: 1 }, isError: false };
     const result = await session.extensionRunner.emitToolResult(original);
-    if (mode === 'OFF') assert.equal(result, undefined);
-    else {
-      assert.deepEqual(result.content[0], original.content[0]);
-      assert.match(result.content.at(-1).text, /controlled PostToolUse rejection/);
-    }
+    assert.equal(result, undefined, 'hook context preserves the original visible receipt');
+    if (mode !== 'OFF') assert.ok((await session.extensionRunner.emitContext([])).some(message => message.customType === 'slopsentral-tool-hooks' && message.content.includes('controlled PostToolUse rejection')));
     assert.equal(aborts(), mode === 'ENFORCING' ? 1 : 0);
     const settle = await session.extensionRunner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, entries => ({
       contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: entries.some(entry => entry.type === 'custom_message'),
@@ -278,9 +382,9 @@ test('native prompt and post-tool adapters preserve context and original tool ev
   assert.ok((await session.extensionRunner.emitContext([])).some(message => message.content.includes('UserPromptSubmit scope guidance')));
   assert.equal(session.sessionManager.getBranch().some(entry => entry.type === 'custom_message'), false);
   const original = { type: 'tool_result', toolName: 'custom_probe', toolCallId: 'probe-1', input: {}, content: [{ type: 'text', text: 'Original tool evidence' }], details: { receipt: 7 }, structuredContent: { state: 'recorded' }, isError: true, usage: { input: 1, output: 2 } };
-  const result = await session.extensionRunner.emitToolResult(original);
-  assert.deepEqual(result.content[0], original.content[0]);
-  assert.ok(result.content.some(part => part.type === 'text' && part.text.includes('PostToolUse scope guidance')));
+  const result = await session.extensionRunner.emitToolResult(original) ?? original;
+  assert.deepEqual(result.content, original.content);
+  assert.ok((await session.extensionRunner.emitContext([])).some(message => message.customType === 'slopsentral-tool-hooks' && message.content.includes('PostToolUse scope guidance')));
   assert.deepEqual(result.details, original.details);
   assert.deepEqual(result.structuredContent, original.structuredContent);
   assert.equal(result.isError, true);
@@ -331,7 +435,7 @@ test('native session shutdown cancels an active manual gate without a continuati
   process.kill(pid, 0);
   await session.extensionRunner.emit({ type: 'session_shutdown', reason: 'quit' });
   await pending;
-  assert.ok(notifications.some(message => message.includes('gate: ABORTED')));
+  assert.deepEqual(notifications, [], 'shutdown suppresses late reports from the cancelled lifecycle');
   assert.throws(() => process.kill(pid, 0), error => error.code === 'ESRCH');
   assert.equal(session.sessionManager.getBranch().some(entry => entry.type === 'custom' && entry.customType === 'slopsentral-stop-continuation'), false);
   assert.deepEqual(errors, []);
@@ -343,6 +447,8 @@ test('photographed prompts never add keyword hints or expose guidance outside th
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
   const instructions = ['engineering-design', 'kotlin-engineering'].map(name => ({ name, path: `fixture/instructions/${name}.md` }));
   const tdd = { name: 'tdd', path: 'fixture/skills/tdd/SKILL.md' };
+  fs.mkdirSync(path.join(f.packagePath, 'fixture/skills/tdd'), { recursive: true });
+  fs.writeFileSync(path.join(f.packagePath, tdd.path), '---\nname: tdd\ndescription: Fixture\n---\nFixture criteria.');
   fs.mkdirSync(path.join(f.packagePath, 'fixture/instructions'));
   for (const ref of instructions) fs.writeFileSync(path.join(f.packagePath, ref.path), `# ${ref.name}\nControlled canonical policy.`);
   config.profiles.push({ ...config.profiles[0], name: 'catalog', instructions, skills: [tdd], hookPolicy: 'OFF' });
@@ -488,5 +594,401 @@ test('native steering and follow-up keep context until the accepted input reache
     assert.equal((await runner.emitContext(messages)).at(-1).content, expected);
     assert.equal(session.sessionManager.getBranch().some(e => e.type === 'custom_message'), false);
   }
+  assert.deepEqual(errors, []);
+});
+
+test('failed native write preserves changed instructions, review obligations, and original error', async t => {
+  const action = { name: 'agents-md-scope', event: 'Stop', plugin: 'fixture', argv: ['uv', 'run', '--locked', '--script', 'hooks/agents-md-scope.py'], timeout: 5 };
+  const f = fixture(t, [action], 'ADVISORY');
+  for (const name of ['agents-md-scope.py', 'agents-md-scope.py.lock']) fs.copyFileSync(path.join(root, 'source/hooks', name), path.join(f.packagePath, 'fixture/hooks', name));
+  const writer = createWriteToolDefinition(f.directory, { operations: {
+    mkdir: async directory => fs.mkdirSync(directory, { recursive: true }),
+    writeFile: async (file, content) => { fs.writeFileSync(file, content); throw new Error('Fixture failure after mutation'); },
+  } });
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory, undefined, path.join(f.directory, 'agent'), [writer]);
+  const notices = [];
+  session.extensionRunner.setUIContext({ notify: message => notices.push(message), setStatus: () => {} });
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'AGENTS.md', content: 'Use the changed fixture command.\n' } }]);
+  assert.equal(fs.readFileSync(path.join(f.directory, 'AGENTS.md'), 'utf8'), 'Use the changed fixture command.\n');
+  const result = session.messages.findLast(message => message.role === 'toolResult');
+  assert.equal(result.isError, true);
+  assert.ok(result.content.some(part => part.text?.includes('Fixture failure after mutation')));
+  assert.ok(result.content.some(part => part.text?.includes('Current instructions from "AGENTS.md"') && part.text.includes('Use the changed fixture command.')));
+  await until(() => notices.some(message => message.includes('scope review')), 'failed mutation assessment');
+  const state = await jsonCommand(session, 'state');
+  assert.deepEqual(state.journal.pending, ['AGENTS.md']);
+  assert.equal(state.journal.assessedRevision, state.journal.revision);
+  await session.extensionRunner.emit({ type: 'session_start', reason: 'resume' });
+  assert.deepEqual((await jsonCommand(session, 'state')).journal.pending, ['AGENTS.md']);
+  assert.deepEqual(errors, []);
+});
+
+test('native nested calls and explicit mutation adapters preserve instruction deletion evidence', async t => {
+  const action = { name: 'agents-md-scope', event: 'Stop', plugin: 'fixture', argv: ['uv', 'run', '--locked', '--script', 'hooks/agents-md-scope.py'], timeout: 5 };
+  const f = fixture(t, [action], 'ADVISORY');
+  for (const name of ['agents-md-scope.py', 'agents-md-scope.py.lock']) fs.copyFileSync(path.join(root, 'source/hooks', name), path.join(f.packagePath, 'fixture/hooks', name));
+  const { Type } = await import('typebox');
+  const parameters = Type.Object({ path: Type.String() });
+  const tools = [
+    { name: 'erase', label: 'erase', description: 'Fixture removal', parameters,
+      execute: async (_id, args) => { fs.unlinkSync(path.join(f.directory, args.path)); throw new Error('Fixture failure after deletion'); } },
+    { name: 'nested', label: 'nested', description: 'Fixture nested write', parameters,
+      execute: async (_id, args, signal, _update, ctx) => ctx.executeTool('write', { path: args.path, content: 'nested source\n' }, { signal }) },
+  ];
+  fs.mkdirSync(path.join(f.directory, 'module'));
+  fs.writeFileSync(path.join(f.directory, 'AGENTS.md'), 'Use root rules.\n');
+  fs.writeFileSync(path.join(f.directory, 'module/AGENTS.md'), 'Use module rules.\n');
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory, undefined, path.join(f.directory, 'agent'), tools);
+  assert.equal((await jsonCommand(session, 'set session {"schemaVersion":1,"mutationAdapters":{"erase":["path"],"nested":["path"]}}')).type, 'saved');
+  await nativeTools(session, modelRuntime, [
+    { name: 'nested', args: { path: 'module/new.py' } },
+    { name: 'erase', args: { path: 'module/AGENTS.md' } },
+  ]);
+  assert.equal(fs.readFileSync(path.join(f.directory, 'module/new.py'), 'utf8'), 'nested source\n');
+  assert.equal(fs.existsSync(path.join(f.directory, 'module/AGENTS.md')), false);
+  const deletion = session.messages.find(message => message.role === 'toolResult' && message.toolName === 'erase');
+  assert.equal(deletion.isError, true);
+  assert.ok(deletion.content.some(part => part.text?.includes('was deleted')));
+  const state = await jsonCommand(session, 'state');
+  assert.deepEqual(state.journal.pending, ['module/AGENTS.md', 'module/new.py']);
+  assert.deepEqual(state.journal.gaps, []);
+  assert.deepEqual(errors, []);
+});
+
+test('read-only native runs launch no scope process and shell changes expose a coverage gap', async t => {
+  const action = { name: 'agents-md-scope', event: 'Stop', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 5 };
+  const f = fixture(t, [action], 'ADVISORY');
+  const ledger = path.join(f.directory, 'calls');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs';fs.appendFileSync(${JSON.stringify(ledger)},'ran\n');console.log('{}');`);
+  fs.writeFileSync(path.join(f.directory, 'read.txt'), 'fixture');
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory);
+  await nativeTools(session, modelRuntime, [{ name: 'read', args: { path: 'read.txt' } }]);
+  assert.equal(fs.existsSync(ledger), false);
+  await nativeTools(session, modelRuntime, [{ name: 'bash', args: { command: "printf 'fixture' > shell-file.txt" } }]);
+  assert.equal(fs.readFileSync(path.join(f.directory, 'shell-file.txt'), 'utf8'), 'fixture');
+  const state = await jsonCommand(session, 'state');
+  assert.deepEqual(state.journal.pending, []);
+  assert.ok(state.journal.gaps.includes('UNSUPPORTED_TOOL: bash'));
+  assert.ok(state.coverage[0].includes('external edits'));
+  assert.deepEqual(errors, []);
+});
+
+function barrierHook(f) {
+  const ready = path.join(f.directory, 'ready');
+  const release = path.join(f.directory, 'release');
+  const exited = path.join(f.directory, 'exited');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs';fs.writeFileSync(${JSON.stringify(ready)},String(process.pid));const timer=setInterval(()=>{if(fs.existsSync(${JSON.stringify(release)})){clearInterval(timer);fs.writeFileSync(${JSON.stringify(exited)},'completed');console.log(JSON.stringify({systemMessage:'barrier released'}));}},5);`);
+  return { ready, release, exited };
+}
+
+test('native background hooks do not delay settlement or lose distinct prompt obligations', async t => {
+  const action = { name: 'gate', event: 'Stop', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 10 };
+  const f = fixture(t, [action], 'ADVISORY');
+  const barrier = barrierHook(f);
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory);
+  const notices = [];
+  session.extensionRunner.setUIContext({ notify: message => notices.push(message), setStatus: () => {} });
+  assert.equal((await jsonCommand(session, 'set session {"schemaVersion":1,"hooks":{"hook:gate":{"execution":"background","critical":"report","output":{"type":"ALWAYS"},"context":"none"}}}')).type, 'saved');
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'first.txt', content: 'first' } }]);
+  await until(() => fs.existsSync(barrier.ready), 'background admission');
+  assert.equal(fs.existsSync(barrier.exited), false, 'the first native run returned before release');
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'second.txt', content: 'second' } }]);
+  assert.equal(fs.readFileSync(path.join(f.directory, 'second.txt'), 'utf8'), 'second');
+  assert.equal(fs.existsSync(barrier.exited), false, 'the second native run also returned before release');
+  assert.equal((await jsonCommand(session, 'state')).jobs.length, 2);
+  fs.writeFileSync(barrier.release, 'release');
+  await until(() => notices.filter(message => message.includes('barrier released')).length === 2, 'both background deliveries');
+  assert.equal((await afterJobs(session)).recent.length, 2);
+  assert.deepEqual(errors, []);
+});
+
+for (const transition of ['configuration', 'session-tree', 'external-branch', 'cancellation']) test(`native background results cannot cross ${transition}`, async t => {
+  const action = { name: 'gate', event: 'Stop', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 10 };
+  const f = fixture(t, [action], 'ADVISORY');
+  if (transition === 'external-branch') { fs.mkdirSync(path.join(f.directory, '.git')); fs.writeFileSync(path.join(f.directory, '.git/HEAD'), 'ref: refs/heads/first\n'); }
+  const barrier = barrierHook(f);
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory);
+  const notices = [];
+  session.extensionRunner.setUIContext({ notify: message => notices.push(message), setStatus: () => {} });
+  await jsonCommand(session, 'set session {"schemaVersion":1,"hooks":{"hook:gate":{"execution":"background","critical":"report","output":{"type":"ALWAYS"},"context":"none"}}}');
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'pending.txt', content: 'pending' } }]);
+  await until(() => fs.existsSync(barrier.ready), 'background barrier');
+  const pid = Number(fs.readFileSync(barrier.ready, 'utf8'));
+  if (transition === 'configuration') await jsonCommand(session, 'set session {"schemaVersion":1,"capabilities":{"hook:gate":false}}');
+  if (transition === 'session-tree') await session.extensionRunner.emit({ type: 'session_tree', newLeafId: session.sessionManager.getLeafId(), fromExtension: true });
+  if (transition === 'external-branch') fs.writeFileSync(path.join(f.directory, '.git/HEAD'), 'ref: refs/heads/other\n');
+  if (transition === 'cancellation') {
+    const key = (await jsonCommand(session, 'state')).jobs[0];
+    assert.ok(key);
+    assert.equal((await jsonCommand(session, `cancel ${key}`)).type, 'cancellation-requested');
+  }
+  fs.writeFileSync(barrier.release, 'release');
+  await until(() => { try { process.kill(pid, 0); return false; } catch (error) { if (error.code !== 'ESRCH') throw error; return true; } }, 'stale job exit');
+  const state = await jsonCommand(session, 'state');
+  assert.deepEqual(state.journal.pending, ['pending.txt']);
+  assert.deepEqual(state.recent, []);
+  assert.equal(notices.some(message => message.includes('barrier released')), false);
+  assert.deepEqual(errors, []);
+});
+
+test('native SettingsList saves a hook toggle, restores the branch, and changes real tool permission', async t => {
+  const action = { name: 'gate', event: 'PreToolUse', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], matcher: '^write$', timeout: 5 };
+  const f = fixture(t, [action]);
+  const configFile = path.join(f.packagePath, 'profiles.json');
+  const config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+  config.profiles[0].instructions.push({ name: 'missing', path: 'fixture/missing.md' });
+  fs.writeFileSync(configFile, JSON.stringify(config));
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory);
+  const importedTerminal = await tsImport('./fixtures/pi-virtual-terminal.ts', import.meta.url);
+  const { VirtualTerminal } = importedTerminal.default ?? importedTerminal;
+  initTheme('dark');
+  const terminal = new VirtualTerminal(60, 18);
+  const tui = new TuiMainScreen(terminal, true);
+  const editor = new Input();
+  tui.addChild(editor); tui.setFocus(editor); tui.start();
+  t.after(() => tui.stop());
+  let component;
+  let closed = false;
+  const ui = session.extensionRunner.createCommandContext().ui;
+  session.extensionRunner.setUIContext({ ...ui, notify: () => {}, setStatus: () => {}, custom: factory => new Promise(resolve => {
+    component = factory(tui, ui.theme, {}, value => {
+      tui.removeChild(component); tui.addChild(editor); tui.setFocus(editor); tui.requestRender(); closed = true; resolve(value);
+    });
+    tui.removeChild(editor); tui.addChild(component); tui.setFocus(component); tui.requestRender();
+  }) }, 'tui');
+  const pending = session.prompt('/slopsentral');
+  await until(() => component !== undefined, 'native menu');
+  await terminal.waitForRender();
+  assert.ok(terminal.getViewport().some(line => line.includes('Save scope')));
+  terminal.sendInput('\x1b[B'); terminal.sendInput('\r'); // Save scope: session -> project.
+  for (const character of 'Hooks') terminal.sendInput(character);
+  terminal.sendInput('\r'); // Open the hook picker.
+  terminal.sendInput('\r'); // Configure gate.
+  terminal.sendInput('\r'); // Enabled: on -> off.
+  await terminal.waitForRender();
+  assert.ok(terminal.getViewport().some(line => line.includes('off')));
+  const saved = JSON.parse(fs.readFileSync(path.join(f.directory, '.pi/slopsentral.json'), 'utf8'));
+  assert.deepEqual(saved.capabilities, { 'hook:gate': false });
+  for (const character of 'Execution') terminal.sendInput(character);
+  terminal.sendInput('\r');
+  await terminal.waitForRender();
+  assert.ok(terminal.getViewport().some(line => line.includes('INVALID_SETTINGS')));
+  terminal.sendInput('\x15');
+  for (const character of 'Exclude regex') terminal.sendInput(character);
+  terminal.sendInput('\r'); terminal.sendInput('['); terminal.sendInput('\r');
+  await terminal.waitForRender();
+  assert.ok(terminal.getViewport().some(line => line.includes('INVALID_SETTINGS')));
+  terminal.sendInput('\x15'); terminal.sendInput('^benign:'); terminal.sendInput('\r');
+  assert.equal(JSON.parse(fs.readFileSync(path.join(f.directory, '.pi/slopsentral.json'), 'utf8')).hooks['hook:gate'].output.pattern, '^benign:');
+  terminal.sendInput('\x15');
+  terminal.resize(26, 10); tui.requestRender();
+  await terminal.waitForRender();
+  for (const line of component.render(26)) assert.ok(visibleWidth(line) <= 26);
+  terminal.sendInput('\x1b'); // Return to hook picker.
+  terminal.sendInput('\x1b'); // Return to main menu.
+  terminal.sendInput('\x1b'); // Close the main menu with its search intact.
+  await pending;
+  assert.equal(closed, true);
+  terminal.sendInput('restored-focus');
+  assert.equal(editor.getValue(), 'restored-focus');
+  await session.extensionRunner.emit({ type: 'session_start', reason: 'resume' });
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'allowed.txt', content: 'allowed' } }]);
+  assert.equal(fs.readFileSync(path.join(f.directory, 'allowed.txt'), 'utf8'), 'allowed');
+  session.extensionRunner.setUIContext({ notify: () => {}, setStatus: () => {} }, 'print');
+  const state = await jsonCommand(session, 'state');
+  assert.equal(state.effective.capabilities.find(item => item.capability.id === 'hook:gate').origin, 'project');
+  assert.equal(state.effective.capabilities.find(item => item.capability.id === 'instruction:missing').state, 'unavailable');
+  assert.equal((await jsonCommand(session, 'set project {"schemaVersion":1,"capabilities":{"hook:gate":true}}')).type, 'saved');
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'blocked.txt', content: 'must not appear' } }]);
+  assert.equal(fs.existsSync(path.join(f.directory, 'blocked.txt')), false);
+  assert.equal(session.messages.findLast(message => message.role === 'toolResult').isError, true);
+  assert.deepEqual(errors, []);
+});
+
+test('output suppression preserves blocking decisions and routes structured context outside the tool receipt', async t => {
+  const hooks = ['PreToolUse', 'PostToolUse', 'Stop'].map(event => ({ name: 'gate', event, plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 5 }));
+  const f = fixture(t, hooks);
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs';const p=JSON.parse(fs.readFileSync(0,'utf8'));console.log(JSON.stringify(p.hook_event_name==='PostToolUse'?{hookSpecificOutput:{hookEventName:'PostToolUse',additionalContext:'private hook context'}}:{decision:'block',reason:'controlled denial'}));`);
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  const notices = [];
+  session.extensionRunner.setUIContext({ notify: message => notices.push(message), setStatus: () => {} });
+  await jsonCommand(session, 'set session {"schemaVersion":1,"hooks":{"hook:gate":{"execution":"foreground","critical":"blocking","output":{"type":"NEVER"},"context":"structured"}}}');
+  const call = { type: 'tool_call', toolName: 'write', toolCallId: 'hidden-1', input: { path: 'file.txt' } };
+  assert.equal((await session.extensionRunner.emitToolCall(call)).block, true);
+  const original = { type: 'tool_result', toolName: 'write', toolCallId: 'hidden-1', input: call.input, content: [{ type: 'text', text: 'original evidence' }], details: { receipt: 1 }, isError: false, structuredContent: { original: true } };
+  const result = await session.extensionRunner.emitToolResult(original) ?? original;
+  assert.deepEqual(result, original, 'hidden hook output must not enter a visible native receipt');
+  assert.ok((await session.extensionRunner.emitContext([])).some(message => message.customType === 'slopsentral-tool-hooks' && message.content.includes('private hook context')));
+  session.sessionManager.appendMessage({ role: 'user', content: 'fixture', timestamp: 0 });
+  const settled = await session.extensionRunner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, entries => ({ contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: entries.some(entry => entry.type === 'custom_message') }));
+  assert.equal(settled.continue, true);
+  assert.equal(settled.entries.some(entry => entry.type === 'custom_message' && entry.display === true), false);
+  assert.deepEqual(notices, []);
+  assert.deepEqual(errors, []);
+});
+
+test('external settings changes invalidate jobs and malformed settings keep the last accepted gates', async t => {
+  const action = { name: 'gate', event: 'Stop', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 10 };
+  const f = fixture(t, [action], 'ADVISORY');
+  const barrier = barrierHook(f);
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory);
+  const notices = [];
+  session.extensionRunner.setUIContext({ notify: message => notices.push(message), setStatus: () => {} });
+  await jsonCommand(session, 'set session {"schemaVersion":1,"hooks":{"hook:gate":{"execution":"background","critical":"report","output":{"type":"ALWAYS"},"context":"none"}}}');
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'changed.txt', content: 'changed' } }]);
+  await until(() => fs.existsSync(barrier.ready), 'external setting barrier');
+  const projectFile = path.join(f.directory, '.pi/slopsentral.json');
+  fs.mkdirSync(path.dirname(projectFile), { recursive: true });
+  fs.writeFileSync(projectFile, JSON.stringify({ schemaVersion: 1, capabilities: { 'hook:gate': false } }));
+  fs.writeFileSync(barrier.release, 'release');
+  await until(() => fs.existsSync(barrier.exited), 'old process completion');
+  const state = await jsonCommand(session, 'state');
+  assert.equal(state.effective.capabilities.find(item => item.capability.id === 'hook:gate').state, 'disabled');
+  assert.equal(notices.some(message => message.includes('barrier released')), false);
+  fs.writeFileSync(projectFile, '{broken');
+  assert.equal((await jsonCommand(session, 'state')).effective.capabilities.find(item => item.capability.id === 'hook:gate').state, 'disabled');
+  assert.ok((await jsonCommand(session, 'state')).errors.some(message => message.includes('project:')));
+  assert.equal((await jsonCommand(session, 'set project {"schemaVersion":1}')).type, 'saved');
+  assert.deepEqual((await jsonCommand(session, 'state')).errors, []);
+  assert.deepEqual(errors, []);
+});
+
+test('scope snapshots preserve later edits while a background assessment finishes', async t => {
+  const action = { name: 'agents-md-scope', event: 'Stop', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 10 };
+  const f = fixture(t, [action], 'ADVISORY');
+  const ready = path.join(f.directory, 'ready');
+  const release = path.join(f.directory, 'release');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs';const p=JSON.parse(fs.readFileSync(0,'utf8'));fs.writeFileSync(${JSON.stringify(ready)},String(process.pid));const timer=setInterval(()=>{if(fs.existsSync(${JSON.stringify(release)})){clearInterval(timer);console.log(JSON.stringify({decision:'block',assessment:'ASSESSED',reason:JSON.stringify(p.changed_paths)}));}},5);`);
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory);
+  const notices = [];
+  session.extensionRunner.setUIContext({ notify: message => notices.push(message), setStatus: () => {} });
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'first.txt', content: 'first' } }]);
+  await until(() => fs.existsSync(ready), 'scope snapshot');
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'later.txt', content: 'later' } }]);
+  fs.writeFileSync(release, 'release');
+  await until(() => notices.some(message => message.includes('later.txt')), 'new scope snapshot');
+  const state = await jsonCommand(session, 'state');
+  assert.deepEqual(state.journal.pending, ['first.txt', 'later.txt']);
+  assert.equal(state.journal.assessedRevision, state.journal.revision);
+  assert.equal(state.recent.length, 1, 'the stale first result never commits');
+  assert.equal(notices.length, 1);
+  assert.deepEqual(errors, []);
+});
+
+test('manual hook runs keep dependency rejection and use the same deadline policy owner', async t => {
+  const action = { name: 'gate', event: 'Stop', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 30 };
+  const f = fixture(t, [action], 'ADVISORY');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `console.log('{}');`);
+  const { session, errors } = await host(t, f.packagePath, f.directory);
+  assert.equal((await jsonCommand(session, 'set session {"schemaVersion":1,"hooks":{"hook:gate":{"execution":"foreground","critical":"report","output":{"type":"NEVER"},"context":"none","timeoutSeconds":5}}}')).type, 'saved');
+  const result = await jsonCommand(session, 'run hook:gate');
+  assert.equal(result.type, 'hook-results');
+  assert.equal(result.runs[0].action.timeout, 5);
+  assert.equal(result.runs[0].result.type, 'completed');
+  assert.equal((await jsonCommand(session, 'set session {"schemaVersion":1,"hooks":{"hook:gate":{"execution":"background","critical":"blocking","output":{"type":"NEVER"},"context":"none"}}}')).type, 'rejected');
+  assert.equal((await jsonCommand(session, 'run hook:absent')).code, 'UNKNOWN_HOOK');
+  fs.writeFileSync(path.join(f.packagePath, 'capabilities.json'), JSON.stringify({ schemaVersion: 1, capabilities: [
+    { id: 'resource:missing', type: 'RESOURCE', name: 'missing', path: 'fixture/missing.txt', dependencies: [], profiles: ['fixture'] },
+    { id: 'hook:gate', type: 'HOOK', name: 'gate', dependencies: ['resource:missing'], profiles: ['fixture'], actions: [action] },
+  ] }));
+  const second = await host(t, f.packagePath, f.directory, undefined, path.join(f.directory, 'second-agent'));
+  await jsonCommand(second.session, 'set session {"schemaVersion":1,"capabilities":{"hook:gate":false,"resource:missing":false}}');
+  const blocked = await jsonCommand(second.session, 'run hook:gate');
+  assert.equal(blocked.runs[0].result.code, 'BLOCKED');
+  assert.match(blocked.runs[0].result.reason, /DEPENDENCY_UNAVAILABLE/);
+  assert.deepEqual(second.errors, []);
+  assert.deepEqual(errors, []);
+});
+
+test('local instructions, skills, and resources compose independently and missing files recover', async t => {
+  const f = fixture(t, [], 'ADVISORY');
+  const instruction = path.join(f.directory, 'local-rules.md');
+  const skill = path.join(f.directory, 'local-skill/SKILL.md');
+  const resource = path.join(f.directory, 'data.json');
+  fs.mkdirSync(path.dirname(skill));
+  fs.writeFileSync(skill, '---\nname: local-skill\ndescription: Local fixture skill.\n---\nUse the fixture.\n');
+  fs.writeFileSync(resource, '{}');
+  const additions = [
+    { id: 'instruction:local-rules', type: 'INSTRUCTION', name: 'local-rules', path: 'local-rules.md', dependencies: [], profiles: [] },
+    { id: 'skill:local-skill', type: 'SKILL', name: 'local-skill', path: skill, dependencies: [], profiles: [] },
+    { id: 'resource:local-data', type: 'RESOURCE', name: 'local-data', path: resource, dependencies: [], profiles: [] },
+  ];
+  const { session, loader, errors } = await host(t, f.packagePath, f.directory);
+  assert.equal((await jsonCommand(session, `set project ${JSON.stringify({ schemaVersion: 1, additions })}`)).type, 'saved');
+  let state = await jsonCommand(session, 'state');
+  assert.equal(state.effective.capabilities.find(item => item.capability.id === 'instruction:local-rules').state, 'unavailable');
+  fs.writeFileSync(instruction, 'Use these recovered local instructions.\n');
+  state = await jsonCommand(session, 'state');
+  assert.equal(state.effective.capabilities.find(item => item.capability.id === 'instruction:local-rules').state, 'enabled');
+  assert.equal(state.effective.capabilities.find(item => item.capability.id === 'instruction:local-rules').capability.path, instruction);
+  await session.extendResourcesFromExtensions('reload');
+  assert.ok(loader.getSkills().skills.some(item => item.filePath === skill));
+  const prompt = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'fixture' }, { cwd: f.directory, skills: loader.getSkills().skills });
+  assert.ok(prompt.systemPromptOptions.sections.slopsentral.includes('Use these recovered local instructions.'));
+  assert.ok(prompt.systemPromptOptions.sections.slopsentral.includes(resource));
+  assert.ok(prompt.systemPromptOptions.skills.some(item => item.filePath === skill));
+  await jsonCommand(session, 'set session {"schemaVersion":1,"capabilities":{"instruction:local-rules":false,"skill:local-skill":false}}');
+  const disabled = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'fixture' }, { cwd: f.directory, skills: loader.getSkills().skills });
+  assert.equal(disabled.systemPromptOptions.sections.slopsentral.includes('Use these recovered local instructions.'), false);
+  assert.ok(disabled.systemPromptOptions.sections.slopsentral.includes(resource));
+  assert.equal(disabled.systemPromptOptions.skills.some(item => item.filePath === skill), false);
+  assert.deepEqual(errors, []);
+});
+
+test('an unreadable branch identity rejects assessment without a subprocess or an assessed receipt', async t => {
+  const action = { name: 'agents-md-scope', event: 'Stop', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 5 };
+  const f = fixture(t, [action], 'ADVISORY');
+  fs.mkdirSync(path.join(f.directory, '.git'));
+  fs.writeFileSync(path.join(f.directory, '.git/HEAD'), 'invalid branch metadata');
+  const ledger = path.join(f.directory, 'must-not-run');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs';fs.writeFileSync(${JSON.stringify(ledger)},'ran');console.log(JSON.stringify({decision:'block',assessment:'ASSESSED',reason:'fixture'}));`);
+  const { session, modelRuntime } = await host(t, f.packagePath, f.directory);
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'pending.txt', content: 'pending' } }]);
+  const state = await afterJobs(session);
+  assert.equal(fs.existsSync(ledger), false);
+  assert.equal(state.journal.assessedRevision, 0);
+  assert.deepEqual(state.journal.pending, ['pending.txt']);
+  assert.match(state.recent[0].result.reason, /WORKSPACE_IDENTITY_UNAVAILABLE/);
+});
+
+test('an invalid catalog keeps instructions and commands usable but rejects an unproven hook graph', async t => {
+  const action = { name: 'gate', event: 'PreToolUse', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 5 };
+  const f = fixture(t, [action]);
+  const profilesFile = path.join(f.packagePath, 'profiles.json');
+  const profiles = JSON.parse(fs.readFileSync(profilesFile, 'utf8'));
+  profiles.profiles[0].instructions.push({ name: 'rules', path: 'fixture/rules.md' });
+  fs.writeFileSync(profilesFile, JSON.stringify(profiles));
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/rules.md'), 'Use the isolated fixture instructions.');
+  fs.writeFileSync(path.join(f.packagePath, 'capabilities.json'), '{"schemaVersion":999}');
+  const ledger = path.join(f.directory, 'hook-must-not-run');
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), `import fs from 'node:fs';fs.writeFileSync(${JSON.stringify(ledger)},'ran');console.log('{}');`);
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory);
+  const prompt = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'fixture' }, { cwd: f.directory, skills: [] });
+  assert.ok(prompt.systemPromptOptions.sections.slopsentral.includes('Use the isolated fixture instructions.'));
+  assert.ok(session.extensionRunner.getRegisteredCommands().some(command => command.name === 'slopsentral'));
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'forbidden.txt', content: 'must not write' } }]);
+  assert.equal(fs.existsSync(ledger), false, 'unknown dependencies must not authorize a hook process');
+  assert.equal(fs.existsSync(path.join(f.directory, 'forbidden.txt')), false, 'the affected blocking operation must remain blocked');
+  const state = await jsonCommand(session, 'state');
+  assert.equal(state.effective.capabilities.find(item => item.capability.id === 'hook:gate').reason, 'CATALOG_UNAVAILABLE');
+  assert.ok(state.errors.includes('INVALID_CATALOG'));
+  assert.deepEqual(errors, []);
+});
+
+test('malformed first-load settings reject effects until a settings command repairs the layer', async t => {
+  const action = { name: 'gate', event: 'PreToolUse', plugin: 'fixture', argv: [process.execPath, 'hooks/gate.mjs'], timeout: 5 };
+  const f = fixture(t, [action]);
+  fs.writeFileSync(path.join(f.packagePath, 'fixture/hooks/gate.mjs'), "console.log('{}');");
+  fs.mkdirSync(path.join(f.directory, '.pi'));
+  fs.writeFileSync(path.join(f.directory, '.pi/slopsentral.json'), '{broken');
+  const { session, modelRuntime, errors } = await host(t, f.packagePath, f.directory);
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'forbidden.txt', content: 'must not write' } }]);
+  assert.equal(fs.existsSync(path.join(f.directory, 'forbidden.txt')), false, 'unadmitted settings must not select default hook semantics');
+  assert.equal((await jsonCommand(session, 'state')).effective.type, 'rejected');
+  assert.ok(session.extensionRunner.getRegisteredCommands().some(command => command.name === 'slopsentral'));
+  assert.equal((await jsonCommand(session, 'set project {"schemaVersion":1}')).type, 'saved');
+  await nativeTools(session, modelRuntime, [{ name: 'write', args: { path: 'recovered.txt', content: 'recovered' } }]);
+  assert.equal(fs.readFileSync(path.join(f.directory, 'recovered.txt'), 'utf8'), 'recovered');
+  assert.equal((await jsonCommand(session, 'state')).effective.type, 'effective');
   assert.deepEqual(errors, []);
 });

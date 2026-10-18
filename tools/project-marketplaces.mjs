@@ -10,7 +10,7 @@ import { loadCatalog, auditCatalog, pluginClosure } from './catalog.mjs';
 import { currentSourceEvidenceFindings, currentSourceLocalPaths } from './routing-source-evidence.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const ignored = new Set(['.git', '.gradle', '.idea', '__pycache__', 'build', 'dist', 'target']);
+const ignored = new Set(['.git', '.gradle', '.idea', '__pycache__', '.ruff_cache', '.pytest_cache', 'build', 'dist', 'target']);
 const codes = new Set(['INVALID_INVOCATION', 'SOURCE_REJECTED', 'UNSUPPORTED_SOURCE', 'UNSAFE_PATH', 'INPUT_CHANGED', 'PKL_UNAVAILABLE', 'PKL_REJECTED', 'INVALID_PLAN', 'OUTPUT_EXISTS', 'ATOMIC_PUBLISH_UNAVAILABLE', 'WRITE_FAILED']);
 class Rejected extends Error {
   constructor(stage, code, message) {
@@ -262,15 +262,20 @@ function operations(plan, files, harness, input) {
       }
     }
   }
+  const runtime = Object.fromEntries([
+    ...['slopsentral', 'runtime', 'settings', 'control', 'journal', 'coordinator', 'menu']
+      .map(name => [`source/hooks/pi/${name}.ts`, `extensions/${name}.ts`]),
+    ...['settings', 'capabilities', 'scope-assessment'].map(name => [`source/schemas/pi/${name}.schema.json`, `schemas/${name}.schema.json`]),
+  ]);
   for (const operation of plan.copies ?? []) {
-    const runtime = { 'source/hooks/pi/slopsentral.ts': 'extensions/slopsentral.ts', 'source/hooks/pi/runtime.ts': 'extensions/runtime.ts' };
     if (harness !== 'pi' || !exactKeys(operation, ['source', 'target']) || runtime[operation.source] !== operation.target)
       reject('plan', 'INVALID_PLAN', 'A package runtime copy differs from its source owner');
     copy(operation.source, tree + '/' + operation.target);
   }
   for (const file of plan.files) add(file.path, outputBytes(file), 0o644);
-  if (harness === 'pi' && ((plan.copies ?? []).length !== 2
-    || !['package.json', 'profiles.json', 'extensions/slopsentral.ts', 'extensions/runtime.ts'].every(name => output.has(tree + '/' + name))))
+  if (harness === 'pi' && ((plan.copies ?? []).length !== Object.keys(runtime).length
+    || !['package.json', 'profiles.json', 'capabilities.json', ...Object.values(runtime)]
+      .every(name => output.has(tree + '/' + name))))
     reject('plan', 'INVALID_PLAN', 'Projection omitted its complete Pi package runtime');
   if (!output.has(tree + '/marketplace.json')) reject('plan', 'INVALID_PLAN', 'Projection omitted its marketplace entrypoint');
   return output;

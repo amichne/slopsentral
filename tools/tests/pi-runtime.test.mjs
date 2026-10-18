@@ -118,3 +118,38 @@ test('active cancellation stops a real hook and prevents later actions', { skip:
   assert.throws(() => process.kill(pid, 0), error => error.code === 'ESRCH');
   assert.equal(fs.existsSync(laterPath), false);
 });
+
+test('stderr diagnostics remain bounded and separate from protocol decisions', async t => {
+  const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi-stderr-')));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const script = path.join(directory, 'probe.mjs');
+  fs.writeFileSync(script, `process.stderr.write('fixture diagnostic');console.log(JSON.stringify({decision:'block',reason:'fixture denial'}));`);
+  const result = await runAction(directory, { name: 'gate', event: 'Stop', plugin: 'fixture', argv: [process.execPath, script], timeout: 5 }, directory, {});
+  assert.equal(result.code, 'BLOCKED');
+  assert.equal(result.reason, 'fixture denial');
+  assert.equal(result.diagnostics, 'fixture diagnostic');
+});
+
+test('a denied process-group signal returns a cleanup failure without an uncaught timer error', { skip: process.platform === 'win32' }, async t => {
+  const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi-kill-denied-')));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const ready = path.join(directory, 'ready');
+  const script = path.join(directory, 'probe.mjs');
+  fs.writeFileSync(script, `import fs from 'node:fs';fs.writeFileSync(${JSON.stringify(ready)},String(process.pid));setInterval(()=>{},1000);`);
+  const original = process.kill;
+  let injected = false;
+  process.kill = (pid, signal) => {
+    if (!injected && pid < 0 && signal === 'SIGTERM') { injected = true; throw Object.assign(new Error('controlled permission failure'), { code: 'EPERM' }); }
+    return original(pid, signal);
+  };
+  t.after(() => { process.kill = original; });
+  const controller = new AbortController();
+  const pending = runAction(directory, { name: 'gate', event: 'Stop', plugin: 'fixture', argv: [process.execPath, script], timeout: 5 }, directory, {}, controller.signal);
+  const deadline = Date.now() + 2000;
+  while (!fs.existsSync(ready)) { assert.ok(Date.now() < deadline); await new Promise(resolve => setTimeout(resolve, 5)); }
+  const pid = Number(fs.readFileSync(ready, 'utf8'));
+  t.after(() => { try { original(pid, 'SIGKILL'); } catch (error) { if (error.code !== 'ESRCH') throw error; } });
+  controller.abort();
+  assert.equal((await pending).code, 'CANCEL_FAILED');
+  assert.equal(injected, true);
+});

@@ -20,8 +20,10 @@
     "ajv-formats": "^3.0.1"
   },
   "devDependencies": {
-    "@earendil-works/pi-coding-agent": "1.2.0",
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
     "@types/node": "26.6.5",
+    "@xterm/headless": "6.0.0",
     "tsx": "4.20.6",
     "typescript": "7.0.2"
   }
