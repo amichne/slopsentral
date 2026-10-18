@@ -35,6 +35,7 @@ MAX_SESSION = 256
 SHA256_LENGTH = 64
 STATUS_PREFIX = 3
 PATH_LIMIT = 60
+MAX_PATHS = 10000
 INSTRUCTIONS = frozenset({"AGENTS.md", "AGENTS.override.md"})
 MANIFESTS = frozenset(
     {
@@ -148,6 +149,7 @@ def parse_event(raw: bytes) -> Event | Rejected:
             or not session.strip()
             or len(session) > MAX_SESSION
             or not isinstance(cwd, str)
+            or "\0" in cwd
             or not Path(cwd).is_absolute()
         ):
             return Rejected(Code.INVALID_EVENT)
@@ -563,13 +565,116 @@ def hook_response(
     return {}
 
 
+def explicit_changes(raw: bytes) -> tuple[Event, tuple[str, ...]] | Rejected:
+    event = parse_event(raw)
+    if isinstance(event, Rejected) or event.name != EventName.STOP:
+        return Rejected(Code.INVALID_EVENT)
+    value: object = json.loads(raw)
+    if not mapping(value) or set(value) - {
+        "hook_event_name",
+        "cwd",
+        "session_id",
+        "changed_paths",
+        "stop_hook_active",
+    }:
+        return Rejected(Code.INVALID_EVENT)
+    supplied = value.get("changed_paths")
+    if (
+        not sequence(supplied)
+        or not all(isinstance(item, str) for item in supplied)
+        or not isinstance(value.get("stop_hook_active", False), bool)
+    ):
+        return Rejected(Code.INVALID_EVENT)
+    names = tuple(sorted({item for item in supplied if isinstance(item, str)}))
+    if len(supplied) > MAX_PATHS:
+        return Rejected(Code.TOO_LARGE)
+    if not all(safe_path(name) and PurePosixPath(name).parts for name in names):
+        return Rejected(Code.INVALID_EVENT)
+    return event, tuple(name for name in names if authored(name))
+
+
+def instruction_inventory(root: Path, name: str) -> dict[str, str] | Rejected:
+    file = root / name
+    if not file.resolve().is_relative_to(root):
+        return Rejected(Code.UNSAFE_INSTRUCTION)
+    for directory in (file.parent, *file.parent.parents):
+        if any((directory / filename).is_symlink() for filename in INSTRUCTIONS):
+            return Rejected(Code.UNSAFE_INSTRUCTION)
+        if directory == root:
+            break
+    if PurePosixPath(name).name not in INSTRUCTIONS:
+        return {}
+    inventory: dict[str, str] = {}
+    for directory, children, files in os.walk(file.parent, followlinks=False):
+        children[:] = [
+            child
+            for child in children
+            if child not in {".git", "node_modules", ".venv"}
+            and not (Path(directory) / child).is_symlink()
+            and not ((Path(directory) / child).relative_to(root).as_posix() + "/").startswith(
+                GENERATED
+            )
+        ]
+        for filename in files:
+            if filename in INSTRUCTIONS:
+                descendant = Path(directory) / filename
+                if descendant.is_symlink():
+                    return Rejected(Code.UNSAFE_INSTRUCTION)
+                inventory[descendant.relative_to(root).as_posix()] = ""
+    return inventory
+
+
+def assess_paths(raw: bytes) -> dict[str, object] | Rejected:
+    """Assess explicit mutation evidence without Git, baselines, or persistent effects."""
+    requested = explicit_changes(raw)
+    if isinstance(requested, Rejected):
+        return requested
+    event, names = requested
+    if not names:
+        return {}
+    root = event.cwd.resolve()
+    instruction_paths: dict[str, str] = {}
+    for name in names:
+        inventory = instruction_inventory(root, name)
+        if isinstance(inventory, Rejected):
+            return inventory
+        instruction_paths.update(inventory)
+    reason = guidance(root, names, Snapshot(Unborn(), {}, instruction_paths))
+    if isinstance(reason, Rejected):
+        return reason
+    return {
+        "decision": "block",
+        "assessment": "ASSESSED",
+        "reason": reason + "\nRecord the review with /slopsentral review NOTE.",
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    _ = parser.add_argument("mode", nargs="?", choices=("hook", "status", "review"), default="hook")
+    _ = parser.add_argument(
+        "mode", nargs="?", choices=("hook", "status", "review", "assess"), default="hook"
+    )
     _ = parser.add_argument("--cwd", type=Path)
     _ = parser.add_argument("--session-id")
     _ = parser.add_argument("--note", default="")
     args = parser.parse_args()
+    if args.mode == "assess":
+        try:
+            assessment = assess_paths(sys.stdin.buffer.read(MAX_BYTES + 1))
+        except (OSError, RuntimeError):
+            assessment = Rejected(Code.IO_FAILED)
+        print(
+            json.dumps(
+                {
+                    "decision": "block",
+                    "assessment": "FAILED",
+                    "reason": f"AGENTS.md assessment failed: {assessment.code.value}",
+                }
+                if isinstance(assessment, Rejected)
+                else assessment
+            )
+        )
+        return 0
     event = (
         parse_event(sys.stdin.buffer.read(MAX_BYTES + 1))
         if args.mode == "hook"
