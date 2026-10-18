@@ -70,7 +70,11 @@ def inspect(root: Path) -> _Package | Rejected:
         or value.get("dependencies")
         or value.get("optionalDependencies")
         or value.get("devDependencies")
-        or value.get("peerDependencies") != {"@earendil-works/pi-coding-agent": "*"}
+        or value.get("peerDependencies")
+        != {
+            "@earendil-works/pi-coding-agent": "*",
+            "@earendil-works/pi-tui": "*",
+        }
     ):
         return Rejected(Code.INVALID_PACKAGE)
     entries = tuple(sorted(root.rglob("*")))
@@ -87,6 +91,15 @@ def inspect(root: Path) -> _Package | Rejected:
         "marketplace-lock.json",
         "extensions/slopsentral.ts",
         "extensions/runtime.ts",
+        "capabilities.json",
+        "schemas/settings.schema.json",
+        "schemas/capabilities.schema.json",
+        "schemas/scope-assessment.schema.json",
+        "extensions/settings.ts",
+        "extensions/control.ts",
+        "extensions/journal.ts",
+        "extensions/coordinator.ts",
+        "extensions/menu.ts",
     }
     if not required.issubset({entry.relative_to(root).as_posix() for entry in files}):
         return Rejected(Code.INVALID_PACKAGE)

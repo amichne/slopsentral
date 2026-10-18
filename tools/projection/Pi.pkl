@@ -37,6 +37,21 @@ class Catalog {
   plugins: List<Link>
 }
 
+class Capability {
+  id: String
+  type: Schema.Kind
+  name: Schema.Identity
+  path: String? = null
+  actions: List<Action>? = null
+  dependencies: List<String>
+  profiles: List<Schema.Identity>
+}
+
+class Capabilities {
+  schemaVersion: Int(this == 1) = 1
+  capabilities: List<Capability>
+}
+
 class Resources {
   extensions: List<String> = List("./extensions/slopsentral.ts")
   skills: List<String>
@@ -49,7 +64,10 @@ class Package {
   type: "module" = "module"
   keywords: List<String> = List("pi-package")
   engines: Mapping<String, String> = new { ["node"] = ">=22.19.0" }
-  peerDependencies: Mapping<String, String> = new { ["@earendil-works/pi-coding-agent"] = "*" }
+  peerDependencies: Mapping<String, String> = new {
+    ["@earendil-works/pi-coding-agent"] = "*"
+    ["@earendil-works/pi-tui"] = "*"
+  }
   pi: Resources
 }
 
@@ -119,12 +137,21 @@ function actions(p: Schema.Plugin): List<Action> =
                       ) && entry.key == "SessionStart"
                     )
                       List()
+                    else if (
+                      ref.name == "agents-md-scope"
+                        && command.command != "uv run --locked --script hooks/agents-md-scope.py"
+                    )
+                      throw("Unsupported Pi scope adapter command")
+                    else if (ref.name == "agents-md-scope" && entry.key != "Stop")
+                      List()
                     else
                       List(new Action {
                         name = ref.name
                         event = entry.key
                         plugin = p.name
-                        argv = command.command.split(" ")
+                        argv =
+                          command.command.split(" ")
+                            + (if (ref.name == "agents-md-scope") List("assess") else List())
                         matcher = command.matcher ?? group.matcher
                         timeout = command.timeout ?? 30
                       })
@@ -174,6 +201,79 @@ function catalog(input: Schema.Input): Catalog = new {
       })
 }
 
+function dependencyTree(primitive: Schema.Primitive): List<Schema.Primitive> =
+  List(primitive) + primitive.dependsOn.toList().flatMap((child) -> dependencyTree(child))
+
+function capabilities(input: Schema.Input): Capabilities = new {
+  local plugins = input.plugins.toList()
+  local refs = plugins.flatMap((plugin) -> plugin.references)
+  local presets = config(input).profiles
+  local dependencies =
+    refs
+      .filter((ref) -> ref is Schema.HookReference)
+      .flatMap((ref) -> dependencyTree((ref as Schema.HookReference).hook))
+  capabilities =
+    refs
+      .map((ref) -> ref.type.toLowerCase() + ":" + ref.name)
+      .distinct
+      .sort()
+      .map((identity) ->
+        let (ref = refs.find((ref) -> ref.type.toLowerCase() + ":" + ref.name == identity))
+        let (plugin = plugins.find((plugin) -> plugin.references.contains(ref)))
+        let (allActions = actions(plugin))
+        let (
+          definition =
+            dependencies.findOrNull((item) -> item.name == ref.name && item.type == ref.type)
+        )
+          new Capability {
+            id = identity
+            type = ref.type
+            name = ref.name
+            path =
+              if (ref.type == "HOOK")
+                null
+              else
+                plugin.name
+                  + "/"
+                  + (if (ref.type == "RESOURCE") ref.sourcePath.drop(7) else target(ref))
+            actions =
+              if (ref.type != "HOOK")
+                null
+              else
+                allActions.filter((action) -> action.name == ref.name)
+            dependencies =
+              (definition?.dependsOn?.toList() ?? List())
+                .map((item) -> item.type.toLowerCase() + ":" + item.name)
+                .distinct
+                .sort()
+            profiles =
+              presets
+                .filter((profile) ->
+                  if (ref.type == "SKILL")
+                    profile.skills.any((link) -> link.name == ref.name)
+                  else if (ref.type == "INSTRUCTION")
+                    profile.instructions.any((link) -> link.name == ref.name)
+                  else if (ref.type == "AGENT")
+                    profile.agents.any((link) -> link.name == ref.name)
+                  else if (ref.type == "HOOK")
+                    profile.hooks.any((action) -> action.name == ref.name)
+                  else
+                    input.profiles
+                      .find((source) -> source.name == profile.name)
+                      .plugins
+                      .any((name) ->
+                        plugins
+                          .find((plugin) -> plugin.name == name)
+                          .references
+                          .any((candidate) ->
+                            candidate.type == ref.type && candidate.name == ref.name
+                          )
+                      )
+                )
+                .map((profile) -> profile.name)
+          })
+}
+
 function copies(): List<Schema.Copy> =
   List(
     new Schema.Copy {
@@ -185,3 +285,13 @@ function copies(): List<Schema.Copy> =
       target = "extensions/runtime.ts"
     },
   )
+    + List("settings", "control", "journal", "coordinator", "menu")
+      .map((name) -> new Schema.Copy {
+        source = "source/hooks/pi/" + name + ".ts"
+        target = "extensions/" + name + ".ts"
+      })
+    + List("settings", "capabilities", "scope-assessment")
+      .map((name) -> new Schema.Copy {
+        source = "source/schemas/pi/" + name + ".schema.json"
+        target = "schemas/" + name + ".schema.json"
+      })

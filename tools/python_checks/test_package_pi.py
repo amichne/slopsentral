@@ -18,7 +18,7 @@ def fixture(root: Path) -> Path:
     manifest = {
         "name": "slopsentral-pi",
         "version": "0.1.0",
-        "peerDependencies": {"@earendil-works/pi-coding-agent": "*"},
+        "peerDependencies": {"@earendil-works/pi-coding-agent": "*", "@earendil-works/pi-tui": "*"},
     }
     _ = (root / "package.json").write_text(json.dumps(manifest))
     for name in [
@@ -26,6 +26,15 @@ def fixture(root: Path) -> Path:
         "marketplace-lock.json",
         "extensions/slopsentral.ts",
         "extensions/runtime.ts",
+        "capabilities.json",
+        "schemas/settings.schema.json",
+        "schemas/capabilities.schema.json",
+        "schemas/scope-assessment.schema.json",
+        "extensions/settings.ts",
+        "extensions/control.ts",
+        "extensions/journal.ts",
+        "extensions/coordinator.ts",
+        "extensions/menu.ts",
         "hooks/gate.py",
         "hooks/gate.py.lock",
         ".mcp.json",
@@ -35,6 +44,16 @@ def fixture(root: Path) -> Path:
         _ = file.write_bytes(("payload " + name).encode())
     (root / "hooks/gate.py").chmod(0o755)
     return root
+
+
+@pytest.mark.parametrize(
+    "name", ["capabilities.json", "extensions/control.ts", "schemas/settings.schema.json"]
+)
+def test_incomplete_capability_runtime_never_produces_an_archive(tmp_path: Path, name: str) -> None:
+    root = fixture(tmp_path / "package")
+    (root / name).unlink()
+    assert package(root, tmp_path / "output") == Rejected(Code.INVALID_PACKAGE)
+    assert not (tmp_path / "output").exists()
 
 
 def test_archive_keeps_payload_modes_and_repeats_exactly(tmp_path: Path) -> None:

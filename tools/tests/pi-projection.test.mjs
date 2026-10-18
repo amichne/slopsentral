@@ -25,8 +25,24 @@ test('Pi projects an installable package with source-derived profiles and focuse
   const manifest = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')));
   assert.deepEqual(manifest.pi.extensions, ['./extensions/slopsentral.ts']);
   assert.equal(manifest.peerDependencies['@earendil-works/pi-coding-agent'], '*');
+  assert.equal(manifest.peerDependencies['@earendil-works/pi-tui'], '*');
   assert.equal(new Set(manifest.pi.skills).size, manifest.pi.skills.length);
   const config = JSON.parse(fs.readFileSync(path.join(pkg, 'profiles.json')));
+  const capabilities = JSON.parse(fs.readFileSync(path.join(pkg, 'capabilities.json')));
+  assert.equal(capabilities.schemaVersion, 1);
+  assert.ok(capabilities.capabilities.some(cap => cap.id === 'skill:pkl-engineering' && cap.type === 'SKILL'));
+  assert.ok(capabilities.capabilities.find(cap => cap.id === 'hook:gradle-check-green').dependencies.includes('instruction:kotlin-engineering'));
+  const scope = capabilities.capabilities.find(cap => cap.id === 'hook:agents-md-scope');
+  assert.deepEqual(scope.actions.map(action => action.event), ['Stop']);
+  assert.equal(scope.actions[0].argv.at(-1), 'assess');
+  for (const profile of config.profiles) {
+    const actions = profile.hooks.filter(action => action.name === 'agents-md-scope');
+    if (actions.length) assert.deepEqual(actions.map(action => action.event), ['Stop']);
+  }
+  for (const name of ['settings.schema.json', 'capabilities.schema.json', 'scope-assessment.schema.json'])
+    assert.deepEqual(fs.readFileSync(path.join(pkg, 'schemas', name)), fs.readFileSync(path.join(root, 'source/schemas/pi', name)));
+  for (const name of ['control.ts', 'settings.ts', 'journal.ts', 'coordinator.ts', 'menu.ts'])
+    assert.ok(fs.statSync(path.join(pkg, 'extensions', name)).isFile());
   assert.equal(config.defaultProfile, 'local-development-default');
   const kotlin = config.profiles.find(p => p.name === 'kotlin-type-design');
   assert.deepEqual(kotlin.skills.map(s => s.name).sort(), ['kotlin-design-practices', 'kotlin-review', 'negative-capability-proof', 'semantic-ratchet']);

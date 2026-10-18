@@ -1,9 +1,10 @@
 # Pi harness
 
-Use Slopsentral in Pi through one package with native commands, prompt instructions, skills, and event handlers.
-The compatibility target is Pi 1.2.0.
-The package uses Pi's TypeScript extension API.
-The [harness overview](agent-marketplaces.md) compares this adapter with Codex and GitHub Copilot.
+Use Slopsentral in Pi through one package with native commands, instructions, skills, resources, and hooks.
+Pi version ranges are unpinned.
+The lockfile supplies Pi 1.3.0 for the current evidence.
+The `*` ranges do not prove compatibility with future releases.
+The [harness overview](agent-marketplaces.md) compares Pi with Codex and GitHub Copilot.
 
 ## Install the published package
 
@@ -26,30 +27,177 @@ The package has no install scripts or runtime dependencies.
 Pi supplies its own host APIs.
 Each release includes `SHA256SUMS`, the tested candidate record, and its promotion record.
 
-## Start a workflow
+## Select capabilities
 
-From your project, start a new session with the Kotlin design profile:
+From your project, start a session with the Kotlin design profile:
 
 ```bash
 pi --slopsentral-profile kotlin-type-design
 ```
 
-This profile supplies Kotlin instructions and its advertised skills with automatic hooks set to `OFF`.
+This profile supplies Kotlin instructions and skills with automatic hooks set to `OFF`.
 The extension keeps the current model, tools, and thinking level.
-Use Pi's existing authentication and model configuration for a model-backed trial.
-
-To select a profile inside Pi, enter `/slopsentral-kotlin-type-design` or `/slopsentral-profile kotlin-type-design`.
-Use `/slopsentral-profile` to examine the current selection and available choices.
-For Kotlin implementation with advisory hooks, select `/slopsentral-profile kotlin-repo-default`.
-Change profiles after the current run ends.
-
 Without a startup choice, a new session uses `local-development-default` with `ADVISORY` hooks.
 The startup flag supplies the initial choice only.
-An existing branch's saved selection takes precedence during session reload or tree navigation.
+Saved session entries take precedence during restoration and tree navigation.
+
+Enter `/slopsentral` to open the native settings menu after a run ends.
+Select a profile, a save scope, or individual instructions, skills, resources, agents, and hooks.
+The menu shows origins, dependencies, effective states, pending reviews, jobs, and recent results.
+Search with text and navigate with Pi's configured selection keys.
+With the default keys, Enter selects an item and Escape returns to its parent.
+Escape exits a picker even when its search contains text.
+Ctrl+U clears the search.
+Small terminals show an enlargement notice when fewer than eight rows remain.
+
+A profile supplies defaults for independent capabilities.
+User, project, and session overrides take precedence in that order.
+The `off` profile supplies an empty preset and preserves explicit overrides.
+Reset each changed layer to remove those overrides.
+A disabled or missing dependency makes its dependent capability unavailable.
+The menu and unaffected capabilities remain usable after an optional resource failure.
+A failed blocking hook still blocks its affected operation.
+
+| Command | Effect |
+| --- | --- |
+| `/slopsentral` | Open settings in the TUI or return state in other modes. |
+| `/slopsentral state` | Return effective configuration, origins, coverage, errors, jobs, and recent results. |
+| `/slopsentral set project JSON` | Replace the project layer with a complete settings object. |
+| `/slopsentral set user JSON` | Replace the user layer. |
+| `/slopsentral set session JSON` | Replace the layer on the active session branch. |
+| `/slopsentral review NOTE` | Record an instruction-scope review and resolve pending obligations. |
+| `/slopsentral run hook:NAME` | Run one hook's completion actions with its deadline and dependencies. |
+| `/slopsentral cancel KEY` | Request cancellation of the named job from the state output. |
+| `/slopsentral-profile NAME` | Select a profile on the active branch. |
+| `/slopsentral-NAME` | Select a source profile directly. |
+| `/slopsentral-check` | Run completion actions from the selected profile and enabled hooks. |
+
+Settings commands and the menu use the same [configuration owner](../source/hooks/pi/control.ts).
+The user file is `slopsentral.json` inside Pi's agent directory.
+The project file is `.pi/slopsentral.json` inside the consumer repository.
+Session settings use branch-local custom entries.
+The package directory keeps no mutable configuration.
+Malformed persistent files preserve the last accepted layer within that extension instance and expose an error.
+A malformed file without an accepted layer rejects workflow effects until repair.
+The settings menu and repair commands remain available.
+A rejected command preserves the current state.
+
+Use the [settings schema](../source/schemas/pi/settings.schema.json) for external configuration.
+For example, this complete project layer disables one instruction and changes one hook:
+
+```json
+{
+  "schemaVersion": 1,
+  "capabilities": { "instruction:engineering-design": false },
+  "hooks": {
+    "hook:agents-md-scope": {
+      "execution": "foreground",
+      "critical": "blocking",
+      "output": { "type": "ERRORS" },
+      "context": "none",
+      "timeoutSeconds": 30
+    }
+  }
+}
+```
+
+Stable capability IDs come from `/slopsentral state`.
+Local additions support instructions, skills, resources, agents, and hooks through the schema.
+The menu supplies an addition wizard for instructions, skills, resources, and hooks.
+Relative local paths resolve against the consumer directory and save as absolute paths.
+A local skill needs `/reload` before Pi discovers it.
+Explicit `/skill:name` commands still reach Pi's discovered skill catalog.
+Advertisement controls do not remove those commands.
+Agent definitions and resources supply references without automatic agents or MCP connections.
+A capability selection grants no publication or tool authority.
+
+In JSON mode, commands return a native `slopsentral-result` message whose `details` contain the typed result.
+Read that message from Pi's `message_end` events.
+Print mode sends JSON to stderr because Pi owns stdout.
+RPC and TUI modes use native notifications.
+Pi owns the process exit status, so consumers must inspect the typed result.
+
+## Hook policies
+
+Each hook has an independent execution policy, critical-path policy, output policy, context policy, and optional deadline.
+Ordinary hooks inherit foreground execution and the profile's failure policy.
+The scope hook defaults to background execution with reports under `ADVISORY`.
+An `ENFORCING` profile keeps foreground execution and blocking behavior.
+
+| Policy | Behavior |
+| --- | --- |
+| `execution: foreground` | Await the hook at its native lifecycle event. |
+| `execution: background` | Queue the hook without an await for its subprocess. |
+| `critical: report` | Report a failure without a completion block. |
+| `critical: blocking` | Reject the affected operation or request one completion continuation. |
+| `output: ALWAYS` | Show interpreted output and bounded diagnostics. |
+| `output: ERRORS` | Show failed outcomes only. |
+| `output: EXCLUDE` | Remove lines that match `pattern`. |
+| `output: NEVER` | Suppress ordinary presentation. |
+| `context: structured` | Supply interpreted context to a supported model request. |
+| `context: none` | Omit hook context from model requests. |
+
+Output objects use the `type` discriminator, such as `{ "type": "NEVER" }`.
+`EXCLUDE` also needs a valid JavaScript `pattern`.
+Filters act after protocol interpretation and never change success, failure, or blocking behavior.
+Context and presentation remain independent.
+Blocking completion semantics reject background execution at settings ingress.
+Deadlines use integer seconds from 1 through 3600.
+Commands use structured argument arrays without shell evaluation.
+Hooks receive the ordinary process environment, including its existing credentials.
+
+Background jobs carry the configuration, workspace, session, operation, and mutation revision that admitted them.
+Configuration changes, session replacement, branch movement, shutdown, and explicit cancellation reject stale delivery.
+Git metadata reads establish branch identity without a Git subprocess.
+Unknown branch identity rejects the affected assessment.
+The queue admits at most 32 jobs and serializes background work.
+Foreground gates do not await that queue.
+Cancellation requests TERM, then KILL after 250 milliseconds when necessary.
+Cancellation cannot undo external effects that a custom hook already caused.
+
+A failed blocking completion hook requests at most one continuation per prompt.
+A second failure remains an unresolved failure.
+Background reports never request an automatic continuation.
+The recent result list keeps 16 identity-scoped entries.
+Old results describe their recorded operation and configuration.
+They do not establish the current state.
+
+## Instruction scopes
+
+Pi collects mutation candidates from native `tool_execution_start` events before the effect.
+Native `write` and `edit` paths include first-run edits and possible mutations from failed tools.
+Collection does not invoke Git or a hook subprocess.
+Final settlement starts one assessment for the pending revision by default.
+A successful assessment records its revision and keeps the review obligation.
+Unchanged subsequent settlements do not repeat advisory assessment.
+
+The assessor uses explicit paths and the existing [instruction-scope rules](agents-md-scope.md).
+It reads instruction files without ordinary source payloads, Git baselines, or persistent receipts.
+A native instruction edit propagates its current contents immediately through the original tool result.
+A deletion propagates a notice to reassess inherited rules.
+Other hook context stays outside native tool receipts.
+
+Examine the affected scopes before `/slopsentral review NOTE`.
+State the instruction update or source-backed reason for no change in the note.
+Disabled hooks, cancellation, failed assessment, and session restoration preserve unresolved evidence.
+A completed assessment alone never resolves the review.
+
+Shell commands and unsupported mutation tools lack complete path coverage.
+`mutationAdapters` can declare argument fields for custom tools.
+The adapter accepts string paths or arrays of string paths from those fields.
+An adapter declaration does not prove that the tool reports every effect.
+External editor changes lack event coverage.
+No filesystem watcher or Git reconciliation fills those gaps.
+State exposes these limits and gaps recorded from shell or unsupported tools.
+
+The journal keeps at most 10000 paths and reports overflow as a coverage gap.
+Scope guidance lists at most 60 paths or descendants and limits context to 24 KiB.
+Large instruction files need a separate read.
+The [implementation evidence](pi-implementation-evidence.md) separates component, native-host, PTY, installed-host, and process-count proof.
 
 ## Update or remove the package
 
-The install command selects one release.
+The install command selects one Slopsentral release.
 To change releases, install the named package with the new release URL.
 Keep the same personal or project installation scope.
 `pi update --extensions` does not discover newer GitHub release URLs.
@@ -67,154 +215,18 @@ To remove a project declaration, run:
 pi remove --local npm:slopsentral-pi
 ```
 
-## Profiles and commands
+## Package ownership
 
-| Command | Effect |
-| --- | --- |
-| `/slopsentral-profile` | Show the current workflow profile and available choices. |
-| `/slopsentral-profile kotlin-type-design` | Select Kotlin design guidance and its skill subset. |
-| `/slopsentral-profile type-design` | Select broader type-design guidance, including schemas, OpenAPI, and Pkl. |
-| `/slopsentral-profile kotlin-repo-default` | Select Kotlin and Software Engineering with `ADVISORY` hooks. |
-| `/slopsentral-profile off` | Turn off Slopsentral prompt additions, advertised skills, and automatic hooks. |
-| `/slopsentral-kotlin-type-design` | Select the named workflow profile directly. |
-| `/slopsentral-check` | Run the selected completion gates, including when automatic hooks use `OFF`. |
-
-Each source profile also gets a `/slopsentral-<profile-name>` command.
-Profile selection persists through custom session entries on the active branch.
-Session reload and tree navigation restore that branch's selection.
-A selection does not grant authority to push, merge, publish, or deploy.
-
-Existing `WORKFLOW_PROFILE` declarations supply the plugin closures.
-The optional `focusSkills` field selects a smaller advertised skill subset within a closure.
-`kotlin-type-design` excludes OpenAPI guidance.
-`type-design` includes schema, OpenAPI, and Pkl guidance.
-Both design profiles use `OFF` for automatic hooks.
-`/slopsentral-check` accepts no arguments and reports notices without an automatic continuation.
-It needs a selected workflow profile and an idle session.
-The `off` selection removes that profile, so manual gates do not run.
-
-The subset controls the skills that Pi advertises to the model.
-Explicit `/skill:name` commands still reach the complete package skill catalog.
-Skills from other packages keep their existing visibility.
-
-## Trial sequence
-
-1. Run `/slopsentral-profile`.
-2. Select `/slopsentral-profile kotlin-type-design`.
-3. Ask Pi to explain a local domain type without edits.
-4. Examine whether its response uses the selected instructions and skills.
-5. Select `/slopsentral-profile type-design`.
-6. Ask for a schema or OpenAPI design comparison without edits.
-7. Select `/slopsentral-profile kotlin-repo-default`.
-8. Ask Pi to explain a local function and examine the hook notices.
-9. If the repository has the necessary gate tools, run `/slopsentral-check`.
-10. Select `/slopsentral-profile off`.
-
-A command response proves command dispatch, not model compliance.
-A model-backed trial needs separate evidence for instruction use, skill choice, and hook behavior.
-An absent tool or stale lock is a prerequisite failure, not a successful gate.
-
-Software Engineering profiles include the [scope hook for `AGENTS.md`](agents-md-scope.md).
-Its notices name the source-backed review and receipt commands.
-After edits, examine the affected instruction scopes and record an update or a documented no-change review.
-An initial baseline cannot prove coverage for earlier edits.
-
-## Event adapters
-
-| Source event | Pi event | Purpose |
-| --- | --- | --- |
-| `SessionStart` | `before_agent_start` | Run deferred session hooks before the first prompt. |
-| `UserPromptSubmit` | `input` | Examine current text before acceptance. |
-| Accepted prompt context | `context` | Add hook output to requests within one run. |
-| `PreToolUse` | `tool_call` | Examine a proposed tool call. |
-| `PostToolUse` | `tool_result` | Append scope context to the original tool evidence. |
-| Prompt instructions | `before_agent_start` | Add the selected structured prompt section. |
-| `Stop` | `agent_before_settle` | Assess final work before Pi settles. |
-
-The adapter runs canonical hook commands with structured argument arrays.
-It supplies `PLUGIN_ROOT` for each plugin payload.
-It translates supported Codex JSON responses into Pi event results.
-Prompt hooks keep the submitted text and images unchanged.
-Accepted hook output enters request context without a saved conversation message.
-Prompt hooks receive the current Pi event text as `prompt` and its input origin as `source`.
-Pi defines three origins: `interactive`, `rpc`, and `extension`.
-Earlier Pi input extensions can transform that text before this adapter receives it.
-
-Pi receives the skills selected by the current profile.
-Slopsentral does not infer task intent from prompt keywords or search other profiles for guidance.
-A question, quotation, negated action, or bare word such as `test` adds no routing hint.
-A request such as `Add regression coverage for this behavior` uses the same advertised skill catalog.
-Pi can select an advertised skill from its description.
-The user can also request a skill with Pi's explicit `/skill:name` command.
-Skill advertisement does not prove model selection or use.
-
-Prompt hooks still run under the selected profile's hook policy.
-Only accepted prompt output can reach the matching user run.
-Repeated inputs replace pending context rather than append hidden messages.
-Queued steering and follow-up inputs keep the current context until the latest accepted input reaches a request.
-Its text and a new saved user entry must both match before its hook output replaces current context.
-Rejected inputs add no prompt context.
-Profile changes, session restoration, tree navigation, shutdown, and settlement discard that context.
-For a new run, later text changes from another extension discard pending context.
-The next run needs its own accepted input.
-
-The `context` adapter excludes legacy `slopsentral-guidance` and `slopsentral-prompt-hooks` messages from model requests.
-It keeps the saved transcript and messages from other extensions.
-New prompt context never enters saved conversation messages or their compaction input.
-Old summaries can contain earlier hints that no longer have a distinct message identity.
-Start a new session to exclude that historical summary content.
-
-Post-tool hooks keep `content`, `structuredContent`, `details`, `isError`, and `usage` from the original result.
-Blocked responses keep the review instructions in their `reason`.
-It reports bounded failures and does not log environment values.
-Hook processes receive the ordinary process environment, including its existing credentials.
-
-The projector rejects unsupported events and adapter commands outside its simple-token grammar.
-The adapter does not use shell evaluation.
-It limits enforcement to one automatic continuation per user prompt.
-Aborted or failed runs do not trigger an enforcement continuation.
-Session shutdown cancels hook processes.
-The adapter uses the host cancellation signal when Pi supplies one.
-Pi does not supply that signal at each lifecycle stage.
-Escape cancellation during startup, settlement, and manual gates remains unproved.
-
-The native-host tests use Pi's real extension runner and the packaged `agents-md-scope` hook in an isolated Git repository.
-They exercise scope notices, the review receipt, and completion gates under the shipped `ADVISORY` policy.
-That policy reports failed gates without a block on completion.
-Deterministic cases also cover `OFF`, `ENFORCING`, process failure, cancellation, and session shutdown.
-These cases do not prove model compliance or interactive Escape behavior.
-
-| Hook policy | Failure behavior |
-| --- | --- |
-| `ADVISORY` | Report the failure without an automatic continuation. |
-| `ENFORCING` | Block a failed tool-call action or request one continuation for a failed completion gate. |
-| `OFF` | Turn off automatic actions. Explicit manual gates remain available. |
-
-A second failed completion gate reports the unresolved failure and ends.
-The adapter does not present that result as success.
-
-## Package choices
-
-One package keeps profile commands and event handling under one extension owner.
-Per-plugin payloads preserve the scripts and resources that canonical hooks need.
-The Pi manifest lists each skill once by its canonical identity.
-Generated output remains a consumer of `source/`, never an authored source.
-
-Instructions use a structured prompt section instead of a replacement for Pi's complete system prompt.
-Profile state follows the active session branch.
-Hook policy comes from the source profile, including `ADVISORY` and `OFF`.
-The package declares `@earendil-works/pi-coding-agent` as a peer dependency with the upstream-prescribed `*` range.
-The `*` peer range does not prove compatibility with every Pi release.
-
-Agent definitions remain reference material in plugin payloads.
-The profile prompt includes their file locations but does not start agents.
-Canonical `.mcp.json` files remain reference material in plugin payloads and the provenance lock.
-The extension does not connect MCP servers or change tool sets.
-Automatic agents and MCP connections remain explicit gaps relative to Codex.
-Source profiles do not supply connection consent or ownership for a server lifecycle.
-
-Projection alone does not prove installed-host behavior or improved model decisions.
-The [native-host suite](../tools/tests/pi-host.test.mjs) supplies separate runtime evidence.
+[Pi.pkl](../tools/projection/Pi.pkl) composes profiles and capabilities from canonical source references.
+It projects only the scope hook's settlement adapter into Pi.
+Codex and Copilot keep their own event contracts.
+The package copies runtime modules and schemas from their authored owners.
+Generated output and installed caches remain consumers.
+[package_pi.py](../tools/package_pi.py) admits the complete payload before archive creation.
+Both Pi peer dependencies use `*`.
+The development dependencies also use `*`, while the lockfile preserves reproducible test inputs.
+Instructions use a structured prompt section within Pi's existing system prompt.
+Slopsentral does not infer task intent from prompt keywords.
 
 ## Automatic releases
 
@@ -304,13 +316,13 @@ The published archive remains the normal installation path for users.
 
 ## Upstream references
 
-These references bind API choices to Pi 1.2.0:
+These references bind the current evidence to Pi 1.3.0:
 
-- [Extension lifecycle and API contracts](https://github.com/earendil-works/pi/blob/v1.2.0/packages/coding-agent/docs/extensions.md).
-- [Package manifests, local trials, and peer dependencies](https://github.com/earendil-works/pi/blob/v1.2.0/packages/coding-agent/docs/packages.md).
-- [Structured prompt sections example](https://github.com/earendil-works/pi/blob/v1.2.0/packages/coding-agent/examples/extensions/prompt-customizer.ts).
-- [Profile commands, flags, and status example](https://github.com/earendil-works/pi/blob/v1.2.0/packages/coding-agent/examples/extensions/preset.ts).
-- [Extension discovery through the SDK](https://github.com/earendil-works/pi/blob/v1.2.0/packages/coding-agent/examples/sdk/06-extensions.ts).
+- [Extension lifecycle and API contracts](https://github.com/earendil-works/pi/blob/71023aec1546d6d677a65669c5665c0927ce0dd0/packages/coding-agent/docs/extensions.md).
+- [Package manifests, local trials, and peer dependencies](https://github.com/earendil-works/pi/blob/71023aec1546d6d677a65669c5665c0927ce0dd0/packages/coding-agent/docs/packages.md).
+- [Structured prompt sections example](https://github.com/earendil-works/pi/blob/71023aec1546d6d677a65669c5665c0927ce0dd0/packages/coding-agent/examples/extensions/prompt-customizer.ts).
+- [Profile commands, flags, and status example](https://github.com/earendil-works/pi/blob/71023aec1546d6d677a65669c5665c0927ce0dd0/packages/coding-agent/examples/extensions/preset.ts).
+- [Extension discovery through the SDK](https://github.com/earendil-works/pi/blob/71023aec1546d6d677a65669c5665c0927ce0dd0/packages/coding-agent/examples/sdk/06-extensions.ts).
 
 The shipped preset example supplies useful command patterns.
 This adapter uses branch-local entries instead of that example's complete-file state scan.

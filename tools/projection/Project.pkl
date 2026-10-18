@@ -424,6 +424,7 @@ output {
             List(
               jsonFile(outputRoot + "/package.json", Pi.manifest(input)),
               jsonFile(outputRoot + "/profiles.json", Pi.config(input)),
+              jsonFile(outputRoot + "/capabilities.json", Pi.capabilities(input)),
             )
           else
             List()
