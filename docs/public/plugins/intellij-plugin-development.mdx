@@ -1,0 +1,29 @@
+---
+title: "IntelliJ Plugin Development"
+description: "IntelliJ plugin delivery, PSI, indexes, platform tests, and live diagnostics."
+icon: "window"
+---
+
+IntelliJ Plugin Development supplies platform-specific procedures.
+For Kotlin plugins, select Software Engineering and Kotlin Engineering with this plugin.
+General Kotlin design and everyday Git workflows keep their existing owners.
+
+## Skills
+
+| Skill | Purpose |
+| --- | --- |
+| `intellij-plugin-delivery` | Package, deliver, and diagnose the plugin lifecycle. |
+| `intellij-psi-indexing` | Examine PSI ownership, indexes, and platform integration. |
+| `intellij-platform-testing` | Use platform tests and live IDE diagnostics. |
+
+## Evidence limits
+
+A compiled plugin does not prove that an installed IDE loads it.
+A platform fixture does not prove a real project's index state.
+Name the IDE, source revision, project, and exercised operation for a live result.
+
+The plugin adds no automatic hooks.
+The host and IDE keep ownership of their runtime effects.
+
+The [plugin manifest](https://github.com/amichne/slopsentral/blob/main/source/plugins/intellij-plugin-development/plugin.json) owns the skill selection.
+The [catalog](https://github.com/amichne/slopsentral/blob/main/source/CATALOG.md) records the current scope.

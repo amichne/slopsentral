@@ -1,0 +1,48 @@
+{
+  "repository": "amichne/slopsentral",
+  "baseRevision": "bc3c53a3156fe7221f7f2aa638c40e6612031f73",
+  "workingBranch": "codex/docs-update-wiring",
+  "published": false,
+  "mintlify": {
+    "subdomain": "slopsentral",
+    "url": "https://slopsentral.michne.com",
+    "deployBranch": "feature/slopsentral-docs",
+    "contentDirectory": "docs/public",
+    "workflowRead": {
+      "code": "entitlement_required",
+      "entitlement": "WORKFLOWS"
+    }
+  },
+  "github": {
+    "workflowPermissions": {
+      "default_workflow_permissions": "read",
+      "can_approve_pull_request_reviews": false
+    },
+    "originalDocsPullRequest": {
+      "number": 69,
+      "state": "CLOSED"
+    },
+    "draftWorkflow": "configured locally, not run",
+    "draftCoverage": "source-derived Pi guide only"
+  },
+  "checks": {
+    "docs": "PASSED",
+    "brokenLinkControl": "PASSED with expected exit 1",
+    "generator": "PASSED 4 cases after intended link-rewrite assertion failed",
+    "python": "PASSED 150 cases, SKIPPED 18 archive-dependent cases",
+    "actionlint": "PASSED",
+    "npmCi": "PASSED with --ignore-scripts",
+    "prose": {
+      "type": "ASSESSED",
+      "findings": 20
+    }
+  },
+  "dependencyAudit": {
+    "source": "npm ci output",
+    "total": 40,
+    "low": 5,
+    "moderate": 7,
+    "high": 28,
+    "remediation": "not run"
+  }
+}

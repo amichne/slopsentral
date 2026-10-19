@@ -1,0 +1,68 @@
+---
+title: "Profiles"
+description: "Inspect saved plugin selections and the explicit Codex profile lifecycle."
+icon: "sliders"
+---
+
+A workflow profile declares a repeatable plugin selection and its policies.
+Normal plugin use relies on the host marketplace.
+Slopsentral supplies no global launcher or automatic repository-profile hook.
+
+## Authored selections
+
+| Profile | Plugins |
+| --- | --- |
+| `local-development-default` | Software Engineering |
+| `kotlin-repo-default` | Software Engineering and Kotlin Engineering |
+| `kotlin-type-design` | Software Engineering and Kotlin Engineering with focused design skills |
+| `type-design` | Software Engineering, Kotlin Engineering, and Developer Tooling with focused design skills |
+| `intellij-plugin-default` | Software Engineering, Kotlin Engineering, and IntelliJ Plugin Development |
+| `documentation-default` | Repository Knowledge |
+| `developer-tooling-default` | Software Engineering and Developer Tooling |
+| `agent-authoring-default` | Software Engineering and Developer Tooling |
+| `pkl-workflow-default` | Software Engineering and Developer Tooling |
+| `pkl-checked-repository` | Software Engineering and Developer Tooling |
+| `personal-configuration-default` | Developer Tooling |
+
+The historical `pkl-checked-repository` name now selects guidance only.
+It does not add automatic Pkl or source-graph hooks.
+
+## Pi settings
+
+Pi uses profiles as defaults for independent capabilities.
+Enter `/slopsentral` to inspect settings or `/slopsentral state` for structured state.
+User, project, and session overrides take precedence over profile defaults.
+The `off` profile keeps explicit overrides.
+The [Pi guide](/guides/pi) describes save scopes, dependencies, and hook policies.
+
+## Explicit Codex lifecycle
+
+From a prepared checkout, inspect a selection with:
+
+```bash
+node tools/catalog.mjs --profile documentation-default --json
+node tools/profile-lifecycle.mjs plan --profile documentation-default
+```
+
+The catalog reports the selection from source.
+The lifecycle plan also reads Codex configuration and inventory.
+It does not apply the plan.
+
+An explicit `apply` can add the marketplace, install selected plugins, and create a named Codex configuration.
+The default policy disables unselected Slopsentral plugins in that configuration.
+It preserves foreign plugins and does not uninstall the unselected plugins.
+
+The lifecycle needs Codex CLI 0.134.0 or later.
+It refuses an unmanaged target file unless the request explicitly permits replacement.
+It never writes the host's hook trust state.
+
+## Saved transactions
+
+The lifecycle keeps file preimages and returns a transaction manifest.
+Rollback uses that exact manifest and the recorded target identity.
+If later work changes the target, rollback reports `PROFILE_CONFLICT` and writes nothing.
+
+Rollback covers the generated configuration file.
+It does not reverse marketplace or plugin installation effects.
+The [lifecycle document](https://github.com/amichne/slopsentral/blob/main/docs/profile-lifecycle.md) supplies apply and rollback commands.
+The [authored profiles](https://github.com/amichne/slopsentral/tree/main/source/profiles) own the selections.

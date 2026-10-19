@@ -1,0 +1,107 @@
+---
+title: "Install Slopsentral"
+description: "Install the Pi package or select marketplace plugins in Codex or GitHub Copilot."
+icon: "download"
+---
+
+Choose the installation path for your agent application.
+Pi uses a release archive.
+Codex and GitHub Copilot use marketplaces.
+The Codex and GitHub Copilot examples install Software Engineering and Kotlin Engineering.
+For prose alone, substitute `repository-knowledge@slopsentral`.
+
+These commands change the application's marketplace and plugin configuration.
+They do not need a Slopsentral checkout.
+
+## Pi
+
+Use Node.js 22.19 or later with an existing Pi installation.
+
+1. Open the [latest Pi release](https://github.com/amichne/slopsentral/releases/latest).
+2. Run the pinned `pi install` command from its release notes.
+3. From your project, start Pi with a profile:
+
+```bash
+pi --slopsentral-profile kotlin-type-design
+```
+
+For project scope, add `--local` after `pi install`.
+Choose one installation scope.
+The archive needs no repository clone, Pkl, or local npm build.
+
+Enter `/slopsentral` to open settings after a run ends.
+Use `/slopsentral state` to inspect effective capabilities and errors.
+The [Pi guide](/guides/pi) covers settings, hooks, updates, and removal.
+
+## Codex
+
+1. Examine the configured marketplaces.
+
+```bash
+codex plugin marketplace list --json
+```
+
+2. If Slopsentral is absent, add its Codex branch.
+
+```bash
+codex plugin marketplace add amichne/slopsentral --ref harness/codex --json
+```
+
+3. Install the selected plugins.
+
+```bash
+codex plugin add software-engineering@slopsentral --json
+codex plugin add kotlin-engineering@slopsentral --json
+```
+
+4. Examine the installed plugins.
+
+```bash
+codex plugin list --json
+```
+
+The inventory must list the selected plugin identities.
+If an existing source points elsewhere, examine it before replacement.
+The [OpenAI documentation](https://developers.openai.com/plugins/build/plugins#add-a-marketplace-from-the-cli) describes marketplace sources and Git refs.
+
+## GitHub Copilot CLI
+
+1. Examine the configured marketplaces.
+
+```bash
+copilot plugin marketplace list
+```
+
+2. If Slopsentral is absent, add its GitHub Copilot branch.
+
+```bash
+copilot plugin marketplace add 'amichne/slopsentral#harness/github-copilot'
+```
+
+3. Install the selected plugins.
+
+```bash
+copilot plugin install software-engineering@slopsentral
+copilot plugin install kotlin-engineering@slopsentral
+```
+
+4. Examine the installed plugins.
+
+```bash
+copilot plugin list
+```
+
+The [GitHub reference](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-plugin-reference) describes plugin selectors and marketplace refs.
+
+## Use the installation
+
+Start a fresh agent session.
+State the task and the authorized scope.
+If the host asks for hook trust, examine the selected hook before approval.
+
+For Kotlin semantic tools, examine Kast's connection separately.
+Kast owns its runtime and workspace discovery.
+A plugin inventory does not prove that a workspace accepts semantic queries.
+
+The [workflow profiles](https://github.com/amichne/slopsentral/tree/main/source/profiles) declare the provider branches.
+The [troubleshooting guide](/guides/troubleshooting) covers missing capabilities and stale installations.

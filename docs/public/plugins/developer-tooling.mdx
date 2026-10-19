@@ -1,0 +1,34 @@
+---
+title: "Developer Tooling"
+description: "CLIs, agent resources, schemas, OpenAPI, Pkl, and explicit personal configuration."
+icon: "wrench"
+---
+
+Developer Tooling supplies procedures for tools and external contracts.
+Use it for a requested CLI, schema, agent resource, or configuration change.
+Personal configuration changes need their own authorization.
+
+## Skills
+
+| Skill | Purpose |
+| --- | --- |
+| `cli-creator` | Define command contracts, JSON output, and explicit writes. |
+| `manage-json-schemas` | Author and examine JSON Schema contracts and examples. |
+| `openapi-contract-authoring` | Author and review OpenAPI operations and component schemas. |
+| `pkl-engineering` | Implement typed Pkl contracts, evaluation, and package behavior. |
+| `plugin-composition-authoring` | Compose plugin manifests from canonical references. |
+| `skill-primitive-authoring` | Create or revise reusable skills and agent profiles. |
+| `python-tooling` | Author typed, locked uv automation. |
+| `personal-setup-management` | Change personal setup through its current source and installer. |
+
+## Other resources
+
+The plugin supplies `openapi-contract-rater` and `schema-type-enforcer` agent definitions.
+An agent definition does not itself start delegated work.
+
+Python Tooling uses the same authored skill as Software Engineering.
+The plugin adds no automatic hooks.
+Source checks and skill-read policy need an explicit composition.
+
+The [plugin manifest](https://github.com/amichne/slopsentral/blob/main/source/plugins/developer-tooling/plugin.json) owns the resource list.
+The [architecture](/reference/architecture) explains canonical ownership.

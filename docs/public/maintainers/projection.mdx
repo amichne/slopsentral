@@ -1,0 +1,60 @@
+---
+title: "Project provider output"
+description: "Create Codex, GitHub Copilot, and Pi trees with the pinned local Pkl projector."
+icon: "arrows-split-up-and-left"
+---
+
+The local projector creates provider output from authored source.
+Projection accepts the current Codex, GitHub Copilot, and Pi shapes.
+It rejects unsupported source types and existing output trees.
+
+## Prerequisites
+
+Use a Git checkout with a resolvable `HEAD`.
+Install the locked Node dependencies.
+Use Node.js 22.19 or later, Python 3.12 or 3.13, and Pkl 0.32.0.
+
+## Install the pinned runtime
+
+From the repository root, choose an output path that does not exist.
+
+```bash
+npm ci
+node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
+```
+
+The installer examines the downloaded bytes against the pinned checksum.
+Projection itself never downloads the runtime.
+
+## Create the provider trees
+
+Choose fresh output directories outside the repository.
+Their parent directory must exist.
+
+```bash
+export PKL_BIN=/tmp/slopsentral-pkl/pkl
+node tools/validate-source-graph.mjs
+node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex-new
+node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
+node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi-new
+npm run check:pi
+git diff --check
+```
+
+Each successful projection emits a `PROJECTED` receipt.
+A failure emits `PROJECTION_REJECTED` with a stage and code.
+An existing output remains unchanged.
+
+## Understand the result
+
+Node freezes source bytes and modes before graph assessment.
+Pkl parses the input into constrained provider models.
+Node materializes the file plan and supplies payload digests for sealing.
+The projector examines source freshness before an atomic publication to the local output path.
+
+The lock records provenance and projected reference hashes.
+Its `sourceSha` field is a source-tree hash, not a Git commit ID.
+The deterministic inputs include source bytes, modes, models, the evaluator, and the `HEAD` commit time.
+
+Local output does not update the repository's published branches or installed caches.
+The [projection contract](https://github.com/amichne/slopsentral/blob/main/docs/pkl-projection.md) gives the complete mechanism and supported limits.

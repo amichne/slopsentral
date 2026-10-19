@@ -13,7 +13,11 @@
     "verify": "npm run check:python && npm run check:source && npm test && npm run verify:marketplaces",
     "validate:profile-contracts": "node tools/validate-profile-contracts.mjs",
     "check:python": "uv run --locked tools/check.py",
-    "check:pi": "tsc --project tools/pi-tsconfig.json"
+    "check:pi": "tsc --project tools/pi-tsconfig.json",
+    "docs:dev": "cd docs/public && mint dev --no-open",
+    "docs:check": "uv run --locked --script tools/sync_docs.py --check && npm run docs:validate",
+    "docs:sync": "uv run --locked --script tools/sync_docs.py",
+    "docs:validate": "cd docs/public && mint validate && mint broken-links --check-anchors --check-redirects"
   },
   "dependencies": {
     "ajv": "^8.20.0",
@@ -24,6 +28,7 @@
     "@earendil-works/pi-tui": "*",
     "@types/node": "26.6.5",
     "@xterm/headless": "6.0.0",
+    "mint": "4.2.879",
     "tsx": "4.20.6",
     "typescript": "7.0.2"
   }
