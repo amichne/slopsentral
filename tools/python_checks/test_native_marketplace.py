@@ -57,6 +57,23 @@ def change(repository: Path, name: str, field: str, value: object) -> None:
     _ = file.write_text(json.dumps(payload))
 
 
+def test_pi_default_is_native_content(source: Path, tmp_path: Path) -> None:
+    assert PKL
+    out = tmp_path / "native-default"
+    _ = project(source, "pi", out, PKL)
+    root = out / ".pi/slopsentral"
+    manifest = obj(json.loads((root / "package.json").read_text()))
+    resources = obj(manifest["pi"])
+    assert set(resources) == {"skills"}
+    assert resources["skills"] == ["./software-engineering/skills/semantic-ratchet"]
+    assert "peerDependencies" not in manifest
+    inventory = obj(json.loads((root / "profile-inventory.json").read_text()))
+    assert inventory["profile"] == "local-development-default"
+    assert not any(
+        (root / path).exists() for path in ["extensions", "profiles.json", "capabilities.json"]
+    )
+
+
 @pytest.mark.parametrize(
     ("field", "value", "reason"),
     [

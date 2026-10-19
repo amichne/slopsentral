@@ -31,7 +31,8 @@
             "group": "Use Slopsentral",
             "pages": [
               "guides/controlled-writing",
-              "guides/troubleshooting"
+              "guides/troubleshooting",
+              "guides/workflows"
             ]
           }
         ]
@@ -55,7 +56,11 @@
               "reference/architecture",
               "reference/profiles",
               "reference/glossary",
-              "reference/releases"
+              "reference/releases",
+              "reference/catalog",
+              "reference/migration",
+              "reference/pi-migration",
+              "reference/external-references"
             ]
           }
         ]

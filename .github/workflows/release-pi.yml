@@ -70,6 +70,24 @@ jobs:
         run: |
           uv run --locked python -m tools.release_assets unpack "$RUNNER_TEMP/marketplace-candidate" "$RUNNER_TEMP/marketplaces" "$SOURCE_SHA"
           cat "$RUNNER_TEMP/marketplace-candidate/SHA256SUMS" >> "$RUNNER_TEMP/pi-candidate/SHA256SUMS"
+      - name: Admit the setup artifact attempt
+        id: setup
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ steps.candidate.outputs.merged_revision }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || inputs.run_id }}
+        run: uv run --locked python -m tools.setup_assets admit-run "$GITHUB_REPOSITORY" "$SOURCE_RUN_ID" "$SOURCE_SHA" --github-output "$GITHUB_OUTPUT"
+      - name: Download the qualified native installer
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.setup.outputs.artifact }}
+          run-id: ${{ github.event.workflow_run.id || inputs.run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/setup-candidate
+      - name: Verify setup identity before publication
+        run: |
+          uv run --locked python -m tools.setup_assets verify "$RUNNER_TEMP/setup-candidate" "$RUNNER_TEMP/pi-candidate/candidate.json"
+          cat "$RUNNER_TEMP/setup-candidate/SHA256SUMS" >> "$RUNNER_TEMP/pi-candidate/SHA256SUMS"
       - name: Create the tag at the admitted merged commit without replacement
         env:
           GH_TOKEN: ${{ github.token }}
@@ -86,15 +104,11 @@ jobs:
           ARCHIVE: ${{ steps.candidate.outputs.archive }}
         run: |
           printf '%s\n' \
-            'Install this Pi package without a source checkout:' \
+            'Install native Pi content with the visible setup command in the [installation guide](https://slopsentral.michne.com/guides/pi).' \
             '' \
-            '```bash' \
-            "pi install npm:slopsentral-pi@https://github.com/$GH_REPO/releases/download/slopsentral-v$VERSION/slopsentral-pi-$VERSION.tgz" \
-            '```' \
+            '[Installation](https://slopsentral.michne.com/guides/install) | [Release contents and verification](https://slopsentral.michne.com/reference/releases)' \
             '' \
-            "[Installation](https://github.com/$GH_REPO/blob/slopsentral-v$VERSION/docs/releases.md) | [README](https://github.com/$GH_REPO/blob/slopsentral-v$VERSION/README.md)" \
-            '' \
-            'This canonical set supersedes earlier standalone and Pi-only releases. Historical releases remain available.' \
+            'This canonical native set supersedes the retired Pi extension runtime. Its historical Pi-only downloads are removed after independent replacement verification; source tags remain recoverable.' \
             'Codex and Copilot archives contain the exact projected bytes tested by Validate Source. See release-assets.json for source identity and checksums.' \
             '' \
             "CI passed for [source $BUILD_SHA](https://github.com/$GH_REPO/commit/$BUILD_SHA)." \
@@ -106,7 +120,8 @@ jobs:
             "$RUNNER_TEMP/marketplace-candidate/slopsentral-codex.tar.gz" \
             "$RUNNER_TEMP/marketplace-candidate/slopsentral-github-copilot.tar.gz" \
             "$RUNNER_TEMP/marketplace-candidate/release-assets.json" \
-            "$RUNNER_TEMP/promotion.json" --verify-tag --draft \
+            "$RUNNER_TEMP/setup-candidate/install-pi.sh" "$RUNNER_TEMP/setup-candidate/setup-pi.mts" \
+            "$RUNNER_TEMP/setup-candidate/setup.json" "$RUNNER_TEMP/promotion.json" --verify-tag --draft \
             --title "Slopsentral $VERSION" \
             --notes-file "$RUNNER_TEMP/pi-release-notes.md"
       - name: Examine actual release downloads before making the set current
@@ -121,4 +136,5 @@ jobs:
           cmp "$RUNNER_TEMP/pi-candidate/candidate.json" "$RUNNER_TEMP/downloaded/candidate.json"
           cmp "$RUNNER_TEMP/promotion.json" "$RUNNER_TEMP/downloaded/promotion.json"
           cmp "$RUNNER_TEMP/marketplace-candidate/release-assets.json" "$RUNNER_TEMP/downloaded/release-assets.json"
+          for file in install-pi.sh setup-pi.mts setup.json; do cmp "$RUNNER_TEMP/setup-candidate/$file" "$RUNNER_TEMP/downloaded/$file"; done
           gh release edit "slopsentral-v$VERSION" --draft=false --latest

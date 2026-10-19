@@ -1,31 +1,78 @@
 ---
 title: "Release assets"
-description: "One qualified set for Codex, Copilot, and the optional Pi extension."
+description: "One qualified source revision for Codex, Copilot, native Pi and setup."
+keywords: [releases, checksums, provenance]
 icon: "box-archive"
 ---
 
-The [latest release](https://github.com/amichne/slopsentral/releases/latest) is the canonical set.
-It supersedes earlier component and Pi-only releases.
-Historical tags and assets remain available.
+The [latest release](https://github.com/amichne/slopsentral/releases/latest) is the
+canonical qualified set. All three archives and the installer name one source
+revision. Native Pi setup selects it automatically; use [installation](/guides/install).
 
 | Asset | Purpose |
 | --- | --- |
 | `slopsentral-codex.tar.gz` | Codex marketplace snapshot |
 | `slopsentral-github-copilot.tar.gz` | Copilot marketplace snapshot |
-| `slopsentral-pi-<version>.tgz` | Optional in-repository Pi extension |
-| `SHA256SUMS` | Exact archive digests |
-| `release-assets.json` | Provider names, sizes, digests, and source revision |
-| `candidate.json`, `promotion.json` | Tested Pi producer, Git tree, main admission, and digest |
+| `slopsentral-pi-<version>.tgz` | Native Pi skill content; no extension runtime |
+| `install-pi.sh`, `setup-pi.mts` | Bootstrap and tested consumer installer |
+| `setup.json` | Installer bytes, version, source and candidate identity |
+| `SHA256SUMS` | All three archives and all three setup assets |
+| `release-assets.json` | Provider names, sizes, digests and source revision |
+| `candidate.json`, `promotion.json` | Tested Pi producer, Git tree, main admission and archive digest |
 
-The current catalog excludes outside workflow bundles and optional service onboarding.
-The [external reference inventory](https://github.com/amichne/slopsentral/blob/main/docs/external-tool-references.md) explains the runtime, API, format, and attribution links that remain.
+The current catalog contains five repository-owned plugin compositions. It has
+no outside workflow bundles or external Pi extensions. Python remains the
+language for locked maintainer automation. The
+[external reference inventory](/reference/external-references) explains retained
+runtime, vendor API, format and attribution references.
 
-The [release guide](https://github.com/amichne/slopsentral/blob/main/docs/releases.md) documents archive installation and the Pi parity table.
-For both Codex and Copilot, register the extracted root directory.
-The [installation guide](/guides/install) documents the normal marketplace route.
-Use the exact Pi command from the canonical release notes.
+## Immutable provider snapshots
 
-Full source validation and native archive installation precede publication.
-Publication consumes those tested bytes.
-Actual GitHub downloads must match checksums before the draft becomes the current release.
-Live model inference remains outside this qualification.
+Normal Codex and Copilot installation uses the branches in the
+[installation guide](/guides/install). For a local snapshot, download the matching
+archive and `SHA256SUMS` from one release into an empty directory. Compare its
+SHA-256 digest: use `shasum -a 256` on macOS or `sha256sum` on Linux.
+
+```bash
+mkdir marketplace
+tar -xzf slopsentral-codex.tar.gz -C marketplace
+codex plugin marketplace add "$PWD/marketplace" --json
+codex plugin add software-engineering@slopsentral --json
+codex plugin list --json
+```
+
+For Copilot, extract `slopsentral-github-copilot.tar.gz` instead, then register the
+extracted root:
+
+```bash
+copilot plugin marketplace add "$PWD/marketplace"
+copilot plugin install software-engineering@slopsentral
+copilot plugin list
+```
+
+Use one source per host; inspect existing registrations before replacing them.
+Repeat installation must keep one identity. Start a fresh session afterward.
+Hook trust remains an explicit native host decision.
+
+## Publication contract
+
+Full source validation compiles Kotlin examples and forbidden calls, checks
+Python, schemas, catalog and documentation, projects all supported hosts, and
+executes projected hook contracts. The Pi job depends on source success, tests
+native discovery and setup recovery, installs its archive, then retains sealed
+archive and setup artifacts.
+
+Publication admits the exact successful main run and attempt. It consumes those
+tested bytes without rebuilding them. A source-tag mismatch, missing artifact,
+failed or skipped required check, or changed checksum stops publication.
+A draft becomes Latest only after actual GitHub downloads match the tested
+archives, installer assets and provenance records.
+
+The new native set supersedes the retired Pi runtime. Historical Pi-only release
+objects and runtime assets in mixed releases are removed after independent public
+installation verification. Mixed Codex/Copilot assets, unrelated releases, source
+history and all tags remain. Source tags preserve recoverable historical source;
+they do not make a retired binary part of the current installation contract.
+
+No runtime/model inference or paid request is part of release qualification.
+See the [Pi migration classification](/reference/pi-migration) for the boundaries.

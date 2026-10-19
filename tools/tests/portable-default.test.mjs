@@ -39,10 +39,10 @@ for (const harness of ['codex', 'github-copilot', 'pi']) {
     const kotlin = path.join(result.out, prefix, 'kotlin-engineering');
     assert.equal(fs.existsSync(path.join(kotlin, '.mcp.json')), false);
     if (harness === 'pi') {
-      const profiles = JSON.parse(fs.readFileSync(path.join(result.out, prefix, 'profiles.json')));
-      const selected = profiles.profiles.find(p => p.name === 'local-development-default');
-      assert.deepEqual(selected.hooks, []);
-      assert.deepEqual(selected.instructions, []);
+      const inventory = JSON.parse(fs.readFileSync(path.join(result.out, prefix, 'profile-inventory.json')));
+      assert.equal(inventory.profile, 'local-development-default');
+      assert.deepEqual(inventory.instructions, []);
+      assert.equal(fs.existsSync(path.join(result.out, prefix, 'extensions')), false);
     } else {
       const manifest = JSON.parse(fs.readFileSync(path.join(bundle, harness === 'codex' ? '.codex-plugin/plugin.json' : 'plugin.json')));
       assert.equal(manifest.hooks, undefined);

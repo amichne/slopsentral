@@ -13,6 +13,7 @@ def test_rewrites_source_links_but_preserves_examples() -> None:
     result = render(
         "# Pi harness\n\nRead [schema](../source/schemas/pi/settings.schema.json).\n"
         "Read [guide](agent-marketplaces.md#pi).\n"
+        "Use [site](/reference/releases).\n"
         "Keep [web](https://example.com) and [section](#settings).\n"
         "```markdown\n[example](../literal.md)\n```\n"
     )
@@ -25,6 +26,7 @@ def test_rewrites_source_links_but_preserves_examples() -> None:
         "https://github.com/amichne/slopsentral/blob/main/docs/agent-marketplaces.md#pi"
         in result.content
     )
+    assert "[site](/reference/releases)" in result.content
     assert "[web](https://example.com)" in result.content
     assert "[section](#settings)" in result.content
     assert "```markdown\n[example](../literal.md)\n```" in result.content

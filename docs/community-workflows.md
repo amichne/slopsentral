@@ -15,4 +15,4 @@ The default Software Engineering plugin supplies one standard skill without an e
 
 Runtime documentation remains with its vendor because host APIs and compilers define those contracts.
 The [external reference inventory](external-tool-references.md) records each retained URL and its purpose.
-The [release guide](releases.md) defines the canonical assets and optional Pi extension scope.
+The [release guide](releases.md) defines the canonical assets and native Pi content scope.

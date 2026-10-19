@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
-def fixture(root: Path) -> Path:
+def legacy_fixture(root: Path) -> Path:
     root.mkdir()
     manifest = {
         "name": "slopsentral-pi",
@@ -87,6 +87,18 @@ def content_fixture(root: Path) -> Path:
     return root
 
 
+def fixture(root: Path) -> Path:
+    result = content_fixture(root)
+    (result / "owner/skills/example/SKILL.md").chmod(0o755)
+    return result
+
+
+def test_retired_complete_runtime_never_produces_an_archive(tmp_path: Path) -> None:
+    root = legacy_fixture(tmp_path / "package")
+    assert package(root, tmp_path / "output") == Rejected(Code.INVALID_PACKAGE)
+    assert not (tmp_path / "output").exists()
+
+
 def test_content_package_needs_no_runtime_peer_or_extension(tmp_path: Path) -> None:
     root = content_fixture(tmp_path / "package")
     assert isinstance(package(root, tmp_path / "output"), Packed)
@@ -131,7 +143,7 @@ def test_content_package_rejects_runtime_and_incomplete_selection(
     ],
 )
 def test_incomplete_capability_runtime_never_produces_an_archive(tmp_path: Path, name: str) -> None:
-    root = fixture(tmp_path / "package")
+    root = legacy_fixture(tmp_path / "package")
     (root / name).unlink()
     assert package(root, tmp_path / "output") == Rejected(Code.INVALID_PACKAGE)
     assert not (tmp_path / "output").exists()
@@ -190,10 +202,10 @@ def test_generated_consumers_exclude_local_state(tmp_path: Path, name: str) -> N
 def test_symlinks_and_missing_payloads_are_rejected(tmp_path: Path) -> None:
     root = fixture(tmp_path / "package")
     link = root / "linked"
-    link.symlink_to(root / "profiles.json")
+    link.symlink_to(root / "profile-inventory.json")
     assert package(root, tmp_path / "output") == Rejected(Code.INVALID_PACKAGE)
     link.unlink()
-    (root / "profiles.json").unlink()
+    (root / "profile-inventory.json").unlink()
     assert package(root, tmp_path / "output") == Rejected(Code.INVALID_PACKAGE)
 
 

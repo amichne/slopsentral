@@ -425,21 +425,15 @@ output {
   value = new Schema.Plan {
     harness = selectedHarness
     plugins = plans
-    copies = if (selectedHarness == "pi" && contentProfile == null) Pi.copies() else List()
+    copies = List()
     files =
       List(jsonFile(outputRoot + "/marketplace.json", marketplace))
         + (
-          if (selectedHarness == "pi" && contentProfile != null)
+          if (selectedHarness == "pi")
             List(
               jsonFile(outputRoot + "/package.json", Pi.manifest(input)),
               jsonFile(outputRoot + "/profile-inventory.json", Pi.inventory(input)),
               textFile(outputRoot + "/AGENTS.md", Pi.instructionText(input)),
-            )
-          else if (selectedHarness == "pi")
-            List(
-              jsonFile(outputRoot + "/package.json", Pi.manifest(input)),
-              jsonFile(outputRoot + "/profiles.json", Pi.config(input)),
-              jsonFile(outputRoot + "/capabilities.json", Pi.capabilities(input)),
             )
           else
             List()

@@ -12,7 +12,7 @@ import { currentSourceEvidenceFindings, currentSourceLocalPaths } from './routin
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ignored = new Set(['.git', '.gradle', '.idea', '__pycache__', '.ruff_cache', '.pytest_cache', 'build', 'dist', 'target']);
-const codes = new Set(['INVALID_INVOCATION', 'SOURCE_REJECTED', 'UNSUPPORTED_SOURCE', 'UNSAFE_PATH', 'INPUT_CHANGED', 'PKL_UNAVAILABLE', 'PKL_REJECTED', 'INVALID_PLAN', 'OUTPUT_EXISTS', 'ATOMIC_PUBLISH_UNAVAILABLE', 'WRITE_FAILED']);
+const codes = new Set(['INVALID_INVOCATION', 'SOURCE_REJECTED', 'UNSUPPORTED_SOURCE', 'UNSAFE_PATH', 'INPUT_CHANGED', 'PKL_UNAVAILABLE', 'PKL_REJECTED', 'INVALID_PLAN', 'OUTPUT_EXISTS', 'ATOMIC_PUBLISH_UNAVAILABLE', 'WRITE_FAILED', 'UNSUPPORTED_CAPABILITY']);
 class Rejected extends Error {
   constructor(stage, code, message) {
     super(message);
@@ -264,21 +264,8 @@ function operations(plan, files, harness, input) {
       }
     }
   }
-  const runtime = Object.fromEntries([
-    ...['slopsentral', 'runtime', 'settings', 'skills', 'control', 'journal', 'coordinator', 'menu']
-      .map(name => [`source/hooks/pi/${name}.ts`, `extensions/${name}.ts`]),
-    ...['settings', 'capabilities', 'scope-assessment'].map(name => [`source/schemas/pi/${name}.schema.json`, `schemas/${name}.schema.json`]),
-  ]);
-  for (const operation of plan.copies ?? []) {
-    if (harness !== 'pi' || !exactKeys(operation, ['source', 'target']) || runtime[operation.source] !== operation.target)
-      reject('plan', 'INVALID_PLAN', 'A package runtime copy differs from its source owner');
-    copy(operation.source, tree + '/' + operation.target);
-  }
+  if ((plan.copies ?? []).length) reject('plan', 'INVALID_PLAN', 'Unexpected package-level copies');
   for (const file of plan.files) add(file.path, outputBytes(file), 0o644);
-  if (harness === 'pi' && ((plan.copies ?? []).length !== Object.keys(runtime).length
-    || !['package.json', 'profiles.json', 'capabilities.json', ...Object.values(runtime)]
-      .every(name => output.has(tree + '/' + name))))
-    reject('plan', 'INVALID_PLAN', 'Projection omitted its complete Pi package runtime');
   if (!output.has(tree + '/marketplace.json')) reject('plan', 'INVALID_PLAN', 'Projection omitted its marketplace entrypoint');
   return output;
 }
@@ -301,6 +288,17 @@ export function project({ source, harness, out, pkl = process.env.PKL_BIN ?? 'pk
   if (target === repository || target.startsWith(repository + path.sep) || repository.startsWith(target + path.sep))
     reject('paths', 'UNSAFE_PATH', 'Projection output must be outside the source repository');
   if (exists(target)) reject('publish', 'OUTPUT_EXISTS', 'Projection output already exists; choose a fresh directory');
+  if (harness === 'pi') {
+    try {
+      return JSON.parse(execFileSync('uv', ['run', '--locked', path.join(root, 'tools/marketplace.py'),
+        'project', '--source', repository, '--harness', 'pi', '--out', target, '--pkl-bin', pkl],
+        { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }));
+    } catch (error) {
+      let failure;
+      try { failure = JSON.parse(error.stdout); } catch { /* report a finite boundary failure below */ }
+      reject('source', codes.has(failure?.code) ? failure.code : 'PKL_REJECTED', failure?.message ?? 'Native Pi projection failed');
+    }
+  }
   let state;
   try { state = freezeInput(repository); }
   catch (error) { if (error instanceof Rejected) throw error; reject('source', 'SOURCE_REJECTED', 'The authored source did not pass validation'); }

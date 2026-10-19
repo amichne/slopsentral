@@ -1,0 +1,32 @@
+---
+title: "Native Pi migration"
+description: "Replace the custom runtime with native content and explicit, recoverable setup."
+keywords: [Pi, migration, native skills, recovery]
+---
+
+The native package replaces the previous Slopsentral Pi runtime. No external Pi
+extension remains. The published default contains one skill and no executable
+code. Use [setup and recovery](/guides/pi) to migrate a personal/current-project
+installation without visiting Releases.
+
+| Previous responsibility | Current owner or deliberate retirement | Qualification |
+| --- | --- | --- |
+| Managed skill loading and custom tool | Pi native skill discovery and `/skill:NAME` | Native loader and installed archive discovery; zero Slopsentral commands/tools/flags |
+| Profile selection and layered overrides | Authoring-time content profile and native package registration | Exact inventory/digests; no runtime profile or session override interpretation |
+| Instruction injection | Native scoped `AGENTS.md` when selected | Preserve existing text; no cross-scope duplication; respect context precedence |
+| Settings menu and custom slash commands | Retired; native settings and explicit setup | No TUI/menu module, custom command, terminal fixture, or runtime setting schema ships |
+| Hook dispatch, completion gates, jobs, cancellation | Retired in Pi | Unsupported policies reject during projection; no lifecycle emulation or prompt substitute |
+| Journal, branch persistence, review obligations | Retired in Pi; prior files remain inert history | Upgrade leaves historical records intact and registers no reader |
+| Package acquisition | Verified native setup | Exact main-run source, source tag, GitHub digest, candidate, promotion, and setup receipt |
+| Configuration writes and recovery | Explicit setup transaction | Compare before write, private backups, native settings locks, repeat install and rollback |
+
+Tests for removed runtime behavior were removed with their implementation.
+Native content, installer, projection, archive, schema, and source qualification
+replace those tests. Removing a runtime feature does not claim its old behavior
+through a prompt. Codex and Copilot keep their own native hook contracts.
+
+The cleanup manifest distinguishes Pi-only historical releases from mixed
+releases. Pi runtime archives and associated receipts are removed only after the
+replacement is independently installed from public bytes. Mixed releases keep
+Codex/Copilot bytes and receive corrected checksums. Unrelated releases, every
+tag, source history, user authentication, defaults, and trust are preserved.

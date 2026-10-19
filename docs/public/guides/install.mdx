@@ -1,11 +1,11 @@
 ---
 title: "Install Slopsentral"
-description: "Select marketplace plugins in Codex or GitHub Copilot, or the optional Pi extension."
+description: "Select marketplace plugins in Codex or GitHub Copilot, or native Pi skills."
 icon: "download"
 ---
 
 Choose the installation path for your agent application.
-Pi uses a release archive.
+Pi uses the verified one-command setup.
 Codex and GitHub Copilot use marketplaces.
 The Codex and GitHub Copilot examples install Software Engineering and Kotlin Engineering.
 For prose alone, substitute `repository-knowledge@slopsentral`.
@@ -77,23 +77,17 @@ The [GitHub reference](https://docs.github.com/en/copilot/reference/copilot-cli-
 
 ## Pi
 
-Use Node.js 22.19 or later with an existing Pi installation.
-
-1. Open the [canonical release](https://github.com/amichne/slopsentral/releases/latest).
-2. Run the pinned `pi install` command from its release notes.
-3. From your project, start Pi with a profile:
+With Pi 1.3.0, Node.js 22.19 or later, curl, and system tar on macOS or Linux,
+run from your project:
 
 ```bash
-pi --slopsentral-profile kotlin-type-design
+bash -o pipefail -c 'curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | sh'
 ```
 
-For project scope, add `--local` after `pi install`.
-Choose one installation scope.
-The archive needs no repository clone, Pkl, or local npm build.
-
-Enter `/slopsentral` to open settings after a run ends.
-Use `/slopsentral state` to inspect effective capabilities and errors.
-The [Pi guide](/guides/pi) covers settings, hooks, updates, and removal.
+Start a fresh Pi session and use `/skill:semantic-ratchet`.
+The command selects and verifies the current native release, preserves unrelated
+configuration, and keeps recovery backups. It needs no checkout or Releases visit.
+See [scope, upgrades, and recovery](/guides/pi).
 
 ## Use the installation
 
