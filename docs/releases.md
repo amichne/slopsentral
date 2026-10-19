@@ -25,8 +25,8 @@ runtime, vendor API, format and attribution references.
 
 Normal Codex and Copilot installation uses the branches in the
 [installation guide](/guides/install). For a local snapshot, download the matching
-archive and `SHA256SUMS` from one release into an empty directory and compare
-its SHA-256 digest (`shasum -a 256` on macOS or `sha256sum` on Linux).
+archive and `SHA256SUMS` from one release into an empty directory. Compare its
+SHA-256 digest: use `shasum -a 256` on macOS or `sha256sum` on Linux.
 
 ```bash
 mkdir marketplace

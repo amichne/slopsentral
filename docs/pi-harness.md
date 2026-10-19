@@ -17,9 +17,9 @@ Run from the project whose old Slopsentral registration you want to migrate:
 bash -o pipefail -c 'curl -fsSL https://raw.githubusercontent.com/amichne/slopsentral/main/tools/install-pi.sh | sh'
 ```
 
-The installer selects the current stable native release, checks GitHub asset
-SHA-256 digests, source tags, candidate and promotion records, and the successful
-main validation run and its required steps. It unpacks verified content without
+The installer selects the current stable native release. It checks GitHub asset
+SHA-256 digests, source tags, and candidate and promotion records. It also checks
+the successful main validation run and its required steps. It unpacks verified content without
 running package scripts. A missing dependency or failed qualification stops setup.
 You do not need a checkout, uv, Python, Pkl, an npm build, or a Releases-page visit.
 
@@ -98,7 +98,7 @@ Stop the other writer before retrying.
 If later edits changed a target, rollback reports `CONFIG_CHANGED` and leaves
 those edits intact. Compare the private preimages with your current files before
 manual recovery. Symlinked configuration scopes are rejected before activation.
-Rollback may restore the prior extension registration; use it to undo a failed
+Rollback can restore the prior extension registration; use it to undo a failed
 migration. To remove a successful installation instead, remove its single
 versioned local-path entry from Pi's native package settings, then restart Pi.
 Keep backups until you have verified discovery and removal.
@@ -114,7 +114,7 @@ Maintainers can project a supported profile with
 `tools/marketplace.py project --harness pi --profile NAME --out FRESH_PATH`.
 The profile inventory records selected skills and instruction digests.
 Unsupported hook policies and restricted invocation policies fail explicitly;
-Pi receives no simulated lifecycle guarantee. See
+Pi receives no simulated lifecycle behavior. See
 [profiles](/reference/profiles) and [projection](/maintainers/projection).
 
 ## Qualification limits
@@ -122,6 +122,6 @@ Pi receives no simulated lifecycle guarantee. See
 Release checks cover native discovery, instruction scope, absence of legacy
 registrations, missing dependencies, changed bytes, repeat installation,
 configuration preservation, interruption, and recovery in disposable locations.
-Codex and Copilot retain their separate native projections and contracts.
+Codex and Copilot keep their separate native projections and contracts.
 Runtime/model integration and paid inference are not exercised.
 The [release reference](/reference/releases) identifies the complete asset set.

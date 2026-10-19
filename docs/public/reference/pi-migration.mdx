@@ -22,11 +22,11 @@ installation without visiting Releases.
 
 Tests for removed runtime behavior were removed with their implementation.
 Native content, installer, projection, archive, schema, and source qualification
-replace those tests. Removing a runtime feature does not claim its old guarantee
+replace those tests. Removing a runtime feature does not claim its old behavior
 through a prompt. Codex and Copilot keep their own native hook contracts.
 
 The cleanup manifest distinguishes Pi-only historical releases from mixed
 releases. Pi runtime archives and associated receipts are removed only after the
-replacement is independently installed from public bytes. Mixed releases retain
+replacement is independently installed from public bytes. Mixed releases keep
 Codex/Copilot bytes and receive corrected checksums. Unrelated releases, every
 tag, source history, user authentication, defaults, and trust are preserved.
