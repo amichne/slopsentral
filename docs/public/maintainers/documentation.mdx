@@ -48,18 +48,9 @@ Examine domain terms against their source separately.
 
 ## Examine the browser result
 
-Use `browser-harness` for rendered pages and interactions.
-Start with a task tab:
+Open the URL printed by `npm run docs:dev` in your browser.
+Use a separate tab for the preview so you can compare it with the public site.
 
-```bash
-browser-harness <<'PY'
-new_tab('http://localhost:3000')
-wait_for_load()
-print(page_info())
-PY
-```
-
-Read the accessibility tree to find navigation links and buttons.
 Use the page controls to reach the changed guide.
 Examine the rendered heading and command text after navigation settles.
 Use a narrow viewport to examine mobile navigation and horizontal overflow.
