@@ -1,96 +1,19 @@
 {
-  "generatedAt": "2026-10-19T10:05:12-04:00",
+  "generatedAt": "2026-10-19T15:28:17-04:00",
   "plugins": [
     {
       "name": "software-engineering",
       "references": [
         {
-          "name": "agents-md-scope",
-          "sha256": "sha256:028d8dc66d0ef7b7fec5b033320ff370a801f0f04d95b8d4cf2df3cb7d7e83d7",
-          "sourcePath": "source/hooks/agents-md-scope.hook.json",
-          "targetPath": "hooks/agents-md-scope.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "software-engineering-context",
-          "sha256": "sha256:0875e5c5f8a04c5d0ec496e1ef597b6eb702a51e7ed05b06040b2c9b34b3430d",
-          "sourcePath": "source/hooks/software-engineering-context.hook.json",
-          "targetPath": "hooks/software-engineering-context.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "agent-execution",
-          "sha256": "sha256:6be9c1c159cc876f85c20006ed99a5881e52896ed7331ff30e7a6d0d25dc4a9f",
-          "sourcePath": "source/instructions/agent-execution.md",
-          "targetPath": "instructions/agent-execution.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "engineering-design",
-          "sha256": "sha256:6115727dd4cb243c521d25eccb90b58a7eedafc37f026b8eba2a2c7e193738cd",
-          "sourcePath": "source/instructions/engineering-design.md",
-          "targetPath": "instructions/engineering-design.md",
-          "type": "INSTRUCTION"
-        },
-        {
-          "name": "git-change-flow",
-          "sha256": "sha256:67576eb8325e6797998a54e49d0644653e1c1b521b04747b62ecdea90e49c859",
-          "sourcePath": "source/skills/git-change-flow",
-          "targetPath": "skills/git-change-flow",
-          "type": "SKILL"
-        },
-        {
-          "name": "github-ci-operations",
-          "sha256": "sha256:a9fda530c7d70316350f3e223a354c9b29302bd62a214c66066ed61ed5131aa3",
-          "sourcePath": "source/skills/github-ci-operations",
-          "targetPath": "skills/github-ci-operations",
-          "type": "SKILL"
-        },
-        {
-          "name": "issue-tracker-operations",
-          "sha256": "sha256:8c173b2a57c7298f9b06c168404ace207b5b7cacd32b256547bf0b2df0a319ec",
-          "sourcePath": "source/skills/issue-tracker-operations",
-          "targetPath": "skills/issue-tracker-operations",
-          "type": "SKILL"
-        },
-        {
-          "name": "mise-project-tooling",
-          "sha256": "sha256:2b4bebea9d99f25eba0327f2098570f3a6c069829a45c5807cdc78b7fb45fc2d",
-          "sourcePath": "source/skills/mise-project-tooling",
-          "targetPath": "skills/mise-project-tooling",
-          "type": "SKILL"
-        },
-        {
-          "name": "pull-request-lifecycle",
-          "sha256": "sha256:6233d4458645ba159ca44ae6713afcc90b530ef6fd77316f39a96d34c280d555",
-          "sourcePath": "source/skills/pull-request-lifecycle",
-          "targetPath": "skills/pull-request-lifecycle",
-          "type": "SKILL"
-        },
-        {
-          "name": "python-tooling",
-          "sha256": "sha256:37c4b2c78383e758f15add3e9c546e50ddeff8d421728931962702c346037dcb",
-          "sourcePath": "source/skills/python-tooling",
-          "targetPath": "skills/python-tooling",
-          "type": "SKILL"
-        },
-        {
           "name": "semantic-ratchet",
-          "sha256": "sha256:380a28726c9aecd034c66288a039d1dfaca2b8e99a43d2411ee823d4acb444ad",
+          "sha256": "sha256:e4615e98e1d9fce09681379b64088652ca8c5fec01cfdf600f853318635e3487",
           "sourcePath": "source/skills/semantic-ratchet",
           "targetPath": "skills/semantic-ratchet",
-          "type": "SKILL"
-        },
-        {
-          "name": "tdd",
-          "sha256": "sha256:f9822e6db3fb2ac979f7d8512644e8d503540f925f25e1abd7abd8a9dccd5e65",
-          "sourcePath": "source/skills/tdd",
-          "targetPath": "skills/tdd",
           "type": "SKILL"
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "3.1.0"
+      "version": "4.0.0"
     },
     {
       "name": "kotlin-engineering",
@@ -129,12 +52,6 @@
           "sourcePath": "source/instructions/kotlin-engineering.md",
           "targetPath": "instructions/kotlin-engineering.md",
           "type": "INSTRUCTION"
-        },
-        {
-          "sha256": "sha256:77133a3da5561acba6754bcfcc7d025dd0013687ad44c88e6f43e3e3a838502a",
-          "sourcePath": "source/plugins/kotlin-engineering/.mcp.json",
-          "targetPath": ".mcp.json",
-          "type": "MCP_CONFIGURATION"
         },
         {
           "name": "gradle-performance-engineering",
@@ -180,7 +97,7 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "3.0.0"
+      "version": "4.0.0"
     },
     {
       "name": "intellij-plugin-development",
@@ -313,7 +230,7 @@
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:d35935484636654f69dd9096a5cfdf2e3305b6ea52f5fe67125b9daa5acc0abd",
+          "sha256": "sha256:9201a6ada7ea19ea77d7f26e52fcfe78d242d32aa982c4a15b21e974402f764f",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
@@ -334,10 +251,10 @@
         }
       ],
       "sourceManifest": "source/plugins/developer-tooling/plugin.json",
-      "version": "3.0.0"
+      "version": "4.0.0"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "6e6689a0ea6b7d32ea67628406447b6f7beca2bb",
+  "sourceSha": "d88292f64bb93bc992732c9c0d77bfda92b22388",
   "type": "HYDRATED_MARKETPLACE"
 }
