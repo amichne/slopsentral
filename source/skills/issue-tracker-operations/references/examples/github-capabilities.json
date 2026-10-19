@@ -4,7 +4,7 @@
   "result": {
     "type": "ISSUE_BACKEND_CAPABILITIES_RESULT",
     "outcome": "COMPLETE",
-    "backend": "JIRA",
+    "backend": "GITHUB",
     "operation": "CAPABILITIES",
     "capabilities": [
       {

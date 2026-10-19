@@ -2,7 +2,7 @@
 
 Generated with `uv run --locked tools/marketplace.py catalog --out source/CATALOG.md`.
 Use Software Engineering for constrained domain design. Select specialties for the task.
-Use native tools or upstream plugins for general workflows. See [community workflows](../docs/community-workflows.md).
+Use repository procedures and native tools for general workflows. See [local workflows](../docs/community-workflows.md).
 The host selects standard skills. Installation grants no action authority.
 
 ## Start here
@@ -73,12 +73,11 @@ Choose for technical prose, documentation sites, source-backed knowledge, naviga
 
 ## Standalone source references
 
-Use upstream workflows for general delivery. These local procedures remain available for explicit reuse.
+Use native host tools for general delivery. These local procedures remain available for explicit reuse.
 
 - [git-change-flow](skills/git-change-flow/SKILL.md).
 - [github-ci-operations](skills/github-ci-operations/SKILL.md).
 - [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md).
-- [mise-project-tooling](skills/mise-project-tooling/SKILL.md).
 - [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md).
 - [tdd](skills/tdd/SKILL.md).
 

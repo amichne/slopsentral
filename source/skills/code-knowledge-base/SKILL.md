@@ -30,7 +30,7 @@ Treat indexes as navigation aids whose claims still need source evidence.
 
 - For concept fields, links, history, format checks, or graph output, read [knowledge-page-contract.md](references/knowledge-page-contract.md).
 - For tracked or sibling storage, read [knowledge-overlay.md](references/knowledge-overlay.md) before a write.
-- For OpenWiki or a backend migration, read [knowledge-backend-handoff.md](references/knowledge-backend-handoff.md).
+- For an unsupported backend or an authorized migration, read [knowledge-backend-handoff.md](references/knowledge-backend-handoff.md).
 - For imported notes or exports, read [knowledge-migration.md](references/knowledge-migration.md).
 - For Kotlin or Gradle sources, read [kotlin-gradle-okf-principles.md](references/kotlin-gradle-okf-principles.md).
 - For generated signatures, read [signature-contract.md](references/signature-contract.md).

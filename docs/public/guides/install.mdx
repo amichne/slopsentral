@@ -1,6 +1,6 @@
 ---
 title: "Install Slopsentral"
-description: "Install the Pi package or select marketplace plugins in Codex or GitHub Copilot."
+description: "Select marketplace plugins in Codex or GitHub Copilot, or the optional Pi extension."
 icon: "download"
 ---
 
@@ -10,28 +10,10 @@ Codex and GitHub Copilot use marketplaces.
 The Codex and GitHub Copilot examples install Software Engineering and Kotlin Engineering.
 For prose alone, substitute `repository-knowledge@slopsentral`.
 
+The [canonical release set](/reference/releases) supplies immutable archives and exact source identities.
+
 These commands change the application's marketplace and plugin configuration.
 They do not need a Slopsentral checkout.
-
-## Pi
-
-Use Node.js 22.19 or later with an existing Pi installation.
-
-1. Open the [latest Pi release](https://github.com/amichne/slopsentral/releases/latest).
-2. Run the pinned `pi install` command from its release notes.
-3. From your project, start Pi with a profile:
-
-```bash
-pi --slopsentral-profile kotlin-type-design
-```
-
-For project scope, add `--local` after `pi install`.
-Choose one installation scope.
-The archive needs no repository clone, Pkl, or local npm build.
-
-Enter `/slopsentral` to open settings after a run ends.
-Use `/slopsentral state` to inspect effective capabilities and errors.
-The [Pi guide](/guides/pi) covers settings, hooks, updates, and removal.
 
 ## Codex
 
@@ -92,6 +74,26 @@ copilot plugin list
 ```
 
 The [GitHub reference](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-plugin-reference) describes plugin selectors and marketplace refs.
+
+## Pi
+
+Use Node.js 22.19 or later with an existing Pi installation.
+
+1. Open the [canonical release](https://github.com/amichne/slopsentral/releases/latest).
+2. Run the pinned `pi install` command from its release notes.
+3. From your project, start Pi with a profile:
+
+```bash
+pi --slopsentral-profile kotlin-type-design
+```
+
+For project scope, add `--local` after `pi install`.
+Choose one installation scope.
+The archive needs no repository clone, Pkl, or local npm build.
+
+Enter `/slopsentral` to open settings after a run ends.
+Use `/slopsentral state` to inspect effective capabilities and errors.
+The [Pi guide](/guides/pi) covers settings, hooks, updates, and removal.
 
 ## Use the installation
 

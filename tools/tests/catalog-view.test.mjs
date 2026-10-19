@@ -53,7 +53,7 @@ test('Astra defaults do not require unrelated skill reads', () => {
 });
 
 test('new standalone skills have bounded procedures and portable local references', () => {
-  for (const name of ['python-tooling', 'mise-project-tooling', 'technical-documentation', 'skill-primitive-authoring', 'plugin-composition-authoring', 'cli-creator']) {
+  for (const name of ['python-tooling', 'technical-documentation', 'skill-primitive-authoring', 'plugin-composition-authoring', 'cli-creator']) {
     const folder = path.join(root, 'source/skills', name);
     const text = fs.readFileSync(path.join(folder, 'SKILL.md'), 'utf8');
     assert.ok(text.trim().split(/\s+/u).length <= 550, `${name}: move details to references`);

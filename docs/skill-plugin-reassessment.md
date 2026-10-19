@@ -49,18 +49,6 @@ discovery and elaborate recipes can reduce usefulness. This supports reducing
 competing entry points without discarding their domain knowledge.
 [OpenAI: rethinking skills and prompts](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra).
 
-Anthropic recommends concise instructions, progressive disclosure, references
-reachable directly from the skill, and constraints matched to operational
-fragility. It also recommends measuring failures before adding instructions.
-Design judgment can remain flexible; fragile publication and schema checks
-need exact procedures.
-[Anthropic: skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
-
-Anthropic's engineering guidance favors simple designs and adding agent
-orchestration when the task needs it. That argues against turning every
-specialty into a persistent persona or a mandatory delegation stage.
-[Anthropic: building effective agents](https://www.anthropic.com/engineering/building-effective-agents).
-
 Use the existing standards for the delivered package. Agent Skills defines
 `SKILL.md` and its supporting resources. Agent Plugins v1 defines skills and
 MCP configuration, with client extensions for other behavior. Those standards
@@ -68,14 +56,6 @@ do not replace Slopsentral's authoring graph or establish a shared runtime
 import system for its canonical assets.
 [Agent Skills specification](https://agentskills.io/specification),
 [Agent Plugins specification](https://agent-plugins.org/specification).
-
-OpenAI's public Build Web Apps package groups a builder and a debugging
-workflow with focused React, shadcn, Stripe, and Supabase guidance. It offers
-a concrete example of organizing around a user job while retaining useful
-specialties. Its compatibility manifest and `agents/openai.yaml` presentation
-metadata also show why directory names alone do not establish execution roles.
-Use it as a structural reference, not a source of mandatory instructions.
-[OpenAI: Build Web Apps package](https://github.com/openai/plugins/tree/main/plugins/build-web-apps).
 
 ## What the current source reveals
 
@@ -220,12 +200,6 @@ Architect or Tooling Engineer is not enough to justify a separate agent.
 
 Move provider model selection and tool restrictions into the adapter.
 Keep the review criteria and findings contract in a reusable skill/reference.
-For portable OpenAI submission, its conversion guidance explicitly recommends
-moving reusable command and agent behavior into skills. Its public directory
-also excludes lifecycle hooks; manually installed desktop distribution remains
-a different route.
-[OpenAI: Claude plugin conversion](https://developers.openai.com/plugins/guides/submit-claude-plugin).
-
 This does not prohibit native subagents. It removes the assumption that a
 persona must be a portable knowledge primitive or that every task needs a
 team of personas.

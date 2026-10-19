@@ -14,10 +14,10 @@ It adds no `SKILL.md` or skill listing to a consumer's package.
 
 This boundary follows the public guidance on focused workflows and progressive
 disclosure. OpenAI describes skills as repeatable procedures with optional
-scripts, references, and assets. Anthropic recommends concise discovery and
-executable helpers for deterministic work.
+scripts, references, and assets. The skill standard defines discovery and
+local resources.
 [OpenAI skills](https://developers.openai.com/plugins/concepts/skills),
-[Anthropic skill authoring](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
+[Agent Skills specification](https://agentskills.io/specification).
 The resource variant is a local authoring decision inferred from that guidance.
 It is not a new lab requirement or provider manifest feature.
 

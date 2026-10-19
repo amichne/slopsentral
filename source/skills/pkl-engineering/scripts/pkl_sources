@@ -180,7 +180,7 @@ def home() -> int:
             "source_count": len(sources),
             "help": [
                 "Run `pkl_sources catalog` to route to an official repository",
-                "Run `pkl_sources sync --cache <dir>` to fetch declared sources",
+                "Run `pkl_sources sync --source pkl --cache <dir>` to fetch declared sources",
                 "Run `pkl_sources index --cache <dir> --out <file>` after sync",
             ],
         }
@@ -197,7 +197,7 @@ def run_catalog(args: argparse.Namespace) -> int:
                 {"id": source.id, "role": source.role, "repository": source.repository}
                 for source in sources
             ],
-            "help": ["Run `pkl_sources sync --cache <dir> --source <id>` to fetch one source"],
+            "help": ["Run `pkl_sources sync --source pkl --cache <dir> --source <id>` to fetch one source"],
         }
     )
     return 0

@@ -2,8 +2,8 @@
 
 Use this reference when the user requests source-backed knowledge in a separate
 repository, or when a configured overlay is delivered by a host hook. This is
-an OKF storage contract. OpenWiki retains its own lifecycle and storage owner;
-its normal repository generation does not prove support for this overlay.
+an OKF storage contract. Another backend keeps its own storage and lifecycle.
+Its normal generation does not prove support for this overlay.
 
 ## Storage selection
 
@@ -105,12 +105,10 @@ appear in the knowledge repository's Git status. Commit or publish either
 repository only when authorized. The checker establishes metadata and source
 impact; it does not prove prose accuracy or model compliance with instructions.
 
-## OpenWiki boundary
+## Other backends
 
-For normal OpenWiki work, load the external openwiki skill and use its native
-search, Claims, page-job lifecycle, and finalization. Do not copy that upstream
-skill here or edit OpenWiki-managed files with the OKF checker. A linked wiki
-workspace is retrieval scope, not evidence that generation can write into a
-separate Git repository. Use this OKF overlay until the OpenWiki owner provides
-and qualifies separate source and storage roots. Do not initialize OpenWiki in
-the source repository to simulate invisible storage.
+Keep another backend's existing files and configuration intact.
+Use this local overlay only for an explicitly selected OKF destination.
+A linked workspace proves retrieval scope, not a separate storage contract.
+Report an unsupported backend before generation.
+Do not install another knowledge tool or simulate external storage with source-repository files.

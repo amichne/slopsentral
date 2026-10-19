@@ -94,5 +94,5 @@ a numeric estimate never establishes comprehension.
 ## Provenance
 
 This is a local rewrite informed by the controlled-language approach in
-[The cure for AI slop](https://github.com/woosal1337/blog/tree/main/videos/ep01-the-cure-for-ai-slop).
+The cure for AI slop by woosal1337.
 It does not claim certification against ASD-STE100.
