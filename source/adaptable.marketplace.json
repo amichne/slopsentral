@@ -5,7 +5,7 @@
   "owner": {
     "name": "Amichne"
   },
-  "description": "Kotlin-first engineering with proof-preserving design, focused tests, and locked uv Python automation.",
+  "description": "Focused domain design and optional language, tooling, and repository workflows.",
   "management": {
     "type": "MANAGEMENT_POLICY",
     "mode": "CURATED"
@@ -21,9 +21,9 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "3.1.0"
+        "version": "4.0.0"
       },
-      "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
+      "description": "Constrain domain values, preserve established facts, and compose pure decisions.",
       "tags": [
         "actions",
         "automation",
@@ -67,7 +67,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "3.0.0"
+        "version": "4.0.0"
       },
       "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "tags": [
@@ -81,7 +81,6 @@
         "higher-order-functions",
         "hooks",
         "kotlin",
-        "kast",
         "ktor",
         "libraries",
         "module-boundaries",
@@ -174,7 +173,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/developer-tooling"
         },
-        "version": "3.0.0"
+        "version": "4.0.0"
       },
       "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
       "tags": [

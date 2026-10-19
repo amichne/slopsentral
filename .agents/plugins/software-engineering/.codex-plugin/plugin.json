@@ -2,11 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
-  "hooks": [
-    "./hooks/agents-md-scope.hooks.json",
-    "./hooks/software-engineering-context.hooks.json"
-  ],
+  "description": "Constrain domain values, preserve established facts, and compose pure decisions.",
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -21,9 +17,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Software Engineering",
-    "longDescription": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
+    "longDescription": "Constrain domain values, preserve established facts, and compose pure decisions.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Design proof-preserving boundaries and implement, verify, and deliver...",
+    "shortDescription": "Constrain domain values, preserve established facts, and compose pure...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
@@ -63,5 +59,5 @@
   "license": "UNLICENSED",
   "name": "software-engineering",
   "skills": "./skills/",
-  "version": "3.1.0"
+  "version": "4.0.0"
 }

@@ -10,11 +10,7 @@ test('everyday implementation and delivery need only one plugin', () => {
   const engineering = plugin('software-engineering');
   assert.ok(engineering, 'Software Engineering must be an installable plugin');
   const closure = pluginClosure(catalog, engineering).refs;
-  for (const name of ['tdd', 'git-change-flow', 'python-tooling',
-    'semantic-ratchet', 'mise-project-tooling', 'github-ci-operations',
-    'issue-tracker-operations', 'pull-request-lifecycle']) {
-    assert.ok(closure.has(`SKILL/${name}`), `one installation must include ${name}`);
-  }
+  assert.deepEqual([...closure.keys()], ['SKILL/semantic-ratchet']);
   for (const name of ['cli-creator']) {
     assert.ok(!closure.has(`SKILL/${name}`), `${name} belongs to the tool-building specialty`);
     assert.ok(pluginClosure(catalog, plugin('developer-tooling')).refs.has(`SKILL/${name}`));

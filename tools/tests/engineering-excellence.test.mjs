@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import test from 'node:test';
 import { auditCatalog, loadCatalog, pluginClosure } from '../catalog.mjs';
-import { checkProofExamples } from '../../source/skills/semantic-ratchet/scripts/check-proof-examples.mjs';
+import { checkProofExamples } from '../check-proof-examples.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const catalog = loadCatalog(root);
@@ -13,12 +13,12 @@ test('Software Engineering owns proof preservation and its delivered policy exac
   assert.ok(excellence, 'Engineering Excellence must be an installable composition');
   const closure = pluginClosure(catalog, excellence).refs;
   assert.ok(closure.has('SKILL/semantic-ratchet'));
-  assert.ok(closure.has('HOOK/software-engineering-context'));
-  assert.ok(closure.has('INSTRUCTION/engineering-design'));
+  assert.equal(closure.has('HOOK/software-engineering-context'), false);
+  assert.equal(closure.has('INSTRUCTION/engineering-design'), false);
   const delivery = pluginClosure(catalog, plugin('software-engineering')).refs;
-  assert.ok(delivery.has('INSTRUCTION/agent-execution'));
+  assert.equal(delivery.has('INSTRUCTION/agent-execution'), false);
   assert.equal(delivery.has('SKILL/semantic-ratchet'), true);
-  assert.equal(delivery.has('INSTRUCTION/engineering-design'), true);
+  assert.equal(delivery.has('INSTRUCTION/engineering-design'), false);
   assert.deepEqual(auditCatalog(catalog), []);
 });
 
@@ -29,7 +29,7 @@ test('code profiles include proof-preservation capability and one policy hook', 
     assert.ok(profile.plugins.includes('software-engineering'), name);
     const closures = profile.plugins.map(name => pluginClosure(catalog, plugin(name)).refs);
     assert.ok(closures.some(refs => refs.has('SKILL/semantic-ratchet')));
-    assert.equal(closures.filter(refs => refs.has('HOOK/software-engineering-context')).length, 1);
+    assert.equal(closures.filter(refs => refs.has('HOOK/software-engineering-context')).length, 0);
   }
   assert.equal(catalog.profiles.find(entry => entry.name === 'documentation-default')
     .plugins.includes('software-engineering'), false);

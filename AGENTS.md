@@ -43,10 +43,10 @@ Run the smallest check that proves the edited surface. For marketplace or plugin
 composition edits, run:
 
 ```bash
-node tools/validate-source-graph.mjs
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
-node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi
+uv run --locked tools/marketplace.py validate
+uv run --locked tools/marketplace.py project --source . --harness codex --out /tmp/slopsentral-codex
+uv run --locked tools/marketplace.py project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+uv run --locked tools/marketplace.py project --source . --harness pi --out /tmp/slopsentral-pi
 npm run check:pi
 git diff --check
 ```
@@ -60,7 +60,7 @@ actionlint .github/workflows/validate-source.yml .github/workflows/release-pi.ym
 
 The projector requires Pkl 0.32.0 (`PKL_BIN` may select an explicit executable).
 Use fresh output directories. Projection never downloads a runtime or replaces
-an existing tree. `node tools/install-projection-pkl.mjs --out <path>` is the
+an existing tree. `uv run --locked tools/install_projection_pkl.py --out <path>` is the
 explicit checksum-verified runtime setup boundary.
 
 ## Documentation
@@ -78,8 +78,8 @@ A preview does not prove the public deployment serves the same source.
 ## Shared Engineering Baseline
 
 Read and apply [the canonical engineering baseline](source/instructions/engineering-design.md)
-for all work. Software Engineering delivers this same source through its context
-hook; language and domain instructions refine it.
+for repository work. The default plugin supplies the focused design skill.
+Language and domain instructions refine the repository rules.
 
 New automation uses required uv, strict Pyright, Ruff, pytest, PEP 723 metadata,
 locked dependencies, and `tool.uv.no-build = true`. Run `uv run --locked tools/check.py`

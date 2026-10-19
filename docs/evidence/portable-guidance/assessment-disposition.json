@@ -1,0 +1,535 @@
+{
+  "type": "ASSESSED_WITH_ADVISORIES",
+  "engine": "Vale 3.24.0",
+  "comprehension": "NOT_ASSESSED",
+  "findings": [
+    {
+      "path": "AGENTS.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 8.97 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "AGENTS.md",
+      "rule": "Slopsentral.LongSentence",
+      "line": 3,
+      "message": "Long sentence: 26 words.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 61,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "README.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 8.68 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/agent-marketplaces.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 9.99 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/community-workflows.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 10.84 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/pi-harness.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 9.58 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/pkl-projection.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 10.42 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/public/guides/choose-plugins.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 8.83 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/public/guides/install.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 8.48 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/public/guides/pi.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 9.58 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/public/guides/troubleshooting.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 8.72 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/public/index.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 9.25 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/public/maintainers/projection.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 8.40 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/public/plugins/developer-tooling.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 11.64 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/public/plugins/kotlin-engineering.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 10.99 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/public/plugins/software-engineering.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 11.71 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 12.21 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 40,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Diction",
+      "line": 61,
+      "message": "Use 'necessary' instead of 'mandatory'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Diction",
+      "line": 77,
+      "message": "Use 'necessary' instead of 'mandatory'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Diction",
+      "line": 108,
+      "message": "Use 'keep' instead of 'retain'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 109,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 120,
+      "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 141,
+      "message": "Replace 'would' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Diction",
+      "line": 143,
+      "message": "Use 'keep' instead of 'retain'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Diction",
+      "line": 147,
+      "message": "Use 'necessary' instead of 'mandatory'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 153,
+      "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 154,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 176,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Diction",
+      "line": 180,
+      "message": "Use 'keep' instead of 'retain'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 205,
+      "message": "Replace 'would' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 218,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Modals",
+      "line": 293,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Diction",
+      "line": 294,
+      "message": "Use 'start' instead of 'activate'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Diction",
+      "line": 330,
+      "message": "Use 'keep' instead of 'Retain'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "docs/skill-plugin-reassessment.md",
+      "rule": "Slopsentral.Diction",
+      "line": 345,
+      "message": "Use 'necessary' instead of 'mandatory'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This historical proposal keeps its source meaning. The task removes an obsolete integration reference and preserves the rest of that proposal."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 11.00 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 22,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 36,
+      "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 66,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 68,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 70,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/ARCHITECTURE.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 10.81 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/CATALOG.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 14.59 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/MIGRATION.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 9.85 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/instructions/engineering-design.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 9.87 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/plugins/AGENTS.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 10.00 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/plugins/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 20,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/AGENTS.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 8.32 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/skills/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 14,
+      "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 15,
+      "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 32,
+      "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/plugin-composition-authoring/SKILL.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 10.92 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/skills/plugin-composition-authoring/references/marketplace-catalog.md",
+      "rule": "Slopsentral.Modals",
+      "line": 17,
+      "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/plugin-composition-authoring/references/marketplace-catalog.md",
+      "rule": "Slopsentral.Modals",
+      "line": 18,
+      "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/plugin-composition-authoring/references/marketplace-catalog.md",
+      "rule": "Slopsentral.Modals",
+      "line": 22,
+      "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/plugin-composition-authoring/references/marketplace-catalog.md",
+      "rule": "Slopsentral.Modals",
+      "line": 33,
+      "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/semantic-ratchet/SKILL.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 8.99 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/api-proof-example.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 11.25 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/api-proof-example.md",
+      "rule": "Slopsentral.Diction",
+      "line": 32,
+      "message": "Use 'keep' instead of 'Retain'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/api-proof-example.md",
+      "rule": "Slopsentral.LongSentence",
+      "line": 73,
+      "message": "Long sentence: 26 words.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/kotlin-proof-example.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 12.65 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/kotlin-proof-example.md",
+      "rule": "Slopsentral.Diction",
+      "line": 34,
+      "message": "Use 'keep' instead of 'retain'. Keep the source meaning.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/kotlin-proof-example.md",
+      "rule": "Slopsentral.LongSentence",
+      "line": 40,
+      "message": "Long sentence: 27 words.",
+      "disposition": "KEPT",
+      "reason": "This inherited passage is outside the focused delivery and design changes. The finding stays visible and does not count as a clean result."
+    },
+    {
+      "path": "tools/tests/fixtures/PROVENANCE.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "message": "Estimated Flesch-Kincaid grade 10.79 exceeds the shared advisory target of 8.",
+      "disposition": "KEPT",
+      "reason": "Domain terms and product names keep the technical meaning. The grade is advisory and does not establish reader comprehension."
+    }
+  ]
+}

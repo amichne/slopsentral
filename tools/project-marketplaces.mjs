@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Effect boundary only. Provider shapes and text transformations live in Pkl.
+// Retained compatibility oracle for maintainer audits.
+// Core delivery uses marketplace.py and Source.pkl. Provider shapes live in Pkl.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';

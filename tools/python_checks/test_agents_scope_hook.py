@@ -57,9 +57,9 @@ def test_explicit_assessment_needs_no_git_or_baseline(tmp_path: Path) -> None:
     assert not (tmp_path / "codex").exists()
 
 
-def test_hook_is_composed_and_local_commands_exist() -> None:
+def test_scope_hook_stays_explicit_and_local_commands_exist() -> None:
     plugin = json.loads((ROOT / "source/plugins/software-engineering/plugin.json").read_text())
-    assert "agents-md-scope" in {hook["name"] for hook in plugin["hooks"]}
+    assert "agents-md-scope" not in {hook["name"] for hook in plugin["hooks"]}
     local = json.loads((ROOT / ".codex/hooks.json").read_text())
     commands = [
         item["command"]

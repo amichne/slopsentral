@@ -32,13 +32,7 @@ test('Pi projects an installable package with source-derived profiles and focuse
   assert.equal(capabilities.schemaVersion, 1);
   assert.ok(capabilities.capabilities.some(cap => cap.id === 'skill:pkl-engineering' && cap.type === 'SKILL'));
   assert.ok(capabilities.capabilities.find(cap => cap.id === 'hook:gradle-check-green').dependencies.includes('instruction:kotlin-engineering'));
-  const scope = capabilities.capabilities.find(cap => cap.id === 'hook:agents-md-scope');
-  assert.deepEqual(scope.actions.map(action => action.event), ['Stop']);
-  assert.equal(scope.actions[0].argv.at(-1), 'assess');
-  for (const profile of config.profiles) {
-    const actions = profile.hooks.filter(action => action.name === 'agents-md-scope');
-    if (actions.length) assert.deepEqual(actions.map(action => action.event), ['Stop']);
-  }
+  assert.equal(capabilities.capabilities.some(cap => cap.id === 'hook:agents-md-scope'), false);
   for (const name of ['settings.schema.json', 'capabilities.schema.json', 'scope-assessment.schema.json'])
     assert.deepEqual(fs.readFileSync(path.join(pkg, 'schemas', name)), fs.readFileSync(path.join(root, 'source/schemas/pi', name)));
   for (const name of ['control.ts', 'settings.ts', 'skills.ts', 'journal.ts', 'coordinator.ts', 'menu.ts'])
@@ -54,7 +48,7 @@ test('Pi projects an installable package with source-derived profiles and focuse
   assert.ok(broad.skills.some(s => s.name === 'openapi-contract-authoring'));
   assert.ok(broad.skills.some(s => s.name === 'manage-json-schemas'));
   assert.ok(broad.skills.some(s => s.name === 'pkl-engineering'));
-  assert.ok(kotlin.instructions.some(i => i.name === 'engineering-design'));
+  assert.equal(kotlin.instructions.some(i => i.name === 'engineering-design'), false);
   assert.ok(kotlin.instructions.some(i => i.name === 'kotlin-engineering'));
   for (const profile of config.profiles) for (const ref of [...profile.skills, ...profile.instructions]) {
     assert.ok(fs.statSync(path.join(pkg, ref.path)).isFile(), ref.path);

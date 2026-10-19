@@ -78,14 +78,17 @@ function reference(raw: Dynamic): Schema.Asset =
     throw("Unsupported canonical asset kind")
 
 function plugin(raw: Dynamic): Schema.Plugin = (
-  checked(raw, List("name", "version", "description", "interface", "tags", "references", "mcp"))
-    .toTyped(Schema.Plugin)
+  checked(
+    raw,
+    List("name", "version", "description", "interface", "tags", "references", "mcp", "hookFiles"),
+  ).toTyped(Schema.Plugin)
 ) {
   interface =
     checked(raw.interface, List("websiteURL", "privacyPolicyURL", "termsOfServiceURL"))
       .toTyped(Schema.Interface)
   tags = raw.tags.toList()
   references = raw.references.toList().map((r) -> reference(r))
+  hookFiles = raw.getPropertyOrNull("hookFiles")?.toList() ?? List()
 }
 
 function input(raw: Dynamic): Schema.Input = (

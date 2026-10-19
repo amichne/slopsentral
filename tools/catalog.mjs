@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Plugin manifests own composition. This module derives closure, checks, and views.
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { validateResourceReference } from './resource-contract.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -270,10 +271,9 @@ function main() {
   const findings = auditCatalog(catalog);
   if (findings.length) throw new Error(findings.join('\n'));
   const output = path.join(root, 'source/CATALOG.md');
-  if (args.includes('--write')) fs.writeFileSync(output, renderCatalog(catalog));
-  else if (args.includes('--check')) {
-    if (!fs.existsSync(output) || fs.readFileSync(output, 'utf8') !== renderCatalog(catalog)) throw new Error('source/CATALOG.md is stale; run node tools/catalog.mjs --write');
-    console.log('OK generated catalog');
+  if (args.includes('--write') || args.includes('--check')) {
+    process.stdout.write(execFileSync('uv', ['run', '--locked', 'tools/marketplace.py', 'catalog', '--source', root,
+      ...(args.includes('--check') ? ['--check'] : ['--out', output])], { cwd: root, encoding: 'utf8' }));
   } else if (args.includes('--json') || args.includes('--profile')) console.log(JSON.stringify(catalogReport(catalog, value('--profile')), null, 2));
   else process.stdout.write(renderCatalog(catalog));
 }

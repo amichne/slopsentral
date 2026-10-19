@@ -89,52 +89,21 @@ async function afterJobs(session) {
   }
 }
 
-test('projected scope hook reports real edits until an explicit review resolves its gate', { skip: !process.env.PKL_BIN && !process.env.SLOPSENTRAL_PI_PACKAGE }, async t => {
-  const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi scope lifecycle ')));
+test('the default Pi profile has no scope gate or automatic policy injection', { skip: !process.env.PKL_BIN && !process.env.SLOPSENTRAL_PI_PACKAGE }, async t => {
+  const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi portable default ')));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
-  const cwd = path.join(directory, 'consumer');
-  fs.mkdirSync(path.join(cwd, 'module'), { recursive: true });
-  fs.writeFileSync(path.join(cwd, 'AGENTS.md'), '# Fixture\nThe root instructions own the module.\n');
-  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'original\n');
-  const git = (...args) => execFileSync('git', ['-C', cwd, '-c', 'core.hooksPath=/dev/null', ...args], { encoding: 'utf8' });
-  git('init', '--quiet');
-  git('add', '.');
-  git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '--quiet', '--no-gpg-sign', '-m', 'fixture');
   let packagePath = process.env.SLOPSENTRAL_PI_PACKAGE;
   if (!packagePath) {
     project({ source: root, harness: 'pi', out: path.join(directory, 'projection') });
     packagePath = path.join(directory, 'projection/.pi/slopsentral');
   }
-  const { session, errors, aborts } = await host(t, packagePath, cwd, undefined, path.join(directory, 'agent'));
-  const notifications = [];
-  session.extensionRunner.setUIContext({ notify: message => notifications.push(message), setStatus: () => {} });
-  const settle = () => session.extensionRunner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, entries => ({
-    contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: entries.some(entry => entry.type === 'custom_message'),
-  }));
-  await session.extensionRunner.emitInput('Examine the fixture.', undefined, 'interactive');
-  assert.deepEqual((await settle()).entries, []);
-  await session.extensionRunner.emit({ type: 'tool_execution_start', toolName: 'write', toolCallId: 'edit-1', args: { path: 'module/main.py' } });
-  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'changed-source-must-stay-private\n');
-  const original = { type: 'tool_result', toolName: 'write', toolCallId: 'edit-1', input: { path: 'module/main.py' }, content: [{ type: 'text', text: 'Native edit receipt' }], details: { receipt: 1 }, structuredContent: { saved: true }, isError: false, usage: { input: 1, output: 1 } };
-  const recorded = await session.extensionRunner.emitToolResult(original) ?? original;
-  assert.deepEqual(recorded, original);
-  assert.deepEqual((await settle()).entries, []);
-  await session.extensionRunner.emit({ type: 'agent_settled', aborted: false });
-  await until(() => notifications.some(message => message.includes('module/main.py')), 'scope assessment');
-  assert.equal(JSON.stringify(notifications).includes('changed-source-must-stay-private'), false);
-  const journal = () => session.sessionManager.getBranch().findLast(entry => entry.type === 'custom' && entry.customType === 'slopsentral-mutations').data;
-  assert.deepEqual(journal().pending, ['module/main.py']);
-  assert.equal(journal().assessedRevision, journal().revision);
-  await session.prompt('/slopsentral-check');
-  assert.ok(notifications.some(message => message.includes('Pending scope review')));
-  await session.prompt('/slopsentral review The root instructions still describe the module.');
-  assert.deepEqual(journal().pending, []);
-  await session.prompt('/slopsentral-profile off');
-  await session.extensionRunner.emit({ type: 'tool_execution_start', toolName: 'write', toolCallId: 'edit-2', args: { path: 'module/main.py' } });
-  fs.writeFileSync(path.join(cwd, 'module/main.py'), 'changed while off\n');
-  assert.equal(await session.extensionRunner.emitToolResult(original), undefined);
-  assert.deepEqual(journal().pending, ['module/main.py'], 'disabled assessment preserves mutation evidence');
-  assert.equal(fs.existsSync(path.join(process.env.CODEX_HOME, 'state/agents-md-scope')), false);
+  const { session, errors, aborts } = await host(t, packagePath, directory);
+  const state = await jsonCommand(session, 'state');
+  assert.equal(state.effective.profile, 'local-development-default');
+  await session.extensionRunner.emitInput('Examine a domain type.', undefined, 'interactive');
+  const result = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine a domain type.' }, { cwd: directory, skills: [] });
+  assert.equal(result.systemPromptOptions.sections.slopsentral.includes('# Engineering Baseline'), false);
+  assert.ok(result.systemPromptOptions.sections.slopsentral_skills.includes('semantic-ratchet'));
   assert.equal(aborts(), 0);
   assert.deepEqual(errors, []);
 });
@@ -169,7 +138,7 @@ test('Pi native loader dispatches profile commands, prompt sections, and branch 
     { cwd: directory, skills: [...allSkills, unrelated], sections: { existing: 'repository context' } });
   let result = await examine();
   assert.equal(result.systemPromptOptions.sections.existing, 'repository context');
-  assert.ok(result.systemPromptOptions.sections.slopsentral.includes('# Engineering Baseline'));
+  assert.equal(result.systemPromptOptions.sections.slopsentral.includes('# Engineering Baseline'), false);
   assert.ok(result.systemPromptOptions.sections.slopsentral.includes('# Kotlin Engineering'));
   assert.deepEqual(result.systemPromptOptions.skills.map(s => s.name), ['unrelated']);
   for (const name of ['kotlin-design-practices', 'kotlin-review', 'negative-capability-proof', 'semantic-ratchet'])

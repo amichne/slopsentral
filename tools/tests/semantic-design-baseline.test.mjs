@@ -60,9 +60,7 @@ test("semantic concepts stay deferred while hooks reference concise canonical in
     assert.equal(fs.existsSync(path.join(repoRoot, `source/hooks/codex/${hookName}.hooks.json`)), false);
   }
 
-  assert.deepEqual(instructions("software-engineering").map(({ name }) => name), [
-    "agent-execution", "engineering-design",
-  ]);
+  assert.deepEqual(instructions("software-engineering"), []);
   assert.deepEqual(instructions("kotlin-engineering").map(({ name }) => name), ["kotlin-engineering"]);
   assert.deepEqual(instructions("developer-tooling"), []);
   assert.equal(
@@ -86,8 +84,8 @@ test("non-concept instructions have one install owner and a bounded baseline", (
   assert.equal(owners.has("schema-driven-design"), false);
   assert.equal(owners.has("kotlin-code-correctness"), false);
   assert.equal(owners.has("kotlin-repository-engineering"), false);
-  assert.deepEqual(owners.get("agent-execution"), ["software-engineering"]);
-  assert.deepEqual(owners.get("engineering-design"), ["software-engineering"]);
+  assert.equal(owners.has("agent-execution"), false);
+  assert.equal(owners.has("engineering-design"), false);
   assert.deepEqual(owners.get("kotlin-engineering"), ["kotlin-engineering"]);
   assert.equal(owners.has("api-contract-design"), false);
   assert.ok([...owners.values()].every(values => values.length === 1));
@@ -162,12 +160,4 @@ test("semantic ratchet detail is selectively routed through addressable referenc
     .map((entry) => entry.name)
     .filter((name) => primitiveByName(plugin(name).skills, "semantic-ratchet"));
   assert.deepEqual(consumers, ["software-engineering"]);
-});
-
-test("Kotlin semantic routing stays external-tool neutral", () => {
-  const correctness = read("source/skills/kotlin-design-practices/SKILL.md");
-  const routing = read("source/evals/routing/kotlin-engineering-workflows.json");
-
-  assert.doesNotMatch(correctness, /\bkast\b/i);
-  assert.doesNotMatch(routing, /\bkast\b/i);
 });

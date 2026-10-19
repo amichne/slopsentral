@@ -52,20 +52,10 @@ The checks compile consumers separately from the domain library:
 - [ForgetFailure.kt](../assets/kotlin/ForgetFailure.kt) must fail because its
   `when` expression omits `ChecksumMismatch`.
 
-Run the [bundled runner](../scripts/check-proof-examples.mjs) with no mode flag:
-
-```sh
-node <skill-root>/scripts/check-proof-examples.mjs
-```
-
-Here `<skill-root>` is the directory containing this skill's `SKILL.md`. In this
-checkout it is `source/skills/semantic-ratchet`. The runner requires Node 20+,
-`kotlinc`, Java, and the shell tools named in the shell example. AJV 8 must be
-installed in a package enclosing the runner so Node can resolve
-`ajv/dist/2020.js`; this repository declares it in its root `package.json`.
-The runner performs no installation or tool configuration. Missing dependencies
-or wrong diagnostics fail the run. `--contracts-only` reports Kotlin as
-`NOT_RUN`; it proves no compiler claim.
+Compile the accepted consumer with the project Kotlin compiler.
+Compile each forbidden call separately against that artifact.
+Each rejected call must produce the named diagnostic.
+A missing compiler does not establish rejection.
 
 The compiler proves the consumer contracts, visibility, and exhaustive handling.
 The parser and checksum implementation require executable checks and the JVM's

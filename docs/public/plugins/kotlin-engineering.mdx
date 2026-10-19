@@ -29,14 +29,12 @@ Keep unchecked construction under the invariant's owner.
 Compiler success does not prove an external effect or concurrent behavior.
 Keep compiler rejection, runtime evidence, and installed host results separate.
 
-## Hooks and Kast
+## Explicit host integration
 
 The plugin selects `kotlin-engineering-context`, `gradle-check-green`, `gradle-wrapper-integrity`, and `kotlin-horizontalization-check`.
-The host still owns hook trust and delivery.
-
-The plugin also declares its existing Kast MCP connection.
-Kast owns runtime installation and workspace discovery.
-A fresh semantic query supplies stronger evidence than plugin installation alone.
+The host owns hook trust and delivery.
+The plugin declares no MCP server or local service executable.
+The project owns its semantic tools and compiler setup.
 
 The [plugin manifest](https://github.com/amichne/slopsentral/blob/main/source/plugins/kotlin-engineering/plugin.json) owns these declarations.
 The [Kotlin instructions](https://github.com/amichne/slopsentral/blob/main/source/instructions/kotlin-engineering.md) own the shared Kotlin rules.

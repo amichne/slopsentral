@@ -12,19 +12,25 @@
 # ///
 """Project all three harnesses in a managed temporary directory."""
 
+import argparse
 import os
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
+parser = argparse.ArgumentParser(description=__doc__)
+_ = parser.add_argument("--with-host-tools", action="store_true")
+arguments = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary:
     base = Path(temporary)
     for harness in ("codex", "github-copilot", "pi"):
         result = subprocess.run(
             [
-                "node",
-                "tools/project-marketplaces.mjs",
+                sys.executable,
+                "tools/marketplace.py",
+                "project",
                 "--source",
                 ".",
                 "--harness",
@@ -37,6 +43,8 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
         )
         if result.returncode:
             raise SystemExit(result.returncode)
+    if not arguments.with_host_tools:
+        raise SystemExit(0)
     for command in (
         ["npm", "run", "check:pi"],
         ["node", "--test", "tools/tests/pi-host.test.mjs"],

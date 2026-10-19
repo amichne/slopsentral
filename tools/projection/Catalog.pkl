@@ -1,0 +1,103 @@
+module slopsentral.projection.Catalog
+
+import "Schema.pkl"
+import "Source.pkl"
+
+local input = Source.input
+local plugins = input.plugins.toList().sortBy((plugin) -> plugin.name)
+local selectedSkills =
+  plugins
+    .flatMap((plugin) ->
+      plugin.references
+        .filter((ref) -> ref.type == "SKILL")
+        .map((ref) -> ref.name)
+    )
+    .toSet()
+local standalone =
+  Source
+    .registered()
+    .filter((ref) -> ref.type == "SKILL")
+    .filter((ref) -> !selectedSkills.contains(ref.name))
+    .sortBy((ref) -> ref.name)
+local kinds =
+  Map(
+    "SKILL", "Skills",
+    "AGENT", "Agents",
+    "HOOK", "Hooks",
+    "INSTRUCTION", "Instructions",
+    "RESOURCE", "Resources",
+  )
+
+function primitive(ref: Schema.Asset): Schema.Primitive =
+  Source
+    .registered()
+    .filter((candidate) -> candidate.type == ref.type && candidate.name == ref.name)
+    .first
+
+function link(ref: Schema.Asset): String =
+  "[" + ref.name + "](" + primitive(ref).path + (if (ref.type == "SKILL") "/SKILL.md" else "") + ")"
+
+function entry(plugin: Schema.Plugin): String =
+  "### "
+    + plugin.name
+    + "\n\n"
+    + plugin.description
+    + "\n\n"
+    + Source.metadata(plugin.name).dailyDriver
+    + "\n\n"
+    + kinds.keys
+      .toList()
+      .map((kind) ->
+        let (
+          refs =
+            plugin.references
+              .filter((ref) -> ref.type == kind)
+              .sortBy((ref) -> ref.name)
+        )
+          if (refs.isEmpty)
+            ""
+          else
+            "**" + kinds[kind] + ":** " + refs.map((ref) -> link(ref)).join(", ") + ".\n\n"
+      )
+      .join("")
+
+text: String =
+  "# Catalog\n\n"
+    + "Generated with `uv run --locked tools/marketplace.py catalog --out source/CATALOG.md`.\n"
+    + "Use Software Engineering for constrained domain design. Select specialties for the task.\n"
+    + "Use native tools or upstream plugins for general workflows. See [community workflows](../docs/community-workflows.md).\n"
+    + "The host selects standard skills. Installation grants no action authority.\n\n"
+    + "## Start here\n\n"
+    + plugins
+      .filter((plugin) -> Source.metadata(plugin.name).role == "default")
+      .map((plugin) -> entry(plugin))
+      .join("")
+    + "## Specialties\n\n"
+    + plugins
+      .filter((plugin) -> Source.metadata(plugin.name).role != "default")
+      .map((plugin) -> entry(plugin))
+      .join("")
+    + "## Profiles\n\n"
+    + input.profiles
+      .sortBy((profile) -> profile.name)
+      .map((profile) ->
+        "- ["
+          + profile.name
+          + "](profiles/"
+          + profile.name
+          + ".json): "
+          + profile.plugins.join(" + ")
+          + ".\n"
+      )
+      .join("")
+    + "\n## Standalone source references\n\n"
+    + "Use upstream workflows for general delivery. These local procedures remain available for explicit reuse.\n\n"
+    + standalone.map((ref) -> "- [" + ref.name + "](" + ref.path + "/SKILL.md).\n").join("")
+    + "\n## Evidence limits\n\n"
+    + "Pkl examines composition and derives provider output.\n"
+    + "Projection does not establish host consumption or model behavior.\n"
+
+output {
+  value = new { text = module.text }
+  renderer = new JsonRenderer {}
+}

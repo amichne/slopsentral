@@ -24,7 +24,8 @@ Each [plugin manifest](../source/plugins/) references canonical skills, instruct
 The graph resolver finds their dependencies before projection.
 Plugins do not own copied primitive definitions.
 
-The [projector](../tools/project-marketplaces.mjs) freezes the input and examines the graph before Pkl selects each target shape.
+The [file adapter](../tools/marketplace.py) freezes input bytes before Pkl resolves the graph and selects each target shape.
+[Source.pkl](../tools/projection/Source.pkl) owns canonical references, dependency closure, and profile selection.
 [Project.pkl](../tools/projection/Project.pkl) owns common copies and provider manifests.
 [Pi.pkl](../tools/projection/Pi.pkl) owns the Pi package, profile manifest, skill list, and supported hook actions.
 The projector copies scripts, locks, and resource sidecars with their canonical owners.

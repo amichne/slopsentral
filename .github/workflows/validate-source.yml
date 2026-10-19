@@ -33,7 +33,7 @@ jobs:
           version: "0.12.9"
           enable-cache: true
       - name: Set up locked Python and schema tools
-        run: uv run --locked tools/setup.py
+        run: uv run --locked tools/setup.py --with-host-tools
       - name: Install checksum-verified native tools
         run: uv run --locked tools/ci.py native
       - name: Validate source, Python, schemas, and retained contracts
@@ -47,7 +47,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: uv run --locked tools/ci.py pkl
       - name: Project both providers and execute projected hook contracts
-        run: uv run --locked tools/verify_marketplaces.py
+        run: uv run --locked tools/verify_marketplaces.py --with-host-tools
 
   pi-candidate:
     name: Retain tested Pi candidate
@@ -85,11 +85,11 @@ jobs:
       - name: Install pinned Pkl
         if: steps.reuse.outputs.candidate != 'REUSED'
         run: |
-          node tools/install-projection-pkl.mjs --out "$RUNNER_TEMP/pkl/pkl"
+          uv run --locked tools/install_projection_pkl.py --out "$RUNNER_TEMP/pkl/pkl"
           echo "PKL_BIN=$RUNNER_TEMP/pkl/pkl" >> "$GITHUB_ENV"
       - name: Project the source package
         if: steps.reuse.outputs.candidate != 'REUSED'
-        run: node tools/project-marketplaces.mjs --source . --harness pi --out "$RUNNER_TEMP/projected-pi"
+        run: uv run --locked tools/marketplace.py project --source . --harness pi --out "$RUNNER_TEMP/projected-pi"
       - name: Examine every Pi contract through the native host
         if: steps.reuse.outputs.candidate != 'REUSED'
         env:

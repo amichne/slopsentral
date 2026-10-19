@@ -3,8 +3,7 @@
     "name": "Amichne"
   },
   "category": "Engineering",
-  "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
-  "hooks": "./hooks.json",
+  "description": "Constrain domain values, preserve established facts, and compose pure decisions.",
   "keywords": [
     "actions",
     "automation",
@@ -73,5 +72,5 @@
     "testing",
     "workflow-graph"
   ],
-  "version": "3.1.0"
+  "version": "4.0.0"
 }
