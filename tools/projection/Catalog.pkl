@@ -91,7 +91,7 @@ text: String =
       )
       .join("")
     + "\n## Standalone source references\n\n"
-    + "Use upstream workflows for general delivery. These local procedures remain available for explicit reuse.\n\n"
+    + "Use native host tools for general delivery. These local procedures remain available for explicit reuse.\n\n"
     + standalone.map((ref) -> "- [" + ref.name + "](" + ref.path + "/SKILL.md).\n").join("")
     + "\n## Evidence limits\n\n"
     + "Pkl examines composition and derives provider output.\n"

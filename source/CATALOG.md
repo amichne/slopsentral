@@ -73,7 +73,7 @@ Choose for technical prose, documentation sites, source-backed knowledge, naviga
 
 ## Standalone source references
 
-Use upstream workflows for general delivery. These local procedures remain available for explicit reuse.
+Use native host tools for general delivery. These local procedures remain available for explicit reuse.
 
 - [git-change-flow](skills/git-change-flow/SKILL.md).
 - [github-ci-operations](skills/github-ci-operations/SKILL.md).

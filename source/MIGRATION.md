@@ -7,7 +7,7 @@ The local development profile sets automatic hooks to `OFF`.
 
 The existing Git, CI, and TDD procedures remain as standalone source references.
 Developer Tooling 4.0.0 keeps Python automation and tool authoring.
-Use native tools or an upstream workflow for general delivery.
+Use native host tools for general delivery.
 Kotlin Engineering 4.0.0 declares no bundled MCP server.
 Core projection uses Pkl with Python file adapters and needs no Node.js executable.
 Pi, Mintlify, and the retained JavaScript audits keep their own Node.js tools.
