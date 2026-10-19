@@ -50,9 +50,14 @@ The trial supports `either` invocation.
 It rejects `human` and `model` restrictions until separate native compatibility evidence supports their projection.
 It rejects `ADVISORY` and `ENFORCING` hook policies with `UNSUPPORTED_CAPABILITY`.
 An `OFF` policy explicitly excludes the selected plugins' hooks.
+Standalone resources outside the selected skill destinations are unsupported in this trial.
+Files inside a selected skill remain covered by that skill folder digest.
 Unsupported requests produce no output directory.
 
-Package admission rejects runtime declarations, runtime peer dependencies, missing skill files, repeated skill paths, and paths outside selected skill roots.
+Package admission checks the complete inventory contract, selected identities and digests,
+and the exact concatenation of declared instruction files into `AGENTS.md`.
+It rejects runtime declarations, runtime peer dependencies, stale digests, missing or repeated
+skill paths, and files outside metadata, selected skill roots, and declared instructions.
 Archive creation uses the existing deterministic packager and version override.
 Release candidate admission and promotion remain under their existing owners.
 
@@ -74,7 +79,7 @@ The existing extension modules remain in source for the later migration.
 | Completion gates in `slopsentral.ts` | Removed from trial | No pre-settlement gate, automatic continuation, or manual gate command exists. |
 | Ordering and cancellation in `coordinator.ts` | Removed from trial | No Slopsentral scheduler, queue, deduplication, cancellation, or completion guarantee exists. |
 | Status and notifications in `control.ts` | Removed from trial | Pi owns native diagnostics. No Slopsentral status protocol exists. |
-| External semantic tools | Separate provider | Kast owns semantic tools and their host integration. The trial adds no MCP server or tool catalog. |
+| External runtime integrations | Outside this trial | The trial adds no MCP server or tool catalog. |
 
 Skills provide procedures and guidance.
 They do not establish a blocking gate, action permission, completed review, or model compliance.
@@ -82,8 +87,9 @@ Local repository tasks and CI can supply executable evidence through ordinary ho
 
 ## Executable evidence and limits
 
-The source baseline is Slopsentral `e97040c2ca304a24b779036b757ca349731eacda`.
-The remote dotfiles head is `8da93dc24aa3a32865acbb01bdbc1101bfe900a0`.
+The original authoring baseline was Slopsentral `e97040c2ca304a24b779036b757ca349731eacda`.
+Integration includes qualified main `5862891564df9d2be9868b3166f52dd0805cb59e`.
+This trial changes no personal deployment or installed configuration.
 The native host evidence uses Pi 1.3.0 from the locked Node dependencies.
 
 ```sh

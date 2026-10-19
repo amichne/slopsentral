@@ -24,7 +24,7 @@ import tarfile
 from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
-from typing import TypeGuard
+from typing import Literal, TypeGuard
 
 
 class Code(StrEnum):
@@ -81,33 +81,135 @@ def content_paths(value: object, names: set[str]) -> _ContentPaths | Rejected:
     return _ContentPaths(tuple(selected))
 
 
-def content_inventory(root: Path, selected: _ContentPaths) -> bool:
-    inventory: object = json.loads((root / "profile-inventory.json").read_bytes())
-    if not mapping(inventory) or inventory.get("type") != "PI_CONTENT_PROFILE":
-        return False
-    if inventory.get("schemaVersion") != 1 or inventory.get("invocation") != "either":
-        return False
-    skills = inventory.get("skills")
-    if not sequence(skills) or not all(mapping(skill) for skill in skills):
-        return False
-    paths = [skill.get("path") for skill in skills if mapping(skill)]
-    return (
-        len(paths) == len(selected.entries)
-        and all(path in selected.entries for path in paths)
-        and len(set(paths)) == len(paths)
-    )
+@dataclass(frozen=True, slots=True)
+class _ContentResource:
+    name: str
+    path: str
+    sha256: str
+
+
+@dataclass(frozen=True, slots=True)
+class _ContentInventory:
+    skills: tuple[_ContentResource, ...]
+    instructions: tuple[_ContentResource, ...]
+
+
+def content_resources(
+    value: object,
+    folder: Literal["skills", "instructions"],
+) -> tuple[_ContentResource, ...] | Rejected:
+    if not sequence(value):
+        return Rejected(Code.INVALID_PACKAGE)
+    records: list[_ContentResource] = []
+    for record in value:
+        if not mapping(record) or set(record) != {"name", "path", "sha256"}:
+            return Rejected(Code.INVALID_PACKAGE)
+        name, path, digest = record["name"], record["path"], record["sha256"]
+        if not isinstance(name, str) or not re.fullmatch(r"[a-z][a-z0-9-]*", name):
+            return Rejected(Code.INVALID_PACKAGE)
+        suffix = r"\.md" if folder == "instructions" else ""
+        if (
+            not isinstance(path, str)
+            or not re.fullmatch(rf"[a-z][a-z0-9-]*/{folder}/{re.escape(name)}{suffix}", path)
+            or not isinstance(digest, str)
+            or not re.fullmatch(r"sha256:[a-f0-9]{64}", digest)
+        ):
+            return Rejected(Code.INVALID_PACKAGE)
+        records.append(_ContentResource(name, path, digest))
+    if len({item.name for item in records}) != len(records) or len(
+        {item.path for item in records}
+    ) != len(records):
+        return Rejected(Code.INVALID_PACKAGE)
+    return tuple(records)
+
+
+def content_digest(root: Path, path: str, names: set[str]) -> str:
+    digest = hashlib.sha256()
+    if path in names:
+        digest.update((root / path).read_bytes())
+    else:
+        for file in sorted(name for name in names if name.startswith(path + "/")):
+            digest.update(file[len(path) + 1 :].encode())
+            digest.update(b"\0")
+            digest.update((root / file).read_bytes())
+            digest.update(b"\0")
+    return "sha256:" + digest.hexdigest()
+
+
+def content_inventory(
+    root: Path,
+    selected: _ContentPaths,
+    names: set[str],
+) -> _ContentInventory | Rejected:
+    try:
+        inventory: object = json.loads((root / "profile-inventory.json").read_bytes())
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return Rejected(Code.INVALID_PACKAGE)
+    if (
+        not mapping(inventory)
+        or set(inventory)
+        != {
+            "type",
+            "schemaVersion",
+            "profile",
+            "invocation",
+            "instructionFile",
+            "skills",
+            "instructions",
+        }
+        or inventory["type"] != "PI_CONTENT_PROFILE"
+        or type(inventory["schemaVersion"]) is not int
+        or inventory["schemaVersion"] != 1
+        or inventory["invocation"] != "either"
+        or inventory["instructionFile"] != "AGENTS.md"
+        or not isinstance(profile := inventory["profile"], str)
+        or not re.fullmatch(r"[a-z][a-z0-9-]*", profile)
+    ):
+        return Rejected(Code.INVALID_PACKAGE)
+    skills = content_resources(inventory["skills"], "skills")
+    instructions = content_resources(inventory["instructions"], "instructions")
+    if isinstance(skills, Rejected) or isinstance(instructions, Rejected):
+        return Rejected(Code.INVALID_PACKAGE)
+    if {item.path for item in skills} != set(selected.entries) or any(
+        item.path not in names for item in instructions
+    ):
+        return Rejected(Code.INVALID_PACKAGE)
+    combined = b"\n".join((root / item.path).read_bytes() for item in instructions)
+    if (
+        any(
+            content_digest(root, item.path, names) != item.sha256
+            for item in (*skills, *instructions)
+        )
+        or (root / "AGENTS.md").read_bytes() != combined
+    ):
+        return Rejected(Code.INVALID_PACKAGE)
+    return _ContentInventory(skills, instructions)
 
 
 def content_selection(root: Path, manifest: dict[str, object], names: set[str]) -> bool:
-    required = {"AGENTS.md", "marketplace.json", "marketplace-lock.json", "profile-inventory.json"}
-    forbidden = {"extensions", "profiles.json", "capabilities.json", "schemas"}
-    if not required.issubset(names) or any(name.split("/")[0] in forbidden for name in names):
+    metadata = {
+        "package.json",
+        "AGENTS.md",
+        "marketplace.json",
+        "marketplace-lock.json",
+        "profile-inventory.json",
+    }
+    if not metadata.issubset(names):
         return False
     resources = manifest.get("pi")
     if not mapping(resources) or set(resources) != {"skills"} or manifest.get("peerDependencies"):
         return False
     selected = content_paths(resources["skills"], names)
-    return isinstance(selected, _ContentPaths) and content_inventory(root, selected)
+    if isinstance(selected, Rejected):
+        return False
+    inventory = content_inventory(root, selected, names)
+    if isinstance(inventory, Rejected):
+        return False
+    allowed = metadata | {item.path for item in inventory.instructions}
+    return all(
+        name in allowed or any(name.startswith(item.path + "/") for item in inventory.skills)
+        for name in names
+    )
 
 
 def inspect(root: Path) -> _Package | Rejected:

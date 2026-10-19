@@ -244,3 +244,29 @@ def test_native_input_keeps_the_default_small(source: Path) -> None:
     selected = next(plugin for plugin in plugins if plugin["name"] == "software-engineering")
     references = [obj(raw) for raw in array(selected["references"])]
     assert [(ref["type"], ref["name"]) for ref in references] == [("SKILL", "semantic-ratchet")]
+
+
+@pytest.mark.parametrize("selected_elsewhere", [False, True])
+def test_content_profile_rejects_standalone_resource_before_output(
+    source: Path,
+    tmp_path: Path,
+    *,
+    selected_elsewhere: bool,
+) -> None:
+    assert PKL
+    marketplace = obj(json.loads((source / "source/adaptable.marketplace.json").read_text()))
+    resource = next(
+        ref for ref in array(marketplace["resources"]) if obj(ref)["name"] == "pkl-agent-runtime"
+    )
+    change(source, "source/plugins/software-engineering/plugin.json", "resources", [resource])
+    if selected_elsewhere:
+        profile_path = source / "source/profiles/kotlin-type-design.json"
+        profile = obj(json.loads(profile_path.read_text()))
+        profile["plugins"] = [*array(profile["plugins"]), "developer-tooling"]
+        profile["focusSkills"] = [*array(profile["focusSkills"]), "pkl-engineering"]
+        _ = profile_path.write_text(json.dumps(profile))
+    out = tmp_path / "rejected-resource"
+    with pytest.raises(ProjectionError, match="STANDALONE_RESOURCE") as error:
+        _ = project(source, "pi", out, PKL, profile="kotlin-type-design")
+    assert error.value.code == Code.UNSUPPORTED_CAPABILITY
+    assert not out.exists()

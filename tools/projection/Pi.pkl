@@ -245,7 +245,7 @@ function selectContent(input: Schema.Input, name: Schema.Identity): Schema.Input
         else if (skills.isEmpty)
           throw("Content profile needs at least one skill")
         else
-          (input) {
+          checkedContentResources((input) {
             contentProfile = name
             profiles = List(profile)
             plugins = new Listing<Schema.Plugin> {
@@ -271,7 +271,26 @@ function selectContent(input: Schema.Input, name: Schema.Identity): Schema.Input
                 }
               }
             }
-          }
+          })
+
+function checkedContentResources(input: Schema.Input): Schema.Input =
+  let (roots = links(input.plugins.toList(), "SKILL").map((link) -> link.path.dropLast(9)))
+    if (
+      input.plugins
+        .toList()
+        .every((plugin) ->
+          plugin.references
+            .filter((ref) -> ref.type == "RESOURCE")
+            .every((ref) ->
+              roots.any((root) ->
+                (plugin.name + "/" + ref.sourcePath.drop(7)).startsWith(root + "/")
+              )
+            )
+        )
+    )
+      input
+    else
+      throw("UNSUPPORTED_PI_CAPABILITY: STANDALONE_RESOURCE")
 
 function instructionText(input: Schema.Input): String =
   input.plugins
