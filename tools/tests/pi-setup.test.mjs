@@ -37,10 +37,19 @@ test('native helper starts through a symlinked temporary directory', t => {
   const real = path.join(directory, 'real'), alias = path.join(directory, 'temporary alias');
   fs.mkdirSync(real); fs.symlinkSync(real, alias, 'dir');
   fs.copyFileSync(path.join(root, 'tools/setup-pi.mts'), path.join(real, 'setup-pi.mts'));
-  for (const folder of [real, alias]) {
-    const result = spawnSync(process.execPath, [path.join(folder, 'setup-pi.mts'), '--help'], { encoding: 'utf8' });
+  for (const [folder, flags] of [[real, []], [alias, []], [alias, ['--preserve-symlinks-main']]]) {
+    const result = spawnSync(process.execPath, [...flags, path.join(folder, 'setup-pi.mts'), '--help'], { encoding: 'utf8' });
     assert.equal(result.status, 0, result.stderr);
     assert.match(result.stdout, /Slopsentral native Pi setup/, folder);
+  }
+});
+
+test('library imports from stdin and eval do not invoke setup', () => {
+  const input = 'await import(' + JSON.stringify(pathToFileURL(path.join(root, 'tools/setup-pi.mts')).href) + '); console.log("library import completed");';
+  for (const [args, options] of [[['--input-type=module', '-'], { input }], [['--input-type=module', '--eval', input], {}]]) {
+    const result = spawnSync(process.execPath, args, { ...options, encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stdout, 'library import completed\n');
   }
 });
 

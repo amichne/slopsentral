@@ -444,4 +444,4 @@ async function main(): Promise<void> {
   console.log(result.status + ': Slopsentral ' + result.version + '. Restart Pi for native discovery.');
   console.log('Recovery: rerun the documented installer in this directory with' + (project ? ' --project' : '') + ' --rollback.');
 }
-if (process.argv[1] && path.resolve(process.argv[1]) === self) main().catch(error => { console.error(error instanceof Error ? error.message : 'SETUP_FAILED'); process.exitCode = 1; });
+if (process.argv[1] && fs.existsSync(process.argv[1]) && fs.realpathSync(process.argv[1]) === fs.realpathSync(self)) main().catch(error => { console.error(error instanceof Error ? error.message : 'SETUP_FAILED'); process.exitCode = 1; });
