@@ -17,6 +17,16 @@
     "software-engineering"
   ],
   "standaloneSkills": [],
+  "skills": {
+    "skill:git-change-flow": { "invocation": "either" },
+    "skill:github-ci-operations": { "invocation": "either" },
+    "skill:issue-tracker-operations": { "invocation": "either" },
+    "skill:mise-project-tooling": { "invocation": "either" },
+    "skill:pull-request-lifecycle": { "invocation": "either" },
+    "skill:python-tooling": { "invocation": "either" },
+    "skill:semantic-ratchet": { "invocation": "either" },
+    "skill:tdd": { "invocation": "either" }
+  },
   "hookPolicy": {
     "type": "HOOK_POLICY",
     "mode": "ADVISORY"

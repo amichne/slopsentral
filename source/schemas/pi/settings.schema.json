@@ -21,6 +21,21 @@
         "local-rules"
       ]
     },
+    "enabled": {
+      "type": "boolean",
+      "examples": [true]
+    },
+    "skills": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^skill:[a-z][a-z0-9-]*$",
+        "examples": ["skill:semantic-ratchet"]
+      },
+      "additionalProperties": {"$ref": "#/$defs/skillBinding"},
+      "description": "This intentional map uses skill identities and typed invocation policies.",
+      "examples": [{"skill:semantic-ratchet": {"invocation": "either"}}]
+    },
     "capabilities": {
       "type": "object",
       "propertyNames": {
@@ -114,6 +129,19 @@
     }
   ],
   "$defs": {
+    "skillBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["invocation"],
+      "properties": {
+        "invocation": {
+          "type": "string",
+          "enum": ["human", "model", "either"],
+          "examples": ["either"]
+        }
+      },
+      "examples": [{"invocation": "either"}]
+    },
     "output": {
       "oneOf": [
         {

@@ -72,7 +72,7 @@ export function settingsMenu(control: Control, ctx: ExtensionContext, theme: The
     let list: SettingsList;
     const getPolicy = () => control.effective.type === "effective" ? control.effective.capabilities.find(item => item.capability.id === id)?.policy ?? item.policy : item.policy;
     list = new SettingsList([
-      { id: "enabled", label: "Enabled", currentValue: item.state === "disabled" ? "off" : "on", values: ["on", "off"], description: `${item.state}. Origin: ${item.origin}. ${item.reason}` },
+      { id: "enabled", label: "Enabled", currentValue: item.selected ? "on" : "off", values: ["on", "off"], description: `${item.state}. Origin: ${item.origin}. ${item.reason}` },
       { id: "execution", label: "Execution", currentValue: item.policy.execution, values: ["foreground", "background"], description: `Policy origin: ${item.policyOrigin}. Background work cannot block.` },
       { id: "critical", label: "Critical path", currentValue: item.policy.critical, values: ["report", "blocking"] },
       { id: "output", label: "Output", currentValue: item.policy.output.type, values: ["ALWAYS", "ERRORS", "NEVER"], description: "Presentation follows protocol interpretation." },
@@ -92,7 +92,7 @@ export function settingsMenu(control: Control, ctx: ExtensionContext, theme: The
       const old = getPolicy();
       const success = key === "enabled" ? toggle(id, value === "on") : policy(id, current => key === "output"
         ? { ...current, output: { type: value } } : { ...current, [key]: key === "timeoutSeconds" ? Number(value) : value });
-      if (!success) list.updateValue(key, key === "enabled" ? item.state === "disabled" ? "off" : "on" : key === "output" ? old.output.type : key === "execution" ? old.execution : key === "critical" ? old.critical : old.context);
+      if (!success) list.updateValue(key, key === "enabled" ? item.selected ? "on" : "off" : key === "output" ? old.output.type : key === "execution" ? old.execution : key === "critical" ? old.critical : old.context);
     }, back, { enableSearch: true });
     return list;
   };
@@ -100,10 +100,28 @@ export function settingsMenu(control: Control, ctx: ExtensionContext, theme: The
     const items = control.effective.type === "effective" ? control.effective.capabilities.filter(item => item.capability.type === kind) : [];
     let list: SettingsList;
     const entries: SettingItem[] = items.map(item => ({ id: item.capability.id, label: item.capability.name,
-      currentValue: item.state === "disabled" ? "off" : "on", description: `${item.state}. Origin: ${item.origin}. Dependencies: ${item.capability.dependencies.join(", ") || "none"}. ${item.reason}`,
-      ...(kind === "HOOK" ? {} : { values: ["on", "off"] }) }));
+      currentValue: item.selected ? "on" : "off", description: `${item.state}. Origin: ${item.origin}. ${item.binding.type === "skill" ? `Invocation: ${item.binding.invocation}. Origin: ${item.binding.origin}. ` : ""}Dependencies: ${item.capability.dependencies.join(", ") || "none"}. ${item.reason}`,
+      ...(kind === "HOOK" || kind === "SKILL" ? {} : { values: ["on", "off"] }) }));
     // SettingsList owns submenu return and selection. Pass its done callback directly.
     if (kind === "HOOK") for (const entry of entries) entry.submenu = (_value, finish) => hookMenu(entry.id, () => finish());
+    if (kind === "SKILL") for (const entry of entries) entry.submenu = (_value, finish) => {
+      const item = items.find(item => item.capability.id === entry.id);
+      if (!item || item.binding.type !== "skill") return detail("Skill unavailable.", () => finish());
+      const skillList = new SettingsList([
+        { id: "enabled", label: "Enabled", currentValue: item.selected ? "on" : "off", values: ["on", "off"] },
+        { id: "invocation", label: "Invocation", currentValue: item.binding.invocation, values: ["human", "model", "either"] },
+        { id: "details", label: "Details", currentValue: "View…", submenu: (_current, complete) => detail(JSON.stringify(item, null, 2), () => complete()) },
+      ], 3, getSettingsListTheme(), (key, value) => {
+        if (key === "enabled") {
+          if (!toggle(entry.id, value === "on")) skillList.updateValue(key, item.selected ? "on" : "off");
+          else list.updateValue(entry.id, value);
+        } else {
+          const base = control.settings(scope);
+          if (!apply({ ...base, skills: { ...base.skills, [entry.id]: { invocation: value } } })) skillList.updateValue(key, item.binding.type === "skill" ? item.binding.invocation : "either");
+        }
+      }, () => finish(), { enableSearch: true });
+      return skillList;
+    };
     list = new SettingsList(entries, 3, getSettingsListTheme(), (id, value) => {
       if (!toggle(id, value === "on")) list.updateValue(id, value === "on" ? "off" : "on");
     }, back, { enableSearch: true });
@@ -115,7 +133,7 @@ export function settingsMenu(control: Control, ctx: ExtensionContext, theme: The
         const finish = (cap: unknown) => {
           const base = control.settings(scope);
           if (apply({ ...base, additions: [...(base.additions ?? []), cap] })) {
-            message = kind === "SKILL" ? "Skill saved. Use /reload to refresh Pi skill discovery." : `Saved ${name}.`;
+            message = `Saved ${name}.`;
             back();
           }
         };
@@ -140,10 +158,11 @@ export function settingsMenu(control: Control, ctx: ExtensionContext, theme: The
   };
   const profile = control.effective.type === "effective" ? control.effective.profile : "unavailable";
   const list = new SettingsList([
-    { id: "profile", label: "Profile", currentValue: profile, description: "Profiles supply presets. Individual overrides remain effective.", submenu: (_value, finish) => profilePicker([...control.config.profiles.map(item => item.name), "off"], name => {
+    { id: "profile", label: "Profile", currentValue: profile, description: "Profiles supply presets. Individual overrides remain effective.", submenu: (_value, finish) => profilePicker([...control.config.profiles.map(item => item.name), "none"], name => {
       if (apply({ ...control.settings(scope), profile: name })) finish(control.effective.type === "effective" ? control.effective.profile : name);
     }, () => finish()) },
     { id: "scope", label: "Save scope", currentValue: scope, values: ["session", "project", "user"], description: "Precedence: defaults, profile, user, project, session." },
+    { id: "enabled", label: "Extension", currentValue: control.effective.type === "effective" && control.effective.enabled ? "on" : "off", values: ["on", "off"], description: "Turn off advertisements, automatic hooks, and automatic collection.", },
     ...(["INSTRUCTION", "SKILL", "RESOURCE", "AGENT", "HOOK"] as const).map(kind => ({ id: kind, label: `${kind[0]}${kind.slice(1).toLowerCase()}s`, currentValue: "Select…",
       submenu: (_value: string, finish: () => void) => capabilities(kind, finish) })),
     { id: "add", label: "Add capability", currentValue: "Local…", submenu: (_value, finish) => addition(() => finish()) },
@@ -165,7 +184,12 @@ export function settingsMenu(control: Control, ctx: ExtensionContext, theme: The
       if (selected === "session" || selected === "project" || selected === "user") { scope = selected; apply({ schemaVersion: 1 }); scope = previous; }
       finish();
     }, () => finish()) },
-  ], 3, getSettingsListTheme(), (_id, value) => { if (value === "session" || value === "project" || value === "user") scope = value; }, done, { enableSearch: true });
+  ], 3, getSettingsListTheme(), (id, value) => {
+    if (id === "enabled") {
+      if (!apply({ ...control.settings(scope), enabled: value === "on" })) list.updateValue(id, control.effective.type === "effective" && control.effective.enabled ? "on" : "off");
+    }
+    else if (value === "session" || value === "project" || value === "user") scope = value;
+  }, done, { enableSearch: true });
   let focused = false;
   return {
     get focused() { return focused; }, set focused(value) { focused = value; },

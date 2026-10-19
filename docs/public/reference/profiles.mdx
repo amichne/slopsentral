@@ -32,8 +32,13 @@ It does not add automatic Pkl or source-graph hooks.
 Pi uses profiles as defaults for independent capabilities.
 Enter `/slopsentral` to inspect settings or `/slopsentral state` for structured state.
 User, project, and session overrides take precedence over profile defaults.
-The `off` profile keeps explicit overrides.
-The [Pi guide](/guides/pi) describes save scopes, dependencies, and hook policies.
+The `none` profile supplies an empty preset and keeps explicit overrides.
+Legacy `off` selections migrate visibly to `none` with their overrides intact.
+The independent `enabled: false` setting turns off the extension.
+
+The active plan governs discovery, invocation, hooks, and inspection through one generation.
+Each skill binding sets `human`, `model`, or `either` invocation.
+The [Pi guide](/guides/pi) describes managed skill routes, save scopes, dependencies, and hook policies.
 
 ## Explicit Codex lifecycle
 

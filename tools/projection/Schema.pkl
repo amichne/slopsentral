@@ -5,6 +5,8 @@ typealias Kind = "SKILL" | "AGENT" | "INSTRUCTION" | "HOOK" | "RESOURCE"
 typealias RelativePath =
   String(!isEmpty && !startsWith("/") && !contains("\\") && !split("/").contains(".."))
 typealias Identity = String(matches(Regex("[a-z][a-z0-9-]*")))
+typealias SkillIdentity = String(matches(Regex("skill:[a-z][a-z0-9-]*")))
+typealias SkillInvocation = "human" | "model" | "either"
 typealias Digest = String(matches(Regex("sha256:[a-f0-9]{64}")))
 
 class Person {
@@ -136,6 +138,11 @@ class Profile {
   plugins: List<Identity>(!isEmpty)
   hookPolicy: "OFF" | "ADVISORY" | "ENFORCING"
   focusSkills: List<Identity>? = null
+  skills: Map<SkillIdentity, SkillBinding> = Map()
+}
+
+class SkillBinding {
+  invocation: SkillInvocation
 }
 
 class Copy {

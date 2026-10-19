@@ -11,6 +11,48 @@ const catalog = [
   { id: 'hook:gate', type: 'HOOK', name: 'gate', dependencies: ['instruction:rules'], profiles: ['fixture'], actions: [] },
 ];
 
+test('none preserves overrides, off reports migration, and disabled suppresses the complete plan', () => {
+  const layers = [{ origin: 'user', settings: { schemaVersion: 1, capabilities: { 'instruction:rules': true } } },
+    { origin: 'session', settings: { schemaVersion: 1, profile: 'off' } }];
+  const migrated = settings.resolveSettings(config, catalog, layers);
+  assert.equal(migrated.type, 'effective');
+  assert.equal(migrated.profile, 'none');
+  assert.equal(migrated.enabled, true);
+  assert.ok(migrated.migrations.includes('off → none: explicit overrides remain'));
+  assert.equal(migrated.capabilities[0].state, 'enabled');
+  assert.equal(migrated.capabilities[0].origin, 'user');
+  const disabled = settings.resolveSettings(config, catalog, [...layers,
+    { origin: 'session', settings: { schemaVersion: 1, enabled: false } }]);
+  assert.equal(disabled.enabled, false);
+  assert.equal(disabled.enabledOrigin, 'session');
+  assert.ok(disabled.capabilities.every(item => item.state === 'disabled'));
+});
+
+test('skill invocation policies resolve once with profile and layer origins', () => {
+  const skill = { id: 'skill:example', type: 'SKILL', name: 'example', path: 'SKILL.md', dependencies: [], profiles: ['fixture'] };
+  const configured = { ...config, profiles: [{ ...profile, skills: [{ name: 'example', path: 'SKILL.md', invocation: 'human' }] }] };
+  const resolved = settings.resolveSettings(configured, [skill], [
+    { origin: 'user', settings: { schemaVersion: 1, skills: { 'skill:example': { invocation: 'model' } } } },
+    { origin: 'session', settings: { schemaVersion: 1, skills: { 'skill:example': { invocation: 'either' } } } },
+  ]);
+  assert.equal(resolved.type, 'effective');
+  assert.deepEqual(resolved.capabilities[0].binding, { type: 'skill', invocation: 'either', origin: 'session' });
+  assert.equal(settings.resolveSettings(configured, [skill], []).capabilities[0].binding.invocation, 'human');
+  assert.equal(settings.resolveSettings(configured, [skill], [{ origin: 'session', settings: { schemaVersion: 1, skills: { 'skill:absent': { invocation: 'human' } } } }]).type, 'rejected');
+  for (const invocation of ['human', 'model', 'either'])
+    assert.equal(settings.parseSettings({ schemaVersion: 1, enabled: false, skills: { 'skill:example': { invocation } } }).type, 'settings');
+  for (const value of [{ enabled: 'false' }, { skills: { 'skill:example': { invocation: 'unknown' } } },
+    { skills: { 'hook:gate': { invocation: 'human' } } }, { skills: { 'skill:example': { invocation: 'human', origin: 'human' } } }])
+    assert.equal(settings.parseSettings({ schemaVersion: 1, ...value }).type, 'rejected');
+});
+
+test('profile links cannot silently disappear from a mismatched runtime catalog', () => {
+  const configured = { ...config, profiles: [{ ...profile, skills: [{ name: 'absent', path: 'absent/SKILL.md', invocation: 'human' }] }] };
+  assert.equal(settings.resolveSettings(configured, catalog, []).type, 'rejected');
+  const skill = { id: 'skill:absent', type: 'SKILL', name: 'absent', path: 'other/SKILL.md', dependencies: [], profiles: ['fixture'] };
+  assert.equal(settings.resolveSettings(configured, [...catalog, skill], []).type, 'rejected');
+});
+
 test('one settings contract accepts valid layers and rejects illegal background gates and regexes', () => {
   assert.equal(settings.parseSettings({ schemaVersion: 1 }).type, 'settings');
   for (const value of [null, { schemaVersion: 2 }, { schemaVersion: 1, extra: true },

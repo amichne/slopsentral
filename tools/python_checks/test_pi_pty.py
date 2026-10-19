@@ -150,8 +150,8 @@ def test_real_pi_menu_and_editor_focus(tmp_path: Path) -> None:
         terminal.read_until(b"Save scope")
         terminal.send(b"\r")
         terminal.read_until(b"Search")
-        terminal.send(b"off")
-        terminal.read_until(b"off")
+        terminal.send(b"none")
+        terminal.read_until(b"none")
         terminal.send(b"\r")
         terminal.read_until(b"Saved to session")
         terminal.send(b"\x1b")
@@ -166,6 +166,6 @@ def test_real_pi_menu_and_editor_focus(tmp_path: Path) -> None:
         terminal.read_until(b'"effective"')
         entries = [json.loads(line) for line in session_file.read_text().splitlines()]
         assert any(
-            entry.get("customType") == "slopsentral-profile" and entry.get("data") == "off"
+            entry.get("customType") == "slopsentral-profile" and entry.get("data") == "none"
             for entry in entries
         )

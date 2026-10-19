@@ -26,7 +26,7 @@ test('Pi projects an installable package with source-derived profiles and focuse
   assert.deepEqual(manifest.pi.extensions, ['./extensions/slopsentral.ts']);
   assert.equal(manifest.peerDependencies['@earendil-works/pi-coding-agent'], '*');
   assert.equal(manifest.peerDependencies['@earendil-works/pi-tui'], '*');
-  assert.equal(new Set(manifest.pi.skills).size, manifest.pi.skills.length);
+  assert.deepEqual(manifest.pi.skills, []);
   const config = JSON.parse(fs.readFileSync(path.join(pkg, 'profiles.json')));
   const capabilities = JSON.parse(fs.readFileSync(path.join(pkg, 'capabilities.json')));
   assert.equal(capabilities.schemaVersion, 1);
@@ -41,9 +41,13 @@ test('Pi projects an installable package with source-derived profiles and focuse
   }
   for (const name of ['settings.schema.json', 'capabilities.schema.json', 'scope-assessment.schema.json'])
     assert.deepEqual(fs.readFileSync(path.join(pkg, 'schemas', name)), fs.readFileSync(path.join(root, 'source/schemas/pi', name)));
-  for (const name of ['control.ts', 'settings.ts', 'journal.ts', 'coordinator.ts', 'menu.ts'])
+  for (const name of ['control.ts', 'settings.ts', 'skills.ts', 'journal.ts', 'coordinator.ts', 'menu.ts'])
     assert.ok(fs.statSync(path.join(pkg, 'extensions', name)).isFile());
   assert.equal(config.defaultProfile, 'local-development-default');
+  const local = config.profiles.find(p => p.name === 'local-development-default');
+  const authoredLocal = JSON.parse(fs.readFileSync(path.join(root, 'source/profiles/local-development-default.json')));
+  assert.deepEqual(local.skills.map(skill => 'skill:' + skill.name).sort(), Object.keys(authoredLocal.skills).sort());
+  assert.ok(config.profiles.every(profile => profile.skills.every(skill => skill.invocation === 'either')));
   const kotlin = config.profiles.find(p => p.name === 'kotlin-type-design');
   assert.deepEqual(kotlin.skills.map(s => s.name).sort(), ['kotlin-design-practices', 'kotlin-review', 'negative-capability-proof', 'semantic-ratchet']);
   const broad = config.profiles.find(p => p.name === 'type-design');
@@ -68,7 +72,7 @@ test('Pi projects an installable package with source-derived profiles and focuse
     assert.equal(ref.sha256, 'sha256:' + digest.digest('hex'), prefix);
   }
   for (const profile of config.profiles) for (const ref of profile.skills)
-    assert.ok(manifest.pi.skills.includes('./' + path.posix.dirname(ref.path)), `${profile.name}: ${ref.name}`);
+    assert.ok(!manifest.pi.skills.includes('./' + path.posix.dirname(ref.path)), `${profile.name}: ${ref.name}`);
 });
 
 test('profile focus rejects empty selections and skills outside selected plugin closures', () => {

@@ -7,7 +7,8 @@ Its five plugin bundles cover software design, Kotlin, IntelliJ plugins, develop
 
 ## Use Slopsentral in Pi
 
-Use Pi 1.2.0 with Node.js 22.19 or later.
+Use Pi with Node.js 22.19 or later.
+The current native evidence uses Pi 1.3.0.
 The package needs no repository clone, Pkl, or local npm build.
 
 1. Open the [latest Pi release](https://github.com/amichne/slopsentral/releases/latest).
@@ -34,13 +35,20 @@ Inside Pi, use these commands:
 | `/slopsentral-profile type-design` | Add schema, OpenAPI, and Pkl skills with automatic hooks set to `OFF`. |
 | `/slopsentral-profile kotlin-repo-default` | Select Kotlin and Software Engineering with `ADVISORY` hooks. |
 | `/slopsentral-check` | Run the selected completion gates explicitly. |
-| `/slopsentral-profile off` | Turn off Slopsentral prompt instructions, advertised skills, and automatic hooks. |
+| `/slopsentral-profile none` | Select an empty preset and keep explicit overrides. |
+| `/slopsentral state` | Inspect the active package, profile, generation, bindings, and origins. |
+| `/slopsentral skill NAME` | Load a skill allowed through the human route. |
 
 Change profiles after the current run ends.
 The selection persists on the active session branch.
 A new session without a profile choice uses `local-development-default` with `ADVISORY` hooks.
 Hook commands need their own tools, including uv for Python hooks.
 Profiles keep the current model and tool set.
+
+The `enabled: false` setting turns off instructions, managed skills, automatic hooks, and automatic mutation collection.
+Legacy `off` selections migrate visibly to `none` and keep explicit overrides.
+Human commands and the `slopsentral_skill` model tool obey each resolved binding's `human`, `model`, or `either` invocation policy.
+Slopsentral-owned `/skill:NAME` requests reject before ordinary model input.
 
 The [Pi guide](docs/pi-harness.md) covers installation scopes, updates, removal, hook policies, and adapter limits.
 Each release includes `SHA256SUMS`, `candidate.json`, and `promotion.json` beside the archive.

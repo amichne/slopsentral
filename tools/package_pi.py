@@ -96,6 +96,7 @@ def inspect(root: Path) -> _Package | Rejected:
         "schemas/capabilities.schema.json",
         "schemas/scope-assessment.schema.json",
         "extensions/settings.ts",
+        "extensions/skills.ts",
         "extensions/control.ts",
         "extensions/journal.ts",
         "extensions/coordinator.ts",

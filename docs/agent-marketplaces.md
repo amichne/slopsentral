@@ -33,7 +33,7 @@ Generated trees and installed caches remain consumers.
 | Resource | Codex adaptation | GitHub Copilot adaptation | Pi adaptation |
 | --- | --- | --- | --- |
 | Plugins | A `.codex-plugin/plugin.json` manifest per plugin | A `plugin.json` manifest per plugin | One package and extension with payloads per plugin |
-| Skills | Plugin skill paths | Plugin skill paths | One manifest entry per canonical skill identity |
+| Skills | Plugin skill paths | Plugin skill paths | Managed bindings and canonical content, without native skill exports |
 | Instructions | A generated `AGENTS.md` index and selected context hooks | A generated `AGENTS.md` index and selected context hooks | Selected instructions in a structured prompt section |
 | Agents | Source Markdown and generated TOML declarations | Generated `.agent.md` files without the source `model` field | Reference paths in the profile prompt, without agent execution |
 | Hooks | Hook JSON files with canonical events | One `hooks.json` per plugin with `bash` and `timeoutSec` fields | Native events with subprocess actions and translated results |
@@ -47,10 +47,12 @@ These adaptations address different host contracts:
 - **Hooks:** Copilot receives its command field names and a flat hook manifest.
   Pi maps prompt, tool, and completion events through its [runtime adapter](../source/hooks/pi/slopsentral.ts).
   The adapter uses argument arrays without shell evaluation and preserves original tool evidence.
-  [Pi event mappings](pi-harness.md#event-adapters) describe each translation and cancellation limit.
+  [Pi hook policies](pi-harness.md#hook-policies) describe execution, output, and cancellation limits.
 - **Profiles:** Pi turns source `WORKFLOW_PROFILE` declarations into commands and a startup flag.
   It saves the selected workflow profile on the active session branch.
-  `focusSkills` limits advertised package skills without a change to other packages.
+  `focusSkills` selects package skills, and `skills` supplies explicit selections and invocation policies.
+  One resolved plan governs managed discovery, command and tool admission, hooks, and inspection.
+  Unrelated packages keep their native skill routes.
   The source profile supplies `OFF`, `ADVISORY`, or `ENFORCING` hook policy.
 - **Agents and tools:** Pi exposes agent and MCP references without automatic agents or server connections.
   Profile selection keeps the current model and tool set.
