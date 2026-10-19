@@ -20,3 +20,10 @@ def test_readme_and_site_expose_setup_without_retired_routes() -> None:
             r"https://github\.com/amichne/slopsentral/blob/[^)\s]+\.md(?:[)#\s]|$)",
             page.read_text(),
         ), page
+
+
+def test_public_guidance_has_no_outside_workflow_helper() -> None:
+    for page in (ROOT / "docs/public").rglob("*.mdx"):
+        content = page.read_text().lower()
+        for obsolete in ("browser-harness", "superpowers", "worktrunk"):
+            assert obsolete not in content, page
