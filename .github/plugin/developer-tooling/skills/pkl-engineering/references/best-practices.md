@@ -1,4 +1,4 @@
-# Pkl Best-Practices Catalog
+# Pkl Configuration Practices
 
 This is a routing catalog. Use the linked first-party source for exact syntax
 and version behavior.
@@ -15,8 +15,6 @@ and version behavior.
 8. [Least-privilege evaluation](#8-least-privilege-evaluation)
 9. [Canonical formatting and style](#9-canonical-formatting-and-style)
 10. [Packages instead of floating imports](#10-packages-instead-of-floating-imports)
-11. [Editor and project synchronization](#11-editor-and-project-synchronization)
-12. [Generated host-language types](#12-generated-host-language-types)
 
 ## 1. Schema modules and amendments
 
@@ -42,7 +40,7 @@ Parse JSON, YAML, environment, or reader output at one edge. Convert `Dynamic`
 to a typed class before downstream use so evaluation owns validation.
 
 References: [language reference](https://pkl-lang.org/main/current/language-reference/index.html),
-[first-party package index](https://pkl-lang.org/package-docs/).
+[standard-library API](https://pkl-lang.org/package-docs/pkl/current/).
 
 ## 4. Fixed and constant facts
 
@@ -102,24 +100,4 @@ project, and retain checksums. Prefer dependency notation over unpinned HTTPS
 imports.
 
 References: [packages](https://pkl-lang.org/main/current/language-reference/index.html),
-[package index](https://pkl-lang.org/package-docs/).
-
-## 11. Editor and project synchronization
-
-Use an official editor integration and point it at the same CLI used in tests.
-Sync the workspace after project dependency changes and verify diagnostics with
-CLI evaluation rather than treating editor state as proof.
-
-References: [VS Code](https://pkl-lang.org/vscode/current/index.html),
-[IntelliJ](https://pkl-lang.org/intellij/current/index.html),
-[Neovim](https://pkl-lang.org/neovim/current/index.html).
-
-## 12. Generated host-language types
-
-Generate host types when consumers benefit from compile-time access to a stable
-Pkl model. Keep generation reproducible and validate both Pkl evaluation and
-host compilation.
-
-References: [binding specification](https://pkl-lang.org/main/current/bindings-specification/index.html),
-[apple/pkl-go](https://github.com/apple/pkl-go),
-[apple/pkl-swift](https://github.com/apple/pkl-swift).
+[package contract](https://pkl-lang.org/main/current/pkl-cli/index.html).
