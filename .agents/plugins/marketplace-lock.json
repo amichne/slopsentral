@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T17:11:25-04:00",
+  "generatedAt": "2026-10-19T17:52:52-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -255,6 +255,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "ceb3373e1d27d0815d8cc610d2fee8175d543436",
+  "sourceSha": "18ffd2e81324e8a5b4133454fa4670ada0272b46",
   "type": "HYDRATED_MARKETPLACE"
 }
