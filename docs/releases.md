@@ -14,6 +14,18 @@ Historical releases, tags, and asset URLs remain available.
 | `release-assets.json` | Exact source revision, names, sizes, and provider archive digests |
 | `candidate.json`, `promotion.json` | Pi producer, tested Git tree, main admission, and archive identity |
 
+## Current catalog
+
+The current set contains five repository-owned plugins: Software Engineering,
+Developer Tooling, Kotlin Engineering, IntelliJ Plugin Development, and Repository Knowledge.
+It removes outside workflow bundles and optional service onboarding, including
+Jira/acli, Develocity scans, standalone mise setup, editor/LSP add-ons, and external profilers.
+The standalone issue reader supports GitHub through the same native GitHub CLI
+used for repository delivery. Unsupported saved backend values fail before any command.
+Existing user configuration is not rewritten.
+The [external reference inventory](external-tool-references.md) records the
+runtime, API, format, and attribution references that remain.
+
 ## Codex and Copilot
 
 The [installation guide](public/guides/install.mdx) documents marketplace discovery and plugin selection.

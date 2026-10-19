@@ -78,7 +78,6 @@ Use upstream workflows for general delivery. These local procedures remain avail
 - [git-change-flow](skills/git-change-flow/SKILL.md).
 - [github-ci-operations](skills/github-ci-operations/SKILL.md).
 - [issue-tracker-operations](skills/issue-tracker-operations/SKILL.md).
-- [mise-project-tooling](skills/mise-project-tooling/SKILL.md).
 - [pull-request-lifecycle](skills/pull-request-lifecycle/SKILL.md).
 - [tdd](skills/tdd/SKILL.md).
 

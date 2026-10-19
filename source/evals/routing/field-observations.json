@@ -257,53 +257,6 @@
     },
     {
       "type": "ROUTING_FIELD_OBSERVATION",
-      "id": "openwiki-refresh-preserves-backend-authority-history-2026-10-01",
-      "caseId": "openwiki-refresh-preserves-backend-authority",
-      "capturedAt": "2026-10-01",
-      "sourceType": "LIVE_SESSION",
-      "outcome": "NEEDS_REPLAY_CASE",
-      "route": {
-        "type": "PRIMITIVE_ROUTE",
-        "primitive": {
-          "type": "SKILL",
-          "name": "openwiki"
-        }
-      },
-      "evidenceRefs": [
-        "Root session 01a0f9c6-83e6-7551-a94b-c2b24ffebc99: tool output line 87 returned openwiki/SKILL.md frontmatter.",
-        "Root session 01a0f9c6-83e6-7551-a94b-c2b24ffebc99: scoped outcome recorded at line 1108.",
-        "Recorded context: gpt-6.1-sol, Codex CLI 0.159.2, vscode host; read payload External standalone openwiki skill; upstream provenance retained.."
-      ],
-      "productiveOutcomeObserved": {
-        "type": "USEFUL_OUTCOME",
-        "summary": "Five OpenWiki pages were refreshed and 72 Claims checked against combined source head f4f06aedf; local product/native gates passed."
-      },
-      "followUpAction": "Replay the maintained complete-flow scenario at a pinned revision; retain the historical result and qualify each missing obligation independently.",
-      "limitations": [
-        "Remote CI was still running at the recorded handoff.",
-        "The new OKF/OpenWiki handoff procedure has not been replayed; the historical external OpenWiki route was appropriate.",
-        "Skill-read evidence proves loading, not procedural compliance. Exact host advertised skill list and source revision of the cached plugin were not retained; no numeric cap attribution is supported."
-      ],
-      "activationEvidence": {
-        "type": "TOOL_TRACE",
-        "sessionIds": [
-          "01a0f9c6-83e6-7551-a94b-c2b24ffebc99"
-        ],
-        "evidenceRefs": [
-          "Root session 01a0f9c6-83e6-7551-a94b-c2b24ffebc99: tool output line 87 returned openwiki/SKILL.md frontmatter.",
-          "Recorded context: gpt-6.1-sol, Codex CLI 0.159.2, vscode host; read payload External standalone openwiki skill; upstream provenance retained.."
-        ]
-      },
-      "verification": {
-        "type": "INCOMPLETE_PROOF",
-        "missingEvidence": [
-          "Remote CI was still running at the recorded handoff.",
-          "The new OKF/OpenWiki handoff procedure has not been replayed; the historical external OpenWiki route was appropriate."
-        ]
-      }
-    },
-    {
-      "type": "ROUTING_FIELD_OBSERVATION",
       "id": "intellij-live-freeze-uses-diagnostics-mcp-before-profiler-history-2026-10-02",
       "caseId": "intellij-live-freeze-uses-diagnostics-mcp-before-profiler",
       "capturedAt": "2026-10-02",

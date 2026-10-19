@@ -8,7 +8,6 @@ import datetime as dt
 import json
 import os
 from pathlib import Path
-import re
 import shutil
 import stat
 import sys
@@ -16,10 +15,6 @@ import tempfile
 from typing import Any
 
 MCP_OPTION = "-Didea.diagnostics.mcp.enabled=true"
-IDE_PERF_OPTION = "-Djdk.attach.allowAttachSelf=true"
-METHOD_RE = re.compile(
-    r"^(?:[A-Za-z_$][\w$]*\.)+[A-Za-z_$][\w$]*#[A-Za-z_$][\w$]*$"
-)
 
 
 class EvidenceError(Exception):
@@ -118,25 +113,6 @@ def command_compare(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
-def command_trace_plan(args: argparse.Namespace) -> dict[str, Any]:
-    if not METHOD_RE.fullmatch(args.method):
-        raise EvidenceError("--method must be a concrete FQCN#method without wildcards")
-    return {
-        "type": "INTELLIJ_IDE_PERF_TRACE_PLAN",
-        "method": args.method,
-        "uiPath": "Help > Diagnostic Tools > Tracer",
-        "commands": ["clear", f"trace {args.method}", "reset"],
-        "procedure": [
-            "capture MCP baseline",
-            "clear old IDE Perf data",
-            "trace the concrete method",
-            "reproduce the named action once",
-            "record List and Tree evidence",
-            "reset all tracepoints",
-        ],
-    }
-
-
 def validate_vm_options_file(path: Path) -> os.stat_result:
     try:
         metadata = path.lstat()
@@ -160,14 +136,6 @@ def validate_vm_options_file(path: Path) -> os.stat_result:
     return metadata
 
 
-def requested_options(enable: str) -> list[str]:
-    if enable == "mcp":
-        return [MCP_OPTION]
-    if enable == "ide-perf":
-        return [IDE_PERF_OPTION]
-    return [MCP_OPTION, IDE_PERF_OPTION]
-
-
 def command_vm_options(args: argparse.Namespace) -> dict[str, Any]:
     path = args.file.expanduser().absolute()
     metadata = validate_vm_options_file(path)
@@ -176,11 +144,11 @@ def command_vm_options(args: argparse.Namespace) -> dict[str, Any]:
     except OSError as error:
         raise EvidenceError(f"cannot read VM-options file: {error}") from error
     existing = set(original.splitlines())
-    additions = [option for option in requested_options(args.enable) if option not in existing]
+    additions = [option for option in [MCP_OPTION] if option not in existing]
     base = {
         "type": "INTELLIJ_VM_OPTIONS_CHANGE",
         "file": str(path),
-        "requested": requested_options(args.enable),
+        "requested": [MCP_OPTION],
         "additions": additions,
     }
     if not additions:
@@ -207,24 +175,6 @@ def command_vm_options(args: argparse.Namespace) -> dict[str, Any]:
     return {**base, "status": "APPLIED", "applied": True, "backup": str(backup)}
 
 
-def command_ide_perf(args: argparse.Namespace) -> dict[str, Any]:
-    target = args.app or args.launcher
-    if not target.exists():
-        raise EvidenceError(f"IDE target does not exist: {target}")
-    if args.app:
-        command = ["open", "-na", str(args.app), "--args", "installPlugins", "com.google.ide-perf"]
-    else:
-        if not target.is_file() or not os.access(target, os.X_OK):
-            raise EvidenceError("--launcher must be an executable file")
-        command = [str(args.launcher), "installPlugins", "com.google.ide-perf"]
-    return {
-        "type": "INTELLIJ_IDE_PERF_INSTALL_COMMAND",
-        "executed": False,
-        "argv": command,
-        "shell": " ".join(json.dumps(part) for part in command),
-    }
-
-
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(prog="intellij_diagnostics")
     commands = root.add_subparsers(dest="command", required=True)
@@ -234,21 +184,12 @@ def parser() -> argparse.ArgumentParser:
     compare.add_argument("--during", type=Path, required=True)
     compare.set_defaults(handler=command_compare)
 
-    trace = commands.add_parser("trace-plan", help="emit a bounded IDE Perf method trace plan")
-    trace.add_argument("--method", required=True)
-    trace.set_defaults(handler=command_trace_plan)
-
     options = commands.add_parser("vm-options", help="preview or apply custom VM-option additions")
     options.add_argument("--file", type=Path, required=True)
-    options.add_argument("--enable", choices=("mcp", "ide-perf", "both"), required=True)
+    options.add_argument("--enable", choices=("mcp",), required=True)
     options.add_argument("--apply", action="store_true")
     options.set_defaults(handler=command_vm_options)
 
-    install = commands.add_parser("ide-perf-command", help="emit, but do not execute, IDE Perf installation")
-    target = install.add_mutually_exclusive_group(required=True)
-    target.add_argument("--app", type=Path)
-    target.add_argument("--launcher", type=Path)
-    install.set_defaults(handler=command_ide_perf)
     return root
 
 

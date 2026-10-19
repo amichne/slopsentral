@@ -134,25 +134,6 @@ def _status_name(value: object) -> str | None:
     return None
 
 
-def _jira_issue(value: object) -> IssueIdentity:
-    issue = _mapping(value, "work item")
-    fields_value = issue.get("fields", {})
-    fields = _mapping(fields_value, "work item fields")
-    identifier = _optional_text(issue.get("key")) or _optional_text(issue.get("id"))
-    if identifier is None:
-        raise IssueBackendError(
-            "PROVIDER_OUTPUT_INVALID",
-            "The acli result omitted the Jira work item key.",
-            "UPDATE_OR_RECONFIGURE_PROVIDER_CLI",
-        )
-    return IssueIdentity(
-        identifier=identifier,
-        title=_optional_text(fields.get("summary")) or _optional_text(issue.get("summary")),
-        state=_status_name(fields.get("status")) or _status_name(issue.get("status")),
-        url=_optional_text(issue.get("url")),
-    )
-
-
 def _github_issue(value: object) -> IssueIdentity:
     issue = _mapping(value, "issue")
     identifier = _optional_text(issue.get("number")) or _optional_text(issue.get("id"))
@@ -184,60 +165,6 @@ def _flatten_issue_pages(value: object) -> list[object]:
         "The provider dependency result must be a JSON array.",
         "UPDATE_OR_RECONFIGURE_PROVIDER_CLI",
     )
-
-
-class JiraProvider:
-    backend = Backend.JIRA
-
-    def __init__(self, runner: CommandRunner) -> None:
-        self._runner = runner
-
-    def view(self, identifier: str) -> ProviderObservation[IssueIdentity]:
-        arguments = ["jira", "workitem", "view", identifier, "--json"]
-        output = self._runner.run("acli", arguments)
-        try:
-            issue = _jira_issue(_parse_json(output))
-        except IssueBackendError as error:
-            raise _attach_evidence(error, (output.evidence,)) from error
-        return ProviderObservation(value=issue, evidence=(output.evidence,))
-
-    def dependency_map(self, identifier: str) -> ProviderObservation[DependencyMap]:
-        arguments = ["jira", "workitem", "link", "list", "--key", identifier, "--json"]
-        output = self._runner.run("acli", arguments)
-        try:
-            payload = _parse_json(output)
-            if isinstance(payload, list):
-                links = payload
-            else:
-                links_value = payload.get("links")
-                if not isinstance(links_value, list):
-                    raise IssueBackendError(
-                        "PROVIDER_OUTPUT_INVALID",
-                        "The acli link result omitted the links array.",
-                        "UPDATE_OR_RECONFIGURE_PROVIDER_CLI",
-                    )
-                links = links_value
-
-            root = IssueIdentity(identifier=identifier, title=None)
-            edges: list[DependencyEdge] = []
-            for raw_link in links:
-                link = _mapping(raw_link, "work item link")
-                link_type = _mapping(link.get("type", {}), "work item link type")
-                if (_optional_text(link_type.get("name")) or "").casefold() != "blocks":
-                    continue
-                inward = link.get("inwardIssue", link.get("inwardWorkItem"))
-                outward = link.get("outwardIssue", link.get("outwardWorkItem"))
-                if inward is not None:
-                    edges.append(DependencyEdge(source=_jira_issue(inward), target=root))
-                if outward is not None:
-                    edges.append(DependencyEdge(source=root, target=_jira_issue(outward)))
-        except IssueBackendError as error:
-            raise _attach_evidence(error, (output.evidence,)) from error
-
-        return ProviderObservation(
-            value=DependencyMap(root=identifier, edges=tuple(edges)),
-            evidence=(output.evidence,),
-        )
 
 
 class GitHubProvider:

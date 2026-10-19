@@ -35,12 +35,6 @@ skill installation, automatic mise trust, a universal 48-hour branch rule,
 mandatory vendor choices, unsupported speed multipliers, or mandatory diagrams.
 Do not inherit another author's persona when writing on behalf of the user.
 
-Official mise documentation defines these commands: non-interactive
-commands use mise exec or mise run without requiring prompt-driven activation.
-[FAQ](https://mise.jdx.dev/faq.html) and
-[troubleshooting](https://mise.jdx.dev/troubleshooting.html) resolve conflicting
-activation advice in the upstream skill. The installed version remains decisive.
-
 ## Task-Oriented Plugin Review
 
 Reviewed 2026-09-16:
@@ -63,7 +57,7 @@ valid. No upstream skill or example prompt is copied into canonical source.
 
 Reviewed 2026-09-16. `gradle-performance-engineering` independently adapts
 new-silvermoon/awesome-android-agent-skills
-with Develocity API evidence and controlled measurement. `github-ci-operations`
+with native build evidence and controlled measurement. `github-ci-operations`
 extends its existing workflow guidance using
 agents-inc/skills.
 Per-skill provenance records retained ideas and rejected blanket speed, cache,

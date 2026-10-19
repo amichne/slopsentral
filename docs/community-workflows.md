@@ -6,7 +6,7 @@ Slopsentral does not install another marketplace or an outside workflow bundle.
 | Task | Local owner |
 | --- | --- |
 | Domain values, pure predicates, and exhaustive cases | `semantic-ratchet` in Software Engineering |
-| Git, CI, PR delivery, TDD, and mise | Standalone source skills in `source/skills/` |
+| Git, CI, PR delivery, and TDD | Standalone source skills in `source/skills/` |
 | Python automation and tool authoring | Developer Tooling |
 | Documentation and repository evidence | Repository Knowledge |
 

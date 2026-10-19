@@ -48,7 +48,7 @@ authoring schemas, constraints, amendments, generators, renderers, or tests.
 
 Read [projects-security-and-interop.md](references/projects-security-and-interop.md)
 when working with `PklProject`, dependencies, packages, environment/resources,
-bindings, code generation, `pkl run`, or editor integrations.
+or bounded native `pkl run` behavior.
 
 ## Use the Façade
 
@@ -87,9 +87,7 @@ the repository's evaluator settings.
 
 `test run` and `package verify` copy the workspace to a temporary sandbox so
 snapshot or package side effects do not alter source. Mutating counterparts are
-named explicitly. Arbitrary `pkl run`, external readers, publishing, LSP,
-documentation generation, and language code generation remain advanced native
-Pkl boundaries rather than hidden façade behavior.
+named explicitly. Arbitrary commands, external readers, and publication stay outside this facade.
 
 ## Completion Criteria
 
@@ -104,12 +102,12 @@ Pkl boundaries rather than hidden façade behavior.
 
 ## Setup, source evidence, and patterns
 
-For CLI or editor setup, read [installation and LSP](references/installation-and-lsp.md).
+For CLI setup, read [runtime setup](references/cli-setup.md).
 Run `uv run --locked --script scripts/pkl_tooling --workspace PATH capabilities` from this skill directory.
-For renderers and generators, read [tooling capabilities](references/tooling-capabilities.md).
+For rendering and evaluation, read [tooling capabilities](references/tooling-capabilities.md).
 For schemas and external inputs, read [specification and resources](references/specification-and-resources.md).
 For source research, read [the official source map](references/official-source-map.md).
 Use `scripts/pkl_sources` for explicit source synchronization and immutable indexing.
-For modeling choices, read [best practices](references/best-practices.md).
+For modeling choices, read [configuration practices](references/best-practices.md).
 For specialized evaluator capabilities, read [advanced patterns](references/advanced-patterns.md).
 Each real entry module must evaluate under explicit capabilities. Neither formatting nor source indexing proves runtime correctness.

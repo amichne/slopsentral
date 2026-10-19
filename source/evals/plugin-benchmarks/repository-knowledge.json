@@ -61,22 +61,22 @@
     },
     {
       "type": "PLUGIN_EVAL_SCENARIO",
-      "id": "openwiki-refresh-preserves-backend-authority",
-      "title": "Openwiki refresh preserves backend authority",
+      "id": "knowledge-refresh-preserves-backend-authority",
+      "title": "Unavailable knowledge backend preserves its files",
       "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
       "routingCaseIds": [
-        "openwiki-refresh-preserves-backend-authority"
+        "knowledge-refresh-preserves-backend-authority"
       ],
       "expectedPrimitive": {
         "type": "SKILL",
         "name": "code-knowledge-base"
       },
-      "userInput": "Refresh the source-backed knowledge pages in this repository, which already uses OpenWiki. Preserve the backend, citations, Claims, and existing publication boundary. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "Refresh source-backed knowledge pages in an existing non-OKF backend. Preserve its files and citations. The repository has no tool for that backend. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
         "The selected backend and external owner are named, with missing tools reported rather than guessed.",
-        "Changed pages and Claims are verified; pending CI remains pending.",
-        "Do not copy an upstream OpenWiki skill into local canonical source.",
-        "Do not create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
+        "Existing pages and citations remain intact; the unsupported operation and missing capability are reported.",
+        "Do not install or select another outside skill to handle an unavailable backend.",
+        "Do not create another store or apply the OKF checker to an unsupported format."
       ]
     },
     {

@@ -57,14 +57,6 @@ import system for its canonical assets.
 [Agent Skills specification](https://agentskills.io/specification),
 [Agent Plugins specification](https://agent-plugins.org/specification).
 
-OpenAI's public Build Web Apps package groups a builder and a debugging
-workflow with focused React, shadcn, Stripe, and Supabase guidance. It offers
-a concrete example of organizing around a user job while retaining useful
-specialties. Its compatibility manifest and `agents/openai.yaml` presentation
-metadata also show why directory names alone do not establish execution roles.
-Use it as a structural reference, not a source of mandatory instructions.
-[OpenAI: Build Web Apps package](https://github.com/openai/plugins/tree/main/plugins/build-web-apps).
-
 ## What the current source reveals
 
 The reuse baseline has nine plugin compositions and 66 skill directories.
@@ -208,12 +200,6 @@ Architect or Tooling Engineer is not enough to justify a separate agent.
 
 Move provider model selection and tool restrictions into the adapter.
 Keep the review criteria and findings contract in a reusable skill/reference.
-For portable OpenAI submission, its conversion guidance explicitly recommends
-moving reusable command and agent behavior into skills. Its public directory
-also excludes lifecycle hooks; manually installed desktop distribution remains
-a different route.
-[OpenAI: Claude plugin conversion](https://developers.openai.com/plugins/guides/submit-claude-plugin).
-
 This does not prohibit native subagents. It removes the assumption that a
 persona must be a portable knowledge primitive or that every task needs a
 team of personas.

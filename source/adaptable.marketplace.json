@@ -373,15 +373,6 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
-      "path": "skills/mise-project-tooling",
-      "name": "mise-project-tooling"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
       "path": "skills/technical-documentation",
       "name": "technical-documentation"
     },

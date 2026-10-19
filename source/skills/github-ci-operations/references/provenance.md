@@ -27,7 +27,7 @@ imports.
 Retained: affected work, deliberate cache layers, required quality gates, bounded
 parallelism, reusable workflows, explicit versions, scoped OIDC, artifact
 promotion, rollback, and CI monitoring. Adapted to Gradle consumer closures,
-Develocity scan correlation, and Actions runner/transport costs. Rejected:
+native report correlation, and Actions runner/transport costs. Rejected:
 unconditional full-suite bans, fixed five-minute/80% targets, unsupported savings
 percentages, mandatory install-job barriers, and mutable version examples as
 security proof. Targets follow measured workloads; uncertain impact widens checks.

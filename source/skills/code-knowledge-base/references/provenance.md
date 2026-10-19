@@ -21,8 +21,8 @@ The original `okf-refactor` metadata identifies this source:
 
 The executable assets remain under `scripts/`, with their tests under `scripts/tests/`.
 The complete example bundle remains under `assets/example-bundle/`.
-The unchanged upstream self-description remains under `assets/self-bundle/` as a historical format fixture.
-Its old commands, installation advice, and audit claims describe that snapshot, not the current workflow or current evidence.
+The upstream self-description is not distributed.
+The local example bundle exercises the supported format without another host or command surface.
 Use this skill's active references for commands and requirements.
 
 The former metadata supplies source identity but no license declaration.
