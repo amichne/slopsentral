@@ -3,7 +3,7 @@
 Slopsentral supplies Kotlin-first skills and engineering rules for Pi, Codex, and GitHub Copilot.
 Its five plugin bundles cover software design, Kotlin, IntelliJ plugins, developer tools, and repository knowledge.
 
-[**Get the latest Pi release**](https://github.com/amichne/slopsentral/releases/latest) · [Pi guide](docs/pi-harness.md) · [Skill catalog](source/CATALOG.md)
+[**Documentation**](https://slopsentral.michne.com) · [**Get the latest Pi release**](https://github.com/amichne/slopsentral/releases/latest) · [Pi guide](docs/pi-harness.md) · [Skill catalog](source/CATALOG.md)
 
 ## Use Slopsentral in Pi
 

@@ -1,0 +1,50 @@
+check: stage=format
+warning: `VIRTUAL_ENV=/Users/amichne/.cache/uv/environments-v2/check-6d151ecd8b6a4b02` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+46 files already formatted
+check: stage=lint
+warning: `VIRTUAL_ENV=/Users/amichne/.cache/uv/environments-v2/check-6d151ecd8b6a4b02` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+All checks passed!
+check: stage=types
+warning: `VIRTUAL_ENV=/Users/amichne/.cache/uv/environments-v2/check-6d151ecd8b6a4b02` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+0 errors, 0 warnings, 0 informations
+WARNING: there is a new pyright version available (v1.1.407 -> v1.1.414).
+Please install the new version or set PYRIGHT_PYTHON_FORCE_VERSION to `latest`
+
+check: stage=tests
+warning: `VIRTUAL_ENV=/Users/amichne/.cache/uv/environments-v2/check-6d151ecd8b6a4b02` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+============================= test session starts ==============================
+platform darwin -- Python 3.12.14, pytest-8.4.2, pluggy-1.6.0
+rootdir: /Users/amichne/code/slopsentral
+configfile: pyproject.toml
+testpaths: tools/python_checks, source/skills/python-tooling/assets, source/skills/controlled-technical-writing/scripts/tests
+plugins: cov-7.0.0
+collected 168 items
+
+tools/python_checks/test_agents_scope_hook.py ....................       [ 11%]
+tools/python_checks/test_contracts.py ..                                 [ 13%]
+tools/python_checks/test_gradle_repository.py .........                  [ 18%]
+tools/python_checks/test_package_pi.py ................                  [ 27%]
+tools/python_checks/test_pi_candidate.py ............................... [ 46%]
+.........                                                                [ 51%]
+tools/python_checks/test_pi_pty.py .                                     [ 52%]
+tools/python_checks/test_pi_release_workflows.py ...                     [ 54%]
+tools/python_checks/test_publish.py ......                               [ 57%]
+tools/python_checks/test_sync_docs.py ....                               [ 60%]
+source/skills/python-tooling/assets/standalone.py ....                   [ 62%]
+source/skills/controlled-technical-writing/scripts/tests/test_assess_text.py . [ 63%]
+....................                                                     [ 75%]
+source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py . [ 75%]
+.......................ssssssssssssssssss                                [100%]
+
+=========================== short test summary info ============================
+SKIPPED [1] source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py:166: Set TEST_VALE_ARCHIVE to the pinned archive for real CLI evidence.
+SKIPPED [1] source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py:177: Set TEST_VALE_ARCHIVE to the pinned archive for real CLI evidence.
+SKIPPED [5] source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py:188: Set TEST_VALE_ARCHIVE to the pinned archive for real CLI evidence.
+SKIPPED [4] source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py:205: Set TEST_VALE_ARCHIVE to the pinned archive for real CLI evidence.
+SKIPPED [3] source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py:244: Set TEST_VALE_ARCHIVE to the pinned archive for real CLI evidence.
+SKIPPED [1] source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py:252: Set TEST_VALE_ARCHIVE to the pinned archive for real CLI evidence.
+SKIPPED [1] source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py:261: Set TEST_VALE_ARCHIVE to the pinned archive for real CLI evidence.
+SKIPPED [1] source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py:270: Set TEST_VALE_ARCHIVE to the pinned archive for real CLI evidence.
+SKIPPED [1] source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py:283: Set TEST_VALE_ARCHIVE to the pinned archive for real CLI evidence.
+======================= 150 passed, 18 skipped in 17.60s =======================
+check: outcome=completed

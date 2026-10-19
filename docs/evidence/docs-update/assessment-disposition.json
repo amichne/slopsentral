@@ -1,0 +1,139 @@
+{
+  "assessmentType": "ASSESSED",
+  "comprehension": "NOT_ASSESSED",
+  "findings": [
+    {
+      "path": "README.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "AGENTS.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "AGENTS.md",
+      "rule": "Slopsentral.LongSentence",
+      "line": 3,
+      "reason": "This finding concerns inherited instructions outside the new Documentation section. Keep the existing instruction text."
+    },
+    {
+      "path": "AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 61,
+      "reason": "This finding concerns inherited instructions outside the new Documentation section. Keep the existing instruction text."
+    },
+    {
+      "path": "docs/public/index.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/guides/controlled-writing.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/guides/install.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/guides/pi.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/guides/troubleshooting.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/plugins/developer-tooling.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/plugins/intellij-plugin-development.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/plugins/kotlin-engineering.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/plugins/repository-knowledge.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/plugins/software-engineering.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/reference/architecture.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/reference/glossary.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/reference/profiles.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/maintainers/contribute.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/maintainers/documentation.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/maintainers/projection.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep the domain terms, product names, and exact contracts. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/evidence/docs-update/README.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep exact tool names, command outcomes, and delivery limits in the evidence record. The grade is advisory."
+    },
+    {
+      "path": "docs/public/maintainers/documentation.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "report": "publication-text-assessment.json",
+      "reason": "Keep exact deployment, tool, and permission terms. The grade is advisory."
+    }
+  ]
+}

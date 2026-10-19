@@ -1,0 +1,18 @@
+{
+  "url": "https://slopsentral.michne.com/guides/install",
+  "title": "Install Slopsentral - Slopsentral",
+  "headings": [
+    "Documentation Index",
+    "Start",
+    "Use Slopsentral",
+    "On this page",
+    "Install Slopsentral",
+    "Codex",
+    "GitHub Copilot CLI",
+    "Use the installation"
+  ],
+  "text": "Start\nInstall Slopsentral\n\nAdd the marketplace and select plugins in Codex or GitHub Copilot CLI.\n\nUse the plugin commands in your installed agent application. The examples install Software Engineering and Kotlin Engineering. For prose alone, substitute repository-knowledge@slopsentral.\nThese commands change the application\u2019s marketplace and plugin configuration. They do not need a Slopsentral checkout.\n\u200b\nCodex\nExamine the configured marketplaces.\ncodex plugin marketplace list --json\n\nIf Slopsentral is absent, add its Codex branch.\ncodex plugin marketplace add amichne/slopsentral --ref harness/codex --json\n\nInstall the selected plugins.\ncodex plugin add software-engineering@slopsentral --json\ncodex plugin add kotlin-engineering@slopsentral --json\n\nExamine the installed plugins.\ncodex plugin list --json\n\nThe inventory must list the selected plugin identities. If an existing source points elsewhere, examine it before replacement. The OpenAI documentation describes marketplace sources and Git refs.\n\u200b\nGitHub Copilot CLI\nExamine the configured marketplaces.\ncopilot plugin marketplace list\n\nIf Slopsentral is absent, add its GitHub Copilot branch.\ncopilot plugin marketplace add 'amichne/slopsentral#harness/github-copilot'\n\nInstall the selected plugins.\ncopilot plugin install software-engineering@slopsentral\ncopilot plugin install kotlin-engineering@slopsentral\n\nExamine the installed plugins.\ncopilot plugin list\n\nThe GitHub reference describes plugin selectors and marketplace refs.\n\u200b\nUse the installation\nStart a fresh agent session. State the task and the authorized scope. If the host asks for hook trust, examine the selected hook before approval.\nFor Kotlin semantic tools, examine Kast\u2019s connection separately. Kast owns its runtime and workspace discovery. A plugin inventory does not prove that a workspace accepts semantic queries.\nThe workflow profiles declare the provider branches. The troubleshooting guide covers missing capabilities and stale installations.\nSlopsentral\nChoose plugins\ngithub\nPowered by\nThis documentation is built and hosted on Mintlify, a developer documentation platform",
+  "width": 1200,
+  "overflow": false,
+  "images": []
+}

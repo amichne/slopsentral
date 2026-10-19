@@ -63,6 +63,18 @@ Use fresh output directories. Projection never downloads a runtime or replaces
 an existing tree. `node tools/install-projection-pkl.mjs --out <path>` is the
 explicit checksum-verified runtime setup boundary.
 
+## Documentation
+
+`docs/public/docs.json` owns Mintlify navigation.
+`docs/pi-harness.md` owns the Pi guide.
+Run `npm run docs:sync` to regenerate `docs/public/guides/pi.mdx`.
+Do not edit that generated page directly.
+Use Node.js 24.21.0 for the pinned Mintlify CLI.
+After page, navigation, or asset changes, run `npm run docs:check`.
+Use `npm run docs:dev` for the browser preview.
+Keep assessment reports and browser evidence outside `docs/public`.
+A preview does not prove the public deployment serves the same source.
+
 ## Shared Engineering Baseline
 
 Read and apply [the canonical engineering baseline](source/instructions/engineering-design.md)

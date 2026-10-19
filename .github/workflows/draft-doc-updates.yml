@@ -1,0 +1,58 @@
+name: Draft Documentation Updates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - docs/pi-harness.md
+      - tools/sync_docs.py
+      - tools/sync_docs.py.lock
+      - .github/workflows/draft-doc-updates.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: draft-doc-updates
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.12.9'
+      - name: Regenerate the public Pi guide from its canonical source
+        run: uv run --locked --script tools/sync_docs.py
+      - name: Create or refresh one draft for generated changes
+        uses: peter-evans/create-pull-request@98357b18bf14b5342f975ff684046ec3b2a07725 # v8.0.0
+        id: docs
+        with:
+          branch: automation/pi-docs
+          base: main
+          add-paths: docs/public/guides/pi.mdx
+          draft: always-true
+          commit-message: 'docs: refresh the public Pi guide'
+          title: 'docs: refresh the public Pi guide'
+          body: |
+            This draft regenerates the public Pi guide from docs/pi-harness.md with tools/sync_docs.py.
+            The canonical guide owns the prose. The generator converts repository links for the public site.
+            Review the source diff and the documentation workflow before approval.
+            This workflow does not merge the draft or change Mintlify deployment settings.
+      - name: Start documentation checks for the bot branch
+        if: steps.docs.outputs.pull-request-operation == 'created' || steps.docs.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run validate-docs.yml --ref automation/pi-docs

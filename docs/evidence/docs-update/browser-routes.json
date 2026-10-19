@@ -1,0 +1,173 @@
+{
+  "type": "PASSED",
+  "baseRevision": "bc3c53a3156fe7221f7f2aa638c40e6612031f73",
+  "routes": [
+    {
+      "route": "guides/choose-plugins",
+      "heading": "Choose plugins",
+      "url": "http://localhost:3000/guides/choose-plugins",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "25b0460a79155b903ce66ece3edb218d8cd2c221fcb9bb69a9bfb13878b6696f",
+      "sourceSha256": "88205db05d20d2f9a4ea2b524783922398a814728229b20fe085efbd3e372a55"
+    },
+    {
+      "route": "guides/controlled-writing",
+      "heading": "Write technical prose",
+      "url": "http://localhost:3000/guides/controlled-writing",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "3fe643a0bfc8e4e919ffd0488d41c539fcfa89c15bb2394065b0a15efbd81677",
+      "sourceSha256": "c2b4f6ce6ac719886ed9cfc519349b75ecfb38d66dbc8b5146deba5a9210010c"
+    },
+    {
+      "route": "guides/install",
+      "heading": "Install Slopsentral",
+      "url": "http://localhost:3000/guides/install",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "f525b5db133b55ea5658cf4c73b592ac308e26e45726219361bbce9eaec315a8",
+      "sourceSha256": "faad4a4aec2ea33dbd717dfafc9acb30b0008602f1926f416dbe3688c49bc949"
+    },
+    {
+      "route": "guides/pi",
+      "heading": "Use Slopsentral in Pi",
+      "url": "http://localhost:3000/guides/pi",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "0598fd96108d4ffa9bd2338675f20fffab109e5280c573ae34cec1db1bbc5dc9",
+      "sourceSha256": "7a738d1a48a4889ba36638f2e18a3e3121214b32c5bc5feebdcd5b6e45fd25ac"
+    },
+    {
+      "route": "guides/troubleshooting",
+      "heading": "Troubleshoot Slopsentral",
+      "url": "http://localhost:3000/guides/troubleshooting",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "ab31710b9b54de36b65f1faf06e0e6e6398e68fa221fb69a83c00c30b4bb8085",
+      "sourceSha256": "e2690d6180b47f301dacaa92eeede22873f0da7e2cb0287b99ac1d69f965b44a"
+    },
+    {
+      "route": "index",
+      "heading": "Slopsentral",
+      "url": "http://localhost:3000/",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "0455192c1192fce623bb53d84ea0d3868e311b3b9f5247bb695528c4e2dbfc9a",
+      "sourceSha256": "a4787e23fbf1f295af36a1ea4dfa44d6b31af79c6f379cb7a2bd0dbebfdeda77"
+    },
+    {
+      "route": "maintainers/contribute",
+      "heading": "Contribute",
+      "url": "http://localhost:3000/maintainers/contribute",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "733780ec0ce825f93f1f5ab5fb1c81ac07d80934cbe1b008069f1caa8bb31da0",
+      "sourceSha256": "517edd3f765daf88ce8fb182b53de41deaf02e9e9c6ad9d1dfd2cc766ec8cc53"
+    },
+    {
+      "route": "maintainers/documentation",
+      "heading": "Maintain the site",
+      "url": "http://localhost:3000/maintainers/documentation",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "413b7d9cee9300121b8496da712fec8cae12bc22d817e86f2686d08376aa1617",
+      "sourceSha256": "792eaa40bf07ba2e9b454c69db4fa8f9f1cba43c3cfae8db9dde485a7f8e3239"
+    },
+    {
+      "route": "maintainers/projection",
+      "heading": "Project provider output",
+      "url": "http://localhost:3000/maintainers/projection",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "25716b1e9e73f58f5da004a34c361c4b0a8505aecc336568ce173d003505f02a",
+      "sourceSha256": "e8b3b99541c5316e8ee350f0ac941b44217ea7c1923ca06ed0134c886defc5fa"
+    },
+    {
+      "route": "plugins/developer-tooling",
+      "heading": "Developer Tooling",
+      "url": "http://localhost:3000/plugins/developer-tooling",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "fe49b0246d2c0126cbae48627a19e1f8989d5e0f43c55654c99b9d5832b4c382",
+      "sourceSha256": "33d2b9dee764edbb1319360c9cce86447f9c4833d2a3c40432f8fcb0c5a274ac"
+    },
+    {
+      "route": "plugins/intellij-plugin-development",
+      "heading": "IntelliJ Plugin Development",
+      "url": "http://localhost:3000/plugins/intellij-plugin-development",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "f0b6c55f0cd553f8fd132d8e5f39e66553847f8a2c72f2454bcbeb924a0f3f02",
+      "sourceSha256": "ca21d6b3aa55af09e533a97e3796587929dd5d9c3e61b30540a2be3a571f15ff"
+    },
+    {
+      "route": "plugins/kotlin-engineering",
+      "heading": "Kotlin Engineering",
+      "url": "http://localhost:3000/plugins/kotlin-engineering",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "ea4908283f1021061d9a1f6db4194c09e51b4a696b3e66fc0685badf5a6e3dc6",
+      "sourceSha256": "4ee55eda51a2dbed3fac4a128c4edc6a620ba04b7ff1ee0fda73ff0b914c72a2"
+    },
+    {
+      "route": "plugins/repository-knowledge",
+      "heading": "Repository Knowledge",
+      "url": "http://localhost:3000/plugins/repository-knowledge",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "91f3249ea7e4b20e4e58b82ee2f8f062ca5539eba6751ce144df93b460e4b3cc",
+      "sourceSha256": "64728498e1499b3ef1475e7bd7b860dfb9e7c5ae995090e942ade4aaa26eec83"
+    },
+    {
+      "route": "plugins/software-engineering",
+      "heading": "Software Engineering",
+      "url": "http://localhost:3000/plugins/software-engineering",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "6e17416587391b76f2a600e226a65513e7b0fac7c6fad5e9459e6d252ecbe0fb",
+      "sourceSha256": "138f10add175346e807bf639e33201cd5bb88a241caf23a093e12d59476fba29"
+    },
+    {
+      "route": "reference/architecture",
+      "heading": "Source and delivery",
+      "url": "http://localhost:3000/reference/architecture",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "fe80b695343d8d6e12e098419ec45aac77a23bdf3f41018a486b4f16efd8822a",
+      "sourceSha256": "bf22806cd2df7c3a7420fa20194df2b2cceba4461d9c6a50d40328f7aa529ae7"
+    },
+    {
+      "route": "reference/glossary",
+      "heading": "Terminology",
+      "url": "http://localhost:3000/reference/glossary",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "d1031985f36f862fed7458164d14dcee1216598b11fc42dc192533e0e10e4e20",
+      "sourceSha256": "51945225b6be127723cb66cc300233d9b216c85efe3deb274fc0cd359205ded4"
+    },
+    {
+      "route": "reference/profiles",
+      "heading": "Profiles",
+      "url": "http://localhost:3000/reference/profiles",
+      "overflow": false,
+      "brokenImages": [],
+      "textSha256": "1fa3b54857f468a0aae339237621be88fcc390c17ebec5e3783fc659e979110b",
+      "sourceSha256": "5c2bf6ef36209a46d14528481d2b6c9548f1d73fe0323357229561634712bf2f"
+    }
+  ],
+  "interactions": [
+    "install sidebar",
+    "Pi sidebar",
+    "Reference tab",
+    "Maintainers tab"
+  ],
+  "mobile": {
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "navigation": "mobile menu to installation guide",
+    "heading": "Install Slopsentral",
+    "foregroundNeeded": "hidden tab paused the menu transition before Chrome activation"
+  }
+}

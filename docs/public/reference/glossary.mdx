@@ -1,0 +1,37 @@
+---
+title: "Terminology"
+description: "Keep domain terms consistent and separate terminology review from prose assessment."
+icon: "spell-check"
+---
+
+Use the current code, schemas, and domain documents to choose terms.
+Keep one name for each concept.
+Do not infer synonymy from similar words or related roles.
+
+## Distinguish the concepts
+
+| Concept | Distinction |
+| --- | --- |
+| `marketplace` | A catalog lists installable plugins and their sources. |
+| `plugin` | A package adds capabilities to an agent application. |
+| `plugin manifest` | A file declares the plugin's metadata and components. |
+| `skill` | A directory supplies task instructions in `SKILL.md` and optional resources. |
+| `hook` | A configured action responds to a lifecycle event and its filter. |
+| `workflow profile` | A source declaration selects plugins, skills, and hook defaults. |
+| `capability` | A Pi setting selects an instruction, skill, resource, agent reference, or hook. |
+| `style rule` | A linter rule defines a prose condition and its reported finding. |
+
+These descriptions explain site usage.
+They do not introduce a machine-enforced glossary.
+The [source schemas](https://github.com/amichne/slopsentral/tree/main/source/schemas) own external contracts.
+
+## Examine terms separately
+
+The local prose assessment uses Vale 3.24.0 and bundled rules.
+Schema version 2 reports prose measurements and findings without a terminology assessment.
+It accepts no `--glossary` argument.
+A successful assessment does not prove that a term matches its domain meaning.
+
+If a repository owns a glossary, obey that repository's terminology rules.
+Keep ambiguous terms explicit until source evidence resolves them.
+The [writing procedure](/guides/controlled-writing) describes the prose report and its limits.

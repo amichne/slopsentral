@@ -1,0 +1,14 @@
+
+> slopsentral@3.0.0 docs:check
+> uv run --locked --script tools/sync_docs.py --check && npm run docs:validate
+
+{"type": "CURRENT", "target": "docs/public/guides/pi.mdx"}
+
+> slopsentral@3.0.0 docs:validate
+> cd docs/public && mint validate && mint broken-links --check-anchors --check-redirects
+
+⠋ validating build...
+[2K[1A[2K[G⠙ validating build...
+[2K[1A[2K[G⠹ validating build...
+[2K[1A[2K[Gsuccess build validation passed
+success no broken links found
