@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T15:28:17-04:00",
+  "generatedAt": "2026-10-19T17:11:25-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -55,28 +55,28 @@
         },
         {
           "name": "gradle-performance-engineering",
-          "sha256": "sha256:c60fa4914a83661d45bee766f653ccb3b3e4ce11114abed8d41b48fcbf031d9b",
+          "sha256": "sha256:62866aa621dea25b6813e70d804e1bdbfe7bda133a0a7a234e38d3bb75bfa0af",
           "sourcePath": "source/skills/gradle-performance-engineering",
           "targetPath": "skills/gradle-performance-engineering",
           "type": "SKILL"
         },
         {
           "name": "kotlin-application-stack",
-          "sha256": "sha256:b155cf9ab9a4fba2e49d6973cbda5037f29cad85fcfb9dd344452f63c654f5ff",
+          "sha256": "sha256:8ae5539fa37dd6ff2c086c67f166624672c2f0ce5b11b5d0149608b6b48c7527",
           "sourcePath": "source/skills/kotlin-application-stack",
           "targetPath": "skills/kotlin-application-stack",
           "type": "SKILL"
         },
         {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:e73e2aaa5930f27ab4b561f2fad6589f680601973f48784df487d53bdb892810",
+          "sha256": "sha256:35f379ee3851842d92dbbd873f867c5bea77f12a5dc940ab89803f5d890e203f",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:03ee427ca36a1fac2347798ba84d9891015e2fe6d64114e75190749c45c3c151",
+          "sha256": "sha256:5ff20c66f2e001f5b83ad09d9ee454f92675eb0cf5ff9f310e02e717567cb434",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -104,14 +104,14 @@
       "references": [
         {
           "name": "intellij-platform-testing",
-          "sha256": "sha256:bfdb2bbd9b7fc481c06430a8fc43a871aea18d5004674ecbeab1ba31b7efe2ab",
+          "sha256": "sha256:aa5f247a510d740e1fc61564efcf9ea34528084a46003ad388a053b112f125f5",
           "sourcePath": "source/skills/intellij-platform-testing",
           "targetPath": "skills/intellij-platform-testing",
           "type": "SKILL"
         },
         {
           "name": "intellij-plugin-delivery",
-          "sha256": "sha256:bf3810f539ddddb967cd3594387e44710417a3df622cbc15baafcca8adebdba5",
+          "sha256": "sha256:085bf54df9069617834bbafb57e5f61b511bd81f1d4fd0d86abf52876e71b8c9",
           "sourcePath": "source/skills/intellij-plugin-delivery",
           "targetPath": "skills/intellij-plugin-delivery",
           "type": "SKILL"
@@ -146,14 +146,14 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:81837b5151dfb1809afd3e11ff12d0ecb4784efe1dd939d9401ea2ac8a48363c",
+          "sha256": "sha256:057cffe4a6769cf16628df98fe96d1c373ba81ecf6a91b272d2e8a4c5e30f155",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
         },
         {
           "name": "controlled-technical-writing",
-          "sha256": "sha256:d5b0056494815bbd82f532f692b69701a0b1a7c28bc098fe8dd8beffe681dc91",
+          "sha256": "sha256:2772a75b244ab70908ee4ecc2617d806c45a6486622e4b63a767a07df05c03cc",
           "sourcePath": "source/skills/controlled-technical-writing",
           "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
@@ -167,7 +167,7 @@
         },
         {
           "name": "technical-documentation",
-          "sha256": "sha256:df2044e566c7d56d447f6124c06a038e6dc7e6ffdb94a6fec50b47d36200e5e6",
+          "sha256": "sha256:02b66b9c1b97220d18648e1ce3194d0689cf60e3fd5c846964c12c986aa7ed07",
           "sourcePath": "source/skills/technical-documentation",
           "targetPath": "skills/technical-documentation",
           "type": "SKILL"
@@ -223,7 +223,7 @@
         },
         {
           "name": "pkl-engineering",
-          "sha256": "sha256:966f6b935d6783439ba72c47ea173cffa7e30ffeb88e985d4f18bc38e8c831ff",
+          "sha256": "sha256:54dcaa40b877d737669f27c82159a76e45376176a2cdc1cda19853ef24312ed6",
           "sourcePath": "source/skills/pkl-engineering",
           "targetPath": "skills/pkl-engineering",
           "type": "SKILL"
@@ -255,6 +255,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "d88292f64bb93bc992732c9c0d77bfda92b22388",
+  "sourceSha": "ceb3373e1d27d0815d8cc610d2fee8175d543436",
   "type": "HYDRATED_MARKETPLACE"
 }
