@@ -85,11 +85,11 @@ export async function qualify(client: Client = live, requested?: string): Promis
   same(c.run_id, p.build_run_id, 'Build run differs.');
   same(c.run_attempt, p.main_run_attempt, 'Main attempt differs.');
   same(c.run_attempt, p.build_run_attempt, 'Build attempt differs.');
-  const run = object(await client.json('/actions/runs/' + String(c.run_id)));
+  const run = object(await client.json('/actions/runs/' + String(c.run_id) + '/attempts/' + String(c.run_attempt)));
   for (const field of ['run_id', 'run_number', 'run_attempt']) if (!Number.isSafeInteger(c[field]) || Number(c[field]) < 1) reject('INVALID_RECORD', 'Invalid producer number.');
   for (const [field, expected] of Object.entries({ id: c.run_id, head_sha: revision, status: 'completed', conclusion: 'success', event: 'push', head_branch: 'main', path: '.github/workflows/validate-source.yml', run_attempt: c.run_attempt, run_number: c.run_number })) same(run[field], expected, 'Unqualified producer: ' + field);
   same(object(run.repository).full_name, repository, 'Foreign producer repository.');
-  const jobs = list(object(await client.json('/actions/runs/' + String(c.run_id) + '/jobs?per_page=100')).jobs).map(object);
+  const jobs = list(object(await client.json('/actions/runs/' + String(c.run_id) + '/attempts/' + String(c.run_attempt) + '/jobs?per_page=100')).jobs).map(object);
   for (const [name, required] of [
     ['Validate marketplace source', ['Compile Kotlin concepts and forbidden calls', 'Validate Pkl facade against native Pkl', 'Project both providers and execute projected hook contracts']],
     ['Retain tested Pi candidate', ['Examine every Pi contract through the native host', 'Install the candidate archive through the native Pi CLI', 'Test native setup and recovery', 'Retain the tested setup installer']],

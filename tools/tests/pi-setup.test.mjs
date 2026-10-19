@@ -62,7 +62,7 @@ function producer(archive, version = '0.1.123') {
     ['Retain tested Pi candidate', ['Examine every Pi contract through the native host', 'Install the candidate archive through the native Pi CLI', 'Test native setup and recovery', 'Retain the tested setup installer']],
   ];
   const jobs = { jobs: steps.map(([name, names]) => ({ name, conclusion: 'success', steps: names.map(name => ({ name, conclusion: 'success' })) })) };
-  const routes = new Map([['/releases/latest', release], ['/releases/tags/' + tag, release], ['/actions/runs/101', run], ['/actions/runs/101/jobs?per_page=100', jobs], ['/git/commits/' + revision, { tree: { sha: tree } }], ['/git/ref/tags/' + tag, { object: { type: 'commit', sha: revision } }]]);
+  const routes = new Map([['/releases/latest', release], ['/releases/tags/' + tag, release], ['/actions/runs/101', { ...run, run_attempt: 2, conclusion: 'failure' }], ['/actions/runs/101/attempts/1', run], ['/actions/runs/101/attempts/1/jobs?per_page=100', jobs], ['/git/commits/' + revision, { tree: { sha: tree } }], ['/git/ref/tags/' + tag, { object: { type: 'commit', sha: revision } }]]);
   return { run, jobs, bytes, release, client: { json: async route => { assert.ok(routes.has(route), route); return structuredClone(routes.get(route)); }, bytes: async url => { const result = bytes.get(url.split('/').at(-1)); assert.ok(result); return result; } } };
 }
 
