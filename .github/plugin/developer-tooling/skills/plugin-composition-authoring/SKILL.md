@@ -34,10 +34,10 @@ Do not infer runtime delivery from a valid manifest.
 9. For hook changes, run the configured command with success and failure inputs outside the plugin root.
 
 ```sh
-node tools/validate-source-graph.mjs
+uv run --locked tools/marketplace.py validate
 uv run --locked python source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>
-node tools/project-marketplaces.mjs --source . --harness codex --out <fresh-codex-directory>
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out <fresh-copilot-directory>
+uv run --locked tools/marketplace.py project --source . --harness codex --out <fresh-codex-directory>
+uv run --locked tools/marketplace.py project --source . --harness github-copilot --out <fresh-copilot-directory>
 git diff --check
 ```
 
