@@ -229,6 +229,7 @@ def main() -> int:
                 "source/schemas/pi/candidate.schema.json",
                 "source/schemas/pi/promotion.schema.json",
                 "source/schemas/pi/content-profile.schema.json",
+                "source/schemas/pi/setup.schema.json",
                 "source/schemas/catalog/catalog.schema.json",
                 "source/schemas/primitives/resource-reference.schema.json",
                 "source/schemas/evals/routing-field-observations.schema.json",

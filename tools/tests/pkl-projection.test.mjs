@@ -186,6 +186,12 @@ function externalEvidencePaths(repo) {
 
 test('Pi excludes local Python caches from canonical payloads after repository checks', native, t => {
   const { dir, repo } = sourceFixture(t);
+  // Select Python explicitly in this content-only fixture; the shipped default stays minimal.
+  const pluginPath = path.join(repo, 'source/plugins/software-engineering/plugin.json');
+  const plugin = JSON.parse(fs.readFileSync(pluginPath));
+  const tooling = JSON.parse(fs.readFileSync(path.join(repo, 'source/plugins/developer-tooling/plugin.json')));
+  plugin.skills.push(tooling.skills.find(skill => skill.name === 'python-tooling'));
+  fs.writeFileSync(pluginPath, JSON.stringify(plugin));
   for (const cache of ['.ruff_cache', '.pytest_cache']) {
     const file = path.join(repo, 'source/skills/python-tooling/assets', cache, 'fixture-cache');
     fs.mkdirSync(path.dirname(file), { recursive: true });

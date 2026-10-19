@@ -7,16 +7,16 @@ icon: "life-ring"
 Start with the exact error, command, provider, and installed plugin version.
 Separate a source failure from an installation failure or absent host evidence.
 
-## Pi settings differ from the profile
+## Pi setup or discovery fails
 
-Use `/slopsentral state` to inspect origins, overrides, dependencies, and errors.
-User, project, and session overrides take precedence over profile defaults.
-The `none` profile keeps explicit overrides.
-Legacy `off` selections migrate to `none` and expose a notice in state.
+Use the exact error from [native setup](/guides/pi). Check Pi 1.3.0, Node 22.19
+or later, system tar and GitHub access. An ambiguous legacy extension or indirect
+configuration path stops before activation. Preserve it for inspection.
 
-Use the independent `enabled: false` setting to turn off the extension.
-Reset each changed layer to remove them.
-The [Pi guide](/guides/pi) covers settings and unresolved scope reviews.
+Restart Pi after setup and inspect its native skills. The default supplies
+`semantic-ratchet`. Project scope still requires Pi's own trust decision.
+A failed or interrupted update uses the documented rollback, which preserves
+later edits and private backups. Old runtime commands are retired.
 
 ## A plugin is absent
 
@@ -25,7 +25,7 @@ The provider source must match its published branch.
 Codex uses `harness/codex`.
 GitHub Copilot uses `harness/github-copilot`.
 
-If the plugin name comes from an older catalog, consult the [migration map](https://github.com/amichne/slopsentral/blob/main/source/MIGRATION.md).
+If the plugin name comes from an older catalog, consult the [migration map](/reference/migration).
 A retired name does not prove that the current plugin failed.
 
 ## A skill does not run
@@ -35,11 +35,8 @@ Start a fresh session after installation changes.
 Examine whether the host enabled the plugin.
 Do not infer skill consumption from installed files alone.
 
-In Pi, inspect the binding's state, invocation policy, and generation through `/slopsentral state`.
-Use `/slopsentral skill NAME` for allowed human invocation.
-The model uses `slopsentral_skill` with the current advertised generation.
-Managed `/skill:NAME` requests reject instead of bypassing that policy.
-A loaded skill supplies instructions, without proof of workflow completion.
+In Pi, use native `/skill:semantic-ratchet` for the default package.
+A loaded skill supplies instructions without proving workflow completion.
 
 The [plugin reference](/plugins/repository-knowledge) lists the procedures that each plugin supplies.
 

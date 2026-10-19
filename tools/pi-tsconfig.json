@@ -9,7 +9,11 @@
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["../source/hooks/pi/*.ts"]
+  "include": [
+    "setup-pi.mts"
+  ]
 }

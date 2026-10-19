@@ -37,7 +37,7 @@ function sourceGate(t) {
   return { root, source, git, check };
 }
 
-test('the source gate rejects whitespace already staged for a Worktrunk commit', t => {
+test('the source gate rejects whitespace already staged for a commit', t => {
   const { source, git, check } = sourceGate(t);
   assert.equal(check().status, 0);
   fs.writeFileSync(source, 'invalid \n');

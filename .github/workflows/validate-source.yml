@@ -120,6 +120,20 @@ jobs:
           --run-id "$GITHUB_RUN_ID" --run-number "$GITHUB_RUN_NUMBER"
           --run-attempt "$GITHUB_RUN_ATTEMPT" --event "$GITHUB_EVENT_NAME"
           --bundle "$RUNNER_TEMP/pi-candidate"
+      - name: Test native setup and recovery
+        run: node --test tools/tests/pi-setup.test.mjs
+      - name: Package the tested setup installer
+        run: >-
+          uv run --locked python -m tools.setup_assets package
+          "$RUNNER_TEMP/pi-candidate" "$RUNNER_TEMP/setup-candidate"
+      - name: Retain the tested setup installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: setup-candidate-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/setup-candidate/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
       - name: Retain the immutable tested archive
         uses: actions/upload-artifact@v4
         with:

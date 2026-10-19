@@ -238,38 +238,8 @@ def inspect(root: Path) -> _Package | Rejected:
         return Rejected(Code.INVALID_PACKAGE)
     files = tuple(entry for entry in entries if entry.is_file())
     names = {entry.relative_to(root).as_posix() for entry in files}
-    accepted = (
-        content_selection(root, value, names)
-        if "profile-inventory.json" in names
-        else runtime_selection(value, names)
-    )
+    accepted = content_selection(root, value, names)
     return _Package(root, version, files) if accepted else Rejected(Code.INVALID_PACKAGE)
-
-
-def runtime_selection(manifest: dict[str, object], names: set[str]) -> bool:
-    if manifest.get("peerDependencies") != {
-        "@earendil-works/pi-coding-agent": "*",
-        "@earendil-works/pi-tui": "*",
-    }:
-        return False
-    required = {
-        "package.json",
-        "profiles.json",
-        "marketplace-lock.json",
-        "extensions/slopsentral.ts",
-        "extensions/runtime.ts",
-        "capabilities.json",
-        "schemas/settings.schema.json",
-        "schemas/capabilities.schema.json",
-        "schemas/scope-assessment.schema.json",
-        "extensions/settings.ts",
-        "extensions/skills.ts",
-        "extensions/control.ts",
-        "extensions/journal.ts",
-        "extensions/coordinator.ts",
-        "extensions/menu.ts",
-    }
-    return required.issubset(names)
 
 
 def package(root: Path, output: Path, *, version: str | None = None) -> Packed | Rejected:

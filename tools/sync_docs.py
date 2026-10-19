@@ -29,7 +29,7 @@ SOURCE = Path("docs/pi-harness.md")
 TARGET = Path("docs/public/guides/pi.mdx")
 HEADER = """---
 title: "Use Slopsentral in Pi"
-description: "Install the package, select capabilities, and inspect hook policies and release evidence."
+description: "Install verified native skills, migrate legacy registrations, and recover safely."
 icon: "terminal"
 ---
 """
@@ -39,7 +39,7 @@ FENCE = re.compile(r"^\s*(`{3,}|~{3,})")
 
 def public_link(match: re.Match[str]) -> str:
     target = match[2]
-    if urlsplit(target).scheme or target.startswith("#"):
+    if urlsplit(target).scheme or target.startswith(("#", "/")):
         return match[0]
     path = posixpath.normpath(f"docs/{target}")
     return f"{match[1]}https://github.com/amichne/slopsentral/blob/main/{path}{match[3]}"

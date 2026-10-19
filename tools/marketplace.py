@@ -400,7 +400,8 @@ def project(
         raise ProjectionError(Code.OUTPUT_EXISTS, "Output already exists")
     files = snapshot(repository)
     models = models_snapshot()
-    input_value = source_input(repository, files, pkl, models, profile=profile)
+    selected = (profile or "local-development-default") if harness == "pi" else None
+    input_value = source_input(repository, files, pkl, models, profile=selected)
     first = evaluate(pkl, "Project.pkl", input_value, harness, models=models)
     examine_plan(first, input_value)
     initial = operations(first, files, harness)

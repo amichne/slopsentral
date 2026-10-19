@@ -21,7 +21,6 @@ by hand when the authored source can be fixed instead.
   preserves all authored files.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
 - Pi packages project into `.pi/slopsentral` for local installation.
-  The Pi adapter lives under `source/hooks/pi/`.
   `tools/projection/Pi.pkl` owns its package shape.
   `Validate Source` keeps a tested Pi candidate before release.
   `.github/workflows/release-pi.yml` publishes those bytes through GitHub Releases.
@@ -29,12 +28,15 @@ by hand when the authored source can be fixed instead.
   `tools/pi_candidate.py` owns producer admission, source identity, candidate reuse,
   and promotion records. `source/schemas/pi/` owns the public provenance shapes.
   Release archives need no repository clone or local npm build for installation.
-- `tools/install-pi.sh` is a thin POSIX host launcher for the published package.
-  Keep installation logic in Pi's package manager.
-- `tools/marketplace.py project --harness pi --profile <name>` compiles a content-only trial.
+- `tools/install-pi.sh` authenticates the tested native consumer installer.
+  `tools/setup-pi.mts` owns native settings migration and private recovery.
+  It uses the Node runtime required by Pi, with strict TypeScript validation;
+  consumer setup must not add uv/Python as prerequisites.
+  `tools/setup_assets.py` binds these setup bytes to the tested candidate.
+- `tools/marketplace.py project --harness pi --profile <name>` compiles a native content selection.
   `tools/projection/Pi.pkl` owns file selection and unsupported-capability rejection.
   Deploy its `AGENTS.md` through the consumer's native instruction scope.
-  See `docs/pi-content-profile.md` for the trial and retired runtime guarantees.
+  See `docs/pi-content-profile.md` for content selection and deliberately retired runtime guarantees.
 
 ## First-Party Material
 

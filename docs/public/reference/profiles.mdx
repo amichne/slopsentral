@@ -27,18 +27,13 @@ Slopsentral supplies no global launcher or automatic repository-profile hook.
 The historical `pkl-checked-repository` name now selects guidance only.
 It does not add automatic Pkl or source-graph hooks.
 
-## Pi settings
+## Pi content selection
 
-Pi uses profiles as defaults for independent capabilities.
-Enter `/slopsentral` to inspect settings or `/slopsentral state` for structured state.
-User, project, and session overrides take precedence over profile defaults.
-The `none` profile supplies an empty preset and keeps explicit overrides.
-Legacy `off` selections migrate visibly to `none` with their overrides intact.
-The independent `enabled: false` setting turns off the extension.
-
-The active plan governs discovery, invocation, hooks, and inspection through one generation.
-Each skill binding sets `human`, `model`, or `either` invocation.
-The [Pi guide](/guides/pi) describes managed skill routes, save scopes, dependencies, and hook policies.
+Pi profiles resolve during projection. The default selects `semantic-ratchet`
+only. A supported explicit profile can add skills and native scoped instructions.
+Restricted invocation modes or hook policies cannot be simulated by prompts;
+projection rejects them. No runtime profile switch or layered override remains.
+See [native Pi setup](/guides/pi) and [migration](/reference/pi-migration).
 
 ## Explicit Codex lifecycle
 
@@ -69,5 +64,15 @@ If later work changes the target, rollback reports `PROFILE_CONFLICT` and writes
 
 Rollback covers the generated configuration file.
 It does not reverse marketplace or plugin installation effects.
-The [lifecycle document](https://github.com/amichne/slopsentral/blob/main/docs/profile-lifecycle.md) supplies apply and rollback commands.
+Use an explicit apply only after reviewing its plan:
+
+```bash
+node tools/profile-lifecycle.mjs apply --profile documentation-default
+```
+
+Keep its returned transaction manifest. Use the exact returned transaction manifest and backup root for rollback:
+
+```bash
+node tools/profile-lifecycle.mjs rollback --transaction /absolute/transaction/manifest.json
+```
 The [authored profiles](https://github.com/amichne/slopsentral/tree/main/source/profiles) own the selections.

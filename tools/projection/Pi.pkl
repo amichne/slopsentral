@@ -7,84 +7,22 @@ class Link {
   path: Schema.RelativePath
 }
 
-class SkillLink {
-  name: Schema.Identity
-  path: Schema.RelativePath
-  invocation: Schema.SkillInvocation
-}
-
-class Action {
-  name: Schema.Identity
-  event: "SessionStart" | "UserPromptSubmit" | "PreToolUse" | "PostToolUse" | "Stop"
-  plugin: Schema.Identity
-  argv: List<String>(!isEmpty)
-  matcher: String? = null
-  timeout: Int(isPositive)
-}
-
-class Profile {
-  name: Schema.Identity
-  description: String
-  skills: List<SkillLink>
-  instructions: List<Link>
-  agents: List<Link>
-  hooks: List<Action>
-  hookPolicy: "OFF" | "ADVISORY" | "ENFORCING"
-}
-
-class Config {
-  schemaVersion: Int(this == 1) = 1
-  defaultProfile: "local-development-default" = "local-development-default"
-  profiles: List<Profile>(!isEmpty)
-}
-
 class Catalog {
   name: Schema.Identity
   plugins: List<Link>
-}
-
-class Capability {
-  id: String
-  type: Schema.Kind
-  name: Schema.Identity
-  path: String? = null
-  actions: List<Action>? = null
-  dependencies: List<String>
-  profiles: List<Schema.Identity>
-}
-
-class Capabilities {
-  schemaVersion: Int(this == 1) = 1
-  capabilities: List<Capability>
-}
-
-class Resources {
-  extensions: List<String> = List("./extensions/slopsentral.ts")
-  skills: List<String>
-}
-
-open class PackageMetadata {
-  name: "slopsentral-pi" = "slopsentral-pi"
-  version: "0.1.0" = "0.1.0"
-  description: String
-  type: "module" = "module"
-  keywords: List<String> = List("pi-package")
-  engines: Mapping<String, String> = new { ["node"] = ">=22.19.0" }
-}
-
-class Package extends PackageMetadata {
-  peerDependencies: Mapping<String, String> = new {
-    ["@earendil-works/pi-coding-agent"] = "*"
-    ["@earendil-works/pi-tui"] = "*"
-  }
-  pi: Resources
 }
 
 class ContentResources {
   skills: List<String>(!isEmpty)
 }
 
-class ContentPackage extends PackageMetadata {
+class ContentPackage {
+  name: "slopsentral-pi" = "slopsentral-pi"
+  version: "0.1.0" = "0.1.0"
+  description: String
+  type: "module" = "module"
+  keywords: List<String> = List("pi-package")
+  engines: Mapping<String, String> = new { ["node"] = ">=22.19.0" }
   pi: ContentResources
 }
 
@@ -120,111 +58,10 @@ function links(plugins: List<Schema.Plugin>, kind: Schema.Kind): List<Link> =
               + target(plugin.references.find((r) -> r.type == kind && r.name == identity))
         })
 
-function actions(p: Schema.Plugin): List<Action> =
-  p.references
-    .filter((r) -> r is Schema.HookReference)
-    .flatMap((r) ->
-      let (ref = r as Schema.HookReference)
-        ref.hook.adapter.hooks
-          .toMap()
-          .entries
-          .toList()
-          .flatMap((entry) ->
-            entry.value
-              .toList()
-              .flatMap((group) ->
-                group.hooks
-                  .toList()
-                  .flatMap((command) ->
-                    if (
-                      !List("SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop")
-                        .contains(entry.key)
-                    )
-                      throw("Unsupported Pi hook event")
-                    else if (
-                      !command.command.matches(Regex("[A-Za-z0-9_./:-]+( [A-Za-z0-9_./:-]+)*"))
-                        || command.commandWindows != null
-                    )
-                      throw("Unsupported Pi hook command")
-                    else if (
-                      command.command.matches(
-                        Regex(
-                          "uv run --locked --script hooks/inject-instruction-context\\.py( --instruction [a-z][a-z0-9-]*)+",
-                        ),
-                      ) && entry.key == "SessionStart"
-                    )
-                      List()
-                    else if (
-                      ref.name == "agents-md-scope"
-                        && command.command != "uv run --locked --script hooks/agents-md-scope.py"
-                    )
-                      throw("Unsupported Pi scope adapter command")
-                    else if (ref.name == "agents-md-scope" && entry.key != "Stop")
-                      List()
-                    else
-                      List(new Action {
-                        name = ref.name
-                        event = entry.key
-                        plugin = p.name
-                        argv =
-                          command.command.split(" ")
-                            + (if (ref.name == "agents-md-scope") List("assess") else List())
-                        matcher = command.matcher ?? group.matcher
-                        timeout = command.timeout ?? 30
-                      })
-                  )
-              )
-          )
-    )
-
-function config(input: Schema.Input): Config = new {
-  profiles =
-    input.profiles.map((profile) ->
-      let (
-        selected = profile.plugins.map((name) -> input.plugins.toList().find((p) -> p.name == name))
-      )
-        new Profile {
-          name = profile.name
-          description = profile.description
-          local selectedNames = links(selected, "SKILL").map((r) -> r.name)
-          skills =
-            if (!profile.skills.keys.every((id) -> selectedNames.contains(id.drop(6))))
-              throw("Profile skill binding is not composed by a selected plugin")
-            else
-              links(input.plugins.toList(), "SKILL")
-                .filter((r) ->
-                  selectedNames.contains(r.name)
-                    && (
-                      profile.focusSkills == null
-                        || profile.focusSkills!!.contains(r.name)
-                        || profile.skills.containsKey("skill:" + r.name)
-                    )
-                )
-                .map((r) -> new SkillLink {
-                  name = r.name
-                  path = r.path
-                  invocation = profile.skills.getOrNull("skill:" + r.name)?.invocation ?? "either"
-                })
-          instructions = links(selected, "INSTRUCTION")
-          agents = links(selected, "AGENT")
-          hooks = selected.flatMap((p) -> actions(p))
-          hookPolicy = profile.hookPolicy
-        })
+function manifest(input: Schema.Input): ContentPackage = new {
+  description = input.description
+  pi = new { skills = links(input.plugins.toList(), "SKILL").map((r) -> "./" + r.path.dropLast(9)) }
 }
-
-function manifest(input: Schema.Input): Package | ContentPackage =
-  if (input.contentProfile == null)
-    new Package {
-      description = input.description
-      pi = new { skills = List() }
-    }
-  else
-    new ContentPackage {
-      description = input.description
-      pi = new {
-        skills = links(input.plugins.toList(), "SKILL").map((r) -> "./" + r.path.dropLast(9))
-      }
-    }
 
 // Selection belongs to the compiler. No profile state reaches a Pi extension.
 function selectContent(input: Schema.Input, name: Schema.Identity): Schema.Input =
@@ -234,13 +71,15 @@ function selectContent(input: Schema.Input, name: Schema.Identity): Schema.Input
     else if (profile.hookPolicy != "OFF")
       throw("UNSUPPORTED_PI_CAPABILITY: LIFECYCLE_HOOKS")
     else
-      let (resolved = config(input).profiles.find((profile) -> profile.name == name))
       let (
         selectedPlugins =
           input.plugins.toList().filter((plugin) -> profile.plugins.contains(plugin.name))
       )
-      let (skills = resolved.skills.map((skill) -> skill.name))
-        if (!resolved.skills.every((skill) -> skill.invocation == "either"))
+      let (available = links(selectedPlugins, "SKILL").map((skill) -> skill.name))
+      let (skills = available.filter((identity) -> profile.focusSkills == null || profile.focusSkills!!.contains(identity) || profile.skills.containsKey("skill:" + identity)))
+        if (!profile.skills.keys.every((identity) -> available.contains(identity.drop(6))))
+          throw("Profile skill binding is not composed by a selected plugin")
+        else if (!profile.skills.values.every((binding) -> binding.invocation == "either"))
           throw("UNSUPPORTED_PI_CAPABILITY: INVOCATION_RESTRICTION")
         else if (skills.isEmpty)
           throw("Content profile needs at least one skill")
@@ -345,98 +184,3 @@ function catalog(input: Schema.Input): Catalog = new {
         path = p.name
       })
 }
-
-function dependencyTree(primitive: Schema.Primitive): List<Schema.Primitive> =
-  List(primitive) + primitive.dependsOn.toList().flatMap((child) -> dependencyTree(child))
-
-function capabilities(input: Schema.Input): Capabilities = new {
-  local plugins = input.plugins.toList()
-  local refs = plugins.flatMap((plugin) -> plugin.references)
-  local presets = config(input).profiles
-  local dependencies =
-    refs
-      .filter((ref) -> ref is Schema.HookReference)
-      .flatMap((ref) -> dependencyTree((ref as Schema.HookReference).hook))
-  capabilities =
-    refs
-      .map((ref) -> ref.type.toLowerCase() + ":" + ref.name)
-      .distinct
-      .sort()
-      .map((identity) ->
-        let (ref = refs.find((ref) -> ref.type.toLowerCase() + ":" + ref.name == identity))
-        let (plugin = plugins.find((plugin) -> plugin.references.contains(ref)))
-        let (allActions = actions(plugin))
-        let (
-          definition =
-            dependencies.findOrNull((item) -> item.name == ref.name && item.type == ref.type)
-        )
-          new Capability {
-            id = identity
-            type = ref.type
-            name = ref.name
-            path =
-              if (ref.type == "HOOK")
-                null
-              else
-                plugin.name
-                  + "/"
-                  + (if (ref.type == "RESOURCE") ref.sourcePath.drop(7) else target(ref))
-            actions =
-              if (ref.type != "HOOK")
-                null
-              else
-                allActions.filter((action) -> action.name == ref.name)
-            dependencies =
-              (definition?.dependsOn?.toList() ?? List())
-                .map((item) -> item.type.toLowerCase() + ":" + item.name)
-                .distinct
-                .sort()
-            profiles =
-              presets
-                .filter((profile) ->
-                  if (ref.type == "SKILL")
-                    profile.skills.any((link) -> link.name == ref.name)
-                  else if (ref.type == "INSTRUCTION")
-                    profile.instructions.any((link) -> link.name == ref.name)
-                  else if (ref.type == "AGENT")
-                    profile.agents.any((link) -> link.name == ref.name)
-                  else if (ref.type == "HOOK")
-                    profile.hooks.any((action) -> action.name == ref.name)
-                  else
-                    input.profiles
-                      .find((source) -> source.name == profile.name)
-                      .plugins
-                      .any((name) ->
-                        plugins
-                          .find((plugin) -> plugin.name == name)
-                          .references
-                          .any((candidate) ->
-                            candidate.type == ref.type && candidate.name == ref.name
-                          )
-                      )
-                )
-                .map((profile) -> profile.name)
-          })
-}
-
-function copies(): List<Schema.Copy> =
-  List(
-    new Schema.Copy {
-      source = "source/hooks/pi/slopsentral.ts"
-      target = "extensions/slopsentral.ts"
-    },
-    new Schema.Copy {
-      source = "source/hooks/pi/runtime.ts"
-      target = "extensions/runtime.ts"
-    },
-  )
-    + List("settings", "skills", "control", "journal", "coordinator", "menu")
-      .map((name) -> new Schema.Copy {
-        source = "source/hooks/pi/" + name + ".ts"
-        target = "extensions/" + name + ".ts"
-      })
-    + List("settings", "capabilities", "scope-assessment")
-      .map((name) -> new Schema.Copy {
-        source = "source/schemas/pi/" + name + ".schema.json"
-        target = "schemas/" + name + ".schema.json"
-      })

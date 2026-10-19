@@ -9,7 +9,7 @@ This document guides maintainers changing a provider mapping or generating a
 marketplace. The projector supports Codex, GitHub Copilot, and an installable Pi package.
 Authored assets remain under `source/`.
 Plugins compose them by reference.
-See [the Pi harness guide](pi-harness.md) for its native extension contract and trial procedure.
+See [the Pi harness guide](pi-harness.md) for its native content contract and setup procedure.
 
 ## Evaluate, seal, publish
 

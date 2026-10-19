@@ -121,14 +121,11 @@ def test_pi_release_surfaces_the_latest_package_and_pinned_install(tmp_path: Pat
     assert "--clobber" not in arguments
     notes = captured["notes"]
     assert isinstance(notes, str)
-    assert (
-        "pi install npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/"
-        "download/slopsentral-v0.1.123/slopsentral-pi-0.1.123.tgz"
-    ) in notes
-    assert (
-        "https://github.com/amichne/slopsentral/blob/slopsentral-v0.1.123/docs/releases.md" in notes
-    )
-    assert "https://github.com/amichne/slopsentral/blob/slopsentral-v0.1.123/README.md" in notes
+    assert "https://slopsentral.michne.com/guides/pi" in notes
+    assert "https://slopsentral.michne.com/reference/releases" in notes
+    assert "/blob/" not in notes
+    assert any(str(argument).endswith("setup-pi.mts") for argument in arguments)
+    assert any(str(argument).endswith("setup.json") for argument in arguments)
     assert "a" * 40 in notes
     assert "b" * 40 in notes
 
@@ -136,6 +133,7 @@ def test_pi_release_surfaces_the_latest_package_and_pinned_install(tmp_path: Pat
 def test_release_admits_every_asset_before_creating_tag_and_draft() -> None:
     script = commands(field(workflow("release-pi.yml"), "jobs", "release"))
     assert script.index("release_assets unpack") < script.index("release_assets ensure-tag")
+    assert script.index("setup_assets verify") < script.index("release_assets ensure-tag")
     assert script.index("release_assets ensure-tag") < script.index("gh release create")
     assert script.index("sha256sum -c SHA256SUMS") < script.index("--draft=false --latest")
 

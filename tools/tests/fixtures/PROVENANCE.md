@@ -20,24 +20,3 @@ The historical evidence does not establish current host behavior.
 
 Current-source tests separately examine complete deterministic output, canonical payload bytes, executable modes, and Codex lock digests.
 The catalog can change without replacing historical evidence with regenerated expectations.
-
-## Pi terminal evidence
-
-`pi-virtual-terminal.ts` is an unchanged upstream test helper from Pi 1.3.0.
-Its source revision is `71023aec1546d6d677a65669c5665c0927ce0dd0`.
-The [original helper](https://github.com/earendil-works/pi/blob/71023aec1546d6d677a65669c5665c0927ce0dd0/packages/tui/test/virtual-terminal.ts) uses `@xterm/headless` to interpret terminal output.
-The [upstream settings tests](https://github.com/earendil-works/pi/blob/71023aec1546d6d677a65669c5665c0927ce0dd0/packages/tui/test/settings-list.test.ts) supply the method.
-This helper is test infrastructure, not a public Pi API.
-Its relative type import remains unchanged and disappears during TypeScript transpilation.
-The production menu uses Pi's exported components and lifecycle APIs.
-
-`pi-LICENSE` preserves the upstream MIT license without edits.
-Direct comparison with that revision established byte equality for both files.
-
-| File | SHA-256 |
-| --- | --- |
-| `pi-virtual-terminal.ts` | `8ab8cf042a2157ac17717763bf7bf78a3147c8b14149a357a4b9081f322b8c31` |
-| `pi-LICENSE` | `0457f5bcec3b3b211605dfb5d1a49042fd638f3686a410fe099c24a25af13c48` |
-
-The Node lockfile resolves Pi 1.3.0 and `@xterm/headless` 6.0.0 for these cases.
-Unpinned Pi ranges permit later installations, whose behavior needs separate evidence.
