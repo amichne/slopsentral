@@ -351,7 +351,7 @@ function tree(root: string): Map<string, string> {
 }
 export function shellQuote(value: string): string { return "'" + value.replaceAll("'", "'\"'\"'") + "'"; }
 
-export async function install(qualified: Qualified, options: { agentDir: string; cwd: string; project: boolean; beforeCommit?: () => void; write?: (file: string, bytes: Buffer | null, mode: number) => void }): Promise<{ status: string; version: string; state: string }> {
+export async function install(qualified: Qualified, options: { agentDir: string; cwd: string; project: boolean; beforeCommit?: () => void; stage?: (source: string, target: string) => void; write?: (file: string, bytes: Buffer | null, mode: number) => void }): Promise<{ status: string; version: string; state: string }> {
   if (qualified[qualification] !== true) reject('UNQUALIFIED_RELEASE', 'Setup requires an admitted release.');
   options = { ...options, ...normalized(options) };
   const context: Scope = { agentDir: options.agentDir, cwd: options.cwd, project: options.project };
@@ -391,8 +391,20 @@ export async function install(qualified: Qualified, options: { agentDir: string;
     }
     files.push(...legacyFiles(context));
     const changes = files.filter(item => item.before !== item.after);
-    if (!fs.existsSync(destination)) { directory(path.dirname(destination)); fs.cpSync(pkg, destination, { recursive: true, errorOnExist: true }); }
-    else {
+    if (!fs.existsSync(destination)) {
+      directory(path.dirname(destination));
+      const staging = fs.mkdtempSync(path.join(path.dirname(destination), '.staging-'));
+      const staged = path.join(staging, 'package');
+      try {
+        if (options.stage) options.stage(pkg, staged);
+        else fs.cpSync(pkg, staged, { recursive: true, errorOnExist: true, force: false });
+        const expected = tree(pkg), actual = tree(staged);
+        if (expected.size !== actual.size || [...expected].some(([name, value]) => actual.get(name) !== value)) reject('STAGING_FAILED', 'Staged package differs.');
+        // The private setup lock serializes publication; a complete version is never copied over.
+        if (fs.existsSync(destination)) reject('CONFIG_CHANGED', 'Package destination appeared during staging.');
+        fs.renameSync(staged, destination);
+      } finally { fs.rmSync(staging, { recursive: true, force: true }); }
+    } else {
       // A version never replaces bytes. A damaged installation is an explicit recovery case.
       const expected = tree(pkg), actual = tree(destination);
       if (expected.size !== actual.size || [...expected].some(([name, value]) => actual.get(name) !== value)) reject('INSTALLED_BYTES_CHANGED', 'The existing version differs; preserve it and use recovery.');

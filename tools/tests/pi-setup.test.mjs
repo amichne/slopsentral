@@ -258,3 +258,17 @@ test('permission-only concurrent and later edits are preserved', async t => {
   assert.equal((await install(admitted, options)).status, 'CURRENT');
   assert.equal(fs.statSync(config).mode & 0o777, 0o600);
 });
+
+test('interrupted package staging leaves the version recoverable before activation', async t => {
+  const options = workspace(t), admitted = await qualify(producer(bundle(options.directory)).client);
+  const state = path.join(options.agentDir, 'slopsentral-setup');
+  await assert.rejects(install(admitted, { ...options, stage: (source, target) => {
+    fs.mkdirSync(target); fs.copyFileSync(path.join(source, 'package.json'), path.join(target, 'package.json'));
+    throw Error('interrupted package copy');
+  } }), /interrupted package copy/);
+  assert.equal(fs.existsSync(path.join(state, 'packages/0.1.123')), false);
+  assert.equal(fs.existsSync(path.join(options.agentDir, 'settings.json')), false);
+  assert.equal((await install(admitted, options)).status, 'INSTALLED');
+  rollback(options);
+  assert.equal(fs.existsSync(path.join(options.agentDir, 'settings.json')), false);
+});
