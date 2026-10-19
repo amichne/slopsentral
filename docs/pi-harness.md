@@ -1,6 +1,6 @@
 # Pi harness
 
-Use Slopsentral in Pi through one package with native commands, instructions, skills, resources, and hooks.
+Use Slopsentral in Pi through one package with native commands, managed skills, instructions, resources, and hooks.
 Pi version ranges are unpinned.
 The lockfile supplies Pi 1.3.0 for the current evidence.
 The `*` ranges do not prove compatibility with future releases.
@@ -50,18 +50,32 @@ Escape exits a picker even when its search contains text.
 Ctrl+U clears the search.
 Small terminals show an enlargement notice when fewer than eight rows remain.
 
-A profile supplies defaults for independent capabilities.
+A profile supplies defaults for independent capabilities and skill invocation policies.
 User, project, and session overrides take precedence in that order.
-The `off` profile supplies an empty preset and preserves explicit overrides.
-Reset each changed layer to remove those overrides.
+The `none` profile supplies an empty preset and keeps explicit overrides.
+Legacy `off` selections resolve to `none` with a migration notice and keep their overrides.
+The migration appears in `/slopsentral state`.
+Set `enabled` to `false` to turn off the extension, regardless of capability overrides.
+
+The disabled extension supplies no skill catalog, prompt instructions, automatic hooks, or automatic mutation collection.
+Its journal keeps pending paths and records a `COLLECTION_DISABLED` coverage gap.
+The settings commands remain available.
+Reset each changed layer to remove its overrides.
+
 A disabled or missing dependency makes its dependent capability unavailable.
-The menu and unaffected capabilities remain usable after an optional resource failure.
+A selected unavailable capability rejects startup or replacement.
+Unavailable catalog entries that the profile does not select remain visible in state.
+The loader rejects their invocation.
+The settings menu and repair commands remain available.
 A failed blocking hook still blocks its affected operation.
 
 | Command | Effect |
 | --- | --- |
 | `/slopsentral` | Open settings in the TUI or return state in other modes. |
-| `/slopsentral state` | Return effective configuration, origins, coverage, errors, jobs, and recent results. |
+| `/slopsentral state` | Return package identity, active generation, resolved bindings, origins, coverage, errors, jobs, and recent results. |
+| `/slopsentral preview session JSON` | Resolve a proposed session layer without a state change or hook execution. |
+| `/slopsentral skill` | List skills allowed through the human route. |
+| `/slopsentral skill NAME` | Load an allowed skill through the human route. |
 | `/slopsentral set project JSON` | Replace the project layer with a complete settings object. |
 | `/slopsentral set user JSON` | Replace the user layer. |
 | `/slopsentral set session JSON` | Replace the layer on the active session branch. |
@@ -69,18 +83,36 @@ A failed blocking hook still blocks its affected operation.
 | `/slopsentral run hook:NAME` | Run one hook's completion actions with its deadline and dependencies. |
 | `/slopsentral cancel KEY` | Request cancellation of the named job from the state output. |
 | `/slopsentral-profile NAME` | Select a profile on the active branch. |
+| `/slopsentral-profile none` | Select the empty preset and keep explicit overrides. |
 | `/slopsentral-NAME` | Select a source profile directly. |
 | `/slopsentral-check` | Run completion actions from the selected profile and enabled hooks. |
+
+To pause a session, use `/slopsentral set session JSON` with `"enabled": false` in the complete layer.
+Keep the layer's other fields to preserve its explicit overrides.
 
 Settings commands and the menu use the same [configuration owner](../source/hooks/pi/control.ts).
 The user file is `slopsentral.json` inside Pi's agent directory.
 The project file is `.pi/slopsentral.json` inside the consumer repository.
 Session settings use branch-local custom entries.
 The package directory keeps no mutable configuration.
+
 Malformed persistent files preserve the last accepted layer within that extension instance and expose an error.
 A malformed file without an accepted layer rejects workflow effects until repair.
 The settings menu and repair commands remain available.
 A rejected command preserves the current state.
+Settings inspection does not run hooks.
+
+The configuration owner resolves a candidate before it replaces the active plan.
+A profile change needs an idle session.
+An invalid replacement keeps the previous active plan.
+The inspector, discovery catalogs, skill loader, and hook dispatcher consume records from that same immutable plan.
+Each plan has an active generation and captured resource paths and digests.
+
+A successful preview returns `type: preview` and the candidate `effective` plan.
+Preview uses the same resolver and resource capture as an accepted plan.
+It changes no active plan, journal, file, or session branch and runs no hooks.
+Preview generations start with `preview:` and cannot invoke the skill loader.
+The command also accepts `user` and `project` scopes.
 
 Use the [settings schema](../source/schemas/pi/settings.schema.json) for external configuration.
 For example, this complete project layer disables one instruction and changes one hook:
@@ -105,9 +137,7 @@ Stable capability IDs come from `/slopsentral state`.
 Local additions support instructions, skills, resources, agents, and hooks through the schema.
 The menu supplies an addition wizard for instructions, skills, resources, and hooks.
 Relative local paths resolve against the consumer directory and save as absolute paths.
-A local skill needs `/reload` before Pi discovers it.
-Explicit `/skill:name` commands still reach Pi's discovered skill catalog.
-Advertisement controls do not remove those commands.
+Local skill additions use the same managed invocation rules.
 Agent definitions and resources supply references without automatic agents or MCP connections.
 A capability selection grants no publication or tool authority.
 
@@ -116,6 +146,65 @@ Read that message from Pi's `message_end` events.
 Print mode sends JSON to stderr because Pi owns stdout.
 RPC and TUI modes use native notifications.
 Pi owns the process exit status, so consumers must inspect the typed result.
+
+## Invoke managed skills
+
+Each resolved skill binding has an invocation policy.
+Shared `SKILL.md` content does not carry profile-specific invocation rules.
+
+| Policy | Human command | Model discovery and invocation |
+| --- | --- | --- |
+| `human` | Allowed | Hidden and rejected |
+| `model` | Rejected | Allowed |
+| `either` | Allowed | Allowed |
+
+Disabled or unavailable bindings permit neither route.
+Omitted policies default to `either`.
+Source profiles select bindings from their plugin compositions.
+Their optional `skills` map adds explicit selections and policies beside `focusSkills`.
+Settings layers can override policies through the same map.
+The `capabilities` map controls whether a skill is enabled.
+
+This settings example illustrates all three policies without a recommendation for these assignments:
+
+```json
+{
+  "schemaVersion": 1,
+  "skills": {
+    "skill:semantic-ratchet": { "invocation": "either" },
+    "skill:python-tooling": { "invocation": "model" },
+    "skill:github-ci-operations": { "invocation": "human" }
+  }
+}
+```
+
+Use `/slopsentral skill NAME` for the human route.
+The model uses `slopsentral_skill` with `name` and the current `generation` from the advertised catalog.
+The command and tool callbacks fix their invocation surface.
+The model cannot select the human surface through tool arguments.
+Both routes use the same [admission function and loader](../source/hooks/pi/skills.ts).
+
+The active plan supplies compact names and descriptions for model discovery and the human catalog.
+Full skill instructions enter context only after admission.
+The loader keeps the canonical reference base directory with the content.
+An admitted request keeps its resolved binding, resource identity, and generation through the load.
+A stale generation, changed resource, unknown name, forbidden policy, or unavailable binding rejects the request before instruction delivery.
+
+After a resource change, use `/reload` to capture its new bytes.
+A valid settings replacement also captures new bytes.
+The human command supplies instructions without an automatic provider turn.
+
+The Pi package exports no managed skills through native skill discovery.
+Legacy `/skill:NAME` requests for managed skills reject before ordinary model input.
+Unrelated packages keep their native skill routes.
+Managed invocation governs these command and tool routes.
+Unrestricted `read` and `bash` can still read installed Markdown.
+Pi transport labels do not authenticate a human.
+
+A loaded skill supplies instructions.
+The load does not prove that a model obeyed them or completed a workflow.
+Profiles keep the current model and tools.
+Skill invocation grants no publication authority.
 
 ## Hook policies
 
@@ -164,7 +253,7 @@ They do not establish the current state.
 
 ## Instruction scopes
 
-Pi collects mutation candidates from native `tool_execution_start` events before the effect.
+While the extension is enabled, Pi collects mutation candidates from native `tool_execution_start` events before the effect.
 Native `write` and `edit` paths include first-run edits and possible mutations from failed tools.
 Collection does not invoke Git or a hook subprocess.
 Final settlement starts one assessment for the pending revision by default.
@@ -181,6 +270,8 @@ Examine the affected scopes before `/slopsentral review NOTE`.
 State the instruction update or source-backed reason for no change in the note.
 Disabled hooks, cancellation, failed assessment, and session restoration preserve unresolved evidence.
 A completed assessment alone never resolves the review.
+While the extension is disabled, `/slopsentral review NOTE` rejects with `COLLECTION_DISABLED` and keeps the coverage gap.
+After `enabled: true`, an accepted review clears existing pending paths and coverage gaps.
 
 Shell commands and unsupported mutation tools lack complete path coverage.
 `mutationAdapters` can declare argument fields for custom tools.
@@ -218,6 +309,7 @@ pi remove --local npm:slopsentral-pi
 ## Package ownership
 
 [Pi.pkl](../tools/projection/Pi.pkl) composes profiles and capabilities from canonical source references.
+It copies managed skill content without native skill exports.
 It projects only the scope hook's settlement adapter into Pi.
 Codex and Copilot keep their own event contracts.
 The package copies runtime modules and schemas from their authored owners.

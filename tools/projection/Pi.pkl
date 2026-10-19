@@ -7,6 +7,12 @@ class Link {
   path: Schema.RelativePath
 }
 
+class SkillLink {
+  name: Schema.Identity
+  path: Schema.RelativePath
+  invocation: Schema.SkillInvocation
+}
+
 class Action {
   name: Schema.Identity
   event: "SessionStart" | "UserPromptSubmit" | "PreToolUse" | "PostToolUse" | "Stop"
@@ -19,7 +25,7 @@ class Action {
 class Profile {
   name: Schema.Identity
   description: String
-  skills: List<Link>
+  skills: List<SkillLink>
   instructions: List<Link>
   agents: List<Link>
   hooks: List<Action>
@@ -171,11 +177,23 @@ function config(input: Schema.Input): Config = new {
           description = profile.description
           local selectedNames = links(selected, "SKILL").map((r) -> r.name)
           skills =
-            links(input.plugins.toList(), "SKILL")
-              .filter((r) ->
-                selectedNames.contains(r.name)
-                  && (profile.focusSkills == null || profile.focusSkills!!.contains(r.name))
-              )
+            if (!profile.skills.keys.every((id) -> selectedNames.contains(id.drop(6))))
+              throw("Profile skill binding is not composed by a selected plugin")
+            else
+              links(input.plugins.toList(), "SKILL")
+                .filter((r) ->
+                  selectedNames.contains(r.name)
+                    && (
+                      profile.focusSkills == null
+                        || profile.focusSkills!!.contains(r.name)
+                        || profile.skills.containsKey("skill:" + r.name)
+                    )
+                )
+                .map((r) -> new SkillLink {
+                  name = r.name
+                  path = r.path
+                  invocation = profile.skills.getOrNull("skill:" + r.name)?.invocation ?? "either"
+                })
           instructions = links(selected, "INSTRUCTION")
           agents = links(selected, "AGENT")
           hooks = selected.flatMap((p) -> actions(p))
@@ -186,7 +204,7 @@ function config(input: Schema.Input): Config = new {
 function manifest(input: Schema.Input): Package = new {
   description = input.description
   pi = new {
-    skills = links(input.plugins.toList(), "SKILL").map((r) -> "./" + r.path.dropLast(9))
+    skills = List()
   }
 }
 
@@ -285,7 +303,7 @@ function copies(): List<Schema.Copy> =
       target = "extensions/runtime.ts"
     },
   )
-    + List("settings", "control", "journal", "coordinator", "menu")
+    + List("settings", "skills", "control", "journal", "coordinator", "menu")
       .map((name) -> new Schema.Copy {
         source = "source/hooks/pi/" + name + ".ts"
         target = "extensions/" + name + ".ts"

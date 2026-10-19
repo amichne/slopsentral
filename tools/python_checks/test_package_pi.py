@@ -31,6 +31,7 @@ def fixture(root: Path) -> Path:
         "schemas/capabilities.schema.json",
         "schemas/scope-assessment.schema.json",
         "extensions/settings.ts",
+        "extensions/skills.ts",
         "extensions/control.ts",
         "extensions/journal.ts",
         "extensions/coordinator.ts",
@@ -47,7 +48,13 @@ def fixture(root: Path) -> Path:
 
 
 @pytest.mark.parametrize(
-    "name", ["capabilities.json", "extensions/control.ts", "schemas/settings.schema.json"]
+    "name",
+    [
+        "capabilities.json",
+        "extensions/control.ts",
+        "extensions/skills.ts",
+        "schemas/settings.schema.json",
+    ],
 )
 def test_incomplete_capability_runtime_never_produces_an_archive(tmp_path: Path, name: str) -> None:
     root = fixture(tmp_path / "package")

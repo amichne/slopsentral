@@ -1,8 +1,10 @@
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import type { Invocation } from "./settings.ts";
 
 export interface Link { readonly name: string; readonly path: string }
+export interface SkillLink extends Link { readonly invocation?: Invocation }
 export interface Action {
   readonly name: string;
   readonly event: "SessionStart" | "UserPromptSubmit" | "PreToolUse" | "PostToolUse" | "Stop";
@@ -14,7 +16,7 @@ export interface Action {
 export interface Profile {
   readonly name: string;
   readonly description: string;
-  readonly skills: readonly Link[];
+  readonly skills: readonly SkillLink[];
   readonly instructions: readonly Link[];
   readonly agents: readonly Link[];
   readonly hooks: readonly Action[];
@@ -49,6 +51,11 @@ function link(value: unknown): value is Link {
   return record(value) && keys(value, ["name", "path"]) && typeof value.name === "string"
     && identity.test(value.name) && relative(value.path);
 }
+function skillLink(value: unknown): value is SkillLink {
+  if (!record(value) || !keys(value, ["name", "path", "invocation"])) return false;
+  return link({ name: value.name, path: value.path })
+    && (value.invocation === undefined || value.invocation === "human" || value.invocation === "model" || value.invocation === "either");
+}
 function action(value: unknown): value is Action {
   if (!record(value) || !keys(value, ["name", "event", "plugin", "argv", "matcher", "timeout"])) return false;
   if (typeof value.name !== "string" || !identity.test(value.name)
@@ -66,7 +73,8 @@ function profile(value: unknown): value is Profile {
   return record(value) && keys(value, ["name", "description", "skills", "instructions", "agents", "hooks", "hookPolicy"])
     && typeof value.name === "string" && identity.test(value.name)
     && typeof value.description === "string" && value.description.length > 0
-    && [value.skills, value.instructions, value.agents].every(v => Array.isArray(v) && v.every(link))
+    && Array.isArray(value.skills) && value.skills.every(skillLink)
+    && [value.instructions, value.agents].every(v => Array.isArray(v) && v.every(link))
     && Array.isArray(value.hooks) && value.hooks.every(action)
     && (value.hookPolicy === "OFF" || value.hookPolicy === "ADVISORY" || value.hookPolicy === "ENFORCING");
 }

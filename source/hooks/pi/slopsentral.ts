@@ -1,9 +1,12 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { failures, notices, scopedSkills, selectionName, type Rejected, type Selection } from "./runtime.ts";
+import { Type } from "@earendil-works/pi-ai";
+import { failures, notices, type Rejected, type Selection } from "./runtime.ts";
 import { Control, blockingFailures, hookContext, presented, type PolicyRun } from "./control.ts";
 import { settingsMenu } from "./menu.ts";
+import { record } from "./settings.ts";
+import type { LoadedSkill, SkillRejection } from "./skills.ts";
 
 const continuationType = "slopsentral-stop-continuation";
 type CurrentPromptContext = { readonly type: "empty" } | { readonly type: "active"; readonly context: string };
@@ -25,13 +28,41 @@ export default function slopsentral(pi: ExtensionAPI): void {
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
   const control = new Control(root, pi);
   const config = control.config;
+  const generation = () => control.effective.type === "effective" ? control.effective.generation : "";
+  const legacy = new Set<string>();
+  const guardLegacy = () => {
+    const capabilities = control.catalog;
+    for (const cap of capabilities) if (cap.type === "SKILL" && !legacy.has(cap.name)) {
+      legacy.add(cap.name);
+      pi.registerCommand(`skill:${cap.name}`, { description: "Use /slopsentral skill for this managed skill.", handler: async (_args, ctx) => {
+        ctx.ui.notify(JSON.stringify({ type: "rejected", code: "LEGACY_SKILL_ROUTE" }), "error");
+      } });
+    }
+  };
+  guardLegacy();
+  const skillParameters = Type.Object({ name: Type.String({ pattern: "^[a-z][a-z0-9-]*$" }), generation: Type.String({ minLength: 1 }) }, { additionalProperties: false });
+  pi.registerTool<typeof skillParameters, SkillRejection | Omit<LoadedSkill, "content">>({
+    name: "slopsentral_skill", label: "Slopsentral skill", description: "Load a managed skill from the active Slopsentral catalog with its generation.",
+    parameters: skillParameters,
+    async execute(_id, params, signal) {
+      const value: unknown = params;
+      const result: LoadedSkill | SkillRejection = record(value) && Object.keys(value).every(key => key === "name" || key === "generation")
+        && typeof value.name === "string" && /^[a-z][a-z0-9-]*$/.test(value.name) && typeof value.generation === "string"
+        ? control.invokeSkill(value.name, "model", value.generation, signal)
+        : { type: "rejected", code: "INVALID_REQUEST" };
+      if (result.type === "rejected") return { content: [{ type: "text", text: JSON.stringify(result) }], details: result, isError: true };
+      const { content, ...details } = result;
+      return { content: [{ type: "text", text: content }], details };
+    },
+  });
   const report = (runs: readonly PolicyRun[], ctx: ExtensionContext, label: string) => {
     const text = runs.map(presented).filter(Boolean).join("\n");
     if (text) ctx.ui.notify(`${label}:\n${text}`, failures(runs) ? "warning" : "info");
   };
   pi.registerFlag("slopsentral-profile", { type: "string", description: "Slopsentral profile for a new session" });
   let selection: Selection | Rejected = { type: "rejected", code: "INVALID_CONFIG" };
-  const displaySelection = () => selection.type === "rejected" ? selection.code : selectionName(selection);
+  const displaySelection = () => control.effective.type === "effective" ? control.effective.enabled ? control.effective.profile : "disabled"
+    : selection.type === "rejected" ? selection.code : "unavailable";
   let startup: { type: "pending" } | { type: "ready"; context: string } | { type: "rejected"; reason: string } = { type: "pending" };
   let lifecycle = new AbortController();
   let promptContext: PromptContext = { type: "empty" };
@@ -42,6 +73,7 @@ export default function slopsentral(pi: ExtensionAPI): void {
     lifecycle = new AbortController();
     promptContext = { type: "empty" };
     control.restore(ctx);
+    guardLegacy();
     const result = control.selection;
     selection = result;
     startup = { type: "pending" };
@@ -62,7 +94,6 @@ export default function slopsentral(pi: ExtensionAPI): void {
   });
   pi.on("tool_execution_start", (event, ctx) => { control.capture(event.toolName, event.args, ctx); });
   pi.on("user_bash", (_event, ctx) => { control.capture("user_bash", {}, ctx); });
-  pi.on("resources_discover", () => ({ skillPaths: control.localSkillPaths() }));
   pi.on("context", (event, ctx) => {
     // Queued input bypasses before_agent_start. Wait for its new user entry and request text.
     if (promptContext.type === "accepted" && startup.type === "ready") {
@@ -88,16 +119,16 @@ export default function slopsentral(pi: ExtensionAPI): void {
     if (!ctx.isIdle()) { ctx.ui.notify("Select a profile after the current run ends.", "warning"); return; }
     const error = control.profile(name, ctx);
     if (error) { ctx.ui.notify(`Unknown Slopsentral profile: ${name}: ${error}`, "error"); return; }
-    restore(ctx);
-    ctx.ui.notify(`Slopsentral profile: ${name}`, "info");
+    changed();
+    ctx.ui.notify(`Slopsentral profile: ${control.effective.type === "effective" ? control.effective.profile : name}${name === "off" ? "\noff → none: explicit overrides remain" : ""}`, "info");
   };
   pi.registerCommand("slopsentral-profile", {
-    description: "Show or select a Slopsentral profile, or select off",
-    getArgumentCompletions: prefix => [...config.profiles.map(p => p.name), "off"].filter(name => name.startsWith(prefix)).map(name => ({ value: name, label: name })),
+    description: "Show or select a Slopsentral profile, or select the empty preset none",
+    getArgumentCompletions: prefix => [...config.profiles.map(p => p.name), "none"].filter(name => name.startsWith(prefix)).map(name => ({ value: name, label: name })),
     handler: async (args, ctx) => {
       const name = args.trim();
       if (name) choose(name, ctx);
-      else ctx.ui.notify(`Slopsentral: ${displaySelection()}\n${config.profiles.map(p => `${p.name}: ${p.description}`).join("\n")}\noff: turn off package context and automatic hooks`, "info");
+      else ctx.ui.notify(`Slopsentral: ${displaySelection()}\n${config.profiles.map(p => `${p.name}: ${p.description}`).join("\n")}\nnone: empty preset, explicit overrides remain\nUse /slopsentral set session {"schemaVersion":1,"enabled":false} to turn off the extension.`, "info");
     },
   });
   for (const profile of config.profiles) pi.registerCommand(`slopsentral-${profile.name}`, {
@@ -114,13 +145,12 @@ export default function slopsentral(pi: ExtensionAPI): void {
     selection = control.selection;
     startup = { type: "pending" };
     promptContext = { type: "empty" };
+    guardLegacy();
   };
   const sync = (ctx: ExtensionContext) => { if (control.sync(ctx)) { changed(); return true; } return false; };
   pi.registerCommand("slopsentral", {
     description: "Configure Slopsentral, inspect JSON state, set a layer, or record a scope review",
     handler: async (args, ctx) => {
-      sync(ctx);
-      if (control.refreshResources(ctx)) changed();
       const text = args.trim();
       const output = (value: unknown) => {
         const encoded = JSON.stringify(value);
@@ -128,6 +158,25 @@ export default function slopsentral(pi: ExtensionAPI): void {
         else if (ctx.mode === "print") console.error(encoded);
         else ctx.ui.notify(encoded, "info");
       };
+      if (text === "skill" || text.startsWith("skill ")) {
+        const name = text.slice(5).trim();
+        if (!name) { output({ type: "skill-catalog", generation: generation(), skills: control.skills("human") }); return; }
+        if (!/^[a-z][a-z0-9-]*$/.test(name)) { output({ type: "rejected", code: "INVALID_REQUEST" }); return; }
+        const result = control.invokeSkill(name, "human", generation());
+        if (result.type === "loaded") pi.sendMessage({ customType: "slopsentral-skill", content: result.content, display: true,
+          details: { name: result.name, generation: result.generation, resource: result.resource, baseDir: result.baseDir } }, { triggerTurn: false });
+        output(result);
+        return;
+      }
+      if (text.startsWith("preview ")) {
+        const match = /^preview (user|project|session) (.+)$/s.exec(text);
+        if (!match || !(match[1] === "user" || match[1] === "project" || match[1] === "session")) { output({ type: "rejected", code: "INVALID_COMMAND" }); return; }
+        let value: unknown;
+        try { value = JSON.parse(match[2] ?? ""); } catch { output({ type: "rejected", code: "INVALID_JSON" }); return; }
+        output(control.preview(match[1], value)); return;
+      }
+      sync(ctx);
+      if (control.refreshResources(ctx)) changed();
       if (text === "state") { output(control.state()); return; }
       if (text.startsWith("review ")) {
         const error = control.review(text.slice(7), ctx);
@@ -165,6 +214,10 @@ export default function slopsentral(pi: ExtensionAPI): void {
     },
   });
   pi.on("input", async (event, ctx) => {
+    const reserved = /^\/skill:([a-z][a-z0-9-]*)(?:\s|$)/.exec(event.text);
+    if (reserved?.[1] && control.ownsSkill(reserved[1])) {
+      ctx.ui.notify(JSON.stringify({ type: "rejected", code: "LEGACY_SKILL_ROUTE" }), "error"); return { action: "handled" };
+    }
     sync(ctx);
     if (control.refreshResources(ctx)) changed();
     const current = currentPromptContext(promptContext);
@@ -188,6 +241,12 @@ export default function slopsentral(pi: ExtensionAPI): void {
   });
   pi.on("before_agent_start", async (event, ctx) => {
     if (sync(ctx)) { ctx.abort(); return; }
+    if (control.examineNativeSkills(event.systemPromptOptions.skills)) {
+      ctx.ui.notify(`${control.nativeResourceError}: repair native skill discovery before another run.`, "error");
+      event.systemPromptOptions.skills = control.scopeSkills(event.systemPromptOptions.skills);
+      delete event.systemPromptOptions.sections.slopsentral_skills;
+      ctx.abort(); return;
+    }
     control.clearToolContext();
     const accepted = promptContext;
     const starting: PromptContext = { type: "starting" };
@@ -195,7 +254,7 @@ export default function slopsentral(pi: ExtensionAPI): void {
     if (selection.type === "rejected") {
       promptContext = { type: "empty" };
       event.systemPromptOptions.sections.slopsentral = `Slopsentral profile unavailable: ${selection.code}. Select a valid profile before another run.`;
-      event.systemPromptOptions.skills = scopedSkills(root, { type: "off" }, event.systemPromptOptions.skills);
+      event.systemPromptOptions.skills = control.scopeSkills(event.systemPromptOptions.skills);
       ctx.abort();
       return;
     }
@@ -214,6 +273,9 @@ export default function slopsentral(pi: ExtensionAPI): void {
     if (text) event.systemPromptOptions.sections.slopsentral = text;
     else delete event.systemPromptOptions.sections.slopsentral;
     event.systemPromptOptions.skills = control.scopeSkills(event.systemPromptOptions.skills);
+    const catalog = control.skills("model");
+    if (catalog.length) event.systemPromptOptions.sections.slopsentral_skills = `Managed Slopsentral skills. Load instructions with slopsentral_skill. Generation: ${generation()}\n${JSON.stringify(catalog)}`;
+    else delete event.systemPromptOptions.sections.slopsentral_skills;
     promptContext = { type: "empty" };
     if (startup.type === "rejected") ctx.abort();
     else {

@@ -40,7 +40,7 @@ test('Pi installs a release archive and loads persisted profiles without registr
   const loader = new DefaultResourceLoader({ cwd: directory, agentDir, settingsManager, noContextFiles: true });
   await loader.reload();
   assert.deepEqual(loader.getExtensions().errors, []);
-  assert.ok(loader.getSkills().skills.some(skill => skill.name === 'openapi-contract-authoring'));
+  assert.equal(loader.getSkills().skills.some(skill => skill.name === 'openapi-contract-authoring'), false);
   const modelRuntime = await ModelRuntime.create({ authPath: path.join(agentDir, 'auth.json'), modelsPath: null,
     modelsStorePath: path.join(agentDir, 'models-cache.json'), allowModelNetwork: false, refreshOnCreate: false });
   const { session } = await createAgentSession({ cwd: directory, agentDir, resourceLoader: loader, modelRuntime, settingsManager,
@@ -53,6 +53,8 @@ test('Pi installs a release archive and loads persisted profiles without registr
   const result = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Describe an identifier' },
     { cwd: directory, skills: loader.getSkills().skills, sections: {} });
   assert.ok(result.systemPromptOptions.sections.slopsentral.includes('# Kotlin Engineering'));
+  assert.ok(result.systemPromptOptions.sections.slopsentral_skills.includes('kotlin-review'));
+  assert.ok(session.getActiveToolNames().includes('slopsentral_skill'));
   assert.deepEqual(errors, []);
 });
 

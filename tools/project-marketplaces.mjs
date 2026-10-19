@@ -145,7 +145,8 @@ function freezeInput(repository) {
     const input = { name: marketplace.name, owner: marketplace.owner, description: marketplace.description,
       generatedAt, sourceSha: digest(files, 'source', 'sha1'), plugins,
       profiles: catalog.profiles.map(p => ({ name: p.name, description: p.description, plugins: p.plugins,
-        hookPolicy: p.hookPolicy.mode, ...(p.focusSkills ? { focusSkills: p.focusSkills } : {}) })),
+        hookPolicy: p.hookPolicy.mode, ...(p.focusSkills ? { focusSkills: p.focusSkills } : {}),
+        ...(p.skills ? { skills: p.skills } : {}) })),
       phase: 'PLAN', projectedDigests: {} };
     // Validate the exact frozen bytes, then prove the live source still matches.
     assertUnchanged(repository, files, evidence);
@@ -263,7 +264,7 @@ function operations(plan, files, harness, input) {
     }
   }
   const runtime = Object.fromEntries([
-    ...['slopsentral', 'runtime', 'settings', 'control', 'journal', 'coordinator', 'menu']
+    ...['slopsentral', 'runtime', 'settings', 'skills', 'control', 'journal', 'coordinator', 'menu']
       .map(name => [`source/hooks/pi/${name}.ts`, `extensions/${name}.ts`]),
     ...['settings', 'capabilities', 'scope-assessment'].map(name => [`source/schemas/pi/${name}.schema.json`, `schemas/${name}.schema.json`]),
   ]);

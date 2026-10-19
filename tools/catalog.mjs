@@ -105,6 +105,9 @@ export function auditProfileComposition(catalog, profile) {
   for (const name of profile.focusSkills ?? []) {
     if (!selectedSkills.has(name)) findings.push(`${profile.name}: focus skill ${name} is not composed by a selected plugin`);
   }
+  for (const id of Object.keys(profile.skills ?? {})) {
+    if (!selectedSkills.has(id.slice('skill:'.length))) findings.push(`${profile.name}: skill binding ${id} is not composed by a selected plugin`);
+  }
   return ordered(new Set(findings));
 }
 

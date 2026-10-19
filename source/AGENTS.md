@@ -75,6 +75,9 @@ Do not copy payloads into plugin directories. Regenerate `source/CATALOG.md` wit
 `node tools/catalog.mjs --write` after composition changes. See
 `source/ARCHITECTURE.md` for the primitive responsibilities and evidence limits.
 
-`WORKFLOW_PROFILE.focusSkills` selects advertised skills from the selected plugin closures.
-The catalog rejects a focus skill outside those closures.
-Pi uses this optional scope without a change to installation state or user authority.
+`WORKFLOW_PROFILE.focusSkills` selects skills from the selected plugin closures.
+`WORKFLOW_PROFILE.skills` selects more skills from those closures and sets each invocation policy.
+The catalog rejects a focus skill or binding outside those closures.
+Pi defaults omitted invocation policies to `either` and excludes managed skills from native discovery.
+The Pi extension owns managed discovery and invocation through the resolved profile.
+These fields do not change installation state or user authority.

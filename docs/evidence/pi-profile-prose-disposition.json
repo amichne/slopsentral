@@ -1,0 +1,79 @@
+{
+  "assessmentType": "ASSESSED",
+  "comprehension": "NOT_ASSESSED",
+  "report": "pi-profile-prose-assessment.json",
+  "findings": [
+    {
+      "path": "README.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep exact product names, command contracts, resource identities, and policy terms. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/agent-marketplaces.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep exact product names, command contracts, resource identities, and policy terms. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/pi-harness.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep exact product names, command contracts, resource identities, and policy terms. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/guides/pi.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep exact product names, command contracts, resource identities, and policy terms. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/guides/troubleshooting.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep exact product names, command contracts, resource identities, and policy terms. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "docs/public/reference/profiles.mdx",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep exact product names, command contracts, resource identities, and policy terms. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Grade",
+      "line": 1,
+      "reason": "Keep exact product names, command contracts, resource identities, and policy terms. The grade is advisory and does not establish comprehension."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 22,
+      "reason": "This finding concerns inherited instructions outside the changed profile paragraph. Keep the existing instruction text."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 36,
+      "reason": "This finding concerns inherited instructions outside the changed profile paragraph. Keep the existing instruction text."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 66,
+      "reason": "This finding concerns inherited instructions outside the changed profile paragraph. Keep the existing instruction text."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 68,
+      "reason": "This finding concerns inherited instructions outside the changed profile paragraph. Keep the existing instruction text."
+    },
+    {
+      "path": "source/AGENTS.md",
+      "rule": "Slopsentral.Modals",
+      "line": 70,
+      "reason": "This finding concerns inherited instructions outside the changed profile paragraph. Keep the existing instruction text."
+    }
+  ]
+}

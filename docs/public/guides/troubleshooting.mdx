@@ -11,7 +11,10 @@ Separate a source failure from an installation failure or absent host evidence.
 
 Use `/slopsentral state` to inspect origins, overrides, dependencies, and errors.
 User, project, and session overrides take precedence over profile defaults.
-The `off` profile keeps explicit overrides.
+The `none` profile keeps explicit overrides.
+Legacy `off` selections migrate to `none` and expose a notice in state.
+
+Use the independent `enabled: false` setting to turn off the extension.
 Reset each changed layer to remove them.
 The [Pi guide](/guides/pi) covers settings and unresolved scope reviews.
 
@@ -31,6 +34,12 @@ State the concrete task and the skill when explicit selection matters.
 Start a fresh session after installation changes.
 Examine whether the host enabled the plugin.
 Do not infer skill consumption from installed files alone.
+
+In Pi, inspect the binding's state, invocation policy, and generation through `/slopsentral state`.
+Use `/slopsentral skill NAME` for allowed human invocation.
+The model uses `slopsentral_skill` with the current advertised generation.
+Managed `/skill:NAME` requests reject instead of bypassing that policy.
+A loaded skill supplies instructions, without proof of workflow completion.
 
 The [plugin reference](/plugins/repository-knowledge) lists the procedures that each plugin supplies.
 

@@ -5,6 +5,10 @@ import type { Action, Config } from "./runtime.ts";
 
 export type Origin = "defaults" | "profile" | "user" | "project" | "session";
 export type SaveScope = "user" | "project" | "session";
+export type Invocation = "human" | "model" | "either";
+export interface SkillPolicy { readonly invocation: Invocation }
+export type ResourceIdentity = { readonly type: "captured"; readonly path: string; readonly digest: string; readonly description: string }
+  | { readonly type: "unavailable"; readonly reason: string } | { readonly type: "none" };
 export type OutputPolicy = { readonly type: "ALWAYS" | "ERRORS" | "NEVER" }
   | { readonly type: "EXCLUDE"; readonly pattern: string };
 export type HookPolicy = ({ readonly execution: "foreground"; readonly critical: "blocking" | "report" }
@@ -26,6 +30,8 @@ export type Capability = CapabilityBase & (
 export interface Settings {
   readonly schemaVersion: 1;
   readonly profile?: string;
+  readonly enabled?: boolean;
+  readonly skills?: Readonly<Record<string, SkillPolicy>>;
   readonly capabilities?: Readonly<Record<string, boolean>>;
   readonly hooks?: Readonly<Record<string, HookPolicy>>;
   readonly additions?: readonly Capability[];
@@ -40,13 +46,20 @@ export interface EffectiveCapability {
   readonly policyOrigin: Origin;
   readonly policy: HookPolicy;
   readonly state: "enabled" | "disabled" | "unavailable";
+  readonly selected: boolean;
   readonly reason: string;
+  readonly binding: { readonly type: "skill"; readonly invocation: Invocation; readonly origin: Origin } | { readonly type: "other" };
+  readonly resource: ResourceIdentity;
 }
 export type Effective = {
   readonly type: "effective";
   readonly profile: string;
   readonly profileOrigin: Origin;
+  readonly enabled: boolean;
+  readonly enabledOrigin: Origin;
+  readonly migrations: readonly string[];
   readonly revision: string;
+  readonly generation: string;
   readonly capabilities: readonly EffectiveCapability[];
   readonly mutationAdapters: Readonly<Record<string, readonly string[]>>;
 } | { readonly type: "rejected"; readonly code: string };
@@ -110,8 +123,12 @@ export function parseCatalog(value: unknown): readonly Capability[] | undefined 
   return value.capabilities;
 }
 function settings(value: unknown): value is Settings {
-  if (!record(value) || !keys(value, ["schemaVersion", "profile", "capabilities", "hooks", "additions", "mutationAdapters"])
+  if (!record(value) || !keys(value, ["schemaVersion", "profile", "enabled", "skills", "capabilities", "hooks", "additions", "mutationAdapters"])
     || value.schemaVersion !== 1 || value.profile !== undefined && (typeof value.profile !== "string" || !identity.test(value.profile))) return false;
+  if (value.enabled !== undefined && typeof value.enabled !== "boolean") return false;
+  if (value.skills !== undefined && (!record(value.skills) || !Object.entries(value.skills).every(([id, policy]) =>
+    /^skill:[a-z][a-z0-9-]*$/.test(id) && record(policy) && keys(policy, ["invocation"])
+      && (policy.invocation === "human" || policy.invocation === "model" || policy.invocation === "either")))) return false;
   if (value.capabilities !== undefined && (!record(value.capabilities)
     || !Object.entries(value.capabilities).every(([id, enabled]) => capabilityId.test(id) && typeof enabled === "boolean"))) return false;
   if (value.hooks !== undefined && (!record(value.hooks)
@@ -153,9 +170,13 @@ export function catalogFromProfiles(config: Config): Capability[] {
 }
 
 export function resolveSettings(config: Config, catalog: readonly Capability[], layers: readonly Layer[],
-  availability: ReadonlyMap<string, string> = new Map()): Effective {
+  availability: ReadonlyMap<string, string> = new Map(), resources: ReadonlyMap<string, ResourceIdentity> = new Map()): Effective {
   let profileName = config.defaultProfile;
   let profileOrigin: Origin = "defaults";
+  let extensionEnabled = true;
+  let enabledOrigin: Origin = "defaults";
+  const migrations: string[] = [];
+  const bindings = new Map<string, { invocation: Invocation; origin: Origin }>();
   const enabled = new Map<string, { value: boolean; origin: Origin }>();
   const policies = new Map<string, { value: HookPolicy; origin: Origin }>();
   const all = new Map(catalog.map(item => [item.id, item]));
@@ -163,6 +184,9 @@ export function resolveSettings(config: Config, catalog: readonly Capability[], 
   const adapters: Record<string, readonly string[]> = {};
   for (const layer of layers) {
     if (layer.settings.profile !== undefined) { profileName = layer.settings.profile; profileOrigin = layer.origin; }
+    if (layer.settings.profile === "off") migrations.push("off → none: explicit overrides remain");
+    if (layer.settings.enabled !== undefined) { extensionEnabled = layer.settings.enabled; enabledOrigin = layer.origin; }
+    for (const [id, policy] of Object.entries(layer.settings.skills ?? {})) bindings.set(id, { invocation: policy.invocation, origin: layer.origin });
     for (const cap of layer.settings.additions ?? []) {
       if (all.has(cap.id) && !additions.has(cap.id)) return { type: "rejected", code: `DUPLICATE_CAPABILITY: ${cap.id}` };
       all.set(cap.id, cap); additions.add(cap.id);
@@ -172,16 +196,31 @@ export function resolveSettings(config: Config, catalog: readonly Capability[], 
     for (const [id, value] of Object.entries(layer.settings.hooks ?? {})) policies.set(id, { value, origin: layer.origin });
     Object.assign(adapters, layer.settings.mutationAdapters);
   }
+  if (profileName === "off") profileName = "none";
   const profile = config.profiles.find(item => item.name === profileName);
-  if (profileName !== "off" && !profile) return { type: "rejected", code: "UNKNOWN_PROFILE" };
-  for (const id of [...enabled.keys(), ...policies.keys()]) if (!all.has(id)) return { type: "rejected", code: `UNKNOWN_CAPABILITY: ${id}` };
+  if (profileName !== "none" && !profile) return { type: "rejected", code: "UNKNOWN_PROFILE" };
+  if (profile) {
+    for (const [kind, links] of [["SKILL", profile.skills], ["INSTRUCTION", profile.instructions], ["AGENT", profile.agents]] as const)
+      for (const link of links) {
+        const cap = all.get(`${kind.toLowerCase()}:${link.name}`);
+        if (!cap || cap.type === "HOOK" || cap.type !== kind || cap.path !== link.path || !cap.profiles.includes(profile.name))
+          return { type: "rejected", code: `PROFILE_RESOURCE_MISMATCH: ${kind.toLowerCase()}:${link.name}` };
+      }
+    for (const action of profile.hooks) {
+      const cap = all.get(`hook:${action.name}`);
+      if (cap?.type !== "HOOK" || !cap.actions.some(candidate => JSON.stringify(candidate) === JSON.stringify(action)))
+        return { type: "rejected", code: `PROFILE_HOOK_MISMATCH: ${action.name}` };
+    }
+  }
+  for (const id of [...enabled.keys(), ...policies.keys(), ...bindings.keys()]) if (!all.has(id)) return { type: "rejected", code: `UNKNOWN_CAPABILITY: ${id}` };
   const states = new Map<string, EffectiveCapability>();
   function resolve(cap: Capability, ancestors: readonly string[] = []): EffectiveCapability {
     const cached = states.get(cap.id);
     if (cached) return cached;
     const override = enabled.get(cap.id);
-    const active = override?.value ?? (profile !== undefined && cap.profiles.includes(profile.name)
+    const selected = override?.value ?? (profile !== undefined && cap.profiles.includes(profile.name)
       && (cap.type !== "HOOK" || profile.hookPolicy !== "OFF"));
+    const active = extensionEnabled && selected;
     const scopeDefault = cap.id === "hook:agents-md-scope" && profile?.hookPolicy !== "ENFORCING";
     const fallback: HookPolicy = scopeDefault
       ? { execution: "background", critical: "report", output: { type: "ALWAYS" }, context: "none" }
@@ -194,25 +233,21 @@ export function resolveSettings(config: Config, catalog: readonly Capability[], 
       if (!target || resolve(target, [...ancestors, cap.id]).state !== "enabled") reason ||= `DEPENDENCY_UNAVAILABLE: ${dependency}`;
     }
     const item: EffectiveCapability = { capability: cap, origin: override?.origin ?? "profile", policyOrigin: policies.get(cap.id)?.origin ?? (scopeDefault ? "defaults" : "profile"),
-      policy, state: !active ? "disabled" : reason ? "unavailable" : "enabled", reason };
+      policy, selected, state: !extensionEnabled ? "disabled" : reason ? "unavailable" : !active ? "disabled" : "enabled", reason,
+      binding: cap.type === "SKILL" ? { type: "skill", invocation: bindings.get(cap.id)?.invocation
+        ?? profile?.skills.find(link => link.name === cap.name)?.invocation ?? "either", origin: bindings.get(cap.id)?.origin ?? "profile" } : { type: "other" },
+      resource: resources.get(cap.id) ?? (availability.has(cap.id) ? { type: "unavailable", reason: availability.get(cap.id) ?? "RESOURCE_FAILED" } : { type: "none" }) };
     states.set(cap.id, item);
     return item;
   }
   const capabilities = [...all.values()].map(cap => resolve(cap));
-  return { type: "effective", profile: profileName, profileOrigin, capabilities, mutationAdapters: adapters,
-    revision: crypto.createHash("sha256").update(JSON.stringify({ profileName, capabilities, adapters })).digest("hex") };
+  const revision = crypto.createHash("sha256").update(JSON.stringify({ profileName, profileOrigin, extensionEnabled, enabledOrigin, capabilities, adapters })).digest("hex");
+  return { type: "effective", profile: profileName, profileOrigin, enabled: extensionEnabled, enabledOrigin, migrations, capabilities, mutationAdapters: adapters,
+    revision, generation: revision };
 }
 
 export function resourcePath(root: string, capability: Capability & { readonly path: string }): string {
   return path.resolve(root, capability.path);
-}
-export function examineResources(root: string, catalog: readonly Capability[]): ReadonlyMap<string, string> {
-  const unavailable = new Map<string, string>();
-  for (const cap of catalog) if (cap.type !== "HOOK") {
-    try { if (!fs.statSync(resourcePath(root, cap)).isFile()) unavailable.set(cap.id, "MISSING_RESOURCE"); }
-    catch { unavailable.set(cap.id, "RESOURCE_FAILED"); }
-  }
-  return unavailable;
 }
 export function readSettings(file: string): { readonly settings: Settings; readonly error?: string } {
   try {
