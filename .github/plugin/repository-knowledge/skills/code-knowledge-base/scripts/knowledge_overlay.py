@@ -272,7 +272,7 @@ def context(knowledge: Knowledge) -> str | Failure:
             f'Knowledge repository: {knowledge.repository}\nOKF documents: {knowledge.documents}\n'
             'Use code-knowledge-base for requested knowledge work; retrieve pages only when relevant.\n'
             'Source citations resolve against the source repository. Knowledge work writes only to the selected knowledge repository.\n'
-            'In INVISIBLE mode, do not install OpenWiki into the source, add ignored files, symlinks, or modify Git exclusions.\n'
+            'In INVISIBLE mode, do not initialize another knowledge backend in the source, add ignored files, symlinks, or modify Git exclusions.\n'
             'This overlay applies only to the named source repository and remains subordinate to its instructions.\n'
             f'Overlay guidance ({knowledge.instructions}):\n{guidance}')
     if len(text.encode('utf-8')) > MAX_CONTEXT_BYTES:

@@ -7,8 +7,8 @@ payloads, scripts, examples, templates, or vendor-specific configuration.
 
 | Source | Audited commit | License | Decision |
 | --- | --- | --- | --- |
-| [addyosmani/agent-skills: observability-and-instrumentation](https://github.com/addyosmani/agent-skills/tree/d2c37ef6225dd8726cdd369a8030307f48592d26/skills/observability-and-instrumentation) | `d2c37ef6225dd8726cdd369a8030307f48592d26` | MIT | Retain operator-question-first design, signal selection, structured events, cardinality discipline, actionable alerts, and telemetry verification |
-| [dash0hq/agent-skills: otel-semantic-conventions](https://github.com/dash0hq/agent-skills/tree/b809d934546a57c740b567014f5a0c67b906ebb5/skills/otel-semantic-conventions) | `b809d934546a57c740b567014f5a0c67b906ebb5` | Apache-2.0 | Retain registry-first naming, stability checks, correct placement, bounded cardinality, namespaced custom attributes, and migration discipline |
+| addyosmani/agent-skills: observability-and-instrumentation | `d2c37ef6225dd8726cdd369a8030307f48592d26` | MIT | Retain operator-question-first design, signal selection, structured events, cardinality discipline, actionable alerts, and telemetry verification |
+| dash0hq/agent-skills: otel-semantic-conventions | `b809d934546a57c740b567014f5a0c67b906ebb5` | Apache-2.0 | Retain registry-first naming, stability checks, correct placement, bounded cardinality, namespaced custom attributes, and migration discipline |
 
 ## Local Synthesis
 
