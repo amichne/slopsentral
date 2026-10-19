@@ -31,6 +31,10 @@ by hand when the authored source can be fixed instead.
   Release archives need no repository clone or local npm build for installation.
 - `tools/install-pi.sh` is a thin POSIX host launcher for the published package.
   Keep installation logic in Pi's package manager.
+- `tools/marketplace.py project --harness pi --profile <name>` compiles a content-only trial.
+  `tools/projection/Pi.pkl` owns file selection and unsupported-capability rejection.
+  Deploy its `AGENTS.md` through the consumer's native instruction scope.
+  See `docs/pi-content-profile.md` for the trial and retired runtime guarantees.
 
 ## First-Party Material
 

@@ -78,6 +78,8 @@ Do not copy payloads into plugin directories. Regenerate `source/CATALOG.md` wit
 `WORKFLOW_PROFILE.focusSkills` selects skills from the selected plugin closures.
 `WORKFLOW_PROFILE.skills` selects more skills from those closures and sets each invocation policy.
 The catalog rejects a focus skill or binding outside those closures.
-Pi defaults omitted invocation policies to `either` and excludes managed skills from native discovery.
-The Pi extension owns managed discovery and invocation through the resolved profile.
+The default Pi projection uses its extension for managed discovery and invocation.
+It defaults omitted invocation policies to `either` and excludes managed skills from native discovery.
 These fields do not change installation state or user authority.
+The content-profile trial resolves this selection during projection.
+It emits native skill paths and a plain instruction file without a Pi extension.

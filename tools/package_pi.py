@@ -55,6 +55,61 @@ def mapping(value: object) -> TypeGuard[dict[str, object]]:
     return isinstance(value, dict)
 
 
+def sequence(value: object) -> TypeGuard[list[object]]:
+    return isinstance(value, list)
+
+
+@dataclass(frozen=True, slots=True)
+class _ContentPaths:
+    entries: tuple[str, ...]
+
+
+def content_paths(value: object, names: set[str]) -> _ContentPaths | Rejected:
+    if not sequence(value) or not value:
+        return Rejected(Code.INVALID_PACKAGE)
+    selected: list[str] = []
+    for path in value:
+        if not isinstance(path, str) or not re.fullmatch(
+            r"\./[a-z][a-z0-9-]*/skills/[a-z][a-z0-9-]*", path
+        ):
+            return Rejected(Code.INVALID_PACKAGE)
+        if path[2:] + "/SKILL.md" not in names:
+            return Rejected(Code.INVALID_PACKAGE)
+        selected.append(path[2:])
+    if len(set(selected)) != len(selected):
+        return Rejected(Code.INVALID_PACKAGE)
+    return _ContentPaths(tuple(selected))
+
+
+def content_inventory(root: Path, selected: _ContentPaths) -> bool:
+    inventory: object = json.loads((root / "profile-inventory.json").read_bytes())
+    if not mapping(inventory) or inventory.get("type") != "PI_CONTENT_PROFILE":
+        return False
+    if inventory.get("schemaVersion") != 1 or inventory.get("invocation") != "either":
+        return False
+    skills = inventory.get("skills")
+    if not sequence(skills) or not all(mapping(skill) for skill in skills):
+        return False
+    paths = [skill.get("path") for skill in skills if mapping(skill)]
+    return (
+        len(paths) == len(selected.entries)
+        and all(path in selected.entries for path in paths)
+        and len(set(paths)) == len(paths)
+    )
+
+
+def content_selection(root: Path, manifest: dict[str, object], names: set[str]) -> bool:
+    required = {"AGENTS.md", "marketplace.json", "marketplace-lock.json", "profile-inventory.json"}
+    forbidden = {"extensions", "profiles.json", "capabilities.json", "schemas"}
+    if not required.issubset(names) or any(name.split("/")[0] in forbidden for name in names):
+        return False
+    resources = manifest.get("pi")
+    if not mapping(resources) or set(resources) != {"skills"} or manifest.get("peerDependencies"):
+        return False
+    selected = content_paths(resources["skills"], names)
+    return isinstance(selected, _ContentPaths) and content_inventory(root, selected)
+
+
 def inspect(root: Path) -> _Package | Rejected:
     if root.is_symlink() or not root.is_dir():
         return Rejected(Code.INVALID_PACKAGE)
@@ -70,11 +125,6 @@ def inspect(root: Path) -> _Package | Rejected:
         or value.get("dependencies")
         or value.get("optionalDependencies")
         or value.get("devDependencies")
-        or value.get("peerDependencies")
-        != {
-            "@earendil-works/pi-coding-agent": "*",
-            "@earendil-works/pi-tui": "*",
-        }
     ):
         return Rejected(Code.INVALID_PACKAGE)
     entries = tuple(sorted(root.rglob("*")))
@@ -85,6 +135,21 @@ def inspect(root: Path) -> _Package | Rejected:
     ):
         return Rejected(Code.INVALID_PACKAGE)
     files = tuple(entry for entry in entries if entry.is_file())
+    names = {entry.relative_to(root).as_posix() for entry in files}
+    accepted = (
+        content_selection(root, value, names)
+        if "profile-inventory.json" in names
+        else runtime_selection(value, names)
+    )
+    return _Package(root, version, files) if accepted else Rejected(Code.INVALID_PACKAGE)
+
+
+def runtime_selection(manifest: dict[str, object], names: set[str]) -> bool:
+    if manifest.get("peerDependencies") != {
+        "@earendil-works/pi-coding-agent": "*",
+        "@earendil-works/pi-tui": "*",
+    }:
+        return False
     required = {
         "package.json",
         "profiles.json",
@@ -102,9 +167,7 @@ def inspect(root: Path) -> _Package | Rejected:
         "extensions/coordinator.ts",
         "extensions/menu.ts",
     }
-    if not required.issubset({entry.relative_to(root).as_posix() for entry in files}):
-        return Rejected(Code.INVALID_PACKAGE)
-    return _Package(root, version, files)
+    return required.issubset(names)
 
 
 def package(root: Path, output: Path, *, version: str | None = None) -> Packed | Rejected:

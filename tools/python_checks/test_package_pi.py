@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import tarfile
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import pytest
 
@@ -45,6 +45,78 @@ def fixture(root: Path) -> Path:
         _ = file.write_bytes(("payload " + name).encode())
     (root / "hooks/gate.py").chmod(0o755)
     return root
+
+
+def content_fixture(root: Path) -> Path:
+    root.mkdir()
+    _ = (root / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "slopsentral-pi",
+                "version": "0.1.0",
+                "pi": {"skills": ["./owner/skills/example"]},
+            }
+        )
+    )
+    skill = root / "owner/skills/example/SKILL.md"
+    skill.parent.mkdir(parents=True)
+    _ = skill.write_text("---\nname: example\ndescription: Example skill.\n---\nUse the example.\n")
+    for name in ["marketplace.json", "marketplace-lock.json", "AGENTS.md"]:
+        _ = (root / name).write_text("{}")
+    _ = (root / "profile-inventory.json").write_text(
+        json.dumps(
+            {
+                "type": "PI_CONTENT_PROFILE",
+                "schemaVersion": 1,
+                "profile": "fixture",
+                "invocation": "either",
+                "instructionFile": "AGENTS.md",
+                "skills": [
+                    {
+                        "name": "example",
+                        "path": "owner/skills/example",
+                        "sha256": "sha256:" + "a" * 64,
+                    }
+                ],
+                "instructions": [],
+            }
+        )
+    )
+    return root
+
+
+def test_content_package_needs_no_runtime_peer_or_extension(tmp_path: Path) -> None:
+    root = content_fixture(tmp_path / "package")
+    assert isinstance(package(root, tmp_path / "output"), Packed)
+
+
+@pytest.mark.parametrize(
+    "mutation", ["extension", "profiles", "peer", "missing-skill", "missing-inventory", "escape"]
+)
+def test_content_package_rejects_runtime_and_incomplete_selection(
+    tmp_path: Path,
+    mutation: Literal[
+        "extension", "profiles", "peer", "missing-skill", "missing-inventory", "escape"
+    ],
+) -> None:
+    root = content_fixture(tmp_path / "package")
+    manifest = json.loads((root / "package.json").read_text())
+    match mutation:
+        case "extension":
+            manifest["pi"]["extensions"] = ["./extension.ts"]
+        case "profiles":
+            _ = (root / "profiles.json").write_text("{}")
+        case "peer":
+            manifest["peerDependencies"] = {"@earendil-works/pi-coding-agent": "*"}
+        case "missing-skill":
+            (root / "owner/skills/example/SKILL.md").unlink()
+        case "missing-inventory":
+            (root / "profile-inventory.json").unlink()
+        case "escape":
+            manifest["pi"]["skills"] = ["../example"]
+    _ = (root / "package.json").write_text(json.dumps(manifest))
+    assert package(root, tmp_path / "output") == Rejected(Code.INVALID_PACKAGE)
+    assert not (tmp_path / "output").exists()
 
 
 @pytest.mark.parametrize(
