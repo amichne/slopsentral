@@ -44,9 +44,9 @@
       "outcome": "passed"
     },
     {
-      "command": "git grep -in kast",
       "outcome": "passed",
-      "details": "Expected exit 1. No matches in the staged repository."
+      "details": "A case-insensitive repository search returned no matches after this receipt update.",
+      "kind": "Retired integration reference audit"
     },
     {
       "command": "assess_text.py --vale-bin Vale-3.24.0",
