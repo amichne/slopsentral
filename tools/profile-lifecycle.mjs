@@ -28,31 +28,10 @@ function readJson(file) {
   return JSON.parse(fs.readFileSync(file, "utf8"));
 }
 
-function assertExactKeys(value, expected, label) {
-  const unexpected = Object.keys(value).filter((key) => !expected.includes(key));
-  if (unexpected.length > 0) throw new UsageError(`${label} has unsupported fields: ${unexpected.join(", ")}`);
-}
-
 function parseWorkflowProfile(value, expectedName) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new UsageError(`profile ${expectedName} must be an object`);
   }
-  assertExactKeys(
-    value,
-    [
-      "type",
-      "schemaVersion",
-      "name",
-      "description",
-      "marketplaces",
-      "plugins",
-      "standaloneSkills",
-      "hookPolicy",
-      "reconciliation",
-      "validation",
-    ],
-    `profile ${expectedName}`,
-  );
   if (value.type !== "WORKFLOW_PROFILE" || value.schemaVersion !== 2 || value.name !== expectedName) {
     throw new UsageError(`profile ${expectedName} has an invalid identity`);
   }
