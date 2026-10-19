@@ -4,6 +4,7 @@ import "pkl:json"
 import "pkl:yaml"
 
 import "Decode.pkl"
+import "Pi.pkl"
 import "Schema.pkl"
 
 // The host supplies immutable file contents and digests. Pkl owns graph decisions.
@@ -160,6 +161,7 @@ function asset(ref: Schema.Primitive): Schema.Asset =
         name = ref.name
         sourcePath = path
         sha256 = digest(path)
+        text = documents[path].text
       }
     else if (ref.type == "AGENT")
       new Schema.AgentReference {
@@ -288,7 +290,7 @@ function profile(raw: Dynamic): Schema.Profile =
           )
       }
 
-input: Schema.Input =
+local fullInput: Schema.Input =
   if (marketplace.type != "MARKETPLACE")
     throw("Expected a marketplace")
   else if (marketplace.schemaVersion != 1)
@@ -316,6 +318,12 @@ input: Schema.Input =
           .sort()
           .map((path) -> profile(document(path)))
     }
+
+input: Schema.Input =
+  if (snapshot.getPropertyOrNull("profile") == null)
+    fullInput
+  else
+    Pi.selectContent(fullInput, snapshot.profile)
 
 output {
   value = input

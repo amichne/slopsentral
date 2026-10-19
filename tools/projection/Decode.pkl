@@ -63,7 +63,8 @@ function reference(raw: Dynamic): Schema.Asset =
   else if (raw.type == "RESOURCE")
     checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.ResourceReference)
   else if (raw.type == "INSTRUCTION")
-    checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.InstructionReference)
+    checked(raw, List("type", "name", "sourcePath", "sha256", "text"))
+      .toTyped(Schema.InstructionReference)
   else if (raw.type == "AGENT")
     checked(raw, List("type", "name", "sourcePath", "sha256", "text"))
       .toTyped(Schema.AgentReference)
@@ -102,6 +103,7 @@ function input(raw: Dynamic): Schema.Input = (
       "sourceSha",
       "plugins",
       "profiles",
+      "contentProfile",
       "phase",
       "projectedDigests",
     ),

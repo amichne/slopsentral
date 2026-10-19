@@ -39,6 +39,7 @@ class SkillReference extends Reference {
 }
 class InstructionReference extends Reference {
   type: "INSTRUCTION" = "INSTRUCTION"
+  text: String = ""
 }
 class AgentReference extends Reference {
   type: "AGENT" = "AGENT"
@@ -129,6 +130,7 @@ class Input {
   sourceSha: String(matches(Regex("[a-f0-9]{40}")))
   plugins: Listing<Plugin>
   profiles: List<Profile> = List()
+  contentProfile: Identity? = null
   phase: "PLAN" | "SEALED" = "PLAN"
   projectedDigests: Mapping<String, Digest> = new {}
 }

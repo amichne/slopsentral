@@ -63,18 +63,29 @@ class Resources {
   skills: List<String>
 }
 
-class Package {
+open class PackageMetadata {
   name: "slopsentral-pi" = "slopsentral-pi"
   version: "0.1.0" = "0.1.0"
   description: String
   type: "module" = "module"
   keywords: List<String> = List("pi-package")
   engines: Mapping<String, String> = new { ["node"] = ">=22.19.0" }
+}
+
+class Package extends PackageMetadata {
   peerDependencies: Mapping<String, String> = new {
     ["@earendil-works/pi-coding-agent"] = "*"
     ["@earendil-works/pi-tui"] = "*"
   }
   pi: Resources
+}
+
+class ContentResources {
+  skills: List<String>(!isEmpty)
+}
+
+class ContentPackage extends PackageMetadata {
+  pi: ContentResources
 }
 
 function target(ref: Schema.Asset): String =
@@ -201,11 +212,127 @@ function config(input: Schema.Input): Config = new {
         })
 }
 
-function manifest(input: Schema.Input): Package = new {
-  description = input.description
-  pi = new {
-    skills = List()
-  }
+function manifest(input: Schema.Input): Package | ContentPackage =
+  if (input.contentProfile == null)
+    new Package {
+      description = input.description
+      pi = new { skills = List() }
+    }
+  else
+    new ContentPackage {
+      description = input.description
+      pi = new {
+        skills = links(input.plugins.toList(), "SKILL").map((r) -> "./" + r.path.dropLast(9))
+      }
+    }
+
+// Selection belongs to the compiler. No profile state reaches a Pi extension.
+function selectContent(input: Schema.Input, name: Schema.Identity): Schema.Input =
+  let (profile = input.profiles.findOrNull((profile) -> profile.name == name))
+    if (profile == null)
+      throw("Unknown content profile")
+    else if (profile.hookPolicy != "OFF")
+      throw("UNSUPPORTED_PI_CAPABILITY: LIFECYCLE_HOOKS")
+    else
+      let (resolved = config(input).profiles.find((profile) -> profile.name == name))
+      let (
+        selectedPlugins =
+          input.plugins.toList().filter((plugin) -> profile.plugins.contains(plugin.name))
+      )
+      let (skills = resolved.skills.map((skill) -> skill.name))
+        if (!resolved.skills.every((skill) -> skill.invocation == "either"))
+          throw("UNSUPPORTED_PI_CAPABILITY: INVOCATION_RESTRICTION")
+        else if (skills.isEmpty)
+          throw("Content profile needs at least one skill")
+        else
+          checkedContentResources((input) {
+            contentProfile = name
+            profiles = List(profile)
+            plugins = new Listing<Schema.Plugin> {
+              for (plugin in selectedPlugins) {
+                (plugin) {
+                  references =
+                    plugin.references.filter((ref) ->
+                      (
+                        ref.type == "INSTRUCTION"
+                          || ref.type == "RESOURCE"
+                          || (ref.type == "SKILL" && skills.contains(ref.name))
+                      )
+                        && selectedPlugins
+                          .find((owner) ->
+                            owner.references.any((candidate) ->
+                              candidate.type == ref.type && candidate.name == ref.name
+                            )
+                          )
+                          .name == plugin.name
+                    )
+                  hookFiles = List()
+                  mcp = null
+                }
+              }
+            }
+          })
+
+function checkedContentResources(input: Schema.Input): Schema.Input =
+  let (roots = links(input.plugins.toList(), "SKILL").map((link) -> link.path.dropLast(9)))
+    if (
+      input.plugins
+        .toList()
+        .every((plugin) ->
+          plugin.references
+            .filter((ref) -> ref.type == "RESOURCE")
+            .every((ref) ->
+              roots.any((root) ->
+                (plugin.name + "/" + ref.sourcePath.drop(7)).startsWith(root + "/")
+              )
+            )
+        )
+    )
+      input
+    else
+      throw("UNSUPPORTED_PI_CAPABILITY: STANDALONE_RESOURCE")
+
+function instructionText(input: Schema.Input): String =
+  input.plugins
+    .toList()
+    .flatMap((plugin) -> plugin.references)
+    .filter((ref) -> ref is Schema.InstructionReference)
+    .map((ref) -> (ref as Schema.InstructionReference).text)
+    .join("\n")
+
+class ContentResource {
+  name: Schema.Identity
+  path: Schema.RelativePath
+  sha256: Schema.Digest
+}
+
+class ContentInventory {
+  type: "PI_CONTENT_PROFILE" = "PI_CONTENT_PROFILE"
+  schemaVersion: Int(this == 1) = 1
+  profile: Schema.Identity
+  invocation: "either" = "either"
+  instructionFile: "AGENTS.md" = "AGENTS.md"
+  skills: List<ContentResource>(!isEmpty)
+  instructions: List<ContentResource>
+}
+
+function contentResources(input: Schema.Input, kind: Schema.Kind): List<ContentResource> =
+  links(input.plugins.toList(), kind)
+    .map((link) -> new ContentResource {
+      name = link.name
+      path = if (kind == "SKILL") link.path.dropLast(9) else link.path
+      sha256 =
+        input.plugins
+          .toList()
+          .flatMap((plugin) -> plugin.references)
+          .find((ref) -> ref.type == kind && ref.name == link.name)
+          .sha256
+    })
+
+function inventory(input: Schema.Input): ContentInventory = new {
+  profile = input.contentProfile!!
+  skills = contentResources(input, "SKILL")
+  instructions = contentResources(input, "INSTRUCTION")
 }
 
 function catalog(input: Schema.Input): Catalog = new {

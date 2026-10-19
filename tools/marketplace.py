@@ -45,6 +45,7 @@ IGNORED = frozenset(
 
 
 class Code(StrEnum):
+    UNSUPPORTED_CAPABILITY = "UNSUPPORTED_CAPABILITY"
     UNSAFE_PATH = "UNSAFE_PATH"
     SOURCE_REJECTED = "SOURCE_REJECTED"
     INPUT_CHANGED = "INPUT_CHANGED"
@@ -168,6 +169,9 @@ def run(arguments: list[str], cwd: Path) -> str:
         arguments, cwd=cwd, capture_output=True, text=True, timeout=65, check=False
     )
     if result.returncode:
+        capability = re.search(r"UNSUPPORTED_PI_CAPABILITY: ([A-Z_]+)", result.stderr)
+        if capability:
+            raise ProjectionError(Code.UNSUPPORTED_CAPABILITY, capability[1])
         location = re.search(r"/([A-Za-z]+\.pkl), line ([0-9]+)\)", result.stderr)
         message = "The evaluator rejected the input"
         if location:
@@ -245,9 +249,16 @@ def snapshot_payload(repository: Path, files: dict[str, File], pkl: str) -> dict
 
 
 def source_input(
-    repository: Path, files: dict[str, File], pkl: str, models: Models | None = None
+    repository: Path,
+    files: dict[str, File],
+    pkl: str,
+    models: Models | None = None,
+    *,
+    profile: str | None = None,
 ) -> dict[str, object]:
     raw = snapshot_payload(repository, files, pkl)
+    if profile is not None:
+        raw["profile"] = profile
     result = evaluate(pkl, "Source.pkl", raw, models=models)
     if not {"name", "owner", "sourceSha", "plugins", "profiles"}.issubset(result):
         raise ProjectionError(Code.INVALID_PLAN, "Pkl omitted the typed source input")
@@ -378,14 +389,18 @@ def examine_seal(plan: dict[str, object], files: dict[str, File], harness: str) 
                 raise ProjectionError(Code.INVALID_PLAN, "A sealed digest differs from its payload")
 
 
-def project(repository: Path, harness: str, target: Path, pkl: str) -> dict[str, object]:
+def project(
+    repository: Path, harness: str, target: Path, pkl: str, *, profile: str | None = None
+) -> dict[str, object]:
+    if profile is not None and harness != "pi":
+        raise ProjectionError(Code.UNSUPPORTED_CAPABILITY, "CONTENT_PROFILE_TARGET")
     if target.is_relative_to(repository):
         raise ProjectionError(Code.UNSAFE_PATH, "Output must be outside the source repository")
     if target.exists() or target.is_symlink():
         raise ProjectionError(Code.OUTPUT_EXISTS, "Output already exists")
     files = snapshot(repository)
     models = models_snapshot()
-    input_value = source_input(repository, files, pkl, models)
+    input_value = source_input(repository, files, pkl, models, profile=profile)
     first = evaluate(pkl, "Project.pkl", input_value, harness, models=models)
     examine_plan(first, input_value)
     initial = operations(first, files, harness)
@@ -449,9 +464,12 @@ def main() -> int:
     _ = parser.add_argument("--source", type=Path, default=ROOT)
     _ = parser.add_argument("--harness", choices=("codex", "github-copilot", "pi"), default="codex")
     _ = parser.add_argument("--out", type=Path)
+    _ = parser.add_argument("--profile", help="Compile one content-only Pi profile")
     _ = parser.add_argument("--check", action="store_true")
     _ = parser.add_argument("--pkl-bin", default=os.environ.get("PKL_BIN", "pkl"))
     args = parser.parse_args()
+    if args.profile is not None and args.command != "project":
+        parser.error("--profile needs project")
     repository = Path(args.source).resolve()
     try:
         if args.command == "validate":
@@ -477,7 +495,11 @@ def main() -> int:
             if args.out is None:
                 parser.error("project needs --out")
             result = project(
-                repository, str(args.harness), Path(args.out).absolute(), str(args.pkl_bin)
+                repository,
+                str(args.harness),
+                Path(args.out).absolute(),
+                str(args.pkl_bin),
+                profile=args.profile,
             )
         print(json.dumps(result))
     except ProjectionError as error:

@@ -58,6 +58,56 @@ def change(repository: Path, name: str, field: str, value: object) -> None:
 
 
 @pytest.mark.parametrize(
+    ("field", "value", "reason"),
+    [
+        ("hookPolicy", {"type": "HOOK_POLICY", "mode": "ENFORCING"}, "LIFECYCLE_HOOKS"),
+        ("hookPolicy", {"type": "HOOK_POLICY", "mode": "ADVISORY"}, "LIFECYCLE_HOOKS"),
+        ("skills", {"skill:semantic-ratchet": {"invocation": "model"}}, "INVOCATION_RESTRICTION"),
+        ("skills", {"skill:semantic-ratchet": {"invocation": "human"}}, "INVOCATION_RESTRICTION"),
+    ],
+)
+def test_content_profile_rejects_unproved_capabilities(
+    source: Path, tmp_path: Path, field: str, value: object, reason: str
+) -> None:
+    assert PKL
+    change(source, "source/profiles/kotlin-type-design.json", field, value)
+    out = tmp_path / "rejected"
+    with pytest.raises(ProjectionError, match=reason) as error:
+        _ = project(source, "pi", out, PKL, profile="kotlin-type-design")
+    assert error.value.code == Code.UNSUPPORTED_CAPABILITY
+    assert not out.exists()
+
+
+@pytest.mark.parametrize("harness", ["codex", "github-copilot"])
+def test_content_profile_rejects_other_hosts(source: Path, tmp_path: Path, harness: str) -> None:
+    assert PKL
+    out = tmp_path / "rejected"
+    with pytest.raises(ProjectionError, match="CONTENT_PROFILE_TARGET") as error:
+        _ = project(source, harness, out, PKL, profile="kotlin-type-design")
+    assert error.value.code == Code.UNSUPPORTED_CAPABILITY
+    assert not out.exists()
+
+
+def test_content_profile_rejects_unknown_profile(source: Path, tmp_path: Path) -> None:
+    assert PKL
+    out = tmp_path / "rejected"
+    with pytest.raises(ProjectionError) as error:
+        _ = project(source, "pi", out, PKL, profile="missing")
+    assert error.value.code == Code.PKL_REJECTED
+    assert not out.exists()
+
+
+def test_content_selection_still_examines_unselected_source(source: Path, tmp_path: Path) -> None:
+    assert PKL
+    _ = (source / "source/skills/pkl-engineering/SKILL.md").write_text("No skill metadata.\n")
+    out = tmp_path / "rejected"
+    with pytest.raises(ProjectionError) as error:
+        _ = project(source, "pi", out, PKL, profile="kotlin-type-design")
+    assert error.value.code == Code.PKL_REJECTED
+    assert not out.exists()
+
+
+@pytest.mark.parametrize(
     ("harness", "prefix"),
     [("codex", ".agents/plugins"), ("github-copilot", ".github/plugin"), ("pi", ".pi/slopsentral")],
 )
@@ -194,3 +244,29 @@ def test_native_input_keeps_the_default_small(source: Path) -> None:
     selected = next(plugin for plugin in plugins if plugin["name"] == "software-engineering")
     references = [obj(raw) for raw in array(selected["references"])]
     assert [(ref["type"], ref["name"]) for ref in references] == [("SKILL", "semantic-ratchet")]
+
+
+@pytest.mark.parametrize("selected_elsewhere", [False, True])
+def test_content_profile_rejects_standalone_resource_before_output(
+    source: Path,
+    tmp_path: Path,
+    *,
+    selected_elsewhere: bool,
+) -> None:
+    assert PKL
+    marketplace = obj(json.loads((source / "source/adaptable.marketplace.json").read_text()))
+    resource = next(
+        ref for ref in array(marketplace["resources"]) if obj(ref)["name"] == "pkl-agent-runtime"
+    )
+    change(source, "source/plugins/software-engineering/plugin.json", "resources", [resource])
+    if selected_elsewhere:
+        profile_path = source / "source/profiles/kotlin-type-design.json"
+        profile = obj(json.loads(profile_path.read_text()))
+        profile["plugins"] = [*array(profile["plugins"]), "developer-tooling"]
+        profile["focusSkills"] = [*array(profile["focusSkills"]), "pkl-engineering"]
+        _ = profile_path.write_text(json.dumps(profile))
+    out = tmp_path / "rejected-resource"
+    with pytest.raises(ProjectionError, match="STANDALONE_RESOURCE") as error:
+        _ = project(source, "pi", out, PKL, profile="kotlin-type-design")
+    assert error.value.code == Code.UNSUPPORTED_CAPABILITY
+    assert not out.exists()
