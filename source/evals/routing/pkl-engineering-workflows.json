@@ -50,18 +50,18 @@
       ]
     },
     {
-      "id": "pkl-setup-routes-to-versioned-official-integration",
+      "id": "pkl-setup-stays-with-runtime-cli",
       "type": "SETUP_FRICTION",
       "source": {
         "type": "CURRENT_SOURCE",
         "capturedAt": "2026-07-14",
         "evidenceRefs": [
           "source/skills/pkl-engineering/SKILL.md",
-          "source/skills/pkl-engineering/references/installation-and-lsp.md",
+          "source/skills/pkl-engineering/references/cli-setup.md",
           "source/skills/pkl-engineering/scripts/pkl_tooling"
         ]
       },
-      "prompt": "Set up Pkl and the LSP for this repository in VS Code, then explain the available JSON/YAML rendering and build tooling.",
+      "prompt": "Inspect the local Pkl CLI for this repository, explain its JSON/YAML rendering, and preserve the existing editor setup.",
       "expectedPrimitive": {
         "type": "SKILL",
         "name": "pkl-engineering"
@@ -76,22 +76,22 @@
       },
       "allowedActions": [
         "Run the non-mutating tooling doctor.",
-        "Use the official VS Code extension and current versioned installation documentation.",
-        "Point the editor at the same Pkl CLI used by repository proof.",
+        "Use the version-matched Pkl CLI documentation and keep editor extensions outside this retained surface.",
+        "Use the existing repository Pkl executable for configuration proof.",
         "Describe renderers and transformations as derived outputs from an evaluated model."
       ],
       "forbiddenActions": [
         "Run package-manager or extension installation without explicit user intent.",
-        "Treat standalone pkl-lsp as the preferred end-user surface when an official editor plugin exists.",
-        "Hard-code a Java or LSP version without checking current official documentation."
+        "Select an editor extension, language server, or outside build integration.",
+        "Guess a runtime version without matching the repository and official documentation."
       ],
-      "recoveryExpectation": "A good run leaves observable CLI/editor version evidence and an explicit project-sync verification step.",
-      "notes": "This case covers installation, LSP, rendering, and tooling discovery.",
-      "productiveOutcome": "The editor, CLI, and repository proof loop use compatible, inspectable Pkl tooling.",
+      "recoveryExpectation": "A useful run leaves exact CLI version evidence and a real configuration evaluation.",
+      "notes": "This designed case covers only the retained CLI setup and rendering surface.",
+      "productiveOutcome": "The repository proof loop uses the named local Pkl executable without another integration.",
       "verificationEvidence": [
-        "The tooling doctor reports resolved Pkl, Java, LSP, editor, and project state.",
+        "The tooling doctor reports resolved Pkl CLI and project state without external integration plans.",
         "Installation guidance links to first-party documentation and uses an explicit plan.",
-        "The final setup includes a CLI evaluation or test outside the editor."
+        "The result includes a real CLI evaluation or test."
       ]
     },
     {

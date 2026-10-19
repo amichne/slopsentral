@@ -1,7 +1,7 @@
 # Pkl Tooling Capabilities
 
-Use this map to select a first-party tool boundary. Confirm flags and version
-compatibility in the linked official documentation before automation.
+Use this map for the retained local Pkl CLI and facade.
+Match its flags and API contract to the installed version.
 
 ## Evaluation and rendering
 
@@ -25,11 +25,9 @@ requires checked-in output.
 - Convert `Dynamic` inputs to a typed class before use.
 - Use an external resource reader only when a required scheme cannot be modeled
   with built-in file, property, environment, package, or project resources.
-- The first-party `pkl.pipe` package demonstrates text/JSON/YAML pipelines;
-  package docs remain the authority for its current API.
 
 See the [language reference](https://pkl-lang.org/main/current/language-reference/index.html)
-and [first-party package index](https://pkl-lang.org/package-docs/).
+and [standard-library API](https://pkl-lang.org/package-docs/pkl/current/).
 
 ## Tests and formatting
 
@@ -42,30 +40,9 @@ and [first-party package index](https://pkl-lang.org/package-docs/).
 The `pkl-engineering` skill's façade adds bounded TOON output and sandboxes test
 and package-verification writes.
 
-## Documentation, builds, and packages
+## Retained scope
 
-| Need | First-party surface |
-| --- | --- |
-| API documentation | `pkldoc` and [apple/pkl-package-docs](https://github.com/apple/pkl-package-docs) |
-| Gradle evaluation/docs/codegen | Pkl Gradle plugin in [apple/pkl](https://github.com/apple/pkl) |
-| Bazel evaluation/tests/docs/codegen | [apple/rules_pkl](https://github.com/apple/rules_pkl) |
-| Reusable package models | [apple/pkl-pantry](https://github.com/apple/pkl-pantry) |
-| Kubernetes resource definitions | [apple/pkl-k8s](https://github.com/apple/pkl-k8s) |
-| External readers | [apple/pkl-readers](https://github.com/apple/pkl-readers) |
-
-## Bindings and code generation
-
-The official Go and Swift bindings manage evaluator processes and expose
-language-native values; JVM libraries integrate directly. Code generators turn
-Pkl module types into host-language types when generated access is preferable
-to dynamic decoding.
-
-- [Language binding specification](https://pkl-lang.org/main/current/bindings-specification/index.html)
-- [apple/pkl-go](https://github.com/apple/pkl-go)
-- [apple/pkl-swift](https://github.com/apple/pkl-swift)
-- [apple/pkl-jvm-examples](https://github.com/apple/pkl-jvm-examples)
-- [apple/pkl-go-examples](https://github.com/apple/pkl-go-examples)
-- [apple/pkl-swift-examples](https://github.com/apple/pkl-swift-examples)
-
-Do not infer a binding API from another language. Each binding has its own
-evaluator lifecycle, version matrix, and generated-code contract.
+The repository facade uses the Pkl CLI for evaluation, formatting, imports, tests, and package operations.
+Repository hooks call that same facade.
+No editor extension, external reader executable, build plugin, domain package, or host-language binding is needed by these commands.
+Keep a project's existing integration unchanged unless the user explicitly requests work on that integration.

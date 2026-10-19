@@ -24,7 +24,6 @@ class IssueBackendCliTest(unittest.TestCase):
             "PATH": f"{self.bin_directory}{os.pathsep}{os.environ['PATH']}",
             "ISSUE_BACKEND_TEST_LOG": str(self.log_path),
         }
-        self._write_provider_double("acli")
         self._write_provider_double("gh")
 
     def _write_provider_double(self, name: str) -> None:
@@ -43,15 +42,7 @@ class IssueBackendCliTest(unittest.TestCase):
                     stream.write(json.dumps({"executable": Path(sys.argv[0]).name, "arguments": sys.argv[1:]}) + "\\n")
 
                 arguments = sys.argv[1:]
-                if Path(sys.argv[0]).name == "acli":
-                    if arguments[:4] == ["jira", "workitem", "view", "TASK-42"]:
-                        print(os.environ["ISSUE_BACKEND_TEST_ACLI_VIEW"])
-                    elif arguments[:4] == ["jira", "workitem", "link", "list"]:
-                        print(os.environ["ISSUE_BACKEND_TEST_ACLI_LINKS"])
-                    else:
-                        print("unexpected acli command", file=sys.stderr)
-                        raise SystemExit(64)
-                elif arguments[:2] == ["api", "--paginate"]:
+                if arguments[:2] == ["api", "--paginate"]:
                     endpoint = arguments[-1]
                     if endpoint.endswith("/dependencies/blocked_by?per_page=100"):
                         print(os.environ["ISSUE_BACKEND_TEST_GH_BLOCKED_BY"])
@@ -90,11 +81,22 @@ class IssueBackendCliTest(unittest.TestCase):
             return []
         return [json.loads(line) for line in self.log_path.read_text(encoding="utf-8").splitlines()]
 
-    def test_capabilities_selects_jira_from_environment_without_legacy_jira(self) -> None:
+    def test_retired_backend_rejects_before_any_provider_command(self) -> None:
+        completed = self.run_cli(
+            "capabilities", "--json",
+            environment={"EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira"},
+        )
+        self.assertEqual(completed.returncode, 1)
+        payload = json.loads(completed.stdout)["result"]
+        self.assertEqual(payload["failure"]["id"], "BACKEND_UNSUPPORTED")
+        self.assertEqual(payload["failure"]["mutationState"], "NOT_STARTED")
+        self.assertEqual(self.commands(), [])
+
+    def test_capabilities_selects_github_without_provider_io(self) -> None:
         completed = self.run_cli(
             "capabilities",
             "--json",
-            environment={"EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira"},
+            environment={"EFFECTIVE_DELIVERY_ISSUE_BACKEND": "github", "EFFECTIVE_DELIVERY_GITHUB_REPOSITORY": "octo/repo"},
         )
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
@@ -102,7 +104,7 @@ class IssueBackendCliTest(unittest.TestCase):
         self.assertEqual(result["type"], "ISSUE_BACKEND_RESULT")
         payload = result["result"]
         self.assertEqual(payload["outcome"], "COMPLETE")
-        self.assertEqual(payload["backend"], "JIRA")
+        self.assertEqual(payload["backend"], "GITHUB")
         self.assertEqual(
             payload["capabilities"],
             [
@@ -132,24 +134,25 @@ class IssueBackendCliTest(unittest.TestCase):
     def test_default_output_is_toon_derived_from_the_canonical_result(self) -> None:
         completed = self.run_cli(
             "capabilities",
-            environment={"EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira"},
+            environment={"EFFECTIVE_DELIVERY_ISSUE_BACKEND": "github", "EFFECTIVE_DELIVERY_GITHUB_REPOSITORY": "octo/repo"},
         )
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertTrue(completed.stdout.startswith("type: ISSUE_BACKEND_RESULT\n"))
         self.assertIn("  type: ISSUE_BACKEND_CAPABILITIES_RESULT\n", completed.stdout)
-        self.assertIn("  backend: JIRA\n", completed.stdout)
+        self.assertIn("  backend: GITHUB\n", completed.stdout)
         self.assertIn("  capabilities[6]{type,name,support}:\n", completed.stdout)
         self.assertFalse(completed.stdout.lstrip().startswith("{"))
 
     def test_toon_object_list_places_the_first_field_on_the_hyphen_line(self) -> None:
         completed = self.run_cli(
             "view",
-            "TASK-42",
+            "42",
             environment={
-                "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
-                "ISSUE_BACKEND_TEST_ACLI_VIEW": json.dumps(
-                    {"key": "TASK-42", "fields": {"summary": "Typed Jira adapter"}}
+                "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "github",
+                "EFFECTIVE_DELIVERY_GITHUB_REPOSITORY": "octo/repo",
+                "ISSUE_BACKEND_TEST_GH_VIEW": json.dumps(
+                    {"number": 42, "title": "Typed GitHub adapter"}
                 ),
             },
         )
@@ -160,48 +163,6 @@ class IssueBackendCliTest(unittest.TestCase):
             completed.stdout,
         )
         self.assertNotIn("\n    -\n", completed.stdout)
-
-    def test_jira_view_invokes_official_acli_and_normalizes_the_issue(self) -> None:
-        completed = self.run_cli(
-            "view",
-            "TASK-42",
-            "--json",
-            environment={
-                "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
-                "ISSUE_BACKEND_TEST_ACLI_VIEW": json.dumps(
-                    {
-                        "key": "TASK-42",
-                        "fields": {
-                            "summary": "Typed Jira adapter",
-                            "status": {"name": "In Progress"},
-                        },
-                    }
-                ),
-            },
-        )
-
-        self.assertEqual(completed.returncode, 0, completed.stderr)
-        result = json.loads(completed.stdout)
-        payload = result["result"]
-        self.assertEqual(
-            payload["issue"],
-            {
-                "type": "ISSUE_BACKEND_ISSUE",
-                "id": "TASK-42",
-                "state": "In Progress",
-                "title": "Typed Jira adapter",
-            },
-        )
-        self.assertEqual(payload["evidence"][0]["type"], "ISSUE_BACKEND_COMMAND_EVIDENCE")
-        self.assertEqual(
-            self.commands(),
-            [
-                {
-                    "executable": "acli",
-                    "arguments": ["jira", "workitem", "view", "TASK-42", "--json"],
-                }
-            ],
-        )
 
     def test_github_view_uses_gh_and_requires_an_explicit_repository(self) -> None:
         completed = self.run_cli(
@@ -223,7 +184,10 @@ class IssueBackendCliTest(unittest.TestCase):
         )
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        self.assertEqual(json.loads(completed.stdout)["result"]["issue"]["id"], "42")
+        self.assertEqual(json.loads(completed.stdout)["result"]["issue"], {
+            "type": "ISSUE_BACKEND_ISSUE", "id": "42", "title": "Typed GitHub adapter",
+            "state": "OPEN", "url": "https://github.com/octo/repo/issues/42",
+        })
         self.assertEqual(
             self.commands(),
             [
@@ -238,75 +202,6 @@ class IssueBackendCliTest(unittest.TestCase):
                         "--json",
                         "number,title,state,url",
                     ],
-                }
-            ],
-        )
-
-    def test_jira_dependency_map_preserves_blocker_direction(self) -> None:
-        completed = self.run_cli(
-            "dependency-map",
-            "TASK-42",
-            "--json",
-            environment={
-                "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
-                "ISSUE_BACKEND_TEST_ACLI_LINKS": json.dumps(
-                    {
-                        "links": [
-                            {
-                                "type": {"name": "Blocks"},
-                                "inwardIssue": {
-                                    "key": "TASK-7",
-                                    "fields": {"summary": "Schema first"},
-                                },
-                            },
-                            {
-                                "type": {"name": "Blocks"},
-                                "outwardIssue": {
-                                    "key": "TASK-99",
-                                    "fields": {"summary": "Consumer"},
-                                },
-                            },
-                        ]
-                    }
-                ),
-            },
-        )
-
-        self.assertEqual(completed.returncode, 0, completed.stderr)
-        result = json.loads(completed.stdout)
-        payload = result["result"]
-        self.assertEqual(payload["type"], "ISSUE_BACKEND_DEPENDENCY_MAP_RESULT")
-        self.assertEqual(payload["dependencyMap"]["type"], "ISSUE_BACKEND_DEPENDENCY_MAP")
-        self.assertEqual(payload["dependencyMap"]["root"], "TASK-42")
-        self.assertEqual(
-            payload["dependencyMap"]["edges"],
-            [
-                {
-                    "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
-                    "relation": "BLOCKS",
-                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "TASK-7", "title": "Schema first"},
-                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "TASK-42"},
-                },
-                {
-                    "type": "ISSUE_BACKEND_DEPENDENCY_EDGE",
-                    "relation": "BLOCKS",
-                    "source": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "TASK-42"},
-                    "target": {"type": "ISSUE_BACKEND_ISSUE_REFERENCE", "id": "TASK-99", "title": "Consumer"},
-                },
-            ],
-        )
-        self.assertEqual(payload["dependencyMap"]["coverage"]["depth"], 1)
-        self.assertEqual(
-            payload["dependencyMap"]["coverage"]["type"],
-            "ISSUE_BACKEND_DEPENDENCY_COVERAGE",
-        )
-        self.assertEqual(payload["dependencyMap"]["coverage"]["hierarchy"], "UNSUPPORTED")
-        self.assertEqual(
-            self.commands(),
-            [
-                {
-                    "executable": "acli",
-                    "arguments": ["jira", "workitem", "link", "list", "--key", "TASK-42", "--json"],
                 }
             ],
         )
@@ -372,12 +267,13 @@ class IssueBackendCliTest(unittest.TestCase):
     def test_malformed_provider_result_retains_command_evidence(self) -> None:
         completed = self.run_cli(
             "view",
-            "TASK-42",
+            "42",
             "--json",
             environment={
-                "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira",
-                "ISSUE_BACKEND_TEST_ACLI_VIEW": json.dumps(
-                    {"fields": {"summary": "Missing identity"}}
+                "EFFECTIVE_DELIVERY_ISSUE_BACKEND": "github",
+                "EFFECTIVE_DELIVERY_GITHUB_REPOSITORY": "octo/repo",
+                "ISSUE_BACKEND_TEST_GH_VIEW": json.dumps(
+                    {"title": "Missing identity"}
                 ),
             },
         )
@@ -385,21 +281,21 @@ class IssueBackendCliTest(unittest.TestCase):
         self.assertEqual(completed.returncode, 1)
         payload = json.loads(completed.stdout)["result"]
         self.assertEqual(payload["failure"]["id"], "PROVIDER_OUTPUT_INVALID")
-        self.assertEqual(payload["evidence"][0]["executable"], "acli")
+        self.assertEqual(payload["evidence"][0]["executable"], "gh")
         self.assertEqual(payload["evidence"][0]["exitCode"], 0)
 
     def test_provider_stderr_does_not_enter_the_canonical_failure(self) -> None:
         completed = self.run_cli(
             "view",
-            "UNEXPECTED-1",
+            "404",
             "--json",
-            environment={"EFFECTIVE_DELIVERY_ISSUE_BACKEND": "jira"},
+            environment={"EFFECTIVE_DELIVERY_ISSUE_BACKEND": "github", "EFFECTIVE_DELIVERY_GITHUB_REPOSITORY": "octo/repo"},
         )
 
         self.assertEqual(completed.returncode, 1)
         payload = json.loads(completed.stdout)["result"]
         self.assertEqual(payload["failure"]["id"], "PROVIDER_COMMAND_FAILED")
-        self.assertNotIn("unexpected acli command", completed.stdout)
+        self.assertNotIn("unexpected gh command", completed.stdout)
         self.assertEqual(payload["evidence"][0]["exitCode"], 64)
 
 

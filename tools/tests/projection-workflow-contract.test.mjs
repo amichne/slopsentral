@@ -25,28 +25,27 @@ test("source validation projects three harnesses through pinned local Pkl", () =
 
 });
 
-test("publication projects a harness matrix through the same local Pkl boundary", () => {
-  assert.match(publicationWorkflow, /uv run --locked tools\/marketplace.py project --source \./);
-  assert.match(publicationWorkflow, /--harness '\$\{\{ matrix\.harness \}\}'/);
-  assert.match(publicationWorkflow, /uv run --locked tools\/install_projection_pkl.py/);
-  assert.doesNotMatch(publicationWorkflow, /npm ci|actions\/setup-node/);
-  assert.doesNotMatch(publicationWorkflow, /amichne\/projeKtor|intelligence project/);
+test("publication consumes the full successful main run without rebuilding", () => {
+  assert.match(publicationWorkflow, /workflow_run:/);
+  assert.match(publicationWorkflow, /workflows: \[Validate Source\]/);
+  assert.match(publicationWorkflow, /workflow_run.conclusion == 'success'/);
+  assert.match(publicationWorkflow, /workflow_run.event == 'push'/);
+  assert.match(publicationWorkflow, /tools.release_assets admit-run/);
+  assert.match(publicationWorkflow, /steps.admission.outputs.artifact/);
+  assert.match(publicationWorkflow, /run-id: \$\{\{ env.SOURCE_RUN_ID \}\}/);
+  assert.match(publicationWorkflow, /tools.release_assets unpack/);
+  assert.doesNotMatch(publicationWorkflow, /marketplace.py project|install_projection_pkl|npm ci|actions\/setup-node/);
+  assert.doesNotMatch(publicationWorkflow, /^  push:/m);
 });
 
-test("publication maps each projection to its dedicated harness branch", () => {
-  assert.match(publicationWorkflow, /harness: codex\s+branch: harness\/codex/);
-  assert.match(publicationWorkflow, /harness: github-copilot\s+branch: harness\/github-copilot/);
-  assert.match(publicationWorkflow, /tools\/publish.py harness/);
-  assert.doesNotMatch(publicationWorkflow, /git push origin "HEAD:\$\{GITHUB_REF_NAME\}"/);
-});
-
-test("main publication joins both projections without triggering itself", () => {
-  assert.match(publicationWorkflow, /publish-main:[\s\S]*needs: publish/);
-  assert.match(publicationWorkflow, /tar -cf/);
-  assert.match(publicationWorkflow, /tar -xf/);
-  assert.match(publicationWorkflow, /merge-multiple: true/);
+test("publication uses tested payloads for both branches and main", () => {
+  assert.match(publicationWorkflow, /tools\/publish.py harness[^\n]+harness\/codex main/);
+  assert.match(publicationWorkflow, /tools\/publish.py harness[^\n]+harness\/github-copilot main/);
   assert.match(publicationWorkflow, /tools\/publish.py main/);
-  assert.match(publicationWorkflow, /paths-ignore:\s+- '\.agents\/plugins\/\*\*'\s+- '\.github\/plugin\/\*\*'/);
+  assert.match(validateWorkflow, /--out "\$RUNNER_TEMP\/qualified-projections"/);
+  assert.match(validateWorkflow, /tools.release_assets package/);
+  assert.match(validateWorkflow, /name: marketplace-candidate/);
+  assert.match(validateWorkflow, /npm run docs:check/);
 });
 
 test("retired broker and garden surfaces are absent", () => {

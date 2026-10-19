@@ -26,7 +26,7 @@
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Choose for domain modeling, atomic predicates, and proof-preserving APIs.",
-    "notFor": "General Git, review, debugging, or CI workflows. Use native tools or an upstream plugin.",
+    "notFor": "General Git, review, debugging, or CI workflows. Use native host tools.",
     "owner": "software-engineering",
     "role": "default",
     "scope": "Constrain domain values, preserve established facts, and compose pure decisions.",

@@ -117,12 +117,6 @@ def commands(items: tuple[tuple[str, ...], ...], *, env: dict[str, str] | None =
 def native(temporary: Path) -> int:
     artifacts = (
         Artifact(
-            "max-sixty/worktrunk",
-            "v0.53.0",
-            "worktrunk-x86_64-unknown-linux-musl.tar.xz",
-            "2d0e810910270955fbf9a7c2d5c61c754eb4fea0c255a960d0acccff65646822",
-        ),
-        Artifact(
             "vale-cli/vale",
             "v3.24.0",
             "vale_3.24.0_Linux_64-bit.tar.gz",
@@ -145,7 +139,6 @@ def native(temporary: Path) -> int:
         file.chmod(file.stat().st_mode | 0o111)
     with Path(os.environ["GITHUB_PATH"]).open("a") as output:
         for directory in (
-            temporary / "worktrunk/worktrunk-x86_64-unknown-linux-musl",
             temporary / "vale",
             kotlin_bin,
         ):

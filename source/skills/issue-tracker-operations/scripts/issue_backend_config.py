@@ -42,7 +42,7 @@ def resolve_backend(
     if raw is None or not raw.strip():
         raise IssueBackendError(
             "BACKEND_REQUIRED",
-            f"Set --backend or {BACKEND_ENVIRONMENT_VARIABLE} to github or jira.",
+            f"Set --backend or {BACKEND_ENVIRONMENT_VARIABLE} to github.",
             "SELECT_SUPPORTED_BACKEND",
         )
     normalized = raw.strip().upper()
@@ -51,7 +51,7 @@ def resolve_backend(
     except ValueError as error:
         raise IssueBackendError(
             "BACKEND_UNSUPPORTED",
-            f"Set --backend or {BACKEND_ENVIRONMENT_VARIABLE} to github or jira.",
+            f"Set --backend or {BACKEND_ENVIRONMENT_VARIABLE} to github.",
             "SELECT_SUPPORTED_BACKEND",
         ) from error
 

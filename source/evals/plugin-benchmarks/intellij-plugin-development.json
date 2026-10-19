@@ -84,7 +84,7 @@
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "live-ide-diagnostics",
       "title": "Live IDE diagnostics",
-      "purpose": "Measure whether a live CPU symptom is sampled before targeted IDE Perf escalation.",
+      "purpose": "Measure whether live native diagnostics precede a bounded JDK evidence request without external profiler setup.",
       "routingCaseIds": [
         "intellij-live-freeze-uses-diagnostics-mcp-before-profiler"
       ],
@@ -92,11 +92,11 @@
         "type": "SKILL",
         "name": "intellij-platform-testing"
       },
-      "userInput": "Use IntelliJ Plugin Development read-only diagnostics to compare a running IDE before and during one completion slowdown, then emit one concrete method trace plan. Do not edit VM options, install software, or otherwise modify remote state.",
+      "userInput": "Use IntelliJ Plugin Development read-only diagnostics to compare a running IDE before and during one completion slowdown. Use native evidence and report unavailable measurements. Do not edit VM options, install software, or otherwise modify remote state.",
       "successChecklist": [
         "The run records bounded before/during diagnostics MCP samples.",
         "CPU, thread-state, blocked/waited, native, and truncation evidence remain explicit.",
-        "The IDE Perf plan traces one concrete method and ends with reset."
+        "The result uses existing native JDK evidence or names unavailable measurements without an outside profiler."
       ]
     },
     {

@@ -1,7 +1,7 @@
 # Provenance
 
 This is a local adaptation informed by Chris Banes's `grounded-writing` skill at
-[chrisbanes/skills, 84c2c53a26614236e644b3ea9eaf891c44704417](https://github.com/chrisbanes/skills/tree/84c2c53a26614236e644b3ea9eaf891c44704417/skills/grounded-writing), reviewed 2026-09-05.
+chrisbanes/skills, 84c2c53a26614236e644b3ea9eaf891c44704417, reviewed 2026-09-05.
 The upstream distribution uses Apache-2.0; a copy is in [Apache-2.0.txt](Apache-2.0.txt).
 
 Local changes: narrower routing, explicit completion evidence, repository-version
@@ -45,7 +45,7 @@ does not establish a universal cutoff for our documents. The
 [Flesch-Kincaid overview](https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests)
 was background; the executable formula comes from the pinned Vale resource.
 
-[julienijs/Linguistic-complexity, 570d674e64ed9ff758dacfce676501c4d3c19811](https://github.com/julienijs/Linguistic-complexity/tree/570d674e64ed9ff758dacfce676501c4d3c19811)
+julienijs/Linguistic-complexity at `570d674e64ed9ff758dacfce676501c4d3c19811`
 uses deletion/compression measures. Its scripts contain unseeded randomized
 deletion and a different iteration count from the README. They are not used
 as a deterministic prose readability gate. No claim is made that the selected

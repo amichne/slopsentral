@@ -17,20 +17,12 @@ account setting, or live deployment setting is changed by this catalog.
 | --- | --- | --- |
 | chrisbanes/skills | `84c2c53a26614236e644b3ea9eaf891c44704417` | Kotlin API ownership, branching, and grounded writing |
 | oakoss/agent-skills | `85e3a3919d9e0ec7f7302a5143ec4b3e66f5f6ad` | CLI pipelines, shell integration, Git, Actions, CI/CD, mise, and technical docs |
-| amichne/projeKtor | `v1.2.1`, action commit `eb3799c2bc60b4803c84fded0b6f4cd587bd0702` | Required provider projection contract |
-| max-sixty/worktrunk | `dea4029c593a89a39fb141da9d0849e4d10dae19`, reviewed 2026-10-06 | External Codex plugin; original Git workflow guidance and project automation checked with `wt v0.53.0` |
 
 Chris Banes's distribution uses Apache-2.0; the relevant standalone skills
 include the license and modification notice. Oakoss skill frontmatter declares
 MIT. The Oakoss-inspired local procedures copy no upstream source files,
 scripts, examples, or templates. Future literal imports must retain the actual
 upstream license and applicable notices.
-
-Worktrunk's plugin remains an upstream distribution with MIT OR Apache-2.0
-licensing. Its skill and hooks are installed from its own marketplace; no
-payload is copied into the Slopsentral source graph. The local Git procedure
-adds task ownership, current-base verification, and staging guidance through
-original wording. Project automation uses the existing repository checks.
 
 ## Adaptation Decisions
 
@@ -42,12 +34,6 @@ Do not import blanket requirements for named Explore/Task/Plan agents, automatic
 skill installation, automatic mise trust, a universal 48-hour branch rule,
 mandatory vendor choices, unsupported speed multipliers, or mandatory diagrams.
 Do not inherit another author's persona when writing on behalf of the user.
-
-Official mise documentation was checked through Context7: non-interactive
-commands use mise exec or mise run without requiring prompt-driven activation.
-[FAQ](https://mise.jdx.dev/faq.html) and
-[troubleshooting](https://mise.jdx.dev/troubleshooting.html) resolve conflicting
-activation advice in the upstream skill. The installed version remains decisive.
 
 ## Task-Oriented Plugin Review
 
@@ -70,9 +56,9 @@ valid. No upstream skill or example prompt is copied into canonical source.
 ## Gradle and GitHub Actions Performance Review
 
 Reviewed 2026-09-16. `gradle-performance-engineering` independently adapts
-[new-silvermoon/awesome-android-agent-skills](https://github.com/new-silvermoon/awesome-android-agent-skills/tree/82900eacc8dbe13de93c6310af27b9df4b2bd2f6)
-with Develocity API evidence and controlled measurement. `github-ci-operations`
+new-silvermoon/awesome-android-agent-skills
+with native build evidence and controlled measurement. `github-ci-operations`
 extends its existing workflow guidance using
-[agents-inc/skills](https://github.com/agents-inc/skills/tree/3a51ef571e996b18294bf776d53dbdad26de0617).
+agents-inc/skills.
 Per-skill provenance records retained ideas and rejected blanket speed, cache,
 and work-skipping claims. No upstream code or templates were imported.

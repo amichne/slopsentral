@@ -1,7 +1,7 @@
 # Provenance
 
 This is a local adaptation informed by Chris Banes's `kotlin-api-design` skill at
-[chrisbanes/skills, 84c2c53a26614236e644b3ea9eaf891c44704417](https://github.com/chrisbanes/skills/tree/84c2c53a26614236e644b3ea9eaf891c44704417/skills/kotlin-api-design), reviewed 2026-09-05.
+chrisbanes/skills, 84c2c53a26614236e644b3ea9eaf891c44704417, reviewed 2026-09-05.
 The upstream distribution uses Apache-2.0; a copy is in [Apache-2.0.txt](Apache-2.0.txt).
 
 Local changes: narrower routing, explicit completion evidence, repository-version

@@ -54,7 +54,8 @@
             "pages": [
               "reference/architecture",
               "reference/profiles",
-              "reference/glossary"
+              "reference/glossary",
+              "reference/releases"
             ]
           }
         ]

@@ -21,7 +21,7 @@ Keep unchecked construction private. Preserve closed failures through compositio
 Handle every known case explicitly. Do not substitute casts, flags, or comments for enforced contracts.
 
 Keep decisions pure. Supply file, network, clock, process, and mutable service effects through explicit adapters.
-Use existing domain types, standard libraries, repository tools, and upstream workflows before adding custom machinery.
+Use existing domain types, standard libraries, repository tools, and native host workflows before adding custom machinery.
 The project owns its language and toolchain choices.
 
 Before an implementation, inspect the current owner and callers.

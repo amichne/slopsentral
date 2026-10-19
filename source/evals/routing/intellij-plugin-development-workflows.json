@@ -194,10 +194,10 @@
         "capturedAt": "2026-08-10",
         "evidenceRefs": [
           "source/skills/intellij-platform-testing/SKILL.md",
-          "source/skills/intellij-platform-testing/references/ide-perf.md"
+          "source/skills/intellij-platform-testing/references/live-diagnostics.md"
         ]
       },
-      "prompt": "Diagnose which running IntelliJ thread causes a repeatable CPU spike during completion, then plan one bounded method trace.",
+      "prompt": "Compare running IntelliJ threads before and during a repeatable completion CPU spike. Use native diagnostics and report unavailable measurements.",
       "expectedPrimitive": {
         "type": "SKILL",
         "name": "intellij-platform-testing"
@@ -213,15 +213,15 @@
       "allowedActions": [
         "Capture bounded diagnostics MCP samples before and during the named action.",
         "Compare CPU, thread-state, blocked/waited, native-hint, and truncation evidence.",
-        "Escalate only the named concrete suspect method to an IDE Perf clear, trace, reproduce, and reset sequence."
+        "Use existing native JDK recording evidence for a bounded unresolved question, or report the missing capability."
       ],
       "forbiddenActions": [
         "Infer a live hot thread from repository text or build output.",
-        "Begin with package-wide IDE Perf wildcards or leave tracepoints active.",
-        "Edit VM options or install IDE Perf without an explicit helper invocation."
+        "Install an outside profiler or infer exact method call counts from sampled stacks.",
+        "Change IDE settings or restart the IDE without explicit authority."
       ],
-      "recoveryExpectation": "A good run should produce comparable live samples and one bounded trace plan without silently mutating the IDE.",
-      "notes": "Diagnostics MCP is the low-overhead first lane; IDE Perf is a targeted escalation.",
+      "recoveryExpectation": "A useful run produces comparable live samples and a bounded native evidence request without silently changing the IDE.",
+      "notes": "Native diagnostics MCP supplies the first sample; existing JDK recording can answer a bounded remaining question.",
       "productiveOutcome": "The suspected hot method is grounded in live action-specific process evidence.",
       "verificationEvidence": [
         "The capture records IDE build, sample parameters, action timing, and before/during comparison.",

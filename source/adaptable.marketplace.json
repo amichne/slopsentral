@@ -25,36 +25,12 @@
       },
       "description": "Constrain domain values, preserve established facts, and compose pure decisions.",
       "tags": [
-        "actions",
-        "automation",
-        "backend",
-        "ci",
-        "cli",
-        "core",
-        "daily-driver",
-        "dependencies",
+        "atomic-predicates",
         "design",
-        "duration",
-        "evidence",
-        "failures",
-        "git",
-        "github",
-        "governance",
-        "hooks",
-        "instructions",
-        "issues",
-        "jira",
-        "local-development",
-        "mise",
-        "onboarding",
-        "optimization",
-        "pull-requests",
-        "release",
+        "proof",
         "schemas",
         "skills",
-        "tdd",
-        "testing",
-        "workflow-graph"
+        "type-safety"
       ]
     },
     {
@@ -390,15 +366,6 @@
       },
       "path": "skills/intellij-platform-testing",
       "name": "intellij-platform-testing"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/mise-project-tooling",
-      "name": "mise-project-tooling"
     },
     {
       "type": "SKILL",

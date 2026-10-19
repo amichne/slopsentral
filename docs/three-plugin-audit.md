@@ -1,3 +1,5 @@
+> Historical audit. The [current catalog](../source/CATALOG.md) and [canonical release set](releases.md) supersede its plugin counts and installation choices.
+
 # Repository Knowledge, Software Engineering, and CLI Development audit
 
 Reviewed 2026-09-22. The three plugins retain separate owners: source-backed
