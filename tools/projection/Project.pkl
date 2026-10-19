@@ -303,6 +303,10 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
         else
           List()
       )
+      + p.hookFiles.map((path) -> new Schema.Copy {
+        source = path
+        target = path.drop(7)
+      })
   files =
     (
       new Listing<Schema.TextFile> {

@@ -347,8 +347,7 @@
             "name": "python-tooling",
             "path": "skills/python-tooling",
             "plugins": [
-              "developer-tooling",
-              "software-engineering"
+              "developer-tooling"
             ]
           }
         ]
@@ -361,8 +360,7 @@
             "name": "python-tooling",
             "path": "skills/python-tooling",
             "plugins": [
-              "developer-tooling",
-              "software-engineering"
+              "developer-tooling"
             ]
           }
         ]

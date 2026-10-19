@@ -91,7 +91,7 @@ Several boundaries deserve revision:
 | --- | --- | --- |
 | Personal Setup | Its manifest includes dotfiles, CLI products, terminal interfaces, and skill/plugin/hook authoring | A personal configuration name hides general toolmaking workflows |
 | Repository Knowledge | Its manifest bundles technical prose and site docs with drift and overlay hooks | Installing writing workflows also installs hook definitions; execution depends on supported host events and configuration |
-| Kotlin Engineering | Its manifest includes guidance, Gradle hooks, and a local Kast MCP command | Language knowledge is coupled to an installed service and host checks |
+| Kotlin Engineering | Its manifest includes guidance, Gradle hooks, and a local MCP command | Language knowledge is coupled to an installed service and host checks |
 | Engineering Excellence | A separate plugin owns design policy and `semantic-ratchet` | A shared engineering concern becomes another default installation decision |
 | Agent profiles | `schema-type-enforcer.agent.md` includes `model: sonnet` | Provider-neutral intent includes a provider-specific execution choice |
 | Generic names | `agents-sdk` means Cloudflare; `workflow` means Vercel Workflow DevKit | Names alone can suggest unrelated agent SDKs or generic workflows |
@@ -144,7 +144,7 @@ remaining names and boundaries below are experiments for later iterations.
 | `repository-knowledge` | Write explanations and maintain source-backed repository knowledge | Current writing and knowledge skills; no automatic overlay or drift hooks in the portable package |
 | `developer-tooling` | Build CLI, shell, terminal, and agent workflow tools | General tool authoring from Personal Setup; conditional authoring references |
 | `api-contracts` | Create and review schemas and API contracts | Current API workflows; reusable schema procedures and focused review output |
-| `kotlin-development` | Implement, review, and diagnose Kotlin code | Kotlin workflows and references; no mandatory Kast connection or event checks |
+| `kotlin-development` | Implement, review, and diagnose Kotlin code | Kotlin workflows and references; no mandatory service connection or event checks |
 | `intellij-development` | Develop and qualify IntelliJ plugins | Current IntelliJ workflows and their platform-specific references |
 | `pkl-workflows` | Develop and verify Pkl configuration | Current Pkl workflows; optional Pkl Repository Checks supplies event hooks |
 | `personal-configuration` | Maintain the user's verified shell and dotfiles setup | Personal setup management and personal variants of shell/CLI workflows |
@@ -165,7 +165,7 @@ full-skill reuse where it helps; report discovery overlap without reinstating
 a global ownership ban.
 
 Group optional integrations visibly with their related workflow package.
-Examples include the Kast connection, Kotlin/Gradle event checks, knowledge
+Examples include the service connection, Kotlin/Gradle event checks, knowledge
 overlay/drift automation, Pkl event checks, and repository policy delivery.
 Keep the skill-read policy an explicit advanced choice.
 
@@ -317,7 +317,7 @@ Use representative tasks and negative controls:
 - A skill rewrite, a hook addition, and a schema-only edit.
 - A prose-only edit in a Pkl repository, and a source-backed knowledge refresh.
 - A local edit without publication authority, and a requested PR publication.
-- Missing Kast, unavailable build tooling, conflicting assets, and overlapping hooks.
+- A missing semantic service, unavailable build tooling, conflicting assets, and overlapping hooks.
 
 Record selected skills, irrelevant selections, loaded resources, actual token
 usage when available, task completion, proof gaps, and automatic hook effects.
@@ -342,7 +342,7 @@ the external projection dependency for both existing provider shapes.
    tasks. Inspect host discovery overlap and automatic effects in fresh sessions.
 2. Consolidate authoring entry points only when the measured task results support
    it. Preserve their constraints, references, helpers, and callers.
-3. Separately pilot Kotlin guidance without mandatory Kast or event hooks.
+3. Separately pilot Kotlin guidance without mandatory services or event hooks.
    Qualify source, both projections, and a fresh supported host session.
 4. Compare real task evidence. Migrate profiles and retire compatibility
    entries only after their replacements preserve the required results.

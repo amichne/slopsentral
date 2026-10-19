@@ -37,7 +37,7 @@ pi --slopsentral-profile kotlin-type-design
 
 This profile supplies Kotlin instructions and skills with automatic hooks set to `OFF`.
 The extension keeps the current model, tools, and thinking level.
-Without a startup choice, a new session uses `local-development-default` with `ADVISORY` hooks.
+Without a startup choice, a new session uses `local-development-default` with automatic hooks set to `OFF`.
 The startup flag supplies the initial choice only.
 Saved session entries take precedence during restoration and tree navigation.
 
@@ -115,14 +115,14 @@ Preview generations start with `preview:` and cannot invoke the skill loader.
 The command also accepts `user` and `project` scopes.
 
 Use the [settings schema](../source/schemas/pi/settings.schema.json) for external configuration.
-For example, this complete project layer disables one instruction and changes one hook:
+For example, this complete project layer disables one instruction and changes one Kotlin hook:
 
 ```json
 {
   "schemaVersion": 1,
-  "capabilities": { "instruction:engineering-design": false },
+  "capabilities": { "instruction:kotlin-engineering": false },
   "hooks": {
-    "hook:agents-md-scope": {
+    "hook:gradle-check-green": {
       "execution": "foreground",
       "critical": "blocking",
       "output": { "type": "ERRORS" },
@@ -210,7 +210,7 @@ Skill invocation grants no publication authority.
 
 Each hook has an independent execution policy, critical-path policy, output policy, context policy, and optional deadline.
 Ordinary hooks inherit foreground execution and the profile's failure policy.
-The scope hook defaults to background execution with reports under `ADVISORY`.
+A custom scope hook can use background execution with reports under `ADVISORY`.
 An `ENFORCING` profile keeps foreground execution and blocking behavior.
 
 | Policy | Behavior |
@@ -253,10 +253,13 @@ They do not establish the current state.
 
 ## Instruction scopes
 
+No shipped plugin selects the scope hook.
+The steps in this section need an explicit local hook addition.
+
 While the extension is enabled, Pi collects mutation candidates from native `tool_execution_start` events before the effect.
 Native `write` and `edit` paths include first-run edits and possible mutations from failed tools.
 Collection does not invoke Git or a hook subprocess.
-Final settlement starts one assessment for the pending revision by default.
+With an explicit scope hook, final settlement starts one assessment for the pending revision.
 A successful assessment records its revision and keeps the review obligation.
 Unchanged subsequent settlements do not repeat advisory assessment.
 
@@ -374,7 +377,7 @@ From the source checkout, select a fresh output path:
 
 ```bash
 export PKL_BIN=/absolute/path/to/pkl-0.32.0
-node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi-trial-01
+uv run --locked tools/marketplace.py project --source . --harness pi --out /tmp/slopsentral-pi-trial-01
 ```
 
 The package path is `/tmp/slopsentral-pi-trial-01/.pi/slopsentral`.

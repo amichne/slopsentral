@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "software-engineering",
-  "version": "3.1.0",
-  "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
+  "version": "4.0.0",
+  "description": "Constrain domain values, preserve established facts, and compose pure decisions.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -18,100 +18,18 @@
       },
       "path": "skills/semantic-ratchet",
       "name": "semantic-ratchet"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/python-tooling",
-      "name": "python-tooling"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/tdd",
-      "name": "tdd"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/git-change-flow",
-      "name": "git-change-flow"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/mise-project-tooling",
-      "name": "mise-project-tooling"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/github-ci-operations",
-      "name": "github-ci-operations"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/issue-tracker-operations",
-      "name": "issue-tracker-operations"
-    },
-    {
-      "type": "SKILL",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "skills/pull-request-lifecycle",
-      "name": "pull-request-lifecycle"
     }
   ],
   "agents": [],
   "instructions": [],
-  "hooks": [
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/software-engineering-context.hook.json",
-      "name": "software-engineering-context"
-    },
-    {
-      "type": "HOOK",
-      "source": {
-        "type": "LOCAL_SOURCE",
-        "path": "./"
-      },
-      "path": "hooks/agents-md-scope.hook.json",
-      "name": "agents-md-scope"
-    }
-  ],
+  "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Start here for typed design, invariant decomposition, Python automation, testing, refactoring, Git, PRs, and CI.",
-    "notFor": "Language and platform syntax beyond the shared baseline; add the relevant specialty.",
+    "dailyDriver": "Choose for domain modeling, atomic predicates, and proof-preserving APIs.",
+    "notFor": "General Git, review, debugging, or CI workflows. Use native tools or an upstream plugin.",
     "owner": "software-engineering",
     "role": "default",
-    "scope": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
+    "scope": "Constrain domain values, preserve established facts, and compose pure decisions.",
     "workstream": "software-engineering"
   }
 }

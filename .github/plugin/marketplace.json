@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "description": "Kotlin-first engineering with proof-preserving design, focused tests, and locked uv Python automation.",
+    "description": "Focused domain design and optional language, tooling, and repository workflows.",
     "pluginRoot": ".github/plugin"
   },
   "name": "slopsentral",
@@ -13,7 +13,7 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
+      "description": "Constrain domain values, preserve established facts, and compose pure decisions.",
       "keywords": [
         "actions",
         "automation",
@@ -83,7 +83,7 @@
         "testing",
         "workflow-graph"
       ],
-      "version": "3.1.0"
+      "version": "4.0.0"
     },
     {
       "author": {
@@ -101,7 +101,6 @@
         "gradle",
         "higher-order-functions",
         "hooks",
-        "kast",
         "kotlin",
         "kotlin-engineering",
         "ktor",
@@ -139,7 +138,6 @@
         "higher-order-functions",
         "hooks",
         "kotlin",
-        "kast",
         "ktor",
         "libraries",
         "module-boundaries",
@@ -160,7 +158,7 @@
         "type-safety",
         "validation"
       ],
-      "version": "3.0.0"
+      "version": "4.0.0"
     },
     {
       "author": {
@@ -275,7 +273,7 @@
         "tools",
         "skills"
       ],
-      "version": "3.0.0"
+      "version": "4.0.0"
     }
   ]
 }

@@ -7,7 +7,7 @@ A plugin groups related procedures for installation. It does not grant authority
 
 | Owner | Responsibility |
 | --- | --- |
-| Software Engineering | Shared invariants, proof, scoped execution, uv Python, Git, PRs, and CI |
+| Software Engineering | Constrained domain values, atomic predicates, and pure decisions |
 | Kotlin Engineering | Kotlin syntax, constrained values, closed outcomes, review, compiler proof, and Gradle |
 | IntelliJ Plugin Development | Delivery, PSI/indexing, platform tests, and live diagnostics |
 | Developer Tooling | Tools, agent resources, JSON Schema, OpenAPI, Pkl, and explicit personal configuration |
@@ -15,7 +15,8 @@ A plugin groups related procedures for installation. It does not grant authority
 
 Software Engineering remains the single default.
 Kotlin profiles add Kotlin Engineering. IntelliJ profiles add the IntelliJ specialty.
-Python Tooling has one source and appears in Software Engineering and Developer Tooling.
+Developer Tooling owns Python automation and tool authoring.
+General local delivery procedures remain standalone source references.
 All other current skills appear in one bundle.
 
 ## Proof and scope
@@ -53,7 +54,8 @@ Focused fixtures keep the runtime-only projection contract under test after the 
 
 ## Hooks and explicit effects
 
-Software Engineering and Kotlin Engineering compose their concise context hooks.
+Software Engineering supplies one standard skill without hooks.
+Kotlin Engineering composes its explicit context hook.
 Kotlin also keeps Gradle checks and wrapper integrity.
 Repository Knowledge keeps its bounded knowledge hooks.
 Developer Tooling and IntelliJ Plugin Development add no automatic hooks.

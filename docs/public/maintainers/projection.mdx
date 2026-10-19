@@ -11,16 +11,15 @@ It rejects unsupported source types and existing output trees.
 ## Prerequisites
 
 Use a Git checkout with a resolvable `HEAD`.
-Install the locked Node dependencies.
-Use Node.js 22.19 or later, Python 3.12 or 3.13, and Pkl 0.32.0.
+Use Python 3.12 or 3.13 and Pkl 0.32.0.
+Core projection needs no Node.js executable.
 
 ## Install the pinned runtime
 
 From the repository root, choose an output path that does not exist.
 
 ```bash
-npm ci
-node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
+uv run --locked tools/install_projection_pkl.py --out /tmp/slopsentral-pkl/pkl
 ```
 
 The installer examines the downloaded bytes against the pinned checksum.
@@ -33,10 +32,10 @@ Their parent directory must exist.
 
 ```bash
 export PKL_BIN=/tmp/slopsentral-pkl/pkl
-node tools/validate-source-graph.mjs
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex-new
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
-node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi-new
+uv run --locked tools/marketplace.py validate
+uv run --locked tools/marketplace.py project --source . --harness codex --out /tmp/slopsentral-codex-new
+uv run --locked tools/marketplace.py project --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
+uv run --locked tools/marketplace.py project --source . --harness pi --out /tmp/slopsentral-pi-new
 npm run check:pi
 git diff --check
 ```

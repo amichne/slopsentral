@@ -51,7 +51,7 @@ This file applies to authored marketplace source under `source/`.
 
 ## Verify
 
-- Run `node tools/validate-source-graph.mjs` after changing primitive
+- Run `uv run --locked tools/marketplace.py validate` after changing primitive
   references, hook metadata, plugin manifests, routing evals, or source graph
   contracts.
 - For marketplace publication proof, run the full root `AGENTS.md` marketplace
@@ -72,7 +72,7 @@ select each hook through one plugin; shared hook packaging does not prove that
 a host will execute it once. Check the full dependency closure for that rule.
 Keep marketplace identities unique and reject conflicting paths or cycles.
 Do not copy payloads into plugin directories. Regenerate `source/CATALOG.md` with
-`node tools/catalog.mjs --write` after composition changes. See
+`uv run --locked tools/marketplace.py catalog --out source/CATALOG.md` after composition changes. See
 `source/ARCHITECTURE.md` for the primitive responsibilities and evidence limits.
 
 `WORKFLOW_PROFILE.focusSkills` selects skills from the selected plugin closures.

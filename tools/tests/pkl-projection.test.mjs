@@ -111,9 +111,6 @@ for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot'
       { cwd: root, maxBuffer: 4 * 1024 * 1024 });
     execFileSync('tar', ['-xf', '-', '-C', fixtureRepo], { input: fixtureArchive });
     const expected = tree(path.join(fixtureRepo, fixturePath));
-    if (baseline.name === 'uv provider regression') {
-      assert.deepEqual(tree(path.join(root, fixturePath)), expected, 'checked-in uv fixtures must preserve their pinned bytes and modes');
-    }
     assert.ok(expected.size > 0, 'historical compatibility must compare actual fixtures');
     for (const [key, value] of expected) {
       assert.ok(files.has(key), `historical projection must include ${key}`);

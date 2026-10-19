@@ -19,17 +19,17 @@ test("source validation projects three harnesses through pinned local Pkl", () =
   assert.match(verifier, /"codex", "github-copilot"/);
   assert.match(verifier, /"codex", "github-copilot", "pi"/);
   assert.match(verifier, /tools\/tests\/pi-host.test.mjs/);
-  assert.match(verifier, /tools\/project-marketplaces.mjs/);
-  assert.match(read("tools/ci.py"), /tools\/install-projection-pkl.mjs/);
+  assert.match(verifier, /tools\/marketplace.py/);
+  assert.match(read("tools/ci.py"), /tools\/install_projection_pkl.py/);
   assert.ok(validateWorkflow.indexOf('Install checksum-verified native tools') < validateWorkflow.indexOf('Validate source, Python'));
 
 });
 
 test("publication projects a harness matrix through the same local Pkl boundary", () => {
-  assert.match(publicationWorkflow, /node tools\/project-marketplaces.mjs --source \./);
+  assert.match(publicationWorkflow, /uv run --locked tools\/marketplace.py project --source \./);
   assert.match(publicationWorkflow, /--harness '\$\{\{ matrix\.harness \}\}'/);
-  assert.match(publicationWorkflow, /node tools\/install-projection-pkl.mjs/);
-  assert.match(publicationWorkflow, /npm ci --ignore-scripts/);
+  assert.match(publicationWorkflow, /uv run --locked tools\/install_projection_pkl.py/);
+  assert.doesNotMatch(publicationWorkflow, /npm ci|actions\/setup-node/);
   assert.doesNotMatch(publicationWorkflow, /amichne\/projeKtor|intelligence project/);
 });
 

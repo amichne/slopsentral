@@ -1,0 +1,1212 @@
+{
+  "comprehension": {
+    "type": "NOT_ASSESSED"
+  },
+  "documents": [
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.97 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "STRUCTURE",
+          "line": 3,
+          "message": "Long sentence: 26 words.",
+          "rule": "Slopsentral.LongSentence",
+          "severity": "warning",
+          "span": [
+            48,
+            52
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 61,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            46,
+            48
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 707,
+        "fleschKincaidGrade": 8.97,
+        "sentences": 46,
+        "words": 393,
+        "wordsPerSentence": 8.54
+      },
+      "path": "AGENTS.md",
+      "sourceSha256": "1a06757520438a1230d84b35fc3ada12ef9067de43f21bbcb0821b6416f21395",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.68 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 956,
+        "fleschKincaidGrade": 8.68,
+        "sentences": 58,
+        "words": 548,
+        "wordsPerSentence": 9.45
+      },
+      "path": "README.md",
+      "sourceSha256": "2ab0c2666d8d04b509fa5e5d56e3f0bbfb9fe2b950321225e0e2b2a96dfce44a",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.99 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 1040,
+        "fleschKincaidGrade": 9.99,
+        "sentences": 59,
+        "words": 561,
+        "wordsPerSentence": 9.51
+      },
+      "path": "docs/agent-marketplaces.md",
+      "sourceSha256": "10f07f2a800be01f3971a71c7e1c290562e3fd7a9b1ff1915187f0309c30d419",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.84 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 367,
+        "fleschKincaidGrade": 10.84,
+        "sentences": 18,
+        "words": 195,
+        "wordsPerSentence": 10.83
+      },
+      "path": "docs/community-workflows.md",
+      "sourceSha256": "41249fe8137ec22568d1477f0e3e949a37de79ee1087b5d721754ecad9b3b258",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.58 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 4475,
+        "fleschKincaidGrade": 9.58,
+        "sentences": 253,
+        "words": 2472,
+        "wordsPerSentence": 9.77
+      },
+      "path": "docs/pi-harness.md",
+      "sourceSha256": "7809394f824a4708ba96060898d06a3ddbf8a4085683977ba3d38ecd1190b285",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.42 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 1303,
+        "fleschKincaidGrade": 10.42,
+        "sentences": 68,
+        "words": 699,
+        "wordsPerSentence": 10.28
+      },
+      "path": "docs/pkl-projection.md",
+      "sourceSha256": "1b503fc292f14e63aac42f2369f14b13901554b3b649ac3205d2c709db18794f",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.83 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 247,
+        "fleschKincaidGrade": 8.83,
+        "sentences": 17,
+        "words": 137,
+        "wordsPerSentence": 8.06
+      },
+      "path": "docs/public/guides/choose-plugins.mdx",
+      "sourceSha256": "005038c3e538037141f66064a7666d1835ff82319320349a630a5344b9e9ed39",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.48 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 443,
+        "fleschKincaidGrade": 8.48,
+        "sentences": 34,
+        "words": 246,
+        "wordsPerSentence": 7.24
+      },
+      "path": "docs/public/guides/install.mdx",
+      "sourceSha256": "fa8630747f14bd583fbdf39d0495c5dc4131512f18ed2723abcb2020d9df50b2",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.58 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 4475,
+        "fleschKincaidGrade": 9.58,
+        "sentences": 253,
+        "words": 2472,
+        "wordsPerSentence": 9.77
+      },
+      "path": "docs/public/guides/pi.mdx",
+      "sourceSha256": "768fce29f0936b0b486fb598e1bf2672278eaf4d28fedd5df61d045da7d3d9f4",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.72 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 702,
+        "fleschKincaidGrade": 8.72,
+        "sentences": 45,
+        "words": 397,
+        "wordsPerSentence": 8.82
+      },
+      "path": "docs/public/guides/troubleshooting.mdx",
+      "sourceSha256": "31ea0e0fa4cfae6ab662916363926b0e120f321c0ed6fad5759519b45ba511c2",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.25 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 300,
+        "fleschKincaidGrade": 9.25,
+        "sentences": 19,
+        "words": 165,
+        "wordsPerSentence": 8.68
+      },
+      "path": "docs/public/index.mdx",
+      "sourceSha256": "7ec66b7188deaabaddc5dceb1dbb01ec6bf42ce92dbf708e49c93a2b30fb0c13",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.40 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 365,
+        "fleschKincaidGrade": 8.4,
+        "sentences": 23,
+        "words": 211,
+        "wordsPerSentence": 9.17
+      },
+      "path": "docs/public/maintainers/projection.mdx",
+      "sourceSha256": "0409a5b81f78a06c0cbb698b5c77e972537b86c857c627e0b6f9fdf2e9847c66",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 11.64 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 178,
+        "fleschKincaidGrade": 11.64,
+        "sentences": 11,
+        "words": 87,
+        "wordsPerSentence": 7.91
+      },
+      "path": "docs/public/plugins/developer-tooling.mdx",
+      "sourceSha256": "2e67c7fb5b307dd8841ab9719c199332ba63e02b3acd6ea9cb6997be50be699e",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.99 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 242,
+        "fleschKincaidGrade": 10.99,
+        "sentences": 15,
+        "words": 122,
+        "wordsPerSentence": 8.13
+      },
+      "path": "docs/public/plugins/kotlin-engineering.mdx",
+      "sourceSha256": "c0b4a1659f6f0cefba4e53d14b974806e368910b13c8a3728aa29e599257dde5",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 11.71 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 444,
+        "fleschKincaidGrade": 11.71,
+        "sentences": 24,
+        "words": 221,
+        "wordsPerSentence": 9.21
+      },
+      "path": "docs/public/plugins/software-engineering.mdx",
+      "sourceSha256": "4d808b6a5db18a48bd48dc63905b9e0709d6439665913504e821ac8e71e48a3c",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 12.21 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 40,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            19,
+            21
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 61,
+          "message": "Use 'necessary' instead of 'mandatory'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            42,
+            50
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 77,
+          "message": "Use 'necessary' instead of 'mandatory'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            51,
+            59
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 108,
+          "message": "Use 'keep' instead of 'retain'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            9,
+            14
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 109,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            25,
+            27
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 120,
+          "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            15,
+            20
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 141,
+          "message": "Replace 'would' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            63,
+            67
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 143,
+          "message": "Use 'keep' instead of 'retain'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            131,
+            136
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 147,
+          "message": "Use 'necessary' instead of 'mandatory'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            108,
+            116
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 153,
+          "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            25,
+            30
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 154,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            41,
+            43
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 176,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            42,
+            44
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 180,
+          "message": "Use 'keep' instead of 'retain'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            33,
+            38
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 205,
+          "message": "Replace 'would' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            14,
+            18
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 218,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            9,
+            11
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 293,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            19,
+            21
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 294,
+          "message": "Use 'start' instead of 'activate'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            53,
+            60
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 330,
+          "message": "Use 'keep' instead of 'Retain'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            16,
+            21
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 345,
+          "message": "Use 'necessary' instead of 'mandatory'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            45,
+            53
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 4247,
+        "fleschKincaidGrade": 12.21,
+        "sentences": 188,
+        "words": 2147,
+        "wordsPerSentence": 11.42
+      },
+      "path": "docs/skill-plugin-reassessment.md",
+      "sourceSha256": "940e21c9109d0a934fb8b1982654c27e63167e260329f47748a8046673ebab35",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 11.00 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 22,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            34,
+            36
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 36,
+          "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            10,
+            15
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 66,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            1,
+            3
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 68,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            62,
+            64
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 70,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            10,
+            12
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 934,
+        "fleschKincaidGrade": 11,
+        "sentences": 41,
+        "words": 506,
+        "wordsPerSentence": 12.34
+      },
+      "path": "source/AGENTS.md",
+      "sourceSha256": "c33825f5b729ec89e3762982659c857a8c4635fc0301c3b343755918f25aebc4",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.81 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 1119,
+        "fleschKincaidGrade": 10.81,
+        "sentences": 66,
+        "words": 574,
+        "wordsPerSentence": 8.7
+      },
+      "path": "source/ARCHITECTURE.md",
+      "sourceSha256": "1862a342b366f2e1cedf37c06030f7c2090306026fbf8736f11f40b02f8e6a06",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 14.59 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 854,
+        "fleschKincaidGrade": 14.59,
+        "sentences": 47,
+        "words": 372,
+        "wordsPerSentence": 7.91
+      },
+      "path": "source/CATALOG.md",
+      "sourceSha256": "68ff930db0f0197a0e2ecf1a8cf246935013b261d71f17fccb48b769f742d0bf",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.85 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 759,
+        "fleschKincaidGrade": 9.85,
+        "sentences": 41,
+        "words": 417,
+        "wordsPerSentence": 10.17
+      },
+      "path": "source/MIGRATION.md",
+      "sourceSha256": "72e3e85db67b701c02bf718f2ef59642ec0793d1328ec01e9c6103e6484b883f",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 9.87 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 496,
+        "fleschKincaidGrade": 9.87,
+        "sentences": 30,
+        "words": 266,
+        "wordsPerSentence": 8.87
+      },
+      "path": "source/instructions/engineering-design.md",
+      "sourceSha256": "96b2d283b92ee8dc4abeca52482af29cd3f55f99d08be0dc6194911936a3c0ed",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.00 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 20,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            12,
+            14
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 280,
+        "fleschKincaidGrade": 10,
+        "sentences": 17,
+        "words": 149,
+        "wordsPerSentence": 8.76
+      },
+      "path": "source/plugins/AGENTS.md",
+      "sourceSha256": "f9539b2aebf7afa6c72441f41c175ec9640c999f4a56c1cf5a087b1ea759ac00",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.32 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 14,
+          "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            3,
+            8
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 15,
+          "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            46,
+            51
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 32,
+          "message": "Replace 'may' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            75,
+            77
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 412,
+        "fleschKincaidGrade": 8.32,
+        "sentences": 21,
+        "words": 253,
+        "wordsPerSentence": 12.05
+      },
+      "path": "source/skills/AGENTS.md",
+      "sourceSha256": "de60e054de9be98658af3a71b2d6d4659bf505a2a27202606ff3f855671ad647",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.92 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 535,
+        "fleschKincaidGrade": 10.92,
+        "sentences": 28,
+        "words": 279,
+        "wordsPerSentence": 9.96
+      },
+      "path": "source/skills/plugin-composition-authoring/SKILL.md",
+      "sourceSha256": "a725f9277bcc0fd952e469e27fc44c40297459bbf37342f6625832a1057527c4",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "DICTION",
+          "line": 17,
+          "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            52,
+            57
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 18,
+          "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            48,
+            53
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 22,
+          "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            19,
+            24
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 33,
+          "message": "Replace 'should' with a direct statement or can, will, or must. Keep the source meaning.",
+          "rule": "Slopsentral.Modals",
+          "severity": "warning",
+          "span": [
+            48,
+            53
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 228,
+        "fleschKincaidGrade": 7.37,
+        "sentences": 20,
+        "words": 132,
+        "wordsPerSentence": 6.6
+      },
+      "path": "source/skills/plugin-composition-authoring/references/marketplace-catalog.md",
+      "sourceSha256": "279073b349f6cb332003d4fb74493c082894f3c22426e76e3fd30b5e7839ecb5",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 8.99 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 655,
+        "fleschKincaidGrade": 8.99,
+        "sentences": 43,
+        "words": 363,
+        "wordsPerSentence": 8.44
+      },
+      "path": "source/skills/semantic-ratchet/SKILL.md",
+      "sourceSha256": "1370dce9ea92230226095f0ae1efdbe238e75b08cb774f821cba21be26e3db40",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 11.25 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 32,
+          "message": "Use 'keep' instead of 'Retain'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            71,
+            76
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "STRUCTURE",
+          "line": 73,
+          "message": "Long sentence: 26 words.",
+          "rule": "Slopsentral.LongSentence",
+          "severity": "warning",
+          "span": [
+            56,
+            57
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 724,
+        "fleschKincaidGrade": 11.25,
+        "sentences": 32,
+        "words": 386,
+        "wordsPerSentence": 12.06
+      },
+      "path": "source/skills/semantic-ratchet/references/api-proof-example.md",
+      "sourceSha256": "ce668ed1eb8d8274afc7cb5d0dd91bc976c4cda228e534841e3ebce0d4488427",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 12.65 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "DICTION",
+          "line": 34,
+          "message": "Use 'keep' instead of 'retain'. Keep the source meaning.",
+          "rule": "Slopsentral.Diction",
+          "severity": "warning",
+          "span": [
+            13,
+            18
+          ],
+          "type": "FINDING"
+        },
+        {
+          "category": "STRUCTURE",
+          "line": 40,
+          "message": "Long sentence: 27 words.",
+          "rule": "Slopsentral.LongSentence",
+          "severity": "warning",
+          "span": [
+            4,
+            8
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 786,
+        "fleschKincaidGrade": 12.65,
+        "sentences": 33,
+        "words": 393,
+        "wordsPerSentence": 11.91
+      },
+      "path": "source/skills/semantic-ratchet/references/kotlin-proof-example.md",
+      "sourceSha256": "4e17649c719f955afe51718339d6dc27efdc5f70cffa2bb8cba34d5aab0aa152",
+      "type": "DOCUMENT_ASSESSMENT"
+    },
+    {
+      "findings": [
+        {
+          "category": "READABILITY",
+          "line": 1,
+          "message": "Estimated Flesch-Kincaid grade 10.79 exceeds the shared advisory target of 8.",
+          "rule": "Slopsentral.Grade",
+          "severity": "warning",
+          "span": [
+            1,
+            1
+          ],
+          "type": "FINDING"
+        }
+      ],
+      "metrics": {
+        "estimatedSyllables": 466,
+        "fleschKincaidGrade": 10.79,
+        "sentences": 23,
+        "words": 248,
+        "wordsPerSentence": 10.78
+      },
+      "path": "tools/tests/fixtures/PROVENANCE.md",
+      "sourceSha256": "ef053a7a34d338fc59b76887a624fdb76c6734715dae1617dc2350bebd2e5316",
+      "type": "DOCUMENT_ASSESSMENT"
+    }
+  ],
+  "engine": {
+    "policySha256": "0a7cc8bb61ff2eb3ea13957b54d752e90d48cf41d936de789143b650d55ea277",
+    "type": "VALE",
+    "version": "3.24.0"
+  },
+  "schemaVersion": 2,
+  "type": "ASSESSED"
+}

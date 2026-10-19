@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "developer-tooling",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

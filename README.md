@@ -1,6 +1,6 @@
 # Slopsentral
 
-Slopsentral supplies Kotlin-first skills and engineering rules for Pi, Codex, and GitHub Copilot.
+Slopsentral supplies focused design skills for Codex, GitHub Copilot, and Pi.
 Its five plugin bundles cover software design, Kotlin, IntelliJ plugins, developer tools, and repository knowledge.
 
 [**Documentation**](https://slopsentral.michne.com) · [**Get the latest Pi release**](https://github.com/amichne/slopsentral/releases/latest) · [Pi guide](docs/pi-harness.md) · [Skill catalog](source/CATALOG.md)
@@ -41,7 +41,7 @@ Inside Pi, use these commands:
 
 Change profiles after the current run ends.
 The selection persists on the active session branch.
-A new session without a profile choice uses `local-development-default` with `ADVISORY` hooks.
+A new session without a profile choice uses `local-development-default` with automatic hooks set to `OFF`.
 Hook commands need their own tools, including uv for Python hooks.
 Profiles keep the current model and tool set.
 
@@ -56,7 +56,8 @@ Each release includes `SHA256SUMS`, `candidate.json`, and `promotion.json` besid
 ## Use Codex or GitHub Copilot
 
 Install the `slopsentral` marketplace for your host.
-Start with Software Engineering for code work.
+Start with Software Engineering for constrained domain design.
+Use [native tools and community workflows](docs/community-workflows.md) for general implementation, debugging, review, and delivery.
 Add Kotlin Engineering for Kotlin work, then select specialties for the task.
 
 | Host | Marketplace source | Guide |
@@ -66,44 +67,47 @@ Add Kotlin Engineering for Kotlin work, then select specialties for the task.
 
 | Plugin | Use it for |
 | --- | --- |
-| Software Engineering | Typed design, tests, Python automation, Git, pull requests, and CI. |
+| Software Engineering | Constrained values, atomic predicates, pure decisions, and exhaustive handling. |
 | Kotlin Engineering | Kotlin APIs, compiler proof, libraries, review, and Gradle. |
 | IntelliJ Plugin Development | IntelliJ lifecycle, PSI, platform tests, and IDE diagnostics. |
-| Developer Tooling | CLIs, schemas, OpenAPI, Pkl, agent resources, and personal configuration. |
+| Developer Tooling | Explicit local tools, schemas, Pkl, Python, and agent resources. |
 | Repository Knowledge | Source-backed knowledge, navigation, technical documents, and prose assessment. |
 
 The [catalog](source/CATALOG.md) lists exact skill names and plugin contents.
 The [migration map](source/MIGRATION.md) maps retired skills to their replacements.
 Installation supplies capabilities. User requests and repository instructions control each action.
 
-Kotlin Engineering declares a Kast MCP connection for Codex.
-Pi keeps that configuration as reference material without a server connection.
-Kast owns runtime installation and workspace discovery.
-Plugin installation alone does not prove that Kast serves the current workspace.
+The default plugin contains one standard skill and no executable hooks or local service configuration.
+The project keeps its language and toolchain choices.
+Kotlin and repository knowledge remain explicit specialties.
 
 ## Contribute
 
-Use Node.js 22.19 or later and uv 0.12.9 or later.
-The tools need Python 3.12 or 3.13 and Pkl 0.32.0.
+Use uv 0.12.9 or later, Python 3.12 or 3.13, and Pkl 0.32.0 for core projection.
+Pi, Mintlify, and the retained JavaScript audits use Node.js separately.
 Run the explicit checkout setup:
 
 ```bash
 uv run --locked tools/setup.py
 ```
 
-The setup installs locked Python and Node dependencies.
+The default setup installs locked Python tools.
+For Pi, Mintlify, and the JavaScript audits, use `uv run --locked tools/setup.py --with-host-tools`.
 If you need the pinned Pkl executable, use a fresh output path:
 
 ```bash
-node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
+uv run --locked tools/install_projection_pkl.py --out /tmp/slopsentral-pkl/pkl
 export PKL_BIN=/tmp/slopsentral-pkl/pkl
 ```
 
-Run the repository gates:
+Run the core gates:
 
 ```bash
-npm run verify
+uv run --locked tools/marketplace.py validate
+uv run --locked tools/verify_marketplaces.py
 ```
+
+For the full maintainer audit, use `npm run verify` after the host tools setup.
 
 For a focused change, use the checks in [AGENTS.md](AGENTS.md) and the affected source scope.
 The [projection guide](docs/pkl-projection.md) describes fresh output paths and provider contracts.

@@ -151,7 +151,9 @@ def native(temporary: Path) -> int:
         ):
             _ = output.write(str(directory) + "\n")
     pkl = temporary / "projection-pkl/pkl"
-    status = commands((("node", "tools/install-projection-pkl.mjs", "--out", str(pkl)),))
+    status = commands(
+        (("uv", "run", "--locked", "tools/install_projection_pkl.py", "--out", str(pkl)),)
+    )
     if status:
         return status
     with Path(os.environ["GITHUB_ENV"]).open("a") as output:

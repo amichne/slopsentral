@@ -8,8 +8,8 @@ after source validation passes:
 
 ```sh
 node tools/validate-source-graph.mjs
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+uv run --locked tools/marketplace.py project --source . --harness codex --out /tmp/slopsentral-codex
+uv run --locked tools/marketplace.py project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 ```
 
 ## Catalog Duties

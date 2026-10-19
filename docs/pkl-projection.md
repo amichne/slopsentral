@@ -3,7 +3,7 @@
 The typed asset union also supports a `RESOURCE` for one authored file. It
 preserves the file's source path, bytes, mode, and digest without a skill entry
 point. See [workflow resources](workflow-resources.md) for the contract and
-the Pkl workflow/check split. Existing provider compatibility fixtures remain fixed.
+the Pkl workflow/check split. Historical compatibility fixtures remain in pinned Git archives.
 
 This document guides maintainers changing a provider mapping or generating a
 marketplace. The projector supports Codex, GitHub Copilot, and an installable Pi package.
@@ -13,25 +13,23 @@ See [the Pi harness guide](pi-harness.md) for its native extension contract and 
 
 ## Evaluate, seal, publish
 
-1. The Node boundary freezes regular file bytes and modes, then validates the
-   source graph against those exact bytes. It resolves references through the existing catalog dependency
-   closure. Conflicting identities, missing assets, and cycles remain failures.
-2. `Decode.pkl` refines the normalized JSON into `Schema.pkl` types. Asset variants
-   require their own data: an agent carries text; a hook carries its adapter.
-   Unknown fields and unsupported variants fail evaluation.
-3. `Project.pkl` maps that input to typed `Targets.pkl` manifests and a file plan.
-   It owns provider names, metadata, hook commands, and agent transformations.
-4. Node materializes the plan in memory and hashes the resulting payloads. Pkl
-   evaluates again with those hashes to seal provenance. Node proves that sealing
-   preserves payload bytes and that every reference digest matches its target.
-5. Node checks source freshness, writes the complete tree into a sibling staging
-   directory, and publishes it with an atomic no-replace rename. An existing
-   file, directory, or symlink wins over the new output. Competing writers admit
-   exactly one complete tree. Failure removes only the owned staging directory.
+1. Python freezes regular file bytes, modes, and digests.
+2. `Source.pkl` resolves canonical references and profile selections from those bytes.
+3. `Decode.pkl` refines the input into `Schema.pkl` types.
+4. `Project.pkl` produces typed provider manifests and explicit file operations.
+5. Python materializes the plan in memory and computes payload hashes.
+6. Pkl seals provenance with those hashes. Python examines payload identity and every reference digest.
+7. Python examines source freshness and writes the complete tree into a sibling directory.
+8. The native rename publishes that directory without replacing an existing target.
+
+The Python adapter owns file and process effects.
+Pkl owns composition and provider shapes.
+The retained JavaScript projector and audits supply compatibility evidence outside the core path.
+Pi and Mintlify use their own Node.js runtimes.
 
 Pkl evaluation cannot fetch remote modules, read ambient environment variables,
 or use project settings. Its module root is an isolated copy of the versioned models.
-Its resource allowlist permits only the frozen input and two explicit properties.
+Its resource allowlist permits only the frozen input and the named input, snapshot, and harness properties.
 It has a 60-second limit. Projection never downloads a runtime.
 The CLI restrictions follow [Pkl's evaluator controls](https://pkl-lang.org/main/0.32.0/pkl-cli/index.html).
 
@@ -43,25 +41,25 @@ and [Linux rename documentation](https://man7.org/linux/man-pages/man2/rename.2.
 
 ## Runtime and commands
 
-Use a Git checkout with a resolvable HEAD and install locked Node dependencies.
-The repository tools need Node.js 22.19 or later, Python 3, and Pkl 0.32.0. The runtime lock
+Use a Git checkout with a resolvable HEAD, Python 3.12 or 3.13, and Pkl 0.32.0.
+Core projection needs no Node.js executable. The runtime lock
 records SHA-256 digests for macOS and Linux on ARM64 and x64. Setup verifies the
 bytes before publishing the executable. It rejects an existing destination.
 
 ```bash
-npm ci
-node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
+uv run --locked tools/install_projection_pkl.py --out /tmp/slopsentral-pkl/pkl
 export PKL_BIN=/tmp/slopsentral-pkl/pkl
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/codex-new
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/copilot-new
-node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/pi-new
-npm run verify
+uv run --locked tools/marketplace.py project --source . --harness codex --out /tmp/codex-new
+uv run --locked tools/marketplace.py project --source . --harness github-copilot --out /tmp/copilot-new
+uv run --locked tools/marketplace.py project --source . --harness pi --out /tmp/pi-new
+uv run --locked tools/marketplace.py validate
+uv run --locked tools/verify_marketplaces.py
 ```
 
 Use fresh output paths with an existing parent directory. Output must be outside
 the source repository. Generated provider trees sit beneath the output directory. The CLI
 returns a `PROJECTED` receipt on stdout or a finite `PROJECTION_REJECTED` outcome
-on stderr. Outcomes identify the stage and failure code. Pkl diagnostics retain
+on stderr. Outcomes identify the failure code. Pkl diagnostics keep
 only a known model filename and line, or `EVALUATION_FAILED`; they exclude source
 text and raw subprocess logs.
 
@@ -88,8 +86,7 @@ missing files, extra files, payload differences, or executable-mode differences,
 after excluding only the lock's `sourceSha`. That hash intentionally excludes
 local caches; the old projector included them. Every other lock field matched.
 
-Checked-in compatibility fixtures preserve representative manifests, agents,
-instructions, hooks, and MCP delivery. Native regression tests compare complete
+Historical Git archives preserve representative manifests, agents, instructions, hooks, and service configuration. Native regression tests compare complete
 repeated projections and every copied skill payload. They also test incomplete
 plans, changed source, symlinks, corrupt runtime downloads, and competing writers.
 These checks prove generated behavior. They do not prove installed host behavior
