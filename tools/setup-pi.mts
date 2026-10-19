@@ -122,7 +122,10 @@ function snapshot(file: string): { bytes: Buffer | null; mode: number } {
   return { bytes: fs.readFileSync(file), mode: info.mode & 0o777 };
 }
 function encode(bytes: Buffer | null): string | null { return bytes === null ? null : bytes.toString('base64'); }
-function current(file: string): string | null { return encode(snapshot(file).bytes); }
+function matches(item: Snapshot, image: string | null): boolean {
+  const observed = snapshot(item.path);
+  return encode(observed.bytes) === image && (image === null || observed.mode === item.mode);
+}
 function direct(file: string): void {
   const absolute = path.resolve(file);
   const parent = path.dirname(absolute);
@@ -141,7 +144,7 @@ function atomic(file: string, bytes: Buffer | null, mode: number): void {
   if (bytes === null) { if (fs.existsSync(file)) fs.unlinkSync(file); return; }
   directory(path.dirname(file));
   const temporary = file + '.' + crypto.randomUUID() + '.tmp';
-  try { fs.writeFileSync(temporary, bytes, { flag: 'wx', mode }); fs.renameSync(temporary, file); }
+  try { fs.writeFileSync(temporary, bytes, { flag: 'wx', mode }); fs.chmodSync(temporary, mode); fs.renameSync(temporary, file); }
   finally { if (fs.existsSync(temporary)) fs.unlinkSync(temporary); }
 }
 function jsonBytes(value: unknown): Buffer { return Buffer.from(JSON.stringify(value, null, 2) + '\n'); }
@@ -302,8 +305,8 @@ function saveTransaction(scope: Scope, transaction: Transaction): void {
 }
 function restore(scope: Scope): void {
   const { file, transaction } = trustedRecord(scope);
-  for (const item of transaction.files) if (current(item.path) !== item.after && current(item.path) !== item.before) reject('CONFIG_CHANGED', 'Later edits require manual recovery; preserved backup: ' + file);
-  for (const item of [...transaction.files].reverse()) if (current(item.path) !== item.before) atomic(item.path, item.before === null ? null : Buffer.from(item.before, 'base64'), item.mode);
+  for (const item of transaction.files) if (!matches(item, item.after) && !matches(item, item.before)) reject('CONFIG_CHANGED', 'Later edits require manual recovery; preserved backup: ' + file);
+  for (const item of [...transaction.files].reverse()) if (!matches(item, item.before)) atomic(item.path, item.before === null ? null : Buffer.from(item.before, 'base64'), item.mode);
   saveTransaction(scope, { ...transaction, status: 'restored' });
 }
 function acquire(lock: string): () => void {
@@ -398,12 +401,12 @@ export async function install(qualified: Qualified, options: { agentDir: string;
     atomic(path.join(state, 'setup.json'), qualified.setup, 0o600);
     if (!changes.length) return { status: 'CURRENT', version: qualified.version, state };
     options.beforeCommit?.();
-    for (const item of changes) if (current(item.path) !== item.before) reject('CONFIG_CHANGED', 'Configuration changed during setup: ' + item.path);
+    for (const item of changes) if (!matches(item, item.before)) reject('CONFIG_CHANGED', 'Configuration changed during setup: ' + item.path);
     if (fs.existsSync(previous)) { const history = path.join(path.dirname(previous), 'history'); directory(history); fs.copyFileSync(previous, path.join(history, crypto.randomUUID() + '.json')); }
     const transaction: Transaction = { schemaVersion: 1, status: 'pending', version: qualified.version, scope: context, files: changes };
     saveTransaction(context, transaction);
     try {
-      for (const item of changes) { if (current(item.path) !== item.before) reject('CONFIG_CHANGED', 'Configuration changed during commit.'); (options.write ?? atomic)(item.path, item.after === null ? null : Buffer.from(item.after, 'base64'), item.mode); }
+      for (const item of changes) { if (!matches(item, item.before)) reject('CONFIG_CHANGED', 'Configuration changed during commit.'); (options.write ?? atomic)(item.path, item.after === null ? null : Buffer.from(item.after, 'base64'), item.mode); }
       saveTransaction(context, { ...transaction, status: 'applied' });
     } catch (error) { restore(context); throw error; }
     return { status: 'INSTALLED', version: qualified.version, state };

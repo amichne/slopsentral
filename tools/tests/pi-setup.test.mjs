@@ -245,3 +245,16 @@ test('personal setup migrates successive projects while retaining private histor
   rollback(next); assert.deepEqual(JSON.parse(fs.readFileSync(configB)).packages, ['npm:slopsentral-pi@0.1.123']);
   assert.deepEqual(JSON.parse(fs.readFileSync(configA)).packages, []);
 });
+
+test('permission-only concurrent and later edits are preserved', async t => {
+  const options = workspace(t), config = path.join(options.agentDir, 'settings.json');
+  write(config, { model: 'preserve' }); fs.chmodSync(config, 0o644);
+  const admitted = await qualify(producer(bundle(options.directory)).client);
+  await assert.rejects(install(admitted, { ...options, beforeCommit: () => fs.chmodSync(config, 0o600) }), /CONFIG_CHANGED/);
+  assert.equal(fs.statSync(config).mode & 0o777, 0o600);
+  fs.chmodSync(config, 0o644); await install(admitted, options); fs.chmodSync(config, 0o600);
+  assert.throws(() => rollback(options), /CONFIG_CHANGED/);
+  assert.equal(fs.statSync(config).mode & 0o777, 0o600);
+  assert.equal((await install(admitted, options)).status, 'CURRENT');
+  assert.equal(fs.statSync(config).mode & 0o777, 0o600);
+});
