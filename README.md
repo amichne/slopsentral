@@ -1,63 +1,16 @@
 # Slopsentral
 
-Slopsentral supplies focused design skills for Codex, GitHub Copilot, and Pi.
+Slopsentral supplies focused design skills for Codex and GitHub Copilot.
+Its optional in-repository Pi extension adapts the same skills and declared hooks.
 Its five plugin bundles cover software design, Kotlin, IntelliJ plugins, developer tools, and repository knowledge.
 
-[**Documentation**](https://slopsentral.michne.com) · [**Get the latest Pi release**](https://github.com/amichne/slopsentral/releases/latest) · [Pi guide](docs/pi-harness.md) · [Skill catalog](source/CATALOG.md)
-
-## Use Slopsentral in Pi
-
-Use Pi with Node.js 22.19 or later.
-The current native evidence uses Pi 1.3.0.
-The package needs no repository clone, Pkl, or local npm build.
-
-1. Open the [latest Pi release](https://github.com/amichne/slopsentral/releases/latest).
-2. Run the `pi install` command from its release notes.
-3. From your project, start Pi with the Kotlin design profile:
-
-```bash
-pi --slopsentral-profile kotlin-type-design
-```
-
-The release command selects an exact archive version in your personal Pi settings.
-For a project installation, add `--local` after `pi install`.
-Choose one installation scope.
-To update, use the command from a newer release in the same scope.
-`pi update --extensions` does not discover newer GitHub release URLs.
-
-The Kotlin design profile supplies Kotlin instructions and selected skills with automatic hooks set to `OFF`.
-Inside Pi, use these commands:
-
-| Command | Result |
-| --- | --- |
-| `/slopsentral-profile` | Show the current profile and available choices. |
-| `/slopsentral-profile kotlin-type-design` | Select Kotlin design skills with automatic hooks set to `OFF`. |
-| `/slopsentral-profile type-design` | Add schema, OpenAPI, and Pkl skills with automatic hooks set to `OFF`. |
-| `/slopsentral-profile kotlin-repo-default` | Select Kotlin and Software Engineering with `ADVISORY` hooks. |
-| `/slopsentral-check` | Run the selected completion gates explicitly. |
-| `/slopsentral-profile none` | Select an empty preset and keep explicit overrides. |
-| `/slopsentral state` | Inspect the active package, profile, generation, bindings, and origins. |
-| `/slopsentral skill NAME` | Load a skill allowed through the human route. |
-
-Change profiles after the current run ends.
-The selection persists on the active session branch.
-A new session without a profile choice uses `local-development-default` with automatic hooks set to `OFF`.
-Hook commands need their own tools, including uv for Python hooks.
-Profiles keep the current model and tool set.
-
-The `enabled: false` setting turns off instructions, managed skills, automatic hooks, and automatic mutation collection.
-Legacy `off` selections migrate visibly to `none` and keep explicit overrides.
-Human commands and the `slopsentral_skill` model tool obey each resolved binding's `human`, `model`, or `either` invocation policy.
-Slopsentral-owned `/skill:NAME` requests reject before ordinary model input.
-
-The [Pi guide](docs/pi-harness.md) covers installation scopes, updates, removal, hook policies, and adapter limits.
-Each release includes `SHA256SUMS`, `candidate.json`, and `promotion.json` beside the archive.
+[**Documentation**](https://slopsentral.michne.com) · [**Canonical release assets**](https://github.com/amichne/slopsentral/releases/latest) · [Pi guide](docs/pi-harness.md) · [Skill catalog](source/CATALOG.md)
 
 ## Use Codex or GitHub Copilot
 
 Install the `slopsentral` marketplace for your host.
 Start with Software Engineering for constrained domain design.
-Use [native tools and community workflows](docs/community-workflows.md) for general implementation, debugging, review, and delivery.
+Use [repository procedures and native tools](docs/community-workflows.md) for general implementation, debugging, review, and delivery.
 Add Kotlin Engineering for Kotlin work, then select specialties for the task.
 
 | Host | Marketplace source | Guide |
@@ -80,6 +33,16 @@ Installation supplies capabilities. User requests and repository instructions co
 The default plugin contains one standard skill and no executable hooks or local service configuration.
 The project keeps its language and toolchain choices.
 Kotlin and repository knowledge remain explicit specialties.
+
+## Optional Pi extension
+
+Pi is an adapter for the same authored skills and hook contracts.
+It is not a separate workflow bundle.
+The [parity table](docs/releases.md#pi-extension-scope) names the retained behavior and its limits.
+No third-party Pi extension is bundled or needed.
+
+Use the exact archive command from the [canonical release](https://github.com/amichne/slopsentral/releases/latest).
+Read the [Pi guide](docs/pi-harness.md) for profile selection and removal.
 
 ## Contribute
 

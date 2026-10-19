@@ -58,7 +58,7 @@ test('Pi installs a release archive and loads persisted profiles without registr
   assert.deepEqual(errors, []);
 });
 
-for (const version of [undefined, '0.1.123']) {
+for (const version of ['0.1.123']) {
   test(`published Pi launcher selects ${version ?? 'the pinned default'} and preserves literal arguments`, async t => {
     const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi launcher ')));
     t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
@@ -71,11 +71,20 @@ for (const version of [undefined, '0.1.123']) {
     const { stdout } = await execute('/bin/sh', [launcher, '--local', 'literal $HOME; argument'], { env });
     const selected = version ?? '0.1.0';
     assert.deepEqual(stdout.trimEnd().split('\n'), [
-      'install', `npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/pi-v${selected}/slopsentral-pi-${selected}.tgz`,
+      'install', `npm:slopsentral-pi@https://github.com/amichne/slopsentral/releases/download/slopsentral-v${selected}/slopsentral-pi-${selected}.tgz`,
       '--local', 'literal $HOME; argument',
     ]);
   });
 }
+
+test('launcher rejects an unspecified version before invoking Pi', async t => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'pi missing version '));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const env = { ...process.env, PATH: directory };
+  delete env.SLOPSENTRAL_PI_VERSION;
+  await assert.rejects(execute('/bin/sh', [path.resolve(import.meta.dirname, '../install-pi.sh')], { env }),
+    error => error.code !== 0 && error.stderr.includes('Set SLOPSENTRAL_PI_VERSION'));
+});
 
 test('the real Pi JSON command returns structured settings without a model request', { timeout: 15000 }, async t => {
   const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi-print-settings-')));

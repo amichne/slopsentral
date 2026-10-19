@@ -35,15 +35,15 @@ useful in any Git repository.
 2. Isolate the work.
    Create or reuse an appropriate branch. Keep unrelated dirty files out of the
    change set and call out conflicts with the requested work. For worktrees,
-   preserve the host's managed checkout ownership; use Worktrunk for CLI-owned
-   worktrees when available. Refresh the intended remote base before creating
+   preserve the host's managed checkout ownership. Use `git worktree add` for
+   independent CLI checkouts. Refresh the intended remote base before creating
    a new task branch and verify the resulting commit and path.
 
 3. Make and validate changes.
    Run the smallest meaningful checks for the edited surface. Broaden checks
    when shared contracts, generated outputs, or workflow files changed. When
    asked to automate repeated setup or checks, put the repository's existing
-   commands in Worktrunk project hooks. Setup that an agent needs must finish
+   commands in the repository's existing task runner. Setup that an agent needs must finish
    before handoff; required verification must block the affected operation.
 
 4. Review the diff.
@@ -65,8 +65,6 @@ useful in any Git repository.
   includes branching, staging, committing, pushing, or pull request handoff.
 - Load [recovery.md](references/recovery.md) before resolving merge conflicts,
   undoing a local mistake, recovering lost commits, or touching stash/reflog.
-- Load [worktrunk-automation.md](references/worktrunk-automation.md) for worktree
-  creation, project hook automation, Worktrunk commits, or agent handoff.
 
 ## Completion Criteria
 

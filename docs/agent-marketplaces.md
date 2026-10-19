@@ -15,7 +15,7 @@ The adapters preserve shared source ownership without a claim of feature parity.
 Generated Codex and GitHub Copilot trees also appear on `main`.
 Pi users install a release archive through Pi's package manager.
 That installation needs no repository clone or local npm build.
-The [README](../README.md#use-slopsentral-in-pi) links the latest release and its pinned install command.
+The [README](releases.md) links the latest release and its pinned install command.
 
 ## Shared source and adaptations
 
@@ -67,34 +67,3 @@ The [architecture](../source/ARCHITECTURE.md) defines canonical ownership.
 Projection proves package shape and source consistency.
 Native host tests supply separate evidence for runtime behavior.
 Neither proves that a model obeys instructions or selects the intended skill.
-
-## Upstream Worktrunk marketplace
-
-Slopsentral consumes Worktrunk for CLI worktree automation.
-Its plugin payload stays with the [upstream marketplace](https://github.com/max-sixty/worktrunk).
-Codex selects `worktrunk@worktrunk` through that marketplace's `.agents/plugins/marketplace.json`.
-
-The source review used commit `dea4029c593a89a39fb141da9d0849e4d10dae19` on 2026-10-06.
-This provenance does not claim that each consumer installed that revision.
-The source tracks upstream unless the consumer pins its marketplace ref.
-
-For requested installation, examine the configured source first:
-
-```sh
-codex plugin marketplace list --json
-codex plugin marketplace add max-sixty/worktrunk
-codex plugin add worktrunk@worktrunk --json
-codex plugin list --json
-```
-
-Add the marketplace only when absent.
-Preserve an existing matching source.
-Install `wt` separately if needed.
-A new host session must load the selected plugin before its skill or hooks can run.
-Installation evidence does not prove native hook consumption.
-
-Use [Worktrunk automation](worktrunk-automation.md) for project hooks, tests, and managed checkout ownership.
-Worktrunk parses `.config/wt.toml`.
-`wt hook show --expanded` examines and previews its configured hooks.
-Integration tests exercise success and failure with the installed CLI in disposable repositories.
-User hook trust and configuration stay with the user and host.

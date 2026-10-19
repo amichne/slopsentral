@@ -17,13 +17,21 @@ import os
 import subprocess
 import sys
 import tempfile
+from contextlib import nullcontext
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description=__doc__)
 _ = parser.add_argument("--with-host-tools", action="store_true")
+_ = parser.add_argument("--out", type=Path, help="Keep tested projections in a new directory")
 arguments = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
-with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary:
+if arguments.out is not None:
+    arguments.out.mkdir(parents=True, exist_ok=False)
+with (
+    nullcontext(str(arguments.out))
+    if arguments.out is not None
+    else tempfile.TemporaryDirectory(prefix="slopsentral-projections-")
+) as temporary:
     base = Path(temporary)
     for harness in ("codex", "github-copilot", "pi"):
         result = subprocess.run(

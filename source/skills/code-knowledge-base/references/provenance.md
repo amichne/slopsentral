@@ -7,14 +7,14 @@ The consolidation preserves the existing OKF parser, validator, visualizer, test
 
 The original `okf` metadata identifies this source:
 
-- Repository: `https://github.com/sniperunder123/okf-knowledge`
+- Repository: `sniperunder123/okf-knowledge`
 - Path: `okf`
 - Ref: `refs/heads/main`
 - Tree SHA: `1a0371a445eb6f73912bf3e74bb3a63dfe54b5ff`
 
 The original `okf-refactor` metadata identifies this source:
 
-- Repository: `https://github.com/duyet/codex-claude-plugins`
+- Repository: `duyet/codex-claude-plugins`
 - Path: `okf/skills/okf-refactor`
 - Ref: `refs/heads/master`
 - Tree SHA: `d95ae5ab85817229a0f1e056e9783e9ee0c7e74e`

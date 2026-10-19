@@ -1,0 +1,28 @@
+---
+title: "Release assets"
+description: "One qualified set for Codex, Copilot, and the optional Pi extension."
+icon: "box-archive"
+---
+
+The [latest release](https://github.com/amichne/slopsentral/releases/latest) is the canonical set.
+It supersedes earlier component and Pi-only releases.
+Historical tags and assets remain available.
+
+| Asset | Purpose |
+| --- | --- |
+| `slopsentral-codex.tar.gz` | Codex marketplace snapshot |
+| `slopsentral-github-copilot.tar.gz` | Copilot marketplace snapshot |
+| `slopsentral-pi-<version>.tgz` | Optional in-repository Pi extension |
+| `SHA256SUMS` | Exact archive digests |
+| `release-assets.json` | Provider names, sizes, digests, and source revision |
+| `candidate.json`, `promotion.json` | Tested Pi producer, Git tree, main admission, and digest |
+
+The [release guide](https://github.com/amichne/slopsentral/blob/main/docs/releases.md) documents archive installation and the Pi parity table.
+For both Codex and Copilot, register the extracted root directory.
+The [installation guide](/guides/install) documents the normal marketplace route.
+Use the exact Pi command from the canonical release notes.
+
+Full source validation and native archive installation precede publication.
+Publication consumes those tested bytes.
+Actual GitHub downloads must match checksums before the draft becomes the current release.
+Live model inference remains outside this qualification.

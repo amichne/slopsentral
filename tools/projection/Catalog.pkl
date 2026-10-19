@@ -65,7 +65,7 @@ text: String =
   "# Catalog\n\n"
     + "Generated with `uv run --locked tools/marketplace.py catalog --out source/CATALOG.md`.\n"
     + "Use Software Engineering for constrained domain design. Select specialties for the task.\n"
-    + "Use native tools or upstream plugins for general workflows. See [community workflows](../docs/community-workflows.md).\n"
+    + "Use repository procedures and native tools for general workflows. See [local workflows](../docs/community-workflows.md).\n"
     + "The host selects standard skills. Installation grants no action authority.\n\n"
     + "## Start here\n\n"
     + plugins

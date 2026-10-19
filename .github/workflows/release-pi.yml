@@ -1,4 +1,4 @@
-name: Release Pi package
+name: Release Slopsentral
 
 on:
   workflow_run:
@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          ref: ${{ github.workflow_sha }}
           persist-credentials: false
       - uses: astral-sh/setup-uv@v7
         with:
@@ -50,14 +50,32 @@ jobs:
           --repository "$GITHUB_REPOSITORY" --revision "$SOURCE_SHA"
           --run-id "$SOURCE_RUN_ID" --bundle "$RUNNER_TEMP/pi-candidate"
           --promotion-record "$RUNNER_TEMP/promotion.json" --github-output "$GITHUB_OUTPUT"
+      - name: Admit the provider artifact attempt
+        id: admission
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ steps.candidate.outputs.merged_revision }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || inputs.run_id }}
+        run: uv run --locked python -m tools.release_assets admit-run "$GITHUB_REPOSITORY" "$SOURCE_RUN_ID" "$SOURCE_SHA" --github-output "$GITHUB_OUTPUT"
+      - name: Download qualified Codex and Copilot archives
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.admission.outputs.artifact }}
+          run-id: ${{ github.event.workflow_run.id || inputs.run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/marketplace-candidate
+      - name: Verify provider identity before publication
+        env:
+          SOURCE_SHA: ${{ steps.candidate.outputs.merged_revision }}
+        run: |
+          uv run --locked python -m tools.release_assets unpack "$RUNNER_TEMP/marketplace-candidate" "$RUNNER_TEMP/marketplaces" "$SOURCE_SHA"
+          cat "$RUNNER_TEMP/marketplace-candidate/SHA256SUMS" >> "$RUNNER_TEMP/pi-candidate/SHA256SUMS"
       - name: Create the tag at the admitted merged commit without replacement
         env:
           GH_TOKEN: ${{ github.token }}
           SOURCE_SHA: ${{ steps.candidate.outputs.merged_revision }}
           VERSION: ${{ steps.candidate.outputs.version }}
-        run: >-
-          gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs"
-          -f "ref=refs/tags/pi-v$VERSION" -f "sha=$SOURCE_SHA"
+        run: uv run --locked python -m tools.release_assets ensure-tag "$GITHUB_REPOSITORY" "slopsentral-v$VERSION" "$SOURCE_SHA"
       - name: Publish the retained archive without replacement
         env:
           GH_TOKEN: ${{ github.token }}
@@ -71,17 +89,36 @@ jobs:
             'Install this Pi package without a source checkout:' \
             '' \
             '```bash' \
-            "pi install npm:slopsentral-pi@https://github.com/$GH_REPO/releases/download/pi-v$VERSION/slopsentral-pi-$VERSION.tgz" \
+            "pi install npm:slopsentral-pi@https://github.com/$GH_REPO/releases/download/slopsentral-v$VERSION/slopsentral-pi-$VERSION.tgz" \
             '```' \
             '' \
-            "[Pi guide](https://github.com/$GH_REPO/blob/pi-v$VERSION/docs/pi-harness.md) | [README](https://github.com/$GH_REPO/blob/pi-v$VERSION/README.md)" \
+            "[Installation](https://github.com/$GH_REPO/blob/slopsentral-v$VERSION/docs/releases.md) | [README](https://github.com/$GH_REPO/blob/slopsentral-v$VERSION/README.md)" \
+            '' \
+            'This canonical set supersedes earlier standalone and Pi-only releases. Historical releases remain available.' \
+            'Codex and Copilot archives contain the exact projected bytes tested by Validate Source. See release-assets.json for source identity and checksums.' \
             '' \
             "CI passed for [source $BUILD_SHA](https://github.com/$GH_REPO/commit/$BUILD_SHA)." \
             "The release tag targets [main commit $SOURCE_SHA](https://github.com/$GH_REPO/commit/$SOURCE_SHA)." \
             "The release includes \`SHA256SUMS\`, \`candidate.json\`, and \`promotion.json\` for archive identity and source provenance." \
             > "$RUNNER_TEMP/pi-release-notes.md"
-          gh release create "pi-v$VERSION" "$ARCHIVE" \
+          gh release create "slopsentral-v$VERSION" "$ARCHIVE" \
             "$RUNNER_TEMP/pi-candidate/SHA256SUMS" "$RUNNER_TEMP/pi-candidate/candidate.json" \
-            "$RUNNER_TEMP/promotion.json" --verify-tag --latest \
-            --title "Slopsentral Pi $VERSION" \
+            "$RUNNER_TEMP/marketplace-candidate/slopsentral-codex.tar.gz" \
+            "$RUNNER_TEMP/marketplace-candidate/slopsentral-github-copilot.tar.gz" \
+            "$RUNNER_TEMP/marketplace-candidate/release-assets.json" \
+            "$RUNNER_TEMP/promotion.json" --verify-tag --draft \
+            --title "Slopsentral $VERSION" \
             --notes-file "$RUNNER_TEMP/pi-release-notes.md"
+      - name: Examine actual release downloads before making the set current
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ steps.candidate.outputs.version }}
+        run: |
+          gh release download "slopsentral-v$VERSION" --dir "$RUNNER_TEMP/downloaded"
+          cmp "$RUNNER_TEMP/pi-candidate/SHA256SUMS" "$RUNNER_TEMP/downloaded/SHA256SUMS"
+          (cd "$RUNNER_TEMP/downloaded" && sha256sum -c SHA256SUMS)
+          cmp "$RUNNER_TEMP/pi-candidate/candidate.json" "$RUNNER_TEMP/downloaded/candidate.json"
+          cmp "$RUNNER_TEMP/promotion.json" "$RUNNER_TEMP/downloaded/promotion.json"
+          cmp "$RUNNER_TEMP/marketplace-candidate/release-assets.json" "$RUNNER_TEMP/downloaded/release-assets.json"
+          gh release edit "slopsentral-v$VERSION" --draft=false --latest

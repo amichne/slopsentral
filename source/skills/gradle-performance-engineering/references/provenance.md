@@ -1,9 +1,9 @@
 # Provenance
 
 Reviewed 2026-09-16. Independently authored adaptation of
-[new-silvermoon/awesome-android-agent-skills: gradle-build-performance](https://github.com/new-silvermoon/awesome-android-agent-skills/blob/82900eacc8dbe13de93c6310af27b9df4b2bd2f6/.github/skills/performance/gradle-build-performance/SKILL.md),
+new-silvermoon/awesome-android-agent-skills: gradle-build-performance,
 discovered through the user-supplied
-[Skills listing](https://www.skills.sh/new-silvermoon/awesome-android-agent-skills/gradle-build-performance).
+The reviewed revision remains the attribution record.
 No upstream files, code examples, or templates are copied. Retain applicable
 license and attribution notices if literal upstream material is imported later.
 

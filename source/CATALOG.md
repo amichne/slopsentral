@@ -2,7 +2,7 @@
 
 Generated with `uv run --locked tools/marketplace.py catalog --out source/CATALOG.md`.
 Use Software Engineering for constrained domain design. Select specialties for the task.
-Use native tools or upstream plugins for general workflows. See [community workflows](../docs/community-workflows.md).
+Use repository procedures and native tools for general workflows. See [local workflows](../docs/community-workflows.md).
 The host selects standard skills. Installation grants no action authority.
 
 ## Start here
