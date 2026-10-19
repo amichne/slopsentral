@@ -32,6 +32,18 @@ function workspace(t) {
   t.after(() => { if (oldHome === undefined) delete process.env.HOME; else process.env.HOME = oldHome; });
   return { directory, cwd, agentDir, project: false };
 }
+test('native helper starts through a symlinked temporary directory', t => {
+  const { directory } = workspace(t);
+  const real = path.join(directory, 'real'), alias = path.join(directory, 'temporary alias');
+  fs.mkdirSync(real); fs.symlinkSync(real, alias, 'dir');
+  fs.copyFileSync(path.join(root, 'tools/setup-pi.mts'), path.join(real, 'setup-pi.mts'));
+  for (const folder of [real, alias]) {
+    const result = spawnSync(process.execPath, [path.join(folder, 'setup-pi.mts'), '--help'], { encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /Slopsentral native Pi setup/, folder);
+  }
+});
+
 function write(file, value) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, json(value)); }
 function bundle(directory, version = '0.1.123', instruction = '') {
   const pkg = path.join(directory, 'input-' + version + '-' + crypto.randomUUID());
