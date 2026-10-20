@@ -6,7 +6,7 @@ icon: "shield-check"
 
 [Dotfiles](https://github.com/amichne/dotfiles) owns B0, the short global engineering baseline.
 Slopsentral owns optional skills and the existing local validators.
-These repositories have separate contracts. They do not need a merger.
+Each repository has its own contract. They do not need a merger.
 
 The implementation is under review in [dotfiles PR 11](https://github.com/amichne/dotfiles/pull/11).
 The change does not install resources into live HOME.
@@ -26,7 +26,7 @@ B0 states the common engineering rules:
 A skill supplies detailed procedures and examples when the task needs them.
 A Pi package or Codex plugin distributes resources.
 Neither container adds an instruction priority.
-Installing a package does not load its instruction files automatically.
+Installing a package does not by itself load its instruction files.
 Slopsentral's native Pi selection remains a set of skills, without a custom runtime.
 
 | Owner | Resource | Selection |
@@ -37,7 +37,7 @@ Slopsentral's native Pi selection remains a set of skills, without a custom runt
 | Slopsentral | `source/skills/` | Optional task guidance |
 | Slopsentral | Existing validator scripts | Explicit local tool paths |
 
-Run `scripts/sync_agent_baseline.py` from the dotfiles checkout after a B0 edit.
+After a B0 edit, run `scripts/sync_agent_baseline.py` from dotfiles.
 Its `--check` option detects drift in both projections.
 The projections contain the same bytes as B0.
 The old dotfiles `APPEND_SYSTEM.md` is removed from the proposed source inventory.
@@ -45,15 +45,16 @@ An existing live copy remains untouched until a separate installation.
 
 ## Inspect native selection
 
-Run `agent-check inspect` to see baseline hashes, projection paths, overrides, and configured tools.
+Run `agent-check inspect` to see baseline hashes, paths, overrides, and selected tools.
 This command reports files. The native host determines effective selection.
-Use Pi's context inspection and Codex's `debug prompt-input` to examine loaded instructions.
+Use Pi's context view and Codex's `debug prompt-input` to see loaded instructions.
 Use Codex App Server `hooks/list` to inspect hook source, state, and trust.
 
 Codex loads global instructions from its selected `CODEX_HOME`.
 An `AGENTS.override.md` at that scope takes precedence over `AGENTS.md`.
-Trusted project instructions refine the global instructions through native repository scopes.
-Instruction budgets, custom homes, explicit overrides, and disabled resources can suppress B0.
+Trusted project files refine the global instructions through native scopes.
+Instruction budgets can suppress B0.
+So can custom homes, explicit overrides, and disabled resources.
 
 Pi loads global `AGENTS.md` before ancestor and project context files.
 Its global `AGENTS.override.md` takes precedence over global `AGENTS.md`.
@@ -62,12 +63,14 @@ B0 therefore uses the global `AGENTS.md` scope.
 Avoid a second copy in package instructions or project append files.
 
 The fresh-session fixtures assert one B0 occurrence in each native prompt.
-This result covers the tested selection. It does not override explicit user configuration.
+This result covers the tested setup. It does not override the user's choices.
 No hook inserts B0, rewrites prompts, or routes requests from keywords.
 
 ## Configure local validators
 
 Use uv 0.12.9 or later and Python 3.12 or 3.13.
+The adapter locks `jsonschema` 4.26.0 to read Slopsentral's report schema.
+Prepare its locked dependencies before using offline sessions.
 Use the standalone Vale 3.24.0 engine.
 The [local writing guide](/guides/controlled-writing) describes its explicit installer.
 Assessment never downloads an engine or sends prose to a hosted service.
@@ -82,21 +85,27 @@ agent-check configure \
 agent-check inspect
 ```
 
-The command records private configuration under `$XDG_STATE_HOME/agent-engineering`.
+The command saves private tool paths under `$XDG_STATE_HOME/agent-engineering`.
 Without `XDG_STATE_HOME`, it uses `~/.local/state/agent-engineering`.
-It does not install tools or change models, authentication, trust, or host settings.
-The scripts and their policy resources must remain available at the selected paths.
+It does not install tools or change host settings.
+Models, authentication, and trust stay as set.
+Keep the scripts and their policy files at the selected paths.
 Read the receipt to identify the selected inputs and policy.
 
 The Kotlin tool is Slopsentral's existing `source/hooks/kotlin-horizontalization-check`.
 It reports direct file counts and filename prefix clusters.
 It does not use ktlint or detekt.
 The current tool supports `src/main/kotlin`, `src/test/kotlin`, and `src/integrationTest/kotlin` roots.
-Other changed Kotlin roots produce an explicit coverage failure in the adapter.
-Its layout findings remain advisory and do not establish a semantic defect.
+Other changed Kotlin roots fail with a coverage error.
+Its layout findings remain advisory. They do not prove a semantic defect.
 Tool absence and execution errors produce failures.
 
 Vale uses the existing `assess_text.py` procedure and its locked local rules.
+The adapter checks the full report against the owner's pinned v2 schema.
+Each selected document must appear once, with its exact path and content hash.
+The engine version and policy hash must match the selected owner.
+The findings and exit code must agree.
+Missing fields, extra fields, and malformed findings fail the check.
 Findings and operational failures remain distinct in the report.
 Both prevent a passing handoff receipt.
 A readability score does not prove reader comprehension.
@@ -117,29 +126,39 @@ The native adapters use these events:
 Pi can continue after `agent_end` through retries, compaction, or queued work.
 The adapter uses `agent_before_settle` for the final actionable event.
 `agent_settled` is notification-only.
-The adapter records non-context session entries and a UI status.
+The adapter records session entries and a UI status.
+Those entries do not enter model context.
 It never requests a model continuation.
 Pi exposes no hard veto at settlement in this contract.
 
 Codex `Stop` runs after a final assistant message, before normal completion.
 It does not run after every internal model response or tool call.
-The adapter uses a hard stop on failure and does not request a repair loop.
-A hard stop cannot retract assistant text that the host already emitted.
+The adapter uses a hard stop on failure.
+It does not request a repair loop.
+A hard stop cannot retract text that the host already emitted.
 App Server reports the hook status as `stopped` and includes the failure reason.
 The turn can still finish with status `completed`.
 The CLI can exit zero and emit `turn.completed` after a failed hook check.
 Use the receipt and `agent-check handoff` exit status as the validation gate.
 The legacy `notify` event is a notification, not a blocking check.
 
-Codex enables native hooks by default in this version, but hook trust remains separate.
-Review and trust the two source definitions through native host controls before use.
+Codex enables native hooks by default in this version.
+Hook trust remains separate.
+Review and trust both hook definitions through native host controls before use.
 Inspect plugin and project hooks for another owner of the same check.
 Do not replace existing hook configuration or use a trust bypass for adoption.
-Disabled, untrusted, unavailable, or failed-to-launch hooks do not establish validation.
+Disabled or untrusted hooks prove no check result.
+Neither do missing hooks or hooks that fail to launch.
 
-Cancellation and provider errors can bypass normal completion events.
+Cancellation and provider errors can bypass normal end events.
 An aborted run can lack a handoff receipt.
 After interruption, run an explicit handoff check before claiming success.
+
+Outside Git, native events record `not-applicable` with reason `outside-repository`.
+Both hosts can then run a normal projectless session.
+This receipt makes no claim about repository checks.
+An explicit `begin`, `turn`, or `handoff` command still fails outside Git.
+Git errors inside a repository remain failures.
 
 ## Keep scope and evidence
 
@@ -147,9 +166,15 @@ Each session starts with a snapshot of Git-visible Kotlin and prose files.
 Unchanged preexisting dirt stays outside the check scope.
 If the session edits a dirty file, the checker assesses the whole current file.
 Edits committed during the session remain in scope.
-Ignored files remain excluded unless Git tracks them.
-Changes to repository ignore rules reject the automatic scope instead of exposing more files.
-Global ignore-rule changes during a session remain outside this fixture's proof.
+Git supplies the initial file scope. Ignored files stay outside it unless tracked.
+Each file seen during a check remains in scope, even after a failed check.
+An ignore rule cannot remove that file from scope.
+Deletion can remove a prose input; hiding an existing file causes a scope failure.
+For each file seen, the checker freezes its ancestor `.gitignore` hashes and `info/exclude`.
+It reads those sources directly, even when Git ignores an ignore file itself.
+Changes to these frozen sources reject the scope until the sources are restored.
+A new session records the revised scope after review.
+Global ignore-rule changes that affect files never seen remain outside this proof.
 The checker never scans all of HOME or changes a source file.
 
 Kotlin checks read the selected package directories and their ancestors.
@@ -158,12 +183,15 @@ Deleted Kotlin files select surviving peers where available.
 Deleted prose files need no prose assessment.
 Symlinks and paths outside the repository cannot supply prose inputs.
 
-Receipts bind file hashes, package topology, validator bytes, interpreter bytes, and policy bytes.
+Receipts bind file hashes and package topology.
+They also bind validator, interpreter, policy, and report schema bytes.
 Unchanged inputs reuse the previous result, including a failed result.
 Repeated start events do not reset the original snapshot.
-Repeated hooks serialize per session and reject concurrent checks.
+Only one check can run per session. A concurrent check fails.
 A changed input during assessment prevents a passing receipt.
-Cancellation kills the validator process group and cannot cache success.
+Cancellation kills the validator process group.
+It cannot cache success.
+Receipts from the earlier session format fail closed; start a new session after upgrading.
 
 Run explicit checks with the same repository and session identifier:
 
@@ -185,7 +213,8 @@ Only a current `handoff` result can establish the current check outcome.
 ## Separate instruction replacement
 
 Native instruction loading is not a system prompt replacement.
-Pi separately supports `SYSTEM.md`, command-line prompt selection, and extension prompt replacement.
+Pi supports `SYSTEM.md` and command-line prompt selection.
+An extension can also replace its prompt.
 Codex separately supports `model_instructions_file` for its base model instructions.
 These mechanisms have broader effects than B0 and are outside this change.
 The adapters do not change built-in safety, sandbox, approval, or trust controls.
