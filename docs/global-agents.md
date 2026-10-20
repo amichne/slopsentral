@@ -93,6 +93,103 @@ The source map stays here for review and future source comparisons.
 OpenAI's [instruction guidance](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)
 also supports selective source reads and proportional procedures.
 
-No installation command runs as part of this draft. Review the destination's
-current instructions before replacing them. A source review and a prose
-assessment cannot prove that a fresh session loads or obeys the file.
+## Install a pinned local snapshot
+
+The [installer](../tools/install_global_agents.py) installs `AGENTS.md` and a
+`.slopsentral` directory inside an explicit destination. The destination must
+already exist as a real directory. The script needs uv and Python 3.12 or 3.13.
+Its adjacent lock pins the Python dependencies.
+
+From the checkout root, examine the committed asset manifest:
+
+```sh
+uv run --locked tools/install_global_agents.py manifest
+```
+
+To install Codex global instructions, use this explicit destination:
+
+```sh
+uv run --locked tools/install_global_agents.py install --destination "$HOME/.codex"
+```
+
+For a repository-root installation, select that repository directory instead.
+The script preserves a different existing `AGENTS.md` or `.slopsentral` tree
+and rejects the installation. It has no overwrite option.
+An identical installation returns `UNCHANGED` without rewriting files.
+
+The committed `tools/global_agents.lock.json` records each asset's repository
+path and SHA-256 digest. Its own digest names the installed snapshot:
+
+```text
+<destination>/
+  AGENTS.md
+  .slopsentral/
+    <manifest-sha256>/
+      docs/
+      source/
+      tools/
+```
+
+The installer captures and hashes source bytes before it writes the destination.
+It stages the snapshot and examines the written digests. It publishes `AGENTS.md`
+last with an operation that rejects an existing file. The installed file keeps
+the portable principles and adds a relative link to the local source map.
+
+The snapshot keeps repository-relative paths, so its local links still resolve.
+The manifest includes transitive Markdown links and companion files from linked
+skills and the type-safety concept. This includes examples, scripts, locks,
+schemas, and license notices. The parser supports inline links, reference links,
+images, and tables. External URLs remain citations and need network access.
+Source caches and untracked files stay outside the asset inventory.
+
+To examine the installation without repair, use:
+
+```sh
+uv run --locked tools/install_global_agents.py verify --destination "$HOME/.codex"
+```
+
+Both commands report the manifest digest and installed `AGENTS.md` digest as
+JSON. They reject changed, missing, unexpected, or symlinked assets.
+The installer also rejects unsafe manifest paths and duplicate JSON keys.
+To bind an operation to a separately saved manifest digest, supply
+`--expected-manifest-sha256 <64-lowercase-hex-characters>`.
+
+The snapshot includes the installer and its dependency lock. After the checkout
+disappears, the copied installer can examine the same destination:
+
+```sh
+uv run --locked --script "$HOME/.codex/.slopsentral/<manifest-sha256>/tools/install_global_agents.py" verify --destination "$HOME/.codex"
+```
+
+The local documents remain readable without the checkout or network.
+The installer needs its declared Python runtime and dependencies.
+SHA-256 proves agreement with the selected manifest. It does not authenticate
+an attacker-controlled script and manifest.
+
+## Refresh and recovery
+
+After a deliberate source change, refresh the committed manifest:
+
+```sh
+uv run --locked tools/install_global_agents.py manifest --write
+```
+
+The refresh uses tracked source files. If a new linked file is absent from
+the Git index, add that file before the refresh. Review digest changes with
+the source diff. Installation never refreshes expected digests implicitly.
+Existing snapshots remain pinned. A different snapshot needs a different
+destination or a separate, deliberate replacement of the prior installation.
+
+A fresh installation creates its own `.slopsentral` directory exclusively.
+If root publication fails, the script removes only its unchanged new snapshot.
+If cleanup cannot establish ownership, it reports `RECOVERY_NEEDED` and keeps
+the affected paths for inspection.
+
+A process interruption can leave a snapshot without `AGENTS.md`.
+The next installation rejects that partial state. Inspect the reported paths
+before recovery. The procedure assumes a trusted destination parent.
+It does not establish crash durability or resist a hostile concurrent writer.
+
+The tests use temporary directories and real file operations.
+A prose assessment or successful installation cannot prove that a fresh agent
+session loads or obeys the instructions.

@@ -1,0 +1,664 @@
+{
+  "type": "SLOPSENTRAL_GLOBAL_ASSETS",
+  "schemaVersion": 1,
+  "agent": "docs/examples/global/AGENTS.md",
+  "guide": "docs/global-agents.md",
+  "files": [
+    {
+      "path": "docs/examples/global/AGENTS.md",
+      "sha256": "5bf03afdaaa36c56cc86019e423f060d39f81697ac978b124479bd2c16c0511b"
+    },
+    {
+      "path": "docs/global-agents.md",
+      "sha256": "424376b66bd76de805f31bcf3eeb07135709c97ee3f9c7de747d7660c5e6b642"
+    },
+    {
+      "path": "source/concepts/type-safety/core.md",
+      "sha256": "78737e5dc82c89591bf78746be9a47cc5e03eb92a0a8f3f0a6533e708c52de2b"
+    },
+    {
+      "path": "source/concepts/type-safety/kotlin/command-metadata.kt",
+      "sha256": "3c603875348b8033efdf1ff6070e3cec6f3582fd00d467ecb408b525175696f6"
+    },
+    {
+      "path": "source/concepts/type-safety/kotlin/composite-encoding.kt",
+      "sha256": "7f05bb06ed6c54268f36f5f65ab6693a2f8f37511eac606c2155d075ed0de493"
+    },
+    {
+      "path": "source/concepts/type-safety/kotlin/config-value.kt",
+      "sha256": "7c552a19c0c870e55fa12ec1a8c05ba96434a3bb2d9506fbc762396531c2fe1b"
+    },
+    {
+      "path": "source/concepts/type-safety/kotlin/email-display.kt",
+      "sha256": "24fc1b2b6af7d9fbc5e5a0dc53adf88e9ff361e2090501111e94ed3122e200f8"
+    },
+    {
+      "path": "source/concepts/type-safety/kotlin/payment-method.kt",
+      "sha256": "c4d644c854a17eea1388744e05cf3b7a4b649db7fe0181e51b17178beb553744"
+    },
+    {
+      "path": "source/concepts/type-safety/kotlin/value-construction.kt",
+      "sha256": "c92062ebf55bfcf9618a5a5c70292e92045bbd84a037250bbb769d2a7c86001a"
+    },
+    {
+      "path": "source/instructions/agent-execution.md",
+      "sha256": "6be9c1c159cc876f85c20006ed99a5881e52896ed7331ff30e7a6d0d25dc4a9f"
+    },
+    {
+      "path": "source/instructions/engineering-design.md",
+      "sha256": "6115727dd4cb243c521d25eccb90b58a7eedafc37f026b8eba2a2c7e193738cd"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/SKILL.md",
+      "sha256": "dbbcd8899bd5b12ff9bba74fbc7008d44767e169cb3e8b6f3a510e50dac02997"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/glossary-entry.json",
+      "sha256": "cc716a07655cde567606449d15b7f6f319e63e8aecc456c4aefffca637ea4ca1"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/.vale.ini",
+      "sha256": "1d0c5184a807a038537de2ae47695b700dbce1d6c87601631b9d405db0e0a5fa"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/assessment.ini",
+      "sha256": "f20ba19d6c7b22d03f21de4dbe1afe65334449f977f03c20358bca74ddb27afc"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/licenses/Commits/LICENSE",
+      "sha256": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/licenses/Commits/NOTICE",
+      "sha256": "59f50430ab07c2ce3ada06ce613cf6b3ae80fff1ce3a646a0deb3279cdb42284"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/licenses/Diataxis/LICENSE",
+      "sha256": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/licenses/Diataxis/NOTICE",
+      "sha256": "bfefe6a4e5bb38768a66828030911791b6b175f143eae04c6e52ec19f8df964d"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/licenses/Google/LICENSE",
+      "sha256": "f661986be23c000812a439e03dfed8d16ff23117e8d1219fc2beb7cd01393640"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/licenses/Std/LICENSE",
+      "sha256": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/licenses/Std/NOTICE",
+      "sha256": "7dfb553d84f2641d8fee959532f0f74d3c98fdd4011d4e5dfda87be312f8f121"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/licenses/readability/LICENSE",
+      "sha256": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/resources.lock.json",
+      "sha256": "987e81b299dd7578f0c1a3853de96d69ce3ab418ee6e87f6c91ad91a7f6a2669"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/Blank.yml",
+      "sha256": "30ab33ff89cb45c3a79dcf0b1bbed6953dd494f2c922e56639dc26fd617a74d0"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/Imperative.yml",
+      "sha256": "f616cdc18f1d979b596df8afa3d58d2f155e0919797d866836fcb2e58e452b94"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/Placeholder.yml",
+      "sha256": "d0bc9bdaaf1548d905bb72cf3ce53770246cb5cba0a08f531f453f5cbda445d1"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/Whitespace.yml",
+      "sha256": "46201cc37ffac126364d083845afbf4c1f6f9a24bb2f16c5f9d040678bb08669"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/_shared/Capitalized.yml",
+      "sha256": "32661de605260bb561e6f052eaafb21fa8f272e60fd13fc9dfa3b4beb3c55837"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/_shared/Period.yml",
+      "sha256": "39608ab45350e0499899a3e47925bdbdc14950b3a12ae014ffacd1230ae22a27"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/_shared/SubjectLength.yml",
+      "sha256": "02b7d78b8449622104e411eafbb50bdb701907f9d7f5e2b3b7358a2c2e362b6f"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/_shared/TypeCase.yml",
+      "sha256": "f1653910da985055307e07f258cbe4cbbc2b7a7002c523bda6bf07e0ccbcb6e4"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/_shared/Wrap.yml",
+      "sha256": "76354e4a9ff6ba7aa86fc3f09664fe20d8ced27c26aa2dd34036262bebf345ec"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Conventional/Breaking.yml",
+      "sha256": "08d6ccc9628d14657355fe6ec4a04c9e4f44800b28eb6441f59064f990738d5b"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Conventional/Description.yml",
+      "sha256": "7823437c078e0a375b95ca0b2db8aef6813499fb78782da8f0d2573885be2079"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Conventional/Footer.yml",
+      "sha256": "971c92cc94ae61081bcbccda7bd2a7d70f518511b391305984df745eac836b86"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Conventional/Scope.yml",
+      "sha256": "ab45989a9fae35cea2ad30b77159c7a6f795bfb40146c2597d6ce5b900eaacd1"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Conventional/Space.yml",
+      "sha256": "83e4a6b5a2982ca5cd0eeddd163f2d27f1c9343ff6aaf2fac6312adcf19e4286"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Conventional/Token.yml",
+      "sha256": "bc001865f1705885e5e67204d299222484e86c507694ad91163c2a823d469fbe"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Conventional/Type.yml",
+      "sha256": "d2335993efb78595aa59069a17d58cf29442643e13660a42c8a958644c84b312"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Explanation/Instruction.yml",
+      "sha256": "2057598df4d55e20fbbeafb20bb4ce8866bc25873d0120b9a0b7a6485896daea"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Explanation/Reference.yml",
+      "sha256": "956b630f17ad9f62c83a59cc62161d36faa8c695ef9748ccfcce08f1cd387699"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Explanation/Why.yml",
+      "sha256": "9fb1b62c390bccf48fc39c0dfe7ef090f020f4403bb89b8686b2d11982b450fc"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Google/ExcessiveClaims.yml",
+      "sha256": "9587449c33f9f00f1508e935094c4c817050e886ff18b70422db42278c3f7388"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/HowTo/Explanation.yml",
+      "sha256": "774588d4ebcadd27c96f724555abcb68baadd2ad8a5ea129b32e3d7f356bb713"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/HowTo/Imperative.yml",
+      "sha256": "da511be38866e8ea3b264864c7e3246e2a72cec7dcca38063b22020db46b4216"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/HowTo/Opening.yml",
+      "sha256": "b05f7476b31add82ce4a4bd70a83249ea4f1715f2b792271129b5f0b0467ec8e"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/HowTo/Reference.yml",
+      "sha256": "bb616ef66c810f5cb54624e7376610cd08ec0dbbca432bb61cc8dfd8a1eda56e"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/HowTo/Steps.yml",
+      "sha256": "550402b45e1582fb036973e2df22de9f984c8f92ba3a1c9e80ac14b07ed798b6"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/HowTo/Teaching.yml",
+      "sha256": "aa5d649350f4dfec4809d20ec10e7d3f1ec4b76f5a6c96a5fd3f91bf56732ecb"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/HowTo/Title.yml",
+      "sha256": "c2aa6681dea663401cc4be37f3eeb560d29e02aa6cf5b1cf76964ac97dd88f43"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Readability/FleschKincaid.yml",
+      "sha256": "1dae60f0d0e9e0a6ed96dedd799900fcb9495efa0afcc995588413d09a1fda21"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Reference/Examples.yml",
+      "sha256": "6446fe7d13b0b669c20fd92c688b925f764eb5efceeb731af5207ac15d48a7a2"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Reference/Instruction.yml",
+      "sha256": "aaa17bb248eef455beaaa3f1a1727de3023e15bcbbfef483de12a7f3b079edc6"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Reference/Opinion.yml",
+      "sha256": "cc500bca0df656fddc5399b3ec7fd56e124b8c373a3a53b93eefc732477cfe43"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Reference/Walkthrough.yml",
+      "sha256": "1171f0bd286390de671deb14d3ae8cde152e91ce822e2ecafb4cacdbb79ec674"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/Claims.yml",
+      "sha256": "249319ce4c1b5ee78208f03a009a6e57a70b7997f82d94590eb6e4c925fbd4b1"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/CommitLength.yml",
+      "sha256": "9cd6e09003847c7b1726caaa20a85a3f9b63fec1b0742eea562adbd46c79ebbf"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/CommitPeriod.yml",
+      "sha256": "6a0aad808eee05753171cafb37870afc44255d41b2ffc473b575347b2efe61e3"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/CommitWrap.yml",
+      "sha256": "e193e8c8a32f24fd1a7afb0bb49e26bafe7dd8053c06fb2b2584e9a3259f0241"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/Contractions.yml",
+      "sha256": "b85e04d8607eacc001639fbdf7dfa74e2518ac28de8a646415f9a4339cb14a76"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/Diction.yml",
+      "sha256": "4510a075da23a9dabe61d37aa4b4c0ece5fccc6214937e994330f66ed42a6035"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/GlossaryMarker.yml",
+      "sha256": "a39a2e950a628dade7e1f340ed0d630c1d1386fe75f26a91a92c8ea2c8f4e3eb"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/Grade.yml",
+      "sha256": "2c050700d919486ed3ad515c775864b30f6634a451d644f3ec4814be702d5a81"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/LongSentence.yml",
+      "sha256": "9e6bfd8a005699310ae559d8b3068239ddf05bf792f2c295c719b7a7e6c4c1ec"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/Modals.yml",
+      "sha256": "efdaa0a56fcfa30755dbe06575900328cd783c30fc293bd8cc2382e0726de827"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Slopsentral/ProcedureLength.yml",
+      "sha256": "55e4cc3bc25d5447bb0b9f9ff3b502ad7b9a4775821ef4655c7ad27b5fb3edaa"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Std/Readability/SentenceLength.yml",
+      "sha256": "1b8073531ff09bd4bf26c8844d71e0e6aef467d3803738d3533b478ace40f9fb"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Tutorial/Expectations.yml",
+      "sha256": "19b64e4b3c02aa8c5ad268f0dc671a863ab95a2e984b00870831a8fe961a36ee"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Tutorial/Explanation.yml",
+      "sha256": "92eda27ca525a53d6e162e412a4fa7c656369d896a3a88e9af6f998e1157c8b0"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Tutorial/Opening.yml",
+      "sha256": "0313ff38254a469726db243ccb5b2756b594730cdf64576ddbacd6352cb65b78"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Tutorial/Options.yml",
+      "sha256": "fd1984d44fb70f9d60004c670ab2d96cf9d3fbee59e58ced5698e84cf4fba6de"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Tutorial/Steps.yml",
+      "sha256": "0b736034b1af362ae623970e84310ac412a679027a24dc0120cd5fe1fd79932c"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/Tutorial/We.yml",
+      "sha256": "03a9131aceb60e8a090e58a7e89dd173f327d40773ba3fd40952c0f3e2725f17"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/config/views/Commit.yml",
+      "sha256": "a9e58f2ba8f8979487233727cd5c496ace9977adbc78bfebcd880896f0989e52"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/assets/vale/styles/config/vocabularies/Slopsentral/accept.txt",
+      "sha256": "c35b7156488ab087b9f07c831caaac8363771b5aa4f80f90674e23a55ac4d1ec"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/references/Apache-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/references/glossary-authoring.md",
+      "sha256": "1861c20d82b3fa4d4d26fab988c989fb1e53829889f59c570df9123ec5833933"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/references/glossary-contract.md",
+      "sha256": "4497282d3c830ab6eceb1dcca8bb7f08f7696e29c7e7e0e24d5fa28b6da84159"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/references/glossary.schema.json",
+      "sha256": "28cd5fddb1a57778efadb17b398ce527caf6dea980f512116e6f23c688082251"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/references/grounding.md",
+      "sha256": "1f910f35f46ae687381f2314ef8d8c99293a2caa58ab63d610d24be0a20f9fab"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/references/provenance.md",
+      "sha256": "12036edc321faa3e84a56d06701f866c6d574a7af31bafe158d2fd87b653392c"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/references/text-assessment.md",
+      "sha256": "7af70f3b60383031b588e9139bf39502e63907cfba5674f0d9e1b74594ae3302"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/references/text-assessment.schema.json",
+      "sha256": "65f8c2174a98d90066245a2002b3fbca7cfd04b3ed3b7783b1e41e9ab34382ff"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/references/vale-local.md",
+      "sha256": "0ef95b219ac60f074fb66743eb206e2151b9a620eafc6fc3487f0c82ba210424"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/assess_text.py",
+      "sha256": "0fdb524bda8296ed2f758e5f545b5c5125a9c5f07719f0b7b37a588c31812fad"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/assess_text.py.lock",
+      "sha256": "b32d23850d12cab2dcb0ed42677e7d4076e62a165883f687eec3333f0deb6c8f"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/check_glossary.py",
+      "sha256": "a6d2a270ec685248c4b5a1d9be3ec7be864de4b58d24db9e7d3d6c8ba76af70d"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/check_glossary.py.lock",
+      "sha256": "b32d23850d12cab2dcb0ed42677e7d4076e62a165883f687eec3333f0deb6c8f"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/glossary_json.py",
+      "sha256": "577da74f8ce7ddd05ce12965cbf02a1993f3b8bc687d541fb59d3026a3ede5c1"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/install_vale.py",
+      "sha256": "7dff92e1d9462f0d094c38e470a0e986d59bf07d36a5c12d08eec6cb0a078955"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/install_vale.py.lock",
+      "sha256": "493285fe04f5efab7e81bec868ca14f5408ee8e80f7139851a11491665598a3d"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/pyproject.toml",
+      "sha256": "174d456bc43a231557252353bdc926a0bfc60c090073501aaf9e8d93746fdee6"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/tests/test_assess_text.py",
+      "sha256": "38bc22b714e12bbb83cf8ce6d1f861316eaf09a55c970a0f4b6325f4c7d5ed80"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/tests/test_check_glossary.py",
+      "sha256": "83eb9ec2e5d365aceb94e2af3d6cab6d470c7000d827b13b5dc9568aa59ea49e"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/tests/test_glossary_json.py",
+      "sha256": "5ff008776bfed3969c05e5264b9363bf1a0ac5c9a30522c4015476f87c8ddbb2"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py",
+      "sha256": "09c446d310b131c1e52771e9b81d60da111718fa87adb730923c39fb08ca1002"
+    },
+    {
+      "path": "source/skills/controlled-technical-writing/scripts/uv.lock",
+      "sha256": "8e4e6aedabb28499ca4f2dd7c4786f08a3ea192178d87bb7143b221d68d8e292"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/SKILL.md",
+      "sha256": "32288a90de5a4d94155e546ce28718986cb04b13f22960cb9366179d13f2d1a4"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/Apache-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/api-builders-and-configuration.md",
+      "sha256": "1cf437795066f3b0a2fb2da4356a2634f325996c012c9dc6ad07ad066e63a7e4"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/api-dsl-choices.md",
+      "sha256": "1bb62079f23f7d9d8224cfa52e20c729971caaafc1a31a8b96bf6df20b78dee9"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/api-extensions-and-factories.md",
+      "sha256": "6bdaa34266ab675b20d9b132958ad901770134af50e7d359f0e3b9be0b6db119"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/api-parameter-selection.md",
+      "sha256": "6ecae4f7c103f3c03ca1db6baaae4249be1f46e5a138cf8e684e23775ca33198"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/api-provenance.md",
+      "sha256": "467d321729b6d29b662cf07fc9823612ebc5338e151f7bb627b325300545b7d2"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/api-review-guides.md",
+      "sha256": "88b9e8e4939ce1ed46e6f5b301b68919280d4335f580d84251945aab62a9afb0"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/api-sources.md",
+      "sha256": "b9426726ecd34270785a1a92b2334b12843b27358ea26a2b98e4bc6f853418f5"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/api-surface-stability.md",
+      "sha256": "1107aae3d22211766ea87e15dd1391805127e26985f52f9b6089db326d916a63"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/branch-preservation.md",
+      "sha256": "b028a94ce4db8b6be3620876768d8ce96924ea2a0657068a332da08f9a85f560"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/branch-provenance.md",
+      "sha256": "683b582df9642eb5fbcaa992ff6355b9e6b407d619c620b9b27e24eec2ec84b0"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/domain-value-surfaces.md",
+      "sha256": "511c4c86763857222a385fd721c17fce89852521d693eaa40a4b5f4849ad1ba0"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/function-ownership-and-composition.md",
+      "sha256": "afd1a094e3b81a42c9e1e65e1dc0b0b5d0dae2f0cc97c99e711113c434bf800b"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/horizontalization-heuristic.md",
+      "sha256": "57499b4905aa38e9c2ea9df551a83f04c11fa628ae91066be21b1ceb4ab3c6d9"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/idioms.md",
+      "sha256": "a23a7351f46ceaed58b344368311e2dce0320927b8227e2c1ece309dd98d42f6"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/kotlin-antipatterns.md",
+      "sha256": "404692f3732cc921c3d28357ac3a61a1830f5b8e8d74be3b8ef73bf04d0931ed"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/layout-package-code-style.md",
+      "sha256": "8a42a56db618f92d86aec4a66637fb53cb3651bcc3aa12be4defa0d1dc1826d4"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/multiplatform-boundaries.md",
+      "sha256": "dc8d93adb589131cc4f7cd29775232bb3e4dd752110d05c5630e883fcf5077bb"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/parse-dont-validate-examples.md",
+      "sha256": "2b44027f3daad27b1933b289cb3221077d0d02834dd1ff1d3088547a7859158d"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/type-safety-patterns.md",
+      "sha256": "4dfa09c4d83b8790107ae62484799017b99fcb1f2f1b3abaf125c9da28f666a2"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/types-domain-modeling.md",
+      "sha256": "33b2d77d6359310d106b1f973adc0c15e6b510526f9366875866b117914ef897"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/types-dsls-and-generics.md",
+      "sha256": "f429dff2d0e3ab5d06f9d7d3b37052d459156eb1d7504e5f1abfd33997887ea8"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/types-errors-and-testing.md",
+      "sha256": "b778229b1e77e096f2e3a3a03b0e684647dd7f39dd54033f8be47f4ead53b31b"
+    },
+    {
+      "path": "source/skills/negative-capability-proof/SKILL.md",
+      "sha256": "bfd1d5cb02b995da118e8b7bd53f0a5b229bc642599596d69fc9a213bdf55156"
+    },
+    {
+      "path": "source/skills/negative-capability-proof/agents/openai.yaml",
+      "sha256": "a1499d95abd8447558c535fe5554adcc3c9b988a0a39264a6283d430effe1e94"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/SKILL.md",
+      "sha256": "d22d2e47c3add5ef8e31bd261e10fc7d08fb5eb53477bf17b5e0d9354e6f0dc2"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/agents/openai.yaml",
+      "sha256": "e4cbd9728eba8b31ce974956d057a7faf63b21583a14bf0075207aada9601bd8"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/assets/artifact-result.schema.json",
+      "sha256": "6b3b1c7f776d25d44ecf49ba5bac59a9fd34a57d9eee5412ea9ef93834af8dfe"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/assets/kotlin/ArtifactOutputAdapters.kt",
+      "sha256": "d316f0339dd1d7b215fe8ad5b29473596659fa94b53671e629f48893abb1754b"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/assets/kotlin/ArtifactProof.kt",
+      "sha256": "3698dc9be1c13f68976f9e9820dd81803a33d7e4c78176e49b3fb2cac91cc6a7"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/assets/kotlin/ForgeMismatch.kt",
+      "sha256": "20010e8d9664a7ed1495e59d06c75177e97031d4bda0d8f5b9de37f1465adb68"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/assets/kotlin/ForgeVerified.kt",
+      "sha256": "7f8366baa07b5305a0b580347453d20f2b98496849e56c36eb5e02ba25121a6e"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/assets/kotlin/ForgetFailure.kt",
+      "sha256": "b31c8349bd812d28a1d4fc14e434d260f880db048eb4a387d2325ad4b2a15629"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/assets/kotlin/Legal.kt",
+      "sha256": "c63081d2ac82eba075de346aff0070cf0fada40a76cbb70714f370b3629f3fbb"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/assets/kotlin/PublishUnverified.kt",
+      "sha256": "212279588381882632c52225f39b5ffe781342b1baca8afa7a7600a9232efce1"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/api-boundaries.md",
+      "sha256": "9b25135f6be37bc9e633f26b637fdda20e71ec35b25894f5a74284da7cd00f3b"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/api-proof-example.md",
+      "sha256": "93bd4a757261582d2425c3d03b7042299de0bdbf2ecb8cf67183b78889ac3423"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/audit-checklist.md",
+      "sha256": "acac764b405f4ea30c5e888e9980c1d88379651480446d52945e6198c36948f4"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/closed-outcomes.md",
+      "sha256": "be60a39d4634ffb8e87cc029979999acd026682dd694052996ccd5b6af044d7a"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/domain-values.md",
+      "sha256": "cbb19f75e74e3fad410e72cfe6ecc3fff6bfe5f0741c6cde7440b155541d6e7b"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/kotlin-proof-example.md",
+      "sha256": "a24c0008f93be2552131df46f5b62a881340b173f94fdefe73a4cbb3152ee780"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/module-boundaries.md",
+      "sha256": "854351df1587b7dcff9b0bddf70437eb353dc4dab186935ac36438471866756f"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/proof-discipline.md",
+      "sha256": "6cfa76e34a04a7105a645565bb70a8ec9a701fcfd91e43e9982caa52f5255bed"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/refactor-playbook.md",
+      "sha256": "97ff63dc1d8d3f2da0945cc1f665bc465fade4b58c0abd9cdd80b235534a1bf1"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/references/state-and-capability-modeling.md",
+      "sha256": "88365fa1d2d67cada61d56909028fde7a9b1e8aac1e9236df318c222c80eaabc"
+    },
+    {
+      "path": "source/skills/semantic-ratchet/scripts/check-proof-examples.mjs",
+      "sha256": "9fd775a9d85edccb2c094f0f52fdb374c291946294ea09fbdd5bb0bb3258055c"
+    },
+    {
+      "path": "source/skills/tdd/SKILL.md",
+      "sha256": "ad644949356e0892584c9921ab32220540976c78726aff5e6c9b5826c3b80365"
+    },
+    {
+      "path": "source/skills/tdd/define-goal-LICENSE.txt",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    {
+      "path": "source/skills/tdd/references/codebase-preflight.md",
+      "sha256": "c7b35da9ae2cb49edbbb75a067af709c1eb1b2b8de68506fd645d025571a437f"
+    },
+    {
+      "path": "source/skills/tdd/references/deep-modules.md",
+      "sha256": "f2123700bf953db1740625686c75bdd145efd486357c47c6818c869fee657a32"
+    },
+    {
+      "path": "source/skills/tdd/references/delegation.md",
+      "sha256": "c1f512ffecd98e9532670ff3947d6c84fceb2ae318e936d2c699f28dc9f4809e"
+    },
+    {
+      "path": "source/skills/tdd/references/executable-check-contract.md",
+      "sha256": "9a7626190965c09200abad6146559bc2372c610fd2c378cd269311de57bec6a3"
+    },
+    {
+      "path": "source/skills/tdd/references/handoff.md",
+      "sha256": "746032a1627bc6925ddf958a2f8cb785c2132c30be8e906d41639140a5b2ebb0"
+    },
+    {
+      "path": "source/skills/tdd/references/interface-design.md",
+      "sha256": "5d3ef9c6d8069716ba01b3d319571bf0aee3b50827e8d8155d3b32a7950a6472"
+    },
+    {
+      "path": "source/skills/tdd/references/isolation.md",
+      "sha256": "3929cef3d85566d1cc480468a04fbf50cab766c8a9093d0cc2736185d5452941"
+    },
+    {
+      "path": "source/skills/tdd/references/mocking.md",
+      "sha256": "090fd8e256edf300c1ea8ad335814aa8cb3b6b2ba0916a6081ab6e8d84a1d794"
+    },
+    {
+      "path": "source/skills/tdd/references/planning-and-scope.md",
+      "sha256": "0ed932978ecd1ee9d652b4e5bf6e1e413e751a3e8de90560106e2dff6f4a70ad"
+    },
+    {
+      "path": "source/skills/tdd/references/planning-playbook.md",
+      "sha256": "ba598d43a505c76525fabb6722f152fcf4d415b452ac8e380ff085596c8e047f"
+    },
+    {
+      "path": "source/skills/tdd/references/planning-provenance.md",
+      "sha256": "fdde7314a790ba1b161e477038400388ab541ff60f0f722c47f7f024358fcf0e"
+    },
+    {
+      "path": "source/skills/tdd/references/refactoring.md",
+      "sha256": "c0c9424361a5e6da326893b994826db1188e7e652b900fd0fafd4ac492fe4d2f"
+    },
+    {
+      "path": "source/skills/tdd/references/runtime-performance.md",
+      "sha256": "2ba234f5161f506ef3f4d65363ad40c65dac041b87712798938a03a7a0b9b1d4"
+    },
+    {
+      "path": "source/skills/tdd/references/tests.md",
+      "sha256": "4569fc016d0692a87663c73a715678665d9af74c79d4de15567db4d825bed8a8"
+    },
+    {
+      "path": "source/skills/tdd/references/tracer-bullets.md",
+      "sha256": "63ead6a549adeb001d69ce674f0141e660e6fe24aeaaf3446ff26dc6fdd1c8c3"
+    },
+    {
+      "path": "tools/install_global_agents.py",
+      "sha256": "3cbacf5e35addeb1edc0940c364c61b32c40ed09c6d1ec637b6fd2224a9d94d3"
+    },
+    {
+      "path": "tools/install_global_agents.py.lock",
+      "sha256": "eca3e0b69e385460e8b3c6b121629b74b988a32f239e60986cd30a6d986d3b73"
+    }
+  ]
+}
