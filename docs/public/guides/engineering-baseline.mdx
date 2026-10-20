@@ -1,0 +1,198 @@
+---
+title: "Use the engineering baseline"
+description: "Keep a short global baseline and run local checks through native agent events."
+icon: "shield-check"
+---
+
+[Dotfiles](https://github.com/amichne/dotfiles) owns B0, the short global engineering baseline.
+Slopsentral owns optional skills and the existing local validators.
+These repositories have separate contracts. They do not need a merger.
+
+The implementation is under review in [dotfiles PR 11](https://github.com/amichne/dotfiles/pull/11).
+The change does not install resources into live HOME.
+Review the source and fixture results before adoption.
+
+## Choose instructions and skills
+
+B0 states the common engineering rules:
+
+- Parse external primitives into constrained types and preserve established facts.
+- Design from invariants and finite failure outcomes.
+- Keep a functional core, an imperative shell, and immutable data.
+- Isolate explicit effects from pure decisions.
+- Choose the smallest faithful unit under test.
+- Plan from evidence, negative controls, and measurable acceptance criteria.
+
+A skill supplies detailed procedures and examples when the task needs them.
+A Pi package or Codex plugin distributes resources.
+Neither container adds an instruction priority.
+Installing a package does not load its instruction files automatically.
+Slopsentral's native Pi selection remains a set of skills, without a custom runtime.
+
+| Owner | Resource | Selection |
+| --- | --- | --- |
+| Dotfiles | `.config/agent-engineering/B0.md` | Canonical baseline |
+| Dotfiles | `.codex/AGENTS.md` | Native global Codex instructions |
+| Dotfiles | `.pi/agent/AGENTS.md` | Native global Pi instructions |
+| Slopsentral | `source/skills/` | Optional task guidance |
+| Slopsentral | Existing validator scripts | Explicit local tool paths |
+
+Run `scripts/sync_agent_baseline.py` from the dotfiles checkout after a B0 edit.
+Its `--check` option detects drift in both projections.
+The projections contain the same bytes as B0.
+The old dotfiles `APPEND_SYSTEM.md` is removed from the proposed source inventory.
+An existing live copy remains untouched until a separate installation.
+
+## Inspect native selection
+
+Run `agent-check inspect` to see baseline hashes, projection paths, overrides, and configured tools.
+This command reports files. The native host determines effective selection.
+Use Pi's context inspection and Codex's `debug prompt-input` to examine loaded instructions.
+Use Codex App Server `hooks/list` to inspect hook source, state, and trust.
+
+Codex loads global instructions from its selected `CODEX_HOME`.
+An `AGENTS.override.md` at that scope takes precedence over `AGENTS.md`.
+Trusted project instructions refine the global instructions through native repository scopes.
+Instruction budgets, custom homes, explicit overrides, and disabled resources can suppress B0.
+
+Pi loads global `AGENTS.md` before ancestor and project context files.
+Its global `AGENTS.override.md` takes precedence over global `AGENTS.md`.
+A project `APPEND_SYSTEM.md` shadows the global append file.
+B0 therefore uses the global `AGENTS.md` scope.
+Avoid a second copy in package instructions or project append files.
+
+The fresh-session fixtures assert one B0 occurrence in each native prompt.
+This result covers the tested selection. It does not override explicit user configuration.
+No hook inserts B0, rewrites prompts, or routes requests from keywords.
+
+## Configure local validators
+
+Use uv 0.12.9 or later and Python 3.12 or 3.13.
+Use the standalone Vale 3.24.0 engine.
+The [local writing guide](/guides/controlled-writing) describes its explicit installer.
+Assessment never downloads an engine or sends prose to a hosted service.
+
+After a separately reviewed dotfiles installation, record explicit validator paths:
+
+```bash
+agent-check configure \
+  --kotlin /path/to/slopsentral/source/hooks/kotlin-horizontalization-check \
+  --assessment /path/to/slopsentral/source/skills/controlled-technical-writing/scripts/assess_text.py \
+  --vale /path/to/local/vale
+agent-check inspect
+```
+
+The command records private configuration under `$XDG_STATE_HOME/agent-engineering`.
+Without `XDG_STATE_HOME`, it uses `~/.local/state/agent-engineering`.
+It does not install tools or change models, authentication, trust, or host settings.
+The scripts and their policy resources must remain available at the selected paths.
+Read the receipt to identify the selected inputs and policy.
+
+The Kotlin tool is Slopsentral's existing `source/hooks/kotlin-horizontalization-check`.
+It reports direct file counts and filename prefix clusters.
+It does not use ktlint or detekt.
+The current tool supports `src/main/kotlin`, `src/test/kotlin`, and `src/integrationTest/kotlin` roots.
+Other changed Kotlin roots produce an explicit coverage failure in the adapter.
+Its layout findings remain advisory and do not establish a semantic defect.
+Tool absence and execution errors produce failures.
+
+Vale uses the existing `assess_text.py` procedure and its locked local rules.
+Findings and operational failures remain distinct in the report.
+Both prevent a passing handoff receipt.
+A readability score does not prove reader comprehension.
+
+## Understand the lifecycle
+
+The qualified hosts are Pi 1.3.0 and Codex CLI 0.163.0.
+The native adapters use these events:
+
+| Host event | Check | Enforced effect |
+| --- | --- | --- |
+| Pi `session_start` | Record initial file hashes | Awaited scope capture |
+| Pi `turn_end` | Assess session edits after each model turn and its tools | Awaited report and visible failure status |
+| Pi `agent_before_settle` | Recheck before final settlement | Awaited report; no hard veto |
+| Codex `SessionStart` | Record initial file hashes | Native command hook |
+| Codex `Stop` | Assess edits before normal turn completion | Failed checks return `continue: false` and a stop reason |
+
+Pi can continue after `agent_end` through retries, compaction, or queued work.
+The adapter uses `agent_before_settle` for the final actionable event.
+`agent_settled` is notification-only.
+The adapter records non-context session entries and a UI status.
+It never requests a model continuation.
+Pi exposes no hard veto at settlement in this contract.
+
+Codex `Stop` runs after a final assistant message, before normal completion.
+It does not run after every internal model response or tool call.
+The adapter uses a hard stop on failure and does not request a repair loop.
+A hard stop cannot retract assistant text that the host already emitted.
+App Server reports the hook status as `stopped` and includes the failure reason.
+The turn can still finish with status `completed`.
+The CLI can exit zero and emit `turn.completed` after a failed hook check.
+Use the receipt and `agent-check handoff` exit status as the validation gate.
+The legacy `notify` event is a notification, not a blocking check.
+
+Codex enables native hooks by default in this version, but hook trust remains separate.
+Review and trust the two source definitions through native host controls before use.
+Inspect plugin and project hooks for another owner of the same check.
+Do not replace existing hook configuration or use a trust bypass for adoption.
+Disabled, untrusted, unavailable, or failed-to-launch hooks do not establish validation.
+
+Cancellation and provider errors can bypass normal completion events.
+An aborted run can lack a handoff receipt.
+After interruption, run an explicit handoff check before claiming success.
+
+## Keep scope and evidence
+
+Each session starts with a snapshot of Git-visible Kotlin and prose files.
+Unchanged preexisting dirt stays outside the check scope.
+If the session edits a dirty file, the checker assesses the whole current file.
+Edits committed during the session remain in scope.
+Ignored files remain excluded unless Git tracks them.
+Changes to repository ignore rules reject the automatic scope instead of exposing more files.
+Global ignore-rule changes during a session remain outside this fixture's proof.
+The checker never scans all of HOME or changes a source file.
+
+Kotlin checks read the selected package directories and their ancestors.
+Their package peers supply layout context, not another source-edit scope.
+Deleted Kotlin files select surviving peers where available.
+Deleted prose files need no prose assessment.
+Symlinks and paths outside the repository cannot supply prose inputs.
+
+Receipts bind file hashes, package topology, validator bytes, interpreter bytes, and policy bytes.
+Unchanged inputs reuse the previous result, including a failed result.
+Repeated start events do not reset the original snapshot.
+Repeated hooks serialize per session and reject concurrent checks.
+A changed input during assessment prevents a passing receipt.
+Cancellation kills the validator process group and cannot cache success.
+
+Run explicit checks with the same repository and session identifier:
+
+```bash
+agent-check begin --repo /path/to/project --session review-1
+agent-check turn --repo /path/to/project --session review-1
+agent-check handoff --repo /path/to/project --session review-1
+agent-check status --repo /path/to/project --session review-1
+```
+
+Use `--retry` on `turn` or `handoff` to rerun unchanged failed work.
+A changed file, tool, or policy invalidates the cached result automatically.
+Missing tools cannot produce success for selected files.
+No selected changes produce `no-changes`, which is not evidence of a full repository assessment.
+Keep each JSON receipt outside the repository.
+The `status` command reads the last receipt without a fresh assessment.
+Only a current `handoff` result can establish the current check outcome.
+
+## Separate instruction replacement
+
+Native instruction loading is not a system prompt replacement.
+Pi separately supports `SYSTEM.md`, command-line prompt selection, and extension prompt replacement.
+Codex separately supports `model_instructions_file` for its base model instructions.
+These mechanisms have broader effects than B0 and are outside this change.
+The adapters do not change built-in safety, sandbox, approval, or trust controls.
+
+The source review uses the official
+[Pi extension contract](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/extensions.md),
+[Pi resource loader](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/src/core/resource-loader.ts), and
+[Codex 0.163.0 source](https://github.com/openai/codex/tree/rust-v0.163.0/codex-rs/hooks).
+Native fixtures use fixed local responses without paid model inference.
+Their results prove host dispatch and file selection, not model obedience.
