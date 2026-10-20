@@ -2,7 +2,11 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Constrain domain values, preserve established facts, and compose pure decisions.",
+  "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
+  "hooks": [
+    "./hooks/agents-md-scope.hooks.json",
+    "./hooks/software-engineering-context.hooks.json"
+  ],
   "interface": {
     "brandColor": "#0F766E",
     "capabilities": [
@@ -17,23 +21,47 @@
     ],
     "developerName": "Amichne",
     "displayName": "Software Engineering",
-    "longDescription": "Constrain domain values, preserve established facts, and compose pure decisions.",
+    "longDescription": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Constrain domain values, preserve established facts, and compose pure...",
+    "shortDescription": "Design proof-preserving boundaries and implement, verify, and deliver...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
   "keywords": [
-    "atomic-predicates",
+    "actions",
+    "automation",
+    "backend",
+    "ci",
+    "cli",
+    "core",
+    "daily-driver",
+    "dependencies",
     "design",
-    "proof",
+    "duration",
+    "evidence",
+    "failures",
+    "git",
+    "github",
+    "governance",
+    "hooks",
+    "instructions",
+    "issues",
+    "jira",
+    "local-development",
+    "mise",
+    "onboarding",
+    "optimization",
+    "pull-requests",
+    "release",
     "schemas",
     "skills",
     "software-engineering",
-    "type-safety"
+    "tdd",
+    "testing",
+    "workflow-graph"
   ],
   "license": "UNLICENSED",
   "name": "software-engineering",
   "skills": "./skills/",
-  "version": "4.0.0"
+  "version": "3.1.0"
 }

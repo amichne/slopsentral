@@ -70,7 +70,6 @@ test("CI validates benchmark definitions without executing agents", () => {
     .map((name) => fs.readFileSync(path.join(workflowRoot, name), "utf8"))
     .join("\n");
 
-  assert.match(workflows, /uv run --locked tools\/ci.py validate/u);
-  assert.match(fs.readFileSync(path.join(repoRoot, "tools/ci.py"), "utf8"), /"npm", "run", "check:source"/u);
+  assert.match(workflows, /node tools\/validate-source-graph\.mjs/u);
   assert.doesNotMatch(workflows, /plugin-eval\s+benchmark/u);
 });

@@ -1,5 +1,3 @@
-> Historical audit. The [current catalog](../source/CATALOG.md) and [canonical release set](releases.md) supersede its plugin counts and installation choices.
-
 # Plugin Choice Audit
 
 Reviewed 2026-09-16. The implementation replaces twelve peer choices with one

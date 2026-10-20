@@ -53,7 +53,7 @@ with tempfile.TemporaryDirectory() as temporary:
         os.environ, PATH=str(Path(compiler).parent) + os.pathsep + os.environ.get("PATH", "")
     )
     result = subprocess.run(
-        ["node", str(root / "tools/check-proof-examples.mjs")],
+        ["node", str(root / "source/skills/semantic-ratchet/scripts/check-proof-examples.mjs")],
         env=environment,
         check=False,
     )

@@ -89,7 +89,7 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
   when changing `needs`, matrices, fan-out gates, Gradle/cache grouping, OCI
   image validation, or workflow/task cardinality.
 - Load [gradle-ci-performance.md](references/gradle-ci-performance.md) for
-  Gradle on GitHub Actions, native report correlation, cache ownership, affected-task
+  Gradle on GitHub Actions, Develocity correlation, cache ownership, affected-task
   selection, measured latency/runner consumption, and CI/CD handoff. Use
   `gradle-performance-engineering` for build-internal diagnosis and experiments.
 - Load [release-flow.md](references/release-flow.md) for GitHub releases, tags,

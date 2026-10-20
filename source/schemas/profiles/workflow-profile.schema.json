@@ -74,43 +74,11 @@
         "state": "PRESERVE"
       }]]
     },
-    "focusSkills": {
-      "type": "array",
-      "description": "These skills select the default bindings from selected plugins. Installation and user authority stay unchanged.",
-      "minItems": 1,
-      "uniqueItems": true,
-      "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$", "examples": ["semantic-ratchet"]},
-      "examples": [["semantic-ratchet", "kotlin-design-practices"]]
-    },
-    "skills": {
-      "type": "object",
-      "description": "These bindings select skills from selected plugins and set their invocation policies.",
-      "propertyNames": {
-        "type": "string",
-        "pattern": "^skill:[a-z][a-z0-9-]*$",
-        "examples": ["skill:semantic-ratchet"]
-      },
-      "additionalProperties": {"$ref": "#/$defs/SkillBinding"},
-      "examples": [{"skill:semantic-ratchet": {"invocation": "either"}}]
-    },
     "hookPolicy": {"$ref": "#/$defs/HookPolicy"},
     "reconciliation": {"$ref": "#/$defs/PluginReconciliation"},
     "validation": {"$ref": "#/$defs/WorkflowValidation"}
   },
   "$defs": {
-    "SkillBinding": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["invocation"],
-      "properties": {
-        "invocation": {
-          "type": "string",
-          "enum": ["human", "model", "either"],
-          "examples": ["either"]
-        }
-      },
-      "examples": [{"invocation": "either"}]
-    },
     "WorkflowMarketplace": {
       "type": "object",
       "additionalProperties": false,

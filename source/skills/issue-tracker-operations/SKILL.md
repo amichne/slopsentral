@@ -1,11 +1,11 @@
 ---
 name: "issue-tracker-operations"
-description: "Use when asked to read GitHub issues, inspect direct blockers, select an issue backend, or report exact backend capabilities."
+description: "Use when asked to read GitHub or Jira issues, inspect direct blockers, select an issue backend, or report exact backend capabilities."
 ---
 
 # Issue Tracker Operations
 
-Use this skill for GitHub issue reads. Use the
+Use this skill for backend-neutral issue reads. Use the
 facade instead of branching on provider commands in the model.
 
 ## Operating Contract
@@ -13,9 +13,11 @@ facade instead of branching on provider commands in the model.
 - Resolve the backend before issue work starts.
 - Use `--backend` for an invocation-specific override.
 - Otherwise, use `EFFECTIVE_DELIVERY_ISSUE_BACKEND`.
-- Set the value to `github`.
+- Set the value to `github` or `jira`.
 - Set `EFFECTIVE_DELIVERY_GITHUB_REPOSITORY` to `owner/repository` for GitHub reads.
 - Use native `gh` for GitHub.
+- Use Atlassian `acli` for Jira.
+- Do not use the stale `jira-resolve-ticket` primitive as a Jira adapter.
 - Treat blocker links and parent-child containment as different relationships.
 - Do not infer transitive completeness from the direct blocker map.
 - Reject unsupported operations before provider execution.

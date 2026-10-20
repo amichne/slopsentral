@@ -61,7 +61,7 @@ prerequisite gate passes.
 |---|---|---|---|---|
 | CFG-001 | Each operation MUST select exactly one backend. | The result contains one `backend` value. | CT | G0 |
 | CFG-002 | `--backend` MUST override environment selection. | A conflicting environment value does not change the explicit selection. | CT | CFG-001 |
-| CFG-003 | Environment selection MUST use `EFFECTIVE_DELIVERY_ISSUE_BACKEND`. | `github` selects the repository issue adapter; other values fail before execution. | CT | CFG-001 |
+| CFG-003 | Environment selection MUST use `EFFECTIVE_DELIVERY_ISSUE_BACKEND`. | `github` and `jira` select their adapters. | CT | CFG-001 |
 | CFG-004 | Unsupported backend values MUST be rejected before provider execution. | The failure is `BACKEND_UNSUPPORTED`, and no provider command runs. | CT, ADV | CFG-003 |
 | CFG-005 | This specification MUST NOT define a GitLab backend. | Capability and selection contracts contain no GitLab variant. | INS, CT | CFG-004 |
 | CAP-001 | Capability output MUST identify native and unsupported operations. | Each known capability has one support value. | CT | CFG-001 |
@@ -74,10 +74,16 @@ prerequisite gate passes.
 | GH-001 | GitHub issue reads MUST execute through native `gh`. | The command evidence names `gh`. | IT | G1 |
 | GH-002 | GitHub blocker reads MUST use the versioned dependency endpoints. | Both `blocked_by` and `blocking` endpoints execute. | IT | GH-001 |
 | GH-003 | GitHub API requests MUST declare version `2026-03-10`. | Each dependency command includes the version header. | IT | GH-002 |
+| JIR-001 | Jira work item reads MUST execute through Atlassian `acli`. | The command evidence names `acli`. | IT | G1 |
+| JIR-002 | Jira reads MUST use the `jira workitem` command family. | View and link-list tests preserve the command path. | IT | JIR-001 |
+| JIR-003 | The facade MUST NOT invoke the legacy `jira` executable. | Provider doubles expose only `acli` and `gh`. | INS, CT | JIR-001 |
+| JIR-004 | The facade MUST NOT wrap `jira-resolve-ticket`. | Software Engineering composes this independent primitive. | INS | JIR-003 |
 
 The GitHub dependency endpoints are defined by the
 [GitHub issue dependency API](https://docs.github.com/en/rest/issues/issue-dependencies?apiVersion=2026-03-10).
-
+The Jira commands are defined by the Atlassian CLI references for
+[`workitem view`](https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-view/)
+and [`workitem link list`](https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-link-list/).
 
 ## 6. Dependency map requirements
 

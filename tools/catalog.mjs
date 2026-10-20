@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 // Plugin manifests own composition. This module derives closure, checks, and views.
 import fs from 'node:fs';
-import { execFileSync } from 'node:child_process';
 import { validateResourceReference } from './resource-contract.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -98,16 +97,6 @@ export function auditProfileComposition(catalog, profile) {
   }
   for (const ref of profile.hooks ?? []) {
     if (!hooks.has(key(ref))) findings.push(`${profile.name}: profile hook ${ref.name} is not composed by a selected plugin`);
-  }
-  const selectedSkills = new Set(profile.plugins.flatMap(name => {
-    const plugin = catalog.plugins.find(p => p.name === name);
-    return plugin ? [...pluginClosure(catalog, plugin).refs.values()].filter(r => r.type === 'SKILL').map(r => r.name) : [];
-  }));
-  for (const name of profile.focusSkills ?? []) {
-    if (!selectedSkills.has(name)) findings.push(`${profile.name}: focus skill ${name} is not composed by a selected plugin`);
-  }
-  for (const id of Object.keys(profile.skills ?? {})) {
-    if (!selectedSkills.has(id.slice('skill:'.length))) findings.push(`${profile.name}: skill binding ${id} is not composed by a selected plugin`);
   }
   return ordered(new Set(findings));
 }
@@ -271,9 +260,10 @@ function main() {
   const findings = auditCatalog(catalog);
   if (findings.length) throw new Error(findings.join('\n'));
   const output = path.join(root, 'source/CATALOG.md');
-  if (args.includes('--write') || args.includes('--check')) {
-    process.stdout.write(execFileSync('uv', ['run', '--locked', 'tools/marketplace.py', 'catalog', '--source', root,
-      ...(args.includes('--check') ? ['--check'] : ['--out', output])], { cwd: root, encoding: 'utf8' }));
+  if (args.includes('--write')) fs.writeFileSync(output, renderCatalog(catalog));
+  else if (args.includes('--check')) {
+    if (!fs.existsSync(output) || fs.readFileSync(output, 'utf8') !== renderCatalog(catalog)) throw new Error('source/CATALOG.md is stale; run node tools/catalog.mjs --write');
+    console.log('OK generated catalog');
   } else if (args.includes('--json') || args.includes('--profile')) console.log(JSON.stringify(catalogReport(catalog, value('--profile')), null, 2));
   else process.stdout.write(renderCatalog(catalog));
 }

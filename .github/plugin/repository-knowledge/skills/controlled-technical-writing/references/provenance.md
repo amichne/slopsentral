@@ -1,7 +1,7 @@
 # Provenance
 
 This is a local adaptation informed by Chris Banes's `grounded-writing` skill at
-chrisbanes/skills, 84c2c53a26614236e644b3ea9eaf891c44704417, reviewed 2026-09-05.
+[chrisbanes/skills, 84c2c53a26614236e644b3ea9eaf891c44704417](https://github.com/chrisbanes/skills/tree/84c2c53a26614236e644b3ea9eaf891c44704417/skills/grounded-writing), reviewed 2026-09-05.
 The upstream distribution uses Apache-2.0; a copy is in [Apache-2.0.txt](Apache-2.0.txt).
 
 Local changes: narrower routing, explicit completion evidence, repository-version
@@ -24,9 +24,11 @@ The bundled files keep upstream copyright, MIT licenses, and Std's NOTICE:
 
 Local Slopsentral rules inherit those three rules, normalize their severity to
 warning, and clarify the grade estimate's message. The diction substitutions
-are locally authored. Only selected Google guidance
+and glossary-marker rule are locally authored. Only selected Google guidance
 is imported: its full word list includes domain/product substitutions that
-can change meaning. `assets/vale/resources.lock.json` records exact revisions and local file digests.
+could change meaning. Glossary-specific literal rules are generated per run
+from the existing registration checker, not fetched from another style package.
+`assets/vale/resources.lock.json` records exact revisions and local file digests.
 
 The workflow uses the official [CLI](https://docs.vale.sh/topics/cli),
 [metric](https://docs.vale.sh/checks/metric), and
@@ -45,7 +47,7 @@ does not establish a universal cutoff for our documents. The
 [Flesch-Kincaid overview](https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests)
 was background; the executable formula comes from the pinned Vale resource.
 
-julienijs/Linguistic-complexity at `570d674e64ed9ff758dacfce676501c4d3c19811`
+[julienijs/Linguistic-complexity, 570d674e64ed9ff758dacfce676501c4d3c19811](https://github.com/julienijs/Linguistic-complexity/tree/570d674e64ed9ff758dacfce676501c4d3c19811)
 uses deletion/compression measures. Its scripts contain unseeded randomized
 deletion and a different iteration count from the README. They are not used
 as a deterministic prose readability gate. No claim is made that the selected
@@ -76,3 +78,25 @@ Slopsentral owns the installer, configuration, vocabulary, and rules under `styl
 The local rules use the supplied writing guidance for diction, modal verbs, contractions, sentence limits, and commit limits.
 The shared sentence-length and grade adapters also exist in Slopsentral's assessment source at `bb930bd`.
 This setup reuses the existing local assessment engine and does not import a hosted service.
+
+## Glossary protocol
+
+The glossary protocol and template are local work based on the user's naming requirements.
+They need current domain usage, standalone definitions, and evidence of equivalence before synonym registration.
+They do not treat conceptual similarity as equivalence.
+The [authoring reference](glossary-authoring.md#prior-work) cites the terminology sources examined on 2026-10-13.
+It uses Microsoft's domain-language guidance, Google's audience guidance, and W3C SKOS's distinctions between labels and concepts.
+The ISO 704:2022 overview supplies scope information only, not a claim of full access or compliance.
+The glossary's domain sources support the chosen names. Repository contracts determine Slopsentral's local meaning.
+Vale's pinned source and local behavior support lexical tooling only.
+No upstream protocol, remote server, or terminology service is imported.
+
+## Structured glossary contract
+
+The JSON Schema, immutable parser, traversal, and reader-view generator are local work.
+The same skill owns the structured contract and the existing Markdown parser.
+External usage URLs remain inert citations.
+The [jsonschema documentation](https://python-jsonschema.readthedocs.io/en/stable/validate/) supplies the local schema-validation API.
+The contract uses the [W3C SKOS distinctions](https://www.w3.org/TR/skos-primer/) between concept identity, labels, relationships, and scope notes.
+It does not implement SKOS or claim that a lexical match proves semantic equivalence.
+The first eight entries remain provisional and contain no invented replacement targets.

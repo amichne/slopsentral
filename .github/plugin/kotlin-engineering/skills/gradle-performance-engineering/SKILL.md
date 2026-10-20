@@ -1,14 +1,18 @@
 ---
 name: "gradle-performance-engineering"
-description: "Measure and improve Gradle build performance using the existing wrapper and native Gradle/Kotlin reports. Use for slow builds, performance regressions, configuration or build cache misses, Kotlin compilation, kapt/KSP, dependency resolution, or Gradle latency on GitHub Actions."
+description: "Measure and improve Gradle build performance using Develocity Build Scan APIs. Use for slow builds, performance regressions, configuration or build cache misses, Kotlin compilation, kapt/KSP, dependency resolution, or Gradle latency on GitHub Actions."
 ---
 
 # Gradle Performance Engineering
 
-Own the measured Gradle optimization loop with the repository wrapper, native
-Gradle reports, and Kotlin compiler reports. Discover the actual targets instead
-of assuming `assembleDebug`. Missing report fields are unavailable evidence;
-do not add a hosted measurement service or infer missing values.
+Own the measured Gradle optimization loop. Discover the available Develocity
+instance, authenticated client, and project permissions before requesting scans.
+Use structured scan evidence before console text or UI inspection when access
+is available. Missing access is an explicit evidence-unavailable outcome; do
+not invent credentials or assume authentication. API access does not guarantee
+that every build published every metric. This skill works for JVM, Android, and
+multiplatform builds; discover the actual targets instead of assuming
+`assembleDebug`.
 
 ## Operating Contract
 
@@ -20,7 +24,7 @@ do not add a hosted measurement service or infer missing values.
   report a warm candidate against a cold baseline as an optimization.
 - Make one causal change per experiment. Preserve task inputs, output semantics,
   test coverage, and required checks. A cache hit is not correctness proof.
-- Use version-matched native report contracts. Missing telemetry is an explicit
+- Use version-matched Develocity API contracts. Missing telemetry is an explicit
   evidence failure, not a zero, cache miss, or successful build.
 - Leave bounded stage/outcome instrumentation at a diagnosed opaque boundary;
   exclude credentials, source contents, and arbitrary environment dumps.
@@ -33,17 +37,17 @@ do not add a hosted measurement service or infer missing values.
    exclusions, and acceptance thresholds. Read
    [measurement.md](references/measurement.md) for metric definitions and sampling.
 
-2. Collect native evidence.
-   Read [native-reports.md](references/native-reports.md) for report availability,
-   invocation identity, timing, and completeness. Match reports to source revisions
-   and, in CI, run attempts, jobs, matrix cells, and exact wrapper invocations.
+2. Collect existing scans through the API.
+   Read [develocity-api.md](references/develocity-api.md) for discovery, paging,
+   build identity, model completeness, and evidence handling. Match scan IDs to
+   source revisions and, in CI, run attempts, jobs, matrix cells, and invocations.
    Separate failed/canceled builds from successful timing samples; report both.
 
 3. Locate the dominant cost.
    Separate initialization/configuration, dependency resolution, task execution,
    resource pressure, and CI overhead. Rank work by contribution to the observed
    critical path, not summed parallel task durations. Use Kotlin build reports
-   when Gradle task reports cannot explain compiler behavior.
+   when task-level scan data cannot explain compiler behavior.
 
 4. Change the owning boundary.
    Read [optimization-playbook.md](references/optimization-playbook.md) for
@@ -62,7 +66,7 @@ do not add a hosted measurement service or infer missing values.
    changing configuration behavior.
 
 6. Decide and report.
-   Report baseline/candidate report paths, cohort counts, measured values and
+   Report baseline/candidate scan links, cohort counts, measured values and
    units, absolute and relative deltas, uncertainty, exclusions, correctness
    evidence, and the next decision. Use exactly one conclusion: improvement
    demonstrated, regression demonstrated, inconclusive, or evidence unavailable.
@@ -71,7 +75,7 @@ do not add a hosted measurement service or infer missing values.
 
 ## Completion Criteria
 
-- Every performance claim has comparable native report evidence and explicit denominators.
+- Every performance claim has comparable scan evidence and explicit denominators.
 - Required correctness checks pass; missing evidence cannot produce acceptance.
 - CI end-to-end latency and runner consumption accompany a CI speedup claim.
 - Baseline, experiment, outcome, and remaining uncertainty are reproducible.

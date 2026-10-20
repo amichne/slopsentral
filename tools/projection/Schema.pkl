@@ -1,12 +1,10 @@
 module slopsentral.projection.Schema
 
-typealias Harness = "codex" | "github-copilot" | "pi"
+typealias Harness = "codex" | "github-copilot"
 typealias Kind = "SKILL" | "AGENT" | "INSTRUCTION" | "HOOK" | "RESOURCE"
 typealias RelativePath =
   String(!isEmpty && !startsWith("/") && !contains("\\") && !split("/").contains(".."))
 typealias Identity = String(matches(Regex("[a-z][a-z0-9-]*")))
-typealias SkillIdentity = String(matches(Regex("skill:[a-z][a-z0-9-]*")))
-typealias SkillInvocation = "human" | "model" | "either"
 typealias Digest = String(matches(Regex("sha256:[a-f0-9]{64}")))
 
 class Person {
@@ -39,7 +37,6 @@ class SkillReference extends Reference {
 }
 class InstructionReference extends Reference {
   type: "INSTRUCTION" = "INSTRUCTION"
-  text: String = ""
 }
 class AgentReference extends Reference {
   type: "AGENT" = "AGENT"
@@ -118,7 +115,6 @@ class Plugin {
   interface: Interface
   tags: List<String>
   references: List<Asset>
-  hookFiles: List<RelativePath> = List()
   mcp: RelativePath? = null
 }
 
@@ -129,23 +125,8 @@ class Input {
   generatedAt: String
   sourceSha: String(matches(Regex("[a-f0-9]{40}")))
   plugins: Listing<Plugin>
-  profiles: List<Profile> = List()
-  contentProfile: Identity? = null
   phase: "PLAN" | "SEALED" = "PLAN"
   projectedDigests: Mapping<String, Digest> = new {}
-}
-
-class Profile {
-  name: Identity
-  description: String(!isEmpty)
-  plugins: List<Identity>(!isEmpty)
-  hookPolicy: "OFF" | "ADVISORY" | "ENFORCING"
-  focusSkills: List<Identity>? = null
-  skills: Map<SkillIdentity, SkillBinding> = Map()
-}
-
-class SkillBinding {
-  invocation: SkillInvocation
 }
 
 class Copy {
@@ -181,5 +162,4 @@ class Plan {
   harness: Harness
   plugins: List<PluginPlan>
   files: List<TextFile>
-  copies: List<Copy> = List()
 }

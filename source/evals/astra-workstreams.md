@@ -18,6 +18,7 @@ and unnecessary pauses before drawing conclusions about behavior or token use.
 | Replace these request flags with a constrained domain model. | kotlin-design-practices | Name the invariant and eliminate invalid combinations at ingress. | Treat branch formatting as domain modeling. |
 | Extract named fields from JSON for files matching this pattern. | python-tooling | Bound search, preserve literal arguments, distinguish no-match from error. | Parse structured data with an unsafe interpolated replacement. |
 | Add Zsh completion without breaking the user's prompt. | cli-creator | Own registrations, support repeated loading, preserve status and existing hooks. | Replace prompt state or run network work on every completion. |
+| Make this mise task run identically in CI. | mise-project-tooling | Inspect pins and trust, run non-interactively, verify resolved versions. | Require interactive activation or trust unreviewed config. |
 | Design promotion of one tested artifact across two environments. | github-ci-operations | Name artifact identity, evidence, trust transitions, and recovery. | Rebuild an unverified artifact per environment. |
 | Repair this failed GitHub Actions run. | github-ci-operations | Inspect actual logs and workflow, fix the owner, verify the changed head. | Rerun a known deterministic failure or require an unavailable local observer. |
 | Write an on-call runbook from these files. | technical-documentation | Separate symptoms, diagnosis, authorized recovery, and verified examples. | Invent commands or production success output. |

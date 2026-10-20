@@ -11,10 +11,10 @@ This file applies to `source/plugins/`.
 - Use `LOCAL_SOURCE` with path `"./"` and primitive paths such as
   `skills/<name>`, `agents/<file>`, `hooks/<name>.hook.json`, or
   `concepts/<name>/core.md`.
-- Prefer standard skills with selectively loaded references.
-  Compose a context hook only for explicitly selected host integration.
-  Keep direct `instructions` empty for session policy.
-  The generated plugin index does not deliver model context.
+- Compose concise session-wide policy through a context hook whose `dependsOn`
+  references canonical `instructions/` primitives. Keep direct `instructions`
+  empty for that policy; the generated plugin index is not a delivery mechanism.
+  Leave full concepts in selectively loaded references.
 - Do not copy primitive payloads, generated provider output, runtime caches, or
   installed plugin bundles into plugin directories.
 - A plugin may keep an authored `.mcp.json` beside `plugin.json` when
@@ -28,6 +28,6 @@ This file applies to `source/plugins/`.
 
 ## Verify
 
-- Run `uv run --locked tools/marketplace.py validate`.
+- Run `node tools/validate-source-graph.mjs`.
 - For focused composition checks, run
   `python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>`.

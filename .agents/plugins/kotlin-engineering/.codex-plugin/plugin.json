@@ -39,6 +39,7 @@
     "gradle",
     "higher-order-functions",
     "hooks",
+    "kast",
     "kotlin",
     "kotlin-engineering",
     "ktor",
@@ -62,7 +63,8 @@
     "validation"
   ],
   "license": "UNLICENSED",
+  "mcpServers": "./.mcp.json",
   "name": "kotlin-engineering",
   "skills": "./skills/",
-  "version": "4.0.0"
+  "version": "3.0.0"
 }

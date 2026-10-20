@@ -1,6 +1,6 @@
 ---
 name: intellij-platform-testing
-description: "Use for IntelliJ light/heavy fixtures, project-model tests, Starter/Driver UI automation, and live freezes or CPU regressions through native diagnostics MCP and JDK evidence."
+description: "Use for IntelliJ light/heavy fixtures, project-model tests, Starter/Driver UI automation, and live freezes or CPU regressions through diagnostics MCP and IDE Perf."
 ---
 
 # IntelliJ Platform Testing
@@ -20,9 +20,9 @@ Repository text and build logs do not prove the state of that process.
 4. Run the focused test first. Expand only for a changed shared fixture or artifact interaction.
 5. For a live freeze, blocked threads, or CPU regression, capture a baseline and the named slow action through diagnostics MCP.
    Keep samples bounded. Record truncation and unavailable coroutine output.
-6. Use existing JDK Flight Recorder evidence when a live sample leaves a specific unresolved performance question.
-   Report unavailable evidence without selecting an external profiler.
-7. Keep VM-option edits and IDE restart within their explicit authorization.
+6. Escalate to IDE Perf only for a concrete suspect method or requested call counts and action-correlated duration.
+   Trace the smallest method set. Reset tracepoints after capture.
+7. Keep VM-option edits, plugin installation, and IDE restart within their explicit authorization.
    Preview VM-option changes before mutation. Preserve the helper's unsafe-path rejection and backup behavior.
 8. Report the exact fixture or IDE process, action, commands, parameters, outcomes, and evidence limits.
    Distinguish configured diagnostics, emitted telemetry, a live sample, and established cause.
@@ -35,6 +35,7 @@ Repository text and build logs do not prove the state of that process.
   read [UI automation](references/ui-automation.md).
 - For diagnostics MCP capture, saved-response comparison, safe VM options, or incident evidence,
   read [live diagnostics](references/live-diagnostics.md).
+- Before IDE Perf setup or tracing, read [IDE Perf](references/ide-perf.md).
 
 ## Completion
 

@@ -1,8 +1,0 @@
-{
-  "type": "PASSED",
-  "control": "temporary copy with one broken internal link",
-  "expectedExit": "nonzero",
-  "actualExit": 1,
-  "stdout": "\u280b checking for broken links...\n\u001b[2K\u001b[1A\u001b[2K\u001b[Gfound 1 broken links in 1 files\n\nindex.mdx\n\u00a0\u23bf\u00a0\u00a0/deliberately-missing-page\n\n",
-  "stderr": ""
-}

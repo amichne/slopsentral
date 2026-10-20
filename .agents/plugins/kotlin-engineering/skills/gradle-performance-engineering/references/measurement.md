@@ -41,7 +41,7 @@ cohorts, describe confounders and avoid causal claims without reproduction.
 | Metric | Definition and interpretation |
 | --- | --- |
 | Gradle elapsed | Successful invocation end minus start, in ms; separate reported configuration and execution spans without assuming all spans are additive |
-| Critical path | Dependency-constrained task timeline from native report data when available; summed task time is work, not wall time; label approximations |
+| Critical path | Dependency-constrained task timeline from supported scan data; summed task time is work, not wall time; label approximations |
 | Configuration-cache reuse | Reused / attempts with a known reuse outcome; separately count stored, invalidated, disabled, failed, and unknown |
 | Build-cache effectiveness | `FROM-CACHE` / (`FROM-CACHE` + executed cacheable tasks with known cache eligibility), task-instance denominator; report local/remote distinction only if exposed |
 | Task avoidance | Counts of `UP-TO-DATE`, `FROM-CACHE`, executed, skipped, `NO-SOURCE`, failed, and unknown; do not count up-to-date work as remote cache hits |
@@ -53,13 +53,13 @@ cohorts, describe confounders and avoid causal claims without reproduction.
 | Reliability | Failed attempts / all eligible attempts; report cancellation, infrastructure failure, test failure, and retry recovery separately |
 
 Never manufacture eligible-task counts from missing cacheability fields. If the
-report exposes a different cache ratio, retain its name/denominator instead of
+server reports a different cache ratio, retain its name/denominator instead of
 presenting it as this ratio. Zero denominators produce an unavailable ratio.
 Configuration reuse and task-output caching are independent layers.
 
 For lower-is-better metrics, report `candidate - baseline` in native units and
 `100 * (candidate - baseline) / baseline` as percent change. A zero baseline has
-no relative delta. Do not sum overlapping phase durations or builds executed
+no relative delta. Do not sum overlapping phase durations or scan builds executed
 concurrently in one job. A faster build that increases tail latency, failures, or
 runner consumption beyond agreed limits fails acceptance.
 
@@ -69,5 +69,5 @@ A concise Markdown report is sufficient: hypothesis, exact invocations, scenario
 preparation, cohort identities/counts, metrics table, uncertainty, correctness
 results, and decision. If automation persists JSON, define and validate a local
 schema first: units, identities, finite outcome enums, nonnegative durations,
-positive counts where required, and explicit unavailable reasons. Keep original native
-reports separate from derived aggregates so transformations remain auditable.
+positive counts where required, and explicit unavailable reasons. Keep raw API
+models separate from derived aggregates so transformations remain auditable.

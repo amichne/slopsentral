@@ -1,31 +1,52 @@
 # Engineering Baseline
 
-Reduce uncertainty before composition. Represent a finite domain with an enum or a closed variant.
-Parse external primitives into constrained domain values.
-Consumers accept those values and keep the facts that they establish.
+Refine; never erase. Decompose each requirement into an invariant, its owner,
+construction boundary, legal transitions, closed failures, and decisive check.
+Inspect existing contracts and callers before adding a representation. Carry
+established facts in consumer types; aliases, names, prior guards, flags, and
+unchecked wrappers do not establish a proof.
 
-Each conditional predicate answers one yes-or-no question about a known value.
-Keep parsing, membership, normalization, and comparison as separate operations.
-A predicate returns true or false.
-A refinement returns success with a stronger value or failure with a finite reason.
-Neither operation hides external effects.
+Keep primitives at ingress and serialization boundaries. Parse external values
+once into constrained values or case-specific immutable variants. Close finite
+state and failure spaces, keep constructors under the invariant owner, and make
+illegal combinations absent from public APIs. Fail early on unknown, ambiguous,
+unsupported, incomplete, or unproven states. Preserve evidence identity, version,
+and lifetime; ordinary types cannot prove freshness or single consumption.
 
-For example, parse a date before comparing it with another date.
-Reject malformed input at the parser. Compare two date values in a pure predicate.
-Do not combine string parsing, date construction, and range comparison in one guard.
-Exhaustive case selection and traversal can handle several alternatives.
-They do not need an artificial chain of binary questions.
+Keep the core deterministic and pure. Pass filesystem, process, network, clock,
+randomness, and mutable state through explicit outer capabilities. Functions
+belong to the smallest semantic owner. Use higher-order functions when they
+compose a real operation: map preserves every failure, fold handles every case,
+and traversal declares order and short-circuit or accumulation semantics.
+Closures may capture immutable refined values; they must not hide effects,
+mutable ambient state, resource lifetimes, or deferred failure channels.
 
-Keep each operation as small as its invariant permits. Give that invariant one owner.
-Keep unchecked construction private. Preserve closed failures through composition.
-Handle every known case explicitly. Do not substitute casts, flags, or comments for enforced contracts.
+Expected failures are finite domain data. For each fallible effect, enumerate
+which invariant could not be established and translate documented exceptions
+once at that adapter into case-specific outcomes. Do not use exceptions as a
+second domain control flow or catch all defects and label them success. Unknown
+adapter failures stop the operation with bounded stage evidence. Preserve
+cancellation and interruption; do not invent rollback or successful completion.
 
-Keep decisions pure. Supply file, network, clock, process, and mutable service effects through explicit adapters.
-Use existing domain types, standard libraries, repository tools, and native host workflows before adding custom machinery.
-The project owns its language and toolchain choices.
+Use the strongest available authority: compiler, schema, structured semantic
+evidence, runtime observation, text, then heuristics. Prove accepted behavior and
+named forbidden calls or transitions. Exhaustive handling must fail when a new
+case is added. Do not bypass errors with casts, blanket ignores, catch-all
+branches, nullable sentinels, or weaker types. Test expectations independently
+of implementation. Add bounded stage/outcome instrumentation while investigating
+opaque effects, without secrets, source payloads, or unbounded output.
 
-Before an implementation, inspect the current owner and callers.
-Name one accepted input and the nearest rejected case.
-Use compiler rejection, schema rejection, or a focused runtime assertion for the claimed invariant.
-An absent tool or empty selection supplies no behavior evidence.
-State what each result proves and which external effects remain unproved.
+Default new automation to Python managed by required uv. Use PEP 723 for portable
+scripts, declared dependencies and indexes, committed locks, and
+`[tool.uv] no-build = true`. Use strict Pyright for static checking and its LSP
+for symbol-aware navigation/refactors when available; run Ruff formatting and
+linting plus pytest success, failure, and boundary checks. Do not claim Python
+proves purity, sealed construction, or linearity: enforce the remaining limits
+with encapsulation and executable tests. Shell is limited to unavoidable host
+launchers; parsing, branching, pipelines, setup, and cleanup belong in Python.
+Existing language toolchains remain authoritative for their code.
+
+Use Semantic Ratchet for invariant and API design, Python Tooling for automation,
+and language/domain specialties for concrete syntax and local verification.
+Complete the smallest useful implementation and the repository's required
+checks. Retain useful existing contracts; remove redundant owners and paths.

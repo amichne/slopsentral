@@ -20,23 +20,6 @@ by hand when the authored source can be fixed instead.
   hand-edit them. Publication updates both trees on `main` in one commit and
   preserves all authored files.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
-- Pi packages project into `.pi/slopsentral` for local installation.
-  `tools/projection/Pi.pkl` owns its package shape.
-  `Validate Source` keeps a tested Pi candidate before release.
-  `.github/workflows/release-pi.yml` publishes those bytes through GitHub Releases.
-  `tools/package_pi.py` owns archive contents, version overrides, and checksums.
-  `tools/pi_candidate.py` owns producer admission, source identity, candidate reuse,
-  and promotion records. `source/schemas/pi/` owns the public provenance shapes.
-  Release archives need no repository clone or local npm build for installation.
-- `tools/install-pi.sh` authenticates the tested native consumer installer.
-  `tools/setup-pi.mts` owns native settings migration and private recovery.
-  It uses the Node runtime required by Pi, with strict TypeScript validation;
-  consumer setup must not add uv/Python as prerequisites.
-  `tools/setup_assets.py` binds these setup bytes to the tested candidate.
-- `tools/marketplace.py project --harness pi --profile <name>` compiles a native content selection.
-  `tools/projection/Pi.pkl` owns file selection and unsupported-capability rejection.
-  Deploy its `AGENTS.md` through the consumer's native instruction scope.
-  See `docs/pi-content-profile.md` for content selection and deliberately retired runtime guarantees.
 
 ## First-Party Material
 
@@ -49,43 +32,22 @@ Run the smallest check that proves the edited surface. For marketplace or plugin
 composition edits, run:
 
 ```bash
-uv run --locked tools/marketplace.py validate
-uv run --locked tools/marketplace.py project --source . --harness codex --out /tmp/slopsentral-codex
-uv run --locked tools/marketplace.py project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
-uv run --locked tools/marketplace.py project --source . --harness pi --out /tmp/slopsentral-pi
-npm run check:pi
+node tools/validate-source-graph.mjs
+node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
+node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
 git diff --check
-```
-
-For Pi release changes, run the focused release checks:
-
-```bash
-uv run --locked pytest tools/python_checks/test_package_pi.py tools/python_checks/test_pi_candidate.py tools/python_checks/test_pi_release_workflows.py
-actionlint .github/workflows/validate-source.yml .github/workflows/release-pi.yml
 ```
 
 The projector requires Pkl 0.32.0 (`PKL_BIN` may select an explicit executable).
 Use fresh output directories. Projection never downloads a runtime or replaces
-an existing tree. `uv run --locked tools/install_projection_pkl.py --out <path>` is the
+an existing tree. `node tools/install-projection-pkl.mjs --out <path>` is the
 explicit checksum-verified runtime setup boundary.
-
-## Documentation
-
-`docs/public/docs.json` owns Mintlify navigation.
-`docs/pi-harness.md` owns the Pi guide.
-Run `npm run docs:sync` to regenerate `docs/public/guides/pi.mdx`.
-Do not edit that generated page directly.
-Use Node.js 24.21.0 for the pinned Mintlify CLI.
-After page, navigation, or asset changes, run `npm run docs:check`.
-Use `npm run docs:dev` for the browser preview.
-Keep assessment reports and browser evidence outside `docs/public`.
-A preview does not prove the public deployment serves the same source.
 
 ## Shared Engineering Baseline
 
 Read and apply [the canonical engineering baseline](source/instructions/engineering-design.md)
-for repository work. The default plugin supplies the focused design skill.
-Language and domain instructions refine the repository rules.
+for all work. Software Engineering delivers this same source through its context
+hook; language and domain instructions refine it.
 
 New automation uses required uv, strict Pyright, Ruff, pytest, PEP 723 metadata,
 locked dependencies, and `tool.uv.no-build = true`. Run `uv run --locked tools/check.py`

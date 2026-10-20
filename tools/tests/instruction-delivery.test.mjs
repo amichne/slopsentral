@@ -9,6 +9,7 @@ import { loadCatalog, pluginClosure } from '../catalog.mjs';
 const root = path.resolve(import.meta.dirname, '../..');
 const catalog = loadCatalog(root);
 const bundles = {
+  'software-engineering': ['agent-execution', 'engineering-design'],
   'kotlin-engineering': ['kotlin-engineering'],
 };
 
@@ -78,7 +79,7 @@ test('standalone API policy preserves the complete output contract', () => {
   assert.ok(catalog.plugins.every(plugin => !plugin.hooks.some(ref => ref.name === 'api-contracts-context')));
 });
 
-test('the explicit scope primitive preserves review behavior outside the default plugin', t => {
+test('software-engineering maintains scoped instructions through its configured hooks', t => {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'agents-scope-contract-'));
   t.after(() => fs.rmSync(temporary, { recursive: true, force: true }));
   const repository = path.join(temporary, 'repository with spaces;literal');
@@ -96,13 +97,17 @@ test('the explicit scope primitive preserves review behavior outside the default
   git('commit', '-qm', 'fixture');
 
   const projected = process.env.INSTRUCTION_MARKETPLACE_ROOT;
-  const pluginRoot = path.join(root, 'source');
-  const adapter = path.join(root, 'source/hooks/codex/agents-md-scope.hooks.json');
+  const pluginRoot = projected
+    ? path.join(projected, '.agents/plugins/software-engineering')
+    : path.join(root, 'source');
+  const adapter = projected
+    ? path.join(pluginRoot, 'hooks/agents-md-scope.hooks.json')
+    : path.join(root, 'source/hooks/codex/agents-md-scope.hooks.json');
   const config = JSON.parse(fs.readFileSync(adapter));
   const environment = { ...process.env, PLUGIN_ROOT: pluginRoot, CODEX_HOME: path.join(temporary, 'codex') };
   const run = (command, input) => {
     const result = spawnSync('bash', ['-c', command], {
-      cwd: pluginRoot, env: environment, input, encoding: 'utf8',
+      cwd: projected || pluginRoot, env: environment, input, encoding: 'utf8',
     });
     assert.equal(result.status, 0, result.stderr);
     return JSON.parse(result.stdout);

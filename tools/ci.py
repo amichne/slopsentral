@@ -117,6 +117,12 @@ def commands(items: tuple[tuple[str, ...], ...], *, env: dict[str, str] | None =
 def native(temporary: Path) -> int:
     artifacts = (
         Artifact(
+            "max-sixty/worktrunk",
+            "v0.53.0",
+            "worktrunk-x86_64-unknown-linux-musl.tar.xz",
+            "2d0e810910270955fbf9a7c2d5c61c754eb4fea0c255a960d0acccff65646822",
+        ),
+        Artifact(
             "vale-cli/vale",
             "v3.24.0",
             "vale_3.24.0_Linux_64-bit.tar.gz",
@@ -139,14 +145,13 @@ def native(temporary: Path) -> int:
         file.chmod(file.stat().st_mode | 0o111)
     with Path(os.environ["GITHUB_PATH"]).open("a") as output:
         for directory in (
+            temporary / "worktrunk/worktrunk-x86_64-unknown-linux-musl",
             temporary / "vale",
             kotlin_bin,
         ):
             _ = output.write(str(directory) + "\n")
     pkl = temporary / "projection-pkl/pkl"
-    status = commands(
-        (("uv", "run", "--locked", "tools/install_projection_pkl.py", "--out", str(pkl)),)
-    )
+    status = commands((("node", "tools/install-projection-pkl.mjs", "--out", str(pkl)),))
     if status:
         return status
     with Path(os.environ["GITHUB_ENV"]).open("a") as output:
@@ -226,15 +231,11 @@ def main() -> int:
             return pkl_smoke(temporary)
         case Task.VALIDATE:
             schemas = (
-                "source/schemas/pi/candidate.schema.json",
-                "source/schemas/pi/promotion.schema.json",
-                "source/schemas/pi/content-profile.schema.json",
-                "source/schemas/pi/setup.schema.json",
                 "source/schemas/catalog/catalog.schema.json",
                 "source/schemas/primitives/resource-reference.schema.json",
                 "source/schemas/evals/routing-field-observations.schema.json",
                 "source/skills/issue-tracker-operations/references/issue-backend-result.schema.json",
-                "source/skills/controlled-technical-writing/references/text-assessment.schema.json",
+                "source/skills/controlled-technical-writing/references/glossary.schema.json",
             )
             return commands(
                 (

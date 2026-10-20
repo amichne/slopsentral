@@ -10,35 +10,21 @@
 # url = "https://pypi.org/simple"
 # default = true
 # ///
-"""Project all three harnesses in a managed temporary directory."""
+"""Project and check both providers in a managed temporary directory."""
 
-import argparse
 import os
 import subprocess
-import sys
 import tempfile
-from contextlib import nullcontext
 from pathlib import Path
 
-parser = argparse.ArgumentParser(description=__doc__)
-_ = parser.add_argument("--with-host-tools", action="store_true")
-_ = parser.add_argument("--out", type=Path, help="Keep tested projections in a new directory")
-arguments = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
-if arguments.out is not None:
-    arguments.out.mkdir(parents=True, exist_ok=False)
-with (
-    nullcontext(str(arguments.out))
-    if arguments.out is not None
-    else tempfile.TemporaryDirectory(prefix="slopsentral-projections-")
-) as temporary:
+with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary:
     base = Path(temporary)
-    for harness in ("codex", "github-copilot", "pi"):
+    for harness in ("codex", "github-copilot"):
         result = subprocess.run(
             [
-                sys.executable,
-                "tools/marketplace.py",
-                "project",
+                "node",
+                "tools/project-marketplaces.mjs",
                 "--source",
                 ".",
                 "--harness",
@@ -47,20 +33,6 @@ with (
                 str(base / harness),
             ],
             cwd=root,
-            check=False,
-        )
-        if result.returncode:
-            raise SystemExit(result.returncode)
-    if not arguments.with_host_tools:
-        raise SystemExit(0)
-    for command in (
-        ["npm", "run", "check:pi"],
-        ["node", "--test", "tools/tests/pi-host.test.mjs"],
-    ):
-        result = subprocess.run(
-            command,
-            cwd=root,
-            env=dict(os.environ, SLOPSENTRAL_PI_PACKAGE=str(base / "pi/.pi/slopsentral")),
             check=False,
         )
         if result.returncode:
@@ -74,6 +46,7 @@ with (
         KNOWLEDGE_MARKETPLACE_ROOT=str(base / "codex"),
     )
     for name in (
+        "full-plugin-delivery",
         "asset-reuse-projection",
         "instruction-delivery",
         "stop-output-contract",
