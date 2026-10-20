@@ -64,11 +64,20 @@ shapes supply validation. Configure the API's reference location to the
 canonical file. This illustrative adapter is not a separately validated OpenAPI
 document; the runner proves the referenced JSON Schema contract.
 
-Use the project schema validator with the bundled accepted and rejected payloads.
-The assets include eleven accepted examples and sixteen named rejection cases.
-The rejected cases cover unknown tags, missing evidence, nulls, mixed cases, and malformed digests.
-Keep each expected result independent of the producer.
-A missing validator does not establish rejection.
+The [runner](../scripts/check-proof-examples.mjs) validates all eleven canonical
+examples and sixteen independently named rejection cases. These include missing
+and unknown tags, absent evidence, illegal nulls, mixed cases, unknown fields,
+malformed digests, unknown failure reasons/stages, unbounded exit status, and
+loss of the prior cleanup outcome:
+
+```sh
+node <skill-root>/scripts/check-proof-examples.mjs --contracts-only
+```
+
+Here `<skill-root>` contains this skill's `SKILL.md`; the checkout root is
+`source/skills/semantic-ratchet`. Install AJV 8 in a package enclosing the runner
+for Node module resolution; this repository already declares that dependency.
+The runner performs no installation and fails if dependencies are unavailable.
 
 Schema acceptance proves the stated shape constraints. It does not establish
 that a producer performed verification, that the digest belongs to particular

@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 
-DESCRIPTION = "Inspect Pkl CLI readiness"
+DESCRIPTION = "Inspect Pkl CLI, editor, and language-server readiness"
 VERSION_PATTERN = re.compile(r"(?P<version>\d+\.\d+\.\d+)")
 NUMBER_PATTERN = re.compile(r"-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$")
 RENDERERS = ("json", "jsonnet", "pcf", "plist", "properties", "textproto", "xml", "yaml")
@@ -73,11 +73,15 @@ def build_parser() -> AxiParser:
     parser = AxiParser(description=DESCRIPTION, allow_abbrev=False)
     parser.add_argument("--workspace", type=Path, default=Path("."))
     parser.add_argument("--pkl-bin", default=os.environ.get("PKL_BIN", ""))
+    parser.add_argument("--java-bin", default=os.environ.get("JAVA_BIN", ""))
+    parser.add_argument("--lsp-jar", type=Path, default=os.environ.get("PKL_LSP_JAR"))
     commands = parser.add_subparsers(dest="command")
     commands.add_parser("doctor", help="Inspect installed tooling and workspace state", allow_abbrev=False)
-    commands.add_parser("capabilities", help="List retained CLI rendering capabilities", allow_abbrev=False)
+    commands.add_parser("capabilities", help="List first-party render and editor integration surfaces", allow_abbrev=False)
     plan = commands.add_parser("install-plan", help="Print a non-mutating official installation plan", allow_abbrev=False)
-    plan.add_argument("target", choices=("cli",))
+    plan.add_argument("target", choices=("cli", "lsp"))
+    plan.add_argument("--editor", choices=("vscode", "intellij", "neovim", "custom"))
+    plan.add_argument("--manager", choices=("homebrew", "mise", "winget", "download"))
     return parser
 
 
@@ -87,6 +91,17 @@ def executable(value: str, fallback: str) -> str | None:
         return str(candidate.resolve()) if candidate.exists() else None
     found = shutil.which(fallback)
     return str(Path(found).resolve()) if found else None
+
+
+def java_executable(value: str) -> str | None:
+    if value:
+        return executable(value, "java")
+    java_home = os.environ.get("JAVA_HOME")
+    if java_home:
+        candidate = Path(java_home) / "bin" / "java"
+        if candidate.exists():
+            return str(candidate.resolve())
+    return executable("", "java")
 
 
 def command_version(command: str | None, args: Sequence[str]) -> tuple[str, str | None]:
@@ -113,12 +128,17 @@ def run_doctor(args: argparse.Namespace) -> int:
         raise UsageError(f"workspace does not exist or is not a directory: {workspace}")
     pkl_path = executable(args.pkl_bin, "pkl")
     pkl_status, pkl_version = command_version(pkl_path, ("--version",))
+    java_path = java_executable(args.java_bin)
+    java_status, java_version = command_version(java_path, ("-version",))
+    lsp_path = args.lsp_jar.expanduser().resolve() if args.lsp_jar else None
+    lsp_status = "ready" if lsp_path and lsp_path.is_file() else "missing"
     modules = sum(1 for path in workspace.rglob("*.pkl") if ".git" not in path.parts)
     tests = sum(
         1
         for path in workspace.rglob("*.pkl")
         if ".git" not in path.parts and path.name.endswith((".test.pkl", "_test.pkl"))
     )
+    editors = [name for name in ("code", "idea", "nvim") if shutil.which(name)]
     payload: dict[str, Any] = {
         "bin": collapse_home(Path(__file__).resolve()),
         "description": DESCRIPTION,
@@ -126,15 +146,25 @@ def run_doctor(args: argparse.Namespace) -> int:
         "pkl_status": pkl_status,
         "pkl_version": pkl_version,
         "pkl_bin": collapse_home(pkl_path) if pkl_path else None,
+        "java_status": java_status,
+        "java_version": java_version,
+        "lsp_status": lsp_status,
+        "lsp_jar": collapse_home(lsp_path) if lsp_path else None,
         "project": (workspace / "PklProject").exists(),
         "lock": (workspace / "PklProject.deps.json").exists(),
         "modules": modules,
         "tests": tests,
+        "editors": editors,
     }
     if pkl_status != "ready":
         payload["help"] = [
             "Run `pkl_tooling install-plan cli` for official installation choices",
             "Pass `--pkl-bin <path>` when Pkl is installed outside PATH",
+        ]
+    elif lsp_status != "ready":
+        payload["help"] = [
+            "Run `pkl_tooling install-plan lsp --editor <editor>` for editor-specific setup",
+            "Use the editor plugin when available; standalone pkl-lsp is a low-level integration surface",
         ]
     emit(payload)
     return 0 if pkl_status == "ready" else 1
@@ -145,8 +175,9 @@ def run_capabilities() -> int:
         {
             "status": "available",
             "renderers": list(RENDERERS),
-            "structured_input": ["pkl.jsonnet", "pkl.yaml", "read()", "read*()"],
-            "tooling": ["pkl"],
+            "structured_input": ["pkl.jsonnet", "pkl.yaml", "read()", "read*()", "external resource readers"],
+            "tooling": ["pkl", "pkldoc", "pkl-lsp", "Pkl Gradle plugin", "language bindings", "code generators"],
+            "editors": ["VS Code extension", "IntelliJ plugin", "Neovim plugin", "custom LSP client"],
             "help": ["Use `pkl eval --format <renderer>` to derive consumer formats from one typed model"],
         }
     )
@@ -154,11 +185,74 @@ def run_capabilities() -> int:
 
 
 def run_install_plan(args: argparse.Namespace) -> int:
-    emit({"status": "plan", "target": "cli", "steps": [
-        "Select an exact OS/architecture binary from https://github.com/apple/pkl/releases",
-        "Verify its published checksum before execution", "pkl --version"],
-        "documentation": "https://pkl-lang.org/main/current/pkl-cli/index.html"})
+    if args.target == "cli":
+        manager = args.manager or default_manager()
+        commands = {
+            "homebrew": ["brew install pkl", "pkl --version"],
+            "mise": ["mise use pkl@<version>", "pkl --version"],
+            "winget": ["winget install Apple.Pkl", "pkl --version"],
+            "download": ["Download the matching release asset from https://github.com/apple/pkl/releases/latest", "pkl --version"],
+        }
+        emit(
+            {
+                "status": "plan",
+                "target": "cli",
+                "manager": manager,
+                "steps": commands[manager],
+                "documentation": "https://pkl-lang.org/main/current/pkl-cli/index.html",
+            }
+        )
+        return 0
+    if not args.editor:
+        raise UsageError("install-plan lsp requires --editor vscode|intellij|neovim|custom")
+    plans = {
+        "vscode": {
+            "steps": [
+                "Install the VSIX from https://github.com/apple/pkl-vscode/releases/latest",
+                "Configure pkl.cli.path when pkl is outside PATH",
+                "Configure pkl.lsp.java.path when Java is outside PATH or JAVA_HOME",
+                "Run Pkl: Sync projects after adding or changing PklProject dependencies",
+            ],
+            "documentation": "https://pkl-lang.org/vscode/current/installation.html",
+        },
+        "intellij": {
+            "steps": [
+                "Install the Pkl plugin from the JetBrains Marketplace or the official Apple update repository",
+                "Configure the Pkl CLI path in the plugin settings when it is outside PATH",
+                "Sync Pkl projects after dependency changes",
+            ],
+            "documentation": "https://pkl-lang.org/intellij/current/installation.html",
+        },
+        "neovim": {
+            "steps": [
+                "Install the official apple/pkl-neovim plugin",
+                "Configure the plugin-managed language server and Pkl CLI paths",
+                "Sync projects after changing PklProject dependencies",
+            ],
+            "documentation": "https://pkl-lang.org/neovim/current/installation.html",
+        },
+        "custom": {
+            "steps": [
+                "Download pkl-lsp.jar from https://github.com/apple/pkl-lsp/releases/latest",
+                "Verify the current Java requirement in the integration documentation",
+                "Start with java -jar <path-to-pkl-lsp.jar>",
+                "Configure pkl.cli.path, pkl.formatter.grammarVersion, pkl.projects.excludedDirectories, and pkl.modulepath",
+            ],
+            "documentation": "https://pkl-lang.org/lsp/current/integration.html",
+        },
+    }
+    emit({"status": "plan", "target": "lsp", "editor": args.editor, **plans[args.editor]})
     return 0
+
+
+def default_manager() -> str:
+    if shutil.which("brew"):
+        return "homebrew"
+    if shutil.which("mise"):
+        return "mise"
+    if os.name == "nt":
+        return "winget"
+    return "download"
 
 
 def collapse_home(path: Path | str | None) -> str | None:
