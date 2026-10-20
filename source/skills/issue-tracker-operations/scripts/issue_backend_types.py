@@ -7,6 +7,7 @@ from typing import Generic, TypeVar
 
 class Backend(str, Enum):
     GITHUB = "GITHUB"
+    JIRA = "JIRA"
 
 
 class Operation(str, Enum):

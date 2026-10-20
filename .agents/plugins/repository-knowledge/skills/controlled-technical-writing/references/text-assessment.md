@@ -2,102 +2,130 @@
 
 ## Contract
 
-Use `scripts/assess_text.py` as the measurement entry point.
-Supply explicit UTF-8 English prose files in `.md`, `.mdx`, or `.txt` format.
-The procedure needs only the files and Vale 3.24.0.
-Language is a caller precondition. Non-English results remain unqualified.
+Use `scripts/assess_text.py` as the only measurement entry point. Document
+purpose never selects a different formula, threshold, or writing mode. The
+supported input is UTF-8 English prose in `.md`, `.mdx`, or `.txt` files.
+For other formats, supply a supported prose artifact.
+Do not infer prose from source code. Language is an explicit caller precondition, not an auto-detection
+claim. Non-English assessments are unqualified.
 
-The fixed policy reports these properties:
+The fixed policy reports:
 
-- `fleschKincaidGrade` estimates complexity from word, sentence, and syllable counts.
-- `wordsPerSentence` reports the mean sentence length.
-- `Slopsentral.LongSentence` flags sentences with more than 25 words.
-- Diction rules flag selected substitutions, excessive claims, contractions, and modal verbs.
+- `fleschKincaidGrade`: `0.39 * words / sentences + 11.8 * estimatedSyllables / words - 15.59`.
+  Counts come from the pinned Vale parser; the wrapper independently checks
+  the arithmetic against the reported value, within its two-decimal precision.
+- `wordsPerSentence` and a finding for a sentence exceeding 25 words, using
+  Vale Std's occurrence rule. That rule's word regex is distinct from Vale's
+  document metric tokenizer; do not imply that these counters are identical.
+- Diction findings from the fixed local substitution list and Google excessive
+  claims rule. Suggestions require a meaning-preserving review, not blind edits.
+- Terminology findings from the JSON contract's scoped replacement and review targets.
+  Each document reports its terminology scope.
+  Existing Markdown contracts keep their alias, casing, and marker rules.
+  The glossary owner supplies both formats without implicit migration.
 
-Grade 8 and 25 words are advisory defaults. They are not calibrated audience thresholds.
-Keep necessary facts, technical terms, and identifiers when you review a finding.
-The engine does not establish grammar, factual accuracy, semantic equivalence, or reader comprehension.
+Grade 8 and 25 words are shared advisory defaults inherited from Vale resources,
+not calibrated audience cutoffs or scientifically validated comprehension
+thresholds. Lower scores are not always better: do not remove required facts,
+split terms, or rename identifiers to improve a number. No composite quality
+score, grade-level audience inference, or alternate compression metric is used.
 
 ## Run
 
-Read [local Vale](vale-local.md) for explicit installation and offline archive support.
-From this skill directory, run:
+Install the exact [Vale 3.24.0 release](https://github.com/vale-cli/vale/releases/tag/v3.24.0)
+for the host, verifying the archive against its release checksums. A newer
+package-manager version is not an equivalent engine. The skill does not
+install binaries or download style packages during assessment.
+
+From the skill directory:
 
 ```sh
-uv run --locked --script scripts/assess_text.py --vale-bin /path/to/vale /path/to/document.md
+uv run --locked --script scripts/assess_text.py --glossary /path/to/glossary.json /path/to/README.md /path/to/runbook.md
 ```
 
-If the pinned engine is on PATH, omit `--vale-bin`.
-For a local installation, use `/path/to/installation/bin/vale`.
-The procedure never installs the engine or downloads styles during assessment.
+Use `--vale-bin /absolute/path/to/vale` when the pinned executable is not on
+PATH. Inputs must be explicit files. The procedure freezes each document and
+the glossary once. It disables global Vale configuration and strips `VALE_*` environment overrides.
+Its temporary configuration contains only the locked resources and glossary-derived literal rules. It never changes source
+files. Inline Vale suppression comments are rejected.
 
-The procedure freezes each file once and uses the same bytes for metrics and findings.
-It ignores global Vale configuration and removes `VALE_*` environment overrides.
-Its temporary configuration uses only the bundled rules whose digests match the policy lock.
-It rejects inline Vale suppression comments and never changes the supplied files.
-
-Vale's native parser selects prose from markup.
-It excludes code spans, code blocks, URLs, math, and frontmatter.
-Heading and table text can receive diction findings, but summary metrics exclude headings and table cells.
-Lists, link labels, and blockquotes remain prose.
-Plain text has no markup exclusions.
+Vale's native format parser determines prose boundaries, not a hand-written
+Markdown stripper. In markup, code spans and blocks, URLs, math, and frontmatter
+are excluded. Heading and table text can receive diction and terminology
+findings, but Vale's summary metric excludes headings and table cells. Lists,
+link labels, and blockquotes remain prose; review attributed quotes without
+silently rewriting them. Plain text has no markup exclusions. Identical prose
+receives the same measurement regardless of filename or document purpose;
+equivalent rendered content is not claimed for arbitrary markup dialects.
 
 ## Outcomes
 
-[The JSON Schema](text-assessment.schema.json) defines report version 2.
-Version 2 removes the glossary fields, terminology findings, and `INCOMPLETE` outcome.
-The CLI no longer accepts `--glossary`.
+The canonical output contract is [text-assessment.schema.json](text-assessment.schema.json).
 
-- `ASSESSED` means that metrics and prose rules ran. Findings can remain.
-- `REJECTED` identifies a finite failure and its stage.
+- `ASSESSED`: measurements and glossary checks ran. This is not a pass label.
+- `INCOMPLETE`: measurements ran, but no glossary was provided. Do not claim
+  checked terminology; the report retains useful evidence.
+- `REJECTED`: a finite failure identifies the stage. Missing/wrong Vale,
+  resource drift, invalid input/glossary, inline overrides, failed processes,
+  malformed engine output, and no measurable prose cannot produce success.
 
-Exit 0 means no automated findings.
-Exit 1 means findings remain.
-Exit 2 means that assessment failed.
-Missing engines, wrong versions, invalid input, policy drift, malformed engine output, and absent prose cannot produce success.
+Exit 0 means an assessed artifact has no automated findings; exit 1 means
+findings remain; exit 2 means rejection or incomplete terminology coverage.
+Keep the engine version, policy digest, glossary digest, document digests,
+metrics, and located findings. Compare metrics only under the same policy and
+glossary. Reports omit time and temporary paths, so repeated runs over the
+same inputs can be byte-identical. Paths refer to the supplied artifacts.
 
-Keep the engine version, policy digest, document digests, metrics, and findings with locations.
-Compare metrics under the same policy.
-Reports omit timestamps and temporary paths, so identical inputs can produce byte-identical reports.
-When precision needs a flagged passage, record its rule, location, and reason outside the source.
-Keep the finding visible.
+Resolve a known alias against its definition before migrating it. An ordinary
+word that coincides with a glossary term may need clarification, not forced
+uppercase. The glossary's meaning outranks a generic diction suggestion. When
+precision requires retaining a flagged sentence or term, record the rule,
+location, and reason outside the source; the automated finding remains visible.
+Do not add an exemption, switch thresholds, or create a synonym to hide it.
 
-## Specialized Rules
+## Readability Validation
 
-The distributed `.vale.ini` supplies commit and Diataxis rules for direct Vale use.
-The assessment uses `assessment.ini` for the same prose rules across document purposes.
-Only the direct configuration adds document-purpose rules and the 20-word advisory for instructions in lists.
-Direct editor previews do not examine policy integrity and do not replace the assessment report.
+The report always says `comprehension.type: NOT_ASSESSED`. Flesch-Kincaid uses
+counts and estimated syllables; it does not validate factual accuracy,
+information order, grammar, or task completion. Even scrambled sentences can
+receive the same score. Separately ask a fresh reader to identify the intended
+action, prerequisites, and result from the document alone. Check those answers
+against the authoritative source. Record who or what performed the test and
+its unresolved questions; simulated reader review is not observed human proof.
 
-## Evidence Limits
+## JSON Terminology
 
-The report always states `comprehension.type: NOT_ASSESSED`.
-Scrambled sentences can receive the same grade as ordered sentences.
-Assess comprehension separately with a reader's task and answers from the document alone.
-Keep human evidence separate from a simulated review.
+Read the [glossary contract](glossary-contract.md) for structured entries and scope rules.
+The wrapper parses the JSON source once and uses its immutable glossary for rule generation.
+It generates `Terminology.yml` for replacement targets and `TerminologyReview.yml` for context review.
+Review targets have no replacement action.
+The wrapper never fetches citation URLs.
+The generated Markdown view remains a reader artifact, not another editable contract.
 
-The engine supplies counts for this fixed formula:
-
-```text
-0.39 * words / sentences + 11.8 * estimatedSyllables / words - 15.59
-```
-
-The wrapper independently examines the arithmetic within the engine's two-decimal precision.
-The sentence advisory uses a different word tokenizer from the summary metric.
-Do not present those counters as identical.
+The assessment uses `assets/vale/assessment.ini` for its fixed measurements.
+The distributed `.vale.ini` supplies commit and Diataxis defaults for direct CLI use.
+Both configurations use the same locked local resources.
+Do not treat the specialized CLI defaults as a different readability formula.
 
 ## Resource Maintenance
 
-Read [provenance](provenance.md) for upstream revisions and licenses.
-Change the policy, lock digests, schema, fixtures, and CI engine pin together when you upgrade.
-The lock records reviewed bytes. It is not a signature.
-Do not fetch unpinned styles or replace the selected formula.
+The bundled policy reuses `vale-cli/readability`, `vale-cli/Std`, and selected
+`vale-cli/Google` material. Read [provenance](provenance.md) for revisions and
+licenses. Do not run `vale sync` with unpinned package names, load the full Google
+style, or copy upstream agent skills into this repository. Direct Vale/editor
+integration can preview the bundled `.vale.ini`, but only the wrapper examines
+integrity and loads the glossary; editor previews are not completion evidence.
 
-From the repository root, run the focused suite:
+Change the canonical policy, its lock digests, provenance, schema, fixtures,
+and CI engine pin together when upgrading. Validate the upstream rule changes
+and affected counts before accepting a new baseline. The lock records the integrity of reviewed source.
+It is not a signature. A person can change both the rules and the lock.
 
 ```sh
-VALE_BIN=/path/to/vale uv run --locked pytest source/skills/controlled-technical-writing/scripts/tests/test_assess_text.py
+VALE_BIN=/absolute/path/to/vale uv run --locked python -m unittest discover -s scripts/tests -p 'test_*.py' -v
 ```
 
-The suite covers independent counts, deterministic reports, core findings, markup exclusions, invalid input, and policy integrity.
-Repository Node tests examine real reports against the JSON Schema.
+Fixtures prove hand-counted arithmetic, advisory activation, filename/context
+invariance, separate-process repeatability, literal alias matching, markup
+boundaries, and fail-closed input/configuration handling. Repository Node tests
+also validate real reports and rejected shapes against the canonical schema.

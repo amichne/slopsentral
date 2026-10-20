@@ -5,7 +5,7 @@
   "owner": {
     "name": "Amichne"
   },
-  "description": "Focused domain design and optional language, tooling, and repository workflows.",
+  "description": "Kotlin-first engineering with proof-preserving design, focused tests, and locked uv Python automation.",
   "management": {
     "type": "MANAGEMENT_POLICY",
     "mode": "CURATED"
@@ -21,16 +21,40 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "4.0.0"
+        "version": "3.1.0"
       },
-      "description": "Constrain domain values, preserve established facts, and compose pure decisions.",
+      "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
       "tags": [
-        "atomic-predicates",
+        "actions",
+        "automation",
+        "backend",
+        "ci",
+        "cli",
+        "core",
+        "daily-driver",
+        "dependencies",
         "design",
-        "proof",
+        "duration",
+        "evidence",
+        "failures",
+        "git",
+        "github",
+        "governance",
+        "hooks",
+        "instructions",
+        "issues",
+        "jira",
+        "local-development",
+        "mise",
+        "onboarding",
+        "optimization",
+        "pull-requests",
+        "release",
         "schemas",
         "skills",
-        "type-safety"
+        "tdd",
+        "testing",
+        "workflow-graph"
       ]
     },
     {
@@ -43,7 +67,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "4.0.0"
+        "version": "3.0.0"
       },
       "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "tags": [
@@ -57,6 +81,7 @@
         "higher-order-functions",
         "hooks",
         "kotlin",
+        "kast",
         "ktor",
         "libraries",
         "module-boundaries",
@@ -123,6 +148,7 @@
         "controlled-language",
         "docs",
         "generation",
+        "glossary",
         "gradle",
         "hooks",
         "impact",
@@ -136,6 +162,7 @@
         "skills",
         "source-backed",
         "technical-writing",
+        "terminology",
         "validation"
       ]
     },
@@ -149,7 +176,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/developer-tooling"
         },
-        "version": "4.0.0"
+        "version": "3.0.0"
       },
       "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
       "tags": [
@@ -366,6 +393,15 @@
       },
       "path": "skills/intellij-platform-testing",
       "name": "intellij-platform-testing"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/mise-project-tooling",
+      "name": "mise-project-tooling"
     },
     {
       "type": "SKILL",

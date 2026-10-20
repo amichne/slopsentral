@@ -14,7 +14,6 @@
 
 import argparse
 import subprocess
-import sys
 from pathlib import Path
 
 
@@ -26,14 +25,12 @@ def main() -> int:
         return 2
     if not (repo / "source/adaptable.marketplace.json").is_file():
         return 0
-    validator = repo / "tools/marketplace.py"
+    validator = repo / "tools/validate-source-graph.mjs"
     if not validator.is_file():
         return 1
     try:
         return subprocess.run(
-            [sys.executable, str(validator), "validate", "--source", str(repo)],
-            cwd=repo,
-            check=False,
+            ["node", str(validator), "--repo", str(repo)], cwd=repo, check=False
         ).returncode
     except OSError:
         return 2

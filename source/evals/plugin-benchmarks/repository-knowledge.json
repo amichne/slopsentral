@@ -61,29 +61,29 @@
     },
     {
       "type": "PLUGIN_EVAL_SCENARIO",
-      "id": "knowledge-refresh-preserves-backend-authority",
-      "title": "Unavailable knowledge backend preserves its files",
+      "id": "openwiki-refresh-preserves-backend-authority",
+      "title": "Openwiki refresh preserves backend authority",
       "purpose": "Exercise the complete flow or negative boundary independently of a plugin-name hint.",
       "routingCaseIds": [
-        "knowledge-refresh-preserves-backend-authority"
+        "openwiki-refresh-preserves-backend-authority"
       ],
       "expectedPrimitive": {
         "type": "SKILL",
         "name": "code-knowledge-base"
       },
-      "userInput": "Refresh source-backed knowledge pages in an existing non-OKF backend. Preserve its files and citations. The repository has no tool for that backend. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
+      "userInput": "Refresh the source-backed knowledge pages in this repository, which already uses OpenWiki. Preserve the backend, citations, Claims, and existing publication boundary. Use only the supplied local or disposable fixture. Do not commit, push, publish, install into a live environment, or otherwise modify remote state.",
       "successChecklist": [
         "The selected backend and external owner are named, with missing tools reported rather than guessed.",
-        "Existing pages and citations remain intact; the unsupported operation and missing capability are reported.",
-        "Do not install or select another outside skill to handle an unavailable backend.",
-        "Do not create another store or apply the OKF checker to an unsupported format."
+        "Changed pages and Claims are verified; pending CI remains pending.",
+        "Do not copy an upstream OpenWiki skill into local canonical source.",
+        "Do not create an OKF store or run the OKF checker over OpenWiki pages as a substitute for native validation."
       ]
     },
     {
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "controlled-technical-prose",
       "title": "Controlled technical prose",
-      "purpose": "Measure whether a prose revision preserves source meaning and records findings from the local prose engine.",
+      "purpose": "Measure whether a prose revision preserves source meaning and enforces stable repository terminology with executable checks.",
       "routingCaseIds": [
         "technical-prose-uses-controlled-terms"
       ],
@@ -91,10 +91,10 @@
         "type": "SKILL",
         "name": "controlled-technical-writing"
       },
-      "userInput": "Use Controlled Technical Writing in this isolated repository worktree. Rewrite one bounded published technical document with direct language and stable repository terminology, then run the local prose assessment and the smallest documentation check. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "Use Controlled Technical Writing in this isolated repository worktree. Rewrite one bounded published technical document with direct language and stable repository terminology, then run the glossary checker and the smallest relevant documentation check. Do not push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "Every material claim remains traceable to the source contract.",
-        "The prose keeps source terms and records an assessment without a glossary.",
+        "One canonical term is used per concept and the repository glossary check passes when a glossary exists.",
         "The smallest relevant rendered or documentation check passes for the changed surface."
       ]
     },

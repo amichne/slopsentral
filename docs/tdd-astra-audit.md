@@ -1,5 +1,3 @@
-> Historical audit. The [current catalog](../source/CATALOG.md) and [canonical release set](releases.md) supersede its plugin counts and installation choices.
-
 # Focused Testing And Codebase Preflight
 
 Audit date: 2026-09-12. Source baseline: `2a2c334`.

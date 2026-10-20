@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import test from 'node:test';
 import Ajv2020 from 'ajv/dist/2020.js';
@@ -12,9 +11,8 @@ test('current catalog has no identity or closure failures', () => {
   assert.deepEqual(auditCatalog(catalog), []);
 });
 
-test('generated catalog matches its Pkl owner', { skip: !process.env.PKL_BIN }, () => {
-  const result = JSON.parse(execFileSync('uv', ['run', '--locked', 'tools/marketplace.py', 'catalog', '--check'], { cwd: root, encoding: 'utf8' }));
-  assert.equal(result.type, 'CATALOG_CHECKED');
+test('generated catalog matches its manifest-derived view', () => {
+  assert.equal(fs.readFileSync(path.join(root, 'source/CATALOG.md'), 'utf8'), renderCatalog(catalog));
 });
 
 test('a profile includes exactly its selected plugins and rejects unknown profiles', () => {
@@ -34,7 +32,7 @@ test('repeated dependency edges inside one plugin are idempotent', () => {
 });
 
 test('a dependency cycle is rejected, not silently truncated', () => {
-  const modified = { ...catalog, definitions: new Map(catalog.definitions), plugins: catalog.plugins.map(p => p.name !== 'software-engineering' ? p : { ...p, hooks: [catalog.marketplace.hooks.find(ref => ref.name === 'software-engineering-context')] }) };
+  const modified = { ...catalog, definitions: new Map(catalog.definitions) };
   const hook = structuredClone(modified.definitions.get('HOOK/software-engineering-context'));
   hook.dependsOn = [structuredClone(hook)];
   modified.definitions.set('HOOK/software-engineering-context', hook);
@@ -45,7 +43,7 @@ test('Astra defaults do not require unrelated skill reads', () => {
   for (const name of ['kotlin-repo-default', 'intellij-plugin-default', 'local-development-default', 'documentation-default']) {
     const profile = catalog.profiles.find(p => p.name === name);
     assert.ok(!profile.plugins.includes('skill-read-policy'));
-    assert.equal(profile.hookPolicy.mode, name === 'local-development-default' ? 'OFF' : 'ADVISORY');
+    assert.equal(profile.hookPolicy.mode, 'ADVISORY');
   }
   const config = JSON.parse(fs.readFileSync(path.join(root, 'source/hooks/required-skill-read.requirements.json'), 'utf8'));
   assert.equal(config.mode, 'ADVISORY');
@@ -53,7 +51,7 @@ test('Astra defaults do not require unrelated skill reads', () => {
 });
 
 test('new standalone skills have bounded procedures and portable local references', () => {
-  for (const name of ['python-tooling', 'technical-documentation', 'skill-primitive-authoring', 'plugin-composition-authoring', 'cli-creator']) {
+  for (const name of ['python-tooling', 'mise-project-tooling', 'technical-documentation', 'skill-primitive-authoring', 'plugin-composition-authoring', 'cli-creator']) {
     const folder = path.join(root, 'source/skills', name);
     const text = fs.readFileSync(path.join(folder, 'SKILL.md'), 'utf8');
     assert.ok(text.trim().split(/\s+/u).length <= 550, `${name}: move details to references`);
@@ -66,11 +64,11 @@ test('new standalone skills have bounded procedures and portable local reference
 
 test('canonical dependencies are traversed even when the plugin reference omits them', () => {
   const marketplace = structuredClone(catalog.marketplace);
-  const target = marketplace.skills.find(ref => ref.name === 'python-tooling');
+  const target = marketplace.skills.find(ref => ref.name === 'mise-project-tooling');
   target.dependsOn = [marketplace.skills.find(ref => ref.name === 'manage-json-schemas')];
   const modified = { ...catalog, marketplace };
   assert.deepEqual(auditCatalog(modified), []);
-  const closure = pluginClosure(modified, modified.plugins.find(p => p.name === 'developer-tooling'));
+  const closure = pluginClosure(modified, modified.plugins.find(p => p.name === 'software-engineering'));
   assert.ok(closure.refs.has('SKILL/manage-json-schemas'));
 });
 
@@ -91,16 +89,16 @@ test('catalog reports distinguish all-plugin and profile selections', () => {
 });
 
 test('a repeated identity cannot hide additional dependency edges', () => {
-  const plugin = catalog.plugins.find(p => p.name === 'developer-tooling');
-  const repeated = plugin.skills.find(ref => ref.name === 'cli-creator');
+  const plugin = catalog.plugins.find(p => p.name === 'software-engineering');
+  const repeated = plugin.skills.find(ref => ref.name === 'semantic-ratchet');
   const foreign = catalog.marketplace.skills.find(ref => ref.name === 'manage-json-schemas');
   const modified = { ...catalog, plugins: catalog.plugins.map(p => p !== plugin ? p : {
-    ...p, skills: [repeated, ...p.skills.filter(ref => ref !== repeated).map(ref => ref.name !== 'python-tooling' ? ref : {
+    ...p, skills: [repeated, ...p.skills.filter(ref => ref !== repeated).map(ref => ref.name !== 'mise-project-tooling' ? ref : {
       ...ref, dependsOn: [{ ...repeated, dependsOn: [foreign] }],
     })],
   }) };
   assert.deepEqual(auditCatalog(modified), []);
-  const closure = pluginClosure(modified, modified.plugins.find(p => p.name === 'developer-tooling'));
+  const closure = pluginClosure(modified, modified.plugins.find(p => p.name === 'software-engineering'));
   assert.ok(closure.refs.has('SKILL/manage-json-schemas'));
 });
 
@@ -108,7 +106,7 @@ test('reused assets expose every composing plugin with unique source counts', ()
   const report = catalogReport(catalog);
   assert.equal(report.schemaVersion, 3);
   const shell = report.assets.find(asset => asset.primitiveType === 'SKILL' && asset.name === 'python-tooling');
-  assert.deepEqual(shell.plugins, ['developer-tooling']);
+  assert.deepEqual(shell.plugins, ['developer-tooling', 'software-engineering']);
   assert.equal(shell.path, 'skills/python-tooling');
   const shared = catalog.marketplace.instructions.find(ref => ref.name === 'engineering-design');
   const modified = { ...catalog, plugins: catalog.plugins.map(p => p.name !== 'repository-knowledge' ? p : {
@@ -116,11 +114,11 @@ test('reused assets expose every composing plugin with unique source counts', ()
   }) };
   assert.deepEqual(auditCatalog(modified), []);
   const reused = catalogReport(modified);
-  assert.ok(reused.totals.instructionWords > report.totals.instructionWords);
-  assert.equal(reused.plugins.reduce((sum, p) => sum + p.instructionWords, 0), reused.totals.instructionWords);
+  assert.equal(reused.totals.instructionWords, report.totals.instructionWords);
+  assert.ok(reused.plugins.reduce((sum, p) => sum + p.instructionWords, 0) > reused.totals.instructionWords);
   const profile = catalogReport(catalog, 'agent-authoring-default');
   assert.deepEqual(profile.assets.find(asset => asset.name === 'python-tooling').plugins,
-    ['developer-tooling']);
+    ['developer-tooling', 'software-engineering']);
 });
 
 test('report v3 validates and rejects unknown asset kinds or ambiguous composition', () => {
@@ -143,7 +141,7 @@ test('report v3 validates and rejects unknown asset kinds or ambiguous compositi
 });
 
 test('profile hook activation includes dependencies and fails closed on missing definitions', () => {
-  const modified = { ...catalog, definitions: new Map(catalog.definitions), plugins: catalog.plugins.map(p => p.name !== 'software-engineering' ? p : { ...p, hooks: [catalog.marketplace.hooks.find(ref => ref.name === 'software-engineering-context')] }) };
+  const modified = { ...catalog, definitions: new Map(catalog.definitions) };
   const sourceHook = catalog.marketplace.hooks.find(ref => ref.name === 'software-engineering-context');
   const carrier = structuredClone(modified.definitions.get('HOOK/code-knowledge-drift'));
   carrier.dependsOn = [...carrier.dependsOn ?? [], sourceHook];

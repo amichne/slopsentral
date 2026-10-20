@@ -63,8 +63,7 @@ function reference(raw: Dynamic): Schema.Asset =
   else if (raw.type == "RESOURCE")
     checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.ResourceReference)
   else if (raw.type == "INSTRUCTION")
-    checked(raw, List("type", "name", "sourcePath", "sha256", "text"))
-      .toTyped(Schema.InstructionReference)
+    checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.InstructionReference)
   else if (raw.type == "AGENT")
     checked(raw, List("type", "name", "sourcePath", "sha256", "text"))
       .toTyped(Schema.AgentReference)
@@ -79,17 +78,14 @@ function reference(raw: Dynamic): Schema.Asset =
     throw("Unsupported canonical asset kind")
 
 function plugin(raw: Dynamic): Schema.Plugin = (
-  checked(
-    raw,
-    List("name", "version", "description", "interface", "tags", "references", "mcp", "hookFiles"),
-  ).toTyped(Schema.Plugin)
+  checked(raw, List("name", "version", "description", "interface", "tags", "references", "mcp"))
+    .toTyped(Schema.Plugin)
 ) {
   interface =
     checked(raw.interface, List("websiteURL", "privacyPolicyURL", "termsOfServiceURL"))
       .toTyped(Schema.Interface)
   tags = raw.tags.toList()
   references = raw.references.toList().map((r) -> reference(r))
-  hookFiles = raw.getPropertyOrNull("hookFiles")?.toList() ?? List()
 }
 
 function input(raw: Dynamic): Schema.Input = (
@@ -102,8 +98,6 @@ function input(raw: Dynamic): Schema.Input = (
       "generatedAt",
       "sourceSha",
       "plugins",
-      "profiles",
-      "contentProfile",
       "phase",
       "projectedDigests",
     ),
@@ -111,18 +105,6 @@ function input(raw: Dynamic): Schema.Input = (
 ) {
   owner = checked(raw.owner, List("name", "email", "url")).toTyped(Schema.Person)
   plugins = new Listing<Schema.Plugin> { for (p in raw.plugins) { plugin(p) } }
-  profiles =
-    (raw.getPropertyOrNull("profiles")?.toList() ?? List()).map((p) -> (
-      checked(p, List("name", "description", "plugins", "hookPolicy", "focusSkills", "skills"))
-        .toTyped(Schema.Profile)
-    ) {
-      plugins = p.plugins.toList()
-      focusSkills = p.getPropertyOrNull("focusSkills")?.toList()
-      skills =
-        (p.getPropertyOrNull("skills")?.toMap() ?? Map()).mapValues((key, binding) ->
-          checked(binding, List("invocation")).toTyped(Schema.SkillBinding)
-        )
-    })
   projectedDigests = new Mapping<String, Schema.Digest> {
     for (key, value in raw.projectedDigests.toMap()) { [key] = value }
   }

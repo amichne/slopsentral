@@ -56,7 +56,7 @@
         {
           "type": "ISSUE_BACKEND_CAPABILITIES_RESULT",
           "outcome": "COMPLETE",
-          "backend": "GITHUB",
+          "backend": "JIRA",
           "operation": "CAPABILITIES",
           "capabilities": [
             {
@@ -85,10 +85,11 @@
     "backend": {
       "type": "string",
       "enum": [
-        "GITHUB"
+        "GITHUB",
+        "JIRA"
       ],
       "examples": [
-        "GITHUB"
+        "JIRA"
       ]
     },
     "capabilitiesResult": {
@@ -157,7 +158,7 @@
         {
           "type": "ISSUE_BACKEND_CAPABILITIES_RESULT",
           "outcome": "COMPLETE",
-          "backend": "GITHUB",
+          "backend": "JIRA",
           "operation": "CAPABILITIES",
           "capabilities": [
             {
@@ -223,11 +224,11 @@
         {
           "type": "ISSUE_BACKEND_VIEW_RESULT",
           "outcome": "COMPLETE",
-          "backend": "GITHUB",
+          "backend": "JIRA",
           "operation": "VIEW",
           "issue": {
             "type": "ISSUE_BACKEND_ISSUE",
-            "id": "42",
+            "id": "TASK-42",
             "title": "Add issue backend facade",
             "state": "In Progress"
           },
@@ -444,7 +445,7 @@
           "type": "string",
           "minLength": 1,
           "examples": [
-            "42"
+            "TASK-42"
           ]
         },
         "title": {
@@ -472,7 +473,7 @@
       "examples": [
         {
           "type": "ISSUE_BACKEND_ISSUE",
-          "id": "42",
+          "id": "TASK-42",
           "title": "Add issue backend facade",
           "state": "In Progress"
         }
@@ -563,7 +564,7 @@
           },
           "target": {
             "type": "ISSUE_BACKEND_ISSUE_REFERENCE",
-            "id": "42"
+            "id": "TASK-42"
           }
         }
       ]
@@ -658,7 +659,7 @@
           "type": "string",
           "minLength": 1,
           "examples": [
-            "42"
+            "TASK-42"
           ]
         },
         "edges": {
@@ -677,7 +678,7 @@
       "examples": [
         {
           "type": "ISSUE_BACKEND_DEPENDENCY_MAP",
-          "root": "42",
+          "root": "TASK-42",
           "edges": [],
           "coverage": {
             "type": "ISSUE_BACKEND_DEPENDENCY_COVERAGE",
@@ -711,10 +712,11 @@
         "executable": {
           "type": "string",
           "enum": [
+            "acli",
             "gh"
           ],
           "examples": [
-            "gh"
+            "acli"
           ]
         },
         "arguments": {
@@ -723,18 +725,16 @@
             "type": "string",
             "minLength": 1,
             "examples": [
-              "issue"
+              "jira"
             ]
           },
           "examples": [
             [
-              "issue",
+              "jira",
+              "workitem",
               "view",
-              "42",
-              "--repo",
-              "octo/repo",
-              "--json",
-              "number,title,state,url"
+              "TASK-42",
+              "--json"
             ]
           ]
         },
@@ -748,15 +748,13 @@
       "examples": [
         {
           "type": "ISSUE_BACKEND_COMMAND_EVIDENCE",
-          "executable": "gh",
+          "executable": "acli",
           "arguments": [
-            "issue",
+            "jira",
+            "workitem",
             "view",
-            "42",
-            "--repo",
-            "octo/repo",
-            "--json",
-            "number,title,state,url"
+            "TASK-42",
+            "--json"
           ],
           "exitCode": 0
         }
@@ -840,7 +838,7 @@
       "result": {
         "type": "ISSUE_BACKEND_CAPABILITIES_RESULT",
         "outcome": "COMPLETE",
-        "backend": "GITHUB",
+        "backend": "JIRA",
         "operation": "CAPABILITIES",
         "capabilities": [
           {

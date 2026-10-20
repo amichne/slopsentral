@@ -87,10 +87,6 @@ test('checkout-local planning rejects duplicate hook activation before any host 
   const plugin = JSON.parse(fs.readFileSync(file, 'utf8'));
   const marketplace = JSON.parse(fs.readFileSync(path.join(fixture, 'source/adaptable.marketplace.json'), 'utf8'));
   plugin.hooks.push(marketplace.hooks.find(ref => ref.name === 'software-engineering-context'));
-  const baselineFile = path.join(fixture, 'source/plugins/software-engineering/plugin.json');
-  const baseline = JSON.parse(fs.readFileSync(baselineFile));
-  baseline.hooks.push(marketplace.hooks.find(ref => ref.name === 'software-engineering-context'));
-  fs.writeFileSync(baselineFile, JSON.stringify(baseline));
   fs.writeFileSync(file, JSON.stringify(plugin));
   const codexHome = path.join(fixture, 'unused-home');
   const result = spawnSync(process.execPath, [fs.realpathSync(path.join(fixture, 'tools/profile-lifecycle.mjs')),

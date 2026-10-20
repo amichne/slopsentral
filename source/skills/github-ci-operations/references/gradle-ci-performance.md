@@ -1,16 +1,16 @@
 # Gradle Performance on GitHub Actions
 
 Use `gradle-performance-engineering` for the Gradle measurement loop and
-native Gradle/Kotlin report interpretation. This reference owns the Actions environment,
-workflow graph, cache transport, and evidence handoff. Use existing native reports;
-do not add an outside measurement service.
+Develocity model interpretation. This reference owns the Actions environment,
+workflow graph, cache transport, and evidence handoff. Assume full Develocity API
+access, but account for absent publishing credentials in untrusted PR contexts.
 
 ## Establish the CI Baseline
 
 Read triggers, required checks, merge-queue behavior, expanded matrix, `needs`,
 runner class/image/resources, wrapper/JDK setup, and existing cache actions.
 Collect structured run/job/step timestamps and conclusions, including attempts
-and canceled runs. Correlate reports using source SHA, run ID, attempt, job,
+and canceled runs. Correlate scans using source SHA, run ID, attempt, job,
 matrix dimensions, and invocation identity. Preserve the tested merge SHA as
 well as the PR head SHA when they differ.
 
@@ -34,14 +34,15 @@ reduction predicts an improvement; matched observed runs must confirm it.
 - Verify the pinned action's documented defaults and read/write restrictions.
   Permit cache writes only from trusted producers. `CI=true` is not a trust
   boundary. Fork PRs and arbitrary branch builds must not gain privileged remote
-  cache writes merely to improve measurements.
+  cache writes or Develocity credentials merely to improve measurements.
 - Configuration-cache transport can contain sensitive material. Use the action's
   supported encryption-key mechanism where needed; preserve secret boundaries
   and measure restore behavior in each event context. Do not expose credentials
-  to untrusted code or silently mark missing report evidence complete.
-- Retain report paths and bounded metrics in job summaries. Keep only needed
-  diagnostic artifacts with defined retention; do not publish source or environment
-  dumps to an outside service as part of optimization.
+  to untrusted code or silently mark missing scan evidence complete.
+- Use the organization's configured Develocity instance and publishing policy.
+  Do not change scan terms, publish to a public service, or dump environment
+  variables as part of optimization. Report scan links and bounded metrics in
+  job summaries; retain only needed diagnostic artifacts with defined retention.
 
 ## Work Selection and Quality Gates
 
@@ -74,7 +75,9 @@ prerequisite when downstream checks do not consume its outputs.
 
 For deployments, prefer provider-supported OIDC with constrained repository,
 ref/environment, and audience claims, scoped job permissions, and protected
-environments. Build a versioned artifact once, tie its digest to validation/provenance, and promote that
+environments. Treat Develocity authentication as its own supported API boundary;
+cloud OIDC support does not imply Develocity supports that exchange. Build a
+versioned artifact once, tie its digest to validation/provenance, and promote that
 identity across environments. Define rollback to a known validated artifact.
 Use `github-ci-operations` and `release-flow.md` for promotion and release
 work; optimization does not itself authorize deployment or protection changes.
@@ -86,7 +89,7 @@ selection and cache policy in representative trusted/untrusted event contexts
 when those contracts change. Compare equivalent baseline/candidate CI cohorts
 and disclose absent event coverage. Preserve correctness and required-check
 behavior, then assess agreed latency, tail, failure and consumption budgets.
-Report the Actions run links and native report paths together; do not declare success from a
+Report the Actions run and scan links together; do not declare success from a
 cache ratio, one fast runner, or a graph model alone.
 
 Sources: [Gradle Actions setup and cache behavior](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md),

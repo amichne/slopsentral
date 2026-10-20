@@ -41,5 +41,5 @@ This file applies to `source/skills/`.
 
 ## Verify
 
-- Run `uv run --locked tools/marketplace.py validate` after skill frontmatter,
+- Run `node tools/validate-source-graph.mjs` after skill frontmatter,
   marketplace references, or plugin references change.

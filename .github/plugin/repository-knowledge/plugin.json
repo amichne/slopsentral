@@ -9,6 +9,7 @@
     "controlled-language",
     "docs",
     "generation",
+    "glossary",
     "gradle",
     "hooks",
     "impact",
@@ -23,6 +24,7 @@
     "skills",
     "source-backed",
     "technical-writing",
+    "terminology",
     "validation"
   ],
   "license": "UNLICENSED",
@@ -32,6 +34,7 @@
     "controlled-language",
     "docs",
     "generation",
+    "glossary",
     "gradle",
     "hooks",
     "impact",
@@ -45,6 +48,7 @@
     "skills",
     "source-backed",
     "technical-writing",
+    "terminology",
     "validation"
   ],
   "version": "3.1.0"

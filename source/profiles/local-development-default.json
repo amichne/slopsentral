@@ -2,7 +2,7 @@
   "type": "WORKFLOW_PROFILE",
   "schemaVersion": 2,
   "name": "local-development-default",
-  "description": "Portable domain design guidance with no automatic hooks or language toolchain policy.",
+  "description": "Everyday implementation, testing, Git, and delivery capabilities. Local tasks stay local unless publication is requested.",
   "marketplaces": [
     {
       "type": "WORKFLOW_MARKETPLACE",
@@ -17,14 +17,9 @@
     "software-engineering"
   ],
   "standaloneSkills": [],
-  "skills": {
-    "skill:semantic-ratchet": {
-      "invocation": "either"
-    }
-  },
   "hookPolicy": {
     "type": "HOOK_POLICY",
-    "mode": "OFF"
+    "mode": "ADVISORY"
   },
   "reconciliation": {
     "type": "PLUGIN_RECONCILIATION",
@@ -34,8 +29,8 @@
     "type": "WORKFLOW_VALIDATION",
     "commands": [
       "node tools/validate-source-graph.mjs",
-      "uv run --locked tools/marketplace.py project --source . --harness codex --out /tmp/slopsentral-codex",
-      "uv run --locked tools/marketplace.py project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+      "node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex",
+      "node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
     ]
   }
 }

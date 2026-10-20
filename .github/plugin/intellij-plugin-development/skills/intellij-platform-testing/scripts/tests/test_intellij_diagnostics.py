@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -46,24 +47,36 @@ class IntelliJDiagnosticsTest(unittest.TestCase):
             self.assertTrue(result["rawDumpTruncated"])
             self.assertFalse(result["coroutineDumpEnabled"])
 
+    def test_trace_plan_accepts_only_concrete_fqcn_method(self):
+        result = self.run_helper(
+            "trace-plan", "--method", "com.intellij.psi.PsiReference#resolve"
+        )
+        self.assertEqual(result["commands"], [
+            "clear", "trace com.intellij.psi.PsiReference#resolve", "reset"
+        ])
+        error = self.run_helper(
+            "trace-plan", "--method", "com.intellij.psi.*#resolve", expected=1
+        )
+        self.assertIn("concrete FQCN#method", error["message"])
+
     def test_vm_options_dry_run_apply_backup_and_noop(self):
         with tempfile.TemporaryDirectory() as directory:
             options = Path(directory) / "custom.vmoptions"
             options.write_text("-Xmx2g\n")
             preview = self.run_helper(
-                "vm-options", "--file", str(options), "--enable", "mcp"
+                "vm-options", "--file", str(options), "--enable", "both"
             )
             self.assertEqual(preview["status"], "DRY_RUN")
             self.assertEqual(options.read_text(), "-Xmx2g\n")
             applied = self.run_helper(
-                "vm-options", "--file", str(options), "--enable", "mcp", "--apply"
+                "vm-options", "--file", str(options), "--enable", "both", "--apply"
             )
             self.assertEqual(applied["status"], "APPLIED")
             backup = Path(applied["backup"])
             self.assertEqual(backup.read_text(), "-Xmx2g\n")
             self.assertIn("-Didea.diagnostics.mcp.enabled=true", options.read_text())
             noop = self.run_helper(
-                "vm-options", "--file", str(options), "--enable", "mcp", "--apply"
+                "vm-options", "--file", str(options), "--enable", "both", "--apply"
             )
             self.assertEqual(noop["status"], "NOOP")
             self.assertEqual(len(list(options.parent.glob("*.backup.*"))), 1)
@@ -86,12 +99,14 @@ class IntelliJDiagnosticsTest(unittest.TestCase):
             )
             self.assertIn("installation-owned", error["message"])
 
-    def test_external_profiler_commands_are_rejected(self):
-        for command in ("ide-perf-command", "trace-plan"):
-            result = subprocess.run([str(SCRIPT), command, "--help"], text=True, capture_output=True, check=False)
-            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
-            self.assertNotIn("com.google.ide-perf", result.stdout)
-
+    def test_ide_perf_command_is_emitted_and_not_executed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            launcher = Path(directory) / "idea"
+            launcher.write_text("#!/bin/sh\nexit 99\n")
+            os.chmod(launcher, 0o755)
+            result = self.run_helper("ide-perf-command", "--launcher", str(launcher))
+            self.assertFalse(result["executed"])
+            self.assertEqual(result["argv"][-2:], ["installPlugins", "com.google.ide-perf"])
 
 
 if __name__ == "__main__":

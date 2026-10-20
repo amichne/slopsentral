@@ -5,7 +5,7 @@ import test from 'node:test';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const reused = [
-  { name: 'python-tooling', plugins: ['developer-tooling'] },
+  { name: 'python-tooling', plugins: ['software-engineering', 'developer-tooling'] },
 ];
 
 for (const [provider, variable, tree] of [
@@ -17,7 +17,8 @@ for (const [provider, variable, tree] of [
       for (const asset of reused) {
         const source = path.join(root, 'source/skills', asset.name);
         const files = fs.readdirSync(source, { recursive: true })
-          .filter(file => !file.split(path.sep).some(part => ["__pycache__", ".ruff_cache", ".pytest_cache"].includes(part)) && !file.endsWith(".pyc") && fs.statSync(path.join(source, file)).isFile());
+          .filter(file => !file.split(path.sep).some(part => ['__pycache__', '.ruff_cache', '.pytest_cache'].includes(part))
+            && !file.endsWith('.pyc') && fs.statSync(path.join(source, file)).isFile());
         assert.ok(files.includes('SKILL.md'));
         for (const plugin of asset.plugins) {
           const projected = path.join(process.env[variable], tree, plugin, 'skills', asset.name);

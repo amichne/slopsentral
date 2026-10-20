@@ -46,7 +46,9 @@ host programs and therefore remain outside the façade.
 - `pkl repl` is interactive and is not an agent automation surface.
 - `pkl server` is the protocol boundary used by language bindings, not a
   developer validation command.
-- Editor servers, binding generators, and separate documentation tools are outside this retained CLI surface.
+- `pkldoc`, the Java/Kotlin code generators, Swift/Go/JVM bindings, and the Pkl
+  language server are separate tools with separate runtime/version contracts.
+  Route to their versioned official documentation rather than guessing flags.
 - Pkl has no native TOON renderer, project-wide static typecheck, semantic lint,
   project initializer, dependency add/remove/update, or package uploader. The
   façade converts its own result envelopes to TOON and does not invent those
@@ -57,3 +59,4 @@ host programs and therefore remain outside the façade.
 - [Pkl 0.32 CLI reference](https://pkl-lang.org/main/0.32.0/pkl-cli/index.html)
 - [`pkl:Project` package docs](https://pkl-lang.org/package-docs/pkl/0.32.0/Project/index.html)
 - [Pkl 0.32 release notes](https://pkl-lang.org/main/0.32.0/release-notes/0.32.html)
+- [Pkl language server integration](https://pkl-lang.org/lsp/current/integration.html)

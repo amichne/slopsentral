@@ -29,8 +29,8 @@
     "type": "WORKFLOW_VALIDATION",
     "commands": [
       "node tools/validate-source-graph.mjs",
-      "uv run --locked tools/marketplace.py project --source . --harness codex --out /tmp/slopsentral-codex",
-      "uv run --locked tools/marketplace.py project --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
+      "node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex",
+      "node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot"
     ]
   }
 }

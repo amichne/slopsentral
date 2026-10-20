@@ -30,9 +30,9 @@ current AGP defaults before adding flags such as non-transitive R classes. Do no
 assume included builds are faster than project dependencies or split modules
 without measuring both configuration overhead and downstream invalidation.
 
-Use the existing Gradle wrapper and native reports for controlled warm-ups and repeatable edits.
-Keep the JDK, daemon, and cache policies aligned with the real workflow.
-A local benchmark cannot prove CI queue or runner improvements.
+Use a Gradle Profiler scenario for controlled local warm-ups and repeatable edits
+when useful. Keep its scenario, JDK, daemon and cache policies aligned with the
+real workflow. A local benchmark cannot prove CI queue or runner improvements.
 
 Official sources (consult versions supported by the repository):
 
@@ -40,5 +40,6 @@ Official sources (consult versions supported by the repository):
 - [Configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html)
 - [Build cache](https://docs.gradle.org/current/userguide/build_cache.html)
 - [Kotlin compilation and reports](https://kotlinlang.org/docs/gradle-compilation-and-caches.html)
+- [Gradle Profiler](https://github.com/gradle/gradle-profiler)
 - [Android build optimization](https://developer.android.com/build/optimize-your-build)
 - [KSP migration](https://developer.android.com/build/migrate-to-ksp)

@@ -143,18 +143,18 @@
           "source/plugins/software-engineering/plugin.json"
         ]
       },
-      "prompt": "Use Software Engineering to inspect the configured issue backend and show the direct blockers for item 42. Do not change any issue or infer dependencies from body text.",
+      "prompt": "Use Software Engineering to inspect the configured issue backend and show the direct blockers for item 42. Jira must use Atlassian acli. Do not change any issue or infer dependencies from body text.",
       "expectedPrimitive": {
         "type": "SKILL",
         "name": "issue-tracker-operations"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
-        "summary": "Issue work can branch directly to one provider command, select an outside issue integration, or treat prose and parent-child containment as blocker evidence.",
-        "risk": "The selected backend becomes an implicit model choice, an outside provider is selected, or dependency direction and coverage become false.",
+        "summary": "Issue work can branch directly to one provider command, reuse a stale Jira resolver, or treat prose and parent-child containment as blocker evidence.",
+        "risk": "The selected backend becomes an implicit model choice, Jira bypasses Atlassian acli, or dependency direction and coverage become false.",
         "loadedPrimitives": [
           "github-ci-operations",
-          "outside-issue-adapter"
+          "jira-resolve-ticket"
         ]
       },
       "allowedActions": [
@@ -163,15 +163,15 @@
         "Read the issue and direct blocker map through the facade, then preserve BLOCKS direction and bounded coverage."
       ],
       "forbiddenActions": [
-        "Select an outside issue adapter or bypass the facade.",
+        "Invoke the legacy jira executable or route through jira-resolve-ticket.",
         "Infer blocker links from issue body text or labels.",
         "Represent hierarchy or transitive traversal as complete direct blocker evidence.",
         "Run a provider-specific remote write outside the facade capability contract."
       ],
       "recoveryExpectation": "If selection, authentication, provider JSON, or capability admission fails, return the typed rejection and do not try an undeclared provider fallback.",
-      "productiveOutcome": "Issue dependency reads become host-selectable while retaining native GitHub authority, exact blocker direction, and explicit evidence limits.",
+      "productiveOutcome": "Issue dependency reads become host-selectable while retaining native GitHub or Jira authority, exact blocker direction, and explicit evidence limits.",
       "verificationEvidence": [
-        "The result names GITHUB and records gh command evidence.",
+        "The result names GITHUB or JIRA and records gh or acli command evidence.",
         "The direct map declares depth one and marks hierarchy and transitive traversal unsupported."
       ],
       "notes": "This protects the issue-host seam without claiming write parity or arbitrary backend support."
@@ -462,28 +462,28 @@
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
-        "summary": "A prose revision can change technical meaning or omit the local assessment.",
+        "summary": "A prose revision can improve tone while changing technical meaning, introducing competing terms, or skipping the repository glossary.",
         "risk": "Readers receive polished text that conflicts with the source contract or creates semantic shadowing.",
         "loadedPrimitives": []
       },
       "allowedActions": [
-        "Read the source facts and nearby rules before you revise prose.",
-        "Keep the terms that the source uses and flag ambiguous meaning for review.",
-        "Run the local prose assessment and the smallest documentation check for the changed surface."
+        "Load the source facts, nearby writing rules, and repository glossary before revising prose.",
+        "Use one canonical name per concept and migrate only clear known synonyms.",
+        "Run the glossary checker and the smallest rendered or documentation check for the changed surface."
       ],
       "forbiddenActions": [
         "Invent behavior, guarantees, or product scope not supported by source evidence.",
-        "Invent a definition or change an established term without source evidence.",
+        "Register an ambiguous synonym or shadow an existing glossary term.",
         "Apply prose rules to code identifiers, command syntax, or machine-readable contracts."
       ],
-      "recoveryExpectation": "A good revision keeps source meaning, runs the local assessment, and flags uncertain meaning for review.",
+      "recoveryExpectation": "A good revision should preserve source meaning, resolve terminology mechanically where possible, and leave uncertain meaning for clarification.",
       "productiveOutcome": "Technical prose becomes easier to read without weakening or duplicating the repository's semantic contract.",
       "verificationEvidence": [
         "Every material claim remains traceable to the source documentation or code contract.",
-        "The local prose assessment runs without a glossary and records findings or typed failures.",
+        "The repository glossary check passes when a glossary is present.",
         "The changed rendered documentation is inspected when presentation affects the deliverable."
       ],
-      "notes": "This case connects prose assessment with source evidence and rendered-document review."
+      "notes": "This case turns a repeated writing request into a source-backed terminology and rendering workflow."
     }
   ]
 }

@@ -1,59 +1,113 @@
 ---
 name: semantic-ratchet
-description: Design constrained domain values and pure decisions. Use when parsers, conditional predicates, or consumer APIs lose established facts, admit invalid states, or repeat checks.
+description: Use when validation, authorization, normalization, or state checks produce facts later code must retain. Replace primitive contracts, flags, sentinel states, string protocols, and call-order conventions with proof-carrying values in any language.
 ---
 
-# Constrained Domain Design
+# Semantic Ratchet
 
-Reduce the set of values and behaviors that callers must consider.
-Use familiar domain types and standard language features.
-Keep each established fact in the value that its consumer accepts.
+Make established facts durable. A successful parse, validation, authorization,
+lookup, normalization, or precondition check must return a representation that
+carries the fact forward whenever later behavior requires it. The type system
+remembers established knowledge; callers reason only about remaining obligations.
 
-## Procedure
+## Operating Contract
 
-1. Name the invariant and its consumer. Inspect existing types, constructors, callers, and tests.
-2. Reuse the current owner when it already enforces the invariant.
-3. Parse an external primitive into a constrained value or a finite failure.
-4. Give each conditional predicate one yes-or-no assertion about known values.
-5. Separate parsing, membership, normalization, and comparison. Keep those operations pure.
-6. Pass stronger values forward. Keep unchecked construction under the invariant owner.
-7. Handle closed variants exhaustively. Preserve failures through composition.
-8. Examine one accepted case and the nearest rejected case with the project tools.
-9. State the established fact, its scope, and the limits of the evidence.
+- Keep tiny, obvious, function-local facts local when they do not escape.
+- Preserve non-local facts by default and cross-boundary facts by requirement.
+- Treat primitive boundary inputs as untrusted; parse or wrap them before core
+  logic receives them.
+- Require proof in consumer contracts. Domain meaning must have a type; a name,
+  alias, unchecked wrapper, prior guard, or comment cannot substitute for an invariant.
+- Prefer intrinsic representations, such as a head plus tail for a non-empty
+  collection, and closed case-specific shapes over wrappers that expose raw values.
+- Parse into stronger values or closed typed failures at ingress. Expected
+  failures must not use null, Boolean, sentinel, free text, or exception protocols.
+- Keep discharged input checks out of application layers. Put pure decisions
+  with their invariant owner; make effects and any new proof obligations explicit.
+- Delegate encoding and format selection to output adapters through a shared
+  serialization abstraction. Domain types do not own encoding methods.
+- Use the strongest local mechanism: static types, schemas, opaque construction,
+  closed tagged values, module APIs, or focused contract checks.
+- Choose the smallest model that prevents the named misuse. Do not add generic
+  type machinery without a concrete invariant.
+- Do not cast, suppress, weaken types, expose unchecked construction, or unpack
+  a stronger value immediately to route around mechanical rejection.
 
-A predicate returns true or false.
-A refinement returns success with a stronger value or failure with a finite reason.
-Exhaustive case selection can return one of several cases.
-Traversal can process a whole collection.
-Neither needs a forced sequence of binary predicates.
+## Workflow
 
-For a date range, parse the date first. Reject a malformed date at that step.
-Compare date values in a separate predicate.
-Do not hide parsing or effects inside the comparison.
+Choose the authorized mode first. For design or read-only review, inspect and
+describe the required representation and proposed rejection check without edits
+or execution beyond the requested scope. For implementation, inspect current
+owners, contracts, callers, and tests before choosing reuse, extend, or add.
+Verified reuse may satisfy the requirement without inventing a new type.
 
-Keep external effects in explicit adapters.
-Keep local facts local when no consumer needs a stronger representation.
-Add a type or abstraction only when it excludes a concrete misuse.
-Use the repository toolchain and native host workflow for implementation and delivery.
+1. Name the fact being established: validity, normalization, authorization,
+   resolution, lifecycle phase, non-empty collection, external protocol value,
+   or domain outcome.
+2. Find where the fact is lost and classify the scope as local, non-local, or a
+   public, module, service, storage, or repository boundary.
+   Trace value identity and callers where available. Report proof loss when a
+   consumer requires an established fact that its input contract no longer
+   carries. If the consumer obligation or value flow is unresolved, name the
+   missing evidence instead of claiming a proven defect.
+3. Choose the narrowest proof carrier: constrained value, closed variant or
+   result, capability, state-specific value, constrained collection, schema, or
+   generated model.
+4. For authorized implementation, change the contract so the old invalid call,
+   state, or transition fails at the earliest available enforcement boundary.
+5. For authorized implementation, update callers by carrying the stronger value
+   forward rather than recreating the primitive representation.
+6. Prove one legal path and one named misuse with compilation, type checking,
+   schema validation, exhaustive handling, or the smallest focused test.
+   State which obligation each result proves, the trusted construction boundary,
+   and unresolved effect or model limits. A typed capability alone does not prove
+   single use, fresh authorization, or immutable external state.
 
-## References
+## API and Composition
 
-- For the rationale, read [proof discipline](references/proof-discipline.md).
-- For scalar and collection types, read [domain values](references/domain-values.md).
-- For finite failures, read [closed outcomes](references/closed-outcomes.md).
-- For operation ownership and composition, read [API design](references/api-boundaries.md).
-- For legal transitions, read [state and capabilities](references/state-and-capability-modeling.md).
-- For module access, read [module design](references/module-boundaries.md).
-- For a review, read [the audit checklist](references/audit-checklist.md).
-- For an implementation, read [the refactor procedure](references/refactor-playbook.md).
-- For language examples, read [the Kotlin example](references/kotlin-proof-example.md) or [the API example](references/api-proof-example.md).
+For function ownership, callback purity, closure capture, and failure-preserving
+higher-order operations, read [API boundaries](references/api-boundaries.md).
+Decompose requirements before selecting syntax; language specialties apply this
+process to their own visibility, exhaustiveness, and platform mechanisms.
 
-## Completion
+## Reference Routing
 
-The consumer accepts the established fact without reconstructing it from primitives.
-The named misuse fails under the selected compiler, schema, or runtime assertion.
-The accepted case still passes.
-Static acceptance does not prove external effects or model behavior.
+- Read [proof-discipline.md](references/proof-discipline.md) when establishing
+  the engineering standard, choosing a proof mechanism, or distinguishing
+  constructive modeling from named wrappers.
+- Read [kotlin-proof-example.md](references/kotlin-proof-example.md),
+  [api-proof-example.md](references/api-proof-example.md), or
+  the Python Tooling self-contained example for a representative
+  realization and its legal-path and forbidden-path checks. Use the relevant
+  language or contract skill for production syntax and tool selection.
+- Read [domain-values.md](references/domain-values.md) for constrained
+  primitives, normalization, non-empty values, and compact domain vocabulary.
+- Read [closed-outcomes.md](references/closed-outcomes.md) for finite variants,
+  exhaustive handling, expected failures, and external unknown cases.
+- Read [state-and-capability-modeling.md](references/state-and-capability-modeling.md)
+  for lifecycle protocols, authorization, and discharged preconditions.
+- Read [module-boundaries.md](references/module-boundaries.md) for public APIs,
+  services, repositories, adapters, generated models, or persistence seams.
+- Read [audit-checklist.md](references/audit-checklist.md) when reviewing code or
+  planning a ratchet.
+- Read [refactor-playbook.md](references/refactor-playbook.md) when implementing
+  the change.
 
-This guidance uses [Parse, do not validate](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/)
-and [Names are not type safety](https://lexi-lambda.github.io/blog/2020/11/01/names-are-not-type-safety/).
+## Ownership Boundary
+
+This skill owns the language-agnostic proof-preservation workflow. Language,
+schema, framework, and repository-specific skills own syntax, tool selection,
+and local verification commands.
+
+## Completion Criteria
+
+- Design or review names the fact, consumer obligation, representation,
+  proposed rejection check, and evidence limits within the authorized scope.
+  Implementation completion additionally requires the following observed results.
+- The established fact survives in the value or contract that crosses its
+  boundary.
+- The previously representable misuse fails mechanically or at the earliest
+  available assertion boundary.
+- Valid behavior still passes the narrowest relevant executable check.
+- Results retain the exact proof boundary. Proposed cases, static fixtures,
+  observed compiler/schema results, and model behavior remain distinct.

@@ -51,7 +51,7 @@ This file applies to authored marketplace source under `source/`.
 
 ## Verify
 
-- Run `uv run --locked tools/marketplace.py validate` after changing primitive
+- Run `node tools/validate-source-graph.mjs` after changing primitive
   references, hook metadata, plugin manifests, routing evals, or source graph
   contracts.
 - For marketplace publication proof, run the full root `AGENTS.md` marketplace
@@ -72,14 +72,5 @@ select each hook through one plugin; shared hook packaging does not prove that
 a host will execute it once. Check the full dependency closure for that rule.
 Keep marketplace identities unique and reject conflicting paths or cycles.
 Do not copy payloads into plugin directories. Regenerate `source/CATALOG.md` with
-`uv run --locked tools/marketplace.py catalog --out source/CATALOG.md` after composition changes. See
+`node tools/catalog.mjs --write` after composition changes. See
 `source/ARCHITECTURE.md` for the primitive responsibilities and evidence limits.
-
-`WORKFLOW_PROFILE.focusSkills` selects skills from the selected plugin closures.
-`WORKFLOW_PROFILE.skills` selects more skills from those closures and sets each invocation policy.
-The catalog rejects a focus skill or binding outside those closures.
-The default Pi projection resolves `local-development-default` at authoring time.
-It emits native skill paths and a plain instruction file without an extension.
-Invocation policies must be `either`; hook policies must be `OFF`.
-Unsupported capabilities fail explicitly rather than becoming prompt guarantees.
-These fields do not change user authority or the host's trust decision.

@@ -21,7 +21,7 @@ test('Kotlin defaults preserve proof owners without unrelated automation', () =>
   assert.deepEqual(profile.plugins, ['software-engineering', 'kotlin-engineering']);
   const selected = profile.plugins.map(name => JSON.parse(fs.readFileSync(path.join(root, `source/plugins/${name}/plugin.json`))));
   const skills = new Set(selected.flatMap(plugin => plugin.skills.map(skill => skill.name)));
-  for (const name of ['semantic-ratchet', 'kotlin-design-practices', 'kotlin-review', 'negative-capability-proof', 'kotlin-gradle-validation']) {
+  for (const name of ['semantic-ratchet', 'tdd', 'python-tooling', 'kotlin-design-practices', 'kotlin-review', 'negative-capability-proof', 'kotlin-gradle-validation']) {
     assert.ok(skills.has(name), `${name} remains discoverable`);
   }
   const hooks = selected.flatMap(plugin => plugin.hooks.map(hook => hook.name));

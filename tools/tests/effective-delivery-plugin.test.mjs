@@ -17,12 +17,12 @@ function names(manifest, field) {
 }
 
 test("software engineering keeps explicit CI observation without automatic CI hooks", () => {
-  const engineering = readJson("source/adaptable.marketplace.json");
+  const engineering = readJson("source/plugins/software-engineering/plugin.json");
   for (const skill of ["git-change-flow", "github-ci-operations", "issue-tracker-operations",
     "pull-request-lifecycle"]) {
     assert.ok(names(engineering, "skills").includes(skill));
   }
-  assert.deepEqual(names(readJson("source/plugins/software-engineering/plugin.json"), "hooks"), []);
+  assert.deepEqual(names(engineering, "hooks"), ["software-engineering-context", "agents-md-scope"]);
   assert.equal(
     fs.existsSync(path.join(repoRoot, "source/skills/github-ci-operations/scripts/ci_wait_for_actions")),
     true,

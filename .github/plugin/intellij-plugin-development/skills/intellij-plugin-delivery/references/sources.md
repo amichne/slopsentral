@@ -7,10 +7,10 @@ scripts, examples, or templates.
 
 | Source | Audited commit | License | Decision |
 | --- | --- | --- | --- |
-| gadfly3173/intellij-platform-sdk-skills | `9f504a29bc9c88dce59e94b72ebb4bce36d9b5b3` | MIT | Primary reference for progressive routing, lifecycle, compatibility, and verification |
-| buyoung/skills | `dc29214c7317d0e96c80835ed6330fd61c2bd0b0` | MIT | Retain the compact delivery mental model and preflight discipline; omit the 120-file payload |
-| duckyman-ai/agent-skills | `3f4e102ad2c0172f1dc95784058a8413d4803f6e` | MIT | Do not retain hardcoded build ranges or universal Kotlin, JDK, VFS, and author-signing claims |
-| titonio/opencode-jb | `69bebeabe2dcf55d4681380697909bdc41df7847` | MIT | Reject missing claimed SDK docs, mismatched runtime paths, unsafe interactive scaffolding, absent wrapper generation, and stale templates |
+| [gadfly3173/intellij-platform-sdk-skills](https://github.com/gadfly3173/intellij-platform-sdk-skills) | `9f504a29bc9c88dce59e94b72ebb4bce36d9b5b3` | MIT | Primary reference for progressive routing, lifecycle, compatibility, and verification |
+| [buyoung/skills](https://github.com/buyoung/skills) | `dc29214c7317d0e96c80835ed6330fd61c2bd0b0` | MIT | Retain the compact delivery mental model and preflight discipline; omit the 120-file payload |
+| [duckyman-ai/agent-skills](https://github.com/duckyman-ai/agent-skills) | `3f4e102ad2c0172f1dc95784058a8413d4803f6e` | MIT | Do not retain hardcoded build ranges or universal Kotlin, JDK, VFS, and author-signing claims |
+| [titonio/opencode-jb](https://github.com/titonio/opencode-jb) | `69bebeabe2dcf55d4681380697909bdc41df7847` | MIT | Reject missing claimed SDK docs, mismatched runtime paths, unsafe interactive scaffolding, absent wrapper generation, and stale templates |
 
 The duplicate `intellij-platform-sdk` request was audited once at the same
 commit.

@@ -21,29 +21,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "21"
       - uses: actions/setup-node@v4
         with:
-          node-version: '24.21.0'
           cache: npm
       - uses: astral-sh/setup-uv@v7
         with:
           version: "0.12.9"
           enable-cache: true
       - name: Set up locked Python and schema tools
-        run: uv run --locked tools/setup.py --with-host-tools
+        run: uv run --locked tools/setup.py
       - name: Install checksum-verified native tools
         run: uv run --locked tools/ci.py native
       - name: Validate source, Python, schemas, and retained contracts
         run: uv run --locked tools/ci.py validate
       - name: Run all Python unit checks
         run: uv run --locked tools/ci.py unit
-      - name: Validate documented installation and navigation
-        run: npm run docs:check
       - name: Compile Kotlin concepts and forbidden calls
         run: uv run --locked tools/ci.py kotlin
       - name: Validate Pkl facade against native Pkl
@@ -51,94 +47,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: uv run --locked tools/ci.py pkl
       - name: Project both providers and execute projected hook contracts
-        run: uv run --locked tools/verify_marketplaces.py --with-host-tools --out "$RUNNER_TEMP/qualified-projections"
-      - name: Archive the tested provider bytes
-        env:
-          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-        run: >-
-          uv run --locked python -m tools.release_assets package
-          "$RUNNER_TEMP/qualified-projections" "$RUNNER_TEMP/marketplace-candidate" "$SOURCE_SHA"
-      - name: Retain qualified provider archives
-        uses: actions/upload-artifact@v4
-        with:
-          name: marketplace-candidate-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/marketplace-candidate/
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 30
-
-  pi-candidate:
-    name: Retain tested Pi candidate
-    needs: validate
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    permissions:
-      contents: read
-      actions: read
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          persist-credentials: false
-      - uses: astral-sh/setup-uv@v7
-        with:
-          version: '0.12.9'
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: npm
-      - name: Install locked Node tools
-        run: npm ci --ignore-scripts
-      - name: Install pinned Pkl
-        run: |
-          uv run --locked tools/install_projection_pkl.py --out "$RUNNER_TEMP/pkl/pkl"
-          echo "PKL_BIN=$RUNNER_TEMP/pkl/pkl" >> "$GITHUB_ENV"
-      - name: Project the source package
-        run: uv run --locked tools/marketplace.py project --source . --harness pi --out "$RUNNER_TEMP/projected-pi"
-      - name: Examine every Pi contract through the native host
-        env:
-          SLOPSENTRAL_PI_PACKAGE: ${{ runner.temp }}/projected-pi/.pi/slopsentral
-        run: |
-          npm run check:pi
-          node --test tools/tests/pi-*.test.mjs
-      - name: Package one unique candidate
-        id: package
-        run: >-
-          uv run --locked --script tools/package_pi.py
-          "$RUNNER_TEMP/projected-pi/.pi/slopsentral" "$RUNNER_TEMP/pi-candidate"
-          --version "0.1.$GITHUB_RUN_NUMBER" --github-output "$GITHUB_OUTPUT"
-      - name: Install the candidate archive through the native Pi CLI
-        env:
-          SLOPSENTRAL_PI_ARCHIVE: ${{ steps.package.outputs.archive }}
-        run: node --test tools/tests/pi-install.test.mjs
-      - name: Seal the tested archive and source identity
-        env:
-          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-        run: >-
-          uv run --locked --script tools/pi_candidate.py seal
-          --repository "$GITHUB_REPOSITORY" --revision "$SOURCE_SHA"
-          --run-id "$GITHUB_RUN_ID" --run-number "$GITHUB_RUN_NUMBER"
-          --run-attempt "$GITHUB_RUN_ATTEMPT" --event "$GITHUB_EVENT_NAME"
-          --bundle "$RUNNER_TEMP/pi-candidate"
-      - name: Test native setup and recovery
-        run: node --test tools/tests/pi-setup.test.mjs
-      - name: Package the tested setup installer
-        run: >-
-          uv run --locked python -m tools.setup_assets package
-          "$RUNNER_TEMP/pi-candidate" "$RUNNER_TEMP/setup-candidate"
-      - name: Retain the tested setup installer
-        uses: actions/upload-artifact@v4
-        with:
-          name: setup-candidate-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/setup-candidate/
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 30
-      - name: Retain the immutable tested archive
-        uses: actions/upload-artifact@v4
-        with:
-          name: pi-candidate-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/pi-candidate/
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 30
+        run: uv run --locked tools/verify_marketplaces.py

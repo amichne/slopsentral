@@ -12,24 +12,17 @@
 # ///
 """Explicit checkout setup. uv is a prerequisite, never downloaded implicitly."""
 
-import argparse
 from pathlib import Path
 
 from python_checks.gates import Command, Completed, Stage, run
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    _ = parser.add_argument(
-        "--with-host-tools",
-        action="store_true",
-        help="Install Pi, Mintlify, and JavaScript audit tools",
-    )
-    arguments = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
-    commands = (Command(Stage.SETUP, "uv", ("sync", "--locked", "--group", "refactor")),)
-    if arguments.with_host_tools:
-        commands += (Command(Stage.SETUP, "npm", ("ci", "--ignore-scripts")),)
+    commands = (
+        Command(Stage.SETUP, "uv", ("sync", "--locked", "--group", "refactor")),
+        Command(Stage.SETUP, "npm", ("ci", "--ignore-scripts")),
+    )
     for command in commands:
         if not isinstance(run(command, root), Completed):
             return 1

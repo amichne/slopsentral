@@ -12,54 +12,9 @@ ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "source/hooks/agents-md-scope.py"
 
 
-def test_explicit_assessment_needs_no_git_or_baseline(tmp_path: Path) -> None:
-    repo = tmp_path / "workspace"
-    (repo / "module").mkdir(parents=True)
-    _ = (repo / "AGENTS.md").write_text("Use the new root command.\n")
-    _ = (repo / "module/AGENTS.md").write_text("Use the module command.\n")
-    denied = tmp_path / "bin"
-    denied.mkdir()
-    ledger = tmp_path / "git-called"
-    git_command = denied / "git"
-    _ = git_command.write_text(f"#!/bin/sh\necho called >> '{ledger}'\nexit 99\n")
-    git_command.chmod(0o755)
-
-    def assess(names: list[str]) -> dict[str, object]:
-        result = subprocess.run(
-            [sys.executable, str(SCRIPT), "assess"],
-            input=json.dumps(
-                {
-                    "hook_event_name": "Stop",
-                    "cwd": str(repo),
-                    "session_id": "first-run",
-                    "changed_paths": names,
-                }
-            ),
-            text=True,
-            capture_output=True,
-            check=False,
-            env={**os.environ, "PATH": str(denied)},
-        )
-        assert result.returncode == 0, result.stderr
-        return json.loads(result.stdout)
-
-    assert assess([]) == {}
-    result = assess(["module/main.py", "AGENTS.md", "deleted/AGENTS.md"])
-    assert result["decision"] == "block"
-    reason = str(result["reason"])
-    assert '"module/main.py" -> review "module/AGENTS.md"' in reason
-    assert "Use the new root command." in reason
-    assert "module/AGENTS.md" in reason
-    assert "The instruction file was deleted" in reason
-    assert assess(["../outside"])["decision"] == "block"
-    assert "INVALID_EVENT" in str(assess(["../outside"]))
-    assert not ledger.exists()
-    assert not (tmp_path / "codex").exists()
-
-
-def test_scope_hook_stays_explicit_and_local_commands_exist() -> None:
+def test_hook_is_composed_and_local_commands_exist() -> None:
     plugin = json.loads((ROOT / "source/plugins/software-engineering/plugin.json").read_text())
-    assert "agents-md-scope" not in {hook["name"] for hook in plugin["hooks"]}
+    assert "agents-md-scope" in {hook["name"] for hook in plugin["hooks"]}
     local = json.loads((ROOT / ".codex/hooks.json").read_text())
     commands = [
         item["command"]

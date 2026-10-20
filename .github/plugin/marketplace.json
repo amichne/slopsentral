@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "description": "Focused domain design and optional language, tooling, and repository workflows.",
+    "description": "Kotlin-first engineering with proof-preserving design, focused tests, and locked uv Python automation.",
     "pluginRoot": ".github/plugin"
   },
   "name": "slopsentral",
@@ -13,29 +13,77 @@
         "name": "Amichne"
       },
       "category": "Engineering",
-      "description": "Constrain domain values, preserve established facts, and compose pure decisions.",
+      "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
       "keywords": [
-        "atomic-predicates",
+        "actions",
+        "automation",
+        "backend",
+        "ci",
+        "cli",
+        "core",
+        "daily-driver",
+        "dependencies",
         "design",
-        "proof",
+        "duration",
+        "evidence",
+        "failures",
+        "git",
+        "github",
+        "governance",
+        "hooks",
+        "instructions",
+        "issues",
+        "jira",
+        "local-development",
+        "mise",
+        "onboarding",
+        "optimization",
+        "pull-requests",
+        "release",
         "schemas",
         "skills",
         "software-engineering",
-        "type-safety"
+        "tdd",
+        "testing",
+        "workflow-graph"
       ],
       "license": "UNLICENSED",
       "name": "software-engineering",
       "source": "software-engineering",
       "strict": true,
       "tags": [
-        "atomic-predicates",
+        "actions",
+        "automation",
+        "backend",
+        "ci",
+        "cli",
+        "core",
+        "daily-driver",
+        "dependencies",
         "design",
-        "proof",
+        "duration",
+        "evidence",
+        "failures",
+        "git",
+        "github",
+        "governance",
+        "hooks",
+        "instructions",
+        "issues",
+        "jira",
+        "local-development",
+        "mise",
+        "onboarding",
+        "optimization",
+        "pull-requests",
+        "release",
         "schemas",
         "skills",
-        "type-safety"
+        "tdd",
+        "testing",
+        "workflow-graph"
       ],
-      "version": "4.0.0"
+      "version": "3.1.0"
     },
     {
       "author": {
@@ -53,6 +101,7 @@
         "gradle",
         "higher-order-functions",
         "hooks",
+        "kast",
         "kotlin",
         "kotlin-engineering",
         "ktor",
@@ -90,6 +139,7 @@
         "higher-order-functions",
         "hooks",
         "kotlin",
+        "kast",
         "ktor",
         "libraries",
         "module-boundaries",
@@ -110,7 +160,7 @@
         "type-safety",
         "validation"
       ],
-      "version": "4.0.0"
+      "version": "3.0.0"
     },
     {
       "author": {
@@ -163,6 +213,7 @@
         "controlled-language",
         "docs",
         "generation",
+        "glossary",
         "gradle",
         "hooks",
         "impact",
@@ -177,6 +228,7 @@
         "skills",
         "source-backed",
         "technical-writing",
+        "terminology",
         "validation"
       ],
       "license": "UNLICENSED",
@@ -187,6 +239,7 @@
         "controlled-language",
         "docs",
         "generation",
+        "glossary",
         "gradle",
         "hooks",
         "impact",
@@ -200,6 +253,7 @@
         "skills",
         "source-backed",
         "technical-writing",
+        "terminology",
         "validation"
       ],
       "version": "3.1.0"
@@ -225,7 +279,7 @@
         "tools",
         "skills"
       ],
-      "version": "4.0.0"
+      "version": "3.0.0"
     }
   ]
 }

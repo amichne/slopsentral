@@ -49,6 +49,18 @@ discovery and elaborate recipes can reduce usefulness. This supports reducing
 competing entry points without discarding their domain knowledge.
 [OpenAI: rethinking skills and prompts](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra).
 
+Anthropic recommends concise instructions, progressive disclosure, references
+reachable directly from the skill, and constraints matched to operational
+fragility. It also recommends measuring failures before adding instructions.
+Design judgment can remain flexible; fragile publication and schema checks
+need exact procedures.
+[Anthropic: skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
+
+Anthropic's engineering guidance favors simple designs and adding agent
+orchestration when the task needs it. That argues against turning every
+specialty into a persistent persona or a mandatory delegation stage.
+[Anthropic: building effective agents](https://www.anthropic.com/engineering/building-effective-agents).
+
 Use the existing standards for the delivered package. Agent Skills defines
 `SKILL.md` and its supporting resources. Agent Plugins v1 defines skills and
 MCP configuration, with client extensions for other behavior. Those standards
@@ -56,6 +68,14 @@ do not replace Slopsentral's authoring graph or establish a shared runtime
 import system for its canonical assets.
 [Agent Skills specification](https://agentskills.io/specification),
 [Agent Plugins specification](https://agent-plugins.org/specification).
+
+OpenAI's public Build Web Apps package groups a builder and a debugging
+workflow with focused React, shadcn, Stripe, and Supabase guidance. It offers
+a concrete example of organizing around a user job while retaining useful
+specialties. Its compatibility manifest and `agents/openai.yaml` presentation
+metadata also show why directory names alone do not establish execution roles.
+Use it as a structural reference, not a source of mandatory instructions.
+[OpenAI: Build Web Apps package](https://github.com/openai/plugins/tree/main/plugins/build-web-apps).
 
 ## What the current source reveals
 
@@ -71,7 +91,7 @@ Several boundaries deserve revision:
 | --- | --- | --- |
 | Personal Setup | Its manifest includes dotfiles, CLI products, terminal interfaces, and skill/plugin/hook authoring | A personal configuration name hides general toolmaking workflows |
 | Repository Knowledge | Its manifest bundles technical prose and site docs with drift and overlay hooks | Installing writing workflows also installs hook definitions; execution depends on supported host events and configuration |
-| Kotlin Engineering | Its manifest includes guidance, Gradle hooks, and a local MCP command | Language knowledge is coupled to an installed service and host checks |
+| Kotlin Engineering | Its manifest includes guidance, Gradle hooks, and a local Kast MCP command | Language knowledge is coupled to an installed service and host checks |
 | Engineering Excellence | A separate plugin owns design policy and `semantic-ratchet` | A shared engineering concern becomes another default installation decision |
 | Agent profiles | `schema-type-enforcer.agent.md` includes `model: sonnet` | Provider-neutral intent includes a provider-specific execution choice |
 | Generic names | `agents-sdk` means Cloudflare; `workflow` means Vercel Workflow DevKit | Names alone can suggest unrelated agent SDKs or generic workflows |
@@ -124,7 +144,7 @@ remaining names and boundaries below are experiments for later iterations.
 | `repository-knowledge` | Write explanations and maintain source-backed repository knowledge | Current writing and knowledge skills; no automatic overlay or drift hooks in the portable package |
 | `developer-tooling` | Build CLI, shell, terminal, and agent workflow tools | General tool authoring from Personal Setup; conditional authoring references |
 | `api-contracts` | Create and review schemas and API contracts | Current API workflows; reusable schema procedures and focused review output |
-| `kotlin-development` | Implement, review, and diagnose Kotlin code | Kotlin workflows and references; no mandatory service connection or event checks |
+| `kotlin-development` | Implement, review, and diagnose Kotlin code | Kotlin workflows and references; no mandatory Kast connection or event checks |
 | `intellij-development` | Develop and qualify IntelliJ plugins | Current IntelliJ workflows and their platform-specific references |
 | `pkl-workflows` | Develop and verify Pkl configuration | Current Pkl workflows; optional Pkl Repository Checks supplies event hooks |
 | `personal-configuration` | Maintain the user's verified shell and dotfiles setup | Personal setup management and personal variants of shell/CLI workflows |
@@ -145,7 +165,7 @@ full-skill reuse where it helps; report discovery overlap without reinstating
 a global ownership ban.
 
 Group optional integrations visibly with their related workflow package.
-Examples include the service connection, Kotlin/Gradle event checks, knowledge
+Examples include the Kast connection, Kotlin/Gradle event checks, knowledge
 overlay/drift automation, Pkl event checks, and repository policy delivery.
 Keep the skill-read policy an explicit advanced choice.
 
@@ -200,6 +220,12 @@ Architect or Tooling Engineer is not enough to justify a separate agent.
 
 Move provider model selection and tool restrictions into the adapter.
 Keep the review criteria and findings contract in a reusable skill/reference.
+For portable OpenAI submission, its conversion guidance explicitly recommends
+moving reusable command and agent behavior into skills. Its public directory
+also excludes lifecycle hooks; manually installed desktop distribution remains
+a different route.
+[OpenAI: Claude plugin conversion](https://developers.openai.com/plugins/guides/submit-claude-plugin).
+
 This does not prohibit native subagents. It removes the assumption that a
 persona must be a portable knowledge primitive or that every task needs a
 team of personas.
@@ -291,7 +317,7 @@ Use representative tasks and negative controls:
 - A skill rewrite, a hook addition, and a schema-only edit.
 - A prose-only edit in a Pkl repository, and a source-backed knowledge refresh.
 - A local edit without publication authority, and a requested PR publication.
-- A missing semantic service, unavailable build tooling, conflicting assets, and overlapping hooks.
+- Missing Kast, unavailable build tooling, conflicting assets, and overlapping hooks.
 
 Record selected skills, irrelevant selections, loaded resources, actual token
 usage when available, task completion, proof gaps, and automatic hook effects.
@@ -316,7 +342,7 @@ the external projection dependency for both existing provider shapes.
    tasks. Inspect host discovery overlap and automatic effects in fresh sessions.
 2. Consolidate authoring entry points only when the measured task results support
    it. Preserve their constraints, references, helpers, and callers.
-3. Separately pilot Kotlin guidance without mandatory services or event hooks.
+3. Separately pilot Kotlin guidance without mandatory Kast or event hooks.
    Qualify source, both projections, and a fresh supported host session.
 4. Compare real task evidence. Migrate profiles and retire compatibility
    entries only after their replacements preserve the required results.

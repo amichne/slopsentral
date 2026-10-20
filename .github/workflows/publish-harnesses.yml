@@ -1,74 +1,148 @@
 name: Publish Harnesses
 
 on:
-  workflow_run:
-    workflows: [Validate Source]
-    types: [completed]
-    branches: [main]
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.agents/plugins/**'
+      - '.github/plugin/**'
   workflow_dispatch:
-    inputs:
-      run_id:
-        description: Successful main Validate Source run
-        required: true
-        type: string
-      revision:
-        description: Exact source revision of that run
-        required: true
-        type: string
 
 permissions:
   contents: read
-  actions: read
 
 concurrency:
-  group: publish-harnesses-main
-  cancel-in-progress: false
+  group: publish-harnesses-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  publish:
-    name: Publish qualified marketplaces
-    if: >-
-      (github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push' &&
-       github.event.workflow_run.conclusion == 'success') ||
-      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+  validate:
+    name: Validate marketplace source
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      actions: read
-    env:
-      SOURCE_SHA: ${{ github.event.workflow_run.head_sha || inputs.revision }}
-      SOURCE_RUN_ID: ${{ github.event.workflow_run.id || inputs.run_id }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.workflow_sha }}
+      - name: Check out repository
+        uses: actions/checkout@v4
+
       - uses: astral-sh/setup-uv@v7
         with:
           version: "0.12.9"
-      - name: Admit the full successful main validation
-        id: admission
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+
+      - name: Install schema validation dependencies
+        run: npm ci
+
+      - name: Validate source marketplace
+        run: node tools/validate-source-graph.mjs
+
+  publish:
+    name: Publish ${{ matrix.harness }}
+    needs: validate
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - harness: codex
+            branch: harness/codex
+          - harness: github-copilot
+            branch: harness/github-copilot
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.9"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+
+      - name: Install schema validation dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Set up pinned projection runtime
+        run: |
+          node tools/install-projection-pkl.mjs --out "$RUNNER_TEMP/projection-pkl/pkl"
+          echo "PKL_BIN=$RUNNER_TEMP/projection-pkl/pkl" >> "$GITHUB_ENV"
+
+      - name: Project ${{ matrix.harness }} marketplace
+        id: projection
+        run: |
+          projection_path="$RUNNER_TEMP/projected-${{ matrix.harness }}"
+          node tools/project-marketplaces.mjs --source . --harness '${{ matrix.harness }}' --out "$projection_path"
+          echo "projection-path=$projection_path" >> "$GITHUB_OUTPUT"
+
+      - name: Publish ${{ matrix.branch }}
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: uv run --locked python -m tools.release_assets admit-run "$GITHUB_REPOSITORY" "$SOURCE_RUN_ID" "$SOURCE_SHA" --github-output "$GITHUB_OUTPUT"
-      - name: Download tested provider archives from that run
+          PROJECTION_PATH: ${{ steps.projection.outputs.projection-path }}
+          TARGET_BRANCH: ${{ matrix.branch }}
+        run: |
+          set -euo pipefail
+          uv run --locked tools/publish.py harness \
+            "${PROJECTION_PATH}" \
+            "${TARGET_BRANCH}" \
+            main \
+            "${GITHUB_SHA}"
+
+      - name: Archive projection with executable permissions
+        env:
+          PROJECTION_PATH: ${{ steps.projection.outputs.projection-path }}
+          HARNESS: ${{ matrix.harness }}
+        run: tar -cf "$RUNNER_TEMP/marketplace-$HARNESS.tar" -C "$PROJECTION_PATH" .
+
+      - name: Upload projection for main
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketplace-${{ matrix.harness }}
+          path: ${{ runner.temp }}/marketplace-${{ matrix.harness }}.tar
+          if-no-files-found: error
+          retention-days: 1
+
+  publish-main:
+    name: Publish both marketplaces to main
+    needs: publish
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.12.9"
+
+      - name: Download this run's projections
         uses: actions/download-artifact@v4
         with:
-          name: ${{ steps.admission.outputs.artifact }}
-          run-id: ${{ env.SOURCE_RUN_ID }}
-          github-token: ${{ github.token }}
-          path: ${{ runner.temp }}/marketplace-candidate
-      - name: Verify identity and unpack tested bytes
-        run: uv run --locked python -m tools.release_assets unpack "$RUNNER_TEMP/marketplace-candidate" "$RUNNER_TEMP/marketplaces" "$SOURCE_SHA"
-      - name: Publish Codex branch
+          pattern: marketplace-*
+          path: ${{ runner.temp }}/marketplace-archives
+          merge-multiple: true
+
+      - name: Extract both projections
         run: |
-          mkdir -p "$RUNNER_TEMP/codex"
-          cp -R "$RUNNER_TEMP/marketplaces/.agents" "$RUNNER_TEMP/codex/"
-          uv run --locked tools/publish.py harness "$RUNNER_TEMP/codex" harness/codex main "$SOURCE_SHA"
-      - name: Publish Copilot branch
-        run: |
-          mkdir -p "$RUNNER_TEMP/copilot"
-          cp -R "$RUNNER_TEMP/marketplaces/.github" "$RUNNER_TEMP/copilot/"
-          uv run --locked tools/publish.py harness "$RUNNER_TEMP/copilot" harness/github-copilot main "$SOURCE_SHA"
+          mkdir -p "$RUNNER_TEMP/marketplaces"
+          tar -xf "$RUNNER_TEMP/marketplace-archives/marketplace-codex.tar" -C "$RUNNER_TEMP/marketplaces"
+          tar -xf "$RUNNER_TEMP/marketplace-archives/marketplace-github-copilot.tar" -C "$RUNNER_TEMP/marketplaces"
+
       - name: Publish generated trees to main
-        run: uv run --locked tools/publish.py main "$RUNNER_TEMP/marketplaces" "$SOURCE_SHA"
+        env:
+          PROJECTION_PATH: ${{ runner.temp }}/marketplaces
+        run: uv run --locked tools/publish.py main "$PROJECTION_PATH" "$GITHUB_SHA"

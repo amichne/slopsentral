@@ -7,7 +7,7 @@ from typing import Mapping, Sequence, cast
 
 from issue_backend_config import resolve_backend, resolve_github_repository
 from issue_backend_output import emit
-from issue_backend_providers import CommandRunner, GitHubProvider, IssueProvider
+from issue_backend_providers import CommandRunner, GitHubProvider, IssueProvider, JiraProvider
 from issue_backend_types import (
     Backend,
     IssueBackendError,
@@ -25,7 +25,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--backend",
-        choices=("github",),
+        choices=("github", "jira"),
         help="Override EFFECTIVE_DELIVERY_ISSUE_BACKEND for this invocation.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -36,15 +36,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     capabilities_parser.add_argument("--json", action="store_true", help="Emit canonical JSON instead of TOON.")
 
-    view_parser = subparsers.add_parser("view", help="Read one GitHub issue.")
-    view_parser.add_argument("identifier", help="GitHub issue number.")
+    view_parser = subparsers.add_parser("view", help="Read one issue or Jira work item.")
+    view_parser.add_argument("identifier", help="GitHub issue number or Jira work item key.")
     view_parser.add_argument("--json", action="store_true", help="Emit canonical JSON instead of TOON.")
 
     dependency_parser = subparsers.add_parser(
         "dependency-map",
         help="Read the direct blocker map for one issue.",
     )
-    dependency_parser.add_argument("identifier", help="GitHub issue number.")
+    dependency_parser.add_argument("identifier", help="GitHub issue number or Jira work item key.")
     dependency_parser.add_argument("--json", action="store_true", help="Emit canonical JSON instead of TOON.")
     return parser
 
@@ -58,9 +58,12 @@ def _operation(command: str) -> Operation:
 
 
 def _provider(
+    backend: Backend,
     environment: Mapping[str, str],
 ) -> IssueProvider:
     runner = CommandRunner(environment)
+    if backend is Backend.JIRA:
+        return JiraProvider(runner)
     return GitHubProvider(runner, resolve_github_repository(environment))
 
 
@@ -82,7 +85,7 @@ def run(
             payload["capabilities"] = [state.to_dict() for state in capabilities()]
             payload["evidence"] = []
         else:
-            provider = _provider(environment)
+            provider = _provider(backend, environment)
             if operation is Operation.VIEW:
                 observation = provider.view(parsed.identifier)
                 payload["issue"] = observation.value.to_issue_dict()
