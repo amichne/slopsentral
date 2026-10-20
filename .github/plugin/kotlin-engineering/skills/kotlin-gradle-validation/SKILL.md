@@ -22,7 +22,7 @@ needs a durable machine-readable handoff.
 - Never call a build green until the relevant Gradle command exits successfully.
 - Keep domain modeling and API shape in `kotlin-engineering`; keep CI
   topology in `github-ci-operations`. Use `gradle-performance-engineering` for
-  performance baselines, native report analysis, and cache/compilation experiments;
+  performance baselines, Develocity API analysis, and cache/compilation experiments;
   this skill owns correctness and native report diagnosis.
 
 ## Workflow

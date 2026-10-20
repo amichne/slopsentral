@@ -15,6 +15,10 @@ them only after naming the capability and proof they require.
 8. [Custom renderers and converters](#8-custom-renderers-and-converters)
 9. [External modules and resource readers](#9-external-modules-and-resource-readers)
 10. [Command modules](#10-command-modules)
+11. [Embedded evaluator lifecycles](#11-embedded-evaluator-lifecycles)
+12. [Language code generation](#12-language-code-generation)
+13. [First-party domain packages](#13-first-party-domain-packages)
+14. [Language evolution evidence](#14-language-evolution-evidence)
 
 ## 1. Abstract and open extension points
 
@@ -89,7 +93,8 @@ Register an external reader only for a required custom URI scheme. Review the
 host executable, bound schemes, arguments, environment, output framing, and
 failure behavior; allowlist each scheme explicitly.
 
-Reference: [resource and module contracts](https://pkl-lang.org/main/current/language-reference/index.html).
+References: [external readers](https://pkl-lang.org/main/current/language-reference/index.html),
+[apple/pkl-readers](https://github.com/apple/pkl-readers).
 
 ## 10. Command modules
 
@@ -99,3 +104,43 @@ output paths, and test idempotence separately from ordinary evaluation.
 
 References: [`pkl:Command` API](https://pkl-lang.org/package-docs/pkl/current/Command/),
 [CLI run command](https://pkl-lang.org/main/current/pkl-cli/index.html).
+
+## 11. Embedded evaluator lifecycles
+
+Bindings manage evaluator processes, module/resource readers, caching, and
+timeouts. Reuse an evaluator manager according to the binding contract, close
+it deterministically, and avoid leaking cross-request properties or secrets.
+
+References: [binding specification](https://pkl-lang.org/main/current/bindings-specification/index.html),
+[apple/pkl-go](https://github.com/apple/pkl-go),
+[apple/pkl-swift](https://github.com/apple/pkl-swift).
+
+## 12. Language code generation
+
+Generate types from public Pkl modules, pin generator/runtime versions, and
+compile generated code in CI. Review model changes as API changes and avoid
+hand-editing generated output.
+
+References: [apple/pkl](https://github.com/apple/pkl),
+[apple/pkl-go](https://github.com/apple/pkl-go),
+[apple/pkl-swift](https://github.com/apple/pkl-swift),
+[apple/rules_pkl](https://github.com/apple/rules_pkl).
+
+## 13. First-party domain packages
+
+Start from package APIs in `pkl-pantry` or `pkl-k8s` when they model the target
+domain, amend them locally, and pin the package version. Use repository source
+only to understand implementation; package docs define the public surface.
+
+References: [package index](https://pkl-lang.org/package-docs/),
+[apple/pkl-pantry](https://github.com/apple/pkl-pantry),
+[apple/pkl-k8s](https://github.com/apple/pkl-k8s).
+
+## 14. Language evolution evidence
+
+Use SPICE documents to understand proposed or accepted design direction, then
+confirm shipping behavior in release notes, versioned docs, and tests. A
+proposal alone is not an available feature.
+
+References: [apple/pkl-evolution](https://github.com/apple/pkl-evolution),
+[release notes](https://pkl-lang.org/main/current/release-notes/index.html).

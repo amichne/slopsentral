@@ -1,7 +1,7 @@
 # Provenance
 
 Source reviewed 2026-09-05:
-oakoss/agent-skills: technical-docs at 85e3a3919d9e0ec7f7302a5143ec4b3e66f5f6ad.
+[oakoss/agent-skills: technical-docs at 85e3a3919d9e0ec7f7302a5143ec4b3e66f5f6ad](https://github.com/oakoss/agent-skills/tree/85e3a3919d9e0ec7f7302a5143ec4b3e66f5f6ad/skills/technical-docs).
 The upstream skill declares MIT in its metadata. This local procedure is
 independently authored; no upstream files, scripts, examples, or templates are
 copied. Preserve the applicable upstream license and notices before importing
