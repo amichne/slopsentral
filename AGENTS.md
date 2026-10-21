@@ -21,6 +21,13 @@ by hand when the authored source can be fixed instead.
   preserves all authored files.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
 
+## Pi Installation Entry Point
+
+`tools/install-pi.sh` preserves the documented curl-to-shell entry point.
+It delegates to the tested native installer from the selected stable release.
+Keep the release installer and package runtime under their release owners.
+Run `node --test tools/tests/pi-bootstrap.test.mjs` after launcher changes.
+
 ## First-Party Material
 
 Do not make upstream/system skills canonical here. Preserve upstream provenance,
