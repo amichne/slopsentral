@@ -53,3 +53,14 @@ New automation uses required uv, strict Pyright, Ruff, pytest, PEP 723 metadata,
 locked dependencies, and `tool.uv.no-build = true`. Run `uv run --locked tools/check.py`
 for the Python boundary checks. Use `uv run --locked tools/setup.py` for explicit
 checkout setup. Keep generated outputs and installed caches outside authored edits.
+
+## Portable Global Instructions
+
+`tools/install_global_agents.py` owns the portable installation and its local
+reference snapshot. `tools/global_agents.lock.json` pins the source assets.
+The [source map](docs/global-agents.md) describes the installation contract.
+
+After changing a bundled source, review its effect on the portable guidance.
+Refresh its digests with `uv run --locked tools/install_global_agents.py manifest --write`.
+Run `uv run --locked tools/install_global_agents.py manifest` to examine freshness.
+Keep installed `.slopsentral` snapshots outside authored edits.
