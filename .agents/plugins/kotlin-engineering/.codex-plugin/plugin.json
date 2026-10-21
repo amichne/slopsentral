@@ -39,12 +39,10 @@
     "gradle",
     "higher-order-functions",
     "hooks",
-    "kast",
     "kotlin",
     "kotlin-engineering",
     "ktor",
     "libraries",
-    "mcp",
     "module-boundaries",
     "observability",
     "opentelemetry",
@@ -53,7 +51,6 @@
     "repository-guidance",
     "repository-topology",
     "review",
-    "semantic-navigation",
     "serialization",
     "skills",
     "task-evidence",
@@ -63,7 +60,6 @@
     "validation"
   ],
   "license": "UNLICENSED",
-  "mcpServers": "./.mcp.json",
   "name": "kotlin-engineering",
   "skills": "./skills/",
   "version": "3.0.0"
