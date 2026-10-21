@@ -24,6 +24,9 @@ The [migration map](source/MIGRATION.md) lists every retired skill and its repla
 Installation makes a skill available. It grants no authority to publish, deploy, or change personal configuration.
 Developer Tooling adds no automatic hooks. Repository Knowledge remains optional for Kotlin work.
 
+For Pi, use the [published installer](docs/pi-install.md).
+It selects the latest stable release by default.
+
 ## Automation
 
 Install uv 0.12.9 or newer. Run the checkout setup and its gates:
