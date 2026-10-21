@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T11:24:27-04:00",
+  "generatedAt": "2026-10-21T17:01:47-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -129,12 +129,6 @@
           "sourcePath": "source/instructions/kotlin-engineering.md",
           "targetPath": "instructions/kotlin-engineering.md",
           "type": "INSTRUCTION"
-        },
-        {
-          "sha256": "sha256:77133a3da5561acba6754bcfcc7d025dd0013687ad44c88e6f43e3e3a838502a",
-          "sourcePath": "source/plugins/kotlin-engineering/.mcp.json",
-          "targetPath": ".mcp.json",
-          "type": "MCP_CONFIGURATION"
         },
         {
           "name": "gradle-performance-engineering",
@@ -338,6 +332,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "4fd927bdb1e661c7a8daec88335a81cfc25620ef",
+  "sourceSha": "60d893fa23d62ff7c4adfebf6d1cbd76ff43db7f",
   "type": "HYDRATED_MARKETPLACE"
 }
