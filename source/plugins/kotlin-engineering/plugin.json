@@ -105,7 +105,6 @@
       "name": "gradle-wrapper-integrity"
     }
   ],
-  "codexMcpServers": "./.mcp.json",
   "metadata": {
     "composition": "referential",
     "dailyDriver": "Choose for Kotlin invariants, API design, libraries, observability, review, Gradle verification, and measured build performance.",
