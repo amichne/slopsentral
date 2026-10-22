@@ -1,6 +1,10 @@
 # JSON Schema Contract Policy
 
-Use this file for baseline schema design rules. For the bundled executable profile, read `schema-profile.md`. For hierarchical discriminator nesting and schema-tree layout, read `hierarchical-schema-layout.md`. For hooks and CI, read `enforcement.md`.
+These are the opt-in Slopsentral profile rules, not universal JSON Schema requirements.
+Apply them only when the repository or user selected this profile. Preserve other
+contracts rather than normalizing their wire tags without migration authority.
+For the executable profile, read `schema-profile.md`; for nesting and tree layout,
+read `hierarchical-schema-layout.md`; for adoption gates, read `enforcement.md`.
 
 ## Type-Safety Mapping
 

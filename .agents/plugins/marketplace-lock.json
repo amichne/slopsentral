@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T23:54:21-04:00",
+  "generatedAt": "2026-10-22T16:41:20-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -146,7 +146,7 @@
       "references": [
         {
           "name": "intellij-platform-testing",
-          "sha256": "sha256:bfdb2bbd9b7fc481c06430a8fc43a871aea18d5004674ecbeab1ba31b7efe2ab",
+          "sha256": "sha256:4c0be75be1b85879f8c30ea09701e9a68412fe0e90ab07c60a420df054188c21",
           "sourcePath": "source/skills/intellij-platform-testing",
           "targetPath": "skills/intellij-platform-testing",
           "type": "SKILL"
@@ -160,7 +160,7 @@
         },
         {
           "name": "intellij-psi-indexing",
-          "sha256": "sha256:a4ed5b9a184ad064d178562f506462a76d7454195c05ba1441331628064955c1",
+          "sha256": "sha256:56fbc74da13cb3d73d01fc5784e0641347a47701823cf49533db9663f874d063",
           "sourcePath": "source/skills/intellij-psi-indexing",
           "targetPath": "skills/intellij-psi-indexing",
           "type": "SKILL"
@@ -195,7 +195,7 @@
         },
         {
           "name": "controlled-technical-writing",
-          "sha256": "sha256:a4ca71b2aa8c6d53dc3b788e58ea6b970db9eaa9c052de6af569286afb4cd99c",
+          "sha256": "sha256:5c90cecd6ebc6e1908c746b85fb771b1c1b1658bfe8548d27b0e9220a440f299",
           "sourcePath": "source/skills/controlled-technical-writing",
           "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
@@ -209,7 +209,7 @@
         },
         {
           "name": "technical-documentation",
-          "sha256": "sha256:df2044e566c7d56d447f6124c06a038e6dc7e6ffdb94a6fec50b47d36200e5e6",
+          "sha256": "sha256:e81ff97ef7bc721049097a1ff86a670196ac86e95976b425f3da340da405bce4",
           "sourcePath": "source/skills/technical-documentation",
           "targetPath": "skills/technical-documentation",
           "type": "SKILL"
@@ -244,7 +244,7 @@
         },
         {
           "name": "manage-json-schemas",
-          "sha256": "sha256:1ba45c30fad35aa0f13779909d65951a19d1943cbb3f65b80a8d040fdda1485e",
+          "sha256": "sha256:68150d0b8c14877fc182cd9f6d3413c422e79410b841d9c2b6e8c840a58b03c2",
           "sourcePath": "source/skills/manage-json-schemas",
           "targetPath": "skills/manage-json-schemas",
           "type": "SKILL"
@@ -272,7 +272,7 @@
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:d35935484636654f69dd9096a5cfdf2e3305b6ea52f5fe67125b9daa5acc0abd",
+          "sha256": "sha256:ae4cb824f252d56a7f6217a3ca8a6e1365999c43da650acdb76f381ae0ecff01",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
@@ -297,6 +297,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "1af4a569210caae5c13a72b5639f24b722225703",
+  "sourceSha": "22de658aba576cec2fefa44ab5e133d9c7301cc8",
   "type": "HYDRATED_MARKETPLACE"
 }
