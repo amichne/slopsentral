@@ -24,6 +24,16 @@ class Capabilities {
 
 function literal(value: Any): String = (new JsonRenderer {}).renderValue(value)
 
+local scriptInvocation: String =
+  """
+  Amp global plugins may lose bundled scripts' executable permissions. When a
+  skill documents a direct script command, read its shebang and invoke that
+  interpreter explicitly with the absolute script path and original arguments.
+  Preserve interpreter flags: for `#!/usr/bin/env -S uv run --locked --script`,
+  use `uv run --locked --script <script-path> ...`; for `#!/usr/bin/env python3`,
+  use `python3 <script-path> ...`. Do not chmod or edit installed plugin caches.
+  """
+
 function entrypoint(plugin: Schema.Plugin): String =
   let (
     skills =
@@ -46,14 +56,13 @@ function entrypoint(plugin: Schema.Plugin): String =
       // Read required context before registering anything; a missing payload fails loading.
       const instructions = \(literal(instructions.map((ref) -> "instructions/" + ref.name + "." + ref.sourcePath.split(".").last)))
         .map(path => readFileSync(new URL(path, import.meta.url), 'utf8').trim());
+      instructions.unshift(\(literal(scriptInvocation)));
       for (const path of \(literal(skills.map((ref) -> "skills/" + ref.name)))) {
         await amp.registerSkill({ path });
       }
-      if (instructions.length) {
-        amp.on('agent.start', () => ({ message: {
-          content: instructions.join('\\n\\n'),
-          display: false,
-        } }));
-      }
+      amp.on('agent.start', () => ({ message: {
+        content: instructions.join('\\n\\n'),
+        display: false,
+      } }));
     }
     """ + "\n"

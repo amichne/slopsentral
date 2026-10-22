@@ -43,13 +43,13 @@ test('Amp registers complete skill packages and supplies canonical instructions 
       on(event, handler) { handlers.set(event, handler); },
     });
     assert.deepEqual(registered, skills.map(ref => 'skills/' + ref.name));
-    assert.deepEqual([...handlers.keys()], instructions.length ? ['agent.start'] : []);
-    if (instructions.length) {
-      const result = await handlers.get('agent.start')();
-      for (const instruction of instructions)
-        assert.ok(result.message.content.includes(fs.readFileSync(path.join(root, 'source', instruction.path), 'utf8').trim()));
-      assert.equal(result.message.display, false);
-    }
+    assert.deepEqual([...handlers.keys()], ['agent.start']);
+    const result = await handlers.get('agent.start')();
+    for (const instruction of instructions)
+      assert.ok(result.message.content.includes(fs.readFileSync(path.join(root, 'source', instruction.path), 'utf8').trim()));
+    assert.match(result.message.content, /uv run --locked --script/);
+    assert.match(result.message.content, /python3/);
+    assert.equal(result.message.display, false);
     const support = JSON.parse(fs.readFileSync(path.join(pluginRoot, 'capabilities.json')));
     assert.equal(support.skills, 'REGISTERED');
     assert.equal(support.instructions, 'AGENT_START_CONTEXT');
@@ -73,6 +73,22 @@ test('Amp registers complete skill packages and supplies canonical instructions 
         assert.equal(fs.realpathSync(new URL(loaded.baseDir)), fs.realpathSync(path.join(pluginRoot, 'skills', skill.name)));
       }
     }
+  }
+  // Global Amp materialization can discard executable bits. Exercise the
+  // interpreter commands from turn-start guidance without changing cache modes.
+  for (const [relative, interpreter, args] of [
+    ['developer-tooling/skills/pkl-engineering/scripts/pkl_agent', 'uv', ['run', '--locked', '--script']],
+    ['software-engineering/skills/issue-tracker-operations/scripts/issue_backend', 'python3', []],
+  ]) {
+    const script = path.join(output, relative);
+    fs.chmodSync(script, 0o644);
+    const direct = spawnSync(script, ['--help'], { cwd: directory, encoding: 'utf8' });
+    assert.equal(direct.error?.code, 'EACCES');
+    const interpreted = spawnSync(interpreter, [...args, script, '--help'],
+      { cwd: directory, encoding: 'utf8', timeout: 60_000 });
+    assert.equal(interpreted.status, 0, interpreted.stdout + interpreted.stderr);
+    assert.match(interpreted.stdout, /usage:/i);
+    assert.equal(fs.statSync(script).mode & 0o777, 0o644);
   }
   const broken = path.join(directory, 'broken');
   fs.mkdirSync(broken);
