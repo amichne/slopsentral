@@ -1,6 +1,6 @@
 ---
 name: "kotlin-gradle-validation"
-description: "Diagnose and verify Kotlin or JVM Gradle builds with focused tasks and native reports. Use for failing tests, compiler diagnostics, coverage, or incremental-build problems; not prose edits or runtime latency measurement."
+description: "Use only when explicitly requested for focused Kotlin or JVM Gradle diagnosis, native reports, compiler failures, coverage, or incremental-build problems."
 ---
 
 # Kotlin Gradle Validation
@@ -9,6 +9,10 @@ Use this skill for a repeatable Kotlin or JVM build/test loop. Prefer the
 repository's Gradle wrapper and native reports. Bundled parsers are optional
 projections over existing reports; the runner is optional when a long command
 needs a durable machine-readable handoff.
+
+This skill is explicit-only. A Kotlin file, Gradle failure, or another skill's
+reference does not authorize implicit invocation. Necessary repository-native
+Gradle commands remain available without this skill.
 
 ## Operating Contract
 
@@ -20,7 +24,7 @@ needs a durable machine-readable handoff.
   before interpreting incomplete console text.
 - Run targeted module or test tasks before full suites.
 - Never call a build green until the relevant Gradle command exits successfully.
-- Keep domain modeling and API shape in `kotlin-engineering`; keep CI
+- Keep domain modeling and API shape in `kotlin-design-practices`; keep CI
   topology in `github-ci-operations`. Use `gradle-performance-engineering` for
   performance baselines, Develocity API analysis, and cache/compilation experiments;
   this skill owns correctness and native report diagnosis.
@@ -97,9 +101,10 @@ runner JSON and copied logs are optional transport, not stronger proof.
 - `scripts/run_gradle_task.py`: optional durable capture for a long-running or
   transferred Gradle command.
 
-## Optional Automatic Checks
+## Standalone Hook Primitives
 
-The `gradle-check-green` hook is opt-in. Without an explicit command it skips
+Kotlin Engineering selects no hooks. The standalone `gradle-check-green` primitive needs explicit composition and configuration.
+Without an explicit command it skips
 and claims no verification. To require a focused command at Stop, configure
 `INTELLIGENCE_GRADLE_CHECK` or a single argument line in
 `.intelligence/gradle-check-command`, for example

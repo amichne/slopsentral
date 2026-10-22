@@ -7,7 +7,7 @@ scripts, examples, or templates.
 
 | Source | Audited commit | License | Decision |
 | --- | --- | --- | --- |
-| [chrisbanes/skills: kotlin-api-design](https://github.com/chrisbanes/skills/tree/2d202c722c1815007619ee0b667401b9d42e456e/skills/kotlin-api-design) | `2d202c722c1815007619ee0b667401b9d42e456e` | Apache-2.0 | Retain semantic function ownership, explicit sealed-result mappings, value-class interop checks, and narrow multiplatform seams |
+| [chrisbanes/skills: kotlin-api-design](https://github.com/chrisbanes/skills/tree/2d202c722c1815007619ee0b667401b9d42e456e/skills/kotlin-api-design) | `2d202c722c1815007619ee0b667401b9d42e456e` | Apache-2.0 | Keep semantic function ownership, explicit sealed-result mappings, and value-class interop evidence |
 
 ## Local Refinements
 
@@ -19,7 +19,7 @@ Retain:
   when a subtype is added;
 - value-class decisions that account for equality, serialization, Java interop,
   and boxing;
-- semantic common APIs with platform mechanics at leaves.
+- domain APIs with runtime mechanics in adapters.
 
 Strengthen or add:
 
