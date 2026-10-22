@@ -1,6 +1,6 @@
 ---
 name: kotlin-review
-description: Use when reviewing Kotlin diffs, PRs, or changed files for lost invariants, invalid states, branch correctness, typed failures, or boundary ownership; not for implementing fixes or routine Gradle diagnosis.
+description: Use for read-only Kotlin review of invariants, branches, expression flow, coroutine and Flow lifecycles, isolated tests, and typed failures.
 ---
 
 # Kotlin Review
@@ -32,6 +32,13 @@ type and branch semantics to determine whether an issue is mechanically real.
   supporting evidence, never proof of a defect.
 - Report only findings with a reachable impact and a proportionate fix. Do not
   modify the code unless the user also asks for fixes.
+- Prefer expression-body functions. Reject `?: return`, labeled Elvis returns, and non-local returns inside scope-function lambdas.
+  Preserve behavior with explicit value branches. Keep `let` and `run` transformations distinct from `apply` construction and `also` effects.
+- Examine coroutine ownership, cancellation, child completion, Flow replay, buffering, and permitted value loss.
+  Reject detached jobs, swallowed cancellation, unowned collectors, and an event contract implemented through conflated state.
+- Use test-local subjects, inputs, collaborators, schedulers, and collectors.
+  Reject class fixtures, shared setup state, ambient services, and global dispatcher overrides in unit tests.
+  Reject mocks, spies, scripted stubs, and fake collaborators. Use real components and separate real-resource integration tests.
 
 ## Workflow
 
@@ -57,7 +64,7 @@ type and branch semantics to determine whether an issue is mechanically real.
    subjectless `when`. Closed Kotlin domains should be exhaustive without a
    catch-all; open external input needs a deliberate unknown case before it is
    translated into a closed local type. A guarded subtype branch must retain an
-   unguarded branch for its remainder. Early returns and rewrites must preserve
+   unguarded branch for the rest of that subtype. Branch rewrites must preserve
    smart casts, exception behavior, `use` and `finally` cleanup, and transaction
    boundaries without `!!`, unchecked casts, or mutable staging.
 

@@ -2,6 +2,8 @@
 
 Use as a compact expression-style reminder.
 
+Prefer expression-body functions. Read [expression flow](expression-flow.md) for scope selection and the prohibition of `?: return`.
+
 Prefer `map`, `mapNotNull`, `flatMap`, `fold`, `associate`, `groupBy`,
 `partition`, `filter`, `takeIf`, `let`, and sealed `when` when they state the
 data flow directly.

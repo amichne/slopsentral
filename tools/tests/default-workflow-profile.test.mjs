@@ -18,7 +18,7 @@ function hookNames(manifest) {
   return new Set((manifest.hooks ?? []).map((hook) => hook.name));
 }
 
-test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
+test("kotlin default keeps shared hooks and excludes Kotlin automation", () => {
   const profile = readJson("source/profiles/kotlin-repo-default.json");
   const selectedPlugins = new Map(profile.plugins.map((name) => [name, plugin(name)]));
 
@@ -36,18 +36,12 @@ test("kotlin default install profile wires AGENTS.md and Gradle hooks", () => {
 
   assert.ok(!hookNames(selectedPlugins.get("software-engineering")).has("github-actions-await"));
 
-  const kotlinHooks = hookNames(selectedPlugins.get("kotlin-engineering"));
-  assert.deepEqual(readJson("source/hooks/kotlin-engineering-context.hook.json").dependsOn.map(({ name }) => name), [
-    "kotlin-engineering",
-  ]);
+  assert.deepEqual([...hookNames(selectedPlugins.get("kotlin-engineering"))], []);
+  assert.deepEqual(selectedPlugins.get("kotlin-engineering").instructions, []);
   for (const hookName of ["kotlin-horizontalization-check", "gradle-check-green", "gradle-wrapper-integrity"]) {
     assert.ok(
-      kotlinHooks.has(hookName),
-      `kotlin-engineering must provide ${hookName} for default Gradle hook configuration`,
-    );
-    assert.ok(
       fs.existsSync(path.join(sourceRoot, "hooks", `${hookName}.hook.json`)),
-      `${hookName} metadata must be authored as a hook primitive`,
+      `${hookName} remains available only for explicit composition`,
     );
   }
 

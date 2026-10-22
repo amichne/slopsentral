@@ -37,6 +37,6 @@ manufacturing a stronger value or reporting a skipped check as successful proof.
 
 This process synthesizes the repository's Kotlin API Surface Design ownership,
 domain-value, and higher-order practices. Kotlin retains its value-class, sealed
-hierarchy, interop, and multiplatform details. Python Tooling supplies strict
+hierarchy and interop details. Python Tooling supplies strict
 union checking and runtime boundary checks without claiming compiler-enforced
 private constructors or purity.

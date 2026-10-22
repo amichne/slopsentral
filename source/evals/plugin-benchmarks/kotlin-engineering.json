@@ -77,7 +77,7 @@
         "type": "SKILL",
         "name": "kotlin-gradle-validation"
       },
-      "userInput": "Use Kotlin Engineering for this Kotlin repository. A Kotlin test fails in Gradle; diagnose the failure, fix it, and rerun the smallest useful Gradle task before saying it is green. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
+      "userInput": "$kotlin-gradle-validation Use Kotlin Engineering for this Kotlin repository. A Kotlin test fails in Gradle; diagnose the failure, fix it, and rerun the smallest useful Gradle task before saying it is green. Do not commit, push, publish, open or update a pull request, or otherwise modify remote state.",
       "successChecklist": [
         "The run uses native Gradle reports or parser output when console output is insufficient.",
         "The diagnosis cites JUnit XML, Gradle problem reports, Kotlin build reports, or explicitly records that they were absent.",
@@ -146,7 +146,7 @@
         "A focused adapter implements a domain-owned capability and one integration module selects it.",
         "A mechanical dependency or public-API check rejects implementation leakage into pure modules.",
         "Clikt tests cover help, defaults, completion, one successful command, and one rejected invocation.",
-        "Ktor client tests use MockEngine and serialized fixtures without live network access.",
+        "Ktor client integration tests use a real engine and a test-owned loopback server without public network access.",
         "The native-image choice records compatibility and measurable delivery criteria instead of applying a universal rule."
       ]
     },
@@ -172,19 +172,19 @@
     {
       "type": "PLUGIN_EVAL_SCENARIO",
       "id": "kotlin-gradle-validation-natural-language",
-      "title": "Natural-language kotlin-gradle-validation",
-      "purpose": "Check ordinary invocation without a plugin or skill name.",
+      "title": "Natural Gradle request keeps explicit skill idle",
+      "purpose": "Prove that a natural Gradle request does not bypass explicit-only policy.",
       "routingCaseIds": [
-        "gradle-failure-uses-structured-reports"
+        "gradle-natural-request-keeps-explicit-skill-idle"
       ],
       "expectedPrimitive": {
         "type": "SKILL",
-        "name": "kotlin-gradle-validation"
+        "name": "tdd"
       },
       "userInput": "Diagnose this JVM Gradle test failure from the existing wrapper and native reports. Resolve the owning test task, repair only the demonstrated cause, and rerun it. Do not commit, push, or otherwise modify remote state.",
       "successChecklist": [
-        "The intended focused skill is read and its relevant native checks execute.",
-        "No unrelated build, review, knowledge generation, or publication is introduced."
+        "The trace reads tdd and does not read kotlin-gradle-validation.",
+        "Necessary wrapper commands still run and native reports support the result."
       ]
     },
     {
@@ -222,6 +222,79 @@
         "The target kotlin-gradle-validation is not read or followed.",
         "Only README prose changes; no build or executable edits occur.",
         "Use the prose owner if available; record an unavailable companion rather than installing one."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-coroutine-flow-design-uses-existing-owner",
+      "title": "Kotlin coroutine flow design uses existing owner",
+      "purpose": "The selected procedure matches the request and preserves its constraints.",
+      "routingCaseIds": [
+        "kotlin-coroutine-flow-design-uses-existing-owner"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-design-practices"
+      },
+      "userInput": "Design cancellation and replay behavior for a Kotlin JVM component that exposes StateFlow and starts child coroutines. Do not commit, push, publish, or otherwise change remote state.",
+      "successChecklist": [
+        "The trace reads Kotlin Design Practices and its coroutine and Flow reference.",
+        "Name the scope owner, child completion, cancellation, replay, and conflation contracts."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-coroutine-review-keeps-read-only-scope",
+      "title": "Kotlin coroutine review keeps read only scope",
+      "purpose": "The selected procedure matches the request and preserves its constraints.",
+      "routingCaseIds": [
+        "kotlin-coroutine-review-keeps-read-only-scope"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-review"
+      },
+      "userInput": "Review this Kotlin change for swallowed cancellation, detached coroutine jobs, and lost Flow events. Do not edit files. Do not commit, push, publish, or otherwise change remote state.",
+      "successChecklist": [
+        "The trace reads Kotlin Review and preserves read-only scope.",
+        "Review reachable lifetime and stream defects with source evidence."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-unit-tests-own-state-and-real-components",
+      "title": "Kotlin unit tests own state and real components",
+      "purpose": "The selected procedure matches the request and preserves its constraints.",
+      "routingCaseIds": [
+        "kotlin-unit-tests-own-state-and-real-components"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-design-practices"
+      },
+      "userInput": "Replace shared Kotlin unit-test fixtures and MockK collaborators with isolated tests of the real component. Include deterministic coroutine and Flow assertions. Do not commit, push, publish, or otherwise change remote state.",
+      "successChecklist": [
+        "The selected references prohibit non-local state and mock-based testing while preserving real scheduling mechanisms.",
+        "Create the subject, dependencies, scheduler, and collectors within each test invocation.",
+        "Use real production components and explicit inputs."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "kotlin-expression-flow-keeps-explicit-results",
+      "title": "Kotlin expression flow keeps explicit results",
+      "purpose": "The selected procedure matches the request and preserves its constraints.",
+      "routingCaseIds": [
+        "kotlin-expression-flow-keeps-explicit-results"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-design-practices"
+      },
+      "userInput": "Refactor a Kotlin nullable-input function into an expression body. Preserve failure values and cleanup while removing Elvis returns. Do not commit, push, publish, or otherwise change remote state.",
+      "successChecklist": [
+        "The trace reads the expression-flow reference and distinguishes nullable success from absence.",
+        "Use explicit value branches and select scope functions by receiver and result."
       ]
     }
   ]

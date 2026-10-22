@@ -32,8 +32,9 @@ Keep pinned Platform, Gradle, Kotlin, and JDK versions unless the task changes t
    Examine the running IDE's artifact identity before an installed-behavior claim.
    A ZIP build, sandbox result, and publication result establish different facts.
 
-Use `kotlin-design-practices` for Kotlin contracts and `kotlin-gradle-validation`
-for Gradle diagnosis. Use `tdd` for focused acceptance proof. Keep Git, CI, and
+Use `kotlin-design-practices` for Kotlin contracts. Read `kotlin-gradle-validation`
+only when the user explicitly selects it. Use necessary Gradle commands directly otherwise.
+Use `tdd` for focused acceptance proof. Keep Git, CI, and
 pull-request operations with their existing workflow owners.
 
 ## Reference Routing

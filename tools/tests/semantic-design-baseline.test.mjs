@@ -63,7 +63,7 @@ test("semantic concepts stay deferred while hooks reference concise canonical in
   assert.deepEqual(instructions("software-engineering").map(({ name }) => name), [
     "agent-execution", "engineering-design",
   ]);
-  assert.deepEqual(instructions("kotlin-engineering").map(({ name }) => name), ["kotlin-engineering"]);
+  assert.deepEqual(instructions("kotlin-engineering"), []);
   assert.deepEqual(instructions("developer-tooling"), []);
   assert.equal(
     primitiveByName(plugin("developer-tooling").skills, "openapi-contract-authoring")?.path,
@@ -88,7 +88,7 @@ test("non-concept instructions have one install owner and a bounded baseline", (
   assert.equal(owners.has("kotlin-repository-engineering"), false);
   assert.deepEqual(owners.get("agent-execution"), ["software-engineering"]);
   assert.deepEqual(owners.get("engineering-design"), ["software-engineering"]);
-  assert.deepEqual(owners.get("kotlin-engineering"), ["kotlin-engineering"]);
+  assert.equal(owners.has("kotlin-engineering"), false);
   assert.equal(owners.has("api-contract-design"), false);
   assert.ok([...owners.values()].every(values => values.length === 1));
   const baselineWords = instructions("software-engineering").reduce((count, ref) =>

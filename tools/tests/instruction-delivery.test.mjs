@@ -10,7 +10,6 @@ const root = path.resolve(import.meta.dirname, '../..');
 const catalog = loadCatalog(root);
 const bundles = {
   'software-engineering': ['agent-execution', 'engineering-design'],
-  'kotlin-engineering': ['kotlin-engineering'],
 };
 
 for (const [name, instructions] of Object.entries(bundles)) {
@@ -62,10 +61,12 @@ test('native startup trace contains the complete canonical policy as developer c
   }
 });
 
-// API context stays an explicit standalone primitive after its plugin retires.
-test('standalone API policy preserves the complete output contract', () => {
-  const metadata = catalog.definitions.get('HOOK/api-contracts-context');
-  assert.deepEqual(metadata.dependsOn.map(ref => ref.name), ['api-contract-design']);
+// Uncomposed context hooks remain usable as explicit standalone primitives.
+for (const [name, instruction] of [['api-contracts-context', 'api-contract-design'],
+  ['kotlin-engineering-context', 'kotlin-engineering']]) {
+test(`standalone ${name} preserves the complete output contract`, () => {
+  const metadata = catalog.definitions.get(`HOOK/${name}`);
+  assert.deepEqual(metadata.dependsOn.map(ref => ref.name), [instruction]);
   const config = JSON.parse(fs.readFileSync(path.join(root, 'source', metadata.path)));
   const command = config.hooks.SessionStart[0].hooks[0].command;
   const result = spawnSync('bash', ['-c', command], {
@@ -75,9 +76,10 @@ test('standalone API policy preserves the complete output contract', () => {
   assert.equal(result.status, 0, result.stderr);
   const output = JSON.parse(result.stdout);
   assert.ok(output.hookSpecificOutput.additionalContext.includes(
-    fs.readFileSync(path.join(root, 'source/instructions/api-contract-design.md'), 'utf8').trim()));
-  assert.ok(catalog.plugins.every(plugin => !plugin.hooks.some(ref => ref.name === 'api-contracts-context')));
+    fs.readFileSync(path.join(root, 'source/instructions', `${instruction}.md`), 'utf8').trim()));
+  assert.ok(catalog.plugins.every(plugin => !plugin.hooks.some(ref => ref.name === name)));
 });
+}
 
 test('software-engineering maintains scoped instructions through its configured hooks', t => {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'agents-scope-contract-'));

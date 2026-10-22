@@ -62,8 +62,11 @@ Keep shared maintenance tools under `tools/`.
 Plugins reference canonical primitives. They do not own copies of those primitives.
 Installed caches and generated provider trees remain consumers.
 
-Software Engineering and Kotlin Engineering deliver concise policies through their context hooks.
-Those hooks cover startup, resume, clear, and compact.
+Software Engineering delivers concise policies through its context hook.
+That hook covers startup, resume, clear, and compact.
+Kotlin Engineering selects no hooks. Its skills carry the Kotlin guidance when selected.
+Negative Capability Proof supports implicit selection. Kotlin Gradle Validation needs explicit user selection.
+The four Kotlin hook primitives remain available for explicit custom compositions.
 Their output does not prove that the host consumed the policy or that a model obeyed it.
 Full procedures and examples remain in task-selected skills and references.
 

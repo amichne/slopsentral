@@ -1,6 +1,6 @@
 ---
 name: kotlin-application-stack
-description: "Use for Kotlin adapters with kotlinx.serialization, Ktor, Clikt, GraalVM, or OpenTelemetry, including dependency isolation and telemetry from typed outcomes."
+description: "Use for Kotlin adapters with kotlinx.serialization, Ktor, Clikt, GraalVM, or OpenTelemetry, including coroutine ownership, Flow transport, and typed outcomes."
 ---
 
 # Kotlin Application Stack
@@ -47,6 +47,12 @@ for the domain model and API shape.
   A retry is not the terminal result. Preserve context across asynchronous and remote operations.
 - Alert only on actionable user impact with an owner, threshold, duration, and diagnostic path.
 - Keep generic Git, CI, release, and Gradle execution with their existing owners.
+- Give each adapter scope, HTTP client, and Flow collector one explicit lifecycle owner.
+  Preserve caller cancellation and release resources on failure and cancellation.
+  Define retry, completion, buffering, and replay behavior before a concurrent adapter change.
+- Use real components in tests. Prohibit mocks, spies, scripted stubs, and fake collaborators.
+  Keep unit-test state local to each invocation. Use separate real-resource integration tests for external effects.
+- Use `kotlin-design-practices` for detailed coroutine, Flow, and test-isolation guidance.
 
 ## Reference Routing
 

@@ -58,10 +58,6 @@ Outside this plugin: Everyday Git and hosted delivery, shell integration, and In
 
 **Skills:** [gradle-performance-engineering](skills/gradle-performance-engineering/SKILL.md), [kotlin-application-stack](skills/kotlin-application-stack/SKILL.md), [kotlin-design-practices](skills/kotlin-design-practices/SKILL.md), [kotlin-gradle-validation](skills/kotlin-gradle-validation/SKILL.md), [kotlin-review](skills/kotlin-review/SKILL.md), [negative-capability-proof](skills/negative-capability-proof/SKILL.md).
 
-**Hooks:** [gradle-check-green](hooks/gradle-check-green.hook.json), [gradle-wrapper-integrity](hooks/gradle-wrapper-integrity.hook.json), [kotlin-engineering-context](hooks/kotlin-engineering-context.hook.json), [kotlin-horizontalization-check](hooks/kotlin-horizontalization-check.hook.json).
-
-**Instructions:** [kotlin-engineering](instructions/kotlin-engineering.md).
-
 ### repository-knowledge
 
 Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.
@@ -84,9 +80,9 @@ Outside this plugin: Automatic knowledge generation during ordinary code tasks o
 
 - [documentation-default](profiles/documentation-default.json): repository-knowledge. 0 instruction words.
 
-- [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 833 instruction words.
+- [intellij-plugin-default](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 697 instruction words.
 
-- [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 833 instruction words.
+- [kotlin-repo-default](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 697 instruction words.
 
 - [local-development-default](profiles/local-development-default.json): software-engineering. 697 instruction words.
 

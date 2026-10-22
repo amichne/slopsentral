@@ -65,7 +65,9 @@ overlay, later lifecycle operations preserve that section byte-for-byte.
 
 `required-skill-read` remains a standalone primitive for explicit custom compositions.
 No shipped plugin or default profile selects it.
-Software Engineering and Kotlin Engineering inject their concise policies through context hooks at startup, resume, clear, and compact.
+Software Engineering injects its concise policies at startup, resume, clear, and compact.
+Kotlin Engineering selects no hooks. Kotlin guidance loads through selected skills.
+Its four standalone hook primitives need explicit custom composition.
 The host owns trust and context consumption.
 
 ## Profile Contract

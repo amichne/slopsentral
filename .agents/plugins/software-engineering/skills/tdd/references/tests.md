@@ -40,10 +40,10 @@ such as exactly-once effect dispatch or workspace serialization. Filesystem or
 database inspection is appropriate when persistence is the promised observable
 result. Prefer round trips through the consumer API when it owns that contract.
 
-Use real pure collaborators. Control time, randomness, filesystem, network,
-processes, and host capabilities at explicit effect boundaries. A deterministic
-fake of an external host can prove adapter decisions; it cannot prove the host
-works. Add the smallest real-boundary check when that is the unresolved claim.
+Use real collaborators and test-local state. Pass fixed inputs to pure decisions.
+Use separate integration tests with real resources for filesystem, network, process, database, and host behavior.
+Do not substitute mocks, spies, scripted stubs, or fake collaborators for that evidence.
+Read [real components](real-components.md) for isolation and lifecycle rules.
 
 ## Avoid Tests That Add Maintenance Without Evidence
 
