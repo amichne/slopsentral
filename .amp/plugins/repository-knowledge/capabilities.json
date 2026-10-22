@@ -1,0 +1,9 @@
+{
+  "agents": "REFERENCE_ONLY",
+  "hooks": "REFERENCE_ONLY",
+  "instructions": "AGENT_START_CONTEXT",
+  "mcp": "REFERENCE_ONLY",
+  "profiles": "UNSUPPORTED",
+  "schemaVersion": 1,
+  "skills": "REGISTERED"
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Repository knowledge storage manifest",
+  "type": "object",
+  "required": [
+    "type",
+    "schemaVersion",
+    "repositories"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "KNOWLEDGE_MANIFEST"
+      ]
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "enum": [
+        1
+      ]
+    },
+    "repositories": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "repository",
+              "documents",
+              "instructions"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "TRACKED"
+                ]
+              },
+              "repository": {
+                "$ref": "#/$defs/absolutePath"
+              },
+              "documents": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "instructions": {
+                "$ref": "#/$defs/relativePath"
+              }
+            },
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "repository",
+              "documents",
+              "instructions",
+              "knowledgeRepository"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "INVISIBLE"
+                ]
+              },
+              "repository": {
+                "$ref": "#/$defs/absolutePath"
+              },
+              "documents": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "instructions": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "knowledgeRepository": {
+                "$ref": "#/$defs/absolutePath"
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "absolutePath": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 4096,
+      "pattern": "^(?!.*(?:^|/)\\.{1,2}(?:/|$))/[^/\\u0000-\\u001f\\ud800-\\udfff]+(?:/[^/\\u0000-\\u001f\\ud800-\\udfff]+)*$"
+    },
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!.*(?:^|/)\\.{1,2}(?:/|$))[^/\\u0000-\\u001f\\ud800-\\udfff]+(?:/[^/\\u0000-\\u001f\\ud800-\\udfff]+)*$"
+    }
+  },
+  "examples": [
+    {
+      "type": "KNOWLEDGE_MANIFEST",
+      "schemaVersion": 1,
+      "repositories": [
+        {
+          "type": "TRACKED",
+          "repository": "/workspace/project",
+          "documents": "docs/knowledge",
+          "instructions": "AGENTS.md"
+        },
+        {
+          "type": "INVISIBLE",
+          "repository": "/workspace/vendor-project",
+          "knowledgeRepository": "/workspace/vendor-project-knowledge",
+          "documents": "docs",
+          "instructions": "AGENTS.md"
+        }
+      ]
+    }
+  ]
+}

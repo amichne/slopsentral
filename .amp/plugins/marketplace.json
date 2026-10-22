@@ -1,0 +1,25 @@
+{
+  "name": "slopsentral",
+  "plugins": [
+    {
+      "name": "software-engineering",
+      "path": "software-engineering"
+    },
+    {
+      "name": "kotlin-engineering",
+      "path": "kotlin-engineering"
+    },
+    {
+      "name": "intellij-plugin-development",
+      "path": "intellij-plugin-development"
+    },
+    {
+      "name": "repository-knowledge",
+      "path": "repository-knowledge"
+    },
+    {
+      "name": "developer-tooling",
+      "path": "developer-tooling"
+    }
+  ]
+}
