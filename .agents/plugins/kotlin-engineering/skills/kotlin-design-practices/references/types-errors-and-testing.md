@@ -14,6 +14,16 @@ Use for expected failures, typed outcomes, and correctness-focused tests.
 Kotlin `Result` can remain at an external API that mandates it.
 Translate that representation before a domain consumer needs a finite failure identity.
 
+- Keep meaningful absence distinct from failure: a successful search with no
+  match is not a transport outage. Use named cases and non-null payloads, not
+  `T?`, `getOrNull`, `getOrDefault`, or success-shaped fallback values.
+- Catch only documented expected adapter failures. Preserve interruption and
+  avoid broad `runCatching` around suspending operations.
+- Mapping preserves failures; recovery must name which cases it handles.
+- Check a valid value, meaningful absence, and an operational failure separately.
+  Verify a newly added sealed case breaks an incomplete consumer, rather than
+  relying only on happy-path runtime tests.
+
 ## Local state and real behavior
 
 - Create the subject, inputs, collaborators, scheduler, and collectors inside each test invocation.

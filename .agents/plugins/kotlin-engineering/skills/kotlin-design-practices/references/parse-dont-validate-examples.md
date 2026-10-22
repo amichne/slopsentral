@@ -17,7 +17,7 @@ transport integer into the domain value before constructing the request.
 @JvmInline
 value class PageSize private constructor(internal val count: Int) {
     companion object {
-        fun parse(raw: Int): PageSizeParse = when (raw) {
+        internal fun parse(raw: Int): PageSizeParse = when (raw) {
             in 1..100 -> PageSizeParse.Parsed(PageSize(raw))
             else -> PageSizeParse.OutOfRange
         }
@@ -35,6 +35,9 @@ data class PageRequest(val size: PageSize)
 The private constructor and companion `parse` function own the range invariant.
 `PageRequest` accepts the learned fact, not another integer to re-check. Expected
 parse failure is a closed outcome, not an exception-backed `Result` or null.
+The value and parser live in the group's boundary module. Only its adapters
+call the internal raw parser; other modules obtain `PageSize` through typed
+capabilities rather than passing integers to a public factory.
 
 Prefer value classes for meaningful scalars. Direct value-class use on the JVM
 can retain the underlying representation without allocating a wrapper. Generic,
@@ -62,10 +65,10 @@ private object PageSizeEncoding : SerializationStrategy<PageSize> {
     }
 }
 
-fun encodeText(format: StringFormat, size: PageSize): String =
+internal fun encodeText(format: StringFormat, size: PageSize): String =
     format.encodeToString(PageSizeEncoding, size)
 
-fun encodeBinary(format: BinaryFormat, size: PageSize): ByteArray =
+internal fun encodeBinary(format: BinaryFormat, size: PageSize): ByteArray =
     format.encodeToByteArray(PageSizeEncoding, size)
 ```
 
