@@ -1,7 +1,11 @@
 # Live IDE Diagnostics
 
-Use diagnostics MCP for a sample from the affected IDE process.
-The IDE needs this VM option at startup:
+Use diagnostics MCP when the host exposes a connection to the affected IDE.
+The VM option below enables IDE support, but does not install or connect a host
+MCP client. Discover the available tools before calling them; Pi and Amp do not
+gain that connection from this skill package. If unavailable, use the IDE's
+supported thread dump or performance capture workflow and label the evidence.
+The IDE needs this VM option at startup for diagnostics MCP:
 
 ```text
 -Didea.diagnostics.mcp.enabled=true

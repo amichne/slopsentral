@@ -41,12 +41,13 @@ Use the [JSON Schema](references/glossary.schema.json) and [entry example](asset
    canonical term. Preserve and flag an ambiguous term rather than inventing a
    definition or blocking unrelated edits.
 4. Draft or revise only the requested text.
-5. Run the bundled text assessment for every changed prose artifact. Use the
-   same engine, rules, and thresholds for README files, reference pages,
-   specifications, runbooks, and other technical prose. Do not select a metric
-   or mode from the document's purpose.
-6. Resolve findings without changing facts, domain meaning, or quoted text.
-   Re-run the assessment after edits, then check reader comprehension separately.
+5. Check facts, terminology, and the requested shape. For short replies and
+   small edits, this review is sufficient unless repository policy requires
+   more. Use the repository's existing prose checks for durable documents.
+6. Run the bundled assessment when the user requests measurement or the
+   repository selects it. Use the same pinned procedure across document types;
+   do not tune thresholds to obtain a passing score. Resolve findings without
+   changing facts or quotations, then rerun after edits.
 
 ## One Measurement Procedure
 
@@ -98,12 +99,13 @@ invent glossary definitions to get a successful check.
 
 ## Completion Criteria
 
-The requested prose preserves the source meaning and has a recorded assessment.
-Resolve each finding or record its exact rule, location, and technical reason to keep the text.
-Never disable the rule or report a clean run when findings remain.
-An unavailable assessment or missing glossary remains explicit.
-Reader testing must separately establish that the intended action is clear;
-a numeric estimate never establishes comprehension.
+The requested prose preserves the source meaning, terminology, and requested shape.
+When assessment is required, keep its report and resolve each finding or record
+its rule, location, and technical reason to keep the text. Never disable a rule
+to manufacture a clean run. Report an unavailable required assessment or missing
+glossary explicitly; do not imply that unmeasured prose passed. For substantial
+documents, assess the reader's intended action separately; a numeric score never
+proves comprehension.
 
 ## Provenance
 

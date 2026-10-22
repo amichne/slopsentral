@@ -1,6 +1,7 @@
 # Bundled Schema Profile
 
-Use this reference when replacing prose schema rules with a portable, executable contract.
+Use this reference only when the repository or user selects the Slopsentral profile.
+Other schema contracts retain their own dialect, wire names, layout, and validator.
 
 ## Fixed Contract
 
@@ -10,7 +11,9 @@ The skill ships one schema profile:
 references/schema-profile/schema-profile.schema.json
 ```
 
-Repos should not carry customized schema profiles or project-level schema policy documents. The profile and the helper's fixed tree policy are the standard. If the standard is wrong, change this skill and let every consuming repo converge on the same contract.
+The helper implements one fixed profile, not a configurable validator framework.
+Selecting this profile does not authorize migrating existing wire contracts.
+Keep other repository policies intact and validate them with their owning tools.
 
 ## What The Profile Owns
 
@@ -52,4 +55,4 @@ Unsupported:
 - project-specific `schemaProfilePath`
 - `--policy`, `--policy-schema`, or custom `--profile` overrides
 
-Keep schema-policy decisions in this skill, not in each repo.
+Keep this profile's implementation here. Repositories decide whether to adopt it.

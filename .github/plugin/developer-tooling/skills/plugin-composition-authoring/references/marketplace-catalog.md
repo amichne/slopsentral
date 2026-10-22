@@ -10,7 +10,12 @@ after source validation passes:
 node tools/validate-source-graph.mjs
 node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
 node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp
 ```
+
+Use fresh output directories. Amp registers skills and turn-start instructions;
+its other primitive kinds remain reference material. Projection is not host
+activation or proof that a model selects a skill.
 
 ## Catalog Duties
 

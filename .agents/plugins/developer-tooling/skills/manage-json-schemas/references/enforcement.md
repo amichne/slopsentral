@@ -1,6 +1,7 @@
 # Policy Enforcement
 
-Use this reference when turning schema guidance into hooks, local commands, or CI gates.
+Use this reference when explicitly adopting the Slopsentral profile in hooks,
+local commands, or CI. Other schema policies keep their existing validators.
 
 ## Command
 
@@ -16,7 +17,8 @@ If the helper is not vendored into the repo, call the skill helper directly:
 node <skill-dir>/scripts/schema-contracts.js policy-tree --root schemas
 ```
 
-The helper enforces this skill's bundled profile and fixed tree policy. Do not add repo-local `schema-policy.json` files or custom profile overrides.
+The helper enforces this skill's bundled profile and fixed tree policy. It does
+not accept custom profile overrides or replace a repository's other policy tools.
 
 ## Package Script
 
@@ -74,7 +76,8 @@ The `policy-tree` check rejects:
 
 ## Recommended Adoption
 
-1. Vendor or copy `scripts/schema-contracts.js`, or call the skill helper directly.
+1. Prefer calling the installed skill helper directly. If vendoring, preserve
+   the full `scripts/` and `references/` layout, including `scripts/package.json`.
 2. Add `schema:policy` to `package.json`.
 3. Add the pre-commit hook or equivalent `lefthook`, `husky`, or `pre-commit` config.
 4. Add CI with the same command.
