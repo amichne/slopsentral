@@ -1,6 +1,6 @@
 ---
 name: kotlin-design-practices
-description: "Use for Kotlin domain types, APIs, expression bodies, scope functions, coroutine and Flow lifecycles, isolated unit tests, and atomic changes across callers."
+description: "Use for production Kotlin changes and Gradle build authoring: value classes, boundary modules, nullability, sealed errors, APIs, expression flow, coroutines, isolated tests, catalogs, convention plugins, and incremental module graphs."
 ---
 
 # Kotlin Design Practices
@@ -12,6 +12,9 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
 
 1. Inspect repository instructions, the Kotlin language version, declarations,
    callers, and existing tests. Name the invariant and the nearest invalid case.
+   Identify the module group and its single primitive boundary owner. Read
+   [boundary enforcement](references/boundary-enforcement.md) when changing
+   construction, raw extraction, nullability, or module edges.
 2. Choose reuse, extension, or a new representation from source evidence.
    Resolve uncertain symbol identity or caller coverage with available semantic tools.
    Do not claim complete caller coverage from an ambiguous text search.
@@ -40,6 +43,13 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
 
 - Use value classes with private construction for constrained scalars.
   Use sealed variants for finite states and case-specific failures.
+- Require domain types wherever scalar meaning crosses an owner or module.
+  Keep raw ingress/egress in the group's designated boundary module; do not
+  expose `.value`, public primitive factories, or aliases as escape hatches.
+- Core declarations and inferred state must be non-null. Model absence as
+  domain-named sealed alternatives with non-null contents; normalize nullable
+  platform and library results at the boundary. Do not replace null with a
+  nullable payload inside a wrapper or an open `Throwable` failure channel.
 - Keep tiny function-local facts local. Add a carrier when a consumer needs the established fact.
 - Put operations on their semantic owner. Extension syntax alone does not establish ownership.
 - A success transform must preserve each failure variant unless its result explicitly refines that failure.
@@ -67,6 +77,10 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
 
 ## Reference Routing
 
+- Before changing Gradle scripts, catalogs, convention plugins, generators, or
+  module edges, read [the build-logic contract](references/build-logic-contract.md).
+  These correctness rules apply without selecting the explicit-only Gradle
+  diagnostic skill. Use focused repository-native checks directly.
 - For domain construction, read [domain types](references/types-domain-modeling.md),
   [parse examples](references/parse-dont-validate-examples.md), and
   [type-safety patterns](references/type-safety-patterns.md).
@@ -104,5 +118,10 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
 
 Each invariant has one owner. Consumers accept its stronger values.
 Legal behavior passes the focused test. Named invalid calls fail at the stated enforcement mechanism.
+For changed boundaries, exercise an external consumer that swaps same-shaped
+IDs, constructs unchecked values, reads raw storage, or omits an outcome case.
+For nullable or primitive policy beyond Kotlin's native rules, run the semantic
+gate on an intentionally violating fixture and a valid control. Report absent
+enforcement rather than treating an ordinary compilation as proof of the policy.
 Compiler evidence proves only its encoded obligation. External effects, freshness,
 single consumption, and installed behavior need separate evidence when the claim includes them.

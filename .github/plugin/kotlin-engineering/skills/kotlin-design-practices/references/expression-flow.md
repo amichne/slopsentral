@@ -9,9 +9,11 @@ Keep public result types explicit.
 - Prohibit `?: return`, including `return@label`. Keep the absent case in the result expression.
 - Prohibit non-local returns from scope-function lambdas.
 - Preserve evaluation order, smart casts, cancellation, resource cleanup, and transaction behavior during a rewrite.
-- Use `value?.let { ... } ?: Missing` only when the successful result cannot be null.
-- If null also means a successful result, use an explicit branch.
-  Keep absence separate from a successful null result.
+- At a nullable interoperability boundary, use `value?.let { ... } ?: Missing`
+  only when the successful result cannot be null.
+- If the external contract permits a successful null result, use an explicit
+  branch to distinguish it from absence, then translate both into named non-null
+  domain cases. Core expressions consume those cases, not nullable state.
 - Do not replace an Elvis return with `!!`, an unchecked cast, or a concealed exception.
 - Keep block bodies when resource management or several effects need explicit statements.
 
