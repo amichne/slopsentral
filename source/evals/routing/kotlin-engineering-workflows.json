@@ -462,6 +462,128 @@
       "verificationEvidence": [
         "The trace reads the expression-flow reference and distinguishes nullable success from absence."
       ]
+    },
+    {
+      "id": "gradle-authoring-uses-catalog-and-convention-contract",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-22",
+        "evidenceRefs": [
+          "source/instructions/kotlin-engineering.md",
+          "source/skills/kotlin-design-practices/SKILL.md",
+          "source/skills/kotlin-design-practices/references/build-logic-contract.md"
+        ]
+      },
+      "prompt": "Add a Kotlin module and share its compiler/test configuration through our existing included build. The root has libs.versions.toml. Apply an external plugin in a precompiled convention plugin and verify the new module without rebuilding everything.",
+      "expectedPrimitive": { "type": "SKILL", "name": "kotlin-design-practices" },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Source audit found a diagnosis-focused trigger and no explicit catalog/convention authoring contract; this case specifies the desired route, not an observed model replay.",
+        "risk": "Build logic can duplicate versions, assume catalog inheritance, or apply unsupported aliases while ordinary module compilation misses the convention boundary.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Read kotlin-design-practices and its build-logic contract before editing settings or scripts.",
+        "Import the authoritative catalog explicitly into the included build and use supported accessors/APIs.",
+        "Declare the external plugin dependency in build logic and apply its ID in the precompiled plugin.",
+        "Test the convention in a consumer and run focused new-module verification."
+      ],
+      "forbiddenActions": [
+        "Copy dependency/plugin versions into module scripts or assume included builds inherit root catalogs.",
+        "Blindly use a catalog plugin alias in a precompiled plugin plugins block.",
+        "Replace convention ownership with afterEvaluate or root cross-project mutation.",
+        "Claim catalog accessors establish dependency alignment or locking."
+      ],
+      "recoveryExpectation": "Build authoring routes to correctness guidance without waiting for a failed build or performance request.",
+      "productiveOutcome": "One catalog/convention owner and verified plugin application in the affected consumer.",
+      "verificationEvidence": [
+        "The trace reads the build-logic reference before the build edits.",
+        "The included-build catalog import and plugin dependency are resolved with the pinned wrapper.",
+        "Focused consumer/plugin tests pass without substituting an aggregate clean build."
+      ],
+      "notes": "Policy regression scenario from the current-source audit; no live routing success is claimed."
+    },
+    {
+      "id": "gradle-generation-proves-incremental-dataflow",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-22",
+        "evidenceRefs": [
+          "source/skills/kotlin-design-practices/references/build-logic-contract.md"
+        ]
+      },
+      "prompt": "Add a generator used by two Kotlin modules. Wire its generated sources and keep unrelated modules out of the work. Prove an unchanged rerun reuses work and removing an input removes its generated output; check consumer invalidation when the generated API changes.",
+      "expectedPrimitive": { "type": "SKILL", "name": "kotlin-design-practices" },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Source audit found incremental evidence concentrated in performance guidance rather than the normal authoring workflow.",
+        "risk": "A clean build can hide missing producer dependencies, stale outputs, and excess consumer invalidation.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Register lazy tasks with complete inputs/outputs and provider-connected generated-source consumers.",
+        "Name affected producers/consumers and an unrelated control before changing the graph.",
+        "Run initial, unchanged, input-change/removal, and public-ABI scenarios with output-content assertions.",
+        "Distinguish task up-to-date checks, build cache, configuration cache, and incremental task execution."
+      ],
+      "forbiddenActions": [
+        "Use hard-coded generated paths and mustRunAfter as a substitute for producer dependencies.",
+        "Use clean, cache disabling, elapsed time alone, or a dry run as incremental correctness proof.",
+        "Leave removed-input outputs behind or give multiple tasks the same output directory."
+      ],
+      "recoveryExpectation": "The graph declares the dataflow and tests observe both correct output changes and reuse of unaffected work.",
+      "productiveOutcome": "Generated work is correct for both fresh and incremental builds.",
+      "verificationEvidence": [
+        "Unchanged eligible tasks are reused and output contents remain correct.",
+        "Removed inputs leave no stale output; an ABI edit triggers affected consumers.",
+        "An unrelated module remains a control; deviations are explained from native reports."
+      ],
+      "notes": "Current-source acceptance scenario, not a historical runtime measurement or model replay."
+    },
+    {
+      "id": "kotlin-core-rejects-primitive-nullable-boundary-escapes",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-22",
+        "evidenceRefs": [
+          "source/instructions/kotlin-engineering.md",
+          "source/skills/kotlin-design-practices/references/boundary-enforcement.md",
+          "source/skills/kotlin-design-practices/references/types-errors-and-testing.md"
+        ]
+      },
+      "prompt": "Implement a customer lookup across a Kotlin module group. CustomerId and AccountId are strings today; lookup returns Customer? and catches network exceptions as null. Keep exactly one raw boundary module and enforce the core policy through BuildLogic, including newly added modules.",
+      "expectedPrimitive": { "type": "SKILL", "name": "kotlin-design-practices" },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Source audit found conflicting permission for domain nullability and Kotlin Result, and no single-boundary semantic-gate contract.",
+        "risk": "Value wrappers can retain public raw escape hatches while null still conflates absence, invalid input, and failed effects.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Declare the module group and one raw boundary owner; keep core consumers on its domain-only surface.",
+        "Use distinct constrained value types and domain-named found, missing, and expected-failure cases with non-null payloads.",
+        "Translate documented adapter errors once while preserving cancellation and defects.",
+        "Wire resolved-type/dependency checks through conventions and prove both native compiler barriers and additional policy rejection.",
+        "Migrate one complete boundary-to-consumer behavior slice with a stable focused check."
+      ],
+      "forbiddenActions": [
+        "Use aliases, public raw factories/accessors, friend access, nullable generic payloads, or Any to bypass the boundary.",
+        "Replace Customer? with Kotlin Result<Customer?> or return Missing for every thrown exception.",
+        "Claim Kotlin itself prohibits nullable types or that a convention-plugin ID or regex scan enforces resolved types.",
+        "Accept unclassified modules, duplicate boundary owners, or a new source set that skips the gate."
+      ],
+      "recoveryExpectation": "Distinct identities, absence, and failures survive every changed consumer; the build rejects named boundary violations.",
+      "productiveOutcome": "The core receives non-null domain values and exhaustively handled outcomes, with explicit enforcement limits.",
+      "verificationEvidence": [
+        "An external consumer without friend access rejects swapped IDs, unchecked construction, and raw extraction while the valid control compiles.",
+        "The semantic gate rejects explicit/inferred/nested nullable core state and a forbidden dependency edge.",
+        "A new module and duplicate boundary owner cannot bypass the required check.",
+        "Found, missing, expected operational failure, and cancellation remain observably distinct."
+      ],
+      "notes": "Stricter requested policy encoded as an acceptance case; fixture consistency is not live Codex adherence or an installed compiler plugin."
     }
   ]
 }

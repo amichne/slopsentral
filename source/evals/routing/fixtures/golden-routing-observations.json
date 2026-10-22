@@ -1542,6 +1542,66 @@
         "Use an Elvis return, a non-local lambda return, or a nested scope chain that hides effects."
       ],
       "notes": "Synthetic expected route. This fixture is not a model trace."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "gradle-authoring-uses-catalog-and-convention-contract",
+      "routedPrimitive": { "type": "SKILL", "name": "kotlin-design-practices" },
+      "satisfiedAllowedActions": [
+        "Read kotlin-design-practices and its build-logic contract before editing settings or scripts.",
+        "Declare the external plugin dependency in build logic and apply its ID in the precompiled plugin."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The trace reads the build-logic reference before the build edits.",
+        "The included-build catalog import and plugin dependency are resolved with the pinned wrapper."
+      ],
+      "avoidedForbiddenActions": [
+        "Copy dependency/plugin versions into module scripts or assume included builds inherit root catalogs.",
+        "Blindly use a catalog plugin alias in a precompiled plugin plugins block.",
+        "Replace convention ownership with afterEvaluate or root cross-project mutation.",
+        "Claim catalog accessors establish dependency alignment or locking."
+      ],
+      "notes": "Synthetic acceptance fixture only; no session replay or live route is claimed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "gradle-generation-proves-incremental-dataflow",
+      "routedPrimitive": { "type": "SKILL", "name": "kotlin-design-practices" },
+      "satisfiedAllowedActions": [
+        "Register lazy tasks with complete inputs/outputs and provider-connected generated-source consumers.",
+        "Run initial, unchanged, input-change/removal, and public-ABI scenarios with output-content assertions."
+      ],
+      "satisfiedVerificationEvidence": [
+        "Unchanged eligible tasks are reused and output contents remain correct.",
+        "Removed inputs leave no stale output; an ABI edit triggers affected consumers."
+      ],
+      "avoidedForbiddenActions": [
+        "Use hard-coded generated paths and mustRunAfter as a substitute for producer dependencies.",
+        "Use clean, cache disabling, elapsed time alone, or a dry run as incremental correctness proof.",
+        "Leave removed-input outputs behind or give multiple tasks the same output directory."
+      ],
+      "notes": "Synthetic acceptance fixture only; no session replay or incremental measurement is claimed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "kotlin-core-rejects-primitive-nullable-boundary-escapes",
+      "routedPrimitive": { "type": "SKILL", "name": "kotlin-design-practices" },
+      "satisfiedAllowedActions": [
+        "Use distinct constrained value types and domain-named found, missing, and expected-failure cases with non-null payloads.",
+        "Wire resolved-type/dependency checks through conventions and prove both native compiler barriers and additional policy rejection."
+      ],
+      "satisfiedVerificationEvidence": [
+        "An external consumer without friend access rejects swapped IDs, unchecked construction, and raw extraction while the valid control compiles.",
+        "The semantic gate rejects explicit/inferred/nested nullable core state and a forbidden dependency edge.",
+        "A new module and duplicate boundary owner cannot bypass the required check."
+      ],
+      "avoidedForbiddenActions": [
+        "Use aliases, public raw factories/accessors, friend access, nullable generic payloads, or Any to bypass the boundary.",
+        "Replace Customer? with Kotlin Result<Customer?> or return Missing for every thrown exception.",
+        "Claim Kotlin itself prohibits nullable types or that a convention-plugin ID or regex scan enforces resolved types.",
+        "Accept unclassified modules, duplicate boundary owners, or a new source set that skips the gate."
+      ],
+      "notes": "Synthetic acceptance fixture only; no installed BuildLogic gate or compiler rejection is claimed."
     }
   ]
 }

@@ -72,6 +72,13 @@ fields, or parallel arrays.
 **Rule:** If the domain distinguishes values, states, operations, or variants,
 the Kotlin model must distinguish them too.
 
+Authored core declarations and inferred state must be non-null. Meaningful
+absence must be a domain-named sealed alternative with non-null contents, not a
+nullable field, sentinel, or nullable generic payload. Kotlin nullable types do
+represent absence; this stricter policy requires its domain meaning to be named.
+Normalize platform nullability at the designated boundary. Private primitive
+storage and local arithmetic remain valid; primitive domain contracts do not.
+
 ## Principle 2: Parse At Boundaries
 
 Boundary code may reject raw CLI arguments, JSON, files, HTTP payloads, database
@@ -105,12 +112,15 @@ discarding established invariants.
 ## Principle 4: Make Expected Failure Explicit
 
 Routine parse failures, unsupported variants, missing fields, invalid state
-transitions, and recoverable domain failures should have typed outcomes where
-the local API can support them. Reserve exceptions for exceptional conditions or
-established platform contracts.
+transitions, and recoverable domain failures must have closed typed outcomes.
+Reuse a compatible closed outcome or define an operation-owned sealed hierarchy.
+Kotlin Result's open Throwable channel does not encode a finite domain failure
+set. Translate documented platform failures at adapters; preserve cancellation,
+interruption, unknown failures, and defects rather than turning them into absence
+or success. Keep meaningful absence distinct from operational failure.
 
-**Rule:** A caller should be able to see expected failure behavior from the type
-signature or documented boundary contract.
+**Rule:** A caller must see expected failure cases in the type signature and
+handle them exhaustively without a catch-all branch.
 
 ## Principle 5: Keep Ownership Semantic
 
@@ -163,8 +173,25 @@ equivalent implementations. Do not create a wrapper that merely renames every
 operation and type from the dependency.
 
 Enforce this dependency direction with the repository's architecture checks.
-If no check exists, add a focused Gradle or test gate that rejects adapter
-dependencies in pure modules and implementation types in their public APIs.
+If no check exists, add a focused Gradle or test gate that rejects direct
+implementation-library dependencies, implementation types in core public APIs,
+and edges outside the registered boundary topology below.
+
+For the single-primitive-boundary topology, a module group is an explicitly
+registered set of projects for a domain capability. Exactly one boundary module
+owns its raw ingress/egress, value construction, and internal adapters. Core
+consumers may depend on its domain-only public surface, never its implementation
+types; this deliberately co-locates value declarations and raw adapters so
+Kotlin internal visibility can protect extraction. Keep implementation libraries
+off the exposed API and let integration select typed capabilities. Do not add
+friend access or public raw accessors to recreate a separate adapter boundary.
+
+For example, allow a customer core module to depend on its registered customer
+boundary through CustomerId and CustomerLookup. Reject a direct core dependency
+on an HTTP client library, an HttpResponse in CustomerLookup, or a boundary
+dependency on its core consumer. This is API isolation, not adapter/runtime
+dependency isolation: Gradle implementation dependencies may still be present
+in the consumer's runtime graph.
 
 **Rule:** A public cross-module API must not reveal an implementation detail
 unless that module explicitly exists to extend the implementation library.
@@ -191,6 +218,14 @@ Choose proof that matches the risk:
 - Gradle tasks for module-level compile or test proof;
 - hooks for package-layout and turn-end checks.
 
+Kotlin does not natively prohibit nullable types or primitive signatures. A
+BuildLogic convention must wire resolved-type and dependency checks for those
+policies across production source sets. Compiler-negative consumer fixtures
+without friend access prove native type/visibility barriers; violating semantic
+fixtures and valid controls prove the additional policy gate. Regex checks and
+ordinary successful compilation prove neither complete policy coverage nor
+that newly added modules cannot bypass it. State missing enforcement explicitly.
+
 **Rule:** Do not claim a Kotlin change is complete from intent. Name the command,
 tool output, test, hook result, or explicit reason verification could not run.
 
@@ -208,7 +243,7 @@ tool output, test, hook result, or explicit reason verification could not run.
 | Refined value immediately unpacked to a primitive | Keep the stronger representation until the named outer boundary |
 | String or integer tag dispatch | Dispatch on typed variants |
 | Package roots with many similarly prefixed peer files | Split by semantic owner or introduce a sealed root |
-| Expected failures hidden in exceptions | Use typed outcomes where the local API supports them |
+| Expected failures hidden in exceptions or Kotlin Result | Translate at the boundary into closed typed outcomes |
 | Hand-written infrastructure for a solved technical domain | Use the standard library or a maintained compatible library, or record the constraint that rules them out |
 | Framework, transport, serializer, engine, or SDK types in domain APIs | Introduce a domain-owned capability and keep the binding in an adapter selected by the integration module |
 | One-to-one wrappers that mirror a dependency | Define the narrower domain capability callers need |

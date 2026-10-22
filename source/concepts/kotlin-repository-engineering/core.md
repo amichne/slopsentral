@@ -7,9 +7,10 @@ instructions, generated-source ownership, and verification breadth. It
 complements code-level Kotlin rules by defining how modules, integration
 boundaries, executable checks, and local `AGENTS.md` files work together.
 
-This standard does not prescribe one module count, documentation tool, IDE,
-semantic indexer, CI provider, or distribution format. Local repository facts
-remain authoritative when they are explicit and mechanically verifiable.
+This standard does not prescribe a total module count, documentation tool, IDE,
+semantic indexer, CI provider, or distribution format. It requires one primitive
+boundary owner per declared module group. Local compatibility exceptions must
+name their authority and replacement enforcement.
 
 ## Quick Use
 
@@ -50,17 +51,53 @@ authority map and affected local instructions must change in the same work.
 ## Module Direction And Integration
 
 Dependencies must point toward stable, domain-owned contracts and pure evidence.
-Core modules must not depend on transport, persistence, framework, engine, IDE,
-serializer, CLI, or SDK implementations. Service modules may depend on their
-contracts and narrower contracts. Adapter modules may depend on the external
-implementation they adapt. One small application or integration module must own
-configuration and select the complete implementation graph.
+Core modules must not directly depend on transport, persistence, framework,
+engine, IDE, serializer, CLI, or SDK implementation libraries. They may depend
+on the domain-only API of their registered boundary module as defined below.
+Service modules may depend on their contracts and narrower contracts. Boundary
+adapters may depend on the external implementation they adapt. One small
+application or integration module must own configuration and select the complete
+implementation graph.
 
 A replacement implementation should require changes to its adapter and the
 integration binding, not to domain callers. Public cross-module APIs must use
-domain-owned types and finite failures. A mechanical dependency or public-API
-check must reject implementation dependencies or types that leak into pure
-modules.
+domain-owned types and finite failures. Mechanical dependency and public-API
+checks must reject direct implementation-library dependencies in core modules,
+public implementation-type leakage, and edges outside the registered topology.
+
+## Primitive Boundary Groups And Build Logic
+
+A module group is an explicit settings-owned set of projects for one domain
+capability. Register every production project and exactly one primitive boundary
+module per group. Reject missing or duplicate ownership and forbidden edges.
+The boundary owns raw conversion, constrained value construction, and internal
+adapters. Its public surface toward core consumers is domain-only. This topology
+permits core modules to depend on that surface, but not on exposed adapter types
+or direct implementation-library dependencies. Co-locating value declarations and raw adapters
+keeps raw extraction internal without friend-module access or public escape
+hatches. Integration selects typed capabilities without becoming another parser.
+
+For example, allow customer core to depend on its registered customer boundary
+through CustomerId and CustomerLookup. Reject core depending directly on an HTTP
+client library, CustomerLookup exposing HttpResponse, or boundary depending on
+its core consumer. This is API isolation, not runtime dependency isolation:
+Gradle implementation dependencies remain eligible for the consumer runtime
+graph even when absent from its compile classpath.
+
+Use an existing BuildLogic convention plugin to wire dependency and resolved-type
+checks into production compilation or required verification. Native Kotlin types
+and visibility reject swapped values and unchecked construction; additional
+semantic checks must reject raw domain contracts and explicit/inferred nullable
+core state. Apply the gate to new modules and source sets automatically. A
+plugin-application test alone is not proof that forbidden code is rejected.
+
+Catalogs own external dependency and plugin versions. Convention plugins own
+shared build policy; included builds import catalogs explicitly. Keep tasks lazy,
+declare inputs and outputs, and wire consumers through producer providers.
+Validate changed work as focused behavior slices through direct consumers.
+For changed generators or build conventions, test no-change reuse and relevant
+source/ABI invalidation; generated input removal must not leave stale outputs.
+A broad clean build does not establish incremental correctness.
 
 ## Executable Change Evidence
 
@@ -180,7 +217,7 @@ narrowest rerunnable check that proves the affected rule.
 |---|---|
 | Remembered module topology | Derive membership and ownership from current manifests |
 | Root project used as shared domain code | Keep the root as orchestrator and introduce an owned module |
-| Framework or adapter dependency in a pure module | Reverse the dependency through a domain-owned contract |
+| Direct implementation-library dependency or implementation-type leakage in core | Use the registered boundary's domain-only API and reject forbidden edges |
 | Complete implementation graph spread across modules | Select bindings in one minimal integration module |
 | Different red and green authority scripts | Use one stable check specification that fails before and passes after |
 | Workflow files for an uninterrupted local change | Keep proof in the test, native report, command result, and handoff |

@@ -398,7 +398,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/SKILL.md",
-      "sha256": "81023c9fdc7c50c5c4b92a3becdf2442b6437868a3752ef059dcb70b030f8904"
+      "sha256": "8525908564a2658529e7d49a1115f70f65537bbe6f2dc7efc8005934c23e973b"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/Apache-2.0.txt",
@@ -434,15 +434,23 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/api-surface-stability.md",
-      "sha256": "1107aae3d22211766ea87e15dd1391805127e26985f52f9b6089db326d916a63"
+      "sha256": "7eec844a10e320ac262b89d9fec85203c47a16ee4aab3de5457ccc22d6aba806"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/boundary-enforcement.md",
+      "sha256": "f8502ce3263f32bfae857c26bfe0ea252688dc5a69d08c694c42a33b27cf8c7a"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/branch-preservation.md",
-      "sha256": "558422b1256d9837c4906860a3110735295f2e3f37d256744770fed1f6260769"
+      "sha256": "c6ac99aae2d65a37216ae54850d09687897b65071e28cc183565ccd5f0d65268"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/branch-provenance.md",
       "sha256": "683b582df9642eb5fbcaa992ff6355b9e6b407d619c620b9b27e24eec2ec84b0"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/build-logic-contract.md",
+      "sha256": "c66f8626c9fda73798f6ed302edc6d28c58827b8c9895813f07bbd478319d4a2"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/coroutine-tests.md",
@@ -454,11 +462,11 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/domain-value-surfaces.md",
-      "sha256": "511c4c86763857222a385fd721c17fce89852521d693eaa40a4b5f4849ad1ba0"
+      "sha256": "af1ad2767fa030dbc5d240a334375b7389648e9b30c0e2d56ea97d6639586e77"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/expression-flow.md",
-      "sha256": "944a88b6d3903099a793ff0e5fbf3dc3863b72744c6851a1b4cc4813751d96f9"
+      "sha256": "899ad4676c08bb342c730bd7e8769db880a22b3848cda9075e1bff9b343e1668"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/function-ownership-and-composition.md",
@@ -470,7 +478,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/idioms.md",
-      "sha256": "f3d3da51fa293862531b30ecd1de7209c67d72c638272d9b5751d51eac4c31c7"
+      "sha256": "ec0e3fbd5a5b99195b876fe7ff22df6bb07b9ab6ef62bcce88ee1dbc6877f396"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/kotlin-antipatterns.md",
@@ -482,7 +490,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/parse-dont-validate-examples.md",
-      "sha256": "2b44027f3daad27b1933b289cb3221077d0d02834dd1ff1d3088547a7859158d"
+      "sha256": "7b35aea87bd4adb1983131974de99b19f0915bc2b4096d7cdccbed1a6e9996ca"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/type-safety-patterns.md",
@@ -490,7 +498,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/types-domain-modeling.md",
-      "sha256": "33b2d77d6359310d106b1f973adc0c15e6b510526f9366875866b117914ef897"
+      "sha256": "e9e760e79f2e519a2c3f7c8517b656b9f03e24974f56cd8efdbbd2863fb3741f"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/types-dsls-and-generics.md",
@@ -498,7 +506,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/types-errors-and-testing.md",
-      "sha256": "b3c8591166597277ff54f40c8f5209d886aef6c71806eb42c828b38548cd455b"
+      "sha256": "a90f70d397a90cc4b12c0837e7777d319e4fe79f17413f4f2592fca3bb235915"
     },
     {
       "path": "source/skills/negative-capability-proof/SKILL.md",
