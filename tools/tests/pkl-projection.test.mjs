@@ -40,7 +40,7 @@ function checksum(files, prefix) {
   return 'sha256:' + hash.digest('hex');
 }
 
-for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot', '.github/plugin']]) {
+for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot', '.github/plugin'], ['amp', '.amp/plugins']]) {
   test(`${harness}: complete deterministic current projection, source bytes, modes, and digests`, native, t => {
     const dir = temporary(t);
     const first = project({ source: root, harness, out: path.join(dir, 'first'), pkl });
@@ -59,13 +59,13 @@ for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot'
         assert.deepEqual(files.get(prefix + '/' + plugin.name + '/skills/' + ref.name + '/' + name), file);
       }
     }
-    if (harness === 'codex') {
+    if (harness === 'codex' || harness === 'amp') {
       const lock = JSON.parse(files.get(prefix + '/marketplace-lock.json').bytes);
       for (const plugin of lock.plugins) for (const ref of plugin.references)
         assert.equal(ref.sha256, checksum(files, prefix + '/' + plugin.name + '/' + ref.targetPath));
     }
   });
-  for (const baseline of compatibilityBaselines) test(`${harness}: ${baseline.name} from pinned source and fixtures`, native, t => {
+  for (const baseline of harness === 'amp' ? [] : compatibilityBaselines) test(`${harness}: ${baseline.name} from pinned source and fixtures`, native, t => {
     const dir = temporary(t);
     const repo = path.join(dir, 'historical-source');
     fs.mkdirSync(repo);

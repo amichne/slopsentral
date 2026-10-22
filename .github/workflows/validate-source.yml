@@ -46,5 +46,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: uv run --locked tools/ci.py pkl
-      - name: Project both providers and execute projected hook contracts
+      - name: Project all three harnesses and execute installed adapter contracts
         run: uv run --locked tools/verify_marketplaces.py

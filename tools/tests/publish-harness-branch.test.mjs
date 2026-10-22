@@ -143,29 +143,32 @@ test("publishes an artifact-only harness branch and skips an unchanged tree", (t
   );
 });
 
-test("publishes only the Copilot subtree and rejects projection leakage", (t) => {
+for (const [harness, root] of [
+  ["github-copilot", ".github/plugin"],
+  ["amp", ".amp/plugins"],
+]) test(`publishes only the ${harness} subtree and rejects projection leakage`, (t) => {
   const fixture = createFixture();
   t.after(() => fs.rmSync(fixture.root, { recursive: true, force: true }));
   const projection = createProjection(
     fixture.root,
-    ".github/plugin/marketplace.json",
-    "github-copilot",
+    `${root}/marketplace.json`,
+    harness,
   );
 
   fs.writeFileSync(path.join(projection, "secret.txt"), "must not publish\n");
   const leaking = spawnSync(
     publisher,
-    ["harness", projection, "harness/github-copilot", "main", fixture.sourceSha],
+    ["harness", projection, `harness/${harness}`, "main", fixture.sourceSha],
     { cwd: fixture.checkout, encoding: "utf8" },
   );
   assert.notEqual(leaking.status, 0);
-  assert.match(leaking.stderr, /must contain only \.github\/plugin/);
+  assert.ok(leaking.stderr.includes(`must contain only ${root}`), leaking.stderr);
 
   fs.rmSync(path.join(projection, "secret.txt"));
   publish(
     fixture.checkout,
     projection,
-    "harness/github-copilot",
+    `harness/${harness}`,
     "main",
     fixture.sourceSha,
   );
@@ -177,13 +180,16 @@ test("publishes only the Copilot subtree and rejects projection leakage", (t) =>
       "ls-tree",
       "-r",
       "--name-only",
-      "harness/github-copilot",
+      `harness/${harness}`,
     ),
-    ".github/plugin/marketplace.json",
+    `${root}/marketplace.json`,
   );
 });
 
-test("refuses to roll a harness branch back to an older source commit", (t) => {
+for (const [harness, root] of [
+  ["codex", ".agents/plugins"],
+  ["amp", ".amp/plugins"],
+]) test(`refuses to roll ${harness} back to an older source commit`, (t) => {
   const fixture = createFixture();
   t.after(() => fs.rmSync(fixture.root, { recursive: true, force: true }));
   const olderSourceSha = fixture.sourceSha;
@@ -195,13 +201,13 @@ test("refuses to roll a harness branch back to an older source commit", (t) => {
   const newerSourceSha = git(fixture.seed, "rev-parse", "HEAD");
   const newerProjection = createProjection(
     fixture.root,
-    ".agents/plugins/marketplace.json",
-    "newer-codex",
+    `${root}/marketplace.json`,
+    `newer-${harness}`,
   );
   publish(
     fixture.checkout,
     newerProjection,
-    "harness/codex",
+    `harness/${harness}`,
     "main",
     newerSourceSha,
   );
@@ -210,24 +216,24 @@ test("refuses to roll a harness branch back to an older source commit", (t) => {
     "--git-dir",
     fixture.remote,
     "rev-parse",
-    "harness/codex",
+    `harness/${harness}`,
   );
 
   git(fixture.seed, "push", "--force", "origin", `${olderSourceSha}:main`);
   const olderProjection = createProjection(
     fixture.root,
-    ".agents/plugins/marketplace.json",
-    "older-codex",
+    `${root}/marketplace.json`,
+    `older-${harness}`,
   );
   const rollback = spawnSync(
     publisher,
-    ["harness", olderProjection, "harness/codex", "main", olderSourceSha],
+    ["harness", olderProjection, `harness/${harness}`, "main", olderSourceSha],
     { cwd: fixture.checkout, encoding: "utf8" },
   );
   assert.notEqual(rollback.status, 0);
-  assert.match(rollback.stderr, /refusing to move harness\/codex backward/);
+  assert.ok(rollback.stderr.includes(`refusing to move harness/${harness} backward`), rollback.stderr);
   assert.equal(
-    git(fixture.root, "--git-dir", fixture.remote, "rev-parse", "harness/codex"),
+    git(fixture.root, "--git-dir", fixture.remote, "rev-parse", `harness/${harness}`),
     newerHarnessCommit,
   );
 });

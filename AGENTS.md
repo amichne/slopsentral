@@ -20,6 +20,11 @@ by hand when the authored source can be fixed instead.
   hand-edit them. Publication updates both trees on `main` in one commit and
   preserves all authored files.
 - Installed caches under `~/.codex/plugins/cache` are consumers, never source.
+- Amp directory plugins project into `.amp/plugins`. `tools/projection/Amp.pkl`
+  owns skill registration and turn-start instructions. Hooks, agents, and MCP
+  configuration remain reference-only; workflow profiles are unsupported.
+  `Publish Harnesses` publishes Amp only to `harness/amp`, not `main`, so the
+  authored checkout does not automatically activate every bundle.
 
 ## Pi Installation Entry Point
 
@@ -42,6 +47,7 @@ composition edits, run:
 node tools/validate-source-graph.mjs
 node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
 node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp
 git diff --check
 ```
 

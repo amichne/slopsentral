@@ -54,6 +54,8 @@ jobs:
             branch: harness/codex
           - harness: github-copilot
             branch: harness/github-copilot
+          - harness: amp
+            branch: harness/amp
 
     steps:
       - name: Check out source
@@ -86,6 +88,13 @@ jobs:
           node tools/project-marketplaces.mjs --source . --harness '${{ matrix.harness }}' --out "$projection_path"
           echo "projection-path=$projection_path" >> "$GITHUB_OUTPUT"
 
+      - name: Verify Amp adapter and installed schema commands before publication
+        if: matrix.harness == 'amp'
+        env:
+          SLOPSENTRAL_AMP_ROOT: ${{ steps.projection.outputs.projection-path }}/.amp/plugins
+          SLOPSENTRAL_SCHEMA_SKILL_ROOT: ${{ steps.projection.outputs.projection-path }}/.amp/plugins/developer-tooling/skills/manage-json-schemas
+        run: node --test tools/tests/amp-projection.test.mjs tools/tests/schema-contracts-runtime.test.mjs
+
       - name: Publish ${{ matrix.branch }}
         env:
           PROJECTION_PATH: ${{ steps.projection.outputs.projection-path }}
@@ -104,7 +113,7 @@ jobs:
           HARNESS: ${{ matrix.harness }}
         run: tar -cf "$RUNNER_TEMP/marketplace-$HARNESS.tar" -C "$PROJECTION_PATH" .
 
-      - name: Upload projection for main
+      - name: Upload projection archive
         uses: actions/upload-artifact@v4
         with:
           name: marketplace-${{ matrix.harness }}
