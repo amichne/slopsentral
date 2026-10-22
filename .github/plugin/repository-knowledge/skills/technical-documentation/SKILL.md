@@ -25,8 +25,10 @@ Use controlled-technical-writing for prose assessment and code-knowledge-base fo
    Change the generator for generated pages. Derive diagrams from real components, states, calls, or schemas.
 6. Examine commands, examples, defaults, links, and page claims against their sources.
    Run the repository's documentation build after navigation, configuration, layout, link, or generated-page changes.
-7. Run controlled-technical-writing's shared assessment for changed prose and keep its report.
-   Resolve findings or record their location and technical reason.
+7. Apply controlled-technical-writing's source and terminology checks.
+   Run the repository's prose checks; use the bundled assessment when requested
+   or required by policy, and keep that report. Do not require a new assessment
+   toolchain for a small wording edit.
 8. For a substantial document, use [reader-testing.md](references/reader-testing.md) to assess comprehension without conversation context.
    Report unresolved reader questions and distinguish a simulated review from human evidence.
 
