@@ -24,6 +24,9 @@ Gradle commands remain available without this skill.
   before interpreting incomplete console text.
 - Run targeted module or test tasks before full suites.
 - Never call a build green until the relevant Gradle command exits successfully.
+- For build authoring, read the build-logic contract in `kotlin-design-practices`
+  before editing. Catalogs, plugin application, lazy task dataflow, and affected
+  module edges are correctness contracts, not optional performance cleanup.
 - Keep domain modeling and API shape in `kotlin-design-practices`; keep CI
   topology in `github-ci-operations`. Use `gradle-performance-engineering` for
   performance baselines, Develocity API analysis, and cache/compilation experiments;
@@ -35,6 +38,8 @@ Gradle commands remain available without this skill.
    Read settings, root build files, wrapper properties, version catalogs, and
    relevant module build files. Determine the JDK, Kotlin and Gradle versions,
    test framework, plugins, and narrowest owning task.
+   Include convention builds and their separate settings/catalog scope. Map
+   changed producers, consumers, module groups, and their boundary owners.
 
 2. Name the claim.
    Choose one concrete target: compile, a specific test, module tests, coverage
@@ -69,6 +74,9 @@ Gradle commands remain available without this skill.
    Rerun the focused command. Widen to the owning module, direct consumers, or a
    required aggregate task only when the changed contract reaches that ring. Do
    not repeat an unchanged successful check merely to fill a sequence.
+   For incremental claims, an identical rerun is a different experiment: verify
+   reuse, source/ABI invalidation, and added/removed generator inputs as applicable
+   using the build-logic contract. Never substitute `clean` for these checks.
 
 ## Failure Handling
 

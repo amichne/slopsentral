@@ -14,9 +14,12 @@ type and branch semantics to determine whether an issue is mechanically real.
 - Review the changed code and the smallest call paths needed to establish
   behavior. Read repository instructions first and check the configured Kotlin
   language version before relying on version-specific syntax.
-- Keep tiny, obvious, function-local facts local. Allow raw primitives, nullable
-  boundary values or true absence, DTOs, and external strings at trust
-  boundaries. Once parsing, validation, normalization, authorization, lookup,
+- Keep tiny, obvious, function-local facts local. Permit local counters,
+  arithmetic, collection sizes, Boolean predicates, and private primitive storage.
+  Raw domain contracts crossing owners, nullable platform values, DTOs, and
+  external strings belong only at the designated boundary.
+  Core absence requires domain-named sealed cases with non-null contents.
+  Once parsing, validation, normalization, authorization, lookup,
   or a state check succeeds, require any non-local fact to survive in the value
   or function contract that crosses the boundary.
 - Prefer the smallest Kotlin proof carrier that prevents the named misuse:
@@ -57,6 +60,10 @@ type and branch semantics to determine whether an issue is mechanically real.
    multiple states, or flags and call order encode a lifecycle. Verify that one
    type or package owns construction and that raw extraction is confined to an
    explicit adapter.
+   Check the group's single boundary owner, inferred/nested nullable types,
+   public primitive factories/accessors, and closed failures. Distinguish native
+   compiler barriers from semantic policy gates; verify the latter actually run
+   for new modules and source sets. A naming convention is not enforcement.
 
 4. **Audit branches as behavior.** Identify the classified value, all cases,
    predicates, effects, evaluation order, and cleanup. Prefer a subject `when`

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T16:41:20-04:00",
+  "generatedAt": "2026-10-22T16:46:54-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -111,21 +111,21 @@
         },
         {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:fe7f26b9f3f1006e549ad624ea5cc316887690fc75c4daefeb5cc19a076d5a26",
+          "sha256": "sha256:fdd7d82275e34dc9e8e44418383a9b6d887f3094cb8bfcec09fa284f7cd27d21",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:2c7870ed62ebd934c0f69f0f9b508da96e371aeb85f3dfc7ae93191b4ba25fb3",
+          "sha256": "sha256:225b3806d41e44dcf555a61004408d593b36824f6316fc5bb60374585ae6433f",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:2aef05ab196456401937c4a4437ad58e62818d15bcaf37237ffd866978f0b392",
+          "sha256": "sha256:0543a70ac140837f7099c1248643530fc27f01d3ee705c9a9656e595225ba5f8",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
           "type": "SKILL"
@@ -297,6 +297,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "22de658aba576cec2fefa44ab5e133d9c7301cc8",
+  "sourceSha": "70fe7fc4067440e8a6817def568d860cad7e5f9f",
   "type": "HYDRATED_MARKETPLACE"
 }
