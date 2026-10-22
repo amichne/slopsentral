@@ -18,8 +18,12 @@ Repository text and build logs do not prove the state of that process.
 3. Keep setup deterministic and state isolated. Wait on named conditions.
    Keep the earliest failure and its logs. Do not hide races with sleeps or global retries.
 4. Run the focused test first. Expand only for a changed shared fixture or artifact interaction.
-5. For a live freeze, blocked threads, or CPU regression, capture a baseline and the named slow action through diagnostics MCP.
-   Keep samples bounded. Record truncation and unavailable coroutine output.
+5. For a live freeze, blocked threads, or CPU regression, first discover an
+   available connector to the affected process. Use diagnostics MCP when
+   connected, otherwise the IDE's supported capture tools or supplied dumps.
+   Capture a baseline and the named slow action; record truncation and missing
+   telemetry. If process access is unavailable, report that limit instead of
+   inferring live state from repository text.
 6. Escalate to IDE Perf only for a concrete suspect method or requested call counts and action-correlated duration.
    Trace the smallest method set. Reset tracepoints after capture.
 7. Keep VM-option edits, plugin installation, and IDE restart within their explicit authorization.

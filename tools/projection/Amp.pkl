@@ -1,0 +1,59 @@
+module slopsentral.projection.Amp
+
+import "Schema.pkl"
+
+class Link {
+  name: Schema.Identity
+  path: Schema.RelativePath
+}
+
+class Catalog {
+  name: Schema.Identity
+  plugins: List<Link>
+}
+
+class Capabilities {
+  schemaVersion: Int(this == 1) = 1
+  skills: "REGISTERED" = "REGISTERED"
+  instructions: "AGENT_START_CONTEXT" = "AGENT_START_CONTEXT"
+  agents: "REFERENCE_ONLY" = "REFERENCE_ONLY"
+  hooks: "REFERENCE_ONLY" = "REFERENCE_ONLY"
+  mcp: "REFERENCE_ONLY" = "REFERENCE_ONLY"
+  profiles: "UNSUPPORTED" = "UNSUPPORTED"
+}
+
+function literal(value: Any): String = (new JsonRenderer {}).renderValue(value)
+
+function entrypoint(plugin: Schema.Plugin): String =
+  let (
+    skills =
+      plugin.references
+        .filter((ref) -> ref.type == "SKILL")
+        .sortBy((ref) -> ref.name)
+  )
+  let (
+    instructions =
+      plugin.references
+        .filter((ref) -> ref.type == "INSTRUCTION")
+        .sortBy((ref) -> ref.name)
+  )
+    """
+    import { readFileSync } from 'node:fs';
+
+    export const description = \(literal(plugin.description.take(300)));
+
+    export default async function (amp) {
+      // Read required context before registering anything; a missing payload fails loading.
+      const instructions = \(literal(instructions.map((ref) -> "instructions/" + ref.name + "." + ref.sourcePath.split(".").last)))
+        .map(path => readFileSync(new URL(path, import.meta.url), 'utf8').trim());
+      for (const path of \(literal(skills.map((ref) -> "skills/" + ref.name)))) {
+        await amp.registerSkill({ path });
+      }
+      if (instructions.length) {
+        amp.on('agent.start', () => ({ message: {
+          content: instructions.join('\\n\\n'),
+          display: false,
+        } }));
+      }
+    }
+    """ + "\n"

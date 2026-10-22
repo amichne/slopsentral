@@ -5,9 +5,11 @@ description: Use when IntelliJ Platform work involves PSI traversal or resolve, 
 
 # IntelliJ PSI and Indexing
 
-Use `jbcontext search` once when the owning code location is unknown, inspect
-the first relevant area, then switch to exact file and symbol reads. Do not
-duplicate semantic discovery in a plugin script.
+When the owner is unknown, use the host's semantic code discovery if available
+(`jbcontext search` is one option), then inspect the resolved files and symbols.
+Otherwise use scoped text search and the build's resolved Platform sources;
+do not claim compiler-grounded identity from text matches. Installing this
+skill does not install a discovery service.
 
 ## Workflow
 

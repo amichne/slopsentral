@@ -5,73 +5,59 @@ description: "Use when JSON Schema assets need authoring, extraction, validation
 
 # Manage JSON Schemas
 
-Use this skill as the authority for JSON Schema contracts. JSON Schema is the portable contract; Ajv is the default validation engine; repo policy checks catch the modeling rules that generic validators cannot express.
-
-Read the nearest repository policy and the bundled schema-policy reference when
-designing a contract. The rules below apply without a plugin context hook.
+Use the repository's schema dialect, validator, and compatibility commitments as
+the contract authority. Review requests authorize findings, not schema migrations.
+The bundled helper implements the Slopsentral profile; it is not a universal
+JSON Schema validator. Select that profile only when the repository already uses
+it or the user asks to adopt it.
 
 ## Load Only What You Need
 
-- For baseline schema design rules, read [references/schema-policy.md](references/schema-policy.md).
-- For the bundled schema profile and fixed tree policy, read [references/schema-profile.md](references/schema-profile.md).
-- For hierarchical discriminator layout, nested discriminators, and schema-tree layout, read [references/hierarchical-schema-layout.md](references/hierarchical-schema-layout.md).
-- For hooks, CI, and executable policy gates, read [references/enforcement.md](references/enforcement.md).
-- For concrete accepted schemas and rejected payload shapes, read [references/schema-examples.md](references/schema-examples.md) and the checked-in schemas under [references/schemas/](references/schemas/).
+- When the Slopsentral profile is selected, read [schema policy](references/schema-policy.md) and [profile](references/schema-profile.md).
+- When modeling its hierarchical variants, read [hierarchical layout](references/hierarchical-schema-layout.md).
+- When explicitly adopting its hooks or CI gates, read [enforcement](references/enforcement.md).
+- For examples of that profile, read [schema examples](references/schema-examples.md) and [schemas](references/schemas/).
 
 ## Required First Steps
 
-1. Locate the existing schema owner, repository policy, and validator before editing.
-2. Read schema-policy for modeling changes; use the other references only for the relevant operation.
-3. Run the existing validator. Install dependencies only when readiness is missing, using the repository's package manager and lockfile.
+1. Locate the schema owner, consumers, repository policy, dialect, and validator.
+2. Name the invariant and compatibility boundary. Preserve wire tags, filenames,
+   and supported keywords unless the requested change requires a migration.
+3. Run the existing validator with a valid payload and the nearest invalid one.
+   Install dependencies only when readiness is missing, using the repository's package manager and lockfile.
 4. Keep schema assets in the owning module's durable schema path, usually `schemas/`, `schema/`, `contracts/`, or `api/schemas/`.
 
 ## Core Rules
 
-- Model finite JSON shapes as discriminated unions, not loose objects plus prose.
-- Use `type` as the discriminator field on every discriminated object.
-- Require `properties.type` only on discriminated objects; every supplied `type` discriminator must be required.
-- Put `discriminator: { "propertyName": "type" }` on every `oneOf` or `anyOf` union schema.
-- Define discriminator values with `enum`, not `const`.
-- Write discriminator values in CAPS_CASE.
-- Require `type` on every discriminated variant.
+- Model finite variants with distinguishable branches and required tags where
+  the wire contract uses them. Fixed records need no synthetic discriminator.
+- Preserve existing tag names and values. Use `const`, `enum`, and union keywords
+  according to the declared dialect and consumer support.
+- Do not add the nonstandard `discriminator` keyword unless the validator and
+  generator support it and repository policy requires it.
 - Close object shapes with `additionalProperties: false` unless extension is intentional and documented.
 - Add granular `examples` on meaningful schema nodes.
 - Treat raw JSON as untrusted input; validate before constructing domain types.
 
-## Hierarchical Schema Rules
+## Opt-In Slopsentral Profile
 
-- Treat underscores in discriminator values as a modeling signal.
-- If a prefix names shared semantics, model the prefix as an outer node: `type: "UPLOAD"`.
-- Put the nested discriminated object under the camelCase translation of the outer discriminator: `upload` for `UPLOAD`, `knowledgeArtifact` for `KNOWLEDGE_ARTIFACT`.
-- Keep nested discriminators named `type`; do not use `subtype`, `kind`, `nodeType`, or similar aliases.
-- Put shared fields on the outer object and variant-specific fields in the nested key object.
-
-## File-Tree Rules
-
-Mirror the semantic hierarchy in the schema file tree:
-
-```text
-schemas/
-  <node>/
-    <node>.schema.json
-    <variant>.schema.json
-```
-
-For `type: "UPLOAD"` with `upload.type: "MANIFEST"`:
-
-```text
-schemas/
-  upload/
-    upload.schema.json
-    manifest.schema.json
-```
-
-Do not repeat the parent prefix in child filenames. Prefer `schemas/upload/manifest.schema.json` over `schemas/upload/upload-manifest.schema.json`.
+The bundled references and CLI commands apply only to this profile.
+It requires `type` discriminators, CAPS_CASE single-value enums rather than
+`const`, granular examples, and a fixed hierarchy. Its helper rejects custom
+profile overrides; use the repository's validator for other contracts instead
+of rewriting them to make this helper pass. Read the profile references before
+using `init`, `extract`, or policy gates; their generated shapes and fixed tree
+layout are deliberate choices, not inferred user requirements.
 
 ## CLI Workflow
 
 Use the bundled helper from this skill directory. Resolve the skill directory
-first, then run:
+first, then run from the target repository. Keep `scripts/package.json` with the
+helper: it preserves CommonJS execution inside Pi and Amp packages.
+`help`, `init`, `extract`, `profile`, and policy checks need only Node.js.
+`validate` also requires the target repository's locked `ajv` and `ajv-formats`
+dependencies (`ajv-draft-04` for draft-04). Package installation does not supply
+those dependencies; report missing readiness rather than claiming validation.
 
 ```bash
 node <skill-dir>/scripts/schema-contracts.js help
@@ -84,37 +70,6 @@ node <skill-dir>/scripts/schema-contracts.js profile \
   --schema schemas/upload/upload.schema.json
 ```
 
-Create a schema asset:
-
-```bash
-node <skill-dir>/scripts/schema-contracts.js init \
-  --name UPLOAD \
-  --out schemas/upload/upload.schema.json
-```
-
-Extract a starter schema from sample JSON:
-
-```bash
-node <skill-dir>/scripts/schema-contracts.js extract \
-  --sample samples/upload-manifest.json \
-  --name MANIFEST \
-  --out schemas/upload/manifest.schema.json
-```
-
-Check one schema:
-
-```bash
-node <skill-dir>/scripts/schema-contracts.js policy \
-  --schema schemas/upload/upload.schema.json
-```
-
-Check the schema tree:
-
-```bash
-node <skill-dir>/scripts/schema-contracts.js policy-tree \
-  --root schemas
-```
-
 Validate data:
 
 ```bash
@@ -123,16 +78,10 @@ node <skill-dir>/scripts/schema-contracts.js validate \
   --data samples/upload-manifest.json
 ```
 
-## Enforcement Default
+## Completion
 
-Every repo with schema contracts should expose one command that hooks and CI can run:
-
-```json
-{
-  "scripts": {
-    "schema:policy": "node scripts/schema-contracts.js policy-tree --root schemas"
-  }
-}
-```
-
-Use the same command from pre-commit hooks and CI. Hooks are a convenience boundary; CI is the durable rejection boundary.
+The changed invariant has valid and invalid examples exercised by the owning
+validator. Report the dialect, selected policy, commands, outcomes, and any
+unverified consumer compatibility. Sample extraction is a starting point, not
+proof of the intended domain. Profile adoption and publication remain separate
+from an ordinary schema edit.

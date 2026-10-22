@@ -27,6 +27,26 @@ Developer Tooling adds no automatic hooks. Repository Knowledge remains optional
 For Pi, use the [published installer](docs/pi-install.md).
 It selects the latest stable release by default.
 
+## Use Slopsentral in Amp
+
+Amp provides native skill discovery and turn-start instructions, without
+automatic hooks, workflow profiles, custom modes, or MCP connections.
+From a prepared checkout, generate the complete directory plugins:
+
+```bash
+node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp-new
+```
+
+Copy selected complete bundles from the output's `.amp/plugins/` into your
+project's `.amp/plugins/`, without replacing existing directories. Start with
+`software-engineering`; add `kotlin-engineering` for Kotlin. Reload Amp plugins.
+Do not copy only `index.js`: skills, scripts, references, and instructions travel together.
+Use `amp skill info software-engineering:semantic-ratchet` to check discovery.
+
+Each bundle declares its limits in `capabilities.json`. Publication targets
+`harness/amp`, not `main`, so this checkout does not activate every bundle.
+See [installation, updates, rollback, and native checks](docs/pkl-projection.md#amp-native-plugins).
+
 ## Automation
 
 Install uv 0.12.9 or newer. Run the checkout setup and its gates:

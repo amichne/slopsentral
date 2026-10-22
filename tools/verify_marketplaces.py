@@ -10,7 +10,7 @@
 # url = "https://pypi.org/simple"
 # default = true
 # ///
-"""Project and check both providers in a managed temporary directory."""
+"""Project and check all three providers in a managed temporary directory."""
 
 import os
 import subprocess
@@ -20,7 +20,7 @@ from pathlib import Path
 root = Path(__file__).resolve().parents[1]
 with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary:
     base = Path(temporary)
-    for harness in ("codex", "github-copilot"):
+    for harness in ("codex", "github-copilot", "amp"):
         result = subprocess.run(
             [
                 "node",
@@ -44,8 +44,10 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
         INSTRUCTION_MARKETPLACE_ROOT=str(base / "codex"),
         STOP_MARKETPLACE_ROOT=str(base / "codex"),
         KNOWLEDGE_MARKETPLACE_ROOT=str(base / "codex"),
+        SLOPSENTRAL_AMP_ROOT=str(base / "amp/.amp/plugins"),
     )
     for name in (
+        "amp-projection",
         "full-plugin-delivery",
         "asset-reuse-projection",
         "instruction-delivery",
@@ -61,8 +63,11 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
 
         if result.returncode:
             raise SystemExit(result.returncode)
-    for harness in ("codex", "github-copilot"):
-        plugin_tree = ".agents/plugins" if harness == "codex" else ".github/plugin"
+    for harness, plugin_tree in (
+        ("codex", ".agents/plugins"),
+        ("github-copilot", ".github/plugin"),
+        ("amp", ".amp/plugins"),
+    ):
         result = subprocess.run(
             [
                 "node",
@@ -71,6 +76,7 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
                 "tools/tests/okf-validator-isolation.test.mjs",
                 "tools/tests/okf-visualizer-isolation.test.mjs",
                 "tools/tests/pkl-installed-entrypoints.test.mjs",
+                "tools/tests/schema-contracts-runtime.test.mjs",
             ],
             cwd=root,
             env=dict(
@@ -86,6 +92,9 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
                 ),
                 SLOPSENTRAL_PKL_SKILL_ROOT=str(
                     base / harness / plugin_tree / "developer-tooling/skills/pkl-engineering"
+                ),
+                SLOPSENTRAL_SCHEMA_SKILL_ROOT=str(
+                    base / harness / plugin_tree / "developer-tooling/skills/manage-json-schemas"
                 ),
             ),
             check=False,

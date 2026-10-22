@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -22,9 +22,13 @@ test("schema-contracts runs from the repository package boundary", () => {
   assert.match(result.stdout, /Policy OK: source\/schemas\/catalog\/catalog\.schema\.json/u);
 });
 
-test("fixed records need no discriminator while discriminated objects require type", () => {
+test("installed schema policy preserves fixed records and rejects missing tags inside an ESM host", () => {
   const directory = mkdtempSync(path.join(tmpdir(), "schema-contracts-"));
   try {
+    writeFileSync(path.join(directory, "package.json"), JSON.stringify({ type: "module" }));
+    const installed = path.join(directory, "skill");
+    cpSync(process.env.SLOPSENTRAL_SCHEMA_SKILL_ROOT
+      ?? path.join(repoRoot, "source/skills/manage-json-schemas"), installed, { recursive: true });
     const schemaPath = path.join(directory, "record.schema.json");
     const schema = {
       $schema: "https://json-schema.org/draft/2020-12/schema",
@@ -37,9 +41,9 @@ test("fixed records need no discriminator while discriminated objects require ty
       examples: [{ name: "orders" }],
     };
     const check = (command) => spawnSync(process.execPath, [
-      "source/skills/manage-json-schemas/scripts/schema-contracts.js",
+      path.join(installed, "scripts/schema-contracts.js"),
       command, "--schema", schemaPath,
-    ], { cwd: repoRoot, encoding: "utf8" });
+    ], { cwd: directory, encoding: "utf8" });
     writeFileSync(schemaPath, JSON.stringify(schema));
     assert.equal(check("profile").status, 0, "A fixed record must pass the schema profile");
     assert.equal(check("policy").status, 0, "A fixed record must pass the schema policy");

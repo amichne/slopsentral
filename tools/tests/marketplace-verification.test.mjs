@@ -110,6 +110,8 @@ fs.appendFileSync(process.env.VERIFY_TEST_LOG, JSON.stringify({
   openapiSkillRoot: process.env.SLOPSENTRAL_OPENAPI_SKILL_ROOT,
   okfSkillRoot: process.env.SLOPSENTRAL_OKF_SKILL_ROOT,
   pklSkillRoot: process.env.SLOPSENTRAL_PKL_SKILL_ROOT,
+  schemaSkillRoot: process.env.SLOPSENTRAL_SCHEMA_SKILL_ROOT,
+  ampRoot: process.env.SLOPSENTRAL_AMP_ROOT,
 }) + '\\n');
 if (args.includes('--out')) fs.mkdirSync(args[args.indexOf('--out') + 1], { recursive: true });
 if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
@@ -133,39 +135,43 @@ if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
   return { result, commands };
 }
 
-test('verification projects both providers and checks the generated Codex hooks', t => {
+test('verification projects all three providers and checks installed adapters', t => {
   const { result, commands } = verify(t);
   assert.equal(result.status, 0, result.stderr);
-  assert.deepEqual(commands.map(({ command }) => command), Array(9).fill('node'));
-  assert.deepEqual(commands.slice(0, 2).map(({ args }) => args.slice(0, 5)), [
+  assert.deepEqual(commands.map(({ command }) => command), Array(12).fill('node'));
+  assert.deepEqual(commands.slice(0, 3).map(({ args }) => args.slice(0, 5)), [
     ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'codex'],
     ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'github-copilot'],
+    ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'amp'],
   ]);
   const codexRoot = commands[0].args[6];
   assert.notEqual(codexRoot, commands[1].args[6]);
-  assert.equal(commands[2].reuseCodexRoot, codexRoot);
-  assert.equal(commands[2].reuseCopilotRoot, commands[1].args[6]);
-  assert.deepEqual(commands[2].args, ['--test', 'tools/tests/full-plugin-delivery.test.mjs']);
-  assert.deepEqual(commands[3].args, ['--test', 'tools/tests/asset-reuse-projection.test.mjs']);
-  assert.equal(commands[4].instructionRoot, codexRoot);
-  assert.equal(commands[5].stopRoot, codexRoot);
-  assert.equal(commands[6].knowledgeRoot, codexRoot);
-  assert.deepEqual(commands[4].args, ['--test', 'tools/tests/instruction-delivery.test.mjs']);
-  assert.deepEqual(commands[5].args, ['--test', 'tools/tests/stop-output-contract.test.mjs']);
-  assert.deepEqual(commands[6].args, ['--test', 'tools/tests/knowledge-overlay-contract.test.mjs']);
-  for (const [index, projection, tree] of [[7, codexRoot, '.agents/plugins'], [8, commands[1].args[6], '.github/plugin']]) {
-    assert.deepEqual(commands[index].args, ['--test', 'tools/tests/openapi-installed-commands.test.mjs', 'tools/tests/okf-validator-isolation.test.mjs', 'tools/tests/okf-visualizer-isolation.test.mjs', 'tools/tests/pkl-installed-entrypoints.test.mjs']);
+  assert.equal(commands[3].ampRoot, path.join(commands[2].args[6], '.amp/plugins'));
+  assert.deepEqual(commands[3].args, ['--test', 'tools/tests/amp-projection.test.mjs']);
+  assert.equal(commands[4].reuseCodexRoot, codexRoot);
+  assert.equal(commands[4].reuseCopilotRoot, commands[1].args[6]);
+  assert.deepEqual(commands[4].args, ['--test', 'tools/tests/full-plugin-delivery.test.mjs']);
+  assert.deepEqual(commands[5].args, ['--test', 'tools/tests/asset-reuse-projection.test.mjs']);
+  assert.equal(commands[6].instructionRoot, codexRoot);
+  assert.equal(commands[7].stopRoot, codexRoot);
+  assert.equal(commands[8].knowledgeRoot, codexRoot);
+  assert.deepEqual(commands[6].args, ['--test', 'tools/tests/instruction-delivery.test.mjs']);
+  assert.deepEqual(commands[7].args, ['--test', 'tools/tests/stop-output-contract.test.mjs']);
+  assert.deepEqual(commands[8].args, ['--test', 'tools/tests/knowledge-overlay-contract.test.mjs']);
+  for (const [index, projection, tree] of [[9, codexRoot, '.agents/plugins'], [10, commands[1].args[6], '.github/plugin'], [11, commands[2].args[6], '.amp/plugins']]) {
+    assert.deepEqual(commands[index].args, ['--test', 'tools/tests/openapi-installed-commands.test.mjs', 'tools/tests/okf-validator-isolation.test.mjs', 'tools/tests/okf-visualizer-isolation.test.mjs', 'tools/tests/pkl-installed-entrypoints.test.mjs', 'tools/tests/schema-contracts-runtime.test.mjs']);
     assert.equal(commands[index].gradleHookRoot, undefined);
     assert.equal(commands[index].openapiSkillRoot, path.join(projection, tree, 'developer-tooling/skills/openapi-contract-authoring'));
     assert.equal(commands[index].okfSkillRoot, path.join(projection, tree, 'repository-knowledge/skills/code-knowledge-base'));
     assert.equal(commands[index].pklSkillRoot, path.join(projection, tree, 'developer-tooling/skills/pkl-engineering'));
+    assert.equal(commands[index].schemaSkillRoot, path.join(projection, tree, 'developer-tooling/skills/manage-json-schemas'));
   }
 });
 
-for (const failedHarness of ['codex', 'github-copilot']) {
+for (const failedHarness of ['codex', 'github-copilot', 'amp']) {
   test(`a failed ${failedHarness} projection prevents downstream verification`, t => {
     const { result, commands } = verify(t, failedHarness);
     assert.equal(result.status, 37, result.stderr);
-    assert.equal(commands.length, failedHarness === 'codex' ? 1 : 2);
+    assert.equal(commands.length, ['codex', 'github-copilot', 'amp'].indexOf(failedHarness) + 1);
   });
 }

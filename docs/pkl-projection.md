@@ -6,8 +6,8 @@ point. See [workflow resources](workflow-resources.md) for the contract and
 the Pkl workflow/check split. Existing provider compatibility fixtures remain fixed.
 
 This document guides maintainers changing a provider mapping or generating a
-marketplace. The projector supports the existing Codex and GitHub Copilot
-shapes. Authored assets remain under `source/`; plugins compose them by reference.
+marketplace. The projector supports Codex, GitHub Copilot, and Amp directory
+plugins. Authored assets remain under `source/`; plugins compose them by reference.
 
 ## Evaluate, seal, publish
 
@@ -28,7 +28,7 @@ shapes. Authored assets remain under `source/`; plugins compose them by referenc
    exactly one complete tree. Failure removes only the owned staging directory.
 
 Pkl evaluation cannot fetch remote modules, read ambient environment variables,
-or use project settings. Its module root is an isolated copy of the four models.
+or use project settings. Its module root is an isolated copy of the versioned models.
 Its resource allowlist permits only the frozen input and two explicit properties.
 It has a 60-second limit. Projection never downloads a runtime.
 The CLI restrictions follow [Pkl's evaluator controls](https://pkl-lang.org/main/0.32.0/pkl-cli/index.html).
@@ -52,6 +52,7 @@ node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
 export PKL_BIN=/tmp/slopsentral-pkl/pkl
 node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/codex-new
 node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/copilot-new
+node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/amp-new
 npm run verify
 ```
 
@@ -100,3 +101,77 @@ Do not weaken rejection to approximate an unknown shape.
 The existing publication workflow still publishes both generated trees together
 on `main` and each harness branch from validated source. The projector replacement
 does not grant publication authority or change installed caches.
+
+## Amp native plugins
+
+`--harness amp` produces `.amp/plugins/<bundle>/index.js` with complete skills,
+scripts, references, and instructions. Copy selected complete bundle directories
+into a consumer project's `.amp/plugins/` without overwriting existing plugins.
+Start with `software-engineering`, adding `kotlin-engineering` for Kotlin work.
+Reload plugins after installation. Do not install only an `index.js` URL.
+
+Publication targets `harness/amp` and retains a `marketplace-amp` workflow archive.
+Amp output is absent from `main` so checking out source does not activate every
+bundle. After the first successful publication, obtain the prebuilt payload:
+
+```bash
+git clone --single-branch --branch harness/amp \
+  https://github.com/amichne/slopsentral.git /tmp/slopsentral-amp-published
+git -C /tmp/slopsentral-amp-published rev-parse HEAD
+git -C /tmp/slopsentral-amp-published log -1 --format=%B
+```
+
+Record the revision and its `Source-Commit` trailer with the installation.
+The branch advances; a recorded commit identifies exact bytes.
+User-local installation in `~/.config/amp/plugins/` is also supported by Amp.
+Choose one scope. Global User/Workspace Plugins repositories require a separate,
+authorized copy of complete bundles and publication through Amp's repository workflow.
+
+### Updates and rollback
+
+1. Obtain the new payload in a fresh directory and review its revision and diff.
+2. Stop active Amp sessions using this installation. Move each selected old
+   bundle to a backup **outside all Amp plugin discovery roots**.
+3. Copy complete replacements into the vacant destinations. Never merge new
+   files into old directories; removed files must disappear. Keep unrelated plugins.
+4. Start Amp or reload plugins. Check `amp plugins list` and
+   `amp skill info software-engineering:semantic-ratchet`, substituting a
+   qualified skill from each selected bundle.
+5. If installation fails, stop the affected sessions, remove only the new
+   bundle, restore its backup, and reload. Keep backups until verification succeeds.
+
+This is manual, session-stopped replacement, not an atomic live updater.
+`amp plugins update` does not update copied directories. Uninstall by removing
+only selected bundles and reloading. Commands still need their documented tools;
+schema `validate`, for example, requires the consumer's locked Ajv dependencies.
+
+### Capability and evidence limits
+
+Skills register as `<bundle>:<skill>`. Shared skills can appear under two names;
+both copies come from the canonical source. Choose bundles deliberately.
+Each bundle's typed `capabilities.json` declares these boundaries:
+
+| Capability | Amp behavior |
+| --- | --- |
+| Skills and resources | Native registration with the full directory layout |
+| Instructions | Installed files supplied through `agent.start` on every turn |
+| Hooks, agent profiles, MCP configuration | Reference material only; no execution, custom modes, or connections |
+| Workflow profiles and hook policies | Unsupported; choose installed bundles instead |
+
+Missing instruction files fail initialization before skill registration.
+Package context grants no authority and does not supersede repository rules.
+Pi installation remains owned by its [published installer](pi-install.md), not
+this projector. This Amp adapter does not restore the retired Pi runtime.
+
+`npm run verify:marketplaces` exercises generated adapters and installed scripts
+for all three targets. To additionally check native Amp discovery, run:
+
+```bash
+AMP_BIN="$(command -v amp)" PKL_BIN=/path/to/pkl \
+  node --test tools/tests/amp-projection.test.mjs
+```
+
+Adapter tests inspect instruction content. The native event command proves
+loading and execution but does not expose that content. CI runs adapter tests;
+native Amp discovery requires `AMP_BIN` and is not a CI gate. Neither check
+measures model routing, instruction adherence, or task outcomes.
