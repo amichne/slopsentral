@@ -4,7 +4,6 @@
   },
   "category": "Coding",
   "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
-  "hooks": "./hooks.json",
   "keywords": [
     "api-design",
     "best-practices",

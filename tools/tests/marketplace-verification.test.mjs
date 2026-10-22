@@ -154,8 +154,8 @@ test('verification projects both providers and checks the generated Codex hooks'
   assert.deepEqual(commands[5].args, ['--test', 'tools/tests/stop-output-contract.test.mjs']);
   assert.deepEqual(commands[6].args, ['--test', 'tools/tests/knowledge-overlay-contract.test.mjs']);
   for (const [index, projection, tree] of [[7, codexRoot, '.agents/plugins'], [8, commands[1].args[6], '.github/plugin']]) {
-    assert.deepEqual(commands[index].args, ['--test', 'tools/tests/gradle-check-green.test.mjs', 'tools/tests/gradle-wrapper-integrity.test.mjs', 'tools/tests/openapi-installed-commands.test.mjs', 'tools/tests/okf-validator-isolation.test.mjs', 'tools/tests/okf-visualizer-isolation.test.mjs', 'tools/tests/pkl-installed-entrypoints.test.mjs']);
-    assert.equal(commands[index].gradleHookRoot, path.join(projection, tree, 'kotlin-engineering'));
+    assert.deepEqual(commands[index].args, ['--test', 'tools/tests/openapi-installed-commands.test.mjs', 'tools/tests/okf-validator-isolation.test.mjs', 'tools/tests/okf-visualizer-isolation.test.mjs', 'tools/tests/pkl-installed-entrypoints.test.mjs']);
+    assert.equal(commands[index].gradleHookRoot, undefined);
     assert.equal(commands[index].openapiSkillRoot, path.join(projection, tree, 'developer-tooling/skills/openapi-contract-authoring'));
     assert.equal(commands[index].okfSkillRoot, path.join(projection, tree, 'repository-knowledge/skills/code-knowledge-base'));
     assert.equal(commands[index].pklSkillRoot, path.join(projection, tree, 'developer-tooling/skills/pkl-engineering'));

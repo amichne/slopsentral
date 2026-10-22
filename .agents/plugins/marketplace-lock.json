@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T17:01:47-04:00",
+  "generatedAt": "2026-10-21T21:02:39Z",
   "plugins": [
     {
       "name": "software-engineering",
@@ -76,14 +76,14 @@
         },
         {
           "name": "semantic-ratchet",
-          "sha256": "sha256:9765e2a5ab93f1ab4d9cc8e7465b7694c947e96ba1a12657d865cd811ac2d100",
+          "sha256": "sha256:d340a6e28649c30e1923909205f22a96411e6e9de6f299f1387e0333c5c33cea",
           "sourcePath": "source/skills/semantic-ratchet",
           "targetPath": "skills/semantic-ratchet",
           "type": "SKILL"
         },
         {
           "name": "tdd",
-          "sha256": "sha256:f9822e6db3fb2ac979f7d8512644e8d503540f925f25e1abd7abd8a9dccd5e65",
+          "sha256": "sha256:8d867f0dbbbaba2c07b70e98be58f74dcb0be0410d2a87eecbc8e9672018df76",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
@@ -96,78 +96,43 @@
       "name": "kotlin-engineering",
       "references": [
         {
-          "name": "gradle-check-green",
-          "sha256": "sha256:87a1794780ae9af34511b7a9547d3c7e98d4c12f98e19a4b8cfa66254b085e49",
-          "sourcePath": "source/hooks/gradle-check-green.hook.json",
-          "targetPath": "hooks/gradle-check-green.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "gradle-wrapper-integrity",
-          "sha256": "sha256:1c32b463464cd01d8df92a305dec928741f5cc23df77798d84a8c1874ef6c125",
-          "sourcePath": "source/hooks/gradle-wrapper-integrity.hook.json",
-          "targetPath": "hooks/gradle-wrapper-integrity.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "kotlin-engineering-context",
-          "sha256": "sha256:17d56904dc15ca87e4cc1a5624b32d5d2369f8ac5821b45648049e4bbc75b3ea",
-          "sourcePath": "source/hooks/kotlin-engineering-context.hook.json",
-          "targetPath": "hooks/kotlin-engineering-context.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "kotlin-horizontalization-check",
-          "sha256": "sha256:9a41e32930badf7131a3f69e3a515ed3bc501ea0ff0ae5083e6ed467e4b23d95",
-          "sourcePath": "source/hooks/kotlin-horizontalization-check.hook.json",
-          "targetPath": "hooks/kotlin-horizontalization-check.hooks.json",
-          "type": "HOOK"
-        },
-        {
-          "name": "kotlin-engineering",
-          "sha256": "sha256:5bb4b2ff459ccff7704b2c21a4a43a5dcf15d7da36ae682657391d049c4faa20",
-          "sourcePath": "source/instructions/kotlin-engineering.md",
-          "targetPath": "instructions/kotlin-engineering.md",
-          "type": "INSTRUCTION"
-        },
-        {
           "name": "gradle-performance-engineering",
-          "sha256": "sha256:c60fa4914a83661d45bee766f653ccb3b3e4ce11114abed8d41b48fcbf031d9b",
+          "sha256": "sha256:9e20ab3ef6101abc8b69cf19f391455af403e5bbb9f5ed8df0739a5e8d25db28",
           "sourcePath": "source/skills/gradle-performance-engineering",
           "targetPath": "skills/gradle-performance-engineering",
           "type": "SKILL"
         },
         {
           "name": "kotlin-application-stack",
-          "sha256": "sha256:b155cf9ab9a4fba2e49d6973cbda5037f29cad85fcfb9dd344452f63c654f5ff",
+          "sha256": "sha256:ad3466b541cf1a3b201c0374b84c6a67ae8d83d95b84a899030f430eda283f45",
           "sourcePath": "source/skills/kotlin-application-stack",
           "targetPath": "skills/kotlin-application-stack",
           "type": "SKILL"
         },
         {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:e73e2aaa5930f27ab4b561f2fad6589f680601973f48784df487d53bdb892810",
+          "sha256": "sha256:fe7f26b9f3f1006e549ad624ea5cc316887690fc75c4daefeb5cc19a076d5a26",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:03ee427ca36a1fac2347798ba84d9891015e2fe6d64114e75190749c45c3c151",
+          "sha256": "sha256:2c7870ed62ebd934c0f69f0f9b508da96e371aeb85f3dfc7ae93191b4ba25fb3",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
         },
         {
           "name": "kotlin-review",
-          "sha256": "sha256:e3407a00eda2f499aa7787d55ea7d014fd060602b827201a0edb13c73216b69d",
+          "sha256": "sha256:2aef05ab196456401937c4a4437ad58e62818d15bcaf37237ffd866978f0b392",
           "sourcePath": "source/skills/kotlin-review",
           "targetPath": "skills/kotlin-review",
           "type": "SKILL"
         },
         {
           "name": "negative-capability-proof",
-          "sha256": "sha256:80399dd21e598582813a30237f6ba094afae55f792d4248b92c65e7770a9e3d7",
+          "sha256": "sha256:33a8dcca9dd3f18c9d8e8de4cfc2f5bd10687b094e4fe187c37389a0ea02bf81",
           "sourcePath": "source/skills/negative-capability-proof",
           "targetPath": "skills/negative-capability-proof",
           "type": "SKILL"
@@ -188,7 +153,7 @@
         },
         {
           "name": "intellij-plugin-delivery",
-          "sha256": "sha256:bf3810f539ddddb967cd3594387e44710417a3df622cbc15baafcca8adebdba5",
+          "sha256": "sha256:469d1f64209623a3846e9bcbc0eb76c9d1e59905e98001b6fdd1d8ca6fc38c3a",
           "sourcePath": "source/skills/intellij-plugin-delivery",
           "targetPath": "skills/intellij-plugin-delivery",
           "type": "SKILL"
@@ -332,6 +297,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "60d893fa23d62ff7c4adfebf6d1cbd76ff43db7f",
+  "sourceSha": "1af4a569210caae5c13a72b5639f24b722225703",
   "type": "HYDRATED_MARKETPLACE"
 }

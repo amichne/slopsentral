@@ -25,5 +25,6 @@ unknown-input branch; exhaustive handling belongs after parsing to a closed type
 
 A predicate may read time, consume input, or mutate state. Do not reorder it,
 evaluate it twice, or lift it out of a branch without proving equivalent effects.
-An early return inside `use`, `try/finally`, or a transaction must retain cleanup
-and commit/rollback behavior. Test the affected cases, not source formatting.
+Replace `?: return` with an explicit value branch under the [expression-flow policy](expression-flow.md).
+Preserve cleanup and commit or rollback behavior inside `use`, `try/finally`, and transactions.
+Use behavior assertions for the affected cases instead of source-format assertions.

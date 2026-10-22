@@ -60,7 +60,7 @@ prevents completion.
 - Read [tracer-bullets.md](references/tracer-bullets.md) for an uncertain boundary;
   distinguish a retained real path from a disposable feasibility spike.
 - Read [tests.md](references/tests.md) for behavior tests and
-  [mocking.md](references/mocking.md) for external boundaries.
+  [real components](references/real-components.md) for test-local state and external effects.
 - Read [interface-design.md](references/interface-design.md) or
   [deep-modules.md](references/deep-modules.md) when test friction exposes a seam.
 - Read [refactoring.md](references/refactoring.md) only after passing proof.

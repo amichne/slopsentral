@@ -56,8 +56,11 @@ Use this reference for serialized boundaries and Ktor server or client adapters.
   does not prove the external contract.
 - Test Ktor servers with `testApplication`. Assert status, headers, body, and
   typed failure projection without binding a real port.
-- Test Ktor clients with `MockEngine`. Assert the outgoing method, URL, headers,
-  body, timeout or retry behavior, and each response class.
+- Use the real Ktor client engine against a test-owned loopback server for client integration tests.
+- Assert the method, URL, headers, body, timeout, retry behavior, and each response class through actual requests.
+- Prohibit `MockEngine`, mocks, spies, and scripted collaborator substitutes.
+- Create each client, server, input, and resource owner inside its test invocation.
+- Release those resources after success, failure, and cancellation. Keep public network services outside the fixture.
 - Test malformed payloads, transport failures, and relevant non-success status
   codes. Assert their finite domain failure projections.
 - Keep domain capability tests independent of Ktor and serialization.

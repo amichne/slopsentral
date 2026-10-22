@@ -490,6 +490,355 @@
           "Native semantic-work reduction was not proved; lower warm public latency must not be relabeled as less native work."
         ]
       }
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "kotlin-routing-negative-proof-2026-10-21",
+      "caseId": "negative-capability-proof-requires-before-after-misuse",
+      "capturedAt": "2026-10-21",
+      "sourceType": "LIVE_SESSION",
+      "outcome": "PASS",
+      "evidenceRefs": [
+        "Codex CLI 0.163.0 session 01a161ac-40e8-70d0-a682-28c839ad043f. Native project skills came from the candidate source under .agents/skills.",
+        "Invocation used codex exec --ignore-user-config --ephemeral --sandbox read-only -c approval_policy=\"never\" --json. No model override was supplied.",
+        "Prompt: Prove that callers can currently forge VerifiedToken, then design the smallest Kotlin API change that makes the same misuse fail compilation. For this routing-only evaluation, read the selected skill and Subject.kt, then state the proposed proof. Do not edit files, run builds, or change remote state.",
+        "Raw JSONL SHA-256: 4be5e033b2e7c17b44611d96e402d15d480781745e0fbf596986b5bdb0ed805f. The local evaluation directory keeps the trace.",
+        "The successful command trace read .agents/skills/negative-capability-proof/SKILL.md.",
+        "source/skills/negative-capability-proof/SKILL.md SHA-256: 305eb91e427beac4857fd5e26ea0784b192b587427d8b87ae25dba3d3d3352a6."
+      ],
+      "productiveOutcomeObserved": {
+        "type": "USEFUL_OUTCOME",
+        "summary": "The model read the selected skill and proposed accepted and rejected compiler cases. It did not claim compilation."
+      },
+      "followUpAction": "Replay the full implementation case when compiler, runtime, or installed-provider evidence is needed.",
+      "limitations": [
+        "One bounded routing probe per case. These prompts request selection and a procedure without implementation.",
+        "Project-skill discovery proves the native read path. It does not prove installed-plugin trust, cache refresh, or GitHub Copilot invocation policy.",
+        "Global skills and instructions remained available. The trace does not record the resolved model identity."
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "negative-capability-proof"
+        }
+      },
+      "activationEvidence": {
+        "type": "TOOL_TRACE",
+        "sessionIds": [
+          "01a161ac-40e8-70d0-a682-28c839ad043f"
+        ],
+        "evidenceRefs": [
+          "The successful command trace read .agents/skills/negative-capability-proof/SKILL.md.",
+          "The model read the selected skill and proposed accepted and rejected compiler cases. It did not claim compilation."
+        ]
+      },
+      "verification": {
+        "type": "INCOMPLETE_PROOF",
+        "missingEvidence": [
+          "The probe did not run Kotlin compilation, coroutine behavior, or a full repair. Routing success does not establish those outcomes."
+        ]
+      }
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "kotlin-routing-gradle-implicit-2026-10-21",
+      "caseId": "gradle-natural-request-keeps-explicit-skill-idle",
+      "capturedAt": "2026-10-21",
+      "sourceType": "LIVE_SESSION",
+      "outcome": "PASS",
+      "evidenceRefs": [
+        "Codex CLI 0.163.0 session 01a161ad-769f-7de3-bf43-56251ef56cb2. Native project skills came from the candidate source under .agents/skills.",
+        "Invocation used codex exec --ignore-user-config --ephemeral --sandbox read-only -c approval_policy=\"never\" --json. No model override was supplied.",
+        "Prompt: A JVM Gradle test failed with expected Accepted but actual Rejected. Identify the diagnostic procedure from the available skills. This is a routing-only evaluation. Read the selected skill, then explain the next diagnostic step. Do not edit files, run builds, or change remote state.",
+        "Raw JSONL SHA-256: d570ea9d850ee19604ace421b0e4d7ad4583c6a6f20fe69b2e92e3b3fef7d8b8. The local evaluation directory keeps the trace.",
+        "The successful command trace read .agents/skills/tdd/SKILL.md.",
+        "source/skills/tdd/SKILL.md SHA-256: 39d7479113829eb3ded476e5d69db012c953fa5fcde95806113159a52c60201a.",
+        "source/skills/tdd/references/tests.md SHA-256: f94cbdedc16a940725688228975ea3d7f03d87731278820a715262a703c83c68."
+      ],
+      "productiveOutcomeObserved": {
+        "type": "USEFUL_OUTCOME",
+        "summary": "The natural request selected TDD. The trace contains no Kotlin Gradle Validation read."
+      },
+      "followUpAction": "Replay the full implementation case when compiler, runtime, or installed-provider evidence is needed.",
+      "limitations": [
+        "One bounded routing probe per case. These prompts request selection and a procedure without implementation.",
+        "Project-skill discovery proves the native read path. It does not prove installed-plugin trust, cache refresh, or GitHub Copilot invocation policy.",
+        "Global skills and instructions remained available. The trace does not record the resolved model identity."
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "tdd"
+        }
+      },
+      "activationEvidence": {
+        "type": "TOOL_TRACE",
+        "sessionIds": [
+          "01a161ad-769f-7de3-bf43-56251ef56cb2"
+        ],
+        "evidenceRefs": [
+          "The successful command trace read .agents/skills/tdd/SKILL.md.",
+          "The natural request selected TDD. The trace contains no Kotlin Gradle Validation read."
+        ]
+      },
+      "verification": {
+        "type": "INCOMPLETE_PROOF",
+        "missingEvidence": [
+          "The probe did not run Kotlin compilation, coroutine behavior, or a full repair. Routing success does not establish those outcomes."
+        ]
+      }
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "kotlin-routing-gradle-explicit-2026-10-21",
+      "caseId": "gradle-failure-uses-structured-reports",
+      "capturedAt": "2026-10-21",
+      "sourceType": "LIVE_SESSION",
+      "outcome": "PASS",
+      "evidenceRefs": [
+        "Codex CLI 0.163.0 session 01a161ad-b59a-7081-a1d7-74f0513563a3. Native project skills came from the candidate source under .agents/skills.",
+        "Invocation used codex exec --ignore-user-config --ephemeral --sandbox read-only -c approval_policy=\"never\" --json. No model override was supplied.",
+        "Prompt: $kotlin-gradle-validation A JVM Gradle test failed with expected Accepted but actual Rejected. This is a routing-only evaluation. Read the selected skill, then explain the next diagnostic step. Do not edit files, run builds, or change remote state.",
+        "Raw JSONL SHA-256: a2091f6bcf9a1b423ca842eb23673383b6afaf71563e6af1cfcb8930fd47d647. The local evaluation directory keeps the trace.",
+        "The successful command trace read .agents/skills/kotlin-gradle-validation/SKILL.md.",
+        "source/skills/kotlin-gradle-validation/SKILL.md SHA-256: 8540a93e3396f01f8b2b62cd17dfe0ddbd95f194399f2d67079610f7e36454ec."
+      ],
+      "productiveOutcomeObserved": {
+        "type": "USEFUL_OUTCOME",
+        "summary": "Explicit skill invocation selected Kotlin Gradle Validation and proposed native report inspection."
+      },
+      "followUpAction": "Replay the full implementation case when compiler, runtime, or installed-provider evidence is needed.",
+      "limitations": [
+        "One bounded routing probe per case. These prompts request selection and a procedure without implementation.",
+        "Project-skill discovery proves the native read path. It does not prove installed-plugin trust, cache refresh, or GitHub Copilot invocation policy.",
+        "Global skills and instructions remained available. The trace does not record the resolved model identity."
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "kotlin-gradle-validation"
+        }
+      },
+      "activationEvidence": {
+        "type": "TOOL_TRACE",
+        "sessionIds": [
+          "01a161ad-b59a-7081-a1d7-74f0513563a3"
+        ],
+        "evidenceRefs": [
+          "The successful command trace read .agents/skills/kotlin-gradle-validation/SKILL.md.",
+          "Explicit skill invocation selected Kotlin Gradle Validation and proposed native report inspection."
+        ]
+      },
+      "verification": {
+        "type": "INCOMPLETE_PROOF",
+        "missingEvidence": [
+          "The probe did not run Kotlin compilation, coroutine behavior, or a full repair. Routing success does not establish those outcomes."
+        ]
+      }
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "kotlin-routing-coroutine-flow-2026-10-21",
+      "caseId": "kotlin-coroutine-flow-design-uses-existing-owner",
+      "capturedAt": "2026-10-21",
+      "sourceType": "LIVE_SESSION",
+      "outcome": "PASS",
+      "evidenceRefs": [
+        "Codex CLI 0.163.0 session 01a161ad-de17-77e3-b92f-cb37d1f57aab. Native project skills came from the candidate source under .agents/skills.",
+        "Invocation used codex exec --ignore-user-config --ephemeral --sandbox read-only -c approval_policy=\"never\" --json. No model override was supplied.",
+        "Prompt: Design cancellation and replay behavior for a Kotlin JVM component that exposes StateFlow and starts child coroutines. This is a routing-only evaluation. Read the selected skill and its focused reference, then outline the lifecycle contract. Do not edit files, run builds, or change remote state.",
+        "Raw JSONL SHA-256: 1249ea9bf194e88cd576ff4c8a3a71d80f10e675885be52c5310098db85e633a. The local evaluation directory keeps the trace.",
+        "The successful command trace read .agents/skills/kotlin-design-practices/SKILL.md.",
+        "source/skills/kotlin-design-practices/SKILL.md SHA-256: 81023c9fdc7c50c5c4b92a3becdf2442b6437868a3752ef059dcb70b030f8904.",
+        "source/skills/kotlin-design-practices/references/coroutines-and-flow.md SHA-256: a4a71b6e0851263c1005787e2ab2bf0605c1e76f0646b9965015bca3b2f39e23."
+      ],
+      "productiveOutcomeObserved": {
+        "type": "USEFUL_OUTCOME",
+        "summary": "The response named scope ownership, cancellation, child completion, replay, and StateFlow conflation."
+      },
+      "followUpAction": "Replay the full implementation case when compiler, runtime, or installed-provider evidence is needed.",
+      "limitations": [
+        "One bounded routing probe per case. These prompts request selection and a procedure without implementation.",
+        "Project-skill discovery proves the native read path. It does not prove installed-plugin trust, cache refresh, or GitHub Copilot invocation policy.",
+        "Global skills and instructions remained available. The trace does not record the resolved model identity."
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "kotlin-design-practices"
+        }
+      },
+      "activationEvidence": {
+        "type": "TOOL_TRACE",
+        "sessionIds": [
+          "01a161ad-de17-77e3-b92f-cb37d1f57aab"
+        ],
+        "evidenceRefs": [
+          "The successful command trace read .agents/skills/kotlin-design-practices/SKILL.md.",
+          "The response named scope ownership, cancellation, child completion, replay, and StateFlow conflation."
+        ]
+      },
+      "verification": {
+        "type": "INCOMPLETE_PROOF",
+        "missingEvidence": [
+          "The probe did not run Kotlin compilation, coroutine behavior, or a full repair. Routing success does not establish those outcomes."
+        ]
+      }
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "kotlin-routing-local-tests-2026-10-21",
+      "caseId": "kotlin-unit-tests-own-state-and-real-components",
+      "capturedAt": "2026-10-21",
+      "sourceType": "LIVE_SESSION",
+      "outcome": "PASS",
+      "evidenceRefs": [
+        "Codex CLI 0.163.0 session 01a161ae-39bc-7623-a31b-9d9b643a69a7. Native project skills came from the candidate source under .agents/skills.",
+        "Invocation used codex exec --ignore-user-config --ephemeral --sandbox read-only -c approval_policy=\"never\" --json. No model override was supplied.",
+        "Prompt: Plan a refactor of Kotlin unit tests that store the subject in a class field, use MockK collaborators, and override Dispatchers.Main. Include deterministic coroutine and Flow assertions. This is a routing-only evaluation. Read the selected skill and focused references, then give the replacement procedure. Do not edit files, run builds, or change remote state.",
+        "Raw JSONL SHA-256: 4b9c3e1da123aa7c7a34e85d43f1c63c93b369bd30aee19682c842c8714db7f3. The local evaluation directory keeps the trace.",
+        "The successful command trace read .agents/skills/kotlin-design-practices/SKILL.md.",
+        "source/skills/kotlin-design-practices/SKILL.md SHA-256: 81023c9fdc7c50c5c4b92a3becdf2442b6437868a3752ef059dcb70b030f8904.",
+        "source/skills/kotlin-design-practices/references/coroutine-tests.md SHA-256: 1ced166af2fd31a791eb394f5d453ba42cd2ce0474aabface6f3d783cba969ac.",
+        "source/skills/kotlin-design-practices/references/types-errors-and-testing.md SHA-256: b3c8591166597277ff54f40c8f5209d886aef6c71806eb42c828b38548cd455b."
+      ],
+      "productiveOutcomeObserved": {
+        "type": "USEFUL_OUTCOME",
+        "summary": "The response prohibited shared fixtures, MockK collaborators, and Dispatchers.setMain. It selected real components and test-local dispatchers."
+      },
+      "followUpAction": "Replay the full implementation case when compiler, runtime, or installed-provider evidence is needed.",
+      "limitations": [
+        "One bounded routing probe per case. These prompts request selection and a procedure without implementation.",
+        "Project-skill discovery proves the native read path. It does not prove installed-plugin trust, cache refresh, or GitHub Copilot invocation policy.",
+        "Global skills and instructions remained available. The trace does not record the resolved model identity.",
+        "The model also read a global coroutine skill and all design references. It gave the candidate prohibition precedence over conflicting main-dispatcher examples."
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "kotlin-design-practices"
+        }
+      },
+      "activationEvidence": {
+        "type": "TOOL_TRACE",
+        "sessionIds": [
+          "01a161ae-39bc-7623-a31b-9d9b643a69a7"
+        ],
+        "evidenceRefs": [
+          "The successful command trace read .agents/skills/kotlin-design-practices/SKILL.md.",
+          "The response prohibited shared fixtures, MockK collaborators, and Dispatchers.setMain. It selected real components and test-local dispatchers."
+        ]
+      },
+      "verification": {
+        "type": "INCOMPLETE_PROOF",
+        "missingEvidence": [
+          "The probe did not run Kotlin compilation, coroutine behavior, or a full repair. Routing success does not establish those outcomes."
+        ]
+      }
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "kotlin-routing-expression-flow-2026-10-21",
+      "caseId": "kotlin-expression-flow-keeps-explicit-results",
+      "capturedAt": "2026-10-21",
+      "sourceType": "LIVE_SESSION",
+      "outcome": "PASS",
+      "evidenceRefs": [
+        "Codex CLI 0.163.0 session 01a161b1-d2f8-7c91-890c-3755070fbbf2. Native project skills came from the candidate source under .agents/skills.",
+        "Invocation used codex exec --ignore-user-config --ephemeral --sandbox read-only -c approval_policy=\"never\" --json. No model override was supplied.",
+        "Prompt: Plan a refactor of a Kotlin nullable-input function into an expression body. Preserve failure values and cleanup while removing Elvis returns. This is a routing-only evaluation. Read the selected skill and its focused reference, then give the selection rules for let, run, apply, and also. Do not edit files, run builds, or change remote state.",
+        "Raw JSONL SHA-256: 2cf6c893fc6f13c354caf0c1cb9ce5994f2db410f9207fd0340744015643a3f0. The local evaluation directory keeps the trace.",
+        "The successful command trace read .agents/skills/kotlin-design-practices/SKILL.md.",
+        "source/skills/kotlin-design-practices/SKILL.md SHA-256: 81023c9fdc7c50c5c4b92a3becdf2442b6437868a3752ef059dcb70b030f8904.",
+        "source/skills/kotlin-design-practices/references/expression-flow.md SHA-256: 944a88b6d3903099a793ff0e5fbf3dc3863b72744c6851a1b4cc4813751d96f9."
+      ],
+      "productiveOutcomeObserved": {
+        "type": "USEFUL_OUTCOME",
+        "summary": "The response selected scope functions by receiver and result, prohibited Elvis returns, and preserved nullable success."
+      },
+      "followUpAction": "Replay the full implementation case when compiler, runtime, or installed-provider evidence is needed.",
+      "limitations": [
+        "One bounded routing probe per case. These prompts request selection and a procedure without implementation.",
+        "Project-skill discovery proves the native read path. It does not prove installed-plugin trust, cache refresh, or GitHub Copilot invocation policy.",
+        "Global skills and instructions remained available. The trace does not record the resolved model identity."
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "kotlin-design-practices"
+        }
+      },
+      "activationEvidence": {
+        "type": "TOOL_TRACE",
+        "sessionIds": [
+          "01a161b1-d2f8-7c91-890c-3755070fbbf2"
+        ],
+        "evidenceRefs": [
+          "The successful command trace read .agents/skills/kotlin-design-practices/SKILL.md.",
+          "The response selected scope functions by receiver and result, prohibited Elvis returns, and preserved nullable success."
+        ]
+      },
+      "verification": {
+        "type": "INCOMPLETE_PROOF",
+        "missingEvidence": [
+          "The probe did not run Kotlin compilation, coroutine behavior, or a full repair. Routing success does not establish those outcomes."
+        ]
+      }
+    },
+    {
+      "type": "ROUTING_FIELD_OBSERVATION",
+      "id": "kotlin-routing-coroutine-review-2026-10-21",
+      "caseId": "kotlin-coroutine-review-keeps-read-only-scope",
+      "capturedAt": "2026-10-21",
+      "sourceType": "LIVE_SESSION",
+      "outcome": "PASS",
+      "evidenceRefs": [
+        "Codex CLI 0.163.0 session 01a161b3-0b78-75e1-8eff-f35ab67da4ea. Native project skills came from the candidate source under .agents/skills.",
+        "Invocation used codex exec --ignore-user-config --ephemeral --sandbox read-only -c approval_policy=\"never\" --json. No model override was supplied.",
+        "Prompt: Review only: a Kotlin diff changes stateIn to use a detached scope, catches CancellationException as a domain failure, and tests StateFlow by expecting every intermediate event. Select and read the skill and focused references you would use, then explain the review obligations. Do not edit files, run builds, or contact remote services.",
+        "Raw JSONL SHA-256: 53580fbeca9dbc59d343a01fb96b6cc33bfc29750a9f7e856bfaffe7c465e1d9. The local evaluation directory keeps the trace.",
+        "The successful command trace read .agents/skills/kotlin-review/SKILL.md.",
+        "source/skills/kotlin-review/SKILL.md SHA-256: 8fc489b443b7faa96d99496d67e2f9163f7fddf60f2863907ea43151d245e405."
+      ],
+      "productiveOutcomeObserved": {
+        "type": "USEFUL_OUTCOME",
+        "summary": "The response selected read-only Kotlin review and named cancellation, ownership, and conflation obligations."
+      },
+      "followUpAction": "Replay the full implementation case when compiler, runtime, or installed-provider evidence is needed.",
+      "limitations": [
+        "One bounded routing probe per case. These prompts request selection and a procedure without implementation.",
+        "Project-skill discovery proves the native read path. It does not prove installed-plugin trust, cache refresh, or GitHub Copilot invocation policy.",
+        "Global skills and instructions remained available. The trace does not record the resolved model identity."
+      ],
+      "route": {
+        "type": "PRIMITIVE_ROUTE",
+        "primitive": {
+          "type": "SKILL",
+          "name": "kotlin-review"
+        }
+      },
+      "activationEvidence": {
+        "type": "TOOL_TRACE",
+        "sessionIds": [
+          "01a161b3-0b78-75e1-8eff-f35ab67da4ea"
+        ],
+        "evidenceRefs": [
+          "The successful command trace read .agents/skills/kotlin-review/SKILL.md.",
+          "The response selected read-only Kotlin review and named cancellation, ownership, and conflation obligations."
+        ]
+      },
+      "verification": {
+        "type": "INCOMPLETE_PROOF",
+        "missingEvidence": [
+          "The probe did not run Kotlin compilation, coroutine behavior, or a full repair. Routing success does not establish those outcomes."
+        ]
+      }
     }
   ]
 }

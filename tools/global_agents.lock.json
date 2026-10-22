@@ -398,7 +398,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/SKILL.md",
-      "sha256": "32288a90de5a4d94155e546ce28718986cb04b13f22960cb9366179d13f2d1a4"
+      "sha256": "81023c9fdc7c50c5c4b92a3becdf2442b6437868a3752ef059dcb70b030f8904"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/Apache-2.0.txt",
@@ -430,7 +430,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/api-sources.md",
-      "sha256": "b9426726ecd34270785a1a92b2334b12843b27358ea26a2b98e4bc6f853418f5"
+      "sha256": "613cc7096eee96aaa5978229ac0ae4d05ce2f49fb6474f46d7a654886aeb288d"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/api-surface-stability.md",
@@ -438,15 +438,27 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/branch-preservation.md",
-      "sha256": "b028a94ce4db8b6be3620876768d8ce96924ea2a0657068a332da08f9a85f560"
+      "sha256": "558422b1256d9837c4906860a3110735295f2e3f37d256744770fed1f6260769"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/branch-provenance.md",
       "sha256": "683b582df9642eb5fbcaa992ff6355b9e6b407d619c620b9b27e24eec2ec84b0"
     },
     {
+      "path": "source/skills/kotlin-design-practices/references/coroutine-tests.md",
+      "sha256": "1ced166af2fd31a791eb394f5d453ba42cd2ce0474aabface6f3d783cba969ac"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/coroutines-and-flow.md",
+      "sha256": "a4a71b6e0851263c1005787e2ab2bf0605c1e76f0646b9965015bca3b2f39e23"
+    },
+    {
       "path": "source/skills/kotlin-design-practices/references/domain-value-surfaces.md",
       "sha256": "511c4c86763857222a385fd721c17fce89852521d693eaa40a4b5f4849ad1ba0"
+    },
+    {
+      "path": "source/skills/kotlin-design-practices/references/expression-flow.md",
+      "sha256": "944a88b6d3903099a793ff0e5fbf3dc3863b72744c6851a1b4cc4813751d96f9"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/function-ownership-and-composition.md",
@@ -458,7 +470,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/idioms.md",
-      "sha256": "a23a7351f46ceaed58b344368311e2dce0320927b8227e2c1ece309dd98d42f6"
+      "sha256": "f3d3da51fa293862531b30ecd1de7209c67d72c638272d9b5751d51eac4c31c7"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/kotlin-antipatterns.md",
@@ -467,10 +479,6 @@
     {
       "path": "source/skills/kotlin-design-practices/references/layout-package-code-style.md",
       "sha256": "8a42a56db618f92d86aec4a66637fb53cb3651bcc3aa12be4defa0d1dc1826d4"
-    },
-    {
-      "path": "source/skills/kotlin-design-practices/references/multiplatform-boundaries.md",
-      "sha256": "dc8d93adb589131cc4f7cd29775232bb3e4dd752110d05c5630e883fcf5077bb"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/parse-dont-validate-examples.md",
@@ -490,15 +498,15 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/types-errors-and-testing.md",
-      "sha256": "b778229b1e77e096f2e3a3a03b0e684647dd7f39dd54033f8be47f4ead53b31b"
+      "sha256": "b3c8591166597277ff54f40c8f5209d886aef6c71806eb42c828b38548cd455b"
     },
     {
       "path": "source/skills/negative-capability-proof/SKILL.md",
-      "sha256": "bfd1d5cb02b995da118e8b7bd53f0a5b229bc642599596d69fc9a213bdf55156"
+      "sha256": "305eb91e427beac4857fd5e26ea0784b192b587427d8b87ae25dba3d3d3352a6"
     },
     {
       "path": "source/skills/negative-capability-proof/agents/openai.yaml",
-      "sha256": "a1499d95abd8447558c535fe5554adcc3c9b988a0a39264a6283d430effe1e94"
+      "sha256": "8619a54e8c098122a7f3881394f84ca89b684366e848233a29ad18b6ec363935"
     },
     {
       "path": "source/skills/semantic-ratchet/SKILL.md",
@@ -542,7 +550,7 @@
     },
     {
       "path": "source/skills/semantic-ratchet/references/api-boundaries.md",
-      "sha256": "9b25135f6be37bc9e633f26b637fdda20e71ec35b25894f5a74284da7cd00f3b"
+      "sha256": "aceed01f5d6a7e95b9be7ba4859e8fb3899331626e8d64877164449574b9a83f"
     },
     {
       "path": "source/skills/semantic-ratchet/references/api-proof-example.md",
@@ -586,7 +594,7 @@
     },
     {
       "path": "source/skills/tdd/SKILL.md",
-      "sha256": "ad644949356e0892584c9921ab32220540976c78726aff5e6c9b5826c3b80365"
+      "sha256": "39d7479113829eb3ded476e5d69db012c953fa5fcde95806113159a52c60201a"
     },
     {
       "path": "source/skills/tdd/define-goal-LICENSE.txt",
@@ -621,20 +629,20 @@
       "sha256": "3929cef3d85566d1cc480468a04fbf50cab766c8a9093d0cc2736185d5452941"
     },
     {
-      "path": "source/skills/tdd/references/mocking.md",
-      "sha256": "090fd8e256edf300c1ea8ad335814aa8cb3b6b2ba0916a6081ab6e8d84a1d794"
-    },
-    {
       "path": "source/skills/tdd/references/planning-and-scope.md",
       "sha256": "0ed932978ecd1ee9d652b4e5bf6e1e413e751a3e8de90560106e2dff6f4a70ad"
     },
     {
       "path": "source/skills/tdd/references/planning-playbook.md",
-      "sha256": "ba598d43a505c76525fabb6722f152fcf4d415b452ac8e380ff085596c8e047f"
+      "sha256": "b283f974779415add7075a5ac82378ccc06b89773ec67677fd24e28ff4dcc454"
     },
     {
       "path": "source/skills/tdd/references/planning-provenance.md",
       "sha256": "fdde7314a790ba1b161e477038400388ab541ff60f0f722c47f7f024358fcf0e"
+    },
+    {
+      "path": "source/skills/tdd/references/real-components.md",
+      "sha256": "ef6816b022d5d43ca22f620190c39de1d0755acd75e1aefed88609e2f6bcce18"
     },
     {
       "path": "source/skills/tdd/references/refactoring.md",
@@ -646,7 +654,7 @@
     },
     {
       "path": "source/skills/tdd/references/tests.md",
-      "sha256": "4569fc016d0692a87663c73a715678665d9af74c79d4de15567db4d825bed8a8"
+      "sha256": "f94cbdedc16a940725688228975ea3d7f03d87731278820a715262a703c83c68"
     },
     {
       "path": "source/skills/tdd/references/tracer-bullets.md",

@@ -6,7 +6,9 @@ description: "Use for a scoped Kotlin API change that must demonstrate a current
 # Negative Capability Proof
 
 Prove one reduction in the Kotlin API's reachable state space. Apply
-`kotlin-engineering` for general design and `tdd` for the executable loop.
+`kotlin-design-practices` for general design and `tdd` for the executable loop.
+Select this skill for natural-language requests that remove a reachable misuse through Kotlin types.
+Ordinary review or a Gradle failure alone does not meet that trigger.
 
 ## Contract
 

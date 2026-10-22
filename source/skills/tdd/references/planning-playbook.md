@@ -18,7 +18,7 @@ Plan validation before implementation. Start with one consequential uncertainty.
 
 **4. Choose the smallest faithful unit.** Preserve the mechanism that could cause success or failure while removing unrelated parts. Include necessary state, concurrency, lifecycle, topology, or scale. “Small” means few moving parts, not a test too small to expose the risk. Explain how this test bears on the real-world outcome. If the decisive uncertainty requires a real environment, start there with safe scope.
 
-**5. Make the evidence trustworthy.** Specify the input, setup, observation, and expected result. Derive the expected result independently of the implementation. Use a baseline or counterexample where useful. Include a negative control that must fail or remain unchanged, plus likely confounders. A mock must not assume the result we want.
+**5. Make the evidence trustworthy.** Specify the input, setup, and expected result. Derive the expectation independently of the implementation. Use a baseline or counterexample. Include a negative control and likely confounders. Use real components and test-local state instead of mock-based behavior.
 
 **6. Widen for a reason.** Prefer a deterministic focused regression, or a compiler/type proof for a static claim, before broader checks. If that cannot test the mechanism, explain why and choose the smallest decisive experiment. Widen when narrow evidence passes, becomes unrepresentative, or exposes a boundary issue; do not wait for narrow-test polish. For each wider layer, name what the earlier proof cannot establish and why the next boundary is necessary. Add integration, runtime, deployment topology, scale, or native UI checks only when relevant. Narrow success does not establish production behavior.
 

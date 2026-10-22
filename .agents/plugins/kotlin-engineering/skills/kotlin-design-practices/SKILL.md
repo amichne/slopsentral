@@ -1,6 +1,6 @@
 ---
 name: kotlin-design-practices
-description: "Use for Kotlin domain types, public APIs, function ownership, higher-order composition, branches, Multiplatform contracts, and atomic implementation across callers."
+description: "Use for Kotlin domain types, APIs, expression bodies, scope functions, coroutine and Flow lifecycles, isolated unit tests, and atomic changes across callers."
 ---
 
 # Kotlin Design Practices
@@ -33,7 +33,8 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
 8. Expand evidence only across affected owners and direct consumers.
    Compile each affected source set. Run focused tests for changed interop, serialization, branches, and legal transitions.
 9. Report exact commands, outcomes, changed contracts, and evidence limits.
-   Use `kotlin-gradle-validation` for Gradle execution and `kotlin-review` for read-only review.
+   Use `kotlin-review` for read-only review. Read `kotlin-gradle-validation` only when the user explicitly selects that skill.
+   Its explicit-only policy does not prevent necessary repository-native compiler or Gradle commands.
 
 ## Design Rules
 
@@ -43,12 +44,21 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
 - Put operations on their semantic owner. Extension syntax alone does not establish ownership.
 - A success transform must preserve each failure variant unless its result explicitly refines that failure.
   A fold must handle each case. Traversal must declare order and short-circuit or accumulation behavior.
-- Keep SDK types and lifecycle mechanics in platform adapters.
-  Use a common capability when runtime selection, fakes, or lifetime ownership matters.
+- Keep SDK types and lifecycle mechanics in adapters.
+  Use a domain capability when runtime selection or lifetime ownership matters.
 - Guarded subtype branches need an unguarded branch for the rest of that subtype.
   Use guards only when the configured Kotlin language version supports them.
 - Preserve `use`, `finally`, cancellation, transactions, and exception behavior.
   Do not bypass compiler rejection with `!!`, unchecked casts, or mutable staging.
+- Prefer expression-body functions with explicit result types for public contracts.
+  Prohibit `?: return`, including labeled returns. Produce a value for each branch instead.
+  Choose `let`, `run`, `apply`, or `also` by receiver and result semantics.
+  Avoid nested scopes, non-local lambda returns, and effects hidden inside value transformations.
+- Give each coroutine and Flow collector an explicit lifetime owner.
+  Preserve cancellation and define completion, failure, buffering, and replay behavior.
+- Keep unit-test state inside each test invocation. Use real components and explicit inputs.
+  Prohibit mock-based tests, spies, scripted stubs, and fake replacements for production collaborators.
+  Do not use class fixtures, global state, ambient clocks, or shared dispatcher overrides.
 - Use repository-native evidence. Do not create `.agent-turn/`, scorecards, copied payloads,
   or separate RED/GREEN scripts for an ordinary uninterrupted change.
   Add a wrapper only when a stable command is absent and the wrapper has lasting regression value.
@@ -65,8 +75,10 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
   [function ownership](references/function-ownership-and-composition.md).
 - For equality, serialization, Java interop, or boxing, read
   [domain value surfaces](references/domain-value-surfaces.md).
-- For source sets or `expect`/`actual`, read
-  [Multiplatform contracts](references/multiplatform-boundaries.md).
+- For expression bodies, scope functions, or null branches, read
+  [expression flow](references/expression-flow.md).
+- For coroutine or Flow ownership, read [coroutines and Flow](references/coroutines-and-flow.md).
+- For isolated coroutine or Flow tests, read [coroutine tests](references/coroutine-tests.md).
 - For guards, early returns, or evaluation order, read
   [branch preservation](references/branch-preservation.md).
 - For package ownership, read [layout](references/layout-package-code-style.md).

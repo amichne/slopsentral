@@ -3,12 +3,6 @@
     "name": "Amichne"
   },
   "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
-  "hooks": [
-    "./hooks/gradle-check-green.hooks.json",
-    "./hooks/gradle-wrapper-integrity.hooks.json",
-    "./hooks/kotlin-engineering-context.hooks.json",
-    "./hooks/kotlin-horizontalization-check.hooks.json"
-  ],
   "interface": {
     "brandColor": "#2563EB",
     "capabilities": [

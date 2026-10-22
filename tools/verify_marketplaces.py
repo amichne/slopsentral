@@ -67,8 +67,6 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
             [
                 "node",
                 "--test",
-                "tools/tests/gradle-check-green.test.mjs",
-                "tools/tests/gradle-wrapper-integrity.test.mjs",
                 "tools/tests/openapi-installed-commands.test.mjs",
                 "tools/tests/okf-validator-isolation.test.mjs",
                 "tools/tests/okf-visualizer-isolation.test.mjs",
@@ -77,9 +75,6 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
             cwd=root,
             env=dict(
                 os.environ,
-                SLOPSENTRAL_GRADLE_HOOK_ROOT=str(
-                    base / harness / plugin_tree / "kotlin-engineering"
-                ),
                 SLOPSENTRAL_OPENAPI_SKILL_ROOT=str(
                     base
                     / harness

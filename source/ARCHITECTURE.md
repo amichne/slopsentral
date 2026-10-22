@@ -28,7 +28,8 @@ Planning alone grants no execution authority.
 Kotlin Design Practices combines API ownership, branches, and cross-module implementation.
 Kotlin Review remains read-only unless the user authorizes a repair.
 Negative Capability Proof keeps compiler-backed rejection separate from ordinary review.
-Gradle Validation owns task evidence. Gradle Performance Engineering owns measured build experiments.
+Gradle Validation needs explicit user selection. Necessary Gradle commands do not need that skill.
+Gradle Performance Engineering owns measured build experiments.
 
 Python Tooling owns uv, PEP 723, locks, strict Pyright, Ruff, and pytest guidance.
 Pure decisions receive explicit effect results. Process adapters use argument arrays and preserve finite failure outcomes.
@@ -53,8 +54,9 @@ Focused fixtures keep the runtime-only projection contract under test after the 
 
 ## Hooks and explicit effects
 
-Software Engineering and Kotlin Engineering compose their concise context hooks.
-Kotlin also keeps Gradle checks and wrapper integrity.
+Software Engineering composes its context and instruction-scope hooks.
+Kotlin Engineering selects no hooks. Its skills contain the Kotlin guidance.
+The Kotlin context, layout, Gradle, and wrapper hooks remain standalone primitives for explicit composition.
 Repository Knowledge keeps its bounded knowledge hooks.
 Developer Tooling and IntelliJ Plugin Development add no automatic hooks.
 
