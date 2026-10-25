@@ -10,7 +10,7 @@ The source graph keeps skills, agent profiles, instructions, concepts, and hooks
 
 ## Plugin Intent
 
-Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.
+Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.
 
 ## Operating Rules
 
@@ -28,7 +28,9 @@ Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit
 
 ## Skill Primitives
 
+- `ast-grep`: `skills/ast-grep` (source: `source/skills/ast-grep`)
 - `cli-creator`: `skills/cli-creator` (source: `source/skills/cli-creator`)
+- `lsp-management`: `skills/lsp-management` (source: `source/skills/lsp-management`)
 - `manage-json-schemas`: `skills/manage-json-schemas` (source: `source/skills/manage-json-schemas`)
 - `openapi-contract-authoring`: `skills/openapi-contract-authoring` (source: `source/skills/openapi-contract-authoring`)
 - `personal-setup-management`: `skills/personal-setup-management` (source: `source/skills/personal-setup-management`)
