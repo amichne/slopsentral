@@ -26,8 +26,10 @@ test('OKF validator uses its own locked environment outside a repository', t => 
   fs.writeFileSync(concept,
     '---\ntype: systems\ntitle: Account\ndescription: Account state\n---\n# Account\n');
 
+  // Keep CI's interpreter location without its project or package environment.
   const environment = Object.fromEntries(Object.entries(process.env)
-    .filter(([name]) => !name.startsWith('UV_') && !name.startsWith('PYTHON') && name !== 'VIRTUAL_ENV'));
+    .filter(([name]) => (!name.startsWith('UV_') || name === 'UV_PYTHON_INSTALL_DIR')
+      && !name.startsWith('PYTHON') && name !== 'VIRTUAL_ENV'));
   environment.UV_NO_CONFIG = '1';
   environment.UV_PYTHON_DOWNLOADS = 'never';
   environment.PYTHONNOUSERSITE = '1';
