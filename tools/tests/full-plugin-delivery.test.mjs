@@ -4,7 +4,7 @@ import path from 'node:path';
 import test from 'node:test';
 
 const root = path.resolve(import.meta.dirname, '../..');
-// Published composition at 7958ea3, before the Pi adapter entered the source graph.
+// Expected public composition, independent of the source manifests and projector.
 const expected = {
   'software-engineering': ['semantic-ratchet', 'python-tooling', 'tdd', 'git-change-flow',
     'mise-project-tooling', 'github-ci-operations', 'issue-tracker-operations', 'pull-request-lifecycle'],
@@ -12,7 +12,8 @@ const expected = {
     'negative-capability-proof', 'kotlin-gradle-validation', 'gradle-performance-engineering'],
   'intellij-plugin-development': ['intellij-plugin-delivery', 'intellij-platform-testing', 'intellij-psi-indexing'],
   'developer-tooling': ['python-tooling', 'cli-creator', 'skill-primitive-authoring', 'plugin-composition-authoring',
-    'manage-json-schemas', 'openapi-contract-authoring', 'personal-setup-management', 'pkl-engineering'],
+    'manage-json-schemas', 'openapi-contract-authoring', 'personal-setup-management', 'pkl-engineering',
+    'lsp-management', 'ast-grep'],
   'repository-knowledge': ['code-knowledge-base', 'local-repository-navigation',
     'controlled-technical-writing', 'technical-documentation'],
 };
@@ -28,7 +29,7 @@ test('Kotlin proof routes implicitly and Gradle diagnosis needs explicit invocat
   kotlinPolicy(path.join(root, 'source'));
 });
 
-test('the five full plugins compose the published 28-skill catalog', () => {
+test('the five full plugins compose the 30-skill catalog', () => {
   const market = read(path.join(root, 'source/adaptable.marketplace.json'));
   assert.deepEqual(market.plugins.map(plugin => plugin.name).sort(), Object.keys(expected).sort());
   assert.deepEqual(market.skills.map(skill => skill.name).sort(), [...new Set(Object.values(expected).flat())].sort());
