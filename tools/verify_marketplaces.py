@@ -12,14 +12,28 @@
 # ///
 """Project and check all three providers in a managed temporary directory."""
 
+import argparse
 import os
 import subprocess
 import tempfile
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
+parser = argparse.ArgumentParser(description=__doc__)
+_ = parser.add_argument(
+    "--out", type=Path, help="Retain verified projections in a fresh external directory"
+)
+arguments = parser.parse_args()
 with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary:
     base = Path(temporary)
+    if arguments.out is not None:
+        base = Path(arguments.out).resolve()
+        if base.is_relative_to(root) or root.is_relative_to(base):
+            parser.error("Retained output must be outside the source checkout")
+        try:
+            base.mkdir(parents=True, exist_ok=False)
+        except OSError:
+            parser.exit(2, "Retained output must be a fresh writable directory\n")
     for harness in ("codex", "github-copilot", "amp"):
         result = subprocess.run(
             [

@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -35,6 +36,9 @@ jobs:
           enable-cache: true
       - name: Set up locked Python and schema tools
         run: uv run --locked tools/setup.py
+      - name: Check the unified release version
+        id: version
+        run: uv run --locked python -m tools.release_version check --github-output "$GITHUB_OUTPUT"
       - name: Install checksum-verified native tools
         run: uv run --locked tools/ci.py native
       - name: Validate source, Python, schemas, and retained contracts
@@ -48,7 +52,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: uv run --locked tools/ci.py pkl
       - name: Project all three harnesses and execute installed adapter contracts
-        run: uv run --locked tools/verify_marketplaces.py
+        run: uv run --locked tools/verify_marketplaces.py --out "$RUNNER_TEMP/qualified-projections"
+      - name: Archive the verified provider bytes
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: >-
+          uv run --locked python -m tools.release_assets package
+          "$RUNNER_TEMP/qualified-projections" "$RUNNER_TEMP/marketplace-candidate" "$SOURCE_SHA" "$VERSION"
+      - name: Retain qualified provider archives
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketplace-candidate-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/marketplace-candidate/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
 
   pi-candidate:
     name: Retain tested Pi candidate
@@ -76,6 +95,9 @@ jobs:
         run: |
           node tools/install-projection-pkl.mjs --out "$RUNNER_TEMP/pkl/pkl"
           echo "PKL_BIN=$RUNNER_TEMP/pkl/pkl" >> "$GITHUB_ENV"
+      - name: Read the shared release version
+        id: version
+        run: uv run --locked python -m tools.release_version check --github-output "$GITHUB_OUTPUT"
       - name: Project the source package
         run: node tools/project-marketplaces.mjs --source . --harness pi --out "$RUNNER_TEMP/projected-pi"
       - name: Examine every Pi contract through the native host
@@ -86,10 +108,12 @@ jobs:
           node --test tools/tests/pi-*.test.mjs
       - name: Package one unique candidate
         id: package
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: >-
           uv run --locked --script tools/package_pi.py
           "$RUNNER_TEMP/projected-pi/.pi/slopsentral" "$RUNNER_TEMP/pi-candidate"
-          --version "0.1.$GITHUB_RUN_NUMBER" --github-output "$GITHUB_OUTPUT"
+          --version "$VERSION" --github-output "$GITHUB_OUTPUT"
       - name: Install the candidate archive through the native Pi CLI
         env:
           SLOPSENTRAL_PI_ARCHIVE: ${{ steps.package.outputs.archive }}

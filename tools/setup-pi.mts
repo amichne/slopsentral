@@ -19,6 +19,7 @@ const repository = 'amichne/slopsentral';
 const api = 'https://api.github.com/repos/' + repository;
 const self = fileURLToPath(import.meta.url);
 const maxBytes = 64 * 1024 * 1024;
+const releaseVersion = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/;
 const hash = (value: Buffer | string): string => crypto.createHash('sha256').update(value).digest('hex');
 function reject(code: string, message: string): never { throw new Error(code + ': ' + message); }
 function object(value: unknown): ObjectValue {
@@ -41,11 +42,11 @@ async function download(url: string): Promise<Buffer> {
 const live: Client = { json: async route => JSON.parse((await download(api + route)).toString()) as unknown, bytes: download };
 
 export async function qualify(client: Client = live, requested?: string): Promise<Qualified> {
-  if (requested && !/^0\.1\.[1-9][0-9]*$/.test(requested)) reject('INVALID_VERSION', 'Use a published 0.1.N version.');
+  if (requested && !releaseVersion.test(requested)) reject('INVALID_VERSION', 'Use a published X.Y.Z version.');
   const release = object(await client.json(requested ? '/releases/tags/slopsentral-v' + requested : '/releases/latest'));
   const tag = text(release.tag_name);
-  if (!/^slopsentral-v0\.1\.[1-9][0-9]*$/.test(tag) || release.draft !== false || release.prerelease !== false) reject('INVALID_RELEASE', 'A qualified stable release is required.');
-  const version = tag.slice('slopsentral-v'.length);
+  const version = tag.startsWith('slopsentral-v') ? tag.slice('slopsentral-v'.length) : '';
+  if (!releaseVersion.test(version) || release.draft !== false || release.prerelease !== false) reject('INVALID_RELEASE', 'A qualified stable release is required.');
   if (requested) same(version, requested, 'Requested version differs.');
   async function asset(name: string): Promise<Buffer> {
     const matches = list(release.assets).map(object).filter(item => item.name === name);
@@ -60,7 +61,7 @@ export async function qualify(client: Client = live, requested?: string): Promis
   }
   const setup = await asset('setup.json');
   const record = parse(setup);
-  same(record.schema_version, 1, 'Unknown setup schema.');
+  if (record.schema_version !== 1 && record.schema_version !== 2) reject('INVALID_RECORD', 'Unknown setup schema.');
   same(record.repository, repository, 'Foreign setup repository.');
   same(record.version, version, 'Setup version differs.');
   const revision = text(record.source_revision);
@@ -80,7 +81,18 @@ export async function qualify(client: Client = live, requested?: string): Promis
   same(c.version, version, 'Candidate version differs.');
   same(p.version, version, 'Promotion version differs.');
   same(c.event, 'push', 'Candidate is not a main push.');
-  same(version, '0.1.' + String(c.run_number), 'Producer version differs.');
+  same(record.schema_version, c.schema_version, 'Setup and candidate schema differ.');
+  same(p.schema_version, c.schema_version, 'Promotion and candidate schema differ.');
+  if (c.schema_version === 1) same(version, '0.1.' + String(c.run_number), 'Producer version differs.');
+  else if (c.schema_version === 2) {
+    const source = object(await client.json('/contents/package.json?ref=' + revision));
+    same(source.encoding, 'base64', 'Unknown source encoding.');
+    const encoded = text(source.content).replaceAll('\n', '');
+    if (encoded.length > 64 * 1024) reject('INVALID_RECORD', 'Source manifest is too large.');
+    const bytes = Buffer.from(encoded, 'base64');
+    same(bytes.toString('base64'), encoded, 'Invalid source manifest encoding.');
+    same(parse(bytes).version, version, 'Source release version differs.');
+  } else reject('INVALID_RECORD', 'Unknown candidate schema.');
   same(c.run_id, p.main_run_id, 'Main run differs.');
   same(c.run_id, p.build_run_id, 'Build run differs.');
   same(c.run_attempt, p.main_run_attempt, 'Main attempt differs.');
@@ -267,7 +279,7 @@ function decodeTransaction(value: unknown, scope: Scope): Transaction {
   for (const key of ['agentDir', 'cwd', 'project'] as const) same(savedScope[key], scope[key], 'Recovery scope differs: ' + key);
   if (!['pending', 'applied', 'restored'].includes(text(record.status))) reject('INVALID_RECORD', 'Unknown recovery state.');
   const version = text(record.version);
-  if (!/^0\.1\.[1-9][0-9]*$/.test(version)) reject('INVALID_RECORD', 'Invalid recovery version.');
+  if (!releaseVersion.test(version)) reject('INVALID_RECORD', 'Invalid recovery version.');
   const image = (value: unknown): string | null => {
     if (value === null) return null;
     const result = text(value);
@@ -427,7 +439,7 @@ export async function install(qualified: Qualified, options: { agentDir: string;
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
-  if (args.includes('--help')) { console.log('Slopsentral native Pi setup\nUsage: install-pi.sh [--project] [--version 0.1.N] [--rollback]\nGlobal by default; migrates Slopsentral registrations in personal and current-project scope.\nDocumentation: https://slopsentral.michne.com/guides/pi'); return; }
+  if (args.includes('--help')) { console.log('Slopsentral native Pi setup\nUsage: install-pi.sh [--project] [--version X.Y.Z] [--rollback]\nGlobal by default; migrates Slopsentral registrations in personal and current-project scope.\nDocumentation: https://slopsentral.michne.com/guides/pi'); return; }
   let version: string | undefined;
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--version') { version = args[++i]; if (!version) reject('INVALID_INVOCATION', 'Missing version.'); }

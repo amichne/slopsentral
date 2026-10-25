@@ -15,6 +15,8 @@
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import hashlib
 import json
 import re
@@ -31,7 +33,9 @@ from typing import TypeGuard
 WORKFLOW = ".github/workflows/validate-source.yml"
 SHA = re.compile(r"[0-9a-f]{40}")
 DIGEST = re.compile(r"[0-9a-f]{64}")
+VERSION = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)")
 REPOSITORY = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")
+CURRENT_SCHEMA = 2
 MAX_ARCHIVE = 64 * 1024 * 1024
 MAX_RECORD = 4096
 MAX_CHECKSUMS = 256
@@ -133,7 +137,7 @@ def decode(value: object) -> Candidate | Failure:
     size = value.get("size")
     if (
         not positive(schema)
-        or schema != 1
+        or schema not in {1, CURRENT_SCHEMA}
         or not isinstance(repository, str)
         or not isinstance(revision, str)
         or identity(repository, revision) is not None
@@ -147,7 +151,8 @@ def decode(value: object) -> Candidate | Failure:
         or not isinstance(event, str)
         or event not in {"pull_request", "push", "workflow_dispatch"}
         or not isinstance(version, str)
-        or version != f"0.1.{number}"
+        or not VERSION.fullmatch(version)
+        or (schema == 1 and version != f"0.1.{number}")
         or not isinstance(archive, str)
         or archive != f"slopsentral-pi-{version}.tgz"
         or not isinstance(sha256, str)
@@ -444,12 +449,15 @@ def seal(repository: str, revision: str, producer: Producer, bundle: Path) -> Ca
         ["git", "status", "--porcelain"]
     ):
         raise CandidateError(Failure.INVALID_IDENTITY)
-    version = f"0.1.{producer.number}"
+    manifest = load(Path("package.json").read_bytes())
+    if not mapping(manifest):
+        raise CandidateError(Failure.INVALID_RECORD)
+    version = text_field(manifest, "version")
     archive = bundle / f"slopsentral-pi-{version}.tgz"
     candidate = require_record(
         asdict(
             Candidate(
-                1,
+                CURRENT_SCHEMA,
                 repository,
                 revision,
                 run_command(["git", "rev-parse", "HEAD^{tree}"]),
@@ -495,8 +503,13 @@ def promote(repository: str, revision: str, run_id: int, bundle: Path, record: P
         raise CandidateError(admitted)
     if tree(repository, candidate.source_revision) != expected_tree:
         raise CandidateError(Failure.SOURCE_TREE_MISMATCH)
+    if (
+        candidate.schema_version == CURRENT_SCHEMA
+        and source_version(repository, revision) != candidate.version
+    ):
+        raise CandidateError(Failure.PAYLOAD_MISMATCH)
     promotion = {
-        "schema_version": 1,
+        "schema_version": candidate.schema_version,
         "repository": repository,
         "source_revision": candidate.source_revision,
         "merged_revision": revision,
@@ -513,6 +526,27 @@ def promote(repository: str, revision: str, run_id: int, bundle: Path, record: P
     with record.open("x") as stream:
         _ = stream.write(json.dumps(promotion, indent=2) + "\n")
     return Promoted(admitted.candidate, revision)
+
+
+def source_version(repository: str, revision: str) -> str:
+    require_identity(repository, revision)
+    # GitHub binds this content to the exact admitted commit, never a mutable branch.
+    document = observe(f"repos/{repository}/contents/package.json?ref={revision}")
+    if not mapping(document) or document.get("encoding") != "base64":
+        raise CandidateError(Failure.INVALID_RECORD)
+    encoded = text_field(document, "content")
+    if len(encoded) > 64 * 1024:
+        raise CandidateError(Failure.INVALID_RECORD)
+    try:
+        manifest = load(base64.b64decode(encoded.replace("\n", ""), validate=True))
+    except binascii.Error as error:
+        raise CandidateError(Failure.INVALID_RECORD) from error
+    if not mapping(manifest):
+        raise CandidateError(Failure.INVALID_RECORD)
+    version = text_field(manifest, "version")
+    if not VERSION.fullmatch(version):
+        raise CandidateError(Failure.INVALID_RECORD)
+    return version
 
 
 def candidate_outputs(candidate: Candidate, bundle: Path) -> dict[str, str]:

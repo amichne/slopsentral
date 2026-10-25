@@ -26,7 +26,7 @@ class Resources {
 
 class Package {
   name: "slopsentral-pi" = "slopsentral-pi"
-  version: "0.1.0" = "0.1.0"
+  version: String(matches(Regex("[0-9]+\\.[0-9]+\\.[0-9]+")))
   description: String
   type: "module" = "module"
   keywords: List<String> = List("pi-package")
@@ -61,6 +61,7 @@ class Inventory {
 }
 
 function manifest(input: Schema.Input): Package = new {
+  version = checked(input).version
   description = checked(input).description
 }
 
