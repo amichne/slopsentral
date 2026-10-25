@@ -439,7 +439,9 @@ async function main(): Promise<void> {
   if (args.includes('--rollback')) { await qualify(live, version); rollback({ agentDir, cwd, project }); console.log('RESTORED: prior configuration. Restart Pi.'); return; }
   if (!['darwin', 'linux'].includes(process.platform)) reject('UNSUPPORTED_PLATFORM', 'Use macOS or Linux.');
   const pi = spawnSync('pi', ['--version'], { encoding: 'utf8', timeout: 10000 });
-  if (pi.status !== 0 || pi.stdout.trim() !== '1.3.0') reject('PI_UNAVAILABLE', 'Install Pi 1.3.0 first; see https://slopsentral.michne.com/guides/pi.');
+  if (pi.status !== 0) reject('PI_UNAVAILABLE', 'Ensure pi --version succeeds within 10 seconds; see https://slopsentral.michne.com/guides/pi.');
+  // A version string cannot prove native package or skill discovery support.
+  console.error('PI_COMPATIBILITY_UNVERIFIED: using installed Pi best-effort. Restart Pi after setup and verify native skill discovery.');
   const result = await install(await qualify(live, version), { agentDir, cwd, project });
   console.log(result.status + ': Slopsentral ' + result.version + '. Restart Pi for native discovery.');
   console.log('Recovery: rerun the documented installer in this directory with' + (project ? ' --project' : '') + ' --rollback.');

@@ -14,7 +14,7 @@ node -e 'const [major, minor] = process.versions.node.split(".").map(Number); pr
 rollback=no
 for argument in "$@"; do [ "$argument" != --rollback ] || rollback=yes; done
 if [ "$rollback" = no ]; then
-  command -v pi >/dev/null 2>&1 || { printf '%s\n' 'PI_UNAVAILABLE: install Pi 1.3.0; see https://slopsentral.michne.com/guides/pi.' >&2; exit 2; }
+  command -v pi >/dev/null 2>&1 || { printf '%s\n' 'PI_UNAVAILABLE: install Pi and ensure pi is on PATH; see https://slopsentral.michne.com/guides/pi.' >&2; exit 2; }
   command -v tar >/dev/null 2>&1 || { printf '%s\n' 'TAR_UNAVAILABLE: install the system tar utility.' >&2; exit 2; }
 fi
 node --input-type=module - "$@" <<'BOOTSTRAP'
