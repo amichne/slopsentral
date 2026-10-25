@@ -29,7 +29,7 @@ The provider uses a read-only workspace with shell tools and web search set to o
 The prompt supplies the skill text and case choices.
 It tells the model to use that evidence without tools.
 Each run uses a temporary Codex home and an empty workspace.
-The runtime links the existing login file without copying its contents.
+The runtime uses a link to the existing login file.
 It excludes personal Codex settings and sets host skill discovery, plugins, and apps to off.
 It removes the temporary runtime when the process exits normally.
 
@@ -59,7 +59,7 @@ Each case asks the model to select every justified action and explain the choice
 The grader compares the selected IDs with an independently authored answer set.
 It rejects missing choices, extra choices, invented choices, duplicates, and malformed output.
 The explanation must contain at least 20 characters. The grader does not assess its meaning.
-Read explanations in the viewer before accepting a baseline.
+Read explanations in the viewer before you accept a baseline.
 
 The score measures a decision under supplied skill instructions.
 Compare the two columns to examine decisions with and without the skill.
@@ -71,7 +71,7 @@ These cases do not claim native-host qualification.
 Each row records the skill path and hashes for its text, both tasks, the case set, and the grader.
 The `sha256:` prefix keeps promptfoo's secret filter from hiding these public content hashes.
 Promptfoo also records provider settings, outputs, and token usage.
-Compare runs only after examining these identities and settings.
+Before you compare runs, examine these identities and settings.
 A single run does not prove an improvement or a stable success rate.
 
 ## Add a regression
