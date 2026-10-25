@@ -257,11 +257,15 @@
         "name": "Amichne"
       },
       "category": "Productivity",
-      "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
+      "description": "Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.",
       "keywords": [
+        "ast-grep",
         "cli",
         "developer-tooling",
+        "language-server",
+        "lsp",
         "skills",
+        "structural-search",
         "tools"
       ],
       "license": "UNLICENSED",
@@ -269,11 +273,15 @@
       "source": "developer-tooling",
       "strict": true,
       "tags": [
+        "ast-grep",
         "cli",
+        "language-server",
+        "lsp",
+        "structural-search",
         "tools",
         "skills"
       ],
-      "version": "3.0.0"
+      "version": "3.1.0"
     }
   ]
 }
