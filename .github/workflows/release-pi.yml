@@ -1,0 +1,111 @@
+name: Release Pi
+
+on:
+  workflow_run:
+    workflows: [Validate Source]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful main Validate Source run whose retained Pi candidate to publish
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: release-pi
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: >-
+      (github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.conclusion == 'success') ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.12.9'
+      - name: Admit the successful main run and original producer
+        id: candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ github.event.workflow_run.head_sha }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || inputs.run_id }}
+        run: >-
+          uv run --locked --script tools/pi_candidate.py promote
+          --repository "$GITHUB_REPOSITORY" --revision "$SOURCE_SHA"
+          --run-id "$SOURCE_RUN_ID" --bundle "$RUNNER_TEMP/pi-candidate"
+          --promotion-record "$RUNNER_TEMP/promotion.json" --github-output "$GITHUB_OUTPUT"
+      - name: Admit the setup artifact attempt
+        id: setup
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ steps.candidate.outputs.merged_revision }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || inputs.run_id }}
+        run: >-
+          uv run --locked python -m tools.setup_assets admit-run
+          "$GITHUB_REPOSITORY" "$SOURCE_RUN_ID" "$SOURCE_SHA" --github-output "$GITHUB_OUTPUT"
+      - name: Download the qualified native installer
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.setup.outputs.artifact }}
+          run-id: ${{ github.event.workflow_run.id || inputs.run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/setup-candidate
+      - name: Verify setup identity before publication
+        run: |
+          uv run --locked python -m tools.setup_assets verify "$RUNNER_TEMP/setup-candidate" "$RUNNER_TEMP/pi-candidate/candidate.json"
+          cat "$RUNNER_TEMP/setup-candidate/SHA256SUMS" >> "$RUNNER_TEMP/pi-candidate/SHA256SUMS"
+      - name: Create the source tag without replacement
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ steps.candidate.outputs.merged_revision }}
+          VERSION: ${{ steps.candidate.outputs.version }}
+        run: uv run --locked python -m tools.release_assets ensure-tag "$GITHUB_REPOSITORY" "slopsentral-v$VERSION" "$SOURCE_SHA"
+      - name: Publish the retained archive without replacement
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ steps.candidate.outputs.merged_revision }}
+          VERSION: ${{ steps.candidate.outputs.version }}
+          ARCHIVE: ${{ steps.candidate.outputs.archive }}
+        run: |
+          printf '%s\n' \
+            'Native Pi skills and verified setup. Installed Pi versions are used best-effort; no exact Pi version is required.' \
+            '' \
+            'Install, update, and recover using the [Pi guide](https://github.com/amichne/slopsentral/blob/main/docs/pi-install.md).' \
+            'Codex, Copilot, and Amp publication remains owned by Publish Harnesses.' \
+            "Source: https://github.com/$GH_REPO/commit/$SOURCE_SHA" \
+            > "$RUNNER_TEMP/pi-release-notes.md"
+          gh release create "slopsentral-v$VERSION" "$ARCHIVE" \
+            "$RUNNER_TEMP/pi-candidate/SHA256SUMS" "$RUNNER_TEMP/pi-candidate/candidate.json" \
+            "$RUNNER_TEMP/setup-candidate/install-pi.sh" "$RUNNER_TEMP/setup-candidate/setup-pi.mts" \
+            "$RUNNER_TEMP/setup-candidate/setup.json" "$RUNNER_TEMP/promotion.json" \
+            --verify-tag --draft --title "Slopsentral $VERSION" --notes-file "$RUNNER_TEMP/pi-release-notes.md"
+      - name: Verify published downloads before making the release current
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ steps.candidate.outputs.version }}
+        run: |
+          gh release download "slopsentral-v$VERSION" --dir "$RUNNER_TEMP/downloaded"
+          cmp "$RUNNER_TEMP/pi-candidate/SHA256SUMS" "$RUNNER_TEMP/downloaded/SHA256SUMS"
+          (cd "$RUNNER_TEMP/downloaded" && sha256sum -c SHA256SUMS)
+          cmp "$RUNNER_TEMP/pi-candidate/candidate.json" "$RUNNER_TEMP/downloaded/candidate.json"
+          cmp "$RUNNER_TEMP/promotion.json" "$RUNNER_TEMP/downloaded/promotion.json"
+          for file in install-pi.sh setup-pi.mts setup.json; do cmp "$RUNNER_TEMP/setup-candidate/$file" "$RUNNER_TEMP/downloaded/$file"; done
+          gh release edit "slopsentral-v$VERSION" --draft=false --latest

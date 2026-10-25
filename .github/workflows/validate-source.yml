@@ -27,6 +27,7 @@ jobs:
           java-version: "21"
       - uses: actions/setup-node@v4
         with:
+          node-version: '24.21.0'
           cache: npm
       - uses: astral-sh/setup-uv@v7
         with:
@@ -48,3 +49,79 @@ jobs:
         run: uv run --locked tools/ci.py pkl
       - name: Project all three harnesses and execute installed adapter contracts
         run: uv run --locked tools/verify_marketplaces.py
+
+  pi-candidate:
+    name: Retain tested Pi candidate
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.12.9'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+          cache: npm
+      - name: Install locked Node tools
+        run: npm ci --ignore-scripts
+      - name: Install pinned Pkl
+        run: |
+          node tools/install-projection-pkl.mjs --out "$RUNNER_TEMP/pkl/pkl"
+          echo "PKL_BIN=$RUNNER_TEMP/pkl/pkl" >> "$GITHUB_ENV"
+      - name: Project the source package
+        run: node tools/project-marketplaces.mjs --source . --harness pi --out "$RUNNER_TEMP/projected-pi"
+      - name: Examine every Pi contract through the native host
+        env:
+          SLOPSENTRAL_PI_PACKAGE: ${{ runner.temp }}/projected-pi/.pi/slopsentral
+        run: |
+          npm run check:pi
+          node --test tools/tests/pi-*.test.mjs
+      - name: Package one unique candidate
+        id: package
+        run: >-
+          uv run --locked --script tools/package_pi.py
+          "$RUNNER_TEMP/projected-pi/.pi/slopsentral" "$RUNNER_TEMP/pi-candidate"
+          --version "0.1.$GITHUB_RUN_NUMBER" --github-output "$GITHUB_OUTPUT"
+      - name: Install the candidate archive through the native Pi CLI
+        env:
+          SLOPSENTRAL_PI_ARCHIVE: ${{ steps.package.outputs.archive }}
+        run: node --test tools/tests/pi-install.test.mjs
+      - name: Seal the tested archive and source identity
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: >-
+          uv run --locked --script tools/pi_candidate.py seal
+          --repository "$GITHUB_REPOSITORY" --revision "$SOURCE_SHA"
+          --run-id "$GITHUB_RUN_ID" --run-number "$GITHUB_RUN_NUMBER"
+          --run-attempt "$GITHUB_RUN_ATTEMPT" --event "$GITHUB_EVENT_NAME"
+          --bundle "$RUNNER_TEMP/pi-candidate"
+      - name: Test native setup and recovery
+        run: node --test tools/tests/pi-setup.test.mjs
+      - name: Package the tested setup installer
+        run: >-
+          uv run --locked python -m tools.setup_assets package
+          "$RUNNER_TEMP/pi-candidate" "$RUNNER_TEMP/setup-candidate"
+      - name: Retain the tested setup installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: setup-candidate-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/setup-candidate/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+      - name: Retain the immutable tested archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: pi-candidate-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pi-candidate/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30

@@ -160,8 +160,9 @@ Each bundle's typed `capabilities.json` declares these boundaries:
 
 Missing instruction files fail initialization before skill registration.
 Package context grants no authority and does not supersede repository rules.
-Pi installation remains owned by its [published installer](pi-install.md), not
-this projector. This Amp adapter does not restore the retired Pi runtime.
+Pi installation remains owned by its [published installer](pi-install.md).
+The same projector also supports `--harness pi` for its content-only native default;
+that separate adapter does not alter Amp or restore the retired Pi runtime.
 
 `npm run verify:marketplaces` exercises generated adapters and installed scripts
 for all three targets. To additionally check native Amp discovery, run:
