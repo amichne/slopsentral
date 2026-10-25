@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/pi/content-profile.schema.json",
+  "title": "Pi content profile inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "schemaVersion",
+    "profile",
+    "invocation",
+    "instructionFile",
+    "skills",
+    "instructions"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "PI_CONTENT_PROFILE"
+      ],
+      "examples": [
+        "PI_CONTENT_PROFILE"
+      ]
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "enum": [
+        1
+      ],
+      "examples": [
+        1
+      ]
+    },
+    "profile": {
+      "$ref": "#/$defs/Identity"
+    },
+    "invocation": {
+      "type": "string",
+      "enum": [
+        "either"
+      ],
+      "examples": [
+        "either"
+      ]
+    },
+    "instructionFile": {
+      "type": "string",
+      "enum": [
+        "AGENTS.md"
+      ],
+      "examples": [
+        "AGENTS.md"
+      ]
+    },
+    "skills": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/Resource"
+      },
+      "examples": [
+        [
+          {
+            "name": "semantic-ratchet",
+            "path": "software-engineering/skills/semantic-ratchet",
+            "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ]
+      ]
+    },
+    "instructions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/Resource"
+      },
+      "examples": [
+        []
+      ]
+    }
+  },
+  "$defs": {
+    "Identity": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "examples": [
+        "kotlin-type-design"
+      ]
+    },
+    "Resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/Identity"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*/(?:skills/[a-z][a-z0-9-]*|instructions/[a-z][a-z0-9-]*\\.md)$",
+          "examples": [
+            "kotlin-engineering/instructions/kotlin-engineering.md"
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "examples": [
+            "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ]
+        }
+      },
+      "examples": [
+        {
+          "name": "semantic-ratchet",
+          "path": "software-engineering/skills/semantic-ratchet",
+          "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "type": "PI_CONTENT_PROFILE",
+      "schemaVersion": 1,
+      "profile": "local-development-default",
+      "invocation": "either",
+      "instructionFile": "AGENTS.md",
+      "skills": [
+        {
+          "name": "semantic-ratchet",
+          "path": "software-engineering/skills/semantic-ratchet",
+          "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "instructions": []
+    }
+  ]
+}

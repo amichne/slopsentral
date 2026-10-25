@@ -5,6 +5,7 @@ import "pkl:yaml"
 
 import "Amp.pkl"
 import "Decode.pkl"
+import "Pi.pkl"
 import "Schema.pkl"
 import "Targets.pkl"
 
@@ -15,6 +16,8 @@ local outputRoot =
     ".agents/plugins"
   else if (selectedHarness == "amp")
     ".amp/plugins"
+  else if (selectedHarness == "pi")
+    ".pi/slopsentral"
   else
     ".github/plugin"
 local commandPath = Regex("\\bhooks/[A-Za-z0-9_.-]+")
@@ -311,7 +314,7 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
           jsonFile("package.json", Map("type", "module"))
           jsonFile("capabilities.json", new Amp.Capabilities {})
         }
-        when (selectedHarness != "amp") {
+        when (selectedHarness != "amp" && selectedHarness != "pi") {
           jsonFile(
             if (selectedHarness == "codex") ".codex-plugin/plugin.json" else "plugin.json",
             if (selectedHarness == "codex") codex(p) else copilot(p),
@@ -367,7 +370,7 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
 }
 
 local plans = input.plugins.toList().map((p) -> pluginPlan(p))
-local marketplace: Targets.CodexMarketplace | Targets.CopilotMarketplace | Amp.Catalog =
+local marketplace: Targets.CodexMarketplace | Targets.CopilotMarketplace | Amp.Catalog | Pi.Catalog =
   if (selectedHarness == "codex")
     new Targets.CodexMarketplace {
       name = input.name
@@ -381,6 +384,8 @@ local marketplace: Targets.CodexMarketplace | Targets.CopilotMarketplace | Amp.C
             category = pluginCategory(p.tags)
           })
     }
+  else if (selectedHarness == "pi")
+    Pi.catalog(input)
   else if (selectedHarness == "amp")
     new Amp.Catalog {
       name = input.name
@@ -426,6 +431,16 @@ output {
     plugins = plans
     files =
       List(jsonFile(outputRoot + "/marketplace.json", marketplace))
+        + (
+          if (selectedHarness == "pi")
+            List(
+              jsonFile(outputRoot + "/package.json", Pi.manifest(input)),
+              jsonFile(outputRoot + "/profile-inventory.json", Pi.inventory(input)),
+              textFile(outputRoot + "/AGENTS.md", ""),
+            )
+          else
+            List()
+        )
         + (
           if (selectedHarness != "github-copilot" && input.phase == "SEALED")
             List(jsonFile(outputRoot + "/marketplace-lock.json", lock))

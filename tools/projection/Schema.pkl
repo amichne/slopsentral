@@ -1,6 +1,6 @@
 module slopsentral.projection.Schema
 
-typealias Harness = "codex" | "github-copilot" | "amp"
+typealias Harness = "codex" | "github-copilot" | "amp" | "pi"
 typealias Kind = "SKILL" | "AGENT" | "INSTRUCTION" | "HOOK" | "RESOURCE"
 typealias RelativePath =
   String(!isEmpty && !startsWith("/") && !contains("\\") && !split("/").contains(".."))

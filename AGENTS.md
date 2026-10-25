@@ -30,7 +30,17 @@ by hand when the authored source can be fixed instead.
 
 `tools/install-pi.sh` preserves the documented curl-to-shell entry point.
 It delegates to the tested native installer from the selected stable release.
-Keep the release installer and package runtime under their release owners.
+`tools/setup-pi.mts` owns settings migration and private recovery.
+`tools/projection/Pi.pkl` owns the content-only native default package shape;
+`tools/package_pi.py`, `tools/pi_candidate.py`, and `tools/setup_assets.py` own
+archive validation and source-bound candidate/installer receipts.
+`Release Pi` publishes retained tested bytes only after a successful main push.
+It is independent of `Publish Harnesses`; do not restore retired Pi extensions,
+workflow emulation, or the old documentation/projector stack.
+Consumer setup must not add Python, uv, Pkl, or npm prerequisites.
+Run `npm run check:pi`, `node --test tools/tests/pi-*.test.mjs`, and the focused
+Python Pi checks after installer/release changes. Use `PKL_BIN` to exercise native
+projection and `SLOPSENTRAL_PI_ARCHIVE` to exercise archive installation.
 Run `node --test tools/tests/pi-bootstrap.test.mjs` after launcher changes.
 
 ## First-Party Material

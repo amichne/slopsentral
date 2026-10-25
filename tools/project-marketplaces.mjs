@@ -94,7 +94,7 @@ function snapshotEvidence(repository, files) {
   }
   return evidence;
 }
-function freezeInput(repository) {
+function freezeInput(repository, harness) {
   const sourceRoot = realDirectory(path.join(repository, 'source'));
   const files = snapshot(sourceRoot);
   const evidence = snapshotEvidence(repository, files);
@@ -143,11 +143,20 @@ function freezeInput(repository) {
         ...(manifest.codexMcpServers ? { mcp: 'source/plugins/' + manifest.name + '/.mcp.json' } : {}) };
     });
     const input = { name: marketplace.name, owner: marketplace.owner, description: marketplace.description,
-      generatedAt, sourceSha: digest(files, 'source', 'sha1'), plugins, phase: 'PLAN', projectedDigests: {} };
+      generatedAt, sourceSha: digest(files, 'source', 'sha1'),
+      plugins: harness === 'pi' ? nativePiSelection(plugins) : plugins, phase: 'PLAN', projectedDigests: {} };
     // Validate the exact frozen bytes, then prove the live source still matches.
     assertUnchanged(repository, files, evidence);
     return { files, input, evidence };
   } finally { fs.rmSync(frozenRepository, { recursive: true }); }
+}
+function nativePiSelection(plugins) {
+  const owner = plugins.find(plugin => plugin.name === 'software-engineering');
+  const skill = owner?.references.find(ref => ref.type === 'SKILL' && ref.name === 'semantic-ratchet');
+  if (!skill) reject('source', 'SOURCE_REJECTED', 'The native Pi default must be composed by software-engineering');
+  // Selection narrows the validated closure; Pkl owns the native package shape.
+  return [{ name: owner.name, version: owner.version, description: owner.description,
+    interface: owner.interface, tags: owner.tags, references: [skill] }];
 }
 function sameFiles(expected, current) {
   return current.size === expected.size && [...expected].every(([key, file]) => current.has(key)
@@ -199,7 +208,7 @@ function operations(plan, files, harness, input) {
   if (!exactKeys(plan, ['type', 'schemaVersion', 'harness', 'plugins', 'files']) || plan.type !== 'PROJECTION_PLAN'
     || plan.schemaVersion !== 1 || plan.harness !== harness || !Array.isArray(plan.plugins) || !Array.isArray(plan.files))
     reject('plan', 'INVALID_PLAN', 'The evaluator did not return a complete typed plan');
-  const tree = harness === 'codex' ? '.agents/plugins' : harness === 'amp' ? '.amp/plugins' : '.github/plugin';
+  const tree = harness === 'codex' ? '.agents/plugins' : harness === 'amp' ? '.amp/plugins' : harness === 'pi' ? '.pi/slopsentral' : '.github/plugin';
   if (plan.plugins.length !== input.plugins.length || new Set(plan.plugins.map(p => p.name)).size !== plan.plugins.length
     || plan.plugins.some(p => !input.plugins.some(expected => expected.name === p.name)))
     reject('plan', 'INVALID_PLAN', 'The plan does not cover every selected plugin exactly once');
@@ -275,7 +284,7 @@ function projectedDigests(plan, output) {
 }
 
 export function project({ source, harness, out, pkl = process.env.PKL_BIN ?? 'pkl' }) {
-  if (!['codex', 'github-copilot', 'amp'].includes(harness) || !source || !out) reject('invocation', 'INVALID_INVOCATION', 'Use --source <repo> --harness codex|github-copilot|amp --out <new-directory>');
+  if (!['codex', 'github-copilot', 'amp', 'pi'].includes(harness) || !source || !out) reject('invocation', 'INVALID_INVOCATION', 'Use --source <repo> --harness codex|github-copilot|amp|pi --out <new-directory>');
   const repository = realDirectory(path.resolve(source));
   const requested = path.resolve(out);
   const parent = fs.realpathSync(path.dirname(requested));
@@ -285,7 +294,7 @@ export function project({ source, harness, out, pkl = process.env.PKL_BIN ?? 'pk
     reject('paths', 'UNSAFE_PATH', 'Projection output must be outside the source repository');
   if (exists(target)) reject('publish', 'OUTPUT_EXISTS', 'Projection output already exists; choose a fresh directory');
   let state;
-  try { state = freezeInput(repository); }
+  try { state = freezeInput(repository, harness); }
   catch (error) { if (error instanceof Rejected) throw error; reject('source', 'SOURCE_REJECTED', 'The authored source did not pass validation'); }
   // Two phases: derive operations, then refine source hashes into actual payload hashes.
   for (const p of state.input.plugins) if (p.mcp) state.input.projectedDigests[p.name + ':MCP_CONFIGURATION'] = digest(state.files, p.mcp);
@@ -295,7 +304,7 @@ export function project({ source, harness, out, pkl = process.env.PKL_BIN ?? 'pk
   const initial = operations(first, state.files, harness, state.input);
   const sealed = evaluate(pkl, { ...state.input, phase: 'SEALED', projectedDigests: projectedDigests(first, initial) }, harness, models);
   const complete = operations(sealed, state.files, harness, state.input);
-  const lockRoot = harness === 'amp' ? '.amp/plugins' : '.agents/plugins';
+  const lockRoot = harness === 'amp' ? '.amp/plugins' : harness === 'pi' ? '.pi/slopsentral' : '.agents/plugins';
   if (harness !== 'github-copilot' && !complete.has(lockRoot + '/marketplace-lock.json')) reject('seal', 'INVALID_PLAN', 'Projection omitted sealed provenance');
   for (const [key, file] of initial) if (!complete.has(key) || !file.bytes.equals(complete.get(key).bytes) || file.mode !== complete.get(key).mode)
     reject('seal', 'INVALID_PLAN', 'Sealing changed a derived payload');
@@ -330,7 +339,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const options = {};
     for (let i = 0; i < args.length; i += 2) {
       if (!['--source', '--harness', '--out', '--pkl-bin'].includes(args[i]) || !args[i + 1] || Object.hasOwn(options, args[i]))
-        reject('invocation', 'INVALID_INVOCATION', 'Use --source <repo> --harness codex|github-copilot|amp --out <new-directory> [--pkl-bin <path>]');
+        reject('invocation', 'INVALID_INVOCATION', 'Use --source <repo> --harness codex|github-copilot|amp|pi --out <new-directory> [--pkl-bin <path>]');
       options[args[i]] = args[i + 1];
     }
     console.log(JSON.stringify(project({ source: options['--source'], harness: options['--harness'], out: options['--out'], pkl: options['--pkl-bin'] })));
