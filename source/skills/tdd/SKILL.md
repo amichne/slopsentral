@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Use when proving behavior changes, comparing runtime performance, or auditing executable proof, including empty test selections, runner failures, and RED/GREEN claims. Characterize refactors with existing checks; prose and formatting changes use their normal validators.
+description: Use when proving behavior changes, validating an existing live integration, comparing runtime performance, or auditing executable proof, including empty test selections, runner failures, and RED/GREEN claims. Characterize refactors with existing checks; prose and formatting changes use their normal validators.
 ---
 
 # Executable-Check TDD
@@ -14,8 +14,10 @@ checks first. An inherited plan describes a hypothesis, not a missing feature.
 
 1. State the acceptance behavior and inspect whether the current code already
    satisfies it. Choose reuse, characterization, a behavior change, or a bounded
-   investigation. Do not create a duplicate implementation or manufacture RED
-   when the existing invariant is proved.
+   investigation. Name the required evidence level: an isolated rule, a real
+   component boundary, the running integration, or the installed artifact.
+   Do not create a duplicate implementation or manufacture RED when the existing
+   invariant is proved. A validation-only request skips implementation.
 2. Specify the working directory, exact command, fixtures, meaningful
    environment, assertion source, expected failure, and passing criterion.
    Check tooling readiness separately. Zero selected tests and infrastructure
@@ -46,6 +48,9 @@ prevents completion.
 
 ## Reference Routing
 
+- Read [real-interface-proof.md](references/real-interface-proof.md) when asked
+  to smoke-test a live integration or verify an installed or running change.
+  Passing tests are supporting checks, not a substitute for that interface.
 - Read [runtime-performance.md](references/runtime-performance.md) when the
   acceptance claim concerns runtime latency, throughput, or reduced semantic work.
   Use gradle-performance-engineering for build performance and intellij-platform-testing

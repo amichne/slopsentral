@@ -602,7 +602,7 @@
     },
     {
       "path": "source/skills/tdd/SKILL.md",
-      "sha256": "39d7479113829eb3ded476e5d69db012c953fa5fcde95806113159a52c60201a"
+      "sha256": "da510e3037f889ae13ac48730e15031f512d0827cd8de64fc71b4a6c65c61c76"
     },
     {
       "path": "source/skills/tdd/define-goal-LICENSE.txt",
@@ -651,6 +651,10 @@
     {
       "path": "source/skills/tdd/references/real-components.md",
       "sha256": "ef6816b022d5d43ca22f620190c39de1d0755acd75e1aefed88609e2f6bcce18"
+    },
+    {
+      "path": "source/skills/tdd/references/real-interface-proof.md",
+      "sha256": "aca890cef893b9973415ee3d18c18ac8a38718f959e92762f992037159717279"
     },
     {
       "path": "source/skills/tdd/references/refactoring.md",
