@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -36,7 +37,11 @@ def test_release_only_promotes_a_successful_main_push_without_rebuilding() -> No
     assert field(release, "on", "workflow_run", "workflows") == ["Validate Source"]
     assert field(release, "on", "workflow_run", "branches") == ["main"]
     job = field(release, "jobs", "release")
-    condition = str(field(job, "if"))
+    selector = field(release, "jobs", "select")
+    condition = str(field(selector, "if"))
+    assert field(job, "needs") == "select"
+    assert field(job, "if") == "needs.select.outputs.release == 'true'"
+    assert "tools.release_version select" in commands(selector)
     assert "github.event.workflow_run.event == 'push'" in condition
     assert "github.event.workflow_run.conclusion == 'success'" in condition
     assert "github.ref == 'refs/heads/main'" in condition
@@ -51,6 +56,10 @@ def test_release_only_promotes_a_successful_main_push_without_rebuilding() -> No
     assert "pi_candidate.py promote" in script
     assert "setup_assets admit-run" in script
     assert script.index("setup_assets verify") < script.index("release_assets ensure-tag")
+    assert script.index("release_assets verify") < script.index("release_assets ensure-tag")
+    for harness in ["codex", "github-copilot", "amp"]:
+        assert f"slopsentral-{harness}.tar.gz" in script
+    assert script.index("--draft=false --latest") < script.index("tools.release_version finalize")
     assert script.index("release_assets ensure-tag") < script.index("gh release create")
     assert script.index("sha256sum -c SHA256SUMS") < script.index("--draft=false --latest")
     for forbidden in [
@@ -121,6 +130,37 @@ def test_provider_publication_remains_independent() -> None:
     assert "release-pi" not in source
 
 
+def test_release_please_only_proposes_one_shared_version_with_app_credentials() -> None:
+    config = json.loads((ROOT / "release-please-config.json").read_bytes())
+    assert config["versioning"] == "always-bump-patch"
+    assert config["skip-github-release"] is True
+    assert set(config["packages"]) == {"."}
+    release_pr = workflow("release-please.yml")
+    assert field(release_pr, "on", "workflow_run", "workflows") == ["Release Slopsentral"]
+    job = field(release_pr, "jobs", "release-pr")
+    assert "github.event.workflow_run.conclusion == 'success'" in str(field(job, "if"))
+    steps = field(job, "steps")
+    assert sequence(steps)
+    token = [
+        step
+        for step in steps
+        if mapping(step)
+        and str(step.get("uses", "")).startswith("actions/create-github-app-token@")
+    ]
+    action = [
+        step
+        for step in steps
+        if mapping(step)
+        and str(step.get("uses", "")).startswith("googleapis/release-please-action@")
+    ]
+    assert len(token) == len(action) == 1
+    assert field(token[0], "with", "app-id") == "${{ secrets.RELEASE_PLEASE_APP_ID }}"
+    assert field(token[0], "with", "private-key") == "${{ secrets.RELEASE_PLEASE_APP_PRIVATE_KEY }}"
+    assert field(action[0], "with", "token") == "${{ steps.app.outputs.token }}"
+    assert field(action[0], "with", "skip-github-release") is True
+    assert "release create" not in commands(job)
+
+
 def test_existing_tag_is_never_replaced(monkeypatch: pytest.MonkeyPatch) -> None:
     revision = "a" * 40
     tag = "slopsentral-v0.1.123"
@@ -153,7 +193,7 @@ def test_existing_tag_is_never_replaced(monkeypatch: pytest.MonkeyPatch) -> None
     ]
 
 
-@pytest.mark.parametrize("tag", ["main", "slopsentral-v0.1.0", "slopsentral-v0.1.01"])
+@pytest.mark.parametrize("tag", ["main", "slopsentral-v4.0.1-beta", "slopsentral-v0.1.01"])
 def test_invalid_tag_fails_before_effects(tag: str, monkeypatch: pytest.MonkeyPatch) -> None:
     def forbidden(_: list[str]) -> str:
         pytest.fail("invalid identity must not invoke git or GitHub")

@@ -70,11 +70,11 @@ function bundle(directory, version = '0.1.123', instruction = '') {
   assert.equal(packed.status, 0, packed.stderr + packed.stdout);
   return fs.readFileSync(JSON.parse(packed.stdout).archive);
 }
-function producer(archive, version = '0.1.123') {
+function producer(archive, version = '0.1.123', schema = 1) {
   const revision = 'a'.repeat(40), tree = 'c'.repeat(40), tag = 'slopsentral-v' + version;
-  const candidate = { schema_version: 1, repository: 'amichne/slopsentral', source_revision: revision, source_tree: tree, run_id: 101, run_number: Number(version.split('.').at(-1)), run_attempt: 1, event: 'push', version, archive: 'slopsentral-pi-' + version + '.tgz', sha256: hash(archive), size: archive.length };
-  const promotion = { repository: candidate.repository, source_revision: revision, merged_revision: revision, source_tree: tree, version, main_run_id: 101, main_run_attempt: 1, build_run_id: 101, build_run_attempt: 1, candidate_sha256: hash(json(candidate)), archive_sha256: hash(archive) };
-  const setup = { schema_version: 1, repository: candidate.repository, source_revision: revision, version, candidate_sha256: hash(json(candidate)), files: ['install-pi.sh', 'setup-pi.mts'].map(file => ({ file, sha256: hash(fs.readFileSync(path.join(root, 'tools', file))), size: fs.statSync(path.join(root, 'tools', file)).size })) };
+  const candidate = { schema_version: schema, repository: 'amichne/slopsentral', source_revision: revision, source_tree: tree, run_id: 101, run_number: schema === 1 ? Number(version.split('.').at(-1)) : 123, run_attempt: 1, event: 'push', version, archive: 'slopsentral-pi-' + version + '.tgz', sha256: hash(archive), size: archive.length };
+  const promotion = { schema_version: schema, repository: candidate.repository, source_revision: revision, merged_revision: revision, source_tree: tree, version, main_run_id: 101, main_run_attempt: 1, build_run_id: 101, build_run_attempt: 1, candidate_sha256: hash(json(candidate)), archive_sha256: hash(archive) };
+  const setup = { schema_version: schema, repository: candidate.repository, source_revision: revision, version, candidate_sha256: hash(json(candidate)), files: ['install-pi.sh', 'setup-pi.mts'].map(file => ({ file, sha256: hash(fs.readFileSync(path.join(root, 'tools', file))), size: fs.statSync(path.join(root, 'tools', file)).size })) };
   const bytes = new Map([['candidate.json', json(candidate)], ['promotion.json', json(promotion)], ['setup.json', json(setup)], [candidate.archive, archive]]);
   const release = { tag_name: tag, draft: false, prerelease: false, assets: [...bytes].map(([name, value]) => ({ name, size: value.length, digest: 'sha256:' + hash(value), browser_download_url: 'https://github.com/amichne/slopsentral/releases/download/' + tag + '/' + name })) };
   const run = { id: 101, repository: { full_name: candidate.repository }, path: '.github/workflows/validate-source.yml', head_sha: revision, head_branch: 'main', event: 'push', status: 'completed', conclusion: 'success', run_attempt: 1, run_number: candidate.run_number };
@@ -83,9 +83,23 @@ function producer(archive, version = '0.1.123') {
     ['Retain tested Pi candidate', ['Examine every Pi contract through the native host', 'Install the candidate archive through the native Pi CLI', 'Test native setup and recovery', 'Retain the tested setup installer']],
   ];
   const jobs = { jobs: steps.map(([name, names]) => ({ name, conclusion: 'success', steps: names.map(name => ({ name, conclusion: 'success' })) })) };
-  const routes = new Map([['/releases/latest', release], ['/releases/tags/' + tag, release], ['/actions/runs/101', { ...run, run_attempt: 2, conclusion: 'failure' }], ['/actions/runs/101/attempts/1', run], ['/actions/runs/101/attempts/1/jobs?per_page=100', jobs], ['/git/commits/' + revision, { tree: { sha: tree } }], ['/git/ref/tags/' + tag, { object: { type: 'commit', sha: revision } }]]);
-  return { run, jobs, bytes, release, client: { json: async route => { assert.ok(routes.has(route), route); return structuredClone(routes.get(route)); }, bytes: async url => { const result = bytes.get(url.split('/').at(-1)); assert.ok(result); return result; } } };
+  const source = { encoding: 'base64', content: json({ name: 'slopsentral', version }).toString('base64') };
+  const routes = new Map([['/contents/package.json?ref=' + revision, source], ['/releases/latest', release], ['/releases/tags/' + tag, release], ['/actions/runs/101', { ...run, run_attempt: 2, conclusion: 'failure' }], ['/actions/runs/101/attempts/1', run], ['/actions/runs/101/attempts/1/jobs?per_page=100', jobs], ['/git/commits/' + revision, { tree: { sha: tree } }], ['/git/ref/tags/' + tag, { object: { type: 'commit', sha: revision } }]]);
+  return { source, run, jobs, bytes, release, client: { json: async route => { assert.ok(routes.has(route), route); return structuredClone(routes.get(route)); }, bytes: async url => { const result = bytes.get(url.split('/').at(-1)); assert.ok(result); return result; } } };
 }
+
+test('shared release versions qualify independently of run numbers and remain recoverable', async t => {
+  const options = workspace(t);
+  const fixture = producer(bundle(options.directory, '4.0.1'), '4.0.1', 2);
+  assert.equal(fixture.run.run_number, 123);
+  const admitted = await qualify(fixture.client, '4.0.1');
+  assert.equal(admitted.version, '4.0.1');
+  assert.equal((await install(admitted, options)).status, 'INSTALLED');
+  rollback(options);
+  assert.equal(fs.existsSync(path.join(options.agentDir, 'settings.json')), false);
+  fixture.source.content = json({ version: '4.0.2' }).toString('base64');
+  await assert.rejects(qualify(fixture.client, '4.0.1'), /Source release version differs/);
+});
 
 test('clean and repeat setup preserve unrelated configuration and native discovery', async t => {
   const options = workspace(t);

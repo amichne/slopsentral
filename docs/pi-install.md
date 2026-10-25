@@ -27,7 +27,7 @@ The maintainer Pi dependency is pinned for reproducible tests, not consumer admi
 
 Personal scope is the default, using `~/.pi/agent` or `PI_CODING_AGENT_DIR`.
 For project scope, append `-s -- --project` after `sh` in the command above.
-For a named native release, append `-s -- --version 0.1.N` with its published version.
+For a named native release, append `-s -- --version 4.0.1` (or another published `X.Y.Z` version).
 Run the same command to update. Repeating the current version returns `CURRENT`.
 
 Setup verifies the release tag, asset digests, source identity, and successful
@@ -57,11 +57,13 @@ Use a fresh output path and the checksum-verified Pkl 0.32.0 runtime. Pi project
 supports only this native default; it does not emulate arbitrary workflow profiles.
 
 `Validate Source` tests native discovery, archive installation, setup, and recovery
-before retaining the Pi archive and installer. `Release Pi` admits only a successful
-main push, verifies retained bytes, and checks actual release downloads before
-making a new release current. It does not rebuild the package, replace old assets,
-or publish Codex, Copilot, or Amp. Their existing `Publish Harnesses` workflow is
-unchanged. Runtime/model integration and paid inference are not exercised.
+before retaining the Pi archive and installer. `Release Slopsentral` admits only a
+successful main version increment, verifies retained bytes, and checks actual
+release downloads before making the shared release current. It does not rebuild
+packages or replace old assets. Codex, Copilot, Amp, and Pi artifacts share the
+same release version; provider-branch publication remains owned by `Publish Harnesses`.
+See [Release Please and required App setup](releases.md). Runtime/model integration
+and paid inference are not exercised.
 
 Changes reach consumers only after a new qualified release is published. Existing
 immutable releases can still carry their historical Pi version requirement.

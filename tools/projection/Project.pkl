@@ -311,7 +311,7 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
       new Listing<Schema.TextFile> {
         when (selectedHarness == "amp") {
           textFile("index.js", Amp.entrypoint(p))
-          jsonFile("package.json", Map("type", "module"))
+          jsonFile("package.json", Map("type", "module", "version", p.version))
           jsonFile("capabilities.json", new Amp.Capabilities {})
         }
         when (selectedHarness != "amp" && selectedHarness != "pi") {

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "d8859160f40cf0b55fb4832d7b8a6b4e27e871ac",
+  "release-type": "node",
+  "versioning": "always-bump-patch",
+  "skip-github-release": true,
+  "include-component-in-tag": true,
+  "include-v-in-tag": true,
+  "tag-separator": "-",
+  "packages": {
+    ".": {
+      "component": "slopsentral",
+      "changelog-path": "CHANGELOG.md",
+      "exclude-paths": [".agents/plugins", ".github/plugin", ".amp/plugins", ".pi"],
+      "extra-files": [
+        {"type": "toml", "path": "pyproject.toml", "jsonpath": "$.project.version"},
+        {"type": "toml", "path": "uv.lock", "jsonpath": "$.package[?(@.name.value == 'slopsentral-automation')].version"},
+        {"type": "json", "path": "source/adaptable.marketplace.json", "jsonpath": "$.plugins[*].plugin.version"},
+        {"type": "json", "path": "source/plugins/software-engineering/plugin.json", "jsonpath": "$.version"},
+        {"type": "json", "path": "source/plugins/kotlin-engineering/plugin.json", "jsonpath": "$.version"},
+        {"type": "json", "path": "source/plugins/intellij-plugin-development/plugin.json", "jsonpath": "$.version"},
+        {"type": "json", "path": "source/plugins/repository-knowledge/plugin.json", "jsonpath": "$.version"},
+        {"type": "json", "path": "source/plugins/developer-tooling/plugin.json", "jsonpath": "$.version"}
+      ]
+    }
+  }
+}

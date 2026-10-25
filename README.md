@@ -27,6 +27,9 @@ Developer Tooling adds no automatic hooks. Repository Knowledge remains optional
 For Pi, use the [published installer](docs/pi-install.md).
 It selects the latest stable release by default.
 
+All provider releases and authored plugins share one Slopsentral version.
+See [Release Please, version policy, and required App setup](docs/releases.md).
+
 ## Use Slopsentral in Amp
 
 Amp provides native skill discovery and turn-start instructions, without

@@ -1,6 +1,6 @@
 {
   "name": "slopsentral",
-  "version": "3.0.0",
+  "version": "4.0.1",
   "description": "Source contracts and validation tooling for the Slopsentral plugin marketplace",
   "private": true,
   "engines": {
@@ -17,6 +17,7 @@
     "verify": "npm run check:python && npm run check:source && npm run check:evals && npm test && npm run verify:marketplaces",
     "validate:profile-contracts": "node tools/validate-profile-contracts.mjs",
     "check:python": "uv run --locked tools/check.py",
+    "check:release": "uv run --locked python -m tools.release_version check",
     "check:pi": "tsc --project tools/pi-tsconfig.json"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "@openai/codex-sdk": "0.156.1",
     "@types/node": "26.6.5",
     "promptfoo": "0.125.1",
+    "release-please": "17.3.0",
     "typescript": "7.0.2"
   }
 }
