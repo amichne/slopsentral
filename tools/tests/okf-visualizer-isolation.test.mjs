@@ -21,8 +21,10 @@ test('documented OKF visualization uses its own lock outside a repository', t =>
   fs.writeFileSync(path.join(docs, 'index.md'), '# Index\n\n[Account](account.md)\n');
   fs.writeFileSync(path.join(docs, 'account.md'),
     '---\ntype: systems\ntitle: Account\ndescription: Account state\n---\n# Account\n');
+  // Keep CI's interpreter location without its project or package environment.
   const environment = Object.fromEntries(Object.entries(process.env)
-    .filter(([name]) => !name.startsWith('UV_') && !name.startsWith('PYTHON') && name !== 'VIRTUAL_ENV'));
+    .filter(([name]) => (!name.startsWith('UV_') || name === 'UV_PYTHON_INSTALL_DIR')
+      && !name.startsWith('PYTHON') && name !== 'VIRTUAL_ENV'));
   Object.assign(environment, { UV_NO_CONFIG: '1', UV_PYTHON_DOWNLOADS: 'never', PYTHONNOUSERSITE: '1' });
   const invoke = args => spawnSync('uv', args, {
     cwd: consumer, env: environment, encoding: 'utf8', timeout: 60000,
