@@ -173,17 +173,39 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/developer-tooling"
         },
-        "version": "3.0.0"
+        "version": "3.1.0"
       },
-      "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
+      "description": "Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.",
       "tags": [
+        "ast-grep",
         "cli",
+        "language-server",
+        "lsp",
+        "structural-search",
         "tools",
         "skills"
       ]
     }
   ],
   "skills": [
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/lsp-management",
+      "name": "lsp-management"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/ast-grep",
+      "name": "ast-grep"
+    },
     {
       "type": "SKILL",
       "source": {

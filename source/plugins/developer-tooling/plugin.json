@@ -2,8 +2,8 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "developer-tooling",
-  "version": "3.0.0",
-  "description": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
+  "version": "3.1.0",
+  "description": "Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
@@ -81,6 +81,24 @@
       },
       "path": "skills/pkl-engineering",
       "name": "pkl-engineering"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/lsp-management",
+      "name": "lsp-management"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/ast-grep",
+      "name": "ast-grep"
     }
   ],
   "agents": [
@@ -107,10 +125,10 @@
   "hooks": [],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Use for a requested tool, contract, agent resource, or configuration change.",
+    "dailyDriver": "Use for a requested tool, contract, agent resource, language server, structural search, or configuration change.",
     "notFor": "Automatic source checks, skill-read policy, or unrequested personal configuration changes.",
     "role": "specialty",
-    "scope": "Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.",
+    "scope": "Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.",
     "workstream": "developer-tooling",
     "owner": "developer-tooling"
   }

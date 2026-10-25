@@ -28,13 +28,13 @@ Outside this plugin: Language and platform syntax beyond the shared baseline; ad
 
 ### developer-tooling
 
-Author typed Python tools, schemas, Pkl contracts, agent resources, and explicit personal configuration changes.
+Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.
 
-Use for a requested tool, contract, agent resource, or configuration change.
+Use for a requested tool, contract, agent resource, language server, structural search, or configuration change.
 
 Outside this plugin: Automatic source checks, skill-read policy, or unrequested personal configuration changes.
 
-**Skills:** [cli-creator](skills/cli-creator/SKILL.md), [manage-json-schemas](skills/manage-json-schemas/SKILL.md), [openapi-contract-authoring](skills/openapi-contract-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md), [pkl-engineering](skills/pkl-engineering/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [python-tooling](skills/python-tooling/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md).
+**Skills:** [ast-grep](skills/ast-grep/SKILL.md), [cli-creator](skills/cli-creator/SKILL.md), [lsp-management](skills/lsp-management/SKILL.md), [manage-json-schemas](skills/manage-json-schemas/SKILL.md), [openapi-contract-authoring](skills/openapi-contract-authoring/SKILL.md), [personal-setup-management](skills/personal-setup-management/SKILL.md), [pkl-engineering](skills/pkl-engineering/SKILL.md), [plugin-composition-authoring](skills/plugin-composition-authoring/SKILL.md), [python-tooling](skills/python-tooling/SKILL.md), [skill-primitive-authoring](skills/skill-primitive-authoring/SKILL.md).
 
 **Agents:** [openapi-contract-rater](agents/openapi/openapi-contract-rater.agent.md), [schema-type-enforcer](agents/schema-type-enforcer.agent.md).
 

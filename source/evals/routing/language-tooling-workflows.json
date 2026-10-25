@@ -1,0 +1,153 @@
+{
+  "$schema": "../../schemas/evals/routing-cases.schema.json",
+  "type": "ROUTING_CASE_SET",
+  "schemaVersion": 2,
+  "name": "language-tooling-workflows",
+  "description": "Designed acceptance cases for language-server lifecycle work and structural search. No model run establishes these routes.",
+  "cases": [
+    {
+      "id": "lsp-setup-proves-workspace-semantics",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-25",
+        "evidenceRefs": [
+          "source/skills/lsp-management/SKILL.md",
+          "source/skills/lsp-management/references/server-selection.md",
+          "source/skills/lsp-management/references/host-activation.md"
+        ]
+      },
+      "prompt": "Install, configure, and activate language servers for this TypeScript and Go monorepo in my editor.",
+      "expectedPrimitive": { "type": "SKILL", "name": "lsp-management" },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Designed acceptance case without an observed model route.",
+        "risk": "A successful installation hides an unattached client, wrong root, or incomplete project import.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Resolve compatible server packages from their maintainers and preserve the project toolchains.",
+        "Configure the editor's documented client for each project root.",
+        "Compare a known semantic result and an error-and-correction pair through the actual client."
+      ],
+      "forbiddenActions": [
+        "Claim semantic readiness from a version command or initialization alone.",
+        "Invent a host configuration key or collapse distinct project roots.",
+        "Replace project version pins with a global default."
+      ],
+      "recoveryExpectation": "Report the first failed stage and its missing prerequisite without a successful activation claim.",
+      "productiveOutcome": "Each requested workspace has separate installation, configuration, activation, and semantic evidence.",
+      "verificationEvidence": [
+        "The selected executable, version, host, and project root are recorded.",
+        "A definition or reference response matches an independently authored fixture.",
+        "The real client reports a known error and its removal after correction."
+      ],
+      "notes": "This case defines future model evidence. Static source acceptance does not satisfy it."
+    },
+    {
+      "id": "lsp-unsupported-host-stops-before-configuration",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-25",
+        "evidenceRefs": ["source/skills/lsp-management/references/host-activation.md"]
+      },
+      "prompt": "Activate this installed server in an agent host whose current documentation exposes no LSP client.",
+      "expectedPrimitive": { "type": "SKILL", "name": "lsp-management" },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Designed unsupported-host case without an observed model route.",
+        "risk": "The agent invents a registration field or treats skill packaging as a client implementation.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Examine the installed host version and its documented integration support.",
+        "Report the absent client and preserve the existing configuration."
+      ],
+      "forbiddenActions": [
+        "Invent LSP settings or silently create a new client adapter.",
+        "Call a process or package installation successful host activation."
+      ],
+      "recoveryExpectation": "Name the missing host capability and a documented integration if the task permits one.",
+      "productiveOutcome": "The unsupported integration remains explicit without a fabricated activation result.",
+      "verificationEvidence": [
+        "The result separates the installed server from the absent client.",
+        "No unsupported host configuration change occurs."
+      ],
+      "notes": "This is the nearest negative case for language-server activation."
+    },
+    {
+      "id": "ast-grep-search-and-rewrite-preserve-negative-cases",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-25",
+        "evidenceRefs": [
+          "source/skills/ast-grep/SKILL.md",
+          "source/skills/ast-grep/references/structural-rules.md",
+          "source/skills/ast-grep/assets/rule-tests/no-console-log.yml"
+        ]
+      },
+      "prompt": "Use ast-grep to replace console.log calls with console.info in src. Keep comments, strings, and other methods intact.",
+      "expectedPrimitive": { "type": "SKILL", "name": "ast-grep" },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Designed structural-rewrite case without an observed model route.",
+        "risk": "Text substitution changes comments or strings, or a structural match becomes an unsupported semantic claim.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Use an explicit TypeScript grammar and the requested source scope.",
+        "Run positive and negative cases before the rewrite.",
+        "Examine a read-only preview before the authorized source write."
+      ],
+      "forbiddenActions": [
+        "Use update-all during discovery or a preview.",
+        "Treat AST equality as resolved symbol identity.",
+        "Change comments, strings, unrelated methods, or files outside the requested scope."
+      ],
+      "recoveryExpectation": "Report parser failures separately from zero matches and use semantic tools for type-dependent changes.",
+      "productiveOutcome": "The examined syntax changes preserve the negative cases and produce a focused diff.",
+      "verificationEvidence": [
+        "The native rule cases pass for calls, comments, strings, and another method.",
+        "The preview leaves source bytes unchanged.",
+        "The applied result matches independent expected text."
+      ],
+      "notes": "Native fixture results prove command behavior only. They do not prove model routing."
+    },
+    {
+      "id": "ordinary-python-work-reuses-language-owner",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-10-25",
+        "evidenceRefs": [
+          "source/skills/lsp-management/SKILL.md",
+          "source/skills/python-tooling/SKILL.md"
+        ]
+      },
+      "prompt": "Change this typed Python function. The uv environment and semantic tools already work.",
+      "expectedPrimitive": { "type": "SKILL", "name": "python-tooling" },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "Designed non-trigger case without an observed model route.",
+        "risk": "A general setup skill replaces the language owner or starts an unrelated installation.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Reuse the current uv environment and semantic tools through the Python owner."
+      ],
+      "forbiddenActions": [
+        "Install another language server without a lifecycle problem.",
+        "Treat a normal source edit as authority for global configuration changes."
+      ],
+      "recoveryExpectation": "Return to the existing Python workflow and preserve the useful installation.",
+      "productiveOutcome": "The source change uses the established language workflow without unrelated setup.",
+      "verificationEvidence": [
+        "The Python owner supplies the implementation and its focused proof.",
+        "No unrelated server installation or configuration change occurs."
+      ],
+      "notes": "This defines the general LSP skill's nearest non-trigger."
+    }
+  ]
+}

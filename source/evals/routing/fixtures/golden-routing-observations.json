@@ -1546,7 +1546,10 @@
     {
       "type": "ROUTING_OBSERVATION",
       "caseId": "gradle-authoring-uses-catalog-and-convention-contract",
-      "routedPrimitive": { "type": "SKILL", "name": "kotlin-design-practices" },
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-design-practices"
+      },
       "satisfiedAllowedActions": [
         "Read kotlin-design-practices and its build-logic contract before editing settings or scripts.",
         "Declare the external plugin dependency in build logic and apply its ID in the precompiled plugin."
@@ -1566,7 +1569,10 @@
     {
       "type": "ROUTING_OBSERVATION",
       "caseId": "gradle-generation-proves-incremental-dataflow",
-      "routedPrimitive": { "type": "SKILL", "name": "kotlin-design-practices" },
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-design-practices"
+      },
       "satisfiedAllowedActions": [
         "Register lazy tasks with complete inputs/outputs and provider-connected generated-source consumers.",
         "Run initial, unchanged, input-change/removal, and public-ABI scenarios with output-content assertions."
@@ -1585,7 +1591,10 @@
     {
       "type": "ROUTING_OBSERVATION",
       "caseId": "kotlin-core-rejects-primitive-nullable-boundary-escapes",
-      "routedPrimitive": { "type": "SKILL", "name": "kotlin-design-practices" },
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "kotlin-design-practices"
+      },
       "satisfiedAllowedActions": [
         "Use distinct constrained value types and domain-named found, missing, and expected-failure cases with non-null payloads.",
         "Wire resolved-type/dependency checks through conventions and prove both native compiler barriers and additional policy rejection."
@@ -1602,6 +1611,95 @@
         "Accept unclassified modules, duplicate boundary owners, or a new source set that skips the gate."
       ],
       "notes": "Synthetic acceptance fixture only; no installed BuildLogic gate or compiler rejection is claimed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "lsp-setup-proves-workspace-semantics",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "lsp-management"
+      },
+      "satisfiedAllowedActions": [
+        "Resolve compatible server packages from their maintainers and preserve the project toolchains.",
+        "Configure the editor's documented client for each project root.",
+        "Compare a known semantic result and an error-and-correction pair through the actual client."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The selected executable, version, host, and project root are recorded.",
+        "A definition or reference response matches an independently authored fixture.",
+        "The real client reports a known error and its removal after correction."
+      ],
+      "avoidedForbiddenActions": [
+        "Claim semantic readiness from a version command or initialization alone.",
+        "Invent a host configuration key or collapse distinct project roots.",
+        "Replace project version pins with a global default."
+      ],
+      "notes": "Synthetic acceptance fixture only. No model route or real-host outcome is recorded."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "lsp-unsupported-host-stops-before-configuration",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "lsp-management"
+      },
+      "satisfiedAllowedActions": [
+        "Examine the installed host version and its documented integration support.",
+        "Report the absent client and preserve the existing configuration."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The result separates the installed server from the absent client.",
+        "No unsupported host configuration change occurs."
+      ],
+      "avoidedForbiddenActions": [
+        "Invent LSP settings or silently create a new client adapter.",
+        "Call a process or package installation successful host activation."
+      ],
+      "notes": "Synthetic acceptance fixture only. No model route or real-host outcome is recorded."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "ast-grep-search-and-rewrite-preserve-negative-cases",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "ast-grep"
+      },
+      "satisfiedAllowedActions": [
+        "Use an explicit TypeScript grammar and the requested source scope.",
+        "Run positive and negative cases before the rewrite.",
+        "Examine a read-only preview before the authorized source write."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The native rule cases pass for calls, comments, strings, and another method.",
+        "The preview leaves source bytes unchanged.",
+        "The applied result matches independent expected text."
+      ],
+      "avoidedForbiddenActions": [
+        "Use update-all during discovery or a preview.",
+        "Treat AST equality as resolved symbol identity.",
+        "Change comments, strings, unrelated methods, or files outside the requested scope."
+      ],
+      "notes": "Synthetic acceptance fixture only. No model route or real-host outcome is recorded."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "ordinary-python-work-reuses-language-owner",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "python-tooling"
+      },
+      "satisfiedAllowedActions": [
+        "Reuse the current uv environment and semantic tools through the Python owner."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The Python owner supplies the implementation and its focused proof.",
+        "No unrelated server installation or configuration change occurs."
+      ],
+      "avoidedForbiddenActions": [
+        "Install another language server without a lifecycle problem.",
+        "Treat a normal source edit as authority for global configuration changes."
+      ],
+      "notes": "Synthetic acceptance fixture only. No model route or real-host outcome is recorded."
     }
   ]
 }
