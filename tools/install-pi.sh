@@ -3,7 +3,7 @@
 set -eu
 if [ "${1-}" = --help ]; then
   printf '%s\n' 'Slopsentral native Pi setup' \
-    'Usage: install-pi.sh [--project] [--version 0.1.N] [--rollback]' \
+    'Usage: install-pi.sh [--project] [--version X.Y.Z] [--rollback]' \
     'Global by default. Migrates Slopsentral registrations in personal and current-project scope.' \
     'Documentation: https://slopsentral.michne.com/guides/pi'
   exit 0
@@ -25,9 +25,10 @@ import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 const args = process.argv.slice(2);
 let version;
+const releaseVersion = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/;
 try {
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === '--version') { version = args[++i]; if (!/^0\.1\.[1-9][0-9]*$/.test(version ?? '')) throw Error('INVALID_VERSION: use a published 0.1.N version.'); }
+    if (args[i] === '--version') { version = args[++i]; if (!releaseVersion.test(version ?? '')) throw Error('INVALID_VERSION: use a published X.Y.Z version.'); }
     else if (!['--project', '--rollback'].includes(args[i])) throw Error('INVALID_INVOCATION: unknown argument ' + args[i]);
   }
   const repository = 'amichne/slopsentral';
@@ -40,7 +41,7 @@ try {
     return bytes;
   }
   const release = JSON.parse((await get('https://api.github.com/repos/' + repository + (version ? '/releases/tags/slopsentral-v' + version : '/releases/latest'))).toString());
-  if (!/^slopsentral-v0\.1\.[1-9][0-9]*$/.test(release.tag_name) || release.draft !== false || release.prerelease !== false) throw Error('INVALID_RELEASE: stable native setup release required.');
+  if (typeof release.tag_name !== 'string' || !release.tag_name.startsWith('slopsentral-v') || !releaseVersion.test(release.tag_name.slice('slopsentral-v'.length)) || release.draft !== false || release.prerelease !== false) throw Error('INVALID_RELEASE: stable native setup release required.');
   const matches = release.assets.filter(item => item.name === 'setup-pi.mts');
   if (matches.length !== 1) throw Error('INVALID_RELEASE: current release has no native installer. Configuration was not changed.');
   const asset = matches[0];

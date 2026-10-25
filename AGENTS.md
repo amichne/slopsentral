@@ -34,14 +34,30 @@ It delegates to the tested native installer from the selected stable release.
 `tools/projection/Pi.pkl` owns the content-only native default package shape;
 `tools/package_pi.py`, `tools/pi_candidate.py`, and `tools/setup_assets.py` own
 archive validation and source-bound candidate/installer receipts.
-`Release Pi` publishes retained tested bytes only after a successful main push.
-It is independent of `Publish Harnesses`; do not restore retired Pi extensions,
+`Release Slopsentral` publishes retained tested bytes only after a successful main
+version increment. It is independent of `Publish Harnesses`; do not restore retired Pi extensions,
 workflow emulation, or the old documentation/projector stack.
 Consumer setup must not add Python, uv, Pkl, or npm prerequisites.
 Run `npm run check:pi`, `node --test tools/tests/pi-*.test.mjs`, and the focused
 Python Pi checks after installer/release changes. Use `PKL_BIN` to exercise native
 projection and `SLOPSENTRAL_PI_ARCHIVE` to exercise archive installation.
 Run `node --test tools/tests/pi-bootstrap.test.mjs` after launcher changes.
+
+## Unified Releases
+
+`package.json` owns the shared Slopsentral product version. Release Please manages
+one root component with patch-only increments; `release-please-config.json` owns
+its complete set of authored version targets. Keep plugin manifests, marketplace
+plugin references, Python metadata, and both root lockfiles synchronized. Do not
+include generated provider trees, dependency pins, or schema revisions as version
+update targets. Run `npm run check:release` and the actual updater test at
+`tools/tests/release-please.test.mjs` after release changes.
+
+The pinned GitHub action and `release-please` test dependency must use the same
+library version. Release Please only proposes version/changelog PRs using a
+repository-scoped GitHub App token; the verified publisher owns tags and releases.
+See `docs/releases.md` for required credentials, source-bound receipts, and the
+post-publication label lifecycle. Never infer credentials or publish from silence.
 
 ## First-Party Material
 

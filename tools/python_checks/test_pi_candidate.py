@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import shutil
@@ -25,13 +26,15 @@ TREE = "c" * 40
 OTHER_TREE = "d" * 40
 
 
-def bundle_at(tmp_path: Path, version: str = "0.1.123") -> tuple[Path, candidate.Candidate]:
+def bundle_at(
+    tmp_path: Path, version: str = "0.1.123", schema_version: int = 1
+) -> tuple[Path, candidate.Candidate]:
     root = fixture(tmp_path / "package")
     bundle = tmp_path / "bundle"
     packed = package(root, bundle, version=version)
     assert isinstance(packed, Packed)
     record = {
-        "schema_version": 1,
+        "schema_version": schema_version,
         "repository": REPOSITORY,
         "source_revision": SOURCE,
         "source_tree": TREE,
@@ -88,6 +91,38 @@ def test_admission_rejects_the_nearest_wrong_producer(
         candidate.admit(record, producer(), REPOSITORY, OTHER_TREE)
         == candidate.Failure.SOURCE_TREE_MISMATCH
     )
+
+
+def test_schema_two_carries_a_release_version_independent_of_the_run(tmp_path: Path) -> None:
+    bundle, record = bundle_at(tmp_path, "4.0.1", schema_version=2)
+    assert record.run_number == 123
+    assert candidate.read(bundle).version == "4.0.1"
+    assert (
+        candidate.decode(asdict(record) | {"schema_version": 1}) == candidate.Failure.INVALID_RECORD
+    )
+    assert (
+        candidate.decode(asdict(record) | {"schema_version": 3}) == candidate.Failure.INVALID_RECORD
+    )
+
+
+def test_promotion_binds_the_declared_source_version(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    bundle, record = bundle_at(tmp_path, "4.0.1", schema_version=2)
+    documents = main_responses()
+    source: dict[str, object] = {
+        "encoding": "base64",
+        "content": base64.b64encode(b'{"version":"4.0.1"}').decode(),
+    }
+    documents[f"repos/{REPOSITORY}/contents/package.json?ref={MERGED}"] = source
+    monkeypatch.setattr(candidate, "observe", documents.__getitem__)
+    monkeypatch.setattr(candidate, "download", transport(bundle))
+    assert candidate.promote(
+        REPOSITORY, MERGED, 202, tmp_path / "promoted", tmp_path / "promotion.json"
+    ) == candidate.Promoted(record, MERGED)
+    source["content"] = base64.b64encode(b'{"version":"4.0.2"}').decode()
+    with pytest.raises(candidate.CandidateError, match=candidate.Failure.PAYLOAD_MISMATCH):
+        _ = candidate.promote(REPOSITORY, MERGED, 202, tmp_path / "wrong", tmp_path / "wrong.json")
 
 
 def test_retained_bytes_round_trip_without_tar_extraction(tmp_path: Path) -> None:
@@ -287,12 +322,17 @@ def test_seal_binds_the_actual_clean_git_tree(
     _ = git("config", "user.email", "fixture@example.invalid")
     _ = git("config", "user.name", "Fixture")
     _ = (repository / "source").write_text("original")
-    _ = git("add", "source")
+    _ = (repository / "package.json").write_text(
+        json.dumps({"name": "slopsentral", "version": "0.1.123"})
+    )
+    _ = git("add", "source", "package.json")
     _ = git("commit", "-m", "fixture")
     revision = git("rev-parse", "HEAD")
     monkeypatch.chdir(repository)
     result = candidate.seal(REPOSITORY, revision, candidate.Producer(101, 123, 1, "push"), bundle)
     assert result.source_revision == revision
+    assert result.schema_version == 2
+    assert result.version == "0.1.123"
     assert result.source_tree == git("rev-parse", "HEAD^{tree}")
     _ = (repository / "source").write_text("changed")
     with pytest.raises(candidate.CandidateError, match="INVALID_IDENTITY"):

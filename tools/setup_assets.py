@@ -37,7 +37,7 @@ def package(source: Path, candidate: Path, output: Path) -> None:
         _ = target.write_bytes(origin.read_bytes())
         records.append({"file": name, "sha256": digest(target), "size": target.stat().st_size})
     value = {
-        "schema_version": 1,
+        "schema_version": admitted.schema_version,
         "repository": admitted.repository,
         "source_revision": admitted.source_revision,
         "version": admitted.version,
@@ -65,7 +65,7 @@ def verify(bundle: Path, candidate: Path) -> None:
             "candidate_sha256",
             "files",
         }
-        or value["schema_version"] != 1
+        or value["schema_version"] != admitted.schema_version
         or value["repository"] != admitted.repository
         or value["source_revision"] != admitted.source_revision
         or value["version"] != admitted.version
