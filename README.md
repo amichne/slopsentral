@@ -146,6 +146,10 @@ Field records keep historical route identities and evidence.
 Records whose skills retired need a fresh replay before they support the replacement route.
 Each plugin benchmark defines a disposable local scenario. No live model benchmark runs during the normal gates.
 
+Run `npm run check:evals` for offline promptfoo controls.
+Run `npm run eval:skills` for live decisions across six core skills.
+Read [the skill eval guide](docs/skill-evals.md) for setup, reports, and evidence limits.
+
 ## Kast
 
 Kotlin Engineering retains its existing Kast MCP connection.
