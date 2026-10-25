@@ -8,7 +8,7 @@ developer tools, and repository knowledge.
 
 ## Set up Pi
 
-With Pi 1.3.0, Node.js 22.19 or later, curl, and system tar on macOS or Linux,
+With Pi on `PATH`, Node.js 22.19 or later, curl, and system tar on macOS or Linux,
 run this from your project:
 
 ```bash
@@ -17,6 +17,7 @@ bash -o pipefail -c 'curl -fsSL https://raw.githubusercontent.com/amichne/slopse
 
 The command installs the current verified native skill package and migrates old
 Slopsentral registrations. It preserves unrelated settings and keeps recovery
-backups. Start a fresh Pi session and use `/skill:semantic-ratchet`.
+backups. Installed Pi versions are used best-effort, without an exact-version gate.
+Start a fresh Pi session and verify discovery with `/skill:semantic-ratchet`.
 
 [Scope, upgrades, and recovery](https://slopsentral.michne.com/guides/pi) · [Qualified release contents](https://slopsentral.michne.com/reference/releases) · [Contribute](https://slopsentral.michne.com/maintainers/contribute)

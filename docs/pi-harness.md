@@ -7,9 +7,16 @@ The [migration reference](/reference/pi-migration) explains the retired runtime.
 
 ## One-command setup
 
-Use macOS or Linux with Pi **1.3.0**, Node.js **22.19 or later**, curl, and system
-tar. You need network access to GitHub. This command does not install Pi or change
-its model, authentication, defaults, or trust decisions.
+Use macOS or Linux with Pi installed on `PATH`, Node.js **22.19 or later**, curl,
+and system tar. You need network access to GitHub. This command does not install
+Pi or change its model, authentication, defaults, or trust decisions.
+
+Setup requires `pi --version` to succeed within 10 seconds, but accepts any version
+output, including local builds. It reports `PI_COMPATIBILITY_UNVERIFIED` and uses
+the installed Pi best-effort: executable availability does not prove support for
+native local packages, skill discovery, instruction scope, or project trust.
+Verify native skill discovery after restarting Pi. The maintainer test dependency
+remains pinned to Pi 1.3.0 for reproducibility; it is not a consumer version gate.
 
 Run from the project whose old Slopsentral registration you want to migrate:
 
