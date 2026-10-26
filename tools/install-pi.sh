@@ -33,11 +33,21 @@ try {
   }
   const repository = 'amichne/slopsentral';
   async function get(url) {
-    const response = await fetch(url, { signal: AbortSignal.timeout(30000), headers: { 'User-Agent': 'slopsentral-setup' } });
-    if (!response.ok) throw Error('DOWNLOAD_FAILED: HTTP ' + response.status);
-    if (Number(response.headers.get('content-length')) > 2 * 1024 * 1024) throw Error('DOWNLOAD_FAILED: bootstrap response too large.');
-    const bytes = Buffer.from(await response.arrayBuffer());
-    if (bytes.length > 2 * 1024 * 1024) throw Error('DOWNLOAD_FAILED: bootstrap response too large.');
+    const maxBytes = 2 * 1024 * 1024;
+    const token = new URL(url).origin === 'https://api.github.com' ? process.env.GH_TOKEN || process.env.GITHUB_TOKEN : undefined;
+    if (token && !/^[A-Za-z0-9_.-]+$/.test(token)) throw Error('INVALID_CREDENTIAL: GitHub token contains unsupported characters.');
+    const result = spawnSync('curl', ['--fail', '--silent', '--show-error',
+      '--no-insecure', '--no-proxy-insecure', '--no-location-trusted', '--location',
+      '--proto', '=https', '--proto-redir', '=https', '--max-time', '30',
+      '--max-filesize', String(maxBytes), '--user-agent', 'slopsentral-setup',
+      '--write-out', '\n%{http_code}', ...(token ? ['--header', '@-'] : []), url],
+      { maxBuffer: maxBytes + 4, timeout: 35000, input: token ? 'Authorization: Bearer ' + token + '\n' : '' });
+    const host = new URL(url).hostname;
+    if (result.error) throw Error('DOWNLOAD_FAILED: curl could not complete the request to ' + host + '. Examine curl availability and response size.');
+    const status = result.stdout.subarray(-3).toString();
+    if (result.status !== 0) throw Error('DOWNLOAD_FAILED: ' + (result.status === 22 ? 'HTTP ' + status : 'curl exit ' + result.status) + ' from ' + host + '. Examine curl proxy and certificate settings. For GitHub API limits, supply GH_TOKEN or GITHUB_TOKEN.');
+    const bytes = result.stdout.subarray(0, -4);
+    if (bytes.length > maxBytes) throw Error('DOWNLOAD_FAILED: bootstrap response too large.');
     return bytes;
   }
   const release = JSON.parse((await get('https://api.github.com/repos/' + repository + (version ? '/releases/tags/slopsentral-v' + version : '/releases/latest'))).toString());

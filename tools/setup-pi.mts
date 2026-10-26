@@ -30,12 +30,21 @@ function list(value: unknown): unknown[] { if (!Array.isArray(value)) reject('IN
 function text(value: unknown): string { if (typeof value !== 'string') reject('INVALID_RECORD', 'Expected text.'); return value; }
 function parse(bytes: Buffer): ObjectValue { return object(JSON.parse(bytes.toString('utf8').replace(/^\uFEFF/, '')) as unknown); }
 function same(left: unknown, right: unknown, message: string): void { if (left !== right) reject('PROVENANCE_MISMATCH', message); }
-async function download(url: string): Promise<Buffer> {
+export async function download(url: string): Promise<Buffer> {
   if (!url.startsWith('https://')) reject('INVALID_ORIGIN', 'HTTPS is required.');
-  const response = await fetch(url, { signal: AbortSignal.timeout(30000), headers: { 'User-Agent': 'slopsentral-setup', Accept: 'application/vnd.github+json' } });
-  if (!response.ok) reject('DOWNLOAD_FAILED', 'HTTP ' + response.status + ' from ' + new URL(url).hostname);
-  if (Number(response.headers.get('content-length')) > maxBytes) reject('DOWNLOAD_FAILED', 'Response is too large.');
-  const bytes = Buffer.from(await response.arrayBuffer());
+  const token = new URL(url).origin === 'https://api.github.com' ? process.env.GH_TOKEN || process.env.GITHUB_TOKEN : undefined;
+  if (token && !/^[A-Za-z0-9_.-]+$/.test(token)) throw Error('INVALID_CREDENTIAL: GitHub token contains unsupported characters.');
+  const result = spawnSync('curl', ['--fail', '--silent', '--show-error',
+    '--no-insecure', '--no-proxy-insecure', '--no-location-trusted', '--location',
+    '--proto', '=https', '--proto-redir', '=https', '--max-time', '30',
+    '--max-filesize', String(maxBytes), '--user-agent', 'slopsentral-setup',
+    '--write-out', '\n%{http_code}', ...(token ? ['--header', '@-'] : []), url],
+    { maxBuffer: maxBytes + 4, timeout: 35000, input: token ? 'Authorization: Bearer ' + token + '\n' : '' });
+  const host = new URL(url).hostname;
+  if (result.error) reject('DOWNLOAD_FAILED', 'curl could not complete the request to ' + host + '. Examine curl availability and response size.');
+  const status = result.stdout.subarray(-3).toString();
+  if (result.status !== 0) reject('DOWNLOAD_FAILED', (result.status === 22 ? 'HTTP ' + status : 'curl exit ' + result.status) + ' from ' + host + '. Examine curl proxy and certificate settings. For GitHub API limits, supply GH_TOKEN or GITHUB_TOKEN.');
+  const bytes = result.stdout.subarray(0, -4);
   if (bytes.length > maxBytes) reject('DOWNLOAD_FAILED', 'Response is too large.');
   return bytes;
 }

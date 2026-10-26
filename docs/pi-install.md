@@ -11,6 +11,38 @@ Run from the project whose old Slopsentral registration you want to migrate.
 The source entry point at `tools/install-pi.sh` remains available for existing commands.
 No checkout, npm installation, Python, or Pkl is needed by consumers.
 
+## Download failures
+
+The launcher and installer use curl for every HTTPS request.
+Both stages use curl certificate trust and proxy settings.
+An approved certificate bundle can be selected with `CURL_CA_BUNDLE`.
+TLS certificate checks remain enabled, and redirects must use HTTPS.
+
+Older installers used Node `fetch` after the first curl download.
+That change of client can produce `fetch failed` when Node lacks the configured certificate trust or proxy route.
+The new installer reports the host and curl exit code or HTTP status.
+A matching error alone does not establish the network cause.
+
+If GitHub returns an API rate-limit error, supply `GH_TOKEN` or `GITHUB_TOKEN` to the shell that runs setup.
+The installer sends the token only to `https://api.github.com`, through curl input rather than process arguments.
+Release asset downloads do not receive that authorization header.
+
+## Checkout dependency failures
+
+Consumer installation does not need `npm install` or a source checkout.
+`ERR_MODULE_NOT_FOUND` for `ajv` in `tools/resource-contract.mjs` means the checkout lacks its schema dependencies.
+For source projection alone, install the locked production dependencies:
+
+```sh
+npm ci --omit=dev --ignore-scripts
+```
+
+The full maintainer suite needs `npm ci --ignore-scripts`, including the Codex SDK and promptfoo.
+An npm `E403` from a corporate registry means that registry denied the package request.
+A fresh checkout cannot fix that denial.
+Request package access through the registry administrator when the full suite is necessary.
+Peer-dependency and deprecation notices do not explain that HTTP rejection.
+
 ## Installed Pi compatibility
 
 Setup requires `pi --version` to succeed within 10 seconds, but accepts any version

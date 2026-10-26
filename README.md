@@ -119,13 +119,17 @@ Read the [architecture](source/ARCHITECTURE.md) for ownership and evidence limit
 
 ## Local evidence
 
-The projector needs Node.js 20.11 or later, locked dependencies, and Pkl 0.32.0.
+The projector needs Node.js 22.22.0 or later, locked dependencies, and Pkl 0.32.0.
 Install its pinned runtime explicitly:
 
 ```text
 npm ci
 node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
 ```
+
+For projection alone, `npm ci --omit=dev --ignore-scripts` installs the schema dependencies without the evaluation toolchain.
+The full maintainer suite needs the development dependencies.
+See [download and dependency failures](docs/pi-install.md#download-failures) for certificate, proxy, and registry errors.
 
 Set `PKL_BIN` to that executable in the process environment.
 Use fresh output paths for each projection.
