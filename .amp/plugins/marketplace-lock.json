@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T10:32:30-04:00",
+  "generatedAt": "2026-10-26T11:55:56-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -188,14 +188,14 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:ccea35b5ffae8eabae0250e979e416667d754192b1a41b36dc72b56d32aa293d",
+          "sha256": "sha256:6e9d066a88edb6bfbd1e46c68d92b75fcbcc87b7be31209e979661c2ea40f2dc",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
         },
         {
           "name": "controlled-technical-writing",
-          "sha256": "sha256:5c90cecd6ebc6e1908c746b85fb771b1c1b1658bfe8548d27b0e9220a440f299",
+          "sha256": "sha256:35347a380f5046c23d5be7df51c492a2ee6a3d406c4986aba3a2d50f60c99f74",
           "sourcePath": "source/skills/controlled-technical-writing",
           "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
@@ -209,7 +209,7 @@
         },
         {
           "name": "technical-documentation",
-          "sha256": "sha256:e820ff866b9c59c94866dbdfb76232fd3e20067b3ee8e4fc1d4bb8f41de9609e",
+          "sha256": "sha256:9e89825e068e1ba5e4e0e1cea5d2d860b881fd2f73f973a2f5194a8a0802bbce",
           "sourcePath": "source/skills/technical-documentation",
           "targetPath": "skills/technical-documentation",
           "type": "SKILL"
@@ -311,6 +311,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "b6ad2b168f24268bf2ad973b6a597a472f1775ab",
+  "sourceSha": "b5b33bb5ec1f4f8fa4d2b67e5d52e31930c94328",
   "type": "HYDRATED_MARKETPLACE"
 }

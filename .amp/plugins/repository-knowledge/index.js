@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 
-export const description = "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.";
+export const description = "Write technical documentation with source-backed glossaries and maintain OKF knowledge, OpenWiki handoffs, navigation, and overlays.";
 
 export default async function (amp) {
   // Read required context before registering anything; a missing payload fails loading.

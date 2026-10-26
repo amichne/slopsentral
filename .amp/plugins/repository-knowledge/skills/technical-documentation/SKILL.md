@@ -15,9 +15,14 @@ Use controlled-technical-writing for prose assessment and code-knowledge-base fo
    Resolve routine choices from repository conventions. Ask only when missing information changes the document's purpose or authority.
 2. Inspect code, schemas, commands, configuration, tests, and existing documents before prose.
    Label each claim as current behavior, an accepted decision, a proposal, or an unresolved gap.
+   For generation or a rewrite, use controlled-technical-writing to reuse the
+   repository glossary or bootstrap a missing one before drafting.
 3. Choose a focused structure with [document-contracts.md](references/document-contracts.md).
    For a substantial specification, establish the decision and evidence before introductions.
    Draft in small sections when the user requests that workflow.
+   If OpenWiki is the selected backend, use code-knowledge-base's backend handoff
+   and the external openwiki integration. Its native page queue and Claims
+   validation own OKF publication; do not write a parallel knowledge store.
 4. If the artifact belongs to a site, identify its configuration, navigation owner, dialect, and generated pages.
    Change pages, navigation, assets, and links as one scoped unit.
    Preserve the current framework unless the user requests a migration.
@@ -49,6 +54,8 @@ A request to edit documentation does not authorize publication.
 
 The document states its reader action and supports material claims with sources.
 Site navigation reaches the changed pages, and generated content keeps its source owner.
+Generation and rewrites reuse or establish a source-backed glossary, or report
+why terminology coverage remains incomplete. A short prose edit needs no new glossary.
 Report commands as passed, failed, skipped, or not run.
 Separate a successful build, inspected rendering, deployment identity, prose
 measurements, and reader comprehension. A published-match claim needs the
