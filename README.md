@@ -147,10 +147,20 @@ Compiler and schema examples exercise legal values and forbidden calls.
 Golden routing fixtures express expected contracts. They do not record model behavior.
 Field records keep historical route identities and evidence.
 Records whose skills retired need a fresh replay before they support the replacement route.
-Each plugin benchmark defines a disposable local scenario. No live model benchmark runs during the normal gates.
+Plugin execution definitions live under `source/evals/promptfoo/execution/`.
+No live model benchmark runs during the normal gates.
 
 Run `npm run check:evals` for offline promptfoo controls.
-Run `npm run eval:skills` for live decisions across six core skills.
+Run `npm run eval:skills` for 22 live decision cases across ten skills, each
+paired with a no-skill control. This includes the ten session-grounded
+regressions from #102; their historical tool-run audit remains separate.
+Run `npm run eval:execution` for all 45 plugin execution scenarios. Supply an
+ignored fixture registry through `SLOPSENTRAL_EXECUTION_FIXTURES`; cases without
+ready fixtures record nonpassing `BLOCKED_SETUP` without a model call. Each ready
+case needs an isolated worktree, a real tool trace, and independent host verification.
+No ready fixture is currently supplied, so the integration claims no live passes
+or measured improvement. Execution reports use `.promptfoo/results/execution.json`;
+retained evidence stays under ignored `.promptfoo/execution/`.
 Read [the skill eval guide](docs/skill-evals.md) for setup, reports, and evidence limits.
 
 ## Kast

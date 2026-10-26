@@ -95,14 +95,35 @@ checkout setup. Keep generated outputs and installed caches outside authored edi
 
 ## Core Skill Evals
 
-`source/evals/promptfoo/cases.mts` owns the initial decision cases and expected answers.
-`promptfooconfig.ts` selects the live suite. `tools/promptfoo` owns its promptfoo adapters.
+`source/evals/promptfoo/cases.mts` owns active decision cases and expected answers,
+including the session-grounded regressions. Extend this owner instead of adding
+a parallel decision catalog or campaign runner.
+`promptfooconfig.ts` selects the live decision suite. `tools/promptfoo` owns the adapters.
 Read skill text from `source/skills`, not generated trees or installed caches.
+Supply case-specific routed references explicitly and record their source hashes.
 After eval changes, run `npm run check:evals` for type checks and offline controls.
 Run `npm run eval:skills` for fresh model responses through the pinned Codex SDK.
 Normal CI runs offline controls without model calls or credentials.
 Keep raw reports under ignored `.promptfoo/`. Keep offline controls separate from model evidence.
-The initial suite scores decisions from supplied skill text. It does not prove automatic routing or tool execution.
+The decision suite scores supplied skill text and references, not automatic routing or tool execution.
+
+`source/evals/promptfoo/execution/` owns the five plugin benchmark definitions
+and 45 scenarios. `npm run eval:execution` runs them through the custom streamed
+Codex SDK provider in `tools/promptfoo/execution-runtime.mts`. Select an explicit ignored
+fixture registry with `SLOPSENTRAL_EXECUTION_FIXTURES`. Bind each case to a target,
+scenario, absolute repository path, full commit SHA, context, and independent
+host verifier path and content hash. Missing fixtures are nonpassing
+`BLOCKED_SETUP` with no model call; never replace them with synthetic live scores.
+Use disposable private worktrees, isolated `HOME`/`CODEX_HOME`, validated fresh
+projections, and native plugin installs. Preserve benchmark model, sandbox, and
+approval settings; disable web search, sandbox network, retries, and caching.
+Require independent evidence for every exact checklist item plus route and scope;
+missing or unassessed evidence never passes. Do not let the model grade itself.
+Retain JSONL events, including failed partial turns, fixture and installation
+identities, initial/final status and diffs, and verifier outputs under ignored
+`.promptfoo/execution/`; the report is `.promptfoo/results/execution.json`.
+Keep routing fixtures and archived assessments separate from both live suites.
+Integration and offline checks do not establish live passes or measured improvement.
 
 ## Portable Global Instructions
 

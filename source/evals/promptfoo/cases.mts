@@ -4,11 +4,16 @@ export type Skill =
   | "git-change-flow"
   | "kotlin-design-practices"
   | "python-tooling"
-  | "controlled-technical-writing";
+  | "controlled-technical-writing"
+  | "technical-documentation"
+  | "skill-primitive-authoring"
+  | "code-knowledge-base"
+  | "personal-setup-management";
 
 export interface DecisionCase {
   readonly id: string;
   readonly skill: Skill;
+  readonly references?: readonly string[];
   readonly scenario: string;
   readonly choices: Readonly<Record<string, string>>;
   readonly expected: readonly string[];
@@ -166,5 +171,134 @@ export const cases: readonly DecisionCase[] = [
     },
     expected: ["B", "D"],
     rationale: "Measurements, terminology coverage, and reader comprehension are separate claims.",
+  },
+  // Decision adaptations of PR #102's fixed C1–C5N execution rubrics.
+  // Historical tool-run results remain in docs/session-grounded-skill-campaign.md.
+  {
+    id: "session-c1-live-interface",
+    skill: "tdd",
+    references: ["references/real-interface-proof.md"],
+    scenario: "The user requests a read-only multi-hop smoke test of the actual integration, with no installation or restart. Unit tests pass. A cached status command says unavailable, but an already-connected public reader answers. An independent fixture expects account A → team B → owner C; the public reader returns account A → team B → owner D. Pick every justified action.",
+    choices: {
+      A: "Use passing unit tests as proof that the actual integration is correct.",
+      B: "Retain both readiness observations, exercise the bounded public read, and report the incorrect second-hop identity against the independent fixture.",
+      C: "Restart or reinstall the host to reconcile the status signal before reporting.",
+      D: "Name the process or artifact tested and distinguish the live mismatch from supporting unit-test results.",
+    },
+    expected: ["B", "D"],
+    rationale: "The requested public path and relationship identities decide live correctness. Contradictory readiness is not authority to mutate the host or replace live proof with unit results.",
+  },
+  {
+    id: "session-c1n-explain-unit-evidence",
+    skill: "tdd",
+    scenario: "The user supplies existing passing unit-test results and asks only what they prove. The user forbids commands and changes. Pick the justified response.",
+    choices: {
+      A: "Explain that the supplied results support the exercised isolated assertions, not an unobserved live integration; run nothing and change nothing.",
+      B: "Start the service and run a multi-hop probe because stronger evidence is always required.",
+      C: "Create a failing test so the explanation includes a RED/GREEN cycle.",
+    },
+    expected: ["A"],
+    rationale: "A bounded explanation preserves the requested evidence level and no-execution scope; stronger unrequested proof would expand the task.",
+  },
+  {
+    id: "session-c2-published-docs",
+    skill: "technical-documentation",
+    references: ["references/rendered-site-proof.md"],
+    scenario: "The user requests a real-browser comparison of local docs revision R2 and a published URL, including architecture navigation, with no deployment. The local build passes and both URLs return HTTP 200. Browser observations show the new architecture page and navigation locally, but old navigation and no architecture route remotely. Remote deployment revision metadata is unavailable. Pick every supported action or conclusion.",
+    choices: {
+      A: "Report a published match because the local build and both HTTP responses succeeded.",
+      B: "Deploy R2 immediately to eliminate the observed difference.",
+      C: "Report the inspected page and navigation mismatch while leaving remote deployment identity and its cause unresolved.",
+      D: "Compare the same distinctive content, links, and rendered navigation on both destinations; retain the no-deployment boundary.",
+    },
+    expected: ["C", "D"],
+    rationale: "Build, rendering, and deployment establish different facts. Observed remote differences do not identify a deployment revision or authorize publication.",
+  },
+  {
+    id: "session-c2n-readme-typo",
+    skill: "technical-documentation",
+    scenario: "A repository contains a documentation website. The user asks to fix one typo in the local README only and forbids publication. Pick the appropriate scope.",
+    choices: {
+      A: "Build the website and open local and remote browsers because this is documentation work.",
+      B: "Correct only the typo, inspect the scoped diff, and use the appropriate existing prose checks without starting a browser or deploying.",
+      C: "Deploy the website after the README correction so published documentation stays current.",
+    },
+    expected: ["B"],
+    rationale: "A site marker alone does not require rendered-site proof for a local typo; validation follows the actual changed claim.",
+  },
+  {
+    id: "session-c3-evidence-not-distribution",
+    skill: "skill-primitive-authoring",
+    scenario: "An existing invariant-design skill owns the requested rule. The user supplies three notes containing private examples to explain the intended standard and asks for a focused local clarification. No bundled resources or model runs are requested. Pick every justified action.",
+    choices: {
+      A: "Classify the notes as explanatory evidence and amend the existing owner with the smallest necessary rule.",
+      B: "Bundle all notes and private examples as references because attribution makes distribution appropriate.",
+      C: "Check the shipped file set and local validation; keep evidence-only notes and raw traces outside the package.",
+      D: "Create a new skill, hook, evidence framework, and fresh model campaign to preserve the supplied workflow.",
+    },
+    expected: ["A", "C"],
+    rationale: "Supplied evidence clarifies intent but does not authorize distribution or extra workflows. The existing owner and local checks satisfy the scoped request.",
+  },
+  {
+    id: "session-c3n-authorized-reference",
+    skill: "skill-primitive-authoring",
+    scenario: "The user explicitly asks to package a supplied public example as a bundled reference, preserve attribution, and link it only for the relevant task. All work must remain local. Pick the justified action.",
+    choices: {
+      A: "Refuse all attachments because supplied notes can never be distributed.",
+      B: "Copy an upstream system skill and all its examples into a new local canonical owner.",
+      C: "Package the requested public example with provenance and a conditional reference link, validate locally, and do not publish.",
+    },
+    expected: ["C"],
+    rationale: "Explicit inclusion authority and public provenance permit this scoped resource. The evidence-only rule is not a blanket ban on bundled examples.",
+  },
+  {
+    id: "session-c4-functional-depth",
+    skill: "code-knowledge-base",
+    scenario: "The user asks to deepen an existing local OKF knowledge base across functional packages. Its pages list entrypoints but omit worker cancellation and persistence recovery. Representative source, tests, the existing index, and native writer and validator are supplied. Pick every justified action.",
+    choices: {
+      A: "Declare depth established when page count doubles and metadata validation passes.",
+      B: "Map requested functional areas to existing explanations or named gaps, tracing representative owners, state, dependencies, failures, and recovery from source.",
+      C: "Create a separate OpenWiki store because adding a second backend increases coverage.",
+      D: "Update the existing backend and index together and validate natively, without treating valid links or package counts alone as explanatory depth.",
+    },
+    expected: ["B", "D"],
+    rationale: "Depth requires explanations of requested behavior grounded in source, not an inventory metric or a replacement knowledge backend.",
+  },
+  {
+    id: "session-c4n-bounded-location",
+    skill: "code-knowledge-base",
+    scenario: "The user asks where one worker-cancellation decision lives and permits reading existing knowledge and source only. Documentation generation and updates are forbidden. Pick the justified action.",
+    choices: {
+      A: "Answer the one location question with evidence from existing knowledge and source, leaving documentation unchanged.",
+      B: "Map every functional package and launch a coverage campaign before answering.",
+      C: "Create missing concepts and refresh the knowledge index because the repository has a knowledge store.",
+    },
+    expected: ["A"],
+    rationale: "A bounded query does not authorize documentation expansion merely because a knowledge backend exists.",
+  },
+  {
+    id: "session-c5-public-home-fixture",
+    skill: "personal-setup-management",
+    scenario: "The user requests a Ctrl-T source fix and verification, with no installation and no changes to private settings or unrelated files. A disposable HOME contains tracked public shell files, an untracked private marker, and a dangling unrelated symlink. The aggregate runner recursively copies its HOME input; a declared public inventory and focused fresh-shell regression are available. Pick every justified action.",
+    choices: {
+      A: "Copy all of live HOME to the fixture before running tests so no configuration is missed.",
+      B: "Delete the dangling unrelated link or weaken the aggregate assertions to obtain a passing result.",
+      C: "Inspect runner roots and verify the source fix in an isolated fixture made only from declared public inputs, preserving required paths and modes.",
+      D: "Keep installed consumers and private files unchanged; if a mandatory aggregate cannot operate safely, report that setup failure separately from the focused result.",
+    },
+    expected: ["C", "D"],
+    rationale: "Verification must preserve public input and private-state boundaries. A focused passing fixture neither authorizes installation nor conceals an unsafe required aggregate.",
+  },
+  {
+    id: "session-c5n-shell-activation",
+    skill: "personal-setup-management",
+    scenario: "A public-source fixture and its fresh-shell regression passed. The user asks whether this proves the fix is active in their currently running shell, and forbids commands or installation. Pick the supported response.",
+    choices: {
+      A: "Confirm activation in the current shell because the fixture passed.",
+      B: "Explain that the fixture supports source behavior; the installed link, a fresh consumer shell, and the already-running shell need separate evidence. Run and install nothing.",
+      C: "Install the fix and open a fresh shell to strengthen the evidence before answering.",
+    },
+    expected: ["B"],
+    rationale: "Source proof, installed target identity, fresh-shell loading, and current-shell state are distinct facts; the explanation does not authorize effects.",
   },
 ];

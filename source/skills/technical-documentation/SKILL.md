@@ -1,6 +1,6 @@
 ---
 name: technical-documentation
-description: "Create or revise repository documents, proposals, specifications, runbooks, source-backed diagrams, or documentation sites. Use for document structure, source coverage, site navigation, and reader comprehension."
+description: "Create or revise repository documents, proposals, specifications, runbooks, source-backed diagrams, or documentation sites. Use for document structure, source coverage, site navigation, rendered or published-site verification, and reader comprehension."
 ---
 
 # Technical Documentation
@@ -38,6 +38,9 @@ Use controlled-technical-writing for prose assessment and code-knowledge-base fo
 - For `mkdocs.yml` or `mkdocs.yaml`, read [mkdocs.md](references/mkdocs.md).
 - For new pages or navigation changes, read [page-structures.md](references/page-structures.md).
 - For site conventions or agent reference material, read [prose-structure.md](references/prose-structure.md).
+- For a changed rendered layout or a requested published-site comparison, read
+  [rendered-site-proof.md](references/rendered-site-proof.md). A build, a local
+  preview, and the published site establish different facts.
 
 For Mintlify, inspect local `docs.json` and the requested deployment before a deployment change.
 A request to edit documentation does not authorize publication.
@@ -47,7 +50,9 @@ A request to edit documentation does not authorize publication.
 The document states its reader action and supports material claims with sources.
 Site navigation reaches the changed pages, and generated content keeps its source owner.
 Report commands as passed, failed, skipped, or not run.
-Separate a successful build, prose measurements, and reader comprehension.
-Label examples that did not run and operational steps without runtime evidence.
+Separate a successful build, inspected rendering, deployment identity, prose
+measurements, and reader comprehension. A published-match claim needs the
+requested remote pages, not only local output. Label examples that did not run
+and operational steps without runtime evidence.
 
 Read [provenance.md](references/provenance.md) before an upstream import.

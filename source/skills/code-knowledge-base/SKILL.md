@@ -17,6 +17,10 @@ Treat indexes as navigation aids whose claims still need source evidence.
    For a query, start at `index.md` and read only concepts that answer the question.
 3. Gather source paths, symbols, schemas, and module facts before prose.
    Use compiler tools, LSP, Gradle metadata, or current signatures when they exist.
+   For requested broad coverage or deeper explanations, map functional areas to
+   existing pages and gaps before expanding. Trace representative entrypoints
+   through owners, state, dependencies, failures, and recovery; package and page
+   counts are not evidence that those mechanisms are explained.
 4. Define stable concept paths and links before new pages.
    Keep source facts, accepted decisions, proposals, and unresolved gaps distinct.
 5. Change the selected pages and their indexes together.
@@ -40,6 +44,9 @@ Treat indexes as navigation aids whose claims still need source evidence.
 
 Each concept has a stable path, a non-empty `type`, and explicit source evidence.
 Changed sources map to affected concepts or a reported coverage gap.
+For a coverage request, each requested functional area maps to an explanation
+with source evidence or a named gap. Keep a bounded query bounded; do not start
+a documentation expansion merely because the repository has a knowledge store.
 Missing documents and unavailable Git are failures, never proof of no drift.
 Signature output is deterministic, and unknown syntax has an explicit outcome.
 Keep generated provider output separate from authored source.

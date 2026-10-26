@@ -103,7 +103,7 @@ for (const [harness, tree] of [['codex', '.agents/plugins'], ['github-copilot', 
         source: { type: 'LOCAL_SOURCE', path: `./plugins/${fixtureName}` } },
     });
     fs.writeFileSync(marketplacePath, JSON.stringify(marketplace));
-    const benchmark = JSON.parse(fs.readFileSync(path.join(repo, 'source/evals/plugin-benchmarks/developer-tooling.json')));
+    const benchmark = JSON.parse(fs.readFileSync(path.join(repo, 'source/evals/promptfoo/execution/developer-tooling.json')));
     benchmark.targetName = fixtureName;
     benchmark.notes = ['Static projection fixture only. No model run.'];
     benchmark.setupQuestions = ['Which isolated directory owns this fixture?'];
@@ -116,7 +116,7 @@ for (const [harness, tree] of [['codex', '.agents/plugins'], ['github-copilot', 
       userInput: 'Run the supplied isolated resource fixture. Do not change remote state.',
       successChecklist: ['The resource executes without a workflow skill and preserves typed failure.'],
     }];
-    fs.writeFileSync(path.join(repo, 'source/evals/plugin-benchmarks', fixtureName + '.json'), JSON.stringify(benchmark));
+    fs.writeFileSync(path.join(repo, 'source/evals/promptfoo/execution', fixtureName + '.json'), JSON.stringify(benchmark));
     execFileSync('git', ['init', '-q'], { cwd: repo });
     execFileSync('git', ['-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid',
       '-c', 'commit.gpgsign=false', 'commit', '--allow-empty', '-qm', 'projection fixture'], { cwd: repo });

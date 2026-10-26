@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import test from "node:test";
 import { cases } from "../../source/evals/promptfoo/cases.mts";
 import { gradeDecision } from "../promptfoo/grade.mts";
@@ -12,7 +13,7 @@ const explanation = "The chosen action preserves the stated invariant and its ev
 
 test("each authored oracle accepts its legal answer and rejects every nearest wrong choice", () => {
   assert.ok(cases.length >= 12);
-  assert.equal(new Set(cases.map((item) => item.skill)).size, 6);
+  assert.equal(new Set(cases.map((item) => item.skill)).size, 10);
   assert.equal(new Set(cases.map((item) => item.id)).size, cases.length);
   for (const item of cases) {
     assert.ok(item.expected.length > 0, item.id);
@@ -52,6 +53,13 @@ test("live configuration renders source skills, hides the oracle, and carries co
     for (const field of ["skillSha256", "suiteSha256", "graderSha256", "taskSha256", "controlTaskSha256"]) {
       assert.match(row.metadata[field], /^sha256:[a-f0-9]{64}$/u);
     }
+    assert.deepEqual(row.metadata.referenceSources, (item.references ?? []).map((reference) => {
+      const path = `source/skills/${item.skill}/${reference}`;
+      const text = readFileSync(new URL(`../../${path}`, import.meta.url), "utf8");
+      assert.ok(row.vars.task.includes(text), `${item.id}: supplied reference`);
+      assert.equal(row.vars.controlTask.includes(text), false, `${item.id}: reference-free control`);
+      return { path, sha256: `sha256:${createHash("sha256").update(text).digest("hex")}` };
+    }));
     assert.equal(renderTask(item, "candidate skill").includes("candidate skill"), true);
   }
 });

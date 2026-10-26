@@ -1,5 +1,5 @@
 {
-  "$schema": "../../schemas/evals/plugin-eval-benchmark.schema.json",
+  "$schema": "../../../schemas/evals/plugin-eval-benchmark.schema.json",
   "type": "PLUGIN_EVAL_BENCHMARK",
   "kind": "plugin-eval-benchmark",
   "schemaVersion": 2,

@@ -23,14 +23,14 @@ test("every plugin publishes one safe benchmark definition", () => {
     .map((entry) => entry.name)
     .sort();
   const benchmarkNames = fs
-    .readdirSync(path.join(repoRoot, "source/evals/plugin-benchmarks"))
+    .readdirSync(path.join(repoRoot, "source/evals/promptfoo/execution"))
     .filter((name) => name.endsWith(".json"))
     .map((name) => name.slice(0, -".json".length))
     .sort();
 
   assert.deepEqual(benchmarkNames, pluginNames);
   for (const pluginName of pluginNames) {
-    const benchmark = readJson(`source/evals/plugin-benchmarks/${pluginName}.json`);
+    const benchmark = readJson(`source/evals/promptfoo/execution/${pluginName}.json`);
     assert.equal(benchmark.targetName, pluginName);
     assert.equal(benchmark.runner.sandbox, "workspace-write");
     assert.equal(benchmark.runner.approvalPolicy, "never");

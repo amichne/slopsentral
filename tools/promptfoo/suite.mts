@@ -29,7 +29,12 @@ export function buildTests(): TestCase[] {
   return cases.map((item) => {
     const skillPath = `source/skills/${item.skill}/SKILL.md`;
     const skillText = readFileSync(new URL(skillPath, root), "utf8");
-    const task = renderTask(item, skillText);
+    const references = (item.references ?? []).map((reference) => {
+      const path = `source/skills/${item.skill}/${reference}`;
+      return { path, text: readFileSync(new URL(path, root), "utf8") };
+    });
+    const suppliedText = [skillText, ...references.map(({ path, text }) => `${path}\n\n${text}`)].join("\n\n");
+    const task = renderTask(item, suppliedText);
     const controlTask = renderTask(item, "No skill instructions are supplied. Use your usual engineering judgment.");
     return {
       description: `${item.skill}: ${item.id}`,
@@ -40,6 +45,7 @@ export function buildTests(): TestCase[] {
         skill: item.skill,
         skillPath,
         skillSha256: hash(skillText),
+        referenceSources: references.map(({ path, text }) => ({ path, sha256: hash(text) })),
         suiteSha256: suiteHash,
         graderSha256: graderHash,
         taskSha256: hash(task),
@@ -53,7 +59,7 @@ export function buildTests(): TestCase[] {
 
 export function createConfig(runtime: Pick<EvalRuntime, "codexHome" | "workspace">): UnifiedConfig {
   return {
-    description: "Core skills v1: paired decisions, not tool execution or automatic routing",
+    description: "Skill decisions v2: core and session regressions, not tool execution or automatic routing",
     sharing: false,
     prompts: [
       { id: "loaded-skill-v1", label: "Loaded skill", raw: "{{task}}" },

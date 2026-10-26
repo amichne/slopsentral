@@ -39,7 +39,7 @@ test("software engineering keeps explicit CI observation without automatic CI ho
 test("default delivery composition does not activate automatic CI hooks", () => {
   const marketplace = readJson("source/adaptable.marketplace.json");
   const profile = readJson("source/profiles/kotlin-repo-default.json");
-  const benchmark = readJson("source/evals/plugin-benchmarks/software-engineering.json");
+  const benchmark = readJson("source/evals/promptfoo/execution/software-engineering.json");
 
   assert.ok(marketplace.plugins.some((entry) => entry.name === "software-engineering"));
   assert.deepEqual(profile.plugins, [
