@@ -34,9 +34,12 @@ Use the [JSON Schema](references/glossary.schema.json) and [entry example](asset
 ## Workflow
 
 1. Load the repository's nearby writing rules and source material.
-2. If a repository glossary governs a term or prose contains an ambiguous
-   domain phrase, consult the glossary and load [glossary-contract.md](references/glossary-contract.md)
-   before drafting.
+2. Find the repository's existing glossary before drafting durable documentation.
+   Reuse its owner and load [glossary-contract.md](references/glossary-contract.md).
+   For an authorized documentation generation, rewrite, or knowledge migration
+   with no glossary, follow [glossary authoring](references/glossary-authoring.md#bootstrap-a-missing-glossary)
+   to create a minimal source-backed glossary. A short reply, isolated wording
+   edit, assessment-only request, or ordinary code task does not trigger creation.
 3. Resolve known synonyms against the glossary. Migrate clear matches to the
    canonical term. Preserve and flag an ambiguous term rather than inventing a
    definition or blocking unrelated edits.
@@ -64,9 +67,10 @@ Preserve the JSON report and
 its input hashes. Missing dependencies, invalid input, and policy overrides
 are typed failures, not permission to substitute another formula.
 
-If no glossary exists, omit `--glossary`. The report retains the measurements
-but is `INCOMPLETE`; terminology consistency has not been checked. Do not
-invent glossary definitions to get a successful check.
+If no glossary exists after the applicable authoring workflow, omit `--glossary`.
+The report retains the measurements but is `INCOMPLETE`; terminology consistency
+has not been checked. Assessment alone does not authorize glossary creation.
+Do not invent definitions to get a successful check.
 
 ## Writing Rules
 
