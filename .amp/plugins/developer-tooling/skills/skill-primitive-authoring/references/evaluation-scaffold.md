@@ -5,14 +5,29 @@ when overlapping skills are being consolidated.
 
 ## Durable Assets
 
-- `evals/catalog.json`: canonical eval cases.
-- `evals/pain_points.jsonl`: intake queue for new failures or follow-up
-  corrections.
-- `evals/files/`: fixtures referenced by catalog cases.
-- `history/progression.json`: accepted benchmark and promotion history.
+Inspect the repository's existing eval owner and runner before adding assets.
+Extend that case set instead of introducing a second catalog, campaign runner,
+or promotion-history framework for the same claim. Use promptfoo when it is
+the established runner; keep authored cases, expected answers, and graders in
+their current source owners and use the existing report format.
+
+Keep stable case IDs, source provenance, independent expected outcomes, and
+nearby scope controls. Supply routed references explicitly when a decision
+depends on them, and record their content identities with the skill and prompt.
+Keep expected answers and grading rationale outside the model's prompt.
 
 Transient benchmark workspaces, review HTML, raw model outputs, and scratch
 feedback should live outside the packaged skill.
+
+## Evidence Levels
+
+Offline controls prove harness acceptance and rejection, not model behavior.
+A supplied-text decision suite measures choices, not automatic skill discovery,
+tool use, edits, or runtime effects. Execution claims require disposable fixtures,
+actual tool traces, and independent assertions at the requested interface.
+Do not turn historical results or rubric checklists into fresh model responses.
+Preserve historical audits and missing evidence when adapting their decisions
+to the shared runner; the adaptation does not supersede the execution record.
 
 ## Case Lifecycle
 
