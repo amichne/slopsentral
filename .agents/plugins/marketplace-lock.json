@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T20:03:36-04:00",
+  "generatedAt": "2026-10-25T21:25:26-04:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -41,7 +41,7 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:a9fda530c7d70316350f3e223a354c9b29302bd62a214c66066ed61ed5131aa3",
+          "sha256": "sha256:899b26ce1d122f9b20b0a32e8261e4e60c064e27685d601b80734278e3454eff",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
@@ -83,7 +83,7 @@
         },
         {
           "name": "tdd",
-          "sha256": "sha256:8d867f0dbbbaba2c07b70e98be58f74dcb0be0410d2a87eecbc8e9672018df76",
+          "sha256": "sha256:08139917988d6a127472f8d2b64a3b29f9d0b8c2a8080596d1c9567e1bca1796",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
@@ -188,7 +188,7 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:81837b5151dfb1809afd3e11ff12d0ecb4784efe1dd939d9401ea2ac8a48363c",
+          "sha256": "sha256:ccea35b5ffae8eabae0250e979e416667d754192b1a41b36dc72b56d32aa293d",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
@@ -209,7 +209,7 @@
         },
         {
           "name": "technical-documentation",
-          "sha256": "sha256:e81ff97ef7bc721049097a1ff86a670196ac86e95976b425f3da340da405bce4",
+          "sha256": "sha256:e820ff866b9c59c94866dbdfb76232fd3e20067b3ee8e4fc1d4bb8f41de9609e",
           "sourcePath": "source/skills/technical-documentation",
           "targetPath": "skills/technical-documentation",
           "type": "SKILL"
@@ -272,7 +272,7 @@
         },
         {
           "name": "personal-setup-management",
-          "sha256": "sha256:22ca4ddf53de3bfa0c9d1e4710894a13b94f7c4b4f1e2d931698cbd15e4ee531",
+          "sha256": "sha256:657744122024d16b407bb4893f44c6b69ce6e6af30e2fee8deb1ed1923b0bc4f",
           "sourcePath": "source/skills/personal-setup-management",
           "targetPath": "skills/personal-setup-management",
           "type": "SKILL"
@@ -300,7 +300,7 @@
         },
         {
           "name": "skill-primitive-authoring",
-          "sha256": "sha256:a3b3e287888817d79d2fe6a3c4aa3958f3b4ccdb3937c38ff74e4679ece17b63",
+          "sha256": "sha256:90926a2ee571cc55f79b2c2ca4d71e31da6151f153a6c6d81f8fecd6465de605",
           "sourcePath": "source/skills/skill-primitive-authoring",
           "targetPath": "skills/skill-primitive-authoring",
           "type": "SKILL"
@@ -311,6 +311,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "fe009c601a7e7f7befedfddfdee7dd5ab5054a33",
+  "sourceSha": "e6880661c2664c6f234308dea1c72c5caadb8022",
   "type": "HYDRATED_MARKETPLACE"
 }
