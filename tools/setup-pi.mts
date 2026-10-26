@@ -34,8 +34,8 @@ export async function download(url: string): Promise<Buffer> {
   if (!url.startsWith('https://')) reject('INVALID_ORIGIN', 'HTTPS is required.');
   const token = new URL(url).origin === 'https://api.github.com' ? process.env.GH_TOKEN || process.env.GITHUB_TOKEN : undefined;
   if (token && !/^[A-Za-z0-9_.-]+$/.test(token)) throw Error('INVALID_CREDENTIAL: GitHub token contains unsupported characters.');
-  const result = spawnSync('curl', ['--fail', '--silent', '--show-error', '--location',
-    '--no-insecure', '--no-proxy-insecure', '--no-location-trusted',
+  const result = spawnSync('curl', ['--fail', '--silent', '--show-error',
+    '--no-insecure', '--no-proxy-insecure', '--no-location-trusted', '--location',
     '--proto', '=https', '--proto-redir', '=https', '--max-time', '30',
     '--max-filesize', String(maxBytes), '--user-agent', 'slopsentral-setup',
     '--write-out', '\n%{http_code}', ...(token ? ['--header', '@-'] : []), url],
