@@ -43,6 +43,8 @@ jobs:
         run: uv run --locked tools/ci.py native
       - name: Validate source, Python, schemas, and retained contracts
         run: uv run --locked tools/ci.py validate
+      - name: Run offline skill eval controls
+        run: npm run check:evals
       - name: Run all Python unit checks
         run: uv run --locked tools/ci.py unit
       - name: Compile Kotlin concepts and forbidden calls

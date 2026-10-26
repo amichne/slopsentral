@@ -4,13 +4,17 @@
   "description": "Source contracts and validation tooling for the Slopsentral plugin marketplace",
   "private": true,
   "engines": {
-    "node": ">=22.19"
+    "node": ">=22.22.0"
   },
   "scripts": {
     "test": "node --test tools/tests/*.test.mjs",
+    "promptfoo": "node --env-file=tools/promptfoo/local.env node_modules/promptfoo/dist/src/entrypoint.js",
+    "eval:skills": "npm run promptfoo -- eval --config promptfooconfig.ts --no-cache --no-share --output .promptfoo/results/latest.json",
+    "eval:skills:smoke": "npm run promptfoo -- eval --config tools/promptfoo/smoke.ts --no-cache --no-write --no-share --no-progress-bar --no-table",
+    "check:evals": "tsc --project tools/promptfoo/tsconfig.json && node --test tools/tests/promptfoo-core.test.mjs && npm run eval:skills:smoke",
     "check:source": "node tools/validate-source-graph.mjs && node tools/catalog.mjs --check && git diff --check && git diff --cached --check && git diff --check origin/main...HEAD",
     "verify:marketplaces": "uv run --locked tools/verify_marketplaces.py",
-    "verify": "npm run check:python && npm run check:source && npm test && npm run verify:marketplaces",
+    "verify": "npm run check:python && npm run check:source && npm run check:evals && npm test && npm run verify:marketplaces",
     "validate:profile-contracts": "node tools/validate-profile-contracts.mjs",
     "check:python": "uv run --locked tools/check.py",
     "check:release": "uv run --locked python -m tools.release_version check",
@@ -22,7 +26,9 @@
   },
   "devDependencies": {
     "@earendil-works/pi-coding-agent": "1.3.0",
+    "@openai/codex-sdk": "0.156.1",
     "@types/node": "26.6.5",
+    "promptfoo": "0.125.1",
     "release-please": "17.3.0",
     "typescript": "7.0.2"
   }

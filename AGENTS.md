@@ -93,6 +93,17 @@ locked dependencies, and `tool.uv.no-build = true`. Run `uv run --locked tools/c
 for the Python boundary checks. Use `uv run --locked tools/setup.py` for explicit
 checkout setup. Keep generated outputs and installed caches outside authored edits.
 
+## Core Skill Evals
+
+`source/evals/promptfoo/cases.mts` owns the initial decision cases and expected answers.
+`promptfooconfig.ts` selects the live suite. `tools/promptfoo` owns its promptfoo adapters.
+Read skill text from `source/skills`, not generated trees or installed caches.
+After eval changes, run `npm run check:evals` for type checks and offline controls.
+Run `npm run eval:skills` for fresh model responses through the pinned Codex SDK.
+Normal CI runs offline controls without model calls or credentials.
+Keep raw reports under ignored `.promptfoo/`. Keep offline controls separate from model evidence.
+The initial suite scores decisions from supplied skill text. It does not prove automatic routing or tool execution.
+
 ## Portable Global Instructions
 
 `tools/install_global_agents.py` owns the portable installation and its local
