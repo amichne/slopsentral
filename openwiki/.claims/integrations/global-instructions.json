@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:fc21d0e8152306b7cbb0cb8ae08a0e6dea31467143a35280a25da3e5f17be2f2",
+  "claims": [
+    {
+      "id": "claim_b6805375cb0e4bbba50ddabc62a3490a",
+      "statement": "The portable installer places AGENTS.md and a manifest-digest-named reference snapshot in an explicit existing directory, requires uv and Python 3.12 or 3.13, and preserves local reference paths.",
+      "evidence": [
+        {
+          "resource": "repo://docs/global-agents.md#L96-L143",
+          "version": "repo-lines-v1:sha256:a51597b7d0e87c9da1ac48cb514bcacf08b52369cfda7adde4764df83ad366f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYjUzOWI2ZTI3ZjA4NDA0ODRhYzdjMzZjOWNkNzlhZTdhM2EwN2E5Nzk3M2ViOTRlZmZlN2YyNjliOTlmZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmYTJiMjYzMmRlYjI5NDQ4NzNlYzBkNGY5MTNlMmEzOTE3M2ZkN2RlYWFjMjE2ODI0MjAxMTE2YjVmY2Q5OGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxZWJiYTdjNWNlY2UzYzc5YjMwOWEwZTNiNTlmMDliNWMwYWMwZTdiYWQzMTlmN2ZhZjdjY2ViNzZiYmFlNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4ZDg5MjA2YmUzY2NhMjg1Nzg3ZTEyMGU5M2Q2MjFlZjE4ODcwNTMxMDRmOTBjMGRlZGYwYzZhM2I0Y2ExZGQifQ"
+        },
+        {
+          "resource": "repo://tools/install_global_agents.py#L1-L12",
+          "version": "repo-lines-v1:sha256:2132fb9364f8b9c095a8f000b9287cc8df05ab888d7675f414aa165975eea3fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlNzM0ZDQzOTNlMTgyOTI2MWQ5OGRlMThhNDliMzE0YmM1MThmMTRlMzMxY2IwNDQ2MjMxODliN2NkNjlmZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkYzZjODYyMzUwYWEzNjAxN2Y1ODdjZWE4NmM1ZjdiMWNiZjFhM2ExNjNlNWUwYjU5OGM1MGZiMjk4YzRmMzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlZWJlNjUxM2NhNjRhYWZjZWM3ZTA4NDZhYmIxMmQwMGI2NzFkYmYwOWMxNWZkNTc0YzA2NDhhNWY5ZWMxZTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_44fab663e4934039800c7dcb13571c85",
+      "statement": "The installer stages verified bytes, publishes the root file last without replacement, rejects different existing installations, and leaves identical installations unchanged.",
+      "evidence": [
+        {
+          "resource": "repo://docs/global-agents.md#L115-L136",
+          "version": "repo-lines-v1:sha256:434255d330d5bb60923835707d33909ee766540367baee15ffe32a7ae5cf12f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyNzEwMDYzNDBkODg2NDk1MmVlMDZlMDkxMDViM2NlZWYxMjk2Yzc0MmNmMmUyM2M4NGZhZmUxMWU3MTI0YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjZjM3YTQyNmY0ZjE3ZTEyNzQ1N2QzYmI4ZDE1NmE2MDQ1NGMxN2E2ZTNmZjQ4ZGM2MGEyNTZiYjY2MjMwMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY0ZGVlMzNiYmRkMjExZDE4ZWQwMTQxYzU2ZmE0ODdlM2RhOTliZTk4YWNiYzZjMDZmNWViMzgzZWMzNjkwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyNzI5YThjOTc5ZjUwYmM2YTg3YmFkMTJmZWExZDYxYmY5NTM4MjUwYWQ0ZGMwMzA4OTM5OGJjMGZmNzIwNzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dfef9872563348f29506464ee9d7eb18",
+      "statement": "Verification rejects changed, missing, unexpected, and symlinked assets, while SHA-256 establishes manifest agreement rather than authenticity or agent compliance.",
+      "evidence": [
+        {
+          "resource": "repo://docs/global-agents.md#L145-L167",
+          "version": "repo-lines-v1:sha256:54526a967f6d71ae272308b3285b75dca623b2d18309e392b78bc38bf5b6b837:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwY2ZiY2EyZmZiNjY1MTRkNGViMzA4MmRhNDIwOTUyOTQ1NTZlNDkxMDE5M2UwMGY1ZmJiNGVhOWE2ZmIwMmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1NjdlMDZmMjlhMTc2Yjc0MDNlYjNkZmEyN2ViODE5ZTBkZWIxZmYyN2E2MjZjZDYxYjU4OTE0ZmI4M2ZkMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1MzAyNDdiYWNiNTllNmM1NDM1ZmM4MmJlNzE3ZTRiZjQ2OGU2Y2JlZWFkOTE3YzEwYjUyOTIxMzYyMzUwZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjYTExYTUxMTk4YjRiYzhkOWNiN2RhZDY4OGI2MGZmZmY2OTE1NmFjMzE5NjBjNGM1Y2YyNTIxMjA3ZWRlNTYifQ"
+        },
+        {
+          "resource": "repo://docs/global-agents.md#L193-L195",
+          "version": "repo-lines-v1:sha256:e1e44ceb33fe0ab072451ee337fd75eea8704b7553485955e497ac7d6b51fb7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjJhODEwMGE4MGNiZWFlYTBlN2MwZjJjZmMwOTI1NzU3ZDc3NGM1ODA0NzM5ZWFjMGI0NTdmOTdkOWFjZmE3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzU4NGIxMjQ3MzhmMmQ5Y2EzMjRlMTY2ZjdkN2RmZTJmOWFiNzA0MGZlOWIyNGI2NGE2ODI1NjIwOGY4Nzc4NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJkNmQ2NGM0MTI4NGU0NTRkZmY3YzA0OTBmMTc5ZTQxY2Q3MTQ4NmZjNTkxZmE1M2JmOWFlNmU3YzAzMTRkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_24be1a6d324f4ef1b9d372ee89e8a7eb",
+      "statement": "Manifest refresh uses tracked sources without updating installed snapshots implicitly; interrupted or ownership-uncertain publication remains a conflict or RECOVERY_NEEDED for inspection.",
+      "evidence": [
+        {
+          "resource": "repo://docs/global-agents.md#L169-L191",
+          "version": "repo-lines-v1:sha256:c5898612a383b919fac08cd0bc3f98e398d91ec0e9859caa12c54275994e5260:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwZmE2NWY2ZDRiODUwMmE5ODQyYTQ1Nzk3ODhlMTAwZDgyN2YyNGFjOGIxZjE0NjgyOTVhNGFkY2UxYmJjYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiMTk2NTIzNDE4M2Y3ZDhiMTBhM2E5M2QzNmRkNjhjZTFlZGE0ZTUzMTEzMDkzYzQ1MjJjMjdiOWZiY2U0ZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3Y2M1MmNhYjE3MzQyNmY1OTYyMmQ1NGY1OWU1MmZhM2Y2MDk1ZGRjYjc0ZWU0MGU4NGU0YWU3ZjliM2Y4MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUxY2U1YTViZGViZmM5ZGNkMDM2MGNhOGE3MjA5OTNlMDVlODgxZjY2NzI3ZDRhZDg5ZDQ0N2E2MTI2Y2JkYWQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-10-26T01:58:25.745Z"
+  }
+}

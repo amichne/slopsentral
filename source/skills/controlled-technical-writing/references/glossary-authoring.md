@@ -15,6 +15,40 @@ Do not fill a glossary with ordinary words whose usual meaning already fits.
 Keep source excerpts, locations, dates, and unresolved conflicts with each candidate.
 Search snippets, mirrored pages, and repetition in one repository do not establish wider domain usage.
 
+## Bootstrap a Missing Glossary
+
+An authorized documentation generation, rewrite, or knowledge migration includes
+creating a glossary when the controlled document scope has none. Search the
+repository's writing rules, documentation roots, and knowledge configuration
+first. Reuse an existing JSON or Markdown glossary; do not create a second owner.
+Reading, assessment alone, a small wording edit, and ordinary code changes do not
+authorize a new glossary.
+
+1. Select the documentation root from repository conventions. Default to
+   `docs/glossary.json` and its generated `docs/GLOSSARY.md` only when no owner exists.
+2. Collect the smallest set of specialist concepts needed to understand the
+   requested documents. Research their established meanings with the procedures
+   below; do not generate entries by extracting every identifier.
+3. Record definitions, local source locations, examined domain references,
+   examples, and distinctions using the JSON contract. Mark the initial review
+   `PROVISIONAL`. Keep `rejectedForms` empty unless separate evidence supports a target.
+4. Set `scope` to the actual controlled documents, including OpenWiki pages when
+   applicable. Exclude the generated reader view. Do not broaden scope to all
+   repository prose merely because a glossary now exists.
+5. Run `check_glossary.py` with the JSON source, render `GLOSSARY.md`, then run
+   `--check-render` before assessing the requested documents with `--glossary`.
+   Use the explicit interpreter and absolute script path when installed scripts
+   lack executable permissions; never change installed caches.
+
+If the evidence cannot support an entry, leave that term unresolved and report
+the gap. If no supported entries remain, do not manufacture an empty or invented
+glossary. Continue supported documentation work and report terminology assessment
+as `INCOMPLETE`. A valid contract does not prove semantic correctness or reader review.
+
+For OpenWiki, complete glossary setup before starting its page queue. The
+external integration owns page assignment, Claims, indexes, and finalization;
+this procedure does not permit extra page writes or sidecar edits during that run.
+
 ## Choose an Established Name
 
 1. Find the term in a current standard, maintained reference, or documented implementation from the same domain.
@@ -72,7 +106,7 @@ These examples come from [Agent Skills](https://agentskills.io/specification) an
 3. Examine whether a domain reader can predict the concept from the label without the drafting conversation.
 4. Ask a new reader to distinguish the example from the nearest different concept with only the definition.
 5. Record actual reader feedback separately from an author's review or an LLM simulation.
-6. Run the [registration check](glossary-contract.md#check).
+6. Run the [registration check](glossary-contract.md#commands).
 7. Generate the Markdown reader view from the JSON source.
 8. Assess the resulting prose with the JSON contract and local Vale.
 

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:675ef076b5dcbf8fbb524d077c4fefe519a1544fc4bddf74fb1daf3585a437fa",
+  "claims": [
+    {
+      "id": "claim_c2ca89c216ca435081601804a99ce408",
+      "statement": "package.json owns a shared product version, while Release Please proposes patch-only increments for one root component and excludes generated provider trees from authored updates.",
+      "evidence": [
+        {
+          "resource": "repo://release-please-config.json#L4-L24",
+          "version": "repo-lines-v1:sha256:43f8f2f218073ab7beeb25dd259d7ebef274adf02eed62454573a63dc2e65ec6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzYzFlMDk5ZTk3M2RjYWYzYmYwYWRjZTNkMzA0NGVhYmEwOWFiNWIxOTM4ZjY0YzM2ZTU3ZDI0MDM0ZjBkMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MjIzOWIxYmQ4MmI4NWVkNTBjMThhYmU2YjhlOTk3ODc1NWRhYzZmZDgwNDA5MjRjOGE4ODBjNTJmMDY1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlYTNkNjhiMDIzMzE1ZGUyNzRiZDRiMjQ2Y2ZlY2NkOTMzNDlkZThkNDM1ZmQwMGUzMTJmMDhjMDk3NGJhYzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlMGY3MjkzZDE1NmE2ZDEyNTI4ZGIxMjkzMzc5ZTUyYTVmODM2NzA0NDI5N2IyMjgyYjk3ZmYyYzg2MDQzOGQifQ"
+        },
+        {
+          "resource": "repo://tools/release_version.py#L50-L75",
+          "version": "repo-lines-v1:sha256:7105a78c3acbf3d01073d0a36ef2a81970038a37d0a3c1890929efa4d64c63e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwZmUwODE0MWFhOGYyNDE4YzRmMmMxYzM5NzQxNDljMTljMDIzYmNjNWY2ZWYwNGMzY2NjN2IzMDE2NDZhYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxYjk2YzczYWYwMmUxN2FkODMyZTM4MjI4N2QyMmI5ODI4MDQ4Mzc4ZGRjZGQzYWE5ODI5NDk4NDM0NjI0YTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5ZWUxOTMyODRlODJmYjc2YWY0ZjRmNTgzZTQzZjA1MDdiNWYxMzJiMTY0ZTZkMzUyM2JhZmI5NGMwYzdiMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjMzM5MDNiYmMyZWZhYTRhOGNkMzY0N2NhZGQ0ODI4ZDQyNDAwZTkyZGI4NGNjOGFmZjg2OWRjMDdlNDY1MzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_730e3e388c7c47e89b3ff171cc20b7c9",
+      "statement": "Release Slopsentral selects successful main validation with a shared-version increment, admits retained artifact attempts, and verifies source and bytes before publishing rather than rebuilding.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release-pi.yml#L24-L56",
+          "version": "repo-lines-v1:sha256:fa9a6a79ced4a3ad60f3f9e1e599866960b3762afa557df04ddd021450aaa256:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjNmQwODcxYWYwMDEwMjlmMjQ4ODI0NjgxMTEwNmJiNDg4OWM0ODVkZDk4ZWZiYTA1N2QxMDMxODM2MjZlZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4ZTVlMWJkOTYwNTlkMDY0NDA2YTc1OWNmZGIyY2Y4ZmZiYjQ2ZWMxYjEyYjZjYTg0N2E0NjI1ODYxZmE0ZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjYzg0MTU0OTE3Njk0Y2U2YTMxYWRjNDZkMjcwZTNkMzNkOTJhZmE2ZDhiZTI4ZjUyN2Q4MTkyOGMzZGI2YTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhYTE5YzU4MWEzODU0NzM1MDdhNmE5ZWE0NjRiMzk3ODdiZTA4MjQ0NTgxYmI3NTNmYjdiNDBjZGYxZGJhNjQifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/release-pi.yml#L72-L125",
+          "version": "repo-lines-v1:sha256:e2a5459c39a581fafb8140fe577ee208d9b93c53d7d688aaf1aa5fcbcebe81ab:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5Mjk3ODYyYzg4NjM5YzBiYjkyZjdiY2E5ZDZhZWM4YzMyYWRmNzQ3MzQ3MzlmNWI2ZWI5MjVkYWMxMjg4NWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NDUwNDc1Y2NhOWE1NGUzNGMwMjY5YzBmZTQ0ZDczODMxNjIzY2FlNDFjNDZmOWZlZGNlYzg2NzY5YzllNGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNzlkYWI3ZGQ3NjRlMDkwMjk0N2I4ZDhiNThhMTY4N2ZlNzI3ZTdmZWM1MGFkZDVkMDNiMTJlMTI5YWEzNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyMzY4YWJjMDg0YzY5NTZjNDJjMTRiOThhNTI2YTRhODI3ZGRhNmRkMDM4YTVmZjhmZTQyNTk5NzdhYjkxOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4bf3cd56dd224ba5ac5c7e38228e576b",
+      "statement": "Release publication creates the source tag without replacement and verifies downloaded draft assets before making the release current and finalizing labels.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release-pi.yml#L126-L175",
+          "version": "repo-lines-v1:sha256:ab3d00af054465f33861c083537799ca4e947779e656064b804106266ba1546f:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwOTZiMDQ4ZjgxNzU0ZjRmNmRiZjJkNTRhZjMwNTQxOGQxZDE5ZjMyMTM2OTE1NDI1YzBmZTIyZGM0ZjA0ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDlkZTNjYTBjNTQ0NTQyYjA2ZGFiMTk1ZDU2NTA2OGRmNjRlN2QzYjQ4NmY0M2VmYmE1YzZkNDUyMmIwZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmMjg1NjA1NDc4M2Q3ODNhMDRkY2FmOWI3YjYwNmE0M2NiN2Y0ZGViM2VlZDZkZjU0NDdlMTU3YTg0Y2UyZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c82a6d40698646639ac1b6fab94a7161",
+      "statement": "Release Please uses separate GitHub App credentials for PR proposals and explicitly skips GitHub release creation.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release-please.yml#L25-L41",
+          "version": "repo-lines-v1:sha256:cab533c5a6dd7eeff37c48b12bb2e3a1a91a123ed7653f57ef53dafa84827760:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyYTM4ZmZjYTVjNTQwZmE5ZGZiMDlkYjBmOTkxODEwYWEwMGVlOTA1MTUyOWM4MzcyOWExMTEyNzVlMzNhNDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzOWMwZDNlNDFhMTMwMjgzNmNmMTRlM2FkZjE1ZDkyYThiZGZhYjU4ZTk2YjI3M2U0MmU3ZWQyOWFkNjI4N2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjOTRhYzFlMGM2NGJjNjI5N2ExNjU1ODExYWFiYmQ3ZTAwOWNjZWU1NjA5NjU2NTM0YzMxOGRlZmNiNGZkZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_86bab4a93ecf4a8e9266bbd36b7877f1",
+      "statement": "Publish Harnesses separately maintains three provider branches and the Codex/Copilot generated trees on main, with Amp absent from main.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/publish-harnesses.yml#L43-L58",
+          "version": "repo-lines-v1:sha256:b295a0e1ef7830354834262faedefa7c7b29af47f1eb72b3b54b7cc751018376:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MjU0YzkxNmE0NDgxMjNlMmQzZDk1ZWJhYTJlNGIxZGIwZmE3YjU0M2UxMmMzZTFiMTFjZjM2MjE2ZjIwMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmODc4ODk5MTk4NDZiYzNiODU3NzBhMzgxODE4ZGIyMmMzZWRhOTFhYjRjYjVkZTZjZDk2MmNkYWMwODNkOWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YjY3MDk0ZjMxMDMyOWFjYjE5NTMwNjAxYmE2NTU5MzEzZGY3ODViMGY4MThkNTJiMDJjNmQ2NzNmZDYwODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1MmIwNTQwMzc3MDA4NGE3MTZjYzdmZDc3NTc0ZDI1YjhiMmJmYTcxMWEwMTUzZjVlNTBiZDhiMTg3OGY5ODIifQ"
+        },
+        {
+          "resource": "repo://docs/pkl-projection.md#L110-L128",
+          "version": "repo-lines-v1:sha256:3f9556e1ba32c14d272861f49397c89109a82e45afc453005ef5207242d50d3a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMDFmYTQzYmFjMjI0NGZjZmFlNGQzNTE4Nzg0OTgzZTg1NjVkMjU2Y2FlNzQ2ZWE1MzY3NTQ2YTYwMmIyMjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMDk2ZmI0ODM0YzBiNDM2ODgwNTM0MTFlYWU3MzBhZjZhZTkxNjQyNGZjYTU0ZGRhZTljYjU2NGJkN2VkMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlNmUwYTkyYTcyZWUzZDgwNGJjNzc0NTA0YWVlY2JlMjdjZjQ4YWEyNzhjMDQ4YjgzZjQ5MWUwMGM5NjU3MzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3ZTM0NmUxODQ0ZjI5ZjIwM2IzOGQwMDY5M2E4ODQyN2I3MDJhMWNjOWI1ZjNlYTFmOGZhMWZjNjk5YWY3Y2MifQ"
+        },
+        {
+          "resource": "repo://docs/releases.md#L30-L33",
+          "version": "repo-lines-v1:sha256:b31096eed2ec61b69e6345bf8ac72de513994a2eaf6635885f88e50235fde543:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmM2YzY5M2M1ZDI3N2FhMTBhMzAyNTcxNmIxODk3NDdmYjlmM2UwOGZkOWQ4MDc5OWU3YzlkNjcwYzk1MmRjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2I0NGQxZDA1MjZkZjBmMmYxZGY4NmNlZTkzYzY1OTc5Y2FmMDgxYzE0NmI0NjdlNGFlY2MzM2M4NGI1ZGY3YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzA3MTEwY2UyNDYyZmY5NDIzZTEwZmZhMTM3Mjg5NzE2M2VmMDNmYzExZGYyNGY0Yjg1YTEyZTIwZmIzMWZiZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWIxZTkzY2JlMmExNzVlNDU5MTMwMmE5NWExYzBiMWEzZjVhNzk4MWM2ODZlNmQwYjYzZTI1MWFlYmUxM2E3ZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-10-26T01:58:25.745Z"
+  }
+}

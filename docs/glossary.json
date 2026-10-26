@@ -10,6 +10,7 @@
     "root": "..",
     "include": [
       "docs/**/*.md",
+      "openwiki/**/*.md",
       "source/skills/controlled-technical-writing/references/**/*.md"
     ],
     "exclude": [

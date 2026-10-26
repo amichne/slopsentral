@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:98608a9d9eef55ba2de4bcd41baa9c0f9370d3fe97fde57109991ae4acf9cdf7",
+  "claims": [
+    {
+      "id": "claim_bc6d8aad02404020823dda2dc37e4a40",
+      "statement": "Explicit checkout setup synchronizes locked Python dependencies and runs npm ci with scripts disabled, while uv remains a prerequisite.",
+      "evidence": [
+        {
+          "resource": "repo://tools/setup.py#L13-L29",
+          "version": "repo-lines-v1:sha256:580ec8ecbd5cd5639ce9f560dc68ce86c94558f960bf12b5aaaf4ce20b60a8b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhMTYyMTg3MGEwNzBiNDk5ZWM0NjM1NTNhN2ZjZDk2NTU1MzFiM2RiNzY3NjI2NDUwMDRkZjBjOWQxMThhMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzNWVkZGYyNjY5OTlhNGQ0YzBmNDYxOGNhMjJlYmUwZWVkYTQzNWQ5MWUyNDM3YWE0MTRiZjIwODA2MTFiYjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aa54c3af670645438a9259746dabc280",
+      "statement": "Composition edits require source graph validation and fresh Codex, Copilot and Amp projections through Pkl 0.32.0, with generated consumers left untouched.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L66-L85",
+          "version": "repo-lines-v1:sha256:d4c5ebcf74b94b860faa836197773520987efdf43294e93ed6afaf24f4f75d17:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhODE5ZjVmODExYTkyZjg5ZTFiNTEzMTIxZjc4OWVlMWViMTUzZjE5NjgzMGUxNzUwNWE4OWNkMGNlYjVlNzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlYmFlNjhmYzYzNDQxYmFlMjE4ZmYxMWEzZTk0ZGY1ZDVjNzQ2NjQ2ZWYyMjZlYzRkNzZkYzc3Yjc2MDM2NDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMzOWE5ZWEyMDkwMjgzMjZlNzAwMmU2NjBmNTM4N2U2YjM4YWFhNjZlZTY1YjdkMDRkNmJlMzFjNDAxN2NkODEifQ"
+        },
+        {
+          "resource": "repo://AGENTS.md#L7-L24",
+          "version": "repo-lines-v1:sha256:a0dfd55d7e0bc07dbd65efc68ce84e963abd3cf3de28d2312f9682fa4e2bcaae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjODE2ZWUzMTg4NjcxMTEwOWRkYTU4YTVlZjk4NDAwNDZmYTI1NDFjZDBjYzJiZWFhNzFjMDJmNWM2YTI1ODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MTdlNjYxYjhlNTE5NjM1NzBiOTM3MzFhMzI1YWQ4ZjRjNjIzMDQwODA3YjdkYTY5MTdkOTExZGFkYzk5NTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTc3NTJiMTM4YjY3NDFjZGQ5NzZjMDVkN2ZhMzAyOTJjODNlN2QxNTdkODIxMGQ4OGYyYjg5MjBlMTFjYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzYjc2MDhiYjMxODc5OGZhZWRmMDliNGQzYjdlZTEzZTlhMzhlZjFhOWViNTlkYmM4MDZmMGFmYmQxODQ3NWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ea929337eed4ba296b11bdfbe118656",
+      "statement": "The Python check stops on failed or unavailable stages, preserving a distinct unavailable exit.",
+      "evidence": [
+        {
+          "resource": "repo://tools/check.py#L21-L36",
+          "version": "repo-lines-v1:sha256:a61d455edaf54876c3534d13b4c04a73ec874bdeec678c7a968f328650c6c13b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMzk3OTMzYTI0YTgwMWVlOTIzMzI3YmQ2OWEwMTA0OWMwNzc5MTUwMjFjZjJlYzM5ZGRhNGY4MWFhODM3ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2Y2YxZDJlZGU2OTc1ZjExZDhmMDM1OWRiMDIyZmUxNDhhZWJiMGYzMWY3OTk0NjFhYTE4OGZjYjA4YzFjOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_72f3b7833233494db2ed68bbc595cbbf",
+      "statement": "The decision suite loads canonical skill text and explicit references, records their hashes, pairs no-skill controls, and disables tool execution and network search.",
+      "evidence": [
+        {
+          "resource": "repo://tools/promptfoo/suite.mts#L14-L55",
+          "version": "repo-lines-v1:sha256:0164e7a9aceecfa2012eb680762eef8f3e348bf54f771c946f3ed3bc0dd16a09:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiNGNhZjU3MjE0YjE4NzJhMDI4ODcyMGFkMTk0NDkyNDAzNzQ1MWFjOWQxZDM2YTVhZDgzNzdjYmRkODMxZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNjM3YjRhZjZmNzg4ZWRhNmY0N2YwYWVhODZiOWU2MWJlM2IwNzcxZDg4YzViMTQ2ZWU1N2JkNDViODVkZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlZTkwMDE1Yjk1ZjYxNmJkNjRhYzkyMzU5MGEwYmRlMmNlOTA4NDJjYTgzNjQ0OTk2ODQwYzgxMWZkYmUyYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkYzBiMWY1ZTFlMjczMmU3Njk2YTY4NTQ0MGFmOGUwMjRlZWZkN2FiNjY5ZDc5MGUwM2ViZWZhYTZhZTBkZTkifQ"
+        },
+        {
+          "resource": "repo://tools/promptfoo/suite.mts#L60-L94",
+          "version": "repo-lines-v1:sha256:72af0505d19a0fe8f1a94951b6708938f7c0d677852f255e839593c840794007:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYjVjZTg4MTkxNmEzMGU3NDg3M2Y5OTlhYTIwY2JhODA1MmY4NmU0MjBjODBhMDQxYWU3MTc5OWE1YzRjMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d02bc100c43f4bfdaec194d65adfc176",
+      "statement": "Validate Source runs offline skill controls and retains verified provider archives rather than running the live skill suite as a normal CI gate.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/validate-source.yml#L44-L72",
+          "version": "repo-lines-v1:sha256:1bb9ec77828993a9d29b23829c753e2b92f14388ffd1c5db5a83c0bb558a2055:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyOTE0YTQyMjgwMzQzNmMzYzkyMTEwYjkxYzU3NTU1ZjhiMGVlMmU5OTFhYjMxZDZkMWIwZjJkNTUyYWMzZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMzJhYzIwODBhMTM0NWM2NDY4ZDBlMGUwOWE0OTMyMDE1MTc2NzQzZjkyYTUyNTM1NWNmZGZkNTg5N2NmZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiN2M5ZTBiZmFhODc3ZmE0ZjMzMWMxNWQ4OWYxYmUzZWQ2ZWFhMDkzYzVlYjlmMTE1NmIzNGY2Yjk3YTdhY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMDgzNWQ1MDUwYzMwOWQ1MGZiN2RlYmU0ZWM1MTE0Yzc1NWYxMTcwOTIzNGI5ODFiMTc3ZTZhNzA4NzAyYzUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-10-26T01:49:39.323Z"
+  }
+}

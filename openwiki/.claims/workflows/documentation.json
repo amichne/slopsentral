@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:fb2c4d25f805898da80a756600cd68c8268776b0ec550aaa0c32709c6fa79903",
+  "claims": [
+    {
+      "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
+      "statement": "Authorized generation, rewrites, and migrations bootstrap a minimal provisional source-backed glossary only if no owner exists, while assessment alone or ordinary code work does not authorize creation.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/controlled-technical-writing/references/glossary-authoring.md#L18-L50",
+          "version": "repo-lines-v1:sha256:9eb5c2415b7199a351e720ca17a03e5fe12cface411a73a933c509c595c18baf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwYTQ2MWRlM2UxOWY2ZWZmNDQ0MGM2MGViOWM5ZDRiNzkyNDAwODlmZDhlOGZmZTE1MmNkNWYyZWU4YjQyZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNTBhOTdkYzM5ODE4Nzk5YjI5Y2VkMGQ4OTc1YTcyMzAxYWExNDc4MDQyYjEzNDcwZWMwNmQwZDkxOGIxNzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4ZjUyNTljNjIwNDllOGRiODYyYmNjNTBiZTc3MTU3MWRiNWQ0YjMzNTBiNGE0ZWQ4ZjUxYmI5MjdmY2ZjYmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiYTliM2U5MDk3MTJjZmFhMTdmNDliMTY0ZGNhNjhlZmUwZTNjOTI2ZjkwYTQ4ODA3ZjQ1OWRmNTQ5YTBhZTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9af700c4349b483b91adb357335b98f7",
+      "statement": "The repository reuses docs/glossary.json for OpenWiki pages instead of creating a second glossary, and its review remains provisional.",
+      "evidence": [
+        {
+          "resource": "repo://docs/glossary.json#L1-L22",
+          "version": "repo-lines-v1:sha256:bc1389e7a9dfd2fb431ce32ac3292eaf3db5f7c187501a955e206e1242dc1df7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZDg0ZDU1ZTY5MGEwMzMzZjk4OWNmNGE5NzI1ZWIyMWMxNzk3MjFjNTIzNGJiYTZlYmRiMGE4MzQ3OTFmMzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0NTVlOTlkZTQwZDFkMmQyYjYzNmY3Yjk0ZmM5YmViNTFhYzkxNjIyZTllZTRiYTdjMmVkNWFmYzJhNjA5MTYifQ"
+        },
+        {
+          "resource": "repo://source/skills/code-knowledge-base/references/knowledge-backend-handoff.md#L10-L15",
+          "version": "repo-lines-v1:sha256:e55a08bd3f393bb43e0534df907f643d5c862a7330cc8ceeece7c0dfe6f03a78:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzM5NGYwMDFkZDk2Y2U4MzdjMWI2ZTk4MWRiMDU3ZTNiNjgxNmI2NDAxZWY2NmI4YWM0MmM1MTRjY2JlYTU4MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjM2OGU0OWYyMDJkMjQzNTdiNTY1Mzg5YjdlMTg2MzNlNGJkYzhmYmJiODFmMzIwZGJkMTQyODkwOGZjNmE2NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTZmYWZlMGJhYjI5Yzc0ZGQ2MzNjMzE0ZTI2ODY1NDZmMjJiNTRiZjMyMmM4NzMzMjg3ZTU0ZjlkZjBlN2QyNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmY3YTk3Y2RlMTgxNmQ4MmQ5OTFhNzU3ZTJiY2MwZWVmYWU0ZDcyMTljNGYxMGIzMGVjMzUzMzhlNmEyMWQ2ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cfe138b4765b4b1dab68ab680d9046c0",
+      "statement": "The external OpenWiki lifecycle owns page assignment, Claims, indexes, provenance, and completion; standalone OKF validation cannot replace it.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/code-knowledge-base/references/knowledge-backend-handoff.md#L3-L28",
+          "version": "repo-lines-v1:sha256:12b6404b59f9d8976c23985da2861329491e3a805e63f03e9625fb5f9749f916:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3NTNhOGEzMDY0NzA0MDU5MzI2ODQzNDk3MTYyNmIyZGM3ZmZjZTg5Nzc4YzcyYzVmZmNiYjgwNTZhNTRiMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5MGQwOTliMDJkNjRhMTJmODk3NWNhZDllZDM2NzVkMzliZWM2MGEwNTUxMDllOTZkNjk2NGEwYWNjYTJjMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxODk1OTc3Nzg3OWMxMTIxYzMxZGI5Yzk2MDM5MWEwNmFjODMyNzFiNTNjNDNlZWViODZlMmJhYWM2YzJiNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkMTgyMjkxZjMzMjg1NWE4Y2EwM2Q0OWNhMzdhYmNlMzhhZjQ4OTMyMWI2Njc2ZTkxYzkwODA1ZjkzZWVhMjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f628b2bc9683486cbc21c0b2b6afe211",
+      "statement": "The documentation workflow runs only on main with daily 09:17 UTC scheduling, relevant push paths, manual dispatch, serialized jobs and unpersisted checkout credentials.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml#L3-L41",
+          "version": "repo-lines-v1:sha256:9959984799dc6c3697e9ac3b6ae3cbc1e9308f56926bf5000d57b73fc241228d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NmRjNDgxNDlmNWE4M2QxZWQ2ZGJiMzliYmM3ZTJiOTAyYWEzZDM0ZDZiZDVhZTRiMjkxYjY4ZGYwY2E3OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4MmMwOGVjOGZlM2Y4NjFkZTY1MjY0MTMxNmY5MjFmZmE4NzZhNGUzYTQ5MjRlZGI2YzA4Nzg4NjZmYjAxYmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyZWJmMmIwM2Q0MjZjMGY1ZDIwMTVmNTUyMDdkZTNhOTFlZDM1YjkzMDY5NTBjMDkwOGMzNGFkNWI0OGVlZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhZWVjMzUyZmYxZjZkZWEyYzQyN2U5Y2ViZDRmMzY3YTM4ZGE2OGZhYjVmYmM4YmQ1ODdkMGM0ZDI5YjgyZDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fb7e3fc5f37f42a99fc64f01bc760a48",
+      "statement": "Documentation generation pins OpenWiki 0.6.1 and gpt-5.6-terra, requires separate generation and PR credentials, and gates the documentation-only PR step on native generation and glossary checks.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml#L109-L128",
+          "version": "repo-lines-v1:sha256:69eabea017127c886115a1ace2c1de3aa69e9a724f01af3eb1932da8f281e793:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NTQ2M2Y5MDRhNzMxZjEzNzRlNzM4MmQ2YjEzYzYxZGZkZTVhMGUxMjhjMjNjZTcxMGVlNTQyZmU4MGQ1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYTFiYmMyOTA1ZTgzNGRmODQ2MmVhZDczOTM5M2E0MjllZTE1MzUxYzFlMTc4MDI3NDI2YmE3NjNiZWVjMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3YzU4YmUwMWE0OTc0NmRhOWY0MWNkOTQzZTZiMjAyZjg2Nzc1MWMyM2EzYzkyOTlhOGNiZDkyYzVkNzg3NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml#L48-L83",
+          "version": "repo-lines-v1:sha256:609dfacc707f00d94e5e9e77f004d5d3f9f0326fc3c19125686d5c3645f4d584:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NGY3NzhlYjhiMTgzNmVjM2Q5ZjU1MWMzNjg1ZjNkNmE0OGRkM2I5N2Y2ZWFhYzhjMjMwOTIwNDM2OGI0YmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNmJmZmE4MWYwYWFmMDQzNTlhZWZjZGIwODkxMzhiNGE0ZWU1YWU3N2YyZjZlYzQ4MGE2ODc5OThmNGZhMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNzlkYWI3ZGQ3NjRlMDkwMjk0N2I4ZDhiNThhMTY4N2ZlNzI3ZTdmZWM1MGFkZDVkMDNiMTJlMTI5YWEzNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzOTI3NzEzZjdjMzFmZTBiY2RlMGUzNmNiODQ2MjUwMzQxMTQxZmQ1NDNlMTVlOWQ2NDZhNzlmYjcyZWE1MjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5dcdc7ecb7e4ceb9329a07a858d7538",
+      "statement": "The generated PR path allowlist excludes transient run state and authored instructions, and the workflow has no auto-merge or executable source publication step.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml#L109-L128",
+          "version": "repo-lines-v1:sha256:69eabea017127c886115a1ace2c1de3aa69e9a724f01af3eb1932da8f281e793:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NTQ2M2Y5MDRhNzMxZjEzNzRlNzM4MmQ2YjEzYzYxZGZkZTVhMGUxMjhjMjNjZTcxMGVlNTQyZmU4MGQ1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYTFiYmMyOTA1ZTgzNGRmODQ2MmVhZDczOTM5M2E0MjllZTE1MzUxYzFlMTc4MDI3NDI2YmE3NjNiZWVjMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3YzU4YmUwMWE0OTc0NmRhOWY0MWNkOTQzZTZiMjAyZjg2Nzc1MWMyM2EzYzkyOTlhOGNiZDkyYzVkNzg3NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8df7c66be4c141a7b97552cd5082b8c2",
+      "statement": "The documentation workflow rejects generation without complete native checkpoint status or with an active run file before it can propose a PR.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml#L68-L78",
+          "version": "repo-lines-v1:sha256:ded03fec5e3e6d0817deba0072e5220ec7fce9422900d943a4417377af738d2e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMzk5ZjkwNjg2MWE0NDc2Nzk0NjY2ZjQ3NGNkOWE3MDFjODg1NDNhYTc0YTUzYmQxNWE1YzIxNjUxZTAzNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OWQ2YjRhMDUzNzVkNWM2NzQ2MTgwNzVlOTkzZDJmZWFhNGU1MTAwZWQ1YTkyMjMyODlmMWJjOGIzNzQwYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwMTU3Njk4NWE4OWVjNTdkOTlmZDVkODcyZTYwODdmM2QzYjc3M2Q2NDdhNjJjMGVjZDczNDIxOGU3ZjdjMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkZWJhMzE2MjAxNzZmZWQ0NTJlYzg4NmFiOGU2MWRkMzFkOWFhYzQ0MTM4MDYyOWNkOGE4ZWQ3ZjUxMzhhNmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f36b51fa8f9a4529bd2d36024f4839d3",
+      "statement": "The documentation PR step requires generated changes beyond .last-update.json and .page-manifest.json; both checkpoint files remain eligible when substantive changes select a PR.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml#L84-L119",
+          "version": "repo-lines-v1:sha256:e1d607ab2cf093e0adc0384412a7b697cfe93cc4dc0fc81e30f54984eb05acf1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNWU0ZWEyYjg5YjM3MTc5ZWFjMTUyYWRiYjA2ODQ5OWUzNjMzMmJhY2M3MTViYzE3Y2RhZGZiYWIyYWQ3NTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxOTk3Mzk1MjYwYWE4MjZhNTgxMTVlOWFiOTJiMzU4MjM5ZjI5ZDYxNGJjMjY5MDZkZjI3MmU4ZGNkZTVlOGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMzIxNWQ2Yzk5MjhlY2NkNTJlMjNmZjI4NWFlYzNlNmVkMmUxZjE4NTgyMTk0M2E1YzU3NGMxMjhkMjAyYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1MTU3NWE5YTY4NzJiOTM5Y2RlYjc4Nzk3ZThhOGQ3MDM1NGQwMTRkMTJjMDVjYTc2M2Q5NWUyNzhkMTM4OTIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-10-26T11:35:00.921Z"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d203750f3f3391eb80739b5754f20649796607016418613073c0ba503bebbdf7",
+  "claims": [
+    {
+      "id": "claim_29bc0266d6ec4bc4913a121262b7a782",
+      "statement": "Projection freezes regular source bytes and modes, rejects source symlinks, and rechecks source and current routing evidence before publication.",
+      "evidence": [
+        {
+          "resource": "repo://tools/project-marketplaces.mjs#L161-L174",
+          "version": "repo-lines-v1:sha256:61ab58b700739cff45ae7888fa239b918b630d4e7c9ca35509108e6ad182f5a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkMWIxZTMyZDFkODc5YTkzM2ViMzg0Njc0N2NlZTY0Y2Y0NTExYTA4ZmU0OTc0MGEwYmI4MDg4ZDMyZDgzNDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZhNzNlZGYyZWVjNThlMjczODliZTkwN2I4YWJkZWMxNjUwZDZjYTJkOGE3ODllYjA0MmRmNWY1NzUwYTE4MTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxNjEwZjZkZGRjMjQxZjFlNDE0YmUyNjRlMDJkYzIxNDU5OGMxOTBhN2M1ZjkwNmYwYTY4MTFlOTEyMmM4NzkifQ"
+        },
+        {
+          "resource": "repo://tools/project-marketplaces.mjs#L299-L314",
+          "version": "repo-lines-v1:sha256:6844353f17d9d10208608ed4166a43065268fd97d2319b57cbd0712a1c4d0e6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZDE4YmJhZWZkMTg0OTFjZjhjYzE2ZGQ1ZjIwNmM5MTdmMmE1YmVlM2JjNDliMTgwYmJiYTAyN2Q4NmE5NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjODZhMmIyODYwMmRkMzE2ZTM0YTUwYzQzYmNiMWE1MjQwMmIyMjg0OTE1MjM5OWRhZDNlYzYzMGVlMmUzN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzYWM1MzliYzEwN2MwY2IzNDM1Y2Y2NTEzZDkzMzU3OGViMjJiMTc0ZmM0NzZkZmVkZDMzODc3NmQ3M2NjMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhN2EwMzRiMGY0MTFiNmM3ODdjZTZkOGIyM2ZmYTQzZWQ2NzYyZmJhZmUxMGI5YTE3MmRkMjVlNDYxNTViMzYifQ"
+        },
+        {
+          "resource": "repo://tools/project-marketplaces.mjs#L42-L57",
+          "version": "repo-lines-v1:sha256:c7d983b4d73c99f9917704783f53b88713033560306ac03ac25307a8b2ea67c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmY2ZiYzQ1MmQzZTI5YzNiZWY2YmI1NzFkMzU5OGFlMDc4YTgyNDYwYjc5ZDJkN2FhYjI0ZjcxNDAxZTY1N2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZTY2NGQ5NzUxNDE5ZTkwMDAzMjJjMDY5YjAyZWZjMDU4NzhlYmY3NDRiNDFkNjZmODhkZWVhZGM5NWM1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlMWNlN2ExNDg4YjA1NGE2MDE3ZjA3MDgzNGNjMDMzMGY0MGMxNmUwMmJhMDYwYWY4YzFkNjZiODU1NDYyYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzN2EyZmVlYTQ0NTkwMjgyNjgzZTNhYTdjYjA4YjQzMTM4MTRiYTU5NWZkOGVjZDA4ZjA2YTFkZjgxZTEzZTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4fb60453c7504bdeba73fdbf31c5f6bf",
+      "statement": "The projector requires exactly Pkl 0.32.0 and evaluates isolated model copies with explicit module and resource allowlists.",
+      "evidence": [
+        {
+          "resource": "repo://tools/project-marketplaces.mjs#L175-L198",
+          "version": "repo-lines-v1:sha256:a1545b2825c52c9575ca85b1661373d37d664d91508b5ee9e0fdfda55cd6eb33:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OTBlYmJmNjNmYzVlMzM0YjEyY2Q5ZmJmYTk0NDdhYTRlODdlZGE2Mjg0MDFhZDc2MjUzZmIyY2YyZjlhZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMDM5YjZiMjY3YzExODRmNTg0MDdiYjFiMjM3ZDlkNzc5YzA0N2NiNWQ1ZjI3MjA1NDQ1MjYwZGJkZjNlNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiMzc0NWYwZmU2MDc2OWY4ZjYxNmEzMTI0YmQ1Nzk0YzgwOThiOGM2NWExNDdhNzc3MmIyMTJlMTkyOGM4ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZWJhNDk2YmRjNGYyODkyMWQ5OTUzNDdmYWM5NWE4YzFhYTk2NWQzZmEyOTk3ODJmZmZmN2QyZmFhNDY5ZTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_34d8e051ecf949e1bc9859ed60cd888b",
+      "statement": "Two-phase projection seals derived payload hashes and rejects changed payloads, mismatched reference digests, or an existing or in-repository output destination.",
+      "evidence": [
+        {
+          "resource": "repo://tools/project-marketplaces.mjs#L286-L314",
+          "version": "repo-lines-v1:sha256:4e0d4bac6db17a5b1cc830ec1c9eae27467ce8d0b82d594aa81897c0888b621b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMDViNjJkZDhmM2NkYTAyZjhjZDczNTEwNmRhMjBlNDBiY2I5ZDRjZDQ5YjcyN2VkYTdhMzE1NGZiMjhhMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjODZhMmIyODYwMmRkMzE2ZTM0YTUwYzQzYmNiMWE1MjQwMmIyMjg0OTE1MjM5OWRhZDNlYzYzMGVlMmUzN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhNDYxNjgxNzhiYzEwNzAxMzY4NjEwOTBlOTc1ZjBkMzU5ZDdmYzdiMTMxNzQ4NGNlNzVhYzM1ZGU1MTAyMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhN2EwMzRiMGY0MTFiNmM3ODdjZTZkOGIyM2ZmYTQzZWQ2NzYyZmJhZmUxMGI5YTE3MmRkMjVlNDYxNTViMzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_09717633ad8e40f49b3ef20fb243d3c4",
+      "statement": "Native directory publication uses no-replace operations and rejects unsupported atomic publication rather than falling back to replacement.",
+      "evidence": [
+        {
+          "resource": "repo://tools/projection/publish_directory.py#L10-L44",
+          "version": "repo-lines-v1:sha256:a81e2b8fb0c5a4095c658ddfab199d7ab09b57a3e3d8a675f11449ce5912ba0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5YjY4NWQ2NTZlMzY2NzViZjc3ZWZlODU2ZTdjNDFiMjQ3NjllZWNjN2EwMzY0YTI4OGEwNGY3NjIzNDhiYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwMTE4MWFhN2VhNzk3ZDFjN2M5MWM4Y2ZhYTY0ZWExYzViZTQzNGM3NDZmZGEyNmZjYjk2OTNjNzY2NDc5MDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyOWQ2N2FlMzljZDAxYjllZDZkN2Q1N2JlYTFhYjhiYjRlMzNiZTVjZTM0ZGIxNTdjZWZmNzEzNTEzMjY4ZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_49ea46b90a49438fa05c0b965cce835b",
+      "statement": "Amp registers skills and delivers instructions through agent.start, while agents, hooks and MCP remain reference-only and profiles unsupported.",
+      "evidence": [
+        {
+          "resource": "repo://tools/projection/Amp.pkl#L15-L23",
+          "version": "repo-lines-v1:sha256:ff71dd1495b105db1b05f8355f964728cd78c084b8df0c64ac665f320b1fb067:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODRmYTU2OWU1YjU5ZDY1OGZkNjVlYmQyNmJmZmNiOWMzNmFjMjJiZDI1MzkwMmFmNjA4ZGIwNmM0ZjY0MmIzYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTNmZTQ2MDdmZGI0NzJiZTIyODhkNTg5ZGVhMzZjYjE1NTQ2MjIxNDU1NTg1MGIxNzUwMjc4OTc2ODJhYjMzZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzQ5YTNkMDAwNTIyNmE2MjZjOWI0YTljMDExODg4MTllMDc0ZDQxNTYxYzUxMDRjNGIwMDRmNmMzZGZjODI3OSJ9"
+        },
+        {
+          "resource": "repo://tools/projection/Amp.pkl#L50-L66",
+          "version": "repo-lines-v1:sha256:6f961f000249ce876128fc074a47585b3e6773fc9fc90e6f75e0c49be06ce369:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTcxNTI1NzJlZTg0ZjEwOTA2Yzc0YjlmMmE5MjQzNGRkYWIwZTNjNDI4MTNiMDRlNTk3ZWZjZWM5NTFiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyM2JkZDhhNTJlZWE1MzY1MzczZGU1OTNhNTljMjM5MjkxMTk5ZTBjNzAyN2ZiYjI2NzM3MmJhZTJlYmRlZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzMDRlODc0NWRjNmZmNWE5MzUxZGEwZDY5ZTQ3NzFmZTc3Mjc0OTEwMGEyZGI2YmZiYjkzZWFmNDQ1YmUwZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4M2Q2NWU4YThmMWM2NjkyNzQxYjZlMmU5Y2ViYjY3YTYzYzJiZGNmNDFmYWFiMTUwNzFiMDI4MTMwODBhODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_022e5a644ad648ea933a8bc42234592b",
+      "statement": "Pi projection accepts only the canonical semantic-ratchet skill in its native default, rather than arbitrary plugin or workflow-profile emulation.",
+      "evidence": [
+        {
+          "resource": "repo://tools/projection/Pi.pkl#L5-L21",
+          "version": "repo-lines-v1:sha256:ff78a27733d9e51a42d23f10c29c8f459d81d7ae639c5962e06c2999541becb1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjN2VhYmJlMjZjZDZhM2ViODc0MmNlYjY0MDlmN2RkYzVhYTQwZjc1NGU0NjVkMTg5ZWI0N2IwMTFmMDI5NDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5ZTYwMjFhMzlhN2Q2MjQzMTIzYjA1NGE1MGVhNDhkY2IxY2M5NDQ1ZThhNTg5ZjBlZGM5MzY1MGZkZWFjMDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlMzViNjUyMjhlMzRhOGY2NTc4M2U3MmViOWY1YzdiZDZlNDJmMDA2ZWQ2ZTZhZjU1ZjBmMDVlZDk5YzFiZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmMWVhYjMyN2RlMjY3ZGQ4YTI3NmZhZDk5OWM3YjIyZjgzZDkzNTVhZTllYzA3ODY3MjRjNDhmOTE3ODNkN2IifQ"
+        },
+        {
+          "resource": "repo://tools/projection/Pi.pkl#L53-L60",
+          "version": "repo-lines-v1:sha256:fcadb3f69454bb39cc453670dde2030b69bdbcb641aa8bfbbccf026645f88cdb:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjVhZWNmOTgxYzc4MzBlMjRiYmEyNTdiYjcwZDczYzc1NThlMzI4YTgyNDEzNzVmYzFiZDkxMWMxY2NhMjkyOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWQ3Y2UyNWJlYWYzYjAwN2ZlY2JlMDU2YjdkODIyOWRjMWM4MzY2NjcxMjgxMGM5ODcxYWVlZjkwN2IwNjE4YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2M5ZmVlNDVjMmMzN2Q0N2U5ZWU2NmNiODM4Y2ExNzc3YzA0MGFjZWU2NDE5M2E4MWI0ZTkxMjAyZmYxYWFjZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODk5NWYwZDE0NTU5NzcwOGZhZTFjNTYyMWVlYjQ2YTMyODVkOWMxMDQwNTE0NTkyN2FiMjU4MTNlMDk5YThkNSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-10-26T01:58:25.745Z"
+  }
+}

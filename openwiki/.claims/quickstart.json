@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b5d09580de182adbf6e475a084d5f6fe795d914ca491a9ededec73d31abb9973",
+  "claims": [
+    {
+      "id": "claim_00b3d0c940c943d0bb4ebf94bfc1c873",
+      "statement": "Plugins compose canonical primitives by reference, generated packages and installed caches remain consumers, and skill installation does not grant publication authority.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L7-L27",
+          "version": "repo-lines-v1:sha256:c6795e7b1b8f2020ff4bea44f9b21eecdb2350bce60fb07a0cdb14f4c2db8641:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjODE2ZWUzMTg4NjcxMTEwOWRkYTU4YTVlZjk4NDAwNDZmYTI1NDFjZDBjYzJiZWFhNzFjMDJmNWM2YTI1ODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMTYxYjhhMTE0M2I3Zjc3NDJiNTc4NzJkNWM3NTRiODQxYjFjYzNjNjIwN2U2OTQ3OWMyN2MwZmI5ZWY2OWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTc3NTJiMTM4YjY3NDFjZGQ5NzZjMDVkN2ZhMzAyOTJjODNlN2QxNTdkODIxMGQ4OGYyYjg5MjBlMTFjYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3NzlhMjU2OGJmNDM0NWQ1OWJiZTRiYWNjMTFkYjYxNDkwODVmMTlmMzdkYjc0YjdiNzk2YTgyY2UxZGM2ZGEifQ"
+        },
+        {
+          "resource": "repo://README.md#L31-L32",
+          "version": "repo-lines-v1:sha256:1499cfe4693b199c63c4f1cdd807a539dd64e634b20b5795c86d72e32f72bc8b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNiMzRhYTBjYzhiOGJkNTMyMWU2ODgxZWJiODcyYWRkYjhjMjViYjRhMjNlZWI5MWExNmM2YzgzYmZkMjc0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjc5Nzg4MmU0NmJlZjdiMzAxZTVhMWNlNmVlYzNmMDRiZDFhNjUzMWRlMDI5ZDNkZDk4ZGQzOGVlMTQ1NWEzYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDk5MTc4YTE5ZWJjNDRjMTk5ZDE3NDg1OWI4MjhkOGRmMjNlNjZjN2ZjZTdkYWE5ODY3NzVjZjFjNWRkYTc5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDdlOWRmYTgyNzFhMDY3NjQ1ZWExNGU1OTM0N2ZkNjExYzFhOWJlYmY2NWU1NTFhMDk0NjQzNWZhMmQzOTYyNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5b69bf4e00d84909af6acf0f8ce2b546",
+      "statement": "Explicit checkout setup synchronizes locked dependencies, while Python checks run ordered formatting, linting, type and test gates within declared coverage.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L60-L77",
+          "version": "repo-lines-v1:sha256:2d7356739fbaca5ea8da8e5bdd809612a42d7e8e32a6ed5fb6522305b18214be:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViZTIyZDJkMWVjMGIyMWQyNzE5NDM0MTM5YTRkYzNiMDI3NDk2ZDVkMjMzM2VkODkzN2UwZTYzZjU5Y2Q2MmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmODVhNGJmZWY1ZDZhNWZjYzFiOGE1NTQzOGFmMjUwOTIzOWJmNzU0MTRjNDEzNWE4ZTQ5MjRmMjQ0ZmJjNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3NWZiNzBmNGUwZjk4OTY3OTIwOTUwY2YzMjQzZjE0YzllNGJmZTJhMDJhYTdjYmJlODk3MWNmYzdhNzg1ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkOTBlOTZkMDg5NTYyMjg2OTEzNDk1OWYyY2VmMmIyM2FlZTE1OGM3OGMzYjRiYTI2MzhmZGY1OGZiZjE0ZWQifQ"
+        },
+        {
+          "resource": "repo://tools/check.py#L21-L36",
+          "version": "repo-lines-v1:sha256:a61d455edaf54876c3534d13b4c04a73ec874bdeec678c7a968f328650c6c13b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMzk3OTMzYTI0YTgwMWVlOTIzMzI3YmQ2OWEwMTA0OWMwNzc5MTUwMjFjZjJlYzM5ZGRhNGY4MWFhODM3ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2Y2YxZDJlZGU2OTc1ZjExZDhmMDM1OWRiMDIyZmUxNDhhZWJiMGYzMWY3OTk0NjFhYTE4OGZjYjA4YzFjOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        },
+        {
+          "resource": "repo://tools/setup.py#L20-L29",
+          "version": "repo-lines-v1:sha256:fdd7dea82d62a4916ca66fdf4814b5d53fee7066d53e09aff13938e858683089:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMzk3OTMzYTI0YTgwMWVlOTIzMzI3YmQ2OWEwMTA0OWMwNzc5MTUwMjFjZjJlYzM5ZGRhNGY4MWFhODM3ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmZTNmOWViNTNiMThkZjMwZTcxY2RjNjJhZDIyMTMwOTM1YzUxZmQxMDEzOThiN2I2YmM0OTU5YTQ4NGM3MzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9aa3dff07db4b16a45b34b82fd00ba1",
+      "statement": "Pi consumer installation uses verified release assets without checkout or Python, uv, Pkl, or npm installation prerequisites.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L31-L40",
+          "version": "repo-lines-v1:sha256:c8e7000b73223ce4e7e9de84a49214d60a20b9c7c07ac47ba67989d0d80f4cd3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlNTZlOTdhOTMzODdmMWVmMDQzYzYyYzg0MDQ5NmE5N2E3MmIxMTVlZDViMTljYmZiMjc5YWI1M2Q1MzY2MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5MjgzZTE2MTRjODBlZGYwM2NiZjQzM2NjYTg4NzM3MGY1MjJmNDAyMTVkOGI1ZDAwYmQ4ZWZlNjQ5OGI4MTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3NzlhMjU2OGJmNDM0NWQ1OWJiZTRiYWNjMTFkYjYxNDkwODVmMTlmMzdkYjc0YjdiNzk2YTgyY2UxZGM2ZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzY2Y4MThiNTMwNDMxNzAwOTI2YjAzZWM1ZjRmOWUzZmViNDhkN2VlZmU4ZWI5ZTM0ZjNiNGVlNWY1MDg4YTQifQ"
+        },
+        {
+          "resource": "repo://docs/pi-install.md#L3-L12",
+          "version": "repo-lines-v1:sha256:d2138b241ec460df051683a8c12c266ec5535aeb722579ecf1bf77cc91efc90b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlODllMDRiZjc5Y2VkOThjMjk0ODQwOTQ5MWY1ZTgxYTc2YjllNjQwNTEzZmI2MWI4OGE1ZjE3ZGMwMGRjMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxZTY2OWFlYjA0MDRmMDg3MmE5NDk4MzJkODM4OGI2NDBhNDg0NTMzZGI5OWMxNTM2NmRjMWZiYjljMjE1ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MGNkOWZiNmY0MDYyNjE0MDdhM2ExYjQwMTc5MjY2MGFjYTFjNzU2NjMzM2E3YWRkMDc5OTg1ODRlNjZiMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1ODZjYjAxZDY4ZjE0YjkwM2MyMzQ1YTMzYjNiNzkxMWFlMDY3ODY0YjQxZjBmZGUxN2MyYzU0YjJjZWFmOWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ffd4a17e7e59447db0671e941bd648d1",
+      "statement": "The repository's documentation automation proposes only generated wiki changes for review and does not auto-merge or publish executable source changes.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml#L109-L128",
+          "version": "repo-lines-v1:sha256:69eabea017127c886115a1ace2c1de3aa69e9a724f01af3eb1932da8f281e793:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NTQ2M2Y5MDRhNzMxZjEzNzRlNzM4MmQ2YjEzYzYxZGZkZTVhMGUxMjhjMjNjZTcxMGVlNTQyZmU4MGQ1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYTFiYmMyOTA1ZTgzNGRmODQ2MmVhZDczOTM5M2E0MjllZTE1MzUxYzFlMTc4MDI3NDI2YmE3NjNiZWVjMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3YzU4YmUwMWE0OTc0NmRhOWY0MWNkOTQzZTZiMjAyZjg2Nzc1MWMyM2EzYzkyOTlhOGNiZDkyYzVkNzg3NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-10-26T11:32:19.597Z"
+  }
+}

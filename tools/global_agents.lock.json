@@ -50,7 +50,7 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",
-      "sha256": "0d4beecba277dbae048cb221f897e48769bac479c032a36e76fae03b5a1ef8c4"
+      "sha256": "767aac562b08a9045ba0043aac6c975a95367ae9ebece78abeb7677bcf7b8318"
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/glossary-entry.json",
@@ -314,7 +314,7 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/references/glossary-authoring.md",
-      "sha256": "1861c20d82b3fa4d4d26fab988c989fb1e53829889f59c570df9123ec5833933"
+      "sha256": "0c854368785a577ff418b4e2d312b3ef6fec671052b70b4be0aec65cf2039b80"
     },
     {
       "path": "source/skills/controlled-technical-writing/references/glossary-contract.md",

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a2e698b8070d868b09cccb0a587bea894b0dc32b7f9e2c720644a2eb25ed2007",
+  "claims": [
+    {
+      "id": "claim_468cefd833044a5fb8a8fba715593e3a",
+      "statement": "Pi's launcher requires macOS or Linux and Node.js 22.19 or later, verifies a stable release installer asset's exact size and digest, and delegates to those bytes.",
+      "evidence": [
+        {
+          "resource": "repo://tools/install-pi.sh#L11-L18",
+          "version": "repo-lines-v1:sha256:5c12834ef8ff471312580abd49b3426ab832903b2226e81331866b07ca4770f6:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTYwOTM2ZTAyZjI0ZWRhZDZjNzE2ZGI5NDA1MzU4YTEwZjg2NGJiNGIyZDZmODNlMDYyN2Q2ZWY4MTkwMGFlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmEyMGRhNDc1OWI5ZGE0MTdlY2FmNjczYjFhZDg1NTA2ZGE3MmJlYzljZGU3NjRlNThmZTU1YjQ0MDUyMjZmOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTJkYTYzZDY5NzRlZDcxMGFiNTk4NzBkNzFlNWNlOGQ5MTg5NGYyZTNhYWZiMTYwYjE3MTM0MDRjOWQ1Y2VhZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGIxZWJlODQxMmIxMzRhYTRiNzliNGY3ZmY1NjYwMWM2M2E1ZjdhYjI2MGNhYTgyOTkxNmJlOThmZWRhODZiNyJ9"
+        },
+        {
+          "resource": "repo://tools/install-pi.sh#L53-L68",
+          "version": "repo-lines-v1:sha256:ba53f90f519f3cc242467a71e650def6423886247fac64fa34570bba7efdb3eb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2NGVjZTExNzBiYjBmMGQyOGY2MDg2MTM5N2JiODhmZmNhODliZmEyZmUzNWQ1Y2IxNjQ2NTAxMWVhZWY3NGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxOTA5YTEwODA0MmYxMzNhYjdlMDU3YmIyMWVhMDc3OThiMjM4ODFhZGI2NTY1ZGRmMjVjMDI3NWY0YTEzODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMmYzN2QxNjA0MTAzZWJlNjJmYzQ0YjcyODYzNjNjY2ZkNWFlMWI0N2NlMmM0ODA3MDE5YTQ1MGE0MjRlOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3MTA0MDgzMzYxMTUxYzJmNTM3NWRlZTdkNmNkZjY3YzI0MjQ3Yjc3MGIxYjgwOTUxYWI1YmJlYWJmOGUwM2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c56a86d42e7a4c28af656a48333e8bec",
+      "statement": "Pi consumer setup needs no checkout, npm installation, Python, uv, or Pkl and installs only semantic-ratchet without changing Pi trust or proving feature compatibility.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L31-L40",
+          "version": "repo-lines-v1:sha256:c8e7000b73223ce4e7e9de84a49214d60a20b9c7c07ac47ba67989d0d80f4cd3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlNTZlOTdhOTMzODdmMWVmMDQzYzYyYzg0MDQ5NmE5N2E3MmIxMTVlZDViMTljYmZiMjc5YWI1M2Q1MzY2MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5MjgzZTE2MTRjODBlZGYwM2NiZjQzM2NjYTg4NzM3MGY1MjJmNDAyMTVkOGI1ZDAwYmQ4ZWZlNjQ5OGI4MTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3NzlhMjU2OGJmNDM0NWQ1OWJiZTRiYWNjMTFkYjYxNDkwODVmMTlmMzdkYjc0YjdiNzk2YTgyY2UxZGM2ZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzY2Y4MThiNTMwNDMxNzAwOTI2YjAzZWM1ZjRmOWUzZmViNDhkN2VlZmU4ZWI5ZTM0ZjNiNGVlNWY1MDg4YTQifQ"
+        },
+        {
+          "resource": "repo://docs/pi-install.md#L3-L12",
+          "version": "repo-lines-v1:sha256:d2138b241ec460df051683a8c12c266ec5535aeb722579ecf1bf77cc91efc90b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlODllMDRiZjc5Y2VkOThjMjk0ODQwOTQ5MWY1ZTgxYTc2YjllNjQwNTEzZmI2MWI4OGE1ZjE3ZGMwMGRjMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxZTY2OWFlYjA0MDRmMDg3MmE5NDk4MzJkODM4OGI2NDBhNDg0NTMzZGI5OWMxNTM2NmRjMWZiYjljMjE1ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MGNkOWZiNmY0MDYyNjE0MDdhM2ExYjQwMTc5MjY2MGFjYTFjNzU2NjMzM2E3YWRkMDc5OTg1ODRlNjZiMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMmI2YzBlMjZhYjQ4NWNlMzJkNWVlMTNhZjIwYTE0YmViZGY3NzQzZDhkMjZiYWUwNWJkYWViYmFiYzlhOGEifQ"
+        },
+        {
+          "resource": "repo://docs/pi-install.md#L48-L56",
+          "version": "repo-lines-v1:sha256:bc481c1c402f062f06bc3bf91661604b60aa84405aa6641efef2eda8a92789d0:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDVlY2MzMjM1ZGIyYzAwMjhkZmQ3ZGU5OWJkZTU0MDMxYzg0NWViYjQ2OTc1MGM4ODQzYTFiOGE0OTE0M2UwNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjkxNDYwMWJhYmIwZTUyM2M1MzdiOGViODMxZDFjYTBkY2Y4NWVmOWViNTcyNGY2YWVjOGNjMDRjOTU5MDQ4NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTU4NmNiMDFkNjhmMTRiOTAzYzIzNDVhMzNiM2I3OTExYWUwNjc4NjRiNDFmMGZkZTE3YzJjNTRiMmNlYWY5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDAyZGVhZTg1YzFlNTkyYzdjMWY0NzAzOThjM2VjZjg1OThmNzMwZTYzMjhjOWRhZGUwMWZkODM3ZTczY2EwOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b8b1ee69ad1c4284b18b10bf8409e9d5",
+      "statement": "Pi setup verifies release identity before migrating recognized registrations, preserves unrelated settings, and stops on ambiguous legacy content or changed installed bytes.",
+      "evidence": [
+        {
+          "resource": "repo://docs/pi-install.md#L58-L74",
+          "version": "repo-lines-v1:sha256:818353e01226cde3d6b7f499d0b414014e6097be148691fce079f78dfba9699a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5ODMyNDVmYzQzOGUyMzg5ZGZjNDQ2YTRjNGJmNTJjMDZjY2Y2Y2FkNjcxOGRjMTI4NjE2ZjA5OTExMGZiNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmZjRmYTBiOGU3OGY5ZWYyMGNmMDNkYjhmNGM4MDdjZjI5ZDk5NGFjMzkyNjZjNzUyZjJmYmNjYTJlMTYyYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5ZGY4YWNiMDViZThiZjViMTcxN2U5YTJiNjFmYzA4MzM2NTkwYjQ4NjE5NmVhMzgyYzU4MTRkM2MyYjI0MjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM0ODZlZWNlYTQ0ZWFjNTY1NzViYTViZmQyYjBhNDMyYWU0YjZjYTE3OTM5N2U4NTYwNThjYTk0NTQzOTRlNGYifQ"
+        },
+        {
+          "resource": "repo://tools/setup-pi.mts#L390-L444",
+          "version": "repo-lines-v1:sha256:6ec9795f3e686d1b8def3648b28502cc1f24c61b3625220a7efc18fdec2762f4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3Y2VmODg0MDAzMTM1ZjEyNjc0OTA5MDdiM2IyYzZhOWNjNTQ1ZDRlNWEzZGU1NGRlOGM1OTNmNDA2YzY0YjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYjI2N2UwYWQ1YTAxNmM0ODgwZmI0ZGI4NjcxMTg0Njk4YzMzZDViZjk0MDIxMWJlNWQ3ZTJlOGE0NWMyMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0M2YyYWM5MTcyZTVhNTBlNmI0ZGUyNjAxYTI3ZWJlYTMwNjU2MzJiMDdmMjA4MDk1YWU4ODg5NGRiYjI5NzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFjOTFjZGMwNjY1ZjBhN2U5MTllYzAzYTJlYmNkMGZiOGRkNjkyOGRlNTczODcyZmJkYTVkY2QwMTAyZDAyN2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fa564b23c77146659ab1952588633da2",
+      "statement": "Amp installation requires whole bundles, and updates replace directories with sessions stopped rather than merging or using amp plugins update.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L40-L58",
+          "version": "repo-lines-v1:sha256:a481b4caa6f937121a7ec26cd7ffe1fc489a4579df2c64b7f4692c8627be3b12:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNzc4MzQwNDMxM2UxMmExYjdlYTc1ZjdhZjhhMzNlNjFkYjI3Njg0NTA0ZmIyZTVhMjI3NjkwMzU4YTljNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkNjZiMzJmZTdlNjRkYjZhNmY2NzRjODhjN2U5ZjdiNWJhNDViYzNhMzcxNTAzZGY4NDhjZjE5ZTFhYjdiZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2ODFhMjc2NDc2MTg5MDdiYzcyNzgzODk5MjA0NzQ5MmE5Y2UxNzFmM2I0NzcwYWQ0Zjc3NjY0MTBiMThmY2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjYTgxMDFjMjBlZTkxNzBjNGIyNmQ1YzM1ZTM2NTNlZDNhYmNiNzRkMTg1MGIwNzFmODAwOWQzYjBmNTY2M2EifQ"
+        },
+        {
+          "resource": "repo://docs/pkl-projection.md#L130-L146",
+          "version": "repo-lines-v1:sha256:840fe1dac510061cbe18494f33a52ec7b6cc5f1a684234f5615747a6eeaf13b4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlZWYxNjNmZGUwYjkxYTg2MGNhZWZhNjhlMTM0NjdkZjU0Yjk1MzMyNDdlN2ZkYmJhYTdhODgwNjFlMDRkOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNDMxMzdjYjE4NWJiOTg0ZGUzOTg3NWFmZWNlNWMxYTA0MjgzN2I3ZjkzZmExNWQxYjY1NzExNTYyZTU3MjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyMTgyOThmOWI3ZmZlYTI1MzFhMTk5ZTM1NGE0NjYwNmQ2ZmQzYzRjMmYyNTA3M2ZmYjgwMWQ3N2UwMGE5YTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2ZmFhY2FiNmM5YmJjNDI2YzY5ZDRhZjlmZDA5ZDU4YmM1M2QyZjZjY2JhYzBiZDhhZDI1ZWExNTIxNjg1NGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_452b694a9880446393927b8f63c78bd8",
+      "statement": "Amp registers skills and turn-start instructions but does not execute referenced hooks, agents, or MCP configuration or support workflow profiles.",
+      "evidence": [
+        {
+          "resource": "repo://docs/pkl-projection.md#L148-L165",
+          "version": "repo-lines-v1:sha256:6d32cd9384fc00bd3823e69f754d5ee63c20f3506a78d25c5d571a0eeaf16a9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNDBjZDI2YjNmMThiNjBiOTdlNzEwNzBiOGM4NzFmMjczYmRlNDZmYzM3NGZhNjk5YjcwZWU4MjFiNmU1MDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMWUxNTg5ODg3NWY0MDMzN2VmNzA3NjQyY2U3NWNlNTFmODA3OTliZDZiMjM4MzZmMmMxNjE3ZjkxNzkzYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5ZTViNzM5NWU2OTVjODEzMjhkZmMzZGY4OTVhMDBmNTZkYzg3NjZlMWFmNjA5OWY5ZTM1MTVlY2FlMzNkODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3OTM0YjcxMDEwNjJiMTRiNzhlYjA5Yzc4MTk0M2JkNTc5ODJiODY2NDcyZmYwMjQ2OTNhOTkwZGFiMWZhNmMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-10-26T15:55:34.144Z"
+  }
+}

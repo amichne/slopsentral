@@ -1,0 +1,128 @@
+name: Update Repository Documentation
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub schedules use UTC: 05:17 EDT / 04:17 EST.
+    - cron: '17 9 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'source/**'
+      - 'tools/**'
+      - 'docs/**'
+      - 'README.md'
+      - 'AGENTS.md'
+      - '.openwikiignore'
+      - 'openwiki/INSTRUCTIONS.md'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: openwiki-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24.21.0'
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.12.9'
+      - name: Check required credentials
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENWIKI_PR_TOKEN: ${{ secrets.OPENWIKI_PR_TOKEN }}
+        run: test -n "$OPENAI_API_KEY" && test -n "$OPENWIKI_PR_TOKEN"
+      - name: Install the pinned OpenWiki runtime
+        run: npm install --global openwiki@0.6.1
+      - name: Check the existing glossary and reader view
+        run: >-
+          uv run --locked --script
+          source/skills/controlled-technical-writing/scripts/check_glossary.py
+          docs/glossary.json --check-render docs/GLOSSARY.md
+      - name: Update OKF pages through OpenWiki
+        env:
+          OPENWIKI_PROVIDER: openai
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENWIKI_MODEL_ID: gpt-5.6-terra
+          OPENWIKI_TELEMETRY_DISABLED: '1'
+          LANGCHAIN_TRACING_V2: 'false'
+        run: openwiki code --update --print
+      - name: Require complete native finalization
+        # OpenWiki can exit zero after skipping a page; its checkpoint stays interrupted.
+        run: |
+          uv run --locked python - <<'PY'
+          import json
+          from pathlib import Path
+
+          metadata = json.loads(Path("openwiki/.last-update.json").read_text())
+          if metadata.get("status") != "complete" or Path("openwiki/.run.json").exists():
+              raise SystemExit("OpenWiki did not complete native finalization.")
+          PY
+      - name: Check terminology in the updated pages
+        run: >-
+          uv run --locked --script
+          source/skills/controlled-technical-writing/scripts/check_glossary.py
+          docs/glossary.json openwiki
+      - name: Detect substantive generated changes
+        id: changes
+        run: |
+          uv run --locked python - <<'PY'
+          import os
+          import subprocess
+          from pathlib import Path
+
+          paths = [
+              "openwiki/",
+              ":(exclude)openwiki/.last-update.json",
+              ":(exclude)openwiki/.page-manifest.json",
+              ":(exclude)openwiki/.run.json",
+              ":(exclude)openwiki/INSTRUCTIONS.md",
+          ]
+          tracked = subprocess.run(["git", "diff", "--quiet", "HEAD", "--", *paths], check=False)
+          if tracked.returncode not in (0, 1):
+              tracked.check_returncode()
+          untracked = subprocess.check_output([
+              "git", "ls-files", "--others", "--exclude-standard", "-z", "--", *paths,
+          ])
+          changed = tracked.returncode == 1 or bool(untracked)
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a") as output:
+              _ = output.write(f"changed={str(changed).lower()}\n")
+          PY
+      - name: Propose completed documentation changes
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
+        with:
+          token: ${{ secrets.OPENWIKI_PR_TOKEN }}
+          base: main
+          branch: openwiki/update
+          add-paths: |
+            openwiki/
+            :(exclude)openwiki/.run.json
+            :(exclude)openwiki/INSTRUCTIONS.md
+          commit-message: 'docs: refresh source-backed OpenWiki'
+          title: 'docs: refresh source-backed OpenWiki'
+          body: |
+            OpenWiki 0.6.1 completed its native OKF and Claims lifecycle.
+            The repository glossary and generated reader view passed local checks.
+
+            Only generated OpenWiki documentation is included. Review source
+            citations and semantic accuracy before merging; this workflow does
+            not enable auto-merge or publish executable source changes.

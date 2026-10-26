@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:415b3ac71df3d311cea113b0e19eded5945ae7e7a5072b0e7c1acaf149f1a748",
+  "claims": [
+    {
+      "id": "claim_d1bc8d787e7348afa9f084f58f304d0e",
+      "statement": "Plugins compose canonical primitives by reference without taking ownership of their payloads.",
+      "evidence": [
+        {
+          "resource": "repo://source/AGENTS.md#L7-L27",
+          "version": "repo-lines-v1:sha256:fad07cd0b9a35de19f7543f2367582373db39ee07f0d3703d143eaadfde11396:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMGY0YWVkOTA1ZGY1OWZhOWU3MWE3ODc3MTFmYjUxYTZmMzExNzNlNDNhMjlmMGU4NjdiZGYyYjVkM2VhM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZTQ0YjU3ZDc0OTJmMTJhODhlMjEwZGMyOTMyMWQ2MzBiNzg2Njc5OWI2ZWIzNTBiZWU0MjAwZjVjNmVkNWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzExZDRjYzIyOTBkOGQ2NTAzOGVmNjUzMzJhNTRkMjQ2OGE4NGIzZDY3ZjI4YTUzYmRiM2FiZjNmYjUyMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlYjVlYTgyZDQ3YjhhYTMzMDRlNTM3OTg0ZjEyZDA1MTNkY2FlNWI3OTg4ZDUyMjk2NTUzMmI5NDY0YzU0YTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fb66ced57d4146a592a5a1d276f4677c",
+      "statement": "The graph rejects conflicting identities, missing paths, dependency cycles, and duplicate hook selection in a profile.",
+      "evidence": [
+        {
+          "resource": "repo://source/AGENTS.md#L68-L76",
+          "version": "repo-lines-v1:sha256:a8a3adbb87c2ded3560bec5765658fdd9441db386cb754e6c094c70953cb584d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDE0ZTY1MGU3ZTI1ZTY1YTUxODkzMWIyMDNiMTkyMzlhMmFkMTQzZDQzNzU3ZjlkNmZlOTY5ZTBiYTQ3MmQyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTgyMzRhOWQ0MjZmZDcxZGNiNzQxZGVjNGNjYmU0YjZlZTIxMTVkYmE1YjJjNmEwYzIwY2VlYjQ1ZWQ3YTFkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDlkNmM0NDdlMzVlZDdkNzI4ODZiNDk3M2M2MDNiOThhZDJjMjA4OTljZjk5N2RkOTZmYjRhZDYwNmJlYzFmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://source/ARCHITECTURE.md#L39-L44",
+          "version": "repo-lines-v1:sha256:e1ab8018a03fb6565c9847855396d3112264a259b92630e49447a0df3346aab9:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmY2ZmMwYjE0ODM3MDc1NmNhMmU5MWRhMGZiNDY4Njc3ZDg2NTk3YmZjYWRkMzVlOWZiNjE1Yzk2NDBlOTJmZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQyMzI2MTAzNDZhM2IwODkyYTcyOTA2MzI5YzE1ZTQ0OTUyYmYzMDQ2YTRmMDI5YWEyMWQ4ZWFiOWU2NmJkZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTM0ZTBiYmNiYzkyN2Y5ODAwMmU2MWQ2NTVmYWUyY2Y4Y2MyYmQwOTIyNTBiMTRkOWFhMzc1ZjViNGU5YTMxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODg5MmZlMDJkY2Q3YWQxMTIzYWQxNmNhNzRkZjllYjlkYWI1YWMzNTg0ZDU1MTAzYmZmZWUxYmIzOWQ5ZDllZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b9c7f5a2a3b64ceb9ec185f71ffdcb2d",
+      "statement": "A RESOURCE names one regular executable or data file, excludes skill entry points and aliases, and may depend only on resources.",
+      "evidence": [
+        {
+          "resource": "repo://source/AGENTS.md#L60-L66",
+          "version": "repo-lines-v1:sha256:01bf5d9362b7ff2bf2f0dd95341b9da137e919e04672363a3d1c21879a8600bd:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQzY2JlMjg0ZDcxNDA3ODMxYzIxOGI2NjM2MDI3YTEzMzc4YzcwYjBhNTVjYTVlYzQ5NTdkMTg4OGFhNjkyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzUzNmE2MjE3NTFiOGY3ZTA0Y2VlY2ZlNmM3MzYwNDE2YzkxODc1MGI1MzBkY2Y2ZWQzYjE3ZDhlYzg4ZjE1NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjgwYjljNzBkNmVmZTE2OTdlOGM2YTE5MDkxNGU4NWU5NDg2OTYzODA0MDk1M2Y3M2JmZGMwZjRiMGVlN2Q5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGRmMjk2ZGVlZjVjMzc0ODIxMmQ4NDgxY2NjYTgyY2NmNTM5ZmFkNjg4YjlkMThiNGJlMmU2N2VlMjFhNTVlYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c59f12d2fb42412f93630efb22110f63",
+      "statement": "Repository Knowledge composes four documentation and knowledge procedures and explicitly excludes automatic knowledge generation during ordinary code tasks.",
+      "evidence": [
+        {
+          "resource": "repo://source/plugins/repository-knowledge/plugin.json#L12-L48",
+          "version": "repo-lines-v1:sha256:b6f6d4b57d4b854a7b1022b31f583feffcb56ac435523a07f2572320f92ae029:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4YWFjOGNiMjQ4MzU0NWFiZjk2NGU4NTRjZDZkNzIyMjM2ZDU4MGY4YmMyZTM5ODczNjg5NzE0YWI3NzU1N2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlZDYzN2MyYTY4ZTIyNDQ5M2VhM2NiNzEzZWE0NjAwODYzZmEzZDJjYTIzNmQ0MTBmYzkyNjdiNmFiZDc5MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxMGQ4ZTY3ODVkNDBmNDA3YWM4YWM2NDA4YmMzODdiMGI2NDk2YWM2YWVhZWJjNDRlZDFjN2RmYzBlNjkxMjIifQ"
+        },
+        {
+          "resource": "repo://source/plugins/repository-knowledge/plugin.json#L72-L80",
+          "version": "repo-lines-v1:sha256:fe9d3f21774cf5b04c7f236abdc35b442994bde7607a070c5c7cab8717447d45:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk0NDA3OWUzMGE2ZjA4YjVmNGU1ZGM1MDE0MGFmMzQ4NmNkYzllMTJjODJjZjZiOTA0YWRmZDA1YWRkOGJlYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYyMDRkNTk1Y2Y0OTExNDdmYzU3MzRmOWYwNTBkOGFjYzgwMzc5YmIzNzVhMjJlMDliNjZkOTM4YmNjZmEwMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDFhNWUyNGI3MzY5ODcwOTk0OWQ0ZGU3MzJkOTZkNTIxODBjYTViNmEwMTkyNjRmZGVmMTNkMGNlNTQ5NGYxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGY3MzlhMDZjMWNiYjEyNDRlMzM2M2QzOGJjZjlmYTUwY2U4NGZlZDM5OWMyMTkzYTNjN2YwOGQ1OTkxOGIyYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_85ef4cd52c244debaaa16845d2dde878",
+      "statement": "Provider output and installed caches remain consumers, while Pkl mappings and canonical source own projection behavior.",
+      "evidence": [
+        {
+          "resource": "repo://source/ARCHITECTURE.md#L46-L53",
+          "version": "repo-lines-v1:sha256:830d3f9183160cc173d485e476f59a60b21332b26cd5ba70dba54228b374058f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGExYjk2ZmVkYWYwMzQyMjJmZjgyZWZjYzJkODQwOTI1ODM5Zjk0MWNlYmZhNTRlYTFkYTQ3ODQ2MmU1ZjQwOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWI1OTRkNjVmOWU5NDkzNmIyNzVjZjYzZmUzYzhiZTZjOTEyOWU1YzVlNThmMzlmMzVjOTE2ODQxZjY3ZDEwZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWYwMzJjYTQ2MDJhNjViNzhiNmRlMDAxMDUzMDFhMmMzYzAzMWMzNzk5NTY2M2YyMmI5YjJhZDMyOTEwYzg1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzQ0ZWEwYWNkZWMwMGZiMjZjYzI2ZjM4ZThhOGU1ZDA2YmI5ODIwOTFiMWRjZTU5ZTU3OTczZjdjZTI2ODNhMyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-10-26T01:58:25.745Z"
+  }
+}

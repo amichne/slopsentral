@@ -1,0 +1,15 @@
+# Authored source owns behavior; provider projections are consumers.
+/.agents/plugins/
+/.github/plugin/
+/.amp/
+/.codex/
+/.agent-turn/
+/.promptfoo/
+/.venv/
+/node_modules/
+/.git/
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
+**/.env
+**/*.env

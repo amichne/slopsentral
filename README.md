@@ -4,6 +4,13 @@ Slopsentral ships five plugins and 28 skills for Kotlin-first engineering.
 The shared rules prioritize safety, correctness, proof, scope, pure functions, and atomic units.
 New automation uses locked uv Python environments.
 
+Start with the [source-backed OpenWiki quickstart](openwiki/quickstart.md) for
+authoring, projection, validation, installation, and release workflows.
+The wiki uses OKF pages and OpenWiki-managed Claims. It reuses the
+[repository glossary](docs/GLOSSARY.md).
+See [documentation updates](openwiki/workflows/documentation.md) for the
+review-only GitHub Action and required secrets.
+
 ## Choose a plugin
 
 Start with Software Engineering and Kotlin Engineering for Kotlin work.

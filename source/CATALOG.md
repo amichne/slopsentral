@@ -60,9 +60,9 @@ Outside this plugin: Everyday Git and hosted delivery, shell integration, and In
 
 ### repository-knowledge
 
-Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.
+Write technical documentation with source-backed glossaries and maintain OKF knowledge, OpenWiki handoffs, navigation, and overlays.
 
-Choose for technical prose, documentation sites, source-backed knowledge, navigation, or sibling knowledge overlays.
+Choose for documentation, glossary bootstrapping, source-backed OKF knowledge, OpenWiki handoffs, navigation, or sibling knowledge overlays.
 
 Outside this plugin: Automatic knowledge generation during ordinary code tasks or treating documentation as source authority.
 

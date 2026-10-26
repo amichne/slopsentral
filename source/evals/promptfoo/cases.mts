@@ -172,6 +172,46 @@ export const cases: readonly DecisionCase[] = [
     expected: ["B", "D"],
     rationale: "Measurements, terminology coverage, and reader comprehension are separate claims.",
   },
+  {
+    id: "writing-bootstrap-missing-glossary",
+    skill: "controlled-technical-writing",
+    references: ["references/glossary-authoring.md", "references/glossary-contract.md"],
+    scenario: "The user authorizes a repository documentation rewrite. Repository rules and documentation roots contain no glossary. Current local contracts and examined domain references support three specialist concepts; a fourth term has conflicting meanings. Pick every justified action.",
+    choices: {
+      A: "Create a minimal provisional glossary.json for the three supported concepts, scope it to the requested documents, validate it, and generate its GLOSSARY.md reader view before assessment.",
+      B: "Omit glossary creation because it was not separately requested, even though the documentation rewrite is authorized.",
+      C: "Invent the fourth definition and synonym replacements so terminology assessment can pass.",
+      D: "Report the unresolved fourth term and keep unsupported replacements out of the glossary.",
+    },
+    expected: ["A", "D"],
+    rationale: "Authorized durable rewriting includes a missing-glossary bootstrap, but definitions and substitutions still require evidence.",
+  },
+  {
+    id: "writing-assessment-no-bootstrap",
+    skill: "controlled-technical-writing",
+    scenario: "The user asks only to measure an existing runbook and forbids file changes. No glossary exists. The fixed tool can report measurements with terminology marked INCOMPLETE. Pick the justified action.",
+    choices: {
+      A: "Create a provisional glossary before measurement because every documentation task requires one.",
+      B: "Run the requested measurement without a glossary, report INCOMPLETE terminology coverage, and change no repository files.",
+      C: "Treat a grade estimate below 8 as complete terminology coverage.",
+    },
+    expected: ["B"],
+    rationale: "Assessment alone does not authorize glossary creation and cannot prove missing terminology coverage.",
+  },
+  {
+    id: "knowledge-openwiki-existing-glossary",
+    skill: "code-knowledge-base",
+    references: ["references/knowledge-backend-handoff.md"],
+    scenario: "The user requests an OKF rewrite through the existing external OpenWiki integration. A canonical docs/glossary.json and generated reader view already exist. The native page queue has assigned one page, and finish has not run. Pick every justified action.",
+    choices: {
+      A: "Reuse the glossary, include the wiki in its controlled scope before the run, then write only the assigned page and submit sparse Claim decisions through OpenWiki.",
+      B: "Create openwiki/glossary.json and hand-edit Claim sidecars to make the wiki self-contained.",
+      C: "Run the standalone OKF checker instead of OpenWiki submission and report the rewrite complete.",
+      D: "Continue the native queue and report completion only after OpenWiki finish returns complete.",
+    },
+    expected: ["A", "D"],
+    rationale: "A backend change does not create another glossary owner; OpenWiki owns page assignment, Claims persistence, and completion.",
+  },
   // Decision adaptations of PR #102's fixed C1–C5N execution rubrics.
   // Historical tool-run results remain in docs/session-grounded-skill-campaign.md.
   {
