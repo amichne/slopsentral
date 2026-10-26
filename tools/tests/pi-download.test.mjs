@@ -43,6 +43,10 @@ test('setup uses curl trust through an HTTP proxy and rejects untrusted TLS, HTT
   t.after(() => { for (const [name, value] of proxyEnvironment) { if (value === undefined) delete process.env[name]; else process.env[name] = value; } });
   process.env.https_proxy = 'http://127.0.0.1:' + ports.proxy;
   process.env.no_proxy = ''; process.env.NO_PROXY = '';
+  const oldCurlHome = process.env.CURL_HOME;
+  fs.writeFileSync(path.join(directory, '.curlrc'), 'insecure\nlocation-trusted\n');
+  process.env.CURL_HOME = directory;
+  t.after(() => { if (oldCurlHome === undefined) delete process.env.CURL_HOME; else process.env.CURL_HOME = oldCurlHome; });
   const previous = process.env.CURL_CA_BUNDLE;
   const oldToken = process.env.GH_TOKEN;
   process.env.GH_TOKEN = 'fixture_token';
