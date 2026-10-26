@@ -26,20 +26,29 @@ ${timeout ? 'exec /bin/sleep 30' : 'printf \'%s\\n\' "$PI_TEST_VERSION"; exit "$
   fs.writeFileSync(preload, `
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import childProcess from 'node:child_process';
+import { syncBuiltinESMExports } from 'node:module';
+const originalSpawn = childProcess.spawnSync;
+const response = bytes => ({ status: 0, stdout: Buffer.concat([Buffer.from(bytes), Buffer.from('\\n200')]) });
+const missing = () => ({ status: 22, stdout: Buffer.from('\\n404') });
 const bytes = fs.readFileSync(process.env.PI_TEST_SETUP);
 const url = 'https://github.com/amichne/slopsentral/releases/download/slopsentral-v0.1.999/setup-pi.mts';
-globalThis.fetch = async input => {
+globalThis.fetch = async () => { throw new TypeError('fetch failed'); };
+childProcess.spawnSync = (command, args, options) => {
+  if (command !== 'curl') return originalSpawn(command, args, options);
+  const input = args.at(-1);
   fs.appendFileSync(process.env.PI_TEST_REQUESTS, input + '\\n');
   // Reaching qualification proves admission; no fixture release may change settings.
-  if (process.argv[1]?.endsWith('/setup-pi.mts')) return new Response('', { status: 404 });
+  if (process.argv[1]?.endsWith('/setup-pi.mts')) return missing();
   if (input === 'https://api.github.com/repos/amichne/slopsentral/releases/latest') {
-    return Response.json({ tag_name: 'slopsentral-v0.1.999', draft: false, prerelease: false,
+    return response(JSON.stringify({ tag_name: 'slopsentral-v0.1.999', draft: false, prerelease: false,
       assets: [{ name: 'setup-pi.mts', browser_download_url: url, size: bytes.length,
-        digest: 'sha256:' + crypto.createHash('sha256').update(bytes).digest('hex') }] });
+        digest: 'sha256:' + crypto.createHash('sha256').update(bytes).digest('hex') }] }));
   }
-  if (input === url) return new Response(bytes);
+  if (input === url) return response(bytes);
   throw Error('Unexpected network request: ' + input);
 };
+syncBuiltinESMExports();
 `);
   return {
     cwd: directory,

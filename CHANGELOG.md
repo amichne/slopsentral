@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.2
+
+- Use curl for Pi setup downloads with configured certificate trust and proxies.
+- Report the failed download host and curl or HTTP status.
+- Accept `GH_TOKEN` or `GITHUB_TOKEN` for GitHub API requests without exposing tokens in process arguments.
+- Preserve release digests, source provenance, and rejection of plaintext redirects.
+
 ## 4.0.1
 
 - Unify Slopsentral tooling, authored plugins, and all provider release artifacts under one version.

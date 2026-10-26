@@ -229,7 +229,11 @@ test('project-controlled recovery code and transaction have no authority', async
   write(path.join(state, 'setup.json'), { files: [{ file: 'setup-pi.mts', sha256: hash(helper) }] });
   write(path.join(state, 'transaction.json'), { schemaVersion: 1, status: 'applied', version: '0.1.123', files: [{ path: marker, before: Buffer.from('forged').toString('base64'), after: null, mode: 0o600 }] });
   assert.throws(() => rollback(options), /NO_RECOVERY/);
-  const hook = path.join(options.directory, 'offline.mjs'); fs.writeFileSync(hook, 'globalThis.fetch = async () => new Response("absent", { status: 404 });');
+  const hook = path.join(options.directory, 'offline.mjs'); fs.writeFileSync(hook, `import childProcess from 'node:child_process'; import { syncBuiltinESMExports } from 'node:module';
+    const original = childProcess.spawnSync;
+    childProcess.spawnSync = (command, args, options) => command === 'curl'
+      ? { status: 22, stdout: Buffer.from('\\n404') } : original(command, args, options);
+    syncBuiltinESMExports();`);
   for (const flags of [['--project', '--rollback'], ['--rollback', '--project']]) {
     const result = spawnSync('/bin/sh', [path.join(root, 'tools/install-pi.sh'), ...flags], { cwd: options.cwd, env: { ...process.env, NODE_OPTIONS: '--import=' + pathToFileURL(hook).href, PI_CODING_AGENT_DIR: options.agentDir }, encoding: 'utf8' });
     assert.notEqual(result.status, 0); assert.match(result.stderr, /DOWNLOAD_FAILED/); assert.doesNotMatch(result.stderr, /PI_UNAVAILABLE/);
