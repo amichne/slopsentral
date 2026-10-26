@@ -31,9 +31,16 @@ overrides belong outside its tracked tree.
    actual installer owner. Never bulk-stage HOME or the source tree. Stage
    explicit public paths only when a commit is in scope. Do not push from a
    setup request alone.
-6. Run the narrow owning check in an isolated fixture, then verify the affected
-   installed consumer only when installation was requested. Validate source,
-   consumer link target, help, completion and a fresh shell as appropriate.
+6. Inspect the runner's input roots before running checks against a HOME worktree.
+   Build an isolated fixture from the declared public file inventory or tracked
+   source, never a recursive copy of live HOME. Exclude private configuration,
+   histories, credentials, and unrelated links; preserve the public paths and
+   modes the check needs. Run the narrow owning check there. If a required
+   aggregate cannot run safely in this layout, report its exact setup failure;
+   do not delete personal files or loosen assertions to make it green.
+7. Verify the affected installed consumer only when installation was requested.
+   Validate source, consumer link target, help, completion and a fresh shell as
+   appropriate. Passing fixture checks do not prove the live shell loaded it.
 
 ## Completion
 
