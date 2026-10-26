@@ -2,7 +2,7 @@
   "author": {
     "name": "Amichne"
   },
-  "description": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
+  "description": "Write technical documentation with source-backed glossaries and maintain OKF knowledge, OpenWiki handoffs, navigation, and overlays.",
   "hooks": [
     "./hooks/code-knowledge-drift.hooks.json",
     "./hooks/knowledge-overlay.hooks.json"
@@ -21,9 +21,9 @@
     ],
     "developerName": "Amichne",
     "displayName": "Repository Knowledge",
-    "longDescription": "Write technical documentation and maintain source-backed repository knowledge, navigation, and overlays.",
+    "longDescription": "Write technical documentation with source-backed glossaries and maintain OKF knowledge, OpenWiki handoffs, navigation, and overlays.",
     "privacyPolicyURL": "https://github.com/amichne/slopsentral",
-    "shortDescription": "Write technical documentation and maintain source-backed repository k...",
+    "shortDescription": "Write technical documentation with source-backed glossaries and maint...",
     "termsOfServiceURL": "https://github.com/amichne/slopsentral",
     "websiteURL": "https://github.com/amichne/slopsentral"
   },
