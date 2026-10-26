@@ -16,6 +16,11 @@ Inspect existing primitives before a new design.
 Extend an existing owner when its scope covers the work.
 Keep skills and agents useful without plugin text or host-specific metadata.
 Preserve public-safe provenance and avoid names from upstream system skills.
+Classify supplied notes as evidence, normative requirements, or requested bundled
+resources before copying anything. Evidence clarifies the rule; it is not a
+request to distribute the notes, private examples, or their entire workflow.
+Bundle only material whose inclusion is requested or necessary for the consumer,
+with the applicable provenance and distribution authority.
 
 Keep `SKILL.md` as a focused router.
 Place concrete variants and examples in references.
@@ -30,6 +35,9 @@ Keep decisions pure and effect adapters explicit.
 3. Write realistic trigger cases, a nearest non-trigger, and the evidence that separates them.
 4. For agent profiles, define delegated ownership, excluded work, tool access, stop conditions, and returned evidence.
 5. Define a focused executable assertion or a recorded assessment with an explicit evidence limit.
+   Historical traces diagnose a candidate fix; they do not measure the edited
+   instructions. Fresh model comparisons need their own applicable authority.
+   Keep evidence-only notes and raw transcripts outside the distributed package.
 6. Keep one procedure for shared work and route case-specific details through the references.
 7. Examine frontmatter, links, scripts, schemas, provenance, and composition through the repository gates.
 8. Report the changed owner, passing assertions, remaining findings, and absent model evidence.
@@ -45,6 +53,8 @@ Keep decisions pure and effect adapters explicit.
 ## Completion
 
 Each supported task has one discoverable owner and a specific success condition.
+Review the shipped file set: each bundled resource has a consumer and an
+inclusion reason, not merely a mention in the conversation.
 Structured output has a schema or typed parser.
 Fixture consistency proves the fixture contract only.
 A model-routing claim needs a real trace or an explicitly limited recorded report.
