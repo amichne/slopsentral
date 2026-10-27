@@ -1,12 +1,5 @@
 {
   "hooks": {
-    "PostToolUse": [
-      {
-        "bash": "uv run --locked --script \"$PLUGIN_ROOT/hooks/agents-md-scope.py\"",
-        "timeoutSec": 30,
-        "type": "command"
-      }
-    ],
     "SessionStart": [
       {
         "bash": "uv run --locked --script \"$PLUGIN_ROOT/hooks/inject-instruction-context.py\" --instruction agent-execution --instruction engineering-design",
