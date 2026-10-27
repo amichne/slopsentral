@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-26T11:55:56-04:00",
+  "generatedAt": "2026-10-27T14:53:44-04:00",
   "plugins": [
     {
       "name": "software-engineering",
       "references": [
         {
           "name": "agents-md-scope",
-          "sha256": "sha256:028d8dc66d0ef7b7fec5b033320ff370a801f0f04d95b8d4cf2df3cb7d7e83d7",
+          "sha256": "sha256:a5e80f5546e662224c18b61f108f148cfddca73cb7c272142df181e54e3f02b2",
           "sourcePath": "source/hooks/agents-md-scope.hook.json",
           "targetPath": "hooks/agents-md-scope.hooks.json",
           "type": "HOOK"
@@ -311,6 +311,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "b5b33bb5ec1f4f8fa4d2b67e5d52e31930c94328",
+  "sourceSha": "e2d83acf130dfbe5cb862c27f5ab25089e30622f",
   "type": "HYDRATED_MARKETPLACE"
 }
