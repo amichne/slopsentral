@@ -1,24 +1,29 @@
 {
   "hooks": {
-    "UserPromptSubmit": [{"hooks": [{
-      "type": "command",
-      "command": "uv run --locked --script hooks/agents-md-scope.py",
-      "timeout": 30,
-      "additionalContextLimit": 32768,
-      "statusMessage": "Examine instruction scopes"
-    }]}],
-    "PostToolUse": [{"hooks": [{
-      "type": "command",
-      "command": "uv run --locked --script hooks/agents-md-scope.py",
-      "timeout": 30,
-      "additionalContextLimit": 32768,
-      "statusMessage": "Examine scope changes"
-    }]}],
-    "Stop": [{"hooks": [{
-      "type": "command",
-      "command": "uv run --locked --script hooks/agents-md-scope.py",
-      "timeout": 30,
-      "statusMessage": "Examine instruction maintenance"
-    }]}]
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --locked --script hooks/agents-md-scope.py",
+            "timeout": 30,
+            "additionalContextLimit": 32768,
+            "statusMessage": "Examine instruction scopes"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --locked --script hooks/agents-md-scope.py",
+            "timeout": 30,
+            "statusMessage": "Examine instruction maintenance"
+          }
+        ]
+      }
+    ]
   }
 }

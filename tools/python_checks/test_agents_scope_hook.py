@@ -16,6 +16,7 @@ def test_hook_is_composed_and_local_commands_exist() -> None:
     plugin = json.loads((ROOT / "source/plugins/software-engineering/plugin.json").read_text())
     assert "agents-md-scope" in {hook["name"] for hook in plugin["hooks"]}
     local = json.loads((ROOT / ".codex/hooks.json").read_text())
+    assert set(local["hooks"]) == {"UserPromptSubmit", "Stop"}
     commands = [
         item["command"]
         for groups in local["hooks"].values()
@@ -231,7 +232,17 @@ def test_global_install_preserves_other_hooks_and_uses_immutable_code(tmp_path: 
     codex_home.mkdir()
     _ = (codex_home / "config.toml").write_text("[features]\nhooks = true\n")
     other = {"matcher": "Bash", "hooks": [{"type": "command", "command": "existing-hook"}]}
-    original = json.dumps({"hooks": {"Stop": [other]}})
+    original = json.dumps(
+        {
+            "hooks": {
+                "Stop": [other],
+                "PostToolUse": [
+                    other,
+                    {"hooks": [{"type": "command", "command": "old/agents-md-scope.py"}]},
+                ],
+            }
+        }
+    )
     _ = (codex_home / "hooks.json").write_text(original)
     command = [
         sys.executable,
@@ -250,6 +261,7 @@ def test_global_install_preserves_other_hooks_and_uses_immutable_code(tmp_path: 
             == Path(str(SCRIPT) + ".lock").read_bytes()
         )
     installed = json.loads((codex_home / "hooks.json").read_text())
+    assert installed["hooks"]["PostToolUse"] == [other]
     assert installed["hooks"]["Stop"][0] == other
     assert len(installed["hooks"]["Stop"]) == 2
     backup = next(codex_home.glob("hooks.json.before-agents-md-scope-*"))

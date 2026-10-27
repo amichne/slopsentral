@@ -88,6 +88,14 @@ def merge(existing: object, adapter: object, command: str) -> dict[str, object] 
     if not mapping(hooks) or not mapping(additions):
         return Rejected(Code.INVALID_CONFIG)
     merged = dict(hooks)
+    if "PostToolUse" in merged:
+        previous = groups(merged["PostToolUse"], None)
+        if isinstance(previous, Rejected):
+            return previous
+        if previous:
+            merged["PostToolUse"] = previous
+        else:
+            del merged["PostToolUse"]
     for event, entries in additions.items():
         previous, fresh = groups(merged.get(event, []), None), groups(entries, command)
         if isinstance(previous, Rejected) or isinstance(fresh, Rejected):

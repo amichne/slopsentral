@@ -1,7 +1,7 @@
 # Maintain scoped instructions
 
 The `agents-md-scope` hook requests instruction maintenance after Git changes.
-It names the affected scopes and refreshes changed instruction text in the agent context.
+It names the affected scopes and includes changed instruction text in its response.
 The agent must examine the source before it changes instructions.
 
 Shared rules belong in the ancestor that owns them.
@@ -12,9 +12,9 @@ The hook does not create placeholder files or copy parent rules into children.
 ## Events and review
 
 `UserPromptSubmit` establishes the first baseline without a review obligation for preexisting edits.
-Later prompts and `PostToolUse` compare actual Git changes against the previous snapshot.
+Later prompts and `Stop` compare actual Git changes against the previous snapshot.
 Changes include untracked files, renames, deletions, committed edits, and edits from external tools between events.
-A failed tool can still change files, so its exit status does not suppress the comparison.
+The comparison includes changes from failed tools.
 
 Changed instructions trigger a review of their descendants.
 The hook reads `AGENTS.md` and `AGENTS.override.md` in the repository and its ancestors.
@@ -42,7 +42,7 @@ uv run --locked tools/install_agents_hook.py
 
 The installer needs `features.hooks = true` in the user configuration.
 It copies the authored script and lock into a directory whose name contains their combined digest.
-It preserves unrelated global hooks and saves the previous `hooks.json` before a change.
+It removes the old `PostToolUse` scope hook, preserves other hooks, and saves `hooks.json` before a change.
 The installed command does not depend on this worktree.
 
 Review and trust the exact definitions through Codex `/hooks`.

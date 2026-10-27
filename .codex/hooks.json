@@ -13,19 +13,6 @@
         ]
       }
     ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "uv run --locked --script \"$(git rev-parse --show-toplevel)/source/hooks/agents-md-scope.py\"",
-            "timeout": 30,
-            "additionalContextLimit": 32768,
-            "statusMessage": "Examine scope changes"
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "hooks": [

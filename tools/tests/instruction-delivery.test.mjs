@@ -118,17 +118,16 @@ test('software-engineering maintains scoped instructions through its configured 
     hook_event_name: event, session_id: 'scope-contract', cwd: repository,
     tool_name: 'Bash', tool_input: {}, tool_response: { exit_code: 1 }, stop_hook_active: false,
   }));
-  assert.deepEqual(Object.keys(config.hooks).sort(), ['PostToolUse', 'Stop', 'UserPromptSubmit']);
+  assert.deepEqual(Object.keys(config.hooks).sort(), ['Stop', 'UserPromptSubmit']);
   assert.deepEqual(hook('UserPromptSubmit'), {});
-  assert.deepEqual(hook('PostToolUse'), {});
   fs.writeFileSync(path.join(repository, 'module/pyproject.toml'), '[project]\nname = "module"\n');
-  assert.match(hook('PostToolUse').hookSpecificOutput.additionalContext, /module\/AGENTS\.md/);
+  assert.match(hook('Stop').reason, /module\/AGENTS\.md/);
   assert.equal(fs.existsSync(path.join(repository, 'module/AGENTS.md')), false);
   assert.equal(hook('Stop').decision, 'block');
 
   fs.writeFileSync(path.join(repository, 'module/AGENTS.md'), '# Module\nUse the module command.\n');
   fs.writeFileSync(path.join(repository, 'AGENTS.md'), '# Repository\nUse the new root command.\n');
-  const refreshed = hook('PostToolUse').hookSpecificOutput.additionalContext;
+  const refreshed = hook('Stop').reason;
   assert.match(refreshed, /Use the new root command\./);
   assert.match(refreshed, /module\/AGENTS\.md/);
   const stopped = hook('Stop');
@@ -140,5 +139,5 @@ test('software-engineering maintains scoped instructions through its configured 
     'The root and module instructions now describe their fixture source.'));
   assert.equal(receipt.type, 'REVIEW_RECORDED');
   assert.deepEqual(hook('Stop'), {});
-  assert.match(hook('PostToolUse', '[]').systemMessage, /INVALID_EVENT/);
+  assert.match(hook('Stop', '[]').systemMessage, /INVALID_EVENT/);
 });
