@@ -2,6 +2,8 @@ export type Skill =
   | "semantic-ratchet"
   | "tdd"
   | "git-change-flow"
+  | "github-ci-operations"
+  | "pull-request-lifecycle"
   | "kotlin-design-practices"
   | "python-tooling"
   | "controlled-technical-writing"
@@ -22,6 +24,108 @@ export interface DecisionCase {
 
 // The oracle stays outside the rendered prompt. Change a case ID when its meaning changes.
 export const cases: readonly DecisionCase[] = [
+  {
+    id: "roi-ci-empty-is-not-success",
+    skill: "github-ci-operations",
+    scenario: "A new PR has head abc123. Its required-check query returns an empty array before Actions starts. The observer reports success because no failed rows exist. Pick every justified action.",
+    choices: {
+      A: "Report that the current revision passed its required checks.",
+      B: "Keep the result unresolved until evidence establishes the expected checks and their terminal states.",
+      C: "Repair the empty-result classification and preserve the observed head in its regression.",
+      D: "Disable required checks to make the empty result authoritative.",
+    },
+    expected: ["B", "C"],
+    rationale: "An empty inventory proves no check outcome. The revision and expected evidence must remain explicit.",
+  },
+  {
+    id: "roi-ci-changed-head",
+    skill: "pull-request-lifecycle",
+    scenario: "Required checks passed for PR head abc123. A later push changes its head to def456 while the observer waits. Pick the supported delivery statement.",
+    choices: {
+      A: "The PR is green because its previous revision passed.",
+      B: "The checks prove abc123 only. Get fresh evidence for def456 before a green claim.",
+      C: "Use the branch name as proof that both revisions have the same check outcome.",
+    },
+    expected: ["B"],
+    rationale: "A terminal result belongs to its observed revision. A branch name cannot transfer that result to a later commit.",
+  },
+  {
+    id: "roi-ci-timeout-continuation",
+    skill: "github-ci-operations",
+    scenario: "A bounded observer times out while checks remain queued. Its saved request binds a PR head, baseline, and completion predicate. An explicit resume command exists. Pick every justified action.",
+    choices: {
+      A: "Resume the saved request with the same identity and predicate after reporting the timeout as unresolved.",
+      B: "Treat the timeout as a successful completion because no failing check appeared.",
+      C: "Start several independent status loops so each agent can watch the same target.",
+      D: "Keep one observer owner and preserve evidence that separates timeout from a terminal result.",
+    },
+    expected: ["A", "D"],
+    rationale: "Timeout limits a wait, not the target identity. One owner and a preserved request avoid duplicate observation and false completion.",
+  },
+  {
+    id: "roi-validation-coverage-equivalence",
+    skill: "github-ci-operations",
+    references: ["references/workflow-graph-optimization.md"],
+    scenario: "An old qualification takes 50 minutes with semantic fixtures enabled. A new routine gate takes 7 minutes with those fixtures disabled. Both runs pass. Pick every supported conclusion.",
+    choices: {
+      A: "The qualification became seven times faster with equal coverage.",
+      B: "The timings describe different proof sets and cannot establish an equal-coverage speedup.",
+      C: "Keep routine and qualification evidence distinct, then compare matched proof sets before a performance claim.",
+      D: "Delete the qualification because the faster gate passed.",
+    },
+    expected: ["B", "C"],
+    rationale: "Latency and proof coverage must share a comparison contract. A smaller proof set cannot establish a faster equivalent gate.",
+  },
+  {
+    id: "roi-validation-stop-at-scope",
+    skill: "tdd",
+    scenario: "A one-module parser fix passes its independent regression, nearest invalid case, and every required repository check. No unresolved consumer or platform risk remains. Pick the next action.",
+    choices: {
+      A: "Run every broad suite repeatedly because more tests always strengthen this specific claim.",
+      B: "Stop validation and deliver the scoped result with the exact checks and their limits.",
+      C: "Add assertions that mirror production branches to raise the test count before delivery.",
+    },
+    expected: ["B"],
+    rationale: "The task ends when its decisive proof and required checks pass. More execution needs a named unresolved risk.",
+  },
+  {
+    id: "roi-delivery-standing-authority",
+    skill: "pull-request-lifecycle",
+    scenario: "The user requests implementation. Repository instructions explicitly authorize task commits, branch pushes, and PR creation after local checks. Checks pass. No instruction authorizes a merge or release. Pick every justified action.",
+    choices: {
+      A: "Commit the scoped files, push the task branch, and create the PR under the existing authority.",
+      B: "Stop at an uncommitted diff and request the same publication permission again.",
+      C: "Merge and release because PR creation authority includes those actions.",
+      D: "Report the PR, its revision, and check evidence while leaving merge and release untouched.",
+    },
+    expected: ["A", "D"],
+    rationale: "Standing authority covers its named delivery steps. It neither needs repetition nor grants unnamed merge or release actions.",
+  },
+  {
+    id: "roi-eval-tied-control",
+    skill: "skill-primitive-authoring",
+    scenario: "A decision evaluation scores 12 of 12 for both the loaded skill and the no-skill control. No tool executes. Pick every supported report statement.",
+    choices: {
+      A: "The skill caused better real-world task completion.",
+      B: "Both variants passed these decision cases. The result shows no measured advantage for the skill.",
+      C: "Tool execution and host behavior remain unmeasured by this suite.",
+      D: "Convert the tied result into a percentage improvement from the skill quality score.",
+    },
+    expected: ["B", "C"],
+    rationale: "A tied paired decision result establishes neither uplift nor executed behavior. Those claims need separate evidence.",
+  },
+  {
+    id: "roi-token-cache-accounting",
+    skill: "github-ci-operations",
+    scenario: "A transcript reports 100 million cumulative input tokens, including 98 million cached input tokens, across repeated tool turns. No billing statement or price contract is supplied. Pick the supported conclusion.",
+    choices: {
+      A: "The transcript proves payment for 100 million uncached tokens.",
+      B: "Report the recorded total and cached categories separately. Neither alone proves money spent or avoidable waste.",
+      C: "Assume all cached input is free and all remaining tokens are unnecessary.",
+    },
+    expected: ["B"],
+    rationale: "Usage categories are evidence of recorded consumption. Billing and counterfactual waste need their own inputs.",
+  },
   {
     id: "ratchet-consumer-and-construction",
     skill: "semantic-ratchet",
