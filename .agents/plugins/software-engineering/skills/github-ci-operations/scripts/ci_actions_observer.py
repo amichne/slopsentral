@@ -49,6 +49,7 @@ from ci_actions_types import (
     INELIGIBLE_DURATION_CONCLUSIONS,
     STATE_VERSION,
     ActiveRequest,
+    Commit,
     DurationSample,
     ObserverError,
     Outcome,
