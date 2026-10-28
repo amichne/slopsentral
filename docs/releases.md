@@ -14,18 +14,21 @@ an assertion that every change is semantically patch-compatible.
 
 1. Main pushes run `Validate Source`. CI checks the shared version, projects and
    tests all providers, installs the Pi archive, and retains source-bound artifacts.
-2. `Release Slopsentral` admits the successful main run. Ordinary commits with no
-   version increment do not create releases. A version increment publishes only
-   the exact retained bytes, under `slopsentral-vX.Y.Z`.
+2. `Release Slopsentral` admits a successful main run whose shared version exceeds
+   the latest published version. It publishes the exact retained bytes under `slopsentral-vX.Y.Z`.
+   After a version is published, ordinary commits do not create another release of that version.
 3. Publication verifies provider manifests, archive digests, installer receipts,
    source identity, and actual GitHub downloads before making the release current.
    It never rebuilds during publication or replaces an existing source tag/asset.
-4. Only after publication succeeds does the publisher mark the merged Release
-   Please PR `autorelease: tagged`, removing `autorelease: pending`. This prevents
-   the next release PR from being blocked by a permanently pending prior release.
-5. `Release Please` runs after that workflow succeeds (including ordinary no-release
-   commits). Conventional commits accumulate into one version/changelog PR. Humans
-   review and merge that PR; Release Please itself does not publish GitHub releases.
+4. After publication succeeds, the publisher marks the merged version PR `autorelease: tagged` and removes `autorelease: pending`.
+   The version PR must match the published version and belong to the history of the released source.
+5. `Release Please` creates a version PR after a successful release workflow, including a run that needs no release.
+6. The workflow merges that PR after both `Validate Source` jobs pass for its exact head.
+   The PR must come from the configured App and change only declared version files plus `CHANGELOG.md`.
+   Its version must advance by one patch. Forks, stale heads, drafts, and mixed code changes cannot pass this gate.
+
+The App token triggers normal main validation after the automatic merge.
+The publisher then promotes the artifacts from that main run. Ordinary code PRs keep their normal merge process.
 
 The first merge bootstraps the unified `4.0.1` release. Subsequent versions come
 from release PRs. The existing `Publish Harnesses` workflow continues maintaining
@@ -40,8 +43,8 @@ Adding a new plugin requires adding its manifest to the release configuration;
 
 ## Required GitHub App setup
 
-The repository does not currently have the required App credentials. The workflow
-is wired but cannot create release PRs until a maintainer completes these steps:
+The workflow needs repository-scoped GitHub App credentials to create release PRs.
+For a new installation, complete these steps:
 
 1. [Register a GitHub App](https://docs.github.com/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app)
    and install it on **amichne/slopsentral only**. No webhook is needed for this
@@ -87,6 +90,11 @@ version. If publication succeeded but lifecycle labeling failed, verify the
 published downloads, then rerun only the idempotent label-finalization operation
 for that exact published source revision. Do not remove pending labels as a
 substitute for verifying a release.
+
+If validation fails after a version PR merges, repair the failure through the normal PR process.
+The next successful main run keeps that unpublished version and can publish its tested artifacts.
+The publisher then completes the original version PR, even when the released source includes the repair commit.
+The Pkl fixture uses a local registry for its publication check. An HTTP failure still stops qualification.
 
 Pi receipt schema 2 binds the release version to `package.json` at the admitted
 source commit, independently of the CI run number. Run identity and attempts are

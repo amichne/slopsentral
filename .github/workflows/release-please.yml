@@ -2,9 +2,9 @@ name: Release Please
 
 on:
   workflow_run:
-    workflows: [Release Slopsentral]
+    workflows: [Release Slopsentral, Validate Source]
     types: [completed]
-    branches: [main]
+    branches: [main, release-please--branches--main--components--slopsentral]
   workflow_dispatch:
 
 permissions:
@@ -17,7 +17,8 @@ concurrency:
 jobs:
   release-pr:
     if: >-
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.name == 'Release Slopsentral' &&
+       github.event.workflow_run.conclusion == 'success') ||
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -39,3 +40,48 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
           skip-github-release: true
+
+  merge-pr:
+    if: >-
+      github.event_name == 'workflow_run' && github.event.workflow_run.name == 'Validate Source' &&
+      github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.head_branch == 'release-please--branches--main--components--slopsentral' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.12.9'
+      - name: Create repository-scoped release merge token
+        id: app
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        with:
+          app-id: ${{ secrets.RELEASE_PLEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_PLEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Admit the exact validated version PR
+        id: admission
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ github.event.workflow_run.head_sha }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+          EXPECTED_AUTHOR: ${{ steps.app.outputs.app-slug }}[bot]
+        run: >-
+          uv run --locked python -m tools.release_version admit-pr
+          --repository "$GITHUB_REPOSITORY" --revision "$SOURCE_SHA" --run-id "$SOURCE_RUN_ID"
+          --author "$EXPECTED_AUTHOR" --github-output "$GITHUB_OUTPUT"
+      - name: Merge the admitted version PR
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          PR_NUMBER: ${{ steps.admission.outputs.pull_request }}
+          SOURCE_SHA: ${{ steps.admission.outputs.revision }}
+        run: gh pr merge "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --squash --match-head-commit "$SOURCE_SHA"

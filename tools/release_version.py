@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
@@ -25,8 +26,10 @@ from tools.pi_candidate import (
     VERSION,
     CandidateError,
     Failure,
+    listing,
     load,
     mapping,
+    number_field,
     observe,
     positive,
     require_identity,
@@ -38,6 +41,7 @@ from tools.pi_candidate import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+RELEASE_BRANCH = "release-please--branches--main--components--slopsentral"
 
 
 def document(path: Path) -> dict[str, object]:
@@ -165,6 +169,126 @@ class Selection:
     release: bool
 
 
+@dataclass(frozen=True, slots=True)
+class _ValidatedReleasePr:
+    number: int
+    revision: str
+    version: str
+
+
+def _release_paths() -> frozenset[str]:
+    config = document(ROOT / "release-please-config.json")
+    if not mapping(packages := config.get("packages")) or not mapping(unit := packages.get(".")):
+        raise CandidateError(Failure.INVALID_RECORD)
+    if not sequence(extra := unit.get("extra-files")):
+        raise CandidateError(Failure.INVALID_RECORD)
+    paths = {
+        "package.json",
+        "package-lock.json",
+        ".release-please-manifest.json",
+        text_field(unit, "changelog-path"),
+    }
+    for item in extra:
+        if not mapping(item):
+            raise CandidateError(Failure.INVALID_RECORD)
+        paths.add(text_field(item, "path"))
+    return frozenset(paths)
+
+
+def _validated_pr(repository: str, revision: str, author: str, number: int) -> _ValidatedReleasePr:
+    pull = observe(f"repos/{repository}/pulls/{number}")
+    if (
+        not mapping(pull)
+        or not mapping(head := pull.get("head"))
+        or not mapping(head_repo := head.get("repo"))
+        or not mapping(base := pull.get("base"))
+        or not mapping(base_repo := base.get("repo"))
+        or not mapping(user := pull.get("user"))
+        or not sequence(labels := pull.get("labels"))
+    ):
+        raise CandidateError(Failure.INVALID_RECORD)
+    if (
+        pull.get("state") != "open"
+        or pull.get("draft") is not False
+        or head.get("sha") != revision
+        or head.get("ref") != RELEASE_BRANCH
+        or head_repo.get("full_name") != repository
+        or base.get("ref") != "main"
+        or base_repo.get("full_name") != repository
+        or user.get("login") != author
+        or user.get("type") != "Bot"
+        or not any(
+            mapping(label) and label.get("name") == "autorelease: pending" for label in labels
+        )
+    ):
+        raise CandidateError(Failure.WRONG_PRODUCER)
+    files = observe(f"repos/{repository}/pulls/{number}/files?per_page=100")
+    if not sequence(files) or len(files) >= PAGE_SIZE or pull.get("changed_files") != len(files):
+        raise CandidateError(Failure.INCOMPLETE_RESPONSE)
+    allowed = _release_paths()
+    if len(files) != len(allowed) or any(
+        not mapping(file) or file.get("status") != "modified" for file in files
+    ):
+        raise CandidateError(Failure.PAYLOAD_MISMATCH)
+    if frozenset(text_field(file, "filename") for file in files if mapping(file)) != allowed:
+        raise CandidateError(Failure.PAYLOAD_MISMATCH)
+    version = source_version(repository, revision)
+    previous = source_version(repository, text_field(base, "sha"))
+    current_parts = tuple(int(part) for part in version.split("."))
+    previous_parts = tuple(int(part) for part in previous.split("."))
+    if current_parts != (previous_parts[0], previous_parts[1], previous_parts[2] + 1):
+        raise CandidateError(Failure.INVALID_IDENTITY)
+    return _ValidatedReleasePr(number, revision, version)
+
+
+def admit_pr(repository: str, revision: str, run_id: int, author: str) -> _ValidatedReleasePr:
+    require_identity(repository, revision)
+    if not positive(run_id) or not re.fullmatch(r"[a-z0-9-]+\[bot\]", author):
+        raise CandidateError(Failure.INVALID_IDENTITY)
+    producer = successful_run(
+        observe(f"repos/{repository}/actions/runs/{run_id}"),
+        repository,
+        revision,
+    )
+    if (
+        producer.get("id") != run_id
+        or producer.get("event") != "pull_request"
+        or producer.get("head_branch") != RELEASE_BRANCH
+        or not mapping(owner := producer.get("head_repository"))
+        or owner.get("full_name") != repository
+        or not mapping(actor := producer.get("actor"))
+        or actor.get("login") != author
+    ):
+        raise CandidateError(Failure.WRONG_PRODUCER)
+    attempt = number_field(producer, "run_attempt")
+    jobs = listing(
+        observe(f"repos/{repository}/actions/runs/{run_id}/attempts/{attempt}/jobs?per_page=100"),
+        "jobs",
+    )
+    for name in ("Validate marketplace source", "Retain tested Pi candidate"):
+        matches = [job for job in jobs if job.get("name") == name]
+        if (
+            len(matches) != 1
+            or matches[0].get("status") != "completed"
+            or matches[0].get("conclusion") != "success"
+        ):
+            raise CandidateError(Failure.PRODUCER_NOT_SUCCESSFUL)
+    pulls = observe(f"repos/{repository}/commits/{revision}/pulls?per_page=100")
+    if not sequence(pulls) or len(pulls) >= PAGE_SIZE:
+        raise CandidateError(Failure.INCOMPLETE_RESPONSE)
+    matches = [
+        pull
+        for pull in pulls
+        if mapping(pull)
+        and pull.get("state") == "open"
+        and mapping(head := pull.get("head"))
+        and head.get("ref") == RELEASE_BRANCH
+    ]
+    if len(matches) != 1:
+        raise CandidateError(Failure.WRONG_PRODUCER)
+    return _validated_pr(repository, revision, author, number_field(matches[0], "number"))
+
+
 def select(repository: str, revision: str, run_id: int) -> Selection:
     if not REPOSITORY.fullmatch(repository) or not positive(run_id):
         raise CandidateError(Failure.INVALID_IDENTITY)
@@ -191,28 +315,73 @@ def select(repository: str, revision: str, run_id: int) -> Selection:
     previous_parts = tuple(int(part) for part in previous.split("."))
     if current_parts < previous_parts:
         raise CandidateError(Failure.INVALID_IDENTITY)
-    return Selection(selected, version, current_parts > previous_parts)
+    published = observe(f"repos/{repository}/releases/latest")
+    if (
+        not mapping(published)
+        or published.get("draft") is not False
+        or published.get("prerelease") is not False
+    ):
+        raise CandidateError(Failure.INVALID_RECORD)
+    tag = text_field(published, "tag_name")
+    published_version = tag.removeprefix("slopsentral-v")
+    if not tag.startswith("slopsentral-v") or not VERSION.fullmatch(published_version):
+        raise CandidateError(Failure.INVALID_RECORD)
+    published_parts = tuple(int(part) for part in published_version.split("."))
+    if current_parts < published_parts:
+        raise CandidateError(Failure.INVALID_IDENTITY)
+    return Selection(selected, version, current_parts > published_parts)
+
+
+@dataclass(frozen=True, slots=True)
+class _PendingVersionPr:
+    number: int
+
+
+def _pending_version_pr(
+    repository: str,
+    revision: str,
+    version: str,
+    pull: object,
+) -> tuple[_PendingVersionPr, ...]:
+    if not mapping(pull) or not sequence(labels := pull.get("labels")):
+        raise CandidateError(Failure.INVALID_RECORD)
+    if not mapping(pull.get("pull_request")) or not any(
+        mapping(label) and label.get("name") == "autorelease: pending" for label in labels
+    ):
+        return ()
+    number = pull.get("number")
+    if not positive(number):
+        raise CandidateError(Failure.INVALID_RECORD)
+    detail = observe(f"repos/{repository}/pulls/{number}")
+    if not mapping(detail) or not mapping(base := detail.get("base")):
+        raise CandidateError(Failure.INVALID_RECORD)
+    if not detail.get("merged_at") or base.get("ref") != "main":
+        return ()
+    merged = text_field(detail, "merge_commit_sha")
+    if source_version(repository, merged) != version:
+        return ()
+    if merged != revision:
+        comparison = observe(f"repos/{repository}/compare/{merged}...{revision}")
+        if not mapping(comparison) or comparison.get("status") != "ahead":
+            raise CandidateError(Failure.WRONG_PRODUCER)
+    return (_PendingVersionPr(number),)
 
 
 def finalize(repository: str, revision: str) -> None:
     require_identity(repository, revision)
-    pulls = observe(f"repos/{repository}/commits/{revision}/pulls?per_page=100")
+    version = source_version(repository, revision)
+    pulls = observe(
+        f"repos/{repository}/issues?state=closed&labels=autorelease%3A%20pending&per_page=100"
+    )
     if not sequence(pulls) or len(pulls) >= PAGE_SIZE:
         raise CandidateError(Failure.INCOMPLETE_RESPONSE)
-    pending: list[int] = []
-    for pull in pulls:
-        if not mapping(pull) or not sequence(labels := pull.get("labels")):
-            raise CandidateError(Failure.INVALID_RECORD)
-        if pull.get("merge_commit_sha") != revision or not pull.get("merged_at"):
-            continue
-        if any(mapping(label) and label.get("name") == "autorelease: pending" for label in labels):
-            number = pull.get("number")
-            if not positive(number):
-                raise CandidateError(Failure.INVALID_RECORD)
-            pending.append(number)
+    pending = tuple(
+        found
+        for pull in pulls
+        for found in _pending_version_pr(repository, revision, version, pull)
+    )
     if not pending:
         return
-    version = source_version(repository, revision)
     release = observe(f"repos/{repository}/releases/tags/slopsentral-v{version}")
     ref = observe(f"repos/{repository}/git/ref/tags/slopsentral-v{version}")
     if (
@@ -240,13 +409,13 @@ def finalize(repository: str, revision: str) -> None:
             "--force",
         ]
     )
-    for number in pending:
+    for pull in pending:
         _ = run_command(
             [
                 "gh",
                 "pr",
                 "edit",
-                str(number),
+                str(pull.number),
                 "--repo",
                 repository,
                 "--remove-label",
@@ -259,11 +428,12 @@ def finalize(repository: str, revision: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    _ = parser.add_argument("command", choices=("check", "select", "finalize"))
+    _ = parser.add_argument("command", choices=("check", "select", "finalize", "admit-pr"))
     _ = parser.add_argument("--root", type=Path, default=ROOT)
     _ = parser.add_argument("--repository", default="amichne/slopsentral")
     _ = parser.add_argument("--revision", default="")
     _ = parser.add_argument("--run-id", type=int, default=0)
+    _ = parser.add_argument("--author", default="")
     _ = parser.add_argument("--github-output", type=Path)
     args = parser.parse_args()
     try:
@@ -272,6 +442,15 @@ def main() -> int:
         elif args.command == "finalize":
             finalize(str(args.repository), str(args.revision))
             result = {"revision": str(args.revision)}
+        elif args.command == "admit-pr":
+            admitted = admit_pr(
+                str(args.repository), str(args.revision), int(args.run_id), str(args.author)
+            )
+            result = {
+                "pull_request": str(admitted.number),
+                "revision": admitted.revision,
+                "version": admitted.version,
+            }
         else:
             selected = select(str(args.repository), str(args.revision), int(args.run_id))
             result = {
