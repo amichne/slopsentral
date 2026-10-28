@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.5](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.4...slopsentral-v4.0.5) (2026-10-28)
+
+
+### Bug Fixes
+
+* **ci:** bind PR waits to a revision and resume timeouts ([#113](https://github.com/amichne/slopsentral/issues/113)) ([e1e16ed](https://github.com/amichne/slopsentral/commit/e1e16ed82aa896032cb1c47b242a6daf67278d3c))
+* exclude proven remote refreshes from task scope review ([#112](https://github.com/amichne/slopsentral/issues/112)) ([3bf707b](https://github.com/amichne/slopsentral/commit/3bf707b3b0836c009ae390cb9d6cd9ca96f8082c))
+
 ## [4.0.4](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.3...slopsentral-v4.0.4) (2026-10-28)
 
 

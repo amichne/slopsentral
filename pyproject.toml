@@ -1,6 +1,6 @@
 [project]
 name = "slopsentral-automation"
-version = "4.0.4"
+version = "4.0.5"
 requires-python = ">=3.12,<3.14"
 dependencies = []
 
