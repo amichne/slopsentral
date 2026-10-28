@@ -295,3 +295,23 @@ def test_first_commit_in_an_unborn_repository_keeps_source_changes(tmp_path: Pat
     output = invoke(repo, "Stop")
     assert output["decision"] == "block"
     assert "AGENTS.md" in str(output["reason"])
+
+
+def test_native_host_scope_uses_its_own_instructions_and_review_store(
+    workspace: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home = workspace.parent / "pi agent"
+    home.mkdir()
+    _ = (home / "AGENTS.md").write_text("Pi global policy.\n")
+    monkeypatch.setenv("SLOPSENTRAL_SCOPE_HOME", str(home))
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    assert list((home / "state/agents-md-scope").glob("*.json"))
+    assert not (workspace.parent / "codex/state").exists()
+    _ = (workspace / "module/main.py").write_text("changed source\n")
+    _ = (home / "AGENTS.md").write_text("Revised Pi global policy.\n")
+    stopped = invoke(workspace, "Stop")
+    assert stopped["decision"] == "block"
+    assert str(home / "AGENTS.md") in str(stopped["reason"])
+    assert "SLOPSENTRAL_SCOPE_HOME=" in str(stopped["reason"])
+    assert review(workspace)["type"] == "REVIEW_RECORDED"
+    assert invoke(workspace, "Stop") == {}

@@ -31,7 +31,10 @@ by hand when the authored source can be fixed instead.
 `tools/install-pi.sh` preserves the documented curl-to-shell entry point.
 It delegates to the tested native installer from the selected stable release.
 `tools/setup-pi.mts` owns settings migration and private recovery.
-`tools/projection/Pi.pkl` owns the content-only native default package shape;
+`tools/projection/Pi.pkl` owns native packages for all catalog plugins.
+`source/hooks/pi/adapter.ts` maps canonical hooks to native Pi events.
+Skills and review prompts use native discovery. Shared skills register once.
+The archive inventory binds every payload file to its digest.
 `tools/package_pi.py`, `tools/pi_candidate.py`, and `tools/setup_assets.py` own
 archive validation and source-bound candidate/installer receipts.
 `Release Slopsentral` publishes retained tested bytes only after a successful main

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/pi/native-package.schema.json",
+  "title": "Native Pi plugin package inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "schemaVersion", "files"],
+  "properties": {
+    "type": { "const": "PI_PLUGIN_PACKAGE" },
+    "schemaVersion": { "const": 1 },
+    "files": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$" },
+      "additionalProperties": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+    }
+  }
+}

@@ -130,6 +130,8 @@ jobs:
           --run-attempt "$GITHUB_RUN_ATTEMPT" --event "$GITHUB_EVENT_NAME"
           --bundle "$RUNNER_TEMP/pi-candidate"
       - name: Test native setup and recovery
+        env:
+          SLOPSENTRAL_PI_ARCHIVE: ${{ steps.package.outputs.archive }}
         run: node --test tools/tests/pi-setup.test.mjs
       - name: Package the tested setup installer
         run: >-
