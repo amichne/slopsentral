@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.6](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.5...slopsentral-v4.0.6) (2026-10-28)
+
+
+### Bug Fixes
+
+* forward Pi hook menu keyboard input ([#117](https://github.com/amichne/slopsentral/issues/117)) ([86584e0](https://github.com/amichne/slopsentral/commit/86584e07b29c973a9203e61b78b4dc449b81ce97))
+
 ## [4.0.5](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.4...slopsentral-v4.0.5) (2026-10-28)
 
 

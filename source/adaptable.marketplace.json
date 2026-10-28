@@ -21,7 +21,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/software-engineering"
         },
-        "version": "4.0.5"
+        "version": "4.0.6"
       },
       "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
       "tags": [
@@ -67,7 +67,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/kotlin-engineering"
         },
-        "version": "4.0.5"
+        "version": "4.0.6"
       },
       "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
       "tags": [
@@ -110,7 +110,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/intellij-plugin-development"
         },
-        "version": "4.0.5"
+        "version": "4.0.6"
       },
       "description": "Build, test, package, and diagnose IntelliJ Platform plugins.",
       "tags": [
@@ -138,7 +138,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/repository-knowledge"
         },
-        "version": "4.0.5"
+        "version": "4.0.6"
       },
       "description": "Write technical documentation with source-backed glossaries and maintain OKF knowledge, OpenWiki handoffs, navigation, and overlays.",
       "tags": [
@@ -173,7 +173,7 @@
           "type": "LOCAL_SOURCE",
           "path": "./plugins/developer-tooling"
         },
-        "version": "4.0.5"
+        "version": "4.0.6"
       },
       "description": "Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.",
       "tags": [
