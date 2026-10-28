@@ -59,6 +59,6 @@ ignore = ["D", "COM812", "ISC001", "E501", "T201", "S603", "S607"]
 [tool.pytest.ini_options]
 pythonpath = [".", "source/skills/kotlin-gradle-validation/scripts", "source/skills/controlled-technical-writing/scripts"]
 addopts = "--strict-config --strict-markers --import-mode=importlib -ra"
-testpaths = ["tools/python_checks", "source/skills/python-tooling/assets", "source/skills/controlled-technical-writing/scripts/tests"]
+testpaths = ["source/skills/github-ci-operations/scripts/tests", "tools/python_checks", "source/skills/python-tooling/assets", "source/skills/controlled-technical-writing/scripts/tests"]
 python_files = ["test_*.py", "standalone.py"]
 filterwarnings = ["error"]

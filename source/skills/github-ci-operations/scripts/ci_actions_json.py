@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Any
+from typing import Any, cast
 
 from ci_actions_types import (
     STATE_VERSION,
     ActiveRequest,
+    Commit,
     DurationSample,
     ObserverError,
     Outcome,
@@ -52,7 +53,10 @@ def active_request_from_json(payload: dict[str, Any]) -> ActiveRequest:
 
 
 def target_to_json(target: Target) -> dict[str, Any]:
-    return {"kind": target.kind.value, "value": target.value, "required": target.required}
+    result = {"kind": target.kind.value, "value": target.value, "required": target.required}
+    if target.head is not None:
+        result["headSha"] = target.head.value
+    return result
 
 
 def target_from_json(payload: dict[str, Any]) -> Target:
@@ -60,6 +64,7 @@ def target_from_json(payload: dict[str, Any]) -> Target:
         kind=TargetKind(str(payload["kind"])),
         value=str(payload["value"]),
         required=bool(payload.get("required", False)),
+        head=Commit(payload["headSha"]) if "headSha" in payload else None,
     )
 
 
@@ -85,7 +90,7 @@ def snapshot_from_json(payload: dict[str, Any]) -> Snapshot:
         status=str(payload["status"]),
         conclusion=str(payload.get("conclusion") or ""),
         summary=str(payload["summary"]),
-        details=details,
+        details=cast(dict[str, Any], details),
     )
     expected_key = payload.get("stateKey")
     if expected_key is not None and expected_key != snapshot.state_key:
@@ -133,7 +138,7 @@ def required_mapping(payload: dict[str, Any], key: str) -> dict[str, Any]:
     value = payload[key]
     if not isinstance(value, dict):
         raise ObserverError(f"{key} must be an object")
-    return value
+    return cast(dict[str, Any], value)
 
 
 def optional_int(value: Any) -> int | None:
