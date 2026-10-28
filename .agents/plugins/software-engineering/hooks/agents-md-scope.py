@@ -201,10 +201,18 @@ def fingerprint(file: Path) -> str:
     return digest.hexdigest()
 
 
+def scope_home() -> Path:
+    return Path(
+        os.environ.get(
+            "SLOPSENTRAL_SCOPE_HOME", os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))
+        )
+    )
+
+
 def external_instructions(root: Path) -> tuple[Path, ...]:
-    codex_home = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex")))
+    home = scope_home()
     ancestors = tuple(parent / name for parent in reversed(root.parents) for name in INSTRUCTIONS)
-    return (*ancestors, codex_home / "AGENTS.md", codex_home / "AGENTS.override.md")
+    return (*ancestors, home / "AGENTS.md", home / "AGENTS.override.md")
 
 
 def dirty_paths(status: bytes) -> set[str] | Rejected:
@@ -454,8 +462,8 @@ def save(file: Path, state: State) -> None:
 
 def state_directory() -> Path:
     # One shared store makes user, repository, and plugin invocations idempotent.
-    codex_home = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex")))
-    return codex_home / "state/agents-md-scope"
+    home = scope_home()
+    return home / "state/agents-md-scope"
 
 
 def review_command(event: Event, mode: Mode) -> str:
@@ -473,6 +481,8 @@ def review_command(event: Event, mode: Mode) -> str:
     ]
     if mode == Mode.REVIEW:
         command.extend(["--note", "REPLACE WITH SOURCE-BACKED REVIEW RESULT"])
+    if "SLOPSENTRAL_SCOPE_HOME" in os.environ:
+        command = ["env", "SLOPSENTRAL_SCOPE_HOME=" + str(scope_home()), *command]
     return shlex.join(command)
 
 
