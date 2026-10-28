@@ -13,7 +13,7 @@ const explanation = "The chosen action preserves the stated invariant and its ev
 
 test("each authored oracle accepts its legal answer and rejects every nearest wrong choice", () => {
   assert.ok(cases.length >= 12);
-  assert.equal(new Set(cases.map((item) => item.skill)).size, 10);
+  assert.equal(new Set(cases.map((item) => item.skill)).size, 12);
   assert.equal(new Set(cases.map((item) => item.id)).size, cases.length);
   for (const item of cases) {
     assert.ok(item.expected.length > 0, item.id);
