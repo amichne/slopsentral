@@ -15,6 +15,7 @@
   },
   "include": [
     "setup-pi.mts",
-    "../source/hooks/pi/adapter.ts"
+    "../source/hooks/pi/adapter.ts",
+    "../source/hooks/pi/controls.ts"
   ]
 }

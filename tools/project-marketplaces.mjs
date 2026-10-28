@@ -238,8 +238,10 @@ function operations(plan, files, harness, input) {
       if (r.sourcePath !== (r.type === 'MCP_CONFIGURATION' ? expected.mcp : authority?.sourcePath))
         reject('plan', 'INVALID_PLAN', 'A projected reference differs from its source authority');
     }
-    if (harness === 'pi' && expected.references.some(r => r.type === 'HOOK' || r.type === 'INSTRUCTION'))
+    if (harness === 'pi' && expected.references.some(r => r.type === 'HOOK' || r.type === 'INSTRUCTION')) {
       copy('source/hooks/pi/adapter.ts', plugin.root + '/hooks/pi-adapter.ts');
+      copy('source/hooks/pi/controls.ts', plugin.root + '/hooks/controls.ts');
+    }
     for (const operation of plugin.copies) {
       if (!exactKeys(operation, ['source', 'target']) || !relative(operation.target)) reject('plan', 'INVALID_PLAN', 'A copy operation is invalid');
       copy(operation.source, plugin.root + '/' + operation.target);
