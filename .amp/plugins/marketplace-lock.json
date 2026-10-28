@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T18:01:08-04:00",
+  "generatedAt": "2026-10-28T22:14:04Z",
   "plugins": [
     {
       "name": "software-engineering",
@@ -90,7 +90,7 @@
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "4.0.5"
+      "version": "4.0.6"
     },
     {
       "name": "kotlin-engineering",
@@ -139,7 +139,7 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "4.0.5"
+      "version": "4.0.6"
     },
     {
       "name": "intellij-plugin-development",
@@ -167,7 +167,7 @@
         }
       ],
       "sourceManifest": "source/plugins/intellij-plugin-development/plugin.json",
-      "version": "4.0.5"
+      "version": "4.0.6"
     },
     {
       "name": "repository-knowledge",
@@ -216,7 +216,7 @@
         }
       ],
       "sourceManifest": "source/plugins/repository-knowledge/plugin.json",
-      "version": "4.0.5"
+      "version": "4.0.6"
     },
     {
       "name": "developer-tooling",
@@ -307,10 +307,10 @@
         }
       ],
       "sourceManifest": "source/plugins/developer-tooling/plugin.json",
-      "version": "4.0.5"
+      "version": "4.0.6"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "224967987eeb9761648611b44ea2aac2639d72aa",
+  "sourceSha": "53fa2817c389b1c71ba37aa264afc34af6bca1d4",
   "type": "HYDRATED_MARKETPLACE"
 }
