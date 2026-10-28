@@ -88,8 +88,12 @@ Related primitives in this repository:
 
    When checks are pending and the local observer is available, run `python3
    "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions" --repo .
-   arm --pr <pr-number> --required --until status-change --timeout auto
-   --json`, then invoke the same script with `--repo . await --json`. For
+   arm --pr <pr-number> --head-sha <published-head-sha> --required --until terminal --timeout auto
+   --json`, then invoke the same script with `--repo . await --json`.
+   Zero checks stay pending. A changed head returns an error.
+   After a timeout, use `resume --timeout auto --json` before `await --json`.
+   Renewal keeps the original target and head SHA.
+   For
    failing Actions runs, use available connector logs or `gh run view <run-id>
    --log-failed`. An unavailable local observer does not block the PR handoff. Separate
    product or test failures, generated drift, dependency setup, permissions,
