@@ -84,6 +84,24 @@ test("runtime reuses only the login and removes its temporary files", () => {
   }
 });
 
+test("decision requests use textual JSON and preserve independent strict grading", () => {
+  const config = createConfig({ codexHome: "/isolated/codex", workspace: "/isolated/workspace" });
+  const provider = config.providers[0];
+  assert.equal(provider.id, "openai:codex-sdk");
+  assert.equal(provider.config.model, "gpt-6-sol");
+  assert.equal(provider.config.model_reasoning_effort, "low");
+  assert.equal(Object.hasOwn(provider.config, "output_schema"), false);
+  const row = config.tests[0];
+  assert.ok(row.vars.task.includes('Return only JSON with exactly two fields:'));
+  assert.ok(row.vars.controlTask.includes('Return only JSON with exactly two fields:'));
+  const grade = row.assert[0].value;
+  const answer = { selected: cases[0].expected, reason: explanation };
+  assert.equal(grade(JSON.stringify(answer)).pass, true);
+  assert.equal(grade(JSON.stringify({ ...answer, extra: true })).pass, false);
+  assert.equal(grade(JSON.stringify({ ...answer, selected: [17] })).pass, false);
+  assert.equal(grade(JSON.stringify({ ...answer, selected: ["UNKNOWN"] })).pass, false);
+});
+
 test("API-key runtime needs no login file", () => {
   const runtime = prepareRuntime(join(tmpdir(), "absent-promptfoo-auth", "auth.json"));
   try {
@@ -98,6 +116,11 @@ test("malformed, invented, duplicate, and extra output cannot pass", () => {
   for (const output of [
     "not JSON", null, [], 17, "null", "{}",
     JSON.stringify({ selected: item.expected, reason: "" }),
+    JSON.stringify({ selected: item.expected }),
+    JSON.stringify({ reason: explanation }),
+    JSON.stringify({ selected: item.expected.join(","), reason: explanation }),
+    JSON.stringify({ selected: [17], reason: explanation }),
+    JSON.stringify({ selected: item.expected, reason: 123 }),
     JSON.stringify({ selected: [...item.expected, item.expected[0]], reason: explanation }),
     JSON.stringify({ selected: ["UNKNOWN"], reason: explanation }),
     JSON.stringify({ selected: item.expected, reason: explanation, extra: true }),
