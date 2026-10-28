@@ -3,6 +3,7 @@ from __future__ import annotations
 import dataclasses
 import enum
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol, Sequence
@@ -54,8 +55,16 @@ class CommandResult:
 
 
 class CommandRunner(Protocol):
-    def __call__(self, args: Sequence[str], cwd: Path) -> CommandResult:
-        ...
+    def __call__(self, args: Sequence[str], cwd: Path) -> CommandResult: ...
+
+
+@dataclass(frozen=True)
+class Commit:
+    value: str
+
+    def __post_init__(self) -> None:
+        if not re.fullmatch(r"[0-9a-f]{40}", self.value):
+            raise ObserverError("head SHA must be a full lowercase 40-character commit SHA")
 
 
 @dataclass(frozen=True)
@@ -63,6 +72,11 @@ class Target:
     kind: TargetKind
     value: str
     required: bool = False
+    head: Commit | None = None
+
+    def __post_init__(self) -> None:
+        if self.kind == TargetKind.RUN and self.head is not None:
+            raise ObserverError("head SHA binding applies to PR targets only")
 
 
 @dataclass(frozen=True)
@@ -76,8 +90,11 @@ class Snapshot:
 
     @property
     def state_key(self) -> str:
+        target = dataclasses.asdict(self.target)
+        if self.target.head is None:
+            del target["head"]
         payload = {
-            "target": dataclasses.asdict(self.target),
+            "target": target,
             "status": self.status,
             "conclusion": self.conclusion,
             "details": self.details,
@@ -103,6 +120,12 @@ class ActiveRequest:
     timeout: TimeoutRecommendation
     armed_at: str
     expires_at: str
+
+    def __post_init__(self) -> None:
+        if self.target != self.baseline.target:
+            raise ObserverError("active target does not match its baseline")
+        if self.target.kind == TargetKind.PR and self.target.head is None:
+            raise ObserverError("active PR observation needs a bound head SHA; arm it again")
 
 
 @dataclass(frozen=True)

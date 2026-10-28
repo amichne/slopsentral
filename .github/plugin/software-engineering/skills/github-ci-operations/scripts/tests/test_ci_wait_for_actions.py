@@ -60,6 +60,8 @@ RUN_SUCCESS_JSON = json.dumps(
         "jobs": [{"name": "test", "status": "completed", "conclusion": "success"}],
     }
 )
+PR_HEAD_RESULT = observer.CommandResult(0, json.dumps({"headRefOid": "a" * 40}), "")
+
 PR_PENDING_JSON = json.dumps(
     [
         {"name": "lint", "state": "SUCCESS", "bucket": "pass"},
@@ -192,7 +194,7 @@ class CiActionsObservationTests(unittest.TestCase):
         self.assertEqual(failed.details["checks"][1]["name"], "test")
 
     def test_required_pr_observation_uses_native_required_filter(self) -> None:
-        runner = RecordingRunner([observer.CommandResult(8, PR_PENDING_JSON, "")])
+        runner = RecordingRunner([PR_HEAD_RESULT, observer.CommandResult(8, PR_PENDING_JSON, ""), PR_HEAD_RESULT])
 
         snapshot = observer.fetch_snapshot(
             observer.Target(observer.TargetKind.PR, "42", required=True),
@@ -205,6 +207,7 @@ class CiActionsObservationTests(unittest.TestCase):
         self.assertEqual(
             runner.calls,
             [
+                ("gh", "pr", "view", "42", "--json", "headRefOid"),
                 (
                     "gh",
                     "pr",
@@ -213,7 +216,8 @@ class CiActionsObservationTests(unittest.TestCase):
                     "--json",
                     "name,state,bucket",
                     "--required",
-                )
+                ),
+                ("gh", "pr", "view", "42", "--json", "headRefOid"),
             ],
         )
 
@@ -227,7 +231,7 @@ class CiActionsObservationTests(unittest.TestCase):
             observer.pr_number("current")
 
     def test_pr_observation_accepts_failed_check_json_on_exit_one(self) -> None:
-        runner = RecordingRunner([observer.CommandResult(1, PR_FAILED_JSON, "")])
+        runner = RecordingRunner([PR_HEAD_RESULT, observer.CommandResult(1, PR_FAILED_JSON, ""), PR_HEAD_RESULT])
 
         snapshot = observer.fetch_snapshot(
             observer.Target(observer.TargetKind.PR, "42"),
@@ -237,14 +241,16 @@ class CiActionsObservationTests(unittest.TestCase):
 
         self.assertEqual(snapshot.outcome, observer.Outcome.FAILURE)
 
-    def test_no_required_checks_is_empty_success(self) -> None:
+    def test_no_required_checks_stays_pending(self) -> None:
         runner = RecordingRunner(
             [
+                PR_HEAD_RESULT,
                 observer.CommandResult(
                     1,
                     "",
                     "no required checks reported on the 'feature/example' branch\n",
-                )
+                ),
+                PR_HEAD_RESULT,
             ]
         )
 
@@ -254,17 +260,19 @@ class CiActionsObservationTests(unittest.TestCase):
             runner,
         )
 
-        self.assertEqual(snapshot.outcome, observer.Outcome.SUCCESS)
+        self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
         self.assertEqual(snapshot.details["counts"]["total"], 0)
 
-    def test_no_checks_is_empty_success(self) -> None:
+    def test_no_checks_stays_pending(self) -> None:
         runner = RecordingRunner(
             [
+                PR_HEAD_RESULT,
                 observer.CommandResult(
                     1,
                     "",
                     "no checks reported on the 'feature/example' branch\n",
-                )
+                ),
+                PR_HEAD_RESULT,
             ]
         )
 
@@ -274,7 +282,7 @@ class CiActionsObservationTests(unittest.TestCase):
             runner,
         )
 
-        self.assertEqual(snapshot.outcome, observer.Outcome.SUCCESS)
+        self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
         self.assertEqual(snapshot.details["counts"]["total"], 0)
 
     def test_pr_observation_preserves_transient_exit_one_error(self) -> None:
@@ -586,7 +594,7 @@ class CiActionsCliTests(unittest.TestCase):
         self.assertEqual(result.exit_code, 124)
         self.assertEqual(result.payload["outcome"], "timeout")
         self.assertEqual(result.payload["current"]["stateKey"], baseline.state_key)
-        self.assertFalse(self.store.active_path.exists())
+        self.assertTrue(self.store.active_path.exists())
         self.assertTrue(self.store.last_observation_path.exists())
 
     def test_await_records_error_evidence_after_retry_exhaustion(self) -> None:
