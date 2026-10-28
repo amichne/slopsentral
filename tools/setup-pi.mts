@@ -221,8 +221,33 @@ function unpack(archive: Buffer, temporary: string): string {
   const root = path.join(temporary, 'package');
   const manifest = parse(fs.readFileSync(path.join(root, 'package.json')));
   same(manifest.name, 'slopsentral-pi', 'Unexpected package identity.');
-  if (Object.keys(object(manifest.pi)).join() !== 'skills' || !list(object(manifest.pi).skills).length || manifest.peerDependencies || manifest.dependencies || manifest.scripts) reject('ARCHIVE_REJECTED', 'Only native content is supported.');
-  for (const name of ['extensions', 'profiles.json', 'capabilities.json']) if (fs.existsSync(path.join(root, name))) reject('ARCHIVE_REJECTED', 'Legacy runtime payload.');
+  const resources = object(manifest.pi);
+  if (manifest.peerDependencies || manifest.dependencies || manifest.scripts) reject('ARCHIVE_REJECTED', 'Package dependencies and lifecycle scripts are unsupported.');
+  if (fs.existsSync(path.join(root, 'native-inventory.json'))) {
+    const inventory = parse(fs.readFileSync(path.join(root, 'native-inventory.json')));
+    same(inventory.type, 'PI_PLUGIN_PACKAGE', 'Unexpected native inventory.');
+    same(inventory.schemaVersion, 1, 'Unexpected native inventory version.');
+    if (Object.keys(inventory).sort().join() !== 'files,schemaVersion,type') reject('ARCHIVE_REJECTED', 'Unexpected native inventory fields.');
+    const files = object(inventory.files);
+    const actual = fs.readdirSync(root, { recursive: true }).filter((name): name is string => typeof name === 'string')
+      .filter(name => fs.statSync(path.join(root, name)).isFile() && name !== 'native-inventory.json').sort();
+    same(JSON.stringify(Object.keys(files).sort()), JSON.stringify(actual), 'Native inventory differs from archive files.');
+    for (const name of actual) same(files[name], 'sha256:' + hash(fs.readFileSync(path.join(root, name))), 'Native payload digest differs.');
+    if (Object.keys(resources).sort().join() !== 'extensions,prompts,skills' || !list(resources.skills).length) reject('ARCHIVE_REJECTED', 'Invalid native resource selection.');
+    for (const [kind, pattern] of [
+      ['skills', /^\.\/[a-z][a-z0-9-]*\/skills\/[a-z][a-z0-9-]*$/],
+      ['prompts', /^\.\/[a-z][a-z0-9-]*\/prompts\/slopsentral-[a-z][a-z0-9-]*\.md$/],
+      ['extensions', /^\.\/[a-z][a-z0-9-]*\/native\.ts$/],
+    ] as const) {
+      const selected = list(resources[kind]);
+      if (new Set(selected).size !== selected.length) reject('ARCHIVE_REJECTED', 'Duplicate native resources.');
+      for (const item of selected) if (typeof item !== 'string' || !pattern.test(item) || !fs.existsSync(path.join(root, item, kind === 'skills' ? 'SKILL.md' : ''))) reject('ARCHIVE_REJECTED', 'Invalid native resource path.');
+    }
+    same(fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8'), '', 'Native instructions belong to plugin adapters.');
+  } else {
+    if (Object.keys(resources).join() !== 'skills' || !list(resources.skills).length) reject('ARCHIVE_REJECTED', 'Only native content is supported.');
+    for (const name of ['extensions', 'profiles.json', 'capabilities.json']) if (fs.existsSync(path.join(root, name))) reject('ARCHIVE_REJECTED', 'Legacy runtime payload.');
+  }
   return root;
 }
 function normalized(scope: Scope): Scope {

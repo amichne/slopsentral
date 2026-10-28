@@ -50,10 +50,40 @@ output, including local builds. `PI_COMPATIBILITY_UNVERIFIED` is a best-effort
 warning, not a version rejection. Executability does not prove support for local
 packages, native skill discovery, instruction scope, or project trust.
 
-Restart Pi and verify `/skill:semantic-ratchet` after setup. The package contains
-only the canonical `semantic-ratchet` skill and no extensions, hooks, commands,
-model calls, or instruction policy. Pi's project-trust decision is unchanged.
-The maintainer Pi dependency is pinned for reproducible tests, not consumer admission.
+Restart Pi after setup. The package exposes all five plugins through native Pi resources:
+
+| Plugin | Native resources |
+| --- | --- |
+| Software Engineering | Eight skills, shared instructions, and instruction-scope review |
+| Kotlin Engineering | Six skills |
+| IntelliJ Plugin Development | Three skills |
+| Repository Knowledge | Four skills, registered knowledge context, and drift reports |
+| Developer Tooling | Ten skills and two review prompts |
+
+The aggregate registers 30 unique skills. Both Software Engineering and Developer Tooling reference the same `python-tooling` skill.
+Use `/skill:semantic-ratchet`, `/skill:kotlin-review`, or another native skill command.
+Use `/slopsentral-schema-type-enforcer` and `/slopsentral-openapi-contract-rater` for the review prompts.
+These prompts use the current Pi session and model. They do not start separate agents.
+
+Each projected plugin also contains its own `package.json` for native local-package use.
+Install either the aggregate or selected plugin directories. Native Pi package filters control resource selection.
+Avoid simultaneous registrations of the aggregate and its plugin directories because skill names overlap.
+
+The hook adapters use Pi's `before_agent_start`, `tool_call`, and `agent_before_settle` events.
+The shared instructions enter the system prompt for each request.
+Registered knowledge enters the session context. Drift reports remain advisory.
+An instruction-scope rejection requests one repair turn. A repeated rejection stays visible and does not cause an automatic loop.
+The adapters preserve messages and continuation requests from earlier extensions.
+Instruction review uses Pi's global instruction directory and stores its receipts there.
+The emitted review command preserves that scope through `SLOPSENTRAL_SCOPE_HOME`.
+
+Hook execution needs `uv` and each canonical script's dependencies on `PATH`.
+Setup does not install those dependencies. Missing dependencies produce explicit hook failures.
+A context-hook failure blocks tool calls until a subsequent request succeeds.
+Hook processes obey time limits, output limits, and cancellation.
+
+Pi retains its native project-trust decision. The maintainer dependency pins Pi 1.3.0 for executable evidence.
+Older hosts can lack the native events that the adapters need.
 
 ## Scope, updates, and recovery
 
@@ -75,9 +105,8 @@ recovery code. Later edits produce `CONFIG_CHANGED` and are preserved.
 
 ## Maintainers
 
-`tools/projection/Pi.pkl` defines the native default package shape. The existing
-projector selects `semantic-ratchet` from the validated software-engineering
-composition without changing authored plugins or workflow profiles:
+`tools/projection/Pi.pkl` defines the native package shape for every catalog plugin.
+The projector uses each validated plugin composition and deduplicates shared skill registrations:
 
 ```sh
 node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi-fresh
@@ -86,7 +115,7 @@ node --test tools/tests/pi-*.test.mjs
 ```
 
 Use a fresh output path and the checksum-verified Pkl 0.32.0 runtime. Pi projection
-supports only this native default; it does not emulate arbitrary workflow profiles.
+supports native plugin packages. It does not emulate workflow profiles.
 
 `Validate Source` tests native discovery, archive installation, setup, and recovery
 before retaining the Pi archive and installer. `Release Slopsentral` admits only a
@@ -94,8 +123,8 @@ successful main version increment, verifies retained bytes, and checks actual
 release downloads before making the shared release current. It does not rebuild
 packages or replace old assets. Codex, Copilot, Amp, and Pi artifacts share the
 same release version; provider-branch publication remains owned by `Publish Harnesses`.
-See [Release Please and required App setup](releases.md). Runtime/model integration
-and paid inference are not exercised.
+See [Release Please and required App setup](releases.md). Native discovery, hooks, archive installation, and recovery have executable tests.
+The tests do not make model requests.
 
 Changes reach consumers only after a new qualified release is published. Existing
 immutable releases can still carry their historical Pi version requirement.

@@ -309,6 +309,21 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
   files =
     (
       new Listing<Schema.TextFile> {
+        when (selectedHarness == "pi") {
+          jsonFile("package.json", Pi.pluginManifest(p))
+          when (!hooks(p).isEmpty || !refs(p, "INSTRUCTION").isEmpty) {
+            textFile("native.ts", Pi.entrypoint(p))
+          }
+          for (r in agents(p)) {
+            textFile(
+              "prompts/slopsentral-" + r.name + ".md",
+              "---\ndescription: "
+                + jsonText(agentFrontmatter(r).description).trim()
+                + "\n---\n"
+                + agentBody(r),
+            )
+          }
+        }
         when (selectedHarness == "amp") {
           textFile("index.js", Amp.entrypoint(p))
           jsonFile("package.json", Map("type", "module", "version", p.version))
@@ -328,14 +343,18 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
           )
         }
         for (r in agents(p)) {
-          when (selectedHarness != "amp") {
+          when (selectedHarness != "amp" && selectedHarness != "pi") {
             textFile("agents/" + basename(r.sourcePath).replaceLast(".md", ".toml"), agentToml(r))
           }
           when (selectedHarness == "github-copilot") {
             textFile(referenceTarget(r), copilotAgent(r))
           }
         }
-        when (selectedHarness != "amp" && (!refs(p, "INSTRUCTION").isEmpty || !agents(p).isEmpty)) {
+        when (
+          selectedHarness != "amp"
+            && selectedHarness != "pi"
+            && (!refs(p, "INSTRUCTION").isEmpty || !agents(p).isEmpty)
+        ) {
           textFile("AGENTS.md", agentsIndex(p))
         }
         when (selectedHarness == "github-copilot" && !hooks(p).isEmpty) {
@@ -435,7 +454,6 @@ output {
           if (selectedHarness == "pi")
             List(
               jsonFile(outputRoot + "/package.json", Pi.manifest(input)),
-              jsonFile(outputRoot + "/profile-inventory.json", Pi.inventory(input)),
               textFile(outputRoot + "/AGENTS.md", ""),
             )
           else

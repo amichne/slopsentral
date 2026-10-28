@@ -345,3 +345,67 @@ def test_content_archive_rejects_changed_instruction_payload(tmp_path: Path) -> 
     _ = (root / "owner/instructions/checked.md").write_text("Changed instruction.\n")
     assert package(root, tmp_path / "output") == Rejected(Code.INVALID_PACKAGE)
     assert not (tmp_path / "output").exists()
+
+
+def native_fixture(root: Path) -> Path:
+    _ = content_fixture(root)
+    (root / "profile-inventory.json").unlink()
+    _ = (root / "owner/native.ts").write_text("export default function (pi) {}\n")
+    (root / "owner/prompts").mkdir()
+    _ = (root / "owner/prompts/slopsentral-review.md").write_text("Review the change.\n")
+    _ = (root / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "slopsentral-pi",
+                "version": "0.1.0",
+                "pi": {
+                    "skills": ["./owner/skills/example"],
+                    "prompts": ["./owner/prompts/slopsentral-review.md"],
+                    "extensions": ["./owner/native.ts"],
+                },
+            }
+        )
+    )
+    _ = (root / "native-inventory.json").write_text(
+        json.dumps(
+            {
+                "type": "PI_PLUGIN_PACKAGE",
+                "schemaVersion": 1,
+                "files": {
+                    file.relative_to(root).as_posix(): "sha256:"
+                    + hashlib.sha256(file.read_bytes()).hexdigest()
+                    for file in root.rglob("*")
+                    if file.is_file()
+                },
+            }
+        )
+    )
+    return root
+
+
+def test_native_plugin_archive_keeps_exact_bytes_and_reseals_version(tmp_path: Path) -> None:
+    root = native_fixture(tmp_path / "package")
+    result = package(root, tmp_path / "output", version="4.0.3")
+    assert isinstance(result, Packed)
+    extracted = tmp_path / "extracted"
+    with tarfile.open(result.archive) as archive:
+        archive.extractall(extracted, filter="data")
+    assert isinstance(package(extracted / "package", tmp_path / "repacked"), Packed)
+    assert (extracted / "package/owner/native.ts").read_bytes() == (
+        root / "owner/native.ts"
+    ).read_bytes()
+
+
+@pytest.mark.parametrize("mutation", ["changed-adapter", "missing-prompt", "unlisted-file"])
+def test_native_inventory_rejects_damaged_or_unlisted_payload(
+    tmp_path: Path, mutation: str
+) -> None:
+    root = native_fixture(tmp_path / "package")
+    if mutation == "changed-adapter":
+        _ = (root / "owner/native.ts").write_text("changed")
+    elif mutation == "missing-prompt":
+        (root / "owner/prompts/slopsentral-review.md").unlink()
+    else:
+        _ = (root / "extra.ts").write_text("unlisted")
+    assert package(root, tmp_path / "output") == Rejected(Code.INVALID_PACKAGE)
+    assert not (tmp_path / "output").exists()

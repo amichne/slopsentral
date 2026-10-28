@@ -311,3 +311,24 @@ test('interrupted package staging leaves the version recoverable before activati
   rollback(options);
   assert.equal(fs.existsSync(path.join(options.agentDir, 'settings.json')), false);
 });
+
+test('the projected five-plugin archive installs, loads, and rolls back through native setup', { skip: !process.env.SLOPSENTRAL_PI_ARCHIVE }, async t => {
+  const options = workspace(t);
+  const archive = fs.readFileSync(process.env.SLOPSENTRAL_PI_ARCHIVE);
+  const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'))).version;
+  const fixture = producer(archive, version, 2);
+  const admitted = await qualify(fixture.client, version);
+  const installed = await install(admitted, options);
+  assert.equal(installed.status, 'INSTALLED');
+  const manager = SettingsManager.create(options.cwd, options.agentDir);
+  const loader = new DefaultResourceLoader({ cwd: options.cwd, agentDir: options.agentDir, settingsManager: manager });
+  await loader.reload();
+  assert.deepEqual(loader.getExtensions().errors, []);
+  assert.deepEqual(loader.getSkills().diagnostics, []);
+  assert.equal(loader.getSkills().skills.length, 30);
+  assert.equal(loader.getPrompts().prompts.length, 2);
+  assert.equal(loader.getExtensions().extensions.length, 2);
+  assert.equal((await install(admitted, options)).status, 'CURRENT');
+  rollback(options);
+  assert.equal(fs.existsSync(path.join(options.agentDir, 'settings.json')), false);
+});

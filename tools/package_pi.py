@@ -212,6 +212,51 @@ def content_selection(root: Path, manifest: dict[str, object], names: set[str]) 
     )
 
 
+def native_selection(root: Path, manifest: dict[str, object], names: set[str]) -> bool:
+    inventory: object = json.loads((root / "native-inventory.json").read_bytes())
+    if (
+        not mapping(inventory)
+        or set(inventory) != {"type", "schemaVersion", "files"}
+        or inventory["type"] != "PI_PLUGIN_PACKAGE"
+        or type(inventory["schemaVersion"]) is not int
+        or inventory["schemaVersion"] != 1
+        or not mapping(files := inventory["files"])
+        or set(files) != names - {"native-inventory.json"}
+        or not {"package.json", "marketplace.json", "marketplace-lock.json", "AGENTS.md"}.issubset(
+            files
+        )
+        or any(files[name] != content_digest(root, name, names) for name in files)
+        or manifest.get("peerDependencies")
+    ):
+        return False
+    resources = manifest.get("pi")
+    if not mapping(resources) or set(resources) != {"skills", "prompts", "extensions"}:
+        return False
+    skills = content_paths(resources["skills"], names)
+    if isinstance(skills, Rejected) or len(
+        {path.rsplit("/", 1)[-1] for path in skills.entries}
+    ) != len(skills.entries):
+        return False
+    for key, pattern in (
+        ("prompts", r"\./[a-z][a-z0-9-]*/prompts/slopsentral-[a-z][a-z0-9-]*\.md"),
+        ("extensions", r"\./[a-z][a-z0-9-]*/native\.ts"),
+    ):
+        paths = resources[key]
+        if not sequence(paths):
+            return False
+        selected: set[str] = set()
+        for item in paths:
+            if (
+                not isinstance(item, str)
+                or not re.fullmatch(pattern, item)
+                or item[2:] not in names
+                or item in selected
+            ):
+                return False
+            selected.add(item)
+    return (root / "AGENTS.md").read_bytes() == b""
+
+
 def inspect(root: Path) -> _Package | Rejected:
     if root.is_symlink() or not root.is_dir():
         return Rejected(Code.INVALID_PACKAGE)
@@ -238,8 +283,32 @@ def inspect(root: Path) -> _Package | Rejected:
         return Rejected(Code.INVALID_PACKAGE)
     files = tuple(entry for entry in entries if entry.is_file())
     names = {entry.relative_to(root).as_posix() for entry in files}
-    accepted = content_selection(root, value, names)
+    accepted = (
+        native_selection(root, value, names)
+        if "native-inventory.json" in names
+        else content_selection(root, value, names)
+    )
     return _Package(root, version, files) if accepted else Rejected(Code.INVALID_PACKAGE)
+
+
+def version_payloads(inspected: _Package, version: str | None) -> dict[str, bytes] | Rejected:
+    overrides: dict[str, bytes] = {}
+    if version is not None:
+        manifest: object = json.loads((inspected.root / "package.json").read_bytes())
+        if not mapping(manifest):
+            return Rejected(Code.INVALID_PACKAGE)
+        manifest["version"] = version
+        overrides["package.json"] = (json.dumps(manifest, indent=2) + "\n").encode()
+        inventory_path = inspected.root / "native-inventory.json"
+        if inventory_path.exists():
+            inventory: object = json.loads(inventory_path.read_bytes())
+            if not mapping(inventory) or not mapping(records := inventory["files"]):
+                return Rejected(Code.INVALID_PACKAGE)
+            records["package.json"] = (
+                "sha256:" + hashlib.sha256(overrides["package.json"]).hexdigest()
+            )
+            overrides["native-inventory.json"] = (json.dumps(inventory, indent=2) + "\n").encode()
+    return overrides
 
 
 def package(root: Path, output: Path, *, version: str | None = None) -> Packed | Rejected:
@@ -250,6 +319,9 @@ def package(root: Path, output: Path, *, version: str | None = None) -> Packed |
         selected = inspected.version if version is None else version
         if not re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)", selected):
             return Rejected(Code.INVALID_PACKAGE)
+        overrides = version_payloads(inspected, version)
+        if isinstance(overrides, Rejected):
+            return overrides
         output.mkdir(parents=True, exist_ok=False)
         archive = output / f"slopsentral-pi-{selected}.tgz"
         with (
@@ -263,12 +335,9 @@ def package(root: Path, output: Path, *, version: str | None = None) -> Packed |
                 )
                 info.uid = info.gid = info.mtime = 0
                 info.uname = info.gname = ""
-                if file == inspected.root / "package.json" and version is not None:
-                    manifest: object = json.loads(file.read_bytes())
-                    if not mapping(manifest):
-                        return Rejected(Code.INVALID_PACKAGE)
-                    manifest["version"] = selected
-                    data = (json.dumps(manifest, indent=2) + "\n").encode()
+                name = file.relative_to(inspected.root).as_posix()
+                if name in overrides:
+                    data = overrides[name]
                     info.size = len(data)
                     packed.addfile(info, io.BytesIO(data))
                     continue

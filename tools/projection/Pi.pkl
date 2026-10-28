@@ -2,78 +2,157 @@ module slopsentral.projection.Pi
 
 import "Schema.pkl"
 
-// The release selection is deliberately not a workflow profile: no hooks,
-// instructions, services, or invocation restrictions are simulated in Pi.
-function checked(input: Schema.Input): Schema.Plugin =
-  if (input.plugins.length != 1)
-    throw("Pi requires the native default selection")
+function checked(input: Schema.Input): List<Schema.Plugin> =
+  if (
+    input.plugins.isEmpty
+      || input.plugins.toList().any((p) -> p.mcp != null)
+      || input.plugins.toList().map((p) -> p.version).distinct.length != 1
+      || input.plugins
+        .toList()
+        .flatMap((p) -> refs(p, "HOOK"))
+        .map((r) -> r.name)
+        .length
+        != input.plugins
+          .toList()
+          .flatMap((p) -> refs(p, "HOOK"))
+          .map((r) -> r.name)
+          .distinct
+          .length
+  )
+    throw("Pi needs one version, unique hook owners, and explicit MCP adapters")
   else
-    let (plugin = input.plugins.toList().first)
-      if (
-        plugin.name != "software-engineering"
-          || plugin.mcp != null
-          || plugin.references.length != 1
-          || plugin.references.first.type != "SKILL"
-          || plugin.references.first.name != "semantic-ratchet"
-      )
-        throw("Pi requires only the canonical semantic-ratchet skill")
-      else
-        plugin
+    input.plugins.toList()
+
+function refs(p: Schema.Plugin, kind: Schema.Kind): List<Schema.Asset> =
+  p.references.filter((r) -> r.type == kind)
 
 class Resources {
-  skills: List<String>(length == 1)
+  skills: List<String>
+  prompts: List<String>
+  extensions: List<String>
 }
 
 class Package {
-  name: "slopsentral-pi" = "slopsentral-pi"
+  name: String
   version: String(matches(Regex("[0-9]+\\.[0-9]+\\.[0-9]+")))
   description: String
   type: "module" = "module"
   keywords: List<String> = List("pi-package")
   engines: Mapping<String, String> = new { ["node"] = ">=22.19.0" }
-  pi: Resources = new { skills = List("./software-engineering/skills/semantic-ratchet") }
+  pi: Resources
+}
+
+function resources(plugins: List<Schema.Plugin>, prefix: Boolean): Resources = new {
+  local skillsByName =
+    plugins
+      .flatMap((p) -> refs(p, "SKILL"))
+      .map((r) -> r.name)
+      .distinct
+      .sort()
+  skills =
+    skillsByName.map((name) ->
+      "./"
+        + (
+          if (prefix)
+            plugins.find((p) -> refs(p, "SKILL").any((r) -> r.name == name)).name + "/"
+          else
+            ""
+        )
+        + "skills/"
+        + name
+    )
+  prompts =
+    plugins
+      .flatMap((p) ->
+        refs(p, "AGENT")
+          .map((r) ->
+            "./" + (if (prefix) p.name + "/" else "") + "prompts/slopsentral-" + r.name + ".md"
+          )
+      )
+      .sort()
+  extensions =
+    plugins
+      .filter((p) -> !refs(p, "HOOK").isEmpty || !refs(p, "INSTRUCTION").isEmpty)
+      .map((p) -> "./" + (if (prefix) p.name + "/" else "") + "native.ts")
+}
+
+function manifest(input: Schema.Input): Package = new {
+  name = "slopsentral-pi"
+  version = checked(input).first.version
+  description = input.description
+  pi = resources(checked(input), true)
+}
+
+function pluginManifest(p: Schema.Plugin): Package = new {
+  name = "slopsentral-pi-" + p.name
+  version = p.version
+  description = p.description
+  pi = resources(List(p), false)
 }
 
 class Link {
   name: Schema.Identity
   path: Schema.RelativePath
 }
-
 class Catalog {
   name: Schema.Identity
   plugins: List<Link>
 }
-
-class Resource {
-  name: Schema.Identity
-  path: Schema.RelativePath
-  sha256: Schema.Digest
-}
-
-class Inventory {
-  type: "PI_CONTENT_PROFILE" = "PI_CONTENT_PROFILE"
-  schemaVersion: Int(this == 1) = 1
-  profile: "native-default" = "native-default"
-  invocation: "either" = "either"
-  instructionFile: "AGENTS.md" = "AGENTS.md"
-  skills: List<Resource>
-  instructions: List<Resource> = List()
-}
-
-function manifest(input: Schema.Input): Package = new {
-  version = checked(input).version
-  description = checked(input).description
-}
-
 function catalog(input: Schema.Input): Catalog = new {
   name = input.name
-  plugins = List(new Link { name = checked(input).name; path = checked(input).name })
+  plugins = checked(input).map((p) -> new Link { name = p.name; path = p.name })
 }
 
-function inventory(input: Schema.Input): Inventory = new {
-  skills = List(new Resource {
-    name = checked(input).references.first.name
-    path = "software-engineering/skills/semantic-ratchet"
-    sha256 = checked(input).references.first.sha256
-  })
+typealias Event = "SessionStart" | "UserPromptSubmit" | "Stop"
+class Hook {
+  name: Schema.Identity
+  event: Event
+  command: String(!isEmpty)
+  timeout: Int(isPositive)
 }
+class Adapter {
+  plugin: Schema.Identity
+  instructions: List<String>
+  hooks: List<Hook>
+}
+function adapter(p: Schema.Plugin): Adapter = new {
+  plugin = p.name
+  instructions = refs(p, "INSTRUCTION").map((r) -> "instructions/" + r.name + ".md")
+  hooks =
+    refs(p, "HOOK")
+      .filter((r) -> r.name != "software-engineering-context")
+      .flatMap((r) ->
+        (r as Schema.HookReference).hook.adapter.hooks
+          .toMap()
+          .entries
+          .toList()
+          .flatMap((entry) ->
+            entry.value
+              .toList()
+              .flatMap((group) ->
+                group.hooks
+                  .toList()
+                  .map((c) -> new Hook {
+                    name = r.name
+                    event = entry.key
+                    command =
+                      if (
+                        group.matcher != null && group.matcher != "^(startup|resume|clear|compact)$"
+                          || c.matcher != null
+                      )
+                        throw("Unsupported Pi hook matcher")
+                      else
+                        c.command
+                    timeout = c.timeout ?? 30
+                  })
+              )
+          )
+      )
+}
+function entrypoint(p: Schema.Plugin): String =
+  "import { fileURLToPath } from 'node:url';\n"
+    + "import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';\n"
+    + "import { register } from './hooks/pi-adapter.ts';\n"
+    + "export default function (pi: ExtensionAPI) { register(pi, fileURLToPath(new URL('.', import.meta.url)), "
+    + (new JsonRenderer { omitNullProperties = true }).renderValue(adapter(p))
+    + "); }\n"

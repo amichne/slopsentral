@@ -144,19 +144,11 @@ function freezeInput(repository, harness) {
     });
     const input = { name: marketplace.name, owner: marketplace.owner, description: marketplace.description,
       generatedAt, sourceSha: digest(files, 'source', 'sha1'),
-      plugins: harness === 'pi' ? nativePiSelection(plugins) : plugins, phase: 'PLAN', projectedDigests: {} };
+      plugins, phase: 'PLAN', projectedDigests: {} };
     // Validate the exact frozen bytes, then prove the live source still matches.
     assertUnchanged(repository, files, evidence);
     return { files, input, evidence };
   } finally { fs.rmSync(frozenRepository, { recursive: true }); }
-}
-function nativePiSelection(plugins) {
-  const owner = plugins.find(plugin => plugin.name === 'software-engineering');
-  const skill = owner?.references.find(ref => ref.type === 'SKILL' && ref.name === 'semantic-ratchet');
-  if (!skill) reject('source', 'SOURCE_REJECTED', 'The native Pi default must be composed by software-engineering');
-  // Selection narrows the validated closure; Pkl owns the native package shape.
-  return [{ name: owner.name, version: owner.version, description: owner.description,
-    interface: owner.interface, tags: owner.tags, references: [skill] }];
 }
 function sameFiles(expected, current) {
   return current.size === expected.size && [...expected].every(([key, file]) => current.has(key)
@@ -246,6 +238,8 @@ function operations(plan, files, harness, input) {
       if (r.sourcePath !== (r.type === 'MCP_CONFIGURATION' ? expected.mcp : authority?.sourcePath))
         reject('plan', 'INVALID_PLAN', 'A projected reference differs from its source authority');
     }
+    if (harness === 'pi' && expected.references.some(r => r.type === 'HOOK' || r.type === 'INSTRUCTION'))
+      copy('source/hooks/pi/adapter.ts', plugin.root + '/hooks/pi-adapter.ts');
     for (const operation of plugin.copies) {
       if (!exactKeys(operation, ['source', 'target']) || !relative(operation.target)) reject('plan', 'INVALID_PLAN', 'A copy operation is invalid');
       copy(operation.source, plugin.root + '/' + operation.target);
@@ -310,6 +304,13 @@ export function project({ source, harness, out, pkl = process.env.PKL_BIN ?? 'pk
     reject('seal', 'INVALID_PLAN', 'Sealing changed a derived payload');
   for (const p of sealed.plugins) for (const r of p.references) if (r.sha256 !== digest(complete, p.root + '/' + r.targetPath))
     reject('seal', 'INVALID_PLAN', 'A projected provenance hash differs from its payload');
+  if (harness === 'pi') {
+    const prefix = lockRoot + '/';
+    const inventory = { type: 'PI_PLUGIN_PACKAGE', schemaVersion: 1, files: Object.fromEntries(
+      [...complete].sort(([a], [b]) => a.localeCompare(b, 'en')).map(([key, file]) =>
+        [key.slice(prefix.length), 'sha256:' + crypto.createHash('sha256').update(file.bytes).digest('hex')])) };
+    complete.set(prefix + 'native-inventory.json', { bytes: encode(inventory), mode: 0o644 });
+  }
   assertUnchanged(repository, state.files, state.evidence);
   const staging = fs.mkdtempSync(path.join(parent, '.slopsentral-projection-'));
   try {

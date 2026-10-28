@@ -43,9 +43,10 @@ test('Pi installs a release archive and discovers native skills without registry
   const loader = new DefaultResourceLoader({ cwd: directory, agentDir, settingsManager, noContextFiles: true });
   await loader.reload();
   assert.deepEqual(loader.getExtensions().errors, []);
-  assert.equal(loader.getSkills().skills.some(skill => skill.name === 'openapi-contract-authoring'), false);
-  assert.deepEqual(loader.getSkills().skills.map(skill => skill.name), ['semantic-ratchet']);
-  assert.deepEqual(loader.getExtensions().extensions, []);
+  assert.equal(loader.getSkills().skills.some(skill => skill.name === 'openapi-contract-authoring'), true);
+  assert.equal(loader.getSkills().skills.length, 30);
+  assert.equal(loader.getPrompts().prompts.length, 2);
+  assert.equal(loader.getExtensions().extensions.length, 2);
   await execute(process.execPath, [cli, 'install', source], { cwd: directory, env });
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(agentDir, 'settings.json'))).packages, [source]);
 });
