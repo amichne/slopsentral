@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import type { TestCase, UnifiedConfig } from "promptfoo";
 import { cases, type DecisionCase } from "../../source/evals/promptfoo/cases.mts";
-import { decisionSchema, gradeDecision } from "./grade.mts";
+import { gradeDecision } from "./grade.mts";
 import type { EvalRuntime } from "./runtime.mts";
 
 const root = new URL("../../", import.meta.url);
@@ -81,7 +81,6 @@ export function createConfig(runtime: Pick<EvalRuntime, "codexHome" | "workspace
         inherit_process_env: false,
         cli_env: { CODEX_HOME: runtime.codexHome },
         maxRetries: 0,
-        output_schema: decisionSchema,
         cli_config: {
           project_doc_max_bytes: 0,
           suppress_unstable_features_warning: true,
