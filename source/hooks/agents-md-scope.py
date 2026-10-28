@@ -100,10 +100,36 @@ type Revision = Commit | Unborn
 
 
 @dataclass(frozen=True)
+class HistoryCheckpoint:
+    size: int
+    digest: str
+    kind: Literal["CHECKPOINT"] = field(default="CHECKPOINT", init=False)
+
+
+@dataclass(frozen=True)
+class UnavailableHistory:
+    kind: Literal["UNAVAILABLE"] = field(default="UNAVAILABLE", init=False)
+
+
+type History = HistoryCheckpoint | UnavailableHistory
+
+
+@dataclass(frozen=True)
+class RemoteRefresh:
+    head: Commit
+
+
+@dataclass(frozen=True)
+class UnattributedHeadChange:
+    pass
+
+
+@dataclass(frozen=True)
 class Snapshot:
     head: Revision
     dirty: dict[str, str]
     instructions: dict[str, str]
+    history: History
 
 
 @dataclass(frozen=True)
@@ -259,6 +285,94 @@ def revision(root: Path) -> Revision | Rejected:
     return Rejected(Code.GIT_FAILED) if isinstance(parsed, Rejected) else parsed
 
 
+def head_history(root: Path) -> bytes | UnavailableHistory:
+    location = git(root, "rev-parse", "--git-path", "logs/HEAD")
+    if isinstance(location, Rejected):
+        return UnavailableHistory()
+    file = root / os.fsdecode(location).strip()
+    try:
+        if file.is_symlink():
+            return UnavailableHistory()
+        with file.open("rb") as stream:
+            raw = stream.read(MAX_BYTES + 1)
+    except OSError:
+        return UnavailableHistory()
+    return raw if len(raw) <= MAX_BYTES else UnavailableHistory()
+
+
+def checkpoint(raw: bytes | UnavailableHistory) -> History:
+    return (
+        raw
+        if isinstance(raw, UnavailableHistory)
+        else HistoryCheckpoint(len(raw), hashlib.sha256(raw).hexdigest())
+    )
+
+
+def refresh_transition(line: bytes, expected: str) -> str | UnattributedHeadChange:
+    fields, separator, message = line.partition(b"\t")
+    old, first, rest = fields.partition(b" ")
+    new, second, _identity = rest.partition(b" ")
+    if not separator or not first or not second:
+        return UnattributedHeadChange()
+    if old != expected.encode() or not re.fullmatch(rb"[0-9a-f]{40}(?:[0-9a-f]{24})?", new):
+        return UnattributedHeadChange()
+    if not (
+        message.startswith((b"checkout: moving from ", b"reset: moving to "))
+        or (
+            message.startswith((b"merge ", b"pull ", b"pull:"))
+            and message.endswith(b": Fast-forward")
+        )
+    ):
+        return UnattributedHeadChange()
+    return new.decode("ascii")
+
+
+def refresh_history(
+    raw: bytes, before: Snapshot, after: Snapshot
+) -> Commit | UnattributedHeadChange:
+    if not (
+        isinstance(before.head, Commit)
+        and isinstance(after.head, Commit)
+        and isinstance(before.history, HistoryCheckpoint)
+    ):
+        return UnattributedHeadChange()
+    if checkpoint(raw) != after.history:
+        return UnattributedHeadChange()
+    size = before.history.size
+    if len(raw) <= size or hashlib.sha256(raw[:size]).hexdigest() != before.history.digest:
+        return UnattributedHeadChange()
+    expected = before.head.sha
+    for line in raw[size:].splitlines():
+        transition = refresh_transition(line, expected)
+        if isinstance(transition, UnattributedHeadChange):
+            return transition
+        expected = transition
+    if expected != after.head.sha:
+        return UnattributedHeadChange()
+    return after.head
+
+
+def remote_refresh(
+    root: Path, before: Snapshot, after: Snapshot
+) -> RemoteRefresh | UnattributedHeadChange:
+    raw = head_history(root)
+    if isinstance(raw, UnavailableHistory):
+        return UnattributedHeadChange()
+    transition = refresh_history(raw, before, after)
+    if isinstance(transition, UnattributedHeadChange):
+        return transition
+    refs = git(
+        root,
+        "for-each-ref",
+        "--format=%(refname)",
+        f"--contains={transition.sha}",
+        "refs/remotes/",
+    )
+    if isinstance(refs, Rejected) or not refs.strip():
+        return UnattributedHeadChange()
+    return RemoteRefresh(transition)
+
+
 def snapshot(root: Path) -> Snapshot | Rejected:
     head = revision(root)
     if isinstance(head, Rejected):
@@ -291,6 +405,7 @@ def snapshot(root: Path) -> Snapshot | Rejected:
         head,
         {name: fingerprint(root / name) for name in sorted(dirty) if authored(name)},
         {name: fingerprint(file) for name, file in sorted(instruction_paths.items())},
+        checkpoint(head_history(root)),
     )
 
 
@@ -307,6 +422,22 @@ def string_map(value: object) -> dict[str, str] | Rejected:
             return Rejected(Code.INVALID_STATE)
         result[key] = item
     return result
+
+
+def parse_history(value: object) -> History | Rejected:
+    # Earlier state has no checkpoint. Keep its first HEAD change conservative.
+    if value is None or value == {"kind": "UNAVAILABLE"}:
+        return UnavailableHistory()
+    if mapping(value) and value.get("kind") == "CHECKPOINT":
+        size, digest = value.get("size"), value.get("digest")
+        if (
+            type(size) is int
+            and 0 <= size <= MAX_BYTES
+            and isinstance(digest, str)
+            and re.fullmatch(r"[0-9a-f]{64}", digest)
+        ):
+            return HistoryCheckpoint(size, digest)
+    return Rejected(Code.INVALID_STATE)
 
 
 def load(file: Path, root: Path) -> State | Rejected:
@@ -326,6 +457,7 @@ def parse_state(value: dict[str, object], root: Path) -> State | Rejected:
     if not mapping(stored):
         return Rejected(Code.INVALID_STATE)
     head = parse_revision(stored.get("head"))
+    history = parse_history(stored.get("history"))
     note, pending = value.get("note"), value.get("pending")
     dirty, instructions = string_map(stored.get("dirty")), string_map(stored.get("instructions"))
     if isinstance(dirty, Rejected) or isinstance(instructions, Rejected):
@@ -333,6 +465,7 @@ def parse_state(value: dict[str, object], root: Path) -> State | Rejected:
     allowed_external = {str(path) for path in external_instructions(root)}
     if (
         isinstance(head, Rejected)
+        or isinstance(history, Rejected)
         or not isinstance(note, str)
         or not sequence(pending)
         or not all(isinstance(item, str) for item in pending)
@@ -345,12 +478,14 @@ def parse_state(value: dict[str, object], root: Path) -> State | Rejected:
         or not all(PurePosixPath(name).name in INSTRUCTIONS for name in instructions)
     ):
         return Rejected(Code.INVALID_STATE)
-    return State(Snapshot(head, dirty, instructions), names, note)
+    return State(Snapshot(head, dirty, instructions, history), names, note)
 
 
 def changed(root: Path, before: Snapshot, after: Snapshot) -> tuple[str, ...] | Rejected:
     candidates = set(before.dirty) | set(after.dirty)
-    if before.head != after.head:
+    if before.head != after.head and isinstance(
+        remote_refresh(root, before, after), UnattributedHeadChange
+    ):
         if not isinstance(after.head, Commit):
             return Rejected(Code.GIT_FAILED)
         committed = (
