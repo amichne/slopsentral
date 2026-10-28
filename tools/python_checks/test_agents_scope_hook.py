@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -315,3 +316,184 @@ def test_native_host_scope_uses_its_own_instructions_and_review_store(
     assert "SLOPSENTRAL_SCOPE_HOME=" in str(stopped["reason"])
     assert review(workspace)["type"] == "REVIEW_RECORDED"
     assert invoke(workspace, "Stop") == {}
+
+
+def remote_change(repo: Path, *, instructions: bool = False) -> None:
+    upstream = repo.parent / "upstream"
+    git(repo, "clone", "-q", str(repo), str(upstream))
+    git(upstream, "config", "user.email", "upstream@example.com")
+    git(upstream, "config", "user.name", "Upstream")
+    _ = (upstream / "upstream.py").write_text("upstream source\n")
+    if instructions:
+        _ = (upstream / "AGENTS.md").write_text("# Updated\nUse the upstream command.\n")
+    git(upstream, "add", ".")
+    git(upstream, "commit", "-qm", "upstream change")
+    git(repo, "remote", "add", "upstream", str(upstream))
+    git(repo, "fetch", "-q", "upstream", "HEAD:refs/remotes/upstream/main")
+
+
+@pytest.mark.parametrize(
+    "transition", [("merge", "--ff-only"), ("checkout", "--detach"), ("reset", "--hard")]
+)
+def test_remote_refresh_does_not_create_task_review(
+    workspace: Path, transition: tuple[str, ...]
+) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    remote_change(workspace)
+    git(workspace, *transition, "refs/remotes/upstream/main")
+    assert invoke(workspace, "Stop") == {}
+    assert invoke(workspace, "Stop") == {}
+
+
+def test_remote_refresh_keeps_task_dirt_and_existing_pending(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    _ = (workspace / "module/main.py").write_text("task edit\n")
+    assert invoke(workspace, "Stop")["decision"] == "block"
+    remote_change(workspace)
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    status = invoke(
+        workspace, arguments=("status", "--cwd", str(workspace), "--session-id", "session-a")
+    )
+    assert status["pending"] == ["module/main.py"]
+    assert invoke(workspace, "Stop")["decision"] == "block"
+
+
+def test_remote_refresh_keeps_preexisting_dirt_without_new_obligation(workspace: Path) -> None:
+    _ = (workspace / "module/main.py").write_text("preexisting edit\n")
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    remote_change(workspace)
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    assert invoke(workspace, "Stop") == {}
+
+
+def test_remote_refresh_with_new_task_edit_reviews_only_the_edit(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    remote_change(workspace)
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    _ = (workspace / "module/main.py").write_text("task edit after refresh\n")
+    status = invoke(
+        workspace, arguments=("status", "--cwd", str(workspace), "--session-id", "session-a")
+    )
+    assert status["pending"] == ["module/main.py"]
+
+
+def test_remote_refresh_preserves_instruction_review_and_context(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    remote_change(workspace, instructions=True)
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    output = invoke(workspace, "Stop")
+    assert output["decision"] == "block"
+    assert "Use the upstream command." in str(output["reason"])
+    status = invoke(
+        workspace, arguments=("status", "--cwd", str(workspace), "--session-id", "session-a")
+    )
+    assert status["pending"] == ["AGENTS.md"]
+
+
+def test_pushed_task_commit_is_not_a_remote_refresh(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    _ = (workspace / "module/main.py").write_text("committed task edit\n")
+    git(workspace, "add", ".")
+    git(workspace, "commit", "-qm", "task edit")
+    git(workspace, "update-ref", "refs/remotes/upstream/main", "HEAD")
+    assert invoke(workspace, "Stop")["decision"] == "block"
+
+
+def test_missing_refresh_history_cannot_remove_review(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    remote_change(workspace)
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    git(workspace, "reflog", "expire", "--expire=all", "--all")
+    output = invoke(workspace, "Stop")
+    assert output["decision"] == "block"
+    assert "upstream.py" in str(output["reason"])
+
+
+@pytest.mark.parametrize("path_count", [209, 911, 1005])
+def test_bulk_remote_refresh_has_no_task_path_inventory(workspace: Path, path_count: int) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    remote_change(workspace)
+    upstream = workspace.parent / "upstream"
+    for index in range(path_count):
+        _ = (upstream / f"source-{index}.py").write_text("upstream\n")
+    git(upstream, "add", ".")
+    git(upstream, "commit", "-qm", "bulk upstream changes")
+    git(workspace, "fetch", "-q", "upstream", "HEAD:refs/remotes/upstream/main")
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    assert invoke(workspace, "Stop") == {}
+    status = invoke(
+        workspace, arguments=("status", "--cwd", str(workspace), "--session-id", "session-a")
+    )
+    assert status["pending"] == []
+
+
+def test_old_state_without_history_keeps_conservative_review(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    file = next((workspace.parent / "codex/state/agents-md-scope").glob("*.json"))
+    state = json.loads(file.read_text())
+    del state["snapshot"]["history"]
+    _ = file.write_text(json.dumps(state))
+    remote_change(workspace)
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    assert invoke(workspace, "Stop")["decision"] == "block"
+
+
+def test_checkout_to_local_only_commit_keeps_review(workspace: Path) -> None:
+    git(workspace, "checkout", "-qb", "local-only")
+    _ = (workspace / "local.py").write_text("local source\n")
+    git(workspace, "add", ".")
+    git(workspace, "commit", "-qm", "local source")
+    git(workspace, "checkout", "--detach", "HEAD~1")
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    git(workspace, "checkout", "local-only")
+    assert invoke(workspace, "Stop")["decision"] == "block"
+
+
+def test_linked_worktree_refresh_uses_its_own_reflog(workspace: Path) -> None:
+    linked = workspace.parent / "linked worktree"
+    git(workspace, "worktree", "add", "--detach", str(linked), "HEAD")
+    assert invoke(linked, "UserPromptSubmit") == {}
+    remote_change(workspace)
+    git(linked, "checkout", "--detach", "refs/remotes/upstream/main")
+    assert invoke(linked, "Stop") == {}
+
+
+def test_installed_command_accepts_refresh_and_blocks_task_edit(workspace: Path) -> None:
+    codex_home = workspace.parent / "codex"
+    codex_home.mkdir()
+    _ = (codex_home / "config.toml").write_text("[features]\nhooks = true\n")
+    installed = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "tools/install_agents_hook.py"),
+            "--codex-home",
+            str(codex_home),
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert installed.returncode == 0, installed.stderr
+    hooks = json.loads((codex_home / "hooks.json").read_text())["hooks"]
+
+    def event(name: str) -> dict[str, object]:
+        command = hooks[name][0]["hooks"][0]["command"]
+        result = subprocess.run(
+            shlex.split(command),
+            input=json.dumps(
+                {"hook_event_name": name, "session_id": "installed", "cwd": str(workspace)}
+            ),
+            text=True,
+            env={**os.environ, "CODEX_HOME": str(codex_home)},
+            capture_output=True,
+            check=False,
+        )
+        assert result.returncode == 0, result.stderr
+        return json.loads(result.stdout)
+
+    assert event("UserPromptSubmit") == {}
+    remote_change(workspace)
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    assert event("Stop") == {}
+    _ = (workspace / "module/main.py").write_text("installed task edit\n")
+    assert event("Stop")["decision"] == "block"

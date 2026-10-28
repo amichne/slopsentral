@@ -16,6 +16,17 @@ Later prompts and `Stop` compare actual Git changes against the previous snapsho
 Changes include untracked files, renames, deletions, committed edits, and edits from external tools between events.
 The comparison includes changes from failed tools.
 
+Source changes from a proven remote refresh create no task review obligation.
+The hook keeps a hash and length of the worktree's HEAD reflog at each snapshot.
+It accepts a later checkout, reset, or fast-forward only when the recorded transitions form an unbroken chain to a remote-backed commit.
+A local commit in that chain keeps the source review, even after a push.
+Missing, expired, rewritten, or unsupported history keeps the full source review.
+Older state without a reflog checkpoint also keeps that conservative behavior for its next HEAD change.
+
+Remote refreshes preserve pending reviews and new local edits.
+Unchanged preexisting edits create no new obligation.
+Changed instruction files still refresh context and need their normal scope review, including when they arrive from a remote.
+
 Changed instructions trigger a review of their descendants.
 The hook reads `AGENTS.md` and `AGENTS.override.md` in the repository and its ancestors.
 It also reads the global instructions under `CODEX_HOME`.
@@ -58,6 +69,9 @@ Keep later unrelated hook changes when you restore the configuration.
 The hook compares files at lifecycle events.
 It is not a continuous file watcher.
 The first baseline cannot prove earlier changes.
+Reflog evidence describes Git transitions on this computer, not the identity of the person or tool that caused them.
+A local Git actor can rewrite reflog messages or remote refs.
+The hook trusts those local records.
 A directory outside a readable Git repository receives an explicit skip result.
 
 State stays under `$CODEX_HOME/state/agents-md-scope`, outside the repository.
