@@ -60,6 +60,8 @@ test('native Pi delivers plugin instructions and enforces instruction review bef
   assert.equal(session.getActiveToolNames().some(name => name.startsWith('slopsentral')), false);
   assert.equal([...session.extensionRunner.getFlags().keys()].some(name => name.startsWith('slopsentral')), false);
   const runner = session.extensionRunner;
+  assert.equal(runner.getRegisteredCommands().filter(command => command.name === 'hooks').length, 1);
+  assert.deepEqual(runner.getCommandDiagnostics(), []);
   const start = await runner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine the fixture.' }, { cwd });
   assert.ok(start.systemPromptOptions.forceSystemPrompt.includes(fs.readFileSync(path.join(pkg, 'software-engineering/instructions/engineering-design.md'), 'utf8')));
   assert.equal(await runner.emitToolCall({ type: 'tool_call', toolCallId: 'read-1', toolName: 'read', input: { path: 'example.py' } }), undefined);

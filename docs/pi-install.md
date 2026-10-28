@@ -82,6 +82,22 @@ Setup does not install those dependencies. Missing dependencies produce explicit
 A context-hook failure blocks tool calls until a subsequent request succeeds.
 Hook processes obey time limits, output limits, and cancellation.
 
+Use `/hooks` in interactive Pi to turn individual Slopsentral hooks on or off.
+Press Enter or Space to change the selected hook.
+Press Esc to return to the session.
+
+The selected row shows its canonical events, Pi events, script commands, and script root.
+One switch controls every event of that hook. Other plugins keep their own choices.
+
+Choices take effect at the next request or settlement. A current turn keeps its admission result.
+Choices persist across sessions in `slopsentral-hooks.json` under Pi's global instruction directory.
+
+Hooks default to on. Disabled hooks start no script processes.
+The adapters refresh cached session context after a choice changes.
+
+Invalid saved choices block hook effects and produce an error. The menu preserves an invalid file.
+The switches control Slopsentral hooks. Other extensions and shared instructions keep their existing behavior.
+
 Pi retains its native project-trust decision. The maintainer dependency pins Pi 1.3.0 for executable evidence.
 Older hosts can lack the native events that the adapters need.
 

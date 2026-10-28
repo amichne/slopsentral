@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.dev/schemas/pi/hooks.schema.json",
+  "title": "Pi hook choices",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "disabled"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "disabled": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]*/[a-z][a-z0-9-]*$"}
+    }
+  },
+  "examples": [{"schemaVersion": 1, "disabled": ["software-engineering/agents-md-scope"]}]
+}

@@ -2,19 +2,8 @@ import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { getAgentDir, type ExtensionAPI, type ExtensionContext } from '@earendil-works/pi-coding-agent';
-
-type Event = 'SessionStart' | 'UserPromptSubmit' | 'Stop';
-export interface Hook {
-  readonly name: string;
-  readonly event: Event;
-  readonly command: string;
-  readonly timeout: number;
-}
-export interface Adapter {
-  readonly plugin: string;
-  readonly instructions: readonly string[];
-  readonly hooks: readonly Hook[];
-}
+import { readHookSettings, registerHookControls, type Adapter, type Hook, type HookEvent, type HookSettings } from './controls.ts';
+export type { Adapter, Hook } from './controls.ts';
 export type Result =
   | { readonly type: 'accepted'; readonly context: string }
   | { readonly type: 'blocked'; readonly reason: string }
@@ -74,12 +63,14 @@ export function runHook(hook: Hook, root: string, cwd: string, session: string, 
 }
 
 export function register(pi: ExtensionAPI, root: string, adapter: Adapter): void {
-  let sessionState: { type: 'cold' } | { type: 'ready'; context: string } = { type: 'cold' };
+  let sessionState: { type: 'cold' } | { type: 'ready'; context: string; revision: string } = { type: 'cold' };
   let admission: Result = { type: 'accepted', context: '' };
   let repairState: 'available' | 'used' = 'available';
-  const run = async (event: Event, ctx: ExtensionContext): Promise<Result> => {
+  registerHookControls(pi, root, adapter, () => { sessionState = { type: 'cold' }; });
+  const run = async (event: HookEvent, ctx: ExtensionContext, settings: HookSettings): Promise<Result> => {
+    if (settings.type === 'failed') return settings;
     const context: string[] = [];
-    for (const hook of adapter.hooks.filter(h => h.event === event)) {
+    for (const hook of adapter.hooks.filter(h => h.event === event && !settings.disabled.has(adapter.plugin + '/' + h.name))) {
       const result = await runHook(hook, root, ctx.cwd, ctx.sessionManager.getSessionId(), ctx.signal);
       if (result.type !== 'accepted') return result;
       if (result.context) context.push(result.context);
@@ -93,10 +84,12 @@ export function register(pi: ExtensionAPI, root: string, adapter: Adapter): void
   });
   pi.on('before_agent_start', async (event, ctx) => {
     repairState = 'available';
-    admission = sessionState.type === 'ready'
+    const settings = readHookSettings();
+    const revision = settings.type === 'ready' ? JSON.stringify([...settings.disabled].sort()) : '';
+    admission = settings.type === 'failed' ? settings : sessionState.type === 'ready' && sessionState.revision === revision
       ? { type: 'accepted', context: sessionState.context }
-      : await run('SessionStart', ctx);
-    if (admission.type === 'accepted') sessionState = { type: 'ready', context: admission.context };
+      : await run('SessionStart', ctx, settings);
+    if (admission.type === 'accepted') sessionState = { type: 'ready', context: admission.context, revision };
     const context = admission.type === 'accepted' ? [admission.context] : [];
     try {
       context.push(...adapter.instructions.map(file => fs.readFileSync(path.join(root, file), 'utf8')));
@@ -104,16 +97,20 @@ export function register(pi: ExtensionAPI, root: string, adapter: Adapter): void
       admission = { type: 'failed', reason: 'INSTRUCTION_UNAVAILABLE' };
     }
     if (admission.type === 'accepted') {
-      admission = await run('UserPromptSubmit', ctx);
+      admission = await run('UserPromptSubmit', ctx, settings);
       if (admission.type === 'accepted') context.push(admission.context);
     }
     if (admission.type !== 'accepted') context.push(`Slopsentral ${adapter.plugin}: ${admission.reason}`);
     return { systemPrompt: event.systemPrompt + '\n\n' + context.filter(Boolean).join('\n\n') };
   });
-  pi.on('tool_call', () => admission.type !== 'accepted' ? { block: true, reason: admission.reason } : undefined);
+  pi.on('tool_call', () => {
+    const settings = readHookSettings();
+    if (settings.type === 'failed') return { block: true, reason: settings.reason };
+    return admission.type !== 'accepted' ? { block: true, reason: admission.reason } : undefined;
+  });
   pi.on('agent_before_settle', async (event, ctx) => {
     if (event.outcome !== 'completed') return;
-    const result = await run('Stop', ctx);
+    const result = await run('Stop', ctx, readHookSettings());
     const text = result.type === 'accepted' ? result.context : result.reason;
     if (!text) return;
     const repair = result.type === 'blocked' && repairState === 'available';
