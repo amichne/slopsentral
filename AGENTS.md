@@ -57,8 +57,11 @@ update targets. Run `npm run check:release` and the actual updater test at
 `tools/tests/release-please.test.mjs` after release changes.
 
 The pinned GitHub action and `release-please` test dependency must use the same
-library version. Release Please only proposes version/changelog PRs using a
-repository-scoped GitHub App token; the verified publisher owns tags and releases.
+library version. Release Please proposes version/changelog PRs with a repository-scoped GitHub App token.
+The workflow merges only App-authored version PRs after both validation jobs pass for their exact head.
+`tools/release_version.py` owns release selection, version-PR admission, and completion labels.
+Keep unpublished version increments pending across failed main runs and subsequent repairs.
+The publisher owns tags and releases. Ordinary code PRs keep their normal merge process.
 See `docs/releases.md` for required credentials, source-bound receipts, and the
 post-publication label lifecycle. Never infer credentials or publish from silence.
 

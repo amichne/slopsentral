@@ -26,7 +26,10 @@ import urllib.request
 import zipfile
 from dataclasses import dataclass
 from enum import StrEnum
+from http import HTTPStatus
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
+from threading import Thread
 from typing import assert_never
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -163,10 +166,33 @@ def native(temporary: Path) -> int:
     return commands((("sudo", "apt-get", "update"), ("sudo", "apt-get", "install", "--yes", "zsh")))
 
 
+class UnpublishedPackage(BaseHTTPRequestHandler):
+    def do_GET(self) -> None:
+        self.send_error(HTTPStatus.NOT_FOUND)
+
+
 def pkl_smoke(temporary: Path) -> int:
+    with HTTPServer(("127.0.0.1", 0), UnpublishedPackage) as registry:
+        worker = Thread(target=registry.serve_forever, daemon=True)
+        worker.start()
+        try:
+            return pkl_fixture(temporary, registry.server_port)
+        finally:
+            registry.shutdown()
+            worker.join()
+
+
+def pkl_fixture(temporary: Path, registry_port: int) -> int:
     fixture = temporary / "pkl-agent-fixture"
     _ = shutil.copytree(
         ROOT / "source/skills/pkl-engineering/scripts/tests/fixtures/project", fixture
+    )
+    project = fixture / "PklProject"
+    _ = project.write_text(
+        project.read_text()
+        + "\nevaluatorSettings {\n  http {\n    rewrites {\n"
+        + f'      ["https://example.com/"] = "http://127.0.0.1:{registry_port}/"\n'
+        + "    }\n  }\n}\n"
     )
     facade = str(ROOT / "source/skills/pkl-engineering/scripts/pkl_agent")
     common = (
@@ -179,6 +205,8 @@ def pkl_smoke(temporary: Path) -> int:
         str(fixture),
         "--pkl-bin",
         os.environ["PKL_BIN"],
+        "--allow-resource",
+        f"http://127[.]0[.]0[.]1:{registry_port}/pkl-agent-fixture@1[.]0[.]0(?:[.]zip)?$",
     )
     operations = (
         ("format", "check", "--all"),

@@ -136,7 +136,10 @@ def test_release_please_only_proposes_one_shared_version_with_app_credentials() 
     assert config["skip-github-release"] is True
     assert set(config["packages"]) == {"."}
     release_pr = workflow("release-please.yml")
-    assert field(release_pr, "on", "workflow_run", "workflows") == ["Release Slopsentral"]
+    assert field(release_pr, "on", "workflow_run", "workflows") == [
+        "Release Slopsentral",
+        "Validate Source",
+    ]
     job = field(release_pr, "jobs", "release-pr")
     assert "github.event.workflow_run.conclusion == 'success'" in str(field(job, "if"))
     steps = field(job, "steps")
@@ -159,6 +162,45 @@ def test_release_please_only_proposes_one_shared_version_with_app_credentials() 
     assert field(action[0], "with", "token") == "${{ steps.app.outputs.token }}"
     assert field(action[0], "with", "skip-github-release") is True
     assert "release create" not in commands(job)
+
+
+def test_release_prs_merge_only_after_their_exact_validated_head() -> None:
+    release_pr = workflow("release-please.yml")
+    jobs = field(release_pr, "jobs")
+    assert mapping(jobs)
+    assert "merge-pr" in jobs, "Validated version PRs need an automatic merge path"
+    assert field(release_pr, "on", "workflow_run", "branches") == [
+        "main",
+        "release-please--branches--main--components--slopsentral",
+    ]
+    job = jobs["merge-pr"]
+    condition = str(field(job, "if"))
+    for needed in [
+        "'Validate Source'",
+        "'success'",
+        "'pull_request'",
+        "head_repository.full_name == github.repository",
+    ]:
+        assert needed in condition
+    assert field(job, "permissions") == {"contents": "read", "actions": "read"}
+    script = commands(job)
+    assert "tools.release_version admit-pr" in script
+    assert script.index("admit-pr") < script.index("gh pr merge")
+    assert '--match-head-commit "$SOURCE_SHA"' in script
+    assert "--admin" not in script
+    assert "--auto" not in script
+    steps = field(job, "steps")
+    assert sequence(steps)
+    checkout = next(
+        step for step in steps if mapping(step) and step.get("uses") == "actions/checkout@v4"
+    )
+    assert field(checkout, "with", "ref") == "${{ github.workflow_sha }}"
+    admission = next(step for step in steps if mapping(step) and step.get("id") == "admission")
+    assert field(admission, "env", "GH_TOKEN") == "${{ github.token }}"
+    merge = steps[-1]
+    assert field(merge, "env", "GH_TOKEN") == "${{ steps.app.outputs.token }}"
+    assert field(merge, "env", "SOURCE_SHA") == "${{ steps.admission.outputs.revision }}"
+    assert field(merge, "env", "PR_NUMBER") == "${{ steps.admission.outputs.pull_request }}"
 
 
 def test_existing_tag_is_never_replaced(monkeypatch: pytest.MonkeyPatch) -> None:

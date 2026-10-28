@@ -100,6 +100,11 @@ def responses(current: str = "4.0.1", previous: str = "4.0.0") -> dict[str, obje
         },
         f"repos/{REPOSITORY}/contents/package.json?ref={REVISION}": content(current),
         f"repos/{REPOSITORY}/contents/package.json?ref={PARENT}": content(previous),
+        f"repos/{REPOSITORY}/releases/latest": {
+            "tag_name": "slopsentral-v4.0.1",
+            "draft": False,
+            "prerelease": False,
+        },
     }
 
 
@@ -108,11 +113,59 @@ def test_only_a_version_increment_selects_a_release(
     monkeypatch: pytest.MonkeyPatch, previous: str, *, release: bool
 ) -> None:
     documents = responses(previous=previous)
+    documents[f"repos/{REPOSITORY}/releases/latest"] = {
+        "tag_name": f"slopsentral-v{previous}",
+        "draft": False,
+        "prerelease": False,
+    }
     monkeypatch.setattr(release_version, "observe", documents.__getitem__)
     monkeypatch.setattr(pi_candidate, "observe", documents.__getitem__)
     assert release_version.select(REPOSITORY, REVISION, 123) == release_version.Selection(
         REVISION, "4.0.1", release
     )
+
+
+def test_a_later_successful_main_run_keeps_an_unpublished_version_increment(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    documents = responses(current="4.0.2", previous="4.0.2")
+    monkeypatch.setattr(release_version, "observe", documents.__getitem__)
+    monkeypatch.setattr(pi_candidate, "observe", documents.__getitem__)
+    assert release_version.select(REPOSITORY, REVISION, 123) == release_version.Selection(
+        REVISION,
+        "4.0.2",
+        release=True,
+    )
+
+
+def test_an_already_published_version_is_not_selected_again(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    documents = responses(current="4.0.1", previous="4.0.0")
+    monkeypatch.setattr(release_version, "observe", documents.__getitem__)
+    monkeypatch.setattr(pi_candidate, "observe", documents.__getitem__)
+    assert release_version.select(REPOSITORY, REVISION, 123).release is False
+
+
+@pytest.mark.parametrize(
+    "published",
+    [
+        {"tag_name": "pi-v4.0.1", "draft": False, "prerelease": False},
+        {"tag_name": "slopsentral-v4.0.1", "draft": True, "prerelease": False},
+        {"tag_name": "slopsentral-v4.0.1", "draft": False, "prerelease": True},
+        {"tag_name": "slopsentral-v4.0.1-beta", "draft": False, "prerelease": False},
+    ],
+)
+def test_release_selection_rejects_an_invalid_published_baseline(
+    monkeypatch: pytest.MonkeyPatch,
+    published: dict[str, object],
+) -> None:
+    documents = responses()
+    documents[f"repos/{REPOSITORY}/releases/latest"] = published
+    monkeypatch.setattr(release_version, "observe", documents.__getitem__)
+    monkeypatch.setattr(pi_candidate, "observe", documents.__getitem__)
+    with pytest.raises(CandidateError, match=Failure.INVALID_RECORD):
+        _ = release_version.select(REPOSITORY, REVISION, 123)
 
 
 @pytest.mark.parametrize(
@@ -157,6 +210,16 @@ def test_finalize_labels_only_after_a_matching_published_source_tag(
             "labels": [{"name": "autorelease: pending"}],
         }
     ]
+    documents[
+        f"repos/{REPOSITORY}/issues?state=closed&labels=autorelease%3A%20pending&per_page=100"
+    ] = [
+        {"number": 42, "pull_request": {}, "labels": [{"name": "autorelease: pending"}]},
+    ]
+    documents[f"repos/{REPOSITORY}/pulls/42"] = {
+        "merged_at": "now",
+        "merge_commit_sha": REVISION,
+        "base": {"ref": "main"},
+    }
     documents[f"repos/{REPOSITORY}/releases/tags/slopsentral-v4.0.1"] = {
         "draft": False,
         "prerelease": False,
@@ -191,5 +254,61 @@ def test_finalize_labels_only_after_a_matching_published_source_tag(
         release_version.finalize(REPOSITORY, REVISION)
     assert calls == []
     documents[f"repos/{REPOSITORY}/commits/{REVISION}/pulls?per_page=100"] = []
+    documents[
+        f"repos/{REPOSITORY}/issues?state=closed&labels=autorelease%3A%20pending&per_page=100"
+    ] = []
     release_version.finalize(REPOSITORY, REVISION)
+    assert calls == []
+
+
+def test_a_repair_release_completes_the_original_version_pr(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    repair = "c" * 40
+    documents = responses()
+    documents[f"repos/{REPOSITORY}/commits/{repair}/pulls?per_page=100"] = []
+    documents[f"repos/{REPOSITORY}/contents/package.json?ref={repair}"] = documents[
+        f"repos/{REPOSITORY}/contents/package.json?ref={REVISION}"
+    ]
+    documents[
+        f"repos/{REPOSITORY}/issues?state=closed&labels=autorelease%3A%20pending&per_page=100"
+    ] = [
+        {"number": 42, "pull_request": {}, "labels": [{"name": "autorelease: pending"}]},
+    ]
+    documents[f"repos/{REPOSITORY}/pulls/42"] = {
+        "merged_at": "now",
+        "merge_commit_sha": REVISION,
+        "base": {"ref": "main"},
+    }
+    comparison: dict[str, object] = {"status": "ahead"}
+    documents[f"repos/{REPOSITORY}/compare/{REVISION}...{repair}"] = comparison
+    documents[f"repos/{REPOSITORY}/releases/tags/slopsentral-v4.0.1"] = {
+        "draft": False,
+        "prerelease": False,
+    }
+    documents[f"repos/{REPOSITORY}/git/ref/tags/slopsentral-v4.0.1"] = {
+        "object": {"type": "commit", "sha": repair},
+    }
+    calls: list[list[str]] = []
+
+    def run(arguments: list[str]) -> str:
+        calls.append(arguments)
+        return ""
+
+    monkeypatch.setattr(release_version, "observe", documents.__getitem__)
+    monkeypatch.setattr(pi_candidate, "observe", documents.__getitem__)
+    monkeypatch.setattr(release_version, "run_command", run)
+    release_version.finalize(REPOSITORY, repair)
+    assert calls, "Publication must complete the original pending version PR"
+    assert calls[-1][-4:] == [
+        "--remove-label",
+        "autorelease: pending",
+        "--add-label",
+        "autorelease: tagged",
+    ]
+    assert calls[-1][3] == "42"
+    comparison["status"] = "diverged"
+    calls.clear()
+    with pytest.raises(CandidateError, match=Failure.WRONG_PRODUCER):
+        release_version.finalize(REPOSITORY, repair)
     assert calls == []
