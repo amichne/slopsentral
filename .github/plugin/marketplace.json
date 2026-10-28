@@ -83,7 +83,7 @@
         "testing",
         "workflow-graph"
       ],
-      "version": "4.0.4"
+      "version": "4.0.5"
     },
     {
       "author": {
@@ -154,7 +154,7 @@
         "type-safety",
         "validation"
       ],
-      "version": "4.0.4"
+      "version": "4.0.5"
     },
     {
       "author": {
@@ -195,7 +195,7 @@
         "ui-testing",
         "verification"
       ],
-      "version": "4.0.4"
+      "version": "4.0.5"
     },
     {
       "author": {
@@ -250,7 +250,7 @@
         "terminology",
         "validation"
       ],
-      "version": "4.0.4"
+      "version": "4.0.5"
     },
     {
       "author": {
@@ -281,7 +281,7 @@
         "tools",
         "skills"
       ],
-      "version": "4.0.4"
+      "version": "4.0.5"
     }
   ]
 }
