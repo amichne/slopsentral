@@ -13,7 +13,7 @@ python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
   arm --run-id <run-id> --until status-change --timeout auto --json
 
 python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
-  arm --pr <pr-number> --required --until terminal --timeout auto --json
+  arm --pr <pr-number> --head-sha <published-head-sha> --required --until terminal --timeout auto --json
 ```
 
 - `status-change` resumes on the first meaningful change in run, job, or check
@@ -23,7 +23,14 @@ python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
 - `--required` uses native `gh pr checks --required --json` to keep only checks
   marked required for that PR.
 
-Only one request may be active per Git repository. The arm result records the
+Every PR request binds the current head SHA, even without `--head-sha`.
+Use `--head-sha` when the caller already knows the expected revision.
+The observer reads the head before and after each check snapshot.
+A different head returns an error instead of accepting another revision's checks.
+An empty check set stays pending, including an empty `--required` result.
+Run targets stay bound to their run ID.
+
+Only one request can be active per Git repository. The arm result records the
 target, baseline, predicate, expiry, resolved timeout, timeout source, and local
 state path.
 
@@ -89,8 +96,22 @@ finish or clear an active observation and export desired duration history to
 `.ci/github-actions-duration-profile.json`. The observer does not migrate
 earlier active requests or clone-local history.
 
-The active request is cleared before the model resumes. A malformed active file
-is quarantined instead of trusted. Terminal run failure logs are fetched once
+A timeout keeps `active.json` and the original target, baseline, and predicate.
+Extend its deadline explicitly, then await the same request:
+
+```sh
+python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
+  resume --timeout auto --json
+python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
+```
+
+`resume` needs an expired active request and performs no remote reads.
+It keeps the previous timeout report until the next wait returns.
+A changed head still returns an error after renewal.
+Terminal results, status changes, and errors remove the active request.
+A malformed active file is quarantined instead of trusted.
+An older PR request without a bound head is also quarantined.
+After that rejection, arm a new request against the intended revision. Terminal run failure logs are fetched once
 through `gh run view <run-id> --log-failed` after classification.
 
 Use the connected GitHub app for supported repository and PR metadata. Use

@@ -14,7 +14,11 @@ def parse_pr_checks(raw: str, pr: str, *, required: bool = False) -> Snapshot:
     counts = count_checks(checks)
     failed = counts.get("failed", 0)
     pending = counts.get("pending", 0)
-    if failed:
+    if not checks:
+        outcome = Outcome.PENDING
+        status = "awaiting_checks"
+        conclusion = ""
+    elif failed:
         outcome = Outcome.FAILURE
         status = "completed"
         conclusion = "failure"
