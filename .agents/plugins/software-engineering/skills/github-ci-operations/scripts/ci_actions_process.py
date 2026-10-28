@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import re
+from dataclasses import replace
 import subprocess
 from pathlib import Path
-from typing import Sequence
+from typing import Sequence, cast
 
 from ci_actions_pr_summary import parse_pr_checks
 from ci_actions_run_parser import parse_run_view
 from ci_actions_types import (
+    Commit,
     CommandResult,
     CommandRunner,
     GH_PREFIX,
@@ -17,6 +19,7 @@ from ci_actions_types import (
     TargetKind,
     TransientObserverError,
 )
+from ci_actions_scalars import parse_json
 
 
 def run_command(args: Sequence[str], cwd: Path) -> CommandResult:
@@ -44,17 +47,37 @@ def fetch_snapshot(
         require_success(result, "gh run view")
         return parse_run_view(result.stdout, target.value)
     number = pr_number(target.value)
+    head = fetch_pr_head(number, repo_root, runner)
+    require_head(target.head, head)
     command = [*GH_PREFIX, "pr", "checks", number, "--json", "name,state,bucket"]
     if target.required:
         command.append("--required")
     result = runner(command, repo_root)
     if no_checks(result, required=target.required):
-        return parse_pr_checks("[]", number, required=target.required)
-    if result.returncode != 0 and not (
-        result.returncode in {1, 8} and result.stdout.strip()
-    ):
-        require_success(result, "gh pr checks")
-    return parse_pr_checks(result.stdout, number, required=target.required)
+        snapshot = parse_pr_checks("[]", number, required=target.required)
+    else:
+        if result.returncode != 0 and not (result.returncode in {1, 8} and result.stdout.strip()):
+            require_success(result, "gh pr checks")
+        snapshot = parse_pr_checks(result.stdout, number, required=target.required)
+    require_head(head, fetch_pr_head(number, repo_root, runner))
+    return replace(snapshot, target=replace(snapshot.target, head=head))
+
+
+def fetch_pr_head(number: str, repo_root: Path, runner: CommandRunner) -> Commit:
+    result = runner([*GH_PREFIX, "pr", "view", number, "--json", "headRefOid"], repo_root)
+    require_success(result, "gh pr view")
+    payload = parse_json(result.stdout, "gh pr view")
+    if not isinstance(payload, dict):
+        raise ObserverError("gh pr view JSON must be an object")
+    head = cast(dict[str, object], payload).get("headRefOid")
+    if not isinstance(head, str):
+        raise ObserverError("gh pr view output needs a string headRefOid")
+    return Commit(head)
+
+
+def require_head(expected: Commit | None, actual: Commit) -> None:
+    if expected is not None and expected != actual:
+        raise ObserverError(f"PR head changed: expected {expected.value}, observed {actual.value}")
 
 
 def pr_number(value: str) -> str:

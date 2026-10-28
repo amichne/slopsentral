@@ -3,7 +3,7 @@ from __future__ import annotations
 import dataclasses
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from ci_actions_duration import utc_now
 from ci_actions_json import (
@@ -74,6 +74,13 @@ class StateStore:
     def clear_active(self) -> None:
         self.active_path.unlink(missing_ok=True)
 
+    def renew(self, previous: ActiveRequest, renewed: ActiveRequest) -> None:
+        if self.load_active() != previous:
+            raise ObserverError("active observation changed before renewal")
+        if renewed.target != previous.target or renewed.baseline != previous.baseline:
+            raise ObserverError("renewal cannot change the observed target or baseline")
+        self._write_json(self.active_path, active_request_to_json(renewed))
+
     def write_last_observation(self, result: WaitResult) -> None:
         self._write_json(self.last_observation_path, wait_result_to_json(result))
 
@@ -123,17 +130,17 @@ class StateStore:
         ]
         self.history_path.parent.mkdir(parents=True, exist_ok=True)
         temporary = self.history_path.with_name(self.history_path.name + ".tmp")
-        temporary.write_text("\n".join(lines) + "\n", encoding="utf-8")
-        temporary.replace(self.history_path)
+        _ = temporary.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        _ = temporary.replace(self.history_path)
 
     def _write_json(self, path: Path, payload: dict[str, Any]) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         temporary = path.with_name(path.name + ".tmp")
-        temporary.write_text(
+        _ = temporary.write_text(
             json.dumps(payload, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
-        temporary.replace(path)
+        _ = temporary.replace(path)
 
     def _load_json(self, path: Path) -> dict[str, Any]:
         try:
@@ -144,10 +151,10 @@ class StateStore:
         if not isinstance(payload, dict):
             quarantined = self._quarantine(path)
             raise ObserverError(f"state file is corrupt: {quarantined}")
-        return payload
+        return cast(dict[str, Any], payload)
 
     def _quarantine(self, path: Path) -> Path:
         timestamp = utc_now().replace("-", "").replace(":", "")
         quarantined = path.with_name(f"{path.stem}.corrupt-{timestamp}{path.suffix}")
-        path.replace(quarantined)
+        _ = path.replace(quarantined)
         return quarantined

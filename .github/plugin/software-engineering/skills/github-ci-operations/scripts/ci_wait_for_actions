@@ -51,10 +51,19 @@ def build_parser() -> argparse.ArgumentParser:
         help="Seconds from 30 through 3300, or auto for duration-informed selection.",
     )
     arm.add_argument("--required", action="store_true", help="Observe required PR checks only.")
+    arm.add_argument(
+        "--head-sha", help="Reject a PR whose current head differs from this full SHA."
+    )
     arm.add_argument("--json", action="store_true")
 
     await_parser = subcommands.add_parser("await", help="Wait for the armed observation event.")
     await_parser.add_argument("--json", action="store_true")
+
+    resume = subcommands.add_parser(
+        "resume", help="Renew an expired observation without changing its target."
+    )
+    resume.add_argument("--timeout", default="auto")
+    resume.add_argument("--json", action="store_true")
 
     status = subcommands.add_parser("status", help="Show whether an observation is armed.")
     status.add_argument("--json", action="store_true")
@@ -86,6 +95,8 @@ def execute(
             return arm_observation(args, repo_root, state, runner, now_epoch)
         if args.command == "await":
             return await_observation(repo_root, state, runner, now_epoch, sleeper)
+        if args.command == "resume":
+            return resume_observation(args.timeout, repo_root, state, now_epoch)
         if args.command == "status":
             active = state.load_active()
             if active is None:
@@ -112,6 +123,7 @@ def arm_observation(
 ) -> CommandResult:
     target = target_from_args(args)
     baseline = observer.fetch_snapshot(target, repo_root, runner)
+    target = baseline.target
     timeout = resolve_timeout(args.timeout, store, baseline, repo_root)
     armed_epoch = now_epoch()
     request = observer.ActiveRequest(
@@ -197,8 +209,29 @@ def await_observation(
         store.write_last_observation(result)
         store.clear_active()
         return CommandResult(2, observer.wait_result_to_json(result))
-    store.clear_active()
+    if result.outcome != observer.Outcome.TIMEOUT:
+        store.clear_active()
     return CommandResult(exit_code_for(result.outcome), observer.wait_result_to_json(result))
+
+
+def resume_observation(
+    timeout_value: str,
+    repo_root: Path,
+    store: observer.StateStore,
+    now_epoch: Callable[[], float],
+) -> CommandResult:
+    previous = store.load_active()
+    if previous is None:
+        raise observer.ObserverError("no GitHub Actions observation is armed")
+    now = now_epoch()
+    if observer.parse_utc(previous.expires_at).timestamp() > now:
+        raise observer.ObserverError("active observation has not expired; use await")
+    timeout = resolve_timeout(timeout_value, store, previous.baseline, repo_root)
+    renewed = dataclasses.replace(
+        previous, timeout=timeout, expires_at=observer.iso_from_epoch(now + timeout.seconds)
+    )
+    store.renew(previous, renewed)
+    return CommandResult(0, {"state": "armed", "request": observer.active_request_to_json(renewed)})
 
 
 def resolve_timeout(
@@ -231,9 +264,7 @@ def resolve_timeout(
         )
 
     matching_samples = [
-        sample
-        for sample in store.load_history()
-        if not workflow or sample.workflow == workflow
+        sample for sample in store.load_history() if not workflow or sample.workflow == workflow
     ]
     durations = observer.eligible_durations(matching_samples)
     return observer.recommend_timeout(
@@ -263,6 +294,8 @@ def matching_team_profile(repo_root: Path, workflow: str) -> dict[str, Any] | No
 
 def target_from_args(args: argparse.Namespace) -> observer.Target:
     if args.run_id:
+        if args.head_sha:
+            raise observer.ObserverError("--head-sha can only be used with --pr")
         if args.required:
             raise observer.ObserverError("--required can only be used with --pr")
         return observer.Target(observer.TargetKind.RUN, str(args.run_id))
@@ -270,6 +303,7 @@ def target_from_args(args: argparse.Namespace) -> observer.Target:
         observer.TargetKind.PR,
         observer.pr_number(str(args.pr)),
         bool(args.required),
+        observer.Commit(args.head_sha) if args.head_sha else None,
     )
 
 
@@ -353,7 +387,11 @@ def render_text(payload: dict[str, Any]) -> str:
 def main() -> int:
     result = execute(sys.argv[1:])
     json_requested = "--json" in sys.argv[1:]
-    output = json.dumps(result.payload, indent=2, sort_keys=True) if json_requested else render_text(result.payload)
+    output = (
+        json.dumps(result.payload, indent=2, sort_keys=True)
+        if json_requested
+        else render_text(result.payload)
+    )
     stream = sys.stderr if result.exit_code == 2 else sys.stdout
     print(output, file=stream)
     return result.exit_code
