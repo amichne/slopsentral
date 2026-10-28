@@ -64,7 +64,7 @@ async function fixture(t, { instructions = [] } = {}) {
         const list = component.children.find(child => child instanceof SettingsList);
         assert.ok(list);
         await use(list, component);
-        list.handleInput('\u001b');
+        component.handleInput('\u001b');
       },
     } });
     if (!errors.length) assert.equal(completed, true);
@@ -72,6 +72,15 @@ async function fixture(t, { instructions = [] } = {}) {
   };
   return { directory, runner, session, start, settle, calls, menu, settingsFile };
 }
+
+test('Pi sends keyboard input to the menu component', async t => {
+  const { menu, settingsFile } = await fixture(t);
+  await menu((_list, component) => {
+    assert.equal(typeof component.handleInput, 'function');
+    component.handleInput('\r');
+  });
+  assert.deepEqual(JSON.parse(fs.readFileSync(settingsFile)).disabled, ['drift/drift']);
+});
 
 test('native Pi exposes one hooks menu across separately loaded adapters', async t => {
   const { runner, session } = await fixture(t);

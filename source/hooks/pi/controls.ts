@@ -118,7 +118,9 @@ export function registerHookControls(pi: ExtensionAPI, root: string, adapter: Ad
           } else choice.changed();
           tui.requestRender();
         }, () => done(), { enableSearch: true });
-        const container = new Container();
+        const container = new class extends Container {
+          handleInput(data: string): void { list.handleInput(data); }
+        }();
         container.addChild(new Text('Hooks — Enter/Space: on/off · Esc: done\nChoices apply to Slopsentral hooks across Pi sessions.', 1, 1));
         container.addChild(list);
         return container;
