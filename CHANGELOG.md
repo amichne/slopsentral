@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.4](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.3...slopsentral-v4.0.4) (2026-10-28)
+
+
+### Features
+
+* add interactive Pi hook switches ([#109](https://github.com/amichne/slopsentral/issues/109)) ([7e0ed70](https://github.com/amichne/slopsentral/commit/7e0ed70b35e5e2c065111e24b8bb0d8eec3a114f))
+
 ## [4.0.3](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.2...slopsentral-v4.0.3) (2026-10-28)
 
 

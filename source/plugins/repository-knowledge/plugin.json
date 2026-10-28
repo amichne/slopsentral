@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "repository-knowledge",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Write technical documentation with source-backed glossaries and maintain OKF knowledge, OpenWiki handoffs, navigation, and overlays.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",

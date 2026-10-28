@@ -2,7 +2,7 @@
   "type": "PLUGIN",
   "schemaVersion": 1,
   "name": "software-engineering",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
   "interface": {
     "websiteURL": "https://github.com/amichne/slopsentral",
