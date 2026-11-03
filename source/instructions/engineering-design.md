@@ -38,7 +38,9 @@ opaque effects, without secrets, source payloads, or unbounded output.
 
 Write shell tooling in Python. Install uv through mise and pin its version in
 the project’s `mise.toml`. Use `mise exec -- uv run --locked --script PATH`
-for portable scripts. Declare the Python range and dependencies in each PEP 723
+for portable scripts. Give public CLI commands executable names without file extensions.
+Put them in a directory on `PATH` so users can invoke each command by name.
+Keep its script lock beside the executable. Declare the Python range and dependencies in each PEP 723
 header. Use `dependencies = []` for standard-library scripts. Declare package
 indexes, commit adjacent script locks, and set `tool.uv.no-build = true`.
 Use strict Pyright. Use its LSP for symbol navigation when available. Use Ruff for format and lint checks.

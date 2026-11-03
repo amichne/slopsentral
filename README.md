@@ -74,6 +74,7 @@ mise exec -- npm run verify
 The project locks Pyright, Ruff, pytest, PyYAML, and the optional LibCST group.
 Write repository automation in Python. Declare each portable script’s Python range and dependencies in its PEP 723 header.
 Use `dependencies = []` when the standard library supplies every import. Commit the adjacent `.lock` file.
+Give public commands executable names without extensions. Put each command and its lock in a directory on `PATH`.
 The configuration disables source builds with `tool.uv.no-build = true`.
 
 New automation uses strict types, finite outcomes, literal argument arrays, and focused tests.

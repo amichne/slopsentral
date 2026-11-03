@@ -7,6 +7,8 @@ description: Build, refactor, and verify typed Python automation, self-contained
 
 Write automation in Python. Install uv through mise. Pin uv in the project’s `mise.toml`.
 Use `mise exec -- uv` to select that version without interactive shell setup.
+Give public commands executable names without extensions. Put the commands and their locks in a directory on `PATH`.
+Keep the `.py` suffix for Python modules.
 
 ## Workflow
 
@@ -22,7 +24,8 @@ Use `mise exec -- uv` to select that version without interactive shell setup.
    without overwriting an existing directory. Review the generated `mise.toml` and run `mise install`.
    Run `mise exec -- uv run --locked --script setup.py` inside the new directory to create
    project and script locks, install declared tools, and run every gate. Review
-   and commit both locks. Setup and dependency refresh are explicit effects.
+   and commit the locks. On POSIX systems, mise puts the scaffold’s `bin` directory on `PATH`.
+   Run `mise exec -- text-summary PATH` to invoke the public command.
 4. Use Pyright's LSP with the uv environment for definitions, references, rename,
    and diagnostics when the host supports it. Verify the advertised capability
    before a refactor; Pyright is not a general codemod engine. Inspect all callers,

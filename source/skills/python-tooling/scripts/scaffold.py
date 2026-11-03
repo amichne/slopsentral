@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 from pathlib import Path
 
@@ -22,8 +23,21 @@ from pathlib import Path
 def scaffold(destination: Path) -> None:
     assets = Path(__file__).resolve().parents[1] / "assets"
     destination.mkdir(parents=True, exist_ok=False)
-    for name in ("mise.toml", "standalone.py", "pyproject.toml", "setup.py", "setup.py.lock"):
+    for name in (
+        "mise.toml",
+        "standalone.py",
+        "standalone.py.lock",
+        "pyproject.toml",
+        "setup.py",
+        "setup.py.lock",
+    ):
         _ = shutil.copy2(assets / name, destination / name)
+    if os.name == "posix":
+        command_dir = destination / "bin"
+        command_dir.mkdir()
+        # uv looks for the lock beside the invoked name, even when the executable is a symlink.
+        (command_dir / "text-summary").symlink_to("../standalone.py")
+        (command_dir / "text-summary.lock").symlink_to("../standalone.py.lock")
     _ = (destination / ".python-version").write_text("3.12\n", encoding="utf-8")
     _ = (destination / ".gitignore").write_text(
         ".venv/\n__pycache__/\n.pytest_cache/\n.ruff_cache/\n", encoding="utf-8"

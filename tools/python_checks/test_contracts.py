@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
+
+import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -42,11 +46,41 @@ def test_pep723_isolation() -> None:
     assert "4 passed" in result.stdout
 
 
-def test_scaffold_uses_checkout_uv_pin(tmp_path: Path) -> None:
+def test_scaffold_exposes_extensionless_command_with_checkout_uv_pin(tmp_path: Path) -> None:
     script = ROOT / "source/skills/python-tooling/scripts/scaffold.py"
     destination = tmp_path / "project with spaces"
     _ = subprocess.run(
         ["uv", "run", "--locked", "--script", str(script), "--out", str(destination)],
         check=True,
     )
-    assert (destination / "mise.toml").read_bytes() == (ROOT / "mise.toml").read_bytes()
+
+    def uv_pin(config: Path) -> str:
+        return tomllib.loads(config.read_text())["tools"]["uv"]
+
+    assert uv_pin(destination / "mise.toml") == uv_pin(ROOT / "mise.toml")
+    if os.name != "posix":
+        pytest.skip("Direct shebang commands on PATH need a POSIX host.")
+    sample = tmp_path / "sample with spaces.txt"
+    _ = sample.write_text("hello\n")
+    result = subprocess.run(
+        ["mise", "exec", "--", "text-summary", str(sample)],
+        cwd=destination,
+        env={**os.environ, "MISE_TRUSTED_CONFIG_PATHS": str(destination)},
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"type": "SUMMARY", "lines": 1, "characters": 6}
+    (destination / "bin/text-summary.lock").unlink()
+    rejected = subprocess.run(
+        ["text-summary", str(sample)],
+        cwd=tmp_path,
+        env={**os.environ, "PATH": os.pathsep.join([str(destination / "bin"), os.environ["PATH"]])},
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert rejected.returncode == 2
+    assert "lockfile" in rejected.stderr
+    assert not rejected.stdout

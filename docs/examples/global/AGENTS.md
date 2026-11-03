@@ -9,6 +9,7 @@ strongest mechanisms the project's language and tools support.
 - Pin uv in the project’s `mise.toml`. Install it with `mise install`.
 - Write shell tooling in Python. Declare the Python range and dependencies in each portable script’s PEP 723 header.
 - Use `dependencies = []` for a script that uses only the standard library.
+- Give public CLI commands executable names without file extensions. Install them in a directory on `PATH`.
 - Commit the adjacent script lock. Run the script with `mise exec -- uv run --locked --script PATH`.
 
 ## Establish the contract

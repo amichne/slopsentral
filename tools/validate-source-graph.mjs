@@ -149,6 +149,10 @@ for (const root of ["source", "tools"]) {
     const script = fs.readFileSync(file, "utf8");
     const relative = relativeToRepo(file);
     const launcher = script.split("\n", 1)[0];
+    const executable = (fs.statSync(file).mode & 0o111) !== 0;
+    if (executable && path.basename(path.dirname(file)) === "bin" && path.extname(file)) {
+      fail(`${relative}: public commands in bin must have extensionless names`);
+    }
     if (!shellInterfaces.has(relative) && (/\.(?:sh|bash|zsh|ksh|fish)$/.test(file)
         || /^#![^\n]*(?:\/|\s)(?:sh|bash|dash|zsh|ksh|fish)(?:\s|$)/.test(launcher))) {
       fail(`${relative}: use a Python script with uv for automation`);
@@ -164,8 +168,7 @@ for (const root of ["source", "tools"]) {
     if (!metadata || !/^# required-version = ">=0\.12\.9"$/m.test(metadata)) {
       fail(`${relativeToRepo(file)}: portable uv script must declare the existing uv >=0.12.9 minimum`);
     }
-    if ((fs.statSync(file).mode & 0o111) !== 0
-        && !script.startsWith("#!/usr/bin/env -S uv run --locked --script\n")) {
+    if (executable && !script.startsWith("#!/usr/bin/env -S uv run --locked --script\n")) {
       fail(`${relativeToRepo(file)}: direct portable uv script must use a locked script launcher`);
     }
     const lock = file.endsWith(".tmpl") ? file.slice(0, -5) + ".lock.tmpl" : file + ".lock";
