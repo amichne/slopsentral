@@ -1,0 +1,31 @@
+name: Gradle cacheability
+on:
+  pull_request:
+    paths:
+      - source/skills/gradle-performance-engineering/assets/cacheability/**
+      - source/skills/gradle-performance-engineering/scripts/cacheability.py*
+      - .github/workflows/gradle-cacheability.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cacheability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25.0.2'
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.12.9'
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c
+        with:
+          gradle-version: '9.8.2'
+          cache-disabled: true
+      - name: Exercise independent builds, relocation, invalidation, and the false-hit control
+        run: uv run --locked --script source/skills/gradle-performance-engineering/scripts/cacheability.py "$(command -v gradle)"
