@@ -18,7 +18,7 @@ def test_setup_receipt_binds_exact_installer_and_candidate(tmp_path: Path) -> No
     tools = source / "tools"
     tools.mkdir(parents=True)
     for name in setup_assets.FILES:
-        _ = (tools / name).write_text(f"verified {name}\n")
+        _ = ((source if name == "install.sh" else tools) / name).write_text(f"verified {name}\n")
     output = tmp_path / "setup"
     setup_assets.package(source, candidate, output)
     setup_assets.verify(output, candidate / "candidate.json")
@@ -33,7 +33,7 @@ def test_setup_refuses_foreign_source_and_indirect_payload(tmp_path: Path) -> No
     tools = source / "tools"
     tools.mkdir(parents=True)
     for name in setup_assets.FILES:
-        _ = (tools / name).write_text("verified")
+        _ = ((source if name == "install.sh" else tools) / name).write_text("verified")
     (tools / "setup-pi.mts").unlink()
     (tools / "setup-pi.mts").symlink_to(tools / "install-pi.sh")
     with pytest.raises(CandidateError):
