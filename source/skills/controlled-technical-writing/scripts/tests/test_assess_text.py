@@ -121,6 +121,12 @@ class AssessTextTest(unittest.TestCase):
             code, result, _ = self.run_assessment("Use the tool.\n\n" + marker + "\n\nUtilize the tool.\n")
             self.assertEqual((code, result.get("failure", {}).get("type")), (2, "POLICY_OVERRIDE"))
 
+    def test_repository_terms_do_not_hide_an_unknown_spelling(self):
+        _, report, _ = self.run_assessment("Gradle and Pkl use a toolchain. Keep the frontmatter. Worktrees contain lockfiles.\n")
+        self.assertTrue({"Vale.Spelling", "Vale.Terms"}.isdisjoint(f["rule"] for f in report["documents"][0]["findings"]))
+        _, typo, _ = self.run_assessment("Keep the fruntmattter.\n")
+        self.assertIn("Vale.Spelling", [f["rule"] for f in typo["documents"][0]["findings"]])
+
     def test_editor_rules_reach_the_assessment(self):
         (self.root / "docs/how-to").mkdir(parents=True)
         code, result, _ = self.run_assessment(

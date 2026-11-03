@@ -100,6 +100,8 @@ Declare dependencies in PEP 723 headers and commit adjacent locks. Use `tool.uv.
 Run `mise exec -- slopsentral-setup` for checkout setup.
 Run `mise exec -- slopsentral-check` for Ruff, strict Pyright, and pytest. Keep generated outputs and installed caches outside authored edits.
 
+For prose changes, run `mise exec -- slopsentral-prose changed`. Keep its report and review warnings at the reported lines.
+
 ## Core Skill Evals
 
 `source/evals/promptfoo/cases.mts` owns active decision cases and expected answers,

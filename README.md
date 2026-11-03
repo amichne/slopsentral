@@ -114,7 +114,8 @@ Exit 0 permits the change. Exit 1 blocks it for prose findings. Exit 2 means the
 The candidate job runs the proposed policy. After this workflow lands on `main`, the trusted job uses the base checker and glossary.
 It reads the PR head as data and posts `slopsentral/prose` to that commit. Both jobs save their JSON reports.
 After the first trusted run, select `slopsentral/prose` as a required status check for `main`.
-Select the GitHub Actions source for the status. Require an up-to-date branch and code-owner review for policy changes.
+Select GitHub Actions as the status source. Enable the rule for up-to-date branches.
+Enable code-owner review for policy changes once a code owner other than the PR author can approve them.
 Review an exception with its rule, passage, and reason in the PR. A review comment cannot override a failed status.
 
 ## Source and delivery

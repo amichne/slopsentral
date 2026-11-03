@@ -115,3 +115,43 @@ def test_changed_prose_from_a_disposable_pull_request(tmp_path: Path) -> None:
     assert code == 2, report
     assert "Slopsentral.GlossaryMarker" in json.dumps(report)
     assert "POLICY_OVERRIDE" in json.dumps(report)
+
+
+def test_rename_from_file_to_directory_preserves_warning(tmp_path: Path) -> None:
+    def git(*args: str) -> str:
+        return subprocess.check_output(["git", *args], cwd=tmp_path, text=True).strip()
+
+    _ = git("init", "-q")
+    _ = git("config", "user.name", "Prose Test")
+    _ = git("config", "user.email", "prose@example.invalid")
+    path = tmp_path / "guide.md"
+    prose = "Utilize the tool.\n"
+    _ = path.write_text(prose)
+    _ = git("add", ".")
+    _ = git("commit", "-qm", "before")
+    base = git("rev-parse", "HEAD")
+    path.unlink()
+    path.mkdir()
+    _ = (path / "page.md").write_text(prose)
+    _ = git("add", ".")
+    _ = git("commit", "-qm", "after")
+    run = subprocess.run(
+        [
+            "uv",
+            "run",
+            "--locked",
+            "--script",
+            str(COMMAND),
+            "changed",
+            "--base",
+            base,
+            "--head",
+            "HEAD",
+        ],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert run.returncode == 0, run.stdout + run.stderr
+    assert json.loads(run.stdout)["type"] == "PASSED"

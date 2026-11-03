@@ -42,6 +42,8 @@ class Reason(StrEnum):
     INVALID_REPORT = "INVALID_REPORT"
     ENGINE = "ENGINE"
     ASSESSMENT = "ASSESSMENT"
+    INPUT = "INPUT"
+    SETUP = "SETUP"
 
 
 @dataclass(frozen=True)
@@ -260,10 +262,21 @@ class Comparison:
     revision: str | None
 
     def read(self, work: Path, binary: str, name: str, revision: str | None) -> Document | Rejected:
-        raw = contents(self.repo, revision, name)
-        if isinstance(raw, Rejected):
-            return raw
-        return document(work, name, raw, binary)
+        path = Path(name)
+        if path.is_absolute() or ".." in path.parts or path.as_posix() != name:
+            return Rejected(Reason.UNSAFE_PATH, "Expected a repository-relative path")
+        try:
+            raw = contents(self.repo, revision, name)
+            if isinstance(raw, Rejected):
+                return raw
+            # Isolate revisions: a former file can be the parent directory of its new path.
+            with tempfile.TemporaryDirectory(dir=work) as directory:
+                snapshot = Path(directory)
+                (snapshot / "docs").mkdir()
+                _ = shutil.copyfile(work / "docs/glossary.json", snapshot / "docs/glossary.json")
+                return document(snapshot, name, raw, binary)
+        except (OSError, ValueError, subprocess.CalledProcessError) as exc:
+            return Rejected(Reason.INPUT, str(exc))
 
 
 def assess_change(
@@ -349,6 +362,7 @@ def check(
     selected, files = select(target)
     summary: dict[str, object] = {
         "base": base,
+        "baseTip": base_tip,
         "head": target.revision or "WORKTREE",
         "files": files,
     }
@@ -358,11 +372,16 @@ def check(
     with tempfile.TemporaryDirectory(prefix="slopsentral-prose-") as tmp:
         root = Path(tmp)
         work = root / "documents"
-        (work / "docs").mkdir(parents=True)
-        _ = shutil.copyfile(POLICY / "docs/glossary.json", work / "docs/glossary.json")
-        binary = engine(root)
+        try:
+            (work / "docs").mkdir(parents=True)
+            _ = shutil.copyfile(POLICY / "docs/glossary.json", work / "docs/glossary.json")
+            binary = engine(root)
+        except (OSError, ValueError, subprocess.CalledProcessError) as exc:
+            binary = Rejected(Reason.SETUP, str(exc))
         for change in selected:
             if isinstance(binary, Rejected):
+                if annotate:
+                    annotation(change.path, "error", binary.detail)
                 files.append(
                     {
                         "path": change.path,
