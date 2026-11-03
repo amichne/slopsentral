@@ -5,7 +5,7 @@ description: Connect a system claim to its source owner, executable oracle, rela
 tags: [evidence, okf, claims, freshness, engineering]
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T20:23:45.331Z
+    at: 2026-11-03T20:36:31.743Z
 sources:
   - id: openwiki-source-e14c3521bbc2e703193cadf9
     resource: repo://source/instructions/engineering-design.md

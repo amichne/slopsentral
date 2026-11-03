@@ -22,10 +22,10 @@ sources:
     resource: repo://source/skills/controlled-technical-writing/references/glossary-authoring.md
   - id: openwiki-source-00110e15b75d856174b63939
     resource: repo://tools/python_checks/test_documentation.py
-generated: { by: "codex", at: "2026-11-03T20:23:45.331Z" }
+generated: { by: "codex", at: "2026-11-03T20:36:31.743Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T20:23:45.331Z
+    at: 2026-11-03T20:36:31.743Z
 ---
 
 # Maintain source-backed documentation
@@ -62,6 +62,12 @@ Slopsentral's `bin/slopsentral-docs` uses that same runtime.
 Its project policy lives in `docs/coverage.json`, including the deliberate product-version exceptions.
 The runtime contains no implicit Slopsentral paths or release exceptions.
 The [package assertions](../testing/validation.md#exercise-the-distributed-practice-independently) run shipped bytes in independent Git projects for all four providers.
+
+The review lock must use a separate output path outside every prepared input.
+It cannot replace a source, document, configuration, or native evidence file.
+An existing target needs the `KNOWLEDGE_REVIEW` kind and valid receipt structure.
+The writer consumes an admitted target and stages the receipt before replacement.
+The kind describes the format, without cryptographic authentication or hostile-writer guarantees.
 
 Review affected source and explanations before `record`.
 CI runs `check` without refreshing expected fingerprints or generating pages.

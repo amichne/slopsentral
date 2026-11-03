@@ -338,3 +338,22 @@ def test_bundled_template_is_current_in_an_independent_repository(tmp_path: Path
     )
     assert result.returncode == 0, result.stderr
     assert "Ran 2 tests" in result.stderr
+
+
+@pytest.mark.parametrize("name", ["docs/guide.md", "openwiki/flow.md", "source/service.py"])
+def test_record_cannot_replace_a_prepared_input(tmp_path: Path, name: str) -> None:
+    fixture(tmp_path)
+    before = (tmp_path / name).read_bytes()
+    status, report = docs.run(tmp_path, "record", lock_name=name)
+    assert status == 2, report
+    assert (tmp_path / name).read_bytes() == before
+
+
+def test_record_preserves_a_foreign_existing_target(tmp_path: Path) -> None:
+    fixture(tmp_path)
+    target = "docs/private-state.json"
+    write(tmp_path, target, '{"private":"preserve"}\n')
+    before = (tmp_path / target).read_bytes()
+    status, report = docs.run(tmp_path, "record", lock_name=target)
+    assert status == 2, report
+    assert (tmp_path / target).read_bytes() == before

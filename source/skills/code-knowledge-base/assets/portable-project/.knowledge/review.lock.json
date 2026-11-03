@@ -14,5 +14,6 @@
     }
   },
   "coverageSha256": "475653dc3158ea208661857ec3967535e45932049b6717690c4a875d581f8ec7",
-  "schemaVersion": 2
+  "schemaVersion": 2,
+  "type": "KNOWLEDGE_REVIEW"
 }

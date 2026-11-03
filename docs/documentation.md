@@ -109,6 +109,8 @@ mise exec -- slopsentral-docs check
 ```
 
 `record` refuses broken structure and unfinished native state.
+It also rejects every prepared input as a lock target and preserves foreign existing targets.
+Owned receipts carry the `KNOWLEDGE_REVIEW` kind and a valid digest map.
 It records a review assertion, without proof that a reviewer understood every statement.
 Never use it only to silence a stale result.
 Review the resulting lock diff alongside the affected pages.

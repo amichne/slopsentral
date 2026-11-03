@@ -12,12 +12,14 @@ sources:
     resource: repo://tools/check.py
   - id: openwiki-source-b796202ab127e6e56e465638
     resource: repo://tools/python_checks/gates.py
+  - id: openwiki-source-00110e15b75d856174b63939
+    resource: repo://tools/python_checks/test_documentation.py
   - id: openwiki-source-2402abcd09d5c9c6105c476c
     resource: repo://tools/tests/documentation-portability.test.mjs
-generated: { by: "codex", at: "2026-11-03T20:23:45.331Z" }
+generated: { by: "codex", at: "2026-11-03T20:36:31.743Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T20:23:45.331Z
+    at: 2026-11-03T20:36:31.743Z
 ---
 
 # Match checks to the engineering claim
@@ -66,6 +68,8 @@ The accepted path records reviewed inputs and reports `CURRENT`.
 A source change reports `STALE` with the affected path.
 Broken links, invalid OKF, missing configuration, and a missing dependency lock reject the operation.
 The assertions also make sure that `check` preserves file bytes, modes, and Git status.
+Every packaged runtime also rejects a source or document as its review-lock target.
+A foreign existing JSON target remains unchanged.
 
 The [Python tests](../../tools/python_checks/test_documentation.py) also exercise the complete shipped template in another Git repository.
 They reject a foreign lock symlink and a configuration that hides its declared knowledge pages.

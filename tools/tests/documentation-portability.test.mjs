@@ -131,9 +131,9 @@ for (const surface of surfaces) {
     environment.UV_NO_CONFIG = '1';
     environment.UV_PYTHON_DOWNLOADS = 'never';
     environment.PYTHONNOUSERSITE = '1';
-    const invoke = command => spawnSync('uv', [
+    const invoke = (command, lockPath = '.knowledge/review.lock.json') => spawnSync('uv', [
       'run', '--locked', '--script', runtime, command,
-      '--repo', consumer, '--config', '.knowledge/coverage.json', '--lock', '.knowledge/review.lock.json',
+      '--repo', consumer, '--config', '.knowledge/coverage.json', '--lock', lockPath,
     ], { cwd: unrelated, env: environment, encoding: 'utf8', timeout: 60_000 });
     function result(command, status, type, code) {
       const before = command === 'check' ? inventory(consumer) : undefined;
@@ -189,6 +189,15 @@ for (const surface of surfaces) {
     result('check', 2, 'REJECTED', 'INPUT');
     fs.writeFileSync(configPath, originalConfig);
     result('check', 0, 'CURRENT');
+
+    write(consumer, '.knowledge/foreign.json', '{"foreign":true}\n');
+    for (const forbidden of ['README.md', 'handbook/guide.md', 'knowledge/service.md', '.knowledge/foreign.json']) {
+      const before = inventory(consumer);
+      const rejected = invoke('record', forbidden);
+      assert.equal(rejected.status, 2, rejected.stdout + rejected.stderr);
+      assert.equal(JSON.parse(rejected.stdout).type, 'REJECTED');
+      assert.deepEqual(inventory(consumer), before, 'record must preserve prepared inputs and foreign existing files');
+    }
 
     const lock = `${runtime}.lock`;
     const originalLock = fs.readFileSync(lock);

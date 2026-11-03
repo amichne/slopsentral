@@ -28,7 +28,12 @@ uv run --locked --script /absolute/path/to/code-knowledge-base/scripts/documenta
 The runtime emits JSON and a process status.
 `CURRENT` returns 0. `STALE` returns 1 with affected areas.
 Invalid configuration, missing evidence, broken links, or incomplete native state return `REJECTED` with status 2.
-A missing lock is rejected. It never establishes current documentation.
+A missing lock is rejected by `check`. It never establishes current documentation.
+The review lock must use a separate path outside every prepared input.
+It cannot replace a source, page, configuration, Claim sidecar, or completion record.
+`record` preserves existing targets without the `KNOWLEDGE_REVIEW` kind and valid receipt structure.
+It stages the admitted receipt beside its target before replacement.
+The kind marks the format, without cryptographic authentication or protection against a hostile concurrent writer.
 
 ## Define the source-to-concept map
 

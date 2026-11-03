@@ -34,6 +34,7 @@ if TYPE_CHECKING:
     from markdown_it.token import Token
 
 SCHEMA_VERSION = 2
+REVIEW_KIND = "KNOWLEDGE_REVIEW"
 CONFIG = "docs/coverage.json"
 LOCK = "docs/knowledge.lock.json"
 
@@ -108,7 +109,7 @@ def unique(pairs: list[tuple[str, object]]) -> dict[str, object]:
 
 
 def load(path: Path) -> object:
-    return json.loads(path.read_text(), object_pairs_hook=unique)
+    return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique)
 
 
 def paths(value: object) -> tuple[str, ...] | Rejected:
@@ -379,7 +380,7 @@ def anchors(items: list[Token]) -> set[str]:
 
 
 def examine_links(root: Path, pages: tuple[str, ...], spec: Coverage) -> Rejected | None:
-    parsed = {name: tokens((root / name).read_text()) for name in pages}
+    parsed = {name: tokens((root / name).read_text(encoding="utf-8")) for name in pages}
     edges: dict[str, set[str]] = {name: set() for name in pages}
     for name, items in parsed.items():
         for link in links(items):
@@ -406,7 +407,9 @@ def examine_links(root: Path, pages: tuple[str, ...], spec: Coverage) -> Rejecte
             if target.fragment and destination.suffix == ".md":
                 relative = destination.relative_to(root.resolve()).as_posix()
                 headings = anchors(
-                    parsed[relative] if relative in parsed else tokens(destination.read_text())
+                    parsed[relative]
+                    if relative in parsed
+                    else tokens(destination.read_text(encoding="utf-8"))
                 )
                 if unquote(target.fragment) not in headings:
                     return Rejected(Code.LINKS, f"{name}: missing anchor {link}")
@@ -446,7 +449,7 @@ def native(root: Path, pages: tuple[str, ...], spec: Coverage) -> Rejected | Non
             or name in spec.auxiliary
         ):
             continue
-        text = (root / name).read_text()
+        text = (root / name).read_text(encoding="utf-8")
         if not text.startswith("---\n") or "\n---\n" not in text[4:]:
             return Rejected(Code.OKF, name)
         metadata: object = yaml.safe_load(text[4:].split("\n---\n", 1)[0])
@@ -568,14 +571,20 @@ def compare(previous: object, state: Mapping[str, object]) -> tuple[int, dict[st
     }
 
 
-def prepared(root: Path, config_name: str, lock_name: str) -> dict[str, object] | Rejected:
+def configuration_bytes(root: Path, config_name: str, lock_name: str) -> bytes | Rejected:
     safe = paths([config_name, lock_name])
     if isinstance(safe, Rejected):
         return safe
     for name in safe:
         if (root / name).resolve() != root.resolve() / name:
             return Rejected(Code.INPUT, f"Indirect configuration or lock: {name}")
-    raw = (root / config_name).read_bytes()
+    return (root / config_name).read_bytes()
+
+
+def prepared(root: Path, config_name: str, lock_name: str) -> dict[str, object] | Rejected:
+    raw = configuration_bytes(root, config_name, lock_name)
+    if isinstance(raw, Rejected):
+        return raw
     spec = coverage(json.loads(raw, object_pairs_hook=unique))
     if isinstance(spec, Rejected):
         return spec
@@ -584,17 +593,57 @@ def prepared(root: Path, config_name: str, lock_name: str) -> dict[str, object] 
     current = snapshot(root, spec, inventory(root))
     if isinstance(current, Rejected):
         return current
+    if any(lock_name in files for files in current.values()):
+        return Rejected(Code.INPUT, "The review lock cannot replace a prepared input")
     return {
+        "type": REVIEW_KIND,
         "schemaVersion": SCHEMA_VERSION,
         "coverageSha256": hashlib.sha256(raw).hexdigest(),
         "areas": current,
     }
 
 
-def record(path: Path, state: Mapping[str, object]) -> None:
+@dataclass(frozen=True, slots=True)
+class _RecordTarget:
+    path: Path
+
+
+def review_record(value: object) -> TypeGuard[Mapping[str, object]]:
+    if not mapping(value) or set(value) != {"type", "schemaVersion", "coverageSha256", "areas"}:
+        return False
+    if value["type"] != REVIEW_KIND or value["schemaVersion"] != SCHEMA_VERSION:
+        return False
+    checksum, areas = value["coverageSha256"], value["areas"]
+    if (
+        not isinstance(checksum, str)
+        or not re.fullmatch(r"[0-9a-f]{64}", checksum)
+        or not mapping(areas)
+        or not areas
+    ):
+        return False
+    return all(
+        mapping(files)
+        and all(
+            isinstance(checksum, str) and re.fullmatch(r"[0-9a-f]{64}", checksum)
+            for checksum in files.values()
+        )
+        for files in areas.values()
+    )
+
+
+def record_target(path: Path) -> _RecordTarget | Rejected:
+    if path.exists() and not review_record(load(path)):
+        return Rejected(Code.INPUT, "The existing target is not an owned knowledge review lock")
+    return _RecordTarget(path)
+
+
+def record(target: _RecordTarget, state: Mapping[str, object]) -> None:
+    path = target.path
     with tempfile.TemporaryDirectory(dir=path.parent, prefix=".knowledge-") as directory:
         temporary = Path(directory) / "review.json"
-        _ = temporary.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
+        _ = temporary.write_text(
+            json.dumps(state, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
+        )
         _ = temporary.replace(path)
 
 
@@ -606,18 +655,31 @@ def run(
         if isinstance(state, Rejected):
             return 2, {"type": "REJECTED", "code": state.code, "detail": state.detail}
         if command == "record":
-            record(root / lock_name, state)
-            return 0, {
-                "type": "RECORDED",
-                "areas": sorted_area_names(state),
-                "limit": "Records reviewed bytes, not semantic correctness",
-            }
+            return write_review(root / lock_name, state)
         previous = load(root / lock_name)
+        if not review_record(previous):
+            return 2, {
+                "type": "REJECTED",
+                "code": Code.INPUT,
+                "detail": "Invalid knowledge review lock",
+            }
         if previous == state:
             return 0, {"type": "CURRENT", "areas": sorted_area_names(state)}
         return compare(previous, state)
     except (OSError, ValueError, yaml.YAMLError, subprocess.CalledProcessError) as exc:
         return 2, {"type": "REJECTED", "code": Code.INPUT, "detail": str(exc)}
+
+
+def write_review(path: Path, state: Mapping[str, object]) -> tuple[int, dict[str, object]]:
+    target = record_target(path)
+    if isinstance(target, Rejected):
+        return 2, {"type": "REJECTED", "code": target.code, "detail": target.detail}
+    record(target, state)
+    return 0, {
+        "type": "RECORDED",
+        "areas": sorted_area_names(state),
+        "limit": "Records reviewed bytes, not semantic correctness",
+    }
 
 
 def sorted_area_names(state: Mapping[str, object]) -> list[str]:
