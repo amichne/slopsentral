@@ -26,7 +26,7 @@
   "verifiers": {
     "type": "PLUGIN_EVAL_VERIFIERS",
     "commands": [
-      "python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin developer-tooling",
+      "uv run --locked --script source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin developer-tooling",
       "node tools/tests/tooling-redesign.test.mjs",
       "git diff --check"
     ]

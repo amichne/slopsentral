@@ -1,9 +1,20 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --locked --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = []
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 """
 gen-agents-local.py — Generate AGENTS.md navigation for a directory.
 
 Usage:
-  python3 gen-agents-local.py <directory> [--depth N] [--hash-only] [--dry-run]
+  uv run --locked --script gen-agents-local.py <directory> [--depth N] [--hash-only] [--dry-run]
 
 Options:
   --depth N      Walk N levels deep (default: 1 = current dir only)

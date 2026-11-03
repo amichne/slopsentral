@@ -10,7 +10,7 @@ Reset the tracepoints after capture.
 The helper only emits the official non-interactive installation command:
 
 ```shell
-uv run --locked python scripts/intellij_diagnostics ide-perf-command \
+uv run --locked --script scripts/intellij_diagnostics ide-perf-command \
   --app "/Applications/IntelliJ IDEA.app"
 ```
 

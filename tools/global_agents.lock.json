@@ -6,7 +6,7 @@
   "files": [
     {
       "path": "docs/examples/global/AGENTS.md",
-      "sha256": "5bf03afdaaa36c56cc86019e423f060d39f81697ac978b124479bd2c16c0511b"
+      "sha256": "6fc6f8801f30895b2993f86a4a28b49b7b271325c4b7412280f1291fb3656dc8"
     },
     {
       "path": "docs/global-agents.md",
@@ -46,11 +46,11 @@
     },
     {
       "path": "source/instructions/engineering-design.md",
-      "sha256": "6115727dd4cb243c521d25eccb90b58a7eedafc37f026b8eba2a2c7e193738cd"
+      "sha256": "9a59984310d19a8eb6c9b19e49fbc1f339d1e909f3f801dddbbed2a345230765"
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",
-      "sha256": "767aac562b08a9045ba0043aac6c975a95367ae9ebece78abeb7677bcf7b8318"
+      "sha256": "b0125aeef87ab53d4d47176f0a277ba40c60d039e6d3f6d7270fec07b1f5e236"
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/glossary-entry.json",
@@ -58,11 +58,7 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/vale/.vale.ini",
-      "sha256": "1d0c5184a807a038537de2ae47695b700dbce1d6c87601631b9d405db0e0a5fa"
-    },
-    {
-      "path": "source/skills/controlled-technical-writing/assets/vale/assessment.ini",
-      "sha256": "f20ba19d6c7b22d03f21de4dbe1afe65334449f977f03c20358bca74ddb27afc"
+      "sha256": "ad9deb5787bb35a512d0eb27a1508200c165c467c62ad55cd9256296e778a6d3"
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/vale/licenses/Commits/LICENSE",
@@ -98,7 +94,7 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/vale/resources.lock.json",
-      "sha256": "987e81b299dd7578f0c1a3853de96d69ce3ab418ee6e87f6c91ad91a7f6a2669"
+      "sha256": "36812469e148e38ce413de92cd73efe5402e9ccbb6fdda572cbe7b5c5590b42a"
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/vale/styles/Commits/Blank.yml",
@@ -306,7 +302,7 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/vale/styles/config/vocabularies/Slopsentral/accept.txt",
-      "sha256": "c35b7156488ab087b9f07c831caaac8363771b5aa4f80f90674e23a55ac4d1ec"
+      "sha256": "9192f15830b8bc541e91eebe721724daadf408a31ddecb1a01619a8603a894ef"
     },
     {
       "path": "source/skills/controlled-technical-writing/references/Apache-2.0.txt",
@@ -334,11 +330,11 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/references/text-assessment.md",
-      "sha256": "7af70f3b60383031b588e9139bf39502e63907cfba5674f0d9e1b74594ae3302"
+      "sha256": "0a4c3831d61e966802bf8f840b77100585052f6aa37dd705d728c22c1de73449"
     },
     {
       "path": "source/skills/controlled-technical-writing/references/text-assessment.schema.json",
-      "sha256": "65f8c2174a98d90066245a2002b3fbca7cfd04b3ed3b7783b1e41e9ab34382ff"
+      "sha256": "b5ac95078351ccb8c1a2691aef2a33177a9740abe5431ff7a81acc437a34aa29"
     },
     {
       "path": "source/skills/controlled-technical-writing/references/vale-local.md",
@@ -346,11 +342,11 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/assess_text.py",
-      "sha256": "0fdb524bda8296ed2f758e5f545b5c5125a9c5f07719f0b7b37a588c31812fad"
+      "sha256": "8f9d3942b1f1ba2992ed9a64951b1b0c18a97f15aabc01e506c4ae585c1ad15d"
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/assess_text.py.lock",
-      "sha256": "b32d23850d12cab2dcb0ed42677e7d4076e62a165883f687eec3333f0deb6c8f"
+      "sha256": "bdd3c1217cbbaf0d565cd190106075efc82b438bf6ff1b70061e8b72d9656897"
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/check_glossary.py",
@@ -366,7 +362,7 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/install_vale.py",
-      "sha256": "7dff92e1d9462f0d094c38e470a0e986d59bf07d36a5c12d08eec6cb0a078955"
+      "sha256": "1a9119d17fe12b942830a00588c55a04398f0fee5366868b56a29cc287d5a7cb"
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/install_vale.py.lock",
@@ -374,11 +370,11 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/pyproject.toml",
-      "sha256": "174d456bc43a231557252353bdc926a0bfc60c090073501aaf9e8d93746fdee6"
+      "sha256": "e787e3180d9cca9e2faf8dbcfb7ab3db736df80bd10b43dbd1b1af360c31254a"
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/tests/test_assess_text.py",
-      "sha256": "38bc22b714e12bbb83cf8ce6d1f861316eaf09a55c970a0f4b6325f4c7d5ed80"
+      "sha256": "ba9c17761b577831b52c33ad548946a7e5e3e51c827b725138dccda28a141af1"
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/tests/test_check_glossary.py",
@@ -386,15 +382,15 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/tests/test_glossary_json.py",
-      "sha256": "5ff008776bfed3969c05e5264b9363bf1a0ac5c9a30522c4015476f87c8ddbb2"
+      "sha256": "d874814e0ed3a83474dcc4f318a3ea83ad6ff5c46b6628f17ad642a8b96ab737"
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/tests/test_vale_setup.py",
-      "sha256": "09c446d310b131c1e52771e9b81d60da111718fa87adb730923c39fb08ca1002"
+      "sha256": "b698b50975e5cc99fc533e183e575c53fb779920c6699574f706b6807a904953"
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/uv.lock",
-      "sha256": "8e4e6aedabb28499ca4f2dd7c4786f08a3ea192178d87bb7143b221d68d8e292"
+      "sha256": "5296adfe5366b3c86664586de38d3f4c6bc583ac4b44fdca46a0b396e18dea4f"
     },
     {
       "path": "source/skills/kotlin-design-practices/SKILL.md",

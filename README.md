@@ -59,16 +59,26 @@ See [installation, updates, rollback, and native checks](docs/pkl-projection.md#
 
 ## Automation
 
-Install uv 0.12.9 or newer. Run the checkout setup and its gates:
+Install mise before checkout setup. Review `mise.toml` before you run `mise trust`.
+The file pins uv for contributors and CI. On POSIX systems, mise adds the checkout’s `bin` directory to `PATH`.
+Setup needs Node.js and npm.
+The prose tests need Vale 3.24.0 on `PATH` or at the path in `VALE_BIN`.
+The marketplace projector needs Pkl 0.32.0 on `PATH` or at the path in `PKL_BIN`.
 
 ```text
-uv run --locked tools/setup.py
-uv run --locked tools/check.py
-npm run verify
+mise install
+mise exec -- slopsentral-setup
+mise exec -- slopsentral-check
+mise exec -- npm run verify
 ```
 
+On Windows, use `mise exec -- uv run --locked --script tools/setup.py` for setup.
+Use `mise exec -- uv run --locked --script tools/check.py` for the Python checks.
+
 The project locks Pyright, Ruff, pytest, PyYAML, and the optional LibCST group.
-Portable Python scripts declare PEP 723 metadata and adjacent locks.
+Write repository automation in Python. Declare each portable script’s Python range and dependencies in its PEP 723 header.
+Use `dependencies = []` when the standard library supplies every import. Commit the adjacent `.lock` file.
+Give public commands executable names without extensions. Put each command and its lock in a directory on `PATH`.
 The configuration disables source builds with `tool.uv.no-build = true`.
 
 New automation uses strict types, finite outcomes, literal argument arrays, and focused tests.
@@ -84,6 +94,29 @@ uv run --locked tools/install_skill.py pkl-engineering
 ```
 
 The installer rejects conflicting local content. It copies no generated plugin payload into authored source.
+
+## Assess changed prose
+
+Run `mise exec -- slopsentral-prose changed` from the checkout. On Windows, run `mise exec -- uv run --locked --script tools/prose.py changed`.
+The command compares the worktree with its common ancestor with `origin/main`. It includes untracked prose.
+For committed inputs, supply `--base BASE_SHA --head HEAD_SHA`. The checker reads Git blobs at those revisions.
+
+The first run downloads the pinned Vale archive. Later runs reuse the cached archive after a digest check.
+The JSON report lists selected documents, exclusions, source digests, findings, and the findings that block the change.
+Exit 0 permits the change. Exit 1 blocks it for prose findings. Exit 2 means the checker lacks a complete assessment.
+
+- Errors block the change. A new `Slopsentral.Diction` warning also blocks it.
+  The checker compares the message, source line, and occurrence count with the earlier document.
+- Other warnings appear in the report and as CI annotations. Grade and sentence length are advisories.
+- An active Vale control, a nonregular prose file, an unavailable engine, or a document without measurable prose fails assessment.
+  A fenced code example can contain a literal control. Python modules and code examples keep their technical terms.
+
+The candidate job runs the proposed policy. After this workflow lands on `main`, the trusted job uses the base checker and glossary.
+It reads the PR head as data and posts `slopsentral/prose` to that commit. Both jobs save their JSON reports.
+After the first trusted run, select `slopsentral/prose` as a required status check for `main`.
+Select GitHub Actions as the status source. Enable the rule for up-to-date branches.
+Enable code-owner review for policy changes once a code owner other than the PR author can approve them.
+Review an exception with its rule, passage, and reason in the PR. A review comment cannot override a failed status.
 
 ## Source and delivery
 

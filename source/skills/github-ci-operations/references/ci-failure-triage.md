@@ -14,11 +14,11 @@ gh auth status
 gh pr checks <pr-number> --json bucket,link,name,state,workflow
 gh run view <run-id> --json conclusion,headSha,jobs,status,url,workflowName
 gh run view <run-id> --log-failed
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
   --pr <pr-number> --required --until status-change --timeout auto --json
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . arm \
   --run-id <run-id> --until terminal --timeout auto --json
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
 ```
 
 Treat structured app results, `gh` JSON, and typed observer results as the live

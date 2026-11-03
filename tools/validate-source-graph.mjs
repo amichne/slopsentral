@@ -77,8 +77,8 @@ const pluginEvalLocalVerifierPrefixes = [
   "git diff --check",
   "node source/",
   "node tools/",
-  "python3 -m unittest source/",
-  "python3 source/",
+  "uv run --locked python -m unittest source/",
+  "uv run --locked --script source/",
 ];
 const pluginEvalScenarioKeys = new Set([
   "type",
@@ -140,20 +140,39 @@ function relativeToRepo(absolutePath) {
   return path.relative(repoRoot, absolutePath).split(path.sep).join("/");
 }
 
+// These public interfaces need a shell: a curl-to-sh bootstrap and a sourced Zsh function.
+const shellInterfaces = new Set(["tools/install-pi.sh", "source/skills/cli-creator/assets/personal-size.zsh"]);
+
 // Portable consumers carry the existing project minimum without an ambient project.
-for (const root of ["source", "tools"]) {
+for (const root of ["bin", "source", "tools"]) {
   for (const file of listFiles(root, file => !file.split(path.sep).includes("__pycache__"))) {
     const script = fs.readFileSync(file, "utf8");
-    if (!script.startsWith("#!") || !script.includes("# /// script\n")) continue;
+    const relative = relativeToRepo(file);
+    const launcher = script.split("\n", 1)[0];
+    const executable = (fs.statSync(file).mode & 0o111) !== 0;
+    if (executable && path.basename(path.dirname(file)) === "bin" && path.extname(file)) {
+      fail(`${relative}: public commands in bin must have extensionless names`);
+    }
+    if (!shellInterfaces.has(relative) && (/\.(?:sh|bash|zsh|ksh|fish)$/.test(file)
+        || /^#![^\n]*(?:\/|\s)(?:sh|bash|dash|zsh|ksh|fish)(?:\s|$)/.test(launcher))) {
+      fail(`${relative}: use a Python script with uv for automation`);
+    }
+    if (/^#![^\n]*(?:\/|\s)python(?:[23](?:\.\d+)?)?(?:\s|$)/.test(launcher)) {
+      fail(`${relative}: use the locked uv launcher for portable Python scripts`);
+    }
+    if (!launcher.startsWith("#!") || !(script.includes("# /// script\n") || /\buv\s+run\b/.test(launcher))) continue;
     const metadata = script.match(/^# \/\/\/ script\n([\s\S]*?)^# \/\/\/$/m)?.[1];
+    if (!/^# dependencies\s*=\s*\[/m.test(metadata ?? "")) {
+      fail(`${relative}: declare dependencies in the PEP 723 header, including an empty list for standard-library scripts`);
+    }
     if (!metadata || !/^# required-version = ">=0\.12\.9"$/m.test(metadata)) {
       fail(`${relativeToRepo(file)}: portable uv script must declare the existing uv >=0.12.9 minimum`);
     }
-    if ((fs.statSync(file).mode & 0o111) !== 0
-        && !script.startsWith("#!/usr/bin/env -S uv run --locked --script\n")) {
+    if (executable && !script.startsWith("#!/usr/bin/env -S uv run --locked --script\n")) {
       fail(`${relativeToRepo(file)}: direct portable uv script must use a locked script launcher`);
     }
-    if (!fs.existsSync(file + ".lock")) {
+    const lock = file.endsWith(".tmpl") ? file.slice(0, -5) + ".lock.tmpl" : file + ".lock";
+    if (!fs.existsSync(lock)) {
       fail(`${relativeToRepo(file)}: portable uv script must have an adjacent lock`);
     }
   }

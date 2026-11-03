@@ -3,8 +3,7 @@
   "schemaVersion": 1,
   "valeVersion": "3.24.0",
   "files": {
-    ".vale.ini": "1d0c5184a807a038537de2ae47695b700dbce1d6c87601631b9d405db0e0a5fa",
-    "assessment.ini": "f20ba19d6c7b22d03f21de4dbe1afe65334449f977f03c20358bca74ddb27afc",
+    ".vale.ini": "ad9deb5787bb35a512d0eb27a1508200c165c467c62ad55cd9256296e778a6d3",
     "licenses/Commits/LICENSE": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074",
     "licenses/Commits/NOTICE": "59f50430ab07c2ce3ada06ce613cf6b3ae80fff1ce3a646a0deb3279cdb42284",
     "licenses/Diataxis/LICENSE": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074",
@@ -64,7 +63,7 @@
     "styles/Tutorial/Steps.yml": "0b736034b1af362ae623970e84310ac412a679027a24dc0120cd5fe1fd79932c",
     "styles/Tutorial/We.yml": "03a9131aceb60e8a090e58a7e89dd173f327d40773ba3fd40952c0f3e2725f17",
     "styles/config/views/Commit.yml": "a9e58f2ba8f8979487233727cd5c496ace9977adbc78bfebcd880896f0989e52",
-    "styles/config/vocabularies/Slopsentral/accept.txt": "c35b7156488ab087b9f07c831caaac8363771b5aa4f80f90674e23a55ac4d1ec"
+    "styles/config/vocabularies/Slopsentral/accept.txt": "9192f15830b8bc541e91eebe721724daadf408a31ddecb1a01619a8603a894ef"
   },
   "upstream": [
     {
