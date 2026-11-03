@@ -93,9 +93,9 @@ and emit bounded stage/outcome codes; they are not empty successful checks.
 Resolve `<skill-root>` to the installed code-knowledge-base directory, then run:
 
 ```sh
-uv run --locked python "<skill-root>/scripts/code_kb.py" check --strict \
+uv run --locked --script "<skill-root>/scripts/code_kb.py" check --strict \
   --repo /workspace/project --docs /workspace/project-knowledge/docs
-uv run --locked python "<skill-root>/scripts/code_kb.py" impact --from-git \
+uv run --locked --script "<skill-root>/scripts/code_kb.py" impact --from-git \
   --repo /workspace/project --docs /workspace/project-knowledge/docs
 ```
 

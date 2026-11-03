@@ -86,7 +86,7 @@ Related primitives in this repository:
      --json bucket,link,name,state,workflow
    ```
 
-   When checks are pending and the local observer is available, run `python3
+   When checks are pending and the local observer is available, run `uv run --locked --script
    "<path-to-github-ci-operations-skill>/scripts/ci_wait_for_actions" --repo .
    arm --pr <pr-number> --head-sha <published-head-sha> --required --until terminal --timeout auto
    --json`, then invoke the same script with `--repo . await --json`.

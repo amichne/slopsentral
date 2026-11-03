@@ -14,7 +14,7 @@ Translate known failures into finite outcomes.
 Report unknown failures with bounded stage evidence.
 Do not log secrets or unbounded event payloads.
 
-New automation uses `python-tooling` with required uv, PEP 723, committed locks, and `tool.uv.no-build = true`.
+Use `python-tooling` for automation. Pin uv with mise. Use PEP 723 headers and adjacent locks for portable scripts.
 Use strict Pyright, Ruff, and pytest.
 Keep shell only for an unavoidable host launcher or state owned by the parent shell.
 Do not place business logic, parsers, pipelines, or cleanup in shell.

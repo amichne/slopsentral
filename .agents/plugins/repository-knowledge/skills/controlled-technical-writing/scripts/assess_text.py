@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run --locked --script
 # /// script
 # requires-python = ">=3.12,<3.14"
-# dependencies = ["jsonschema==4.26.0"]
+# dependencies = ["jsonschema==4.26.0", "markdown-it-py==4.0.0"]
 # [tool.uv]
 # no-build = true
 # required-version = ">=0.12.9"
@@ -14,6 +14,7 @@
 
 import argparse
 import hashlib
+import html
 import json
 import math
 import os
@@ -24,6 +25,8 @@ import tempfile
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
+
+from markdown_it import MarkdownIt
 
 from check_glossary import check
 from install_vale import Failure as InstallFailure, load_bundle
@@ -164,6 +167,61 @@ CATEGORIES = {"Slopsentral.Grade": "READABILITY", "Slopsentral.LongSentence": "S
               "Slopsentral.GlossaryMarker": "TERMINOLOGY"}
 
 
+CATEGORIES.update(dict.fromkeys((
+    "Slopsentral.Modals", "Slopsentral.Contractions", "Vale.Terms", "Vale.Avoid",
+    "Vale.Spelling", "Vale.Repetition",
+), "DICTION"))
+CATEGORIES.update(dict.fromkeys((
+    "Slopsentral.ProcedureLength",
+    "Tutorial.Expectations", "Tutorial.Explanation", "Tutorial.Opening",
+    "Tutorial.Options", "Tutorial.Steps", "Tutorial.We",
+    "HowTo.Explanation", "HowTo.Imperative", "HowTo.Opening",
+    "HowTo.Reference", "HowTo.Steps", "HowTo.Teaching",
+    "HowTo.Title", "Explanation.Instruction", "Explanation.Reference",
+    "Explanation.Why", "Reference.Examples", "Reference.Instruction",
+    "Reference.Opinion", "Reference.Walkthrough",
+), "STRUCTURE"))
+
+
+COMMENT_START = re.compile(r"<!--|<!|\{\s*/\*")
+COMMENT_PREFIX = re.compile(r"[\sA-Za-z0-9&#;]+")
+CONTROL_BODY = re.compile(r"^vale\s+(?:on\b|off\b|styles?\s*=|.+?=\s*(?:yes|no|on|off)\b)", re.I | re.S)
+
+
+def control_offsets(text: str):
+    for opener in COMMENT_START.finditer(text):
+        prefix = COMMENT_PREFIX.match(text, opener.end())
+        if prefix is None or not html.unescape(prefix[0]).lstrip().lower().startswith("vale"):
+            continue
+        closer = {"<!--": "-->", "<!": ">"}.get(opener[0], "*/")
+        end = text.find(closer, opener.end())
+        body = html.unescape(text[opener.end():end if end >= 0 else len(text)]).strip()
+        if CONTROL_BODY.match(body):
+            yield opener.start()
+
+
+def lint_input(text: str, suffix: str) -> str | Rejected:
+    """Keep offsets stable and make controls in quoted fences inert for the native parser."""
+    offsets = tuple(control_offsets(text))
+    if not offsets:
+        return text
+    quoted_lines = set()
+    if suffix in (".md", ".mdx"):
+        for token in MarkdownIt().parse(text):
+            if token.type == "fence" and token.map is not None:
+                start, end = token.map
+                quoted_lines.update(range(start + 1, end))
+    chars = list(text)
+    previous = line = 0
+    for offset in offsets:
+        line += text.count("\n", previous, offset)
+        if line not in quoted_lines:
+            return Rejected(Failure.POLICY_OVERRIDE, Stage.INPUT)
+        chars[offset] = "x"
+        previous = offset
+    return "".join(chars)
+
+
 def parse_findings(payload, expected_path):
     if not isinstance(payload, dict) or len(payload) > 1:
         return Rejected(Failure.INVALID_VALE_OUTPUT, Stage.LINT)
@@ -242,7 +300,7 @@ def assess(paths, glossary, binary):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(resource.contents)
         config = root / ".vale.ini"
-        config.write_bytes(policy_bundle.assessment_config)
+        config.write_bytes(policy_bundle.cli_config)
         if entries:
             (root / "styles/Slopsentral/Terminology.yml").write_text(
                 glossary_rules(entries), encoding="utf-8")
@@ -253,8 +311,9 @@ def assess(paths, glossary, binary):
                 text = path.read_bytes().decode("utf-8", errors="strict")
             except (OSError, UnicodeError):
                 return Rejected(Failure.INVALID_INPUT, Stage.INPUT)
-            if re.search(r"<!--\s*vale\b", text, re.IGNORECASE):
-                return Rejected(Failure.POLICY_OVERRIDE, Stage.INPUT)
+            lint_text = lint_input(text, path.suffix.lower())
+            if isinstance(lint_text, Rejected):
+                return lint_text
             terminology = "NOT_PROVIDED" if glossary is None else "IN_SCOPE"
             if structured_glossary is not None:
                 for name in ("Terminology.yml", "TerminologyReview.yml"):
@@ -265,8 +324,13 @@ def assess(paths, glossary, binary):
                 else:
                     terminology = "OUT_OF_SCOPE"
             # Freeze the input once; metrics and findings must assess the same bytes.
-            snapshot = root / ("input" + path.suffix.lower())
-            snapshot.write_bytes(text.encode("utf-8"))
+            resolved = path.resolve()
+            location = next((parent for parent in (scope_root, Path.cwd())
+                             if parent is not None and resolved.is_relative_to(parent)), resolved.anchor)
+            relative = resolved.relative_to(location).with_suffix(path.suffix.lower())
+            snapshot = root / "documents" / relative
+            snapshot.parent.mkdir(parents=True, exist_ok=True)
+            snapshot.write_bytes(lint_text.encode("utf-8"))
             common = ["--config", str(config)]
             raw_metrics = run_vale(resolved_binary, [*common, "ls-metrics", str(snapshot)],
                                    environment, Stage.METRICS)

@@ -20,7 +20,7 @@ Record truncation and unavailable coroutine output. Capture a baseline and the n
 From this skill directory, compare saved responses with the Python helper:
 
 ```text
-uv run --locked python scripts/intellij_diagnostics compare --before before.json --during during.json
+uv run --locked --script scripts/intellij_diagnostics compare --before before.json --during during.json
 ```
 
 The comparison reports CPU deltas, JVM thread states, blocked/waited deltas, and native-frame hints.
@@ -32,7 +32,7 @@ A metric value of `-1` means that the JVM did not expose that metric.
 After a sample identifies a suspect method, generate a bounded IDE Perf sequence:
 
 ```text
-uv run --locked python scripts/intellij_diagnostics trace-plan --method com.intellij.psi.PsiReference#resolve
+uv run --locked --script scripts/intellij_diagnostics trace-plan --method com.intellij.psi.PsiReference#resolve
 ```
 
 The same path applies when the user asks for call counts or action-correlated duration.
@@ -49,7 +49,7 @@ Use JFR, async-profiler, or the IDE performance capture workflow for allocation 
 Preview changes to an existing custom override:
 
 ```text
-uv run --locked python scripts/intellij_diagnostics vm-options --file /path/to/custom.vmoptions --enable both
+uv run --locked --script scripts/intellij_diagnostics vm-options --file /path/to/custom.vmoptions --enable both
 ```
 
 Use `--apply` only when the task authorizes that mutation.

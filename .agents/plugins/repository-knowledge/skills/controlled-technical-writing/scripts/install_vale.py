@@ -157,7 +157,6 @@ class _VerifiedBundle:
     files: tuple[_File, ...]
     policy_sha256: str
     cli_config: bytes
-    assessment_config: bytes
 
 
 def _object_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -224,7 +223,7 @@ def load_bundle(root: Path) -> _VerifiedBundle | Failure:
         ]:
             return Failure(FailureCode.INVALID_BUNDLE)
         entries: object = lock["files"]
-        if not _is_mapping(entries) or not {".vale.ini", "assessment.ini"}.issubset(entries):
+        if not _is_mapping(entries) or ".vale.ini" not in entries:
             return Failure(FailureCode.INVALID_BUNDLE)
         files: list[_File] = []
         for relative, expected in entries.items():
@@ -241,7 +240,7 @@ def load_bundle(root: Path) -> _VerifiedBundle | Failure:
                 or "\\" in relative
                 or ":" in relative
                 or str(path) != relative
-                or path.parts[0] not in {".vale.ini", "assessment.ini", "styles", "licenses"}
+                or path.parts[0] not in {".vale.ini", "styles", "licenses"}
             ):
                 return Failure(FailureCode.INVALID_BUNDLE)
             source = root / path
@@ -263,7 +262,6 @@ def load_bundle(root: Path) -> _VerifiedBundle | Failure:
             tuple(files),
             hashlib.sha256(lock_bytes).hexdigest(),
             configs[".vale.ini"],
-            configs["assessment.ini"],
         )
     except (OSError, ValueError, UnicodeError):
         return Failure(FailureCode.INVALID_BUNDLE)
@@ -398,7 +396,9 @@ def install(
         return Failure(FailureCode.IO_FAILED)
 
 
-def setup(destination: Path, archive_path: Path | None) -> Installed | Failure:
+def setup(
+    destination: Path, archive_path: Path | None, cache_dir: Path | None = None
+) -> Installed | Failure:
     if destination.exists() or destination.is_symlink():
         return Failure(FailureCode.DESTINATION_EXISTS)
     release = select_release(platform.system(), platform.machine())
@@ -407,6 +407,9 @@ def setup(destination: Path, archive_path: Path | None) -> Installed | Failure:
     bundle = load_bundle(BUNDLE)
     if isinstance(bundle, Failure):
         return bundle
+    cached = cache_dir / release.sha256 if cache_dir is not None else None
+    if archive_path is None and cached is not None and cached.is_file():
+        archive_path = cached
     if archive_path is None:
         raw = download(release)
     else:
@@ -420,6 +423,15 @@ def setup(destination: Path, archive_path: Path | None) -> Installed | Failure:
     archive = verify_archive(raw, release)
     if isinstance(archive, Failure):
         return archive
+    if cached is not None and archive_path is None:
+        try:
+            cached.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.TemporaryDirectory(dir=cached.parent) as staging:
+                staged = Path(staging) / "archive"
+                _ = staged.write_bytes(raw)
+                _ = staged.replace(cached)
+        except OSError:
+            return Failure(FailureCode.IO_FAILED)
     return install(destination, bundle, archive)
 
 
@@ -455,6 +467,7 @@ def main() -> int:
     _ = parser.add_argument(
         "--self-test", action="store_true", help="Examine bundled policy integrity"
     )
+    _ = parser.add_argument("--cache-dir", type=Path, help="Cache verified archives by digest")
     args = parser.parse_args(namespace=_Arguments())
     if args.self_test:
         bundle = load_bundle(BUNDLE)
@@ -465,7 +478,7 @@ def main() -> int:
     else:
         if args.destination is None:
             parser.error("--destination is necessary")
-        payload, code = output(setup(args.destination.absolute(), args.archive))
+        payload, code = output(setup(args.destination.absolute(), args.archive, args.cache_dir))
     print(json.dumps(payload, sort_keys=True))
     return code
 

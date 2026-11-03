@@ -62,7 +62,8 @@ uv run --locked --script scripts/assess_text.py --glossary /path/to/glossary.jso
 ```
 
 The procedure uses Vale 3.24.0 with bundled rules whose integrity is checked.
-It reports a Flesch-Kincaid grade estimate, a sentence-length advisory, a fixed diction policy, and the repository's canonical glossary.
+The editor and assessment share the same Vale rules. The path selects the document-type rules.
+The assessment adds the repository glossary. It reports located findings, readability metrics, and document scope.
 Preserve the JSON report and
 its input hashes. Missing dependencies, invalid input, and policy overrides
 are typed failures, not permission to substitute another formula.

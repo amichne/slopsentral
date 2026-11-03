@@ -112,8 +112,8 @@ Those lints do not change OKF conformance or authorize consumer rejection of a c
 Run the source-evidence procedure:
 
 ```sh
-uv run --locked python "<skill-root>/scripts/code_kb.py" check --repo . --docs docs --strict
-uv run --locked python "<skill-root>/scripts/code_kb.py" impact --repo . --docs docs --from-git
+uv run --locked --script "<skill-root>/scripts/code_kb.py" check --repo . --docs docs --strict
+uv run --locked --script "<skill-root>/scripts/code_kb.py" impact --repo . --docs docs --from-git
 ```
 
 Resolve `<skill-root>` to this skill's installed directory. Use `--strict` for

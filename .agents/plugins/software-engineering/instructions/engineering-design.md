@@ -36,14 +36,17 @@ branches, nullable sentinels, or weaker types. Test expectations independently
 of implementation. Add bounded stage/outcome instrumentation while investigating
 opaque effects, without secrets, source payloads, or unbounded output.
 
-Default new automation to Python managed by required uv. Use PEP 723 for portable
-scripts, declared dependencies and indexes, committed locks, and
-`[tool.uv] no-build = true`. Use strict Pyright for static checking and its LSP
-for symbol-aware navigation/refactors when available; run Ruff formatting and
-linting plus pytest success, failure, and boundary checks. Do not claim Python
-proves purity, sealed construction, or linearity: enforce the remaining limits
-with encapsulation and executable tests. Shell is limited to unavoidable host
-launchers; parsing, branching, pipelines, setup, and cleanup belong in Python.
+Write shell tooling in Python. Install uv through mise and pin its version in
+the project’s `mise.toml`. Use `mise exec -- uv run --locked --script PATH`
+for portable scripts. Give public CLI commands executable names without file extensions.
+Put them in a directory on `PATH` so users can invoke each command by name.
+Keep its script lock beside the executable. Declare the Python range and dependencies in each PEP 723
+header. Use `dependencies = []` for standard-library scripts. Declare package
+indexes, commit adjacent script locks, and set `tool.uv.no-build = true`.
+Use strict Pyright. Use its LSP for symbol navigation when available. Use Ruff for format and lint checks.
+Use pytest for accepted inputs, rejected inputs, and limits. Use encapsulation and executable tests for purity, construction, and single use.
+Use Python for setup, process calls, decisions, and cleanup. Keep shell adapters only for an existing host interface
+that needs shell code. Keep its automation in Python.
 Existing language toolchains remain authoritative for their code.
 
 Use Semantic Ratchet for invariant and API design, Python Tooling for automation,

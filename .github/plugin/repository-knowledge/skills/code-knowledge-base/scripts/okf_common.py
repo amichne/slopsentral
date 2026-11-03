@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
 """Shared helpers for the Open Knowledge Format (OKF) tooling.
 
 Frontmatter parsing, code stripping, and link extraction used by the validator
-(and available to other OKF scripts). Requires PyYAML for authoritative YAML
-parsing:  pip install pyyaml
+(and available to other OKF scripts). The caller declares PyYAML for YAML parsing.
 """
 from __future__ import annotations
 
