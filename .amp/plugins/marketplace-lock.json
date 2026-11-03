@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T17:41:23Z",
+  "generatedAt": "2026-11-03T15:47:04-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -27,7 +27,7 @@
         },
         {
           "name": "engineering-design",
-          "sha256": "sha256:9a59984310d19a8eb6c9b19e49fbc1f339d1e909f3f801dddbbed2a345230765",
+          "sha256": "sha256:5d06b5c2990d46f25978150f4aaf9c9a8c61fde5fcc8af9e55961842de8125e5",
           "sourcePath": "source/instructions/engineering-design.md",
           "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
@@ -188,7 +188,7 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:7682f074dfc3bc71650e5c1d7c6833e52baa0faf1ca48aa91d8fc52f48b33d05",
+          "sha256": "sha256:54d93b850b37082ff0394f4634daeadfddf613063f9f0a901723284e9763a4bf",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
@@ -209,7 +209,7 @@
         },
         {
           "name": "technical-documentation",
-          "sha256": "sha256:9e89825e068e1ba5e4e0e1cea5d2d860b881fd2f73f973a2f5194a8a0802bbce",
+          "sha256": "sha256:79be0301dfc814d51b3d9c034ad51ea81a950f8784f3b4416da0b397637f6233",
           "sourcePath": "source/skills/technical-documentation",
           "targetPath": "skills/technical-documentation",
           "type": "SKILL"
@@ -311,6 +311,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "afe0c4908e66602d70777afb95552ef188216cf2",
+  "sourceSha": "fb831d9d1a218677c9a980c91c5c831b7f03b2b1",
   "type": "HYDRATED_MARKETPLACE"
 }
