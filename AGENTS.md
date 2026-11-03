@@ -94,10 +94,10 @@ Read and apply [the canonical engineering baseline](source/instructions/engineer
 for all work. Software Engineering delivers this same source through its context
 hook; language and domain instructions refine it.
 
-New automation uses required uv, strict Pyright, Ruff, pytest, PEP 723 metadata,
-locked dependencies, and `tool.uv.no-build = true`. Run `uv run --locked tools/check.py`
-for the Python boundary checks. Use `uv run --locked tools/setup.py` for explicit
-checkout setup. Keep generated outputs and installed caches outside authored edits.
+Write repository automation in Python. Install the uv version from `mise.toml` with `mise install`.
+Declare dependencies in PEP 723 headers and commit adjacent locks. Use `tool.uv.no-build = true`.
+Run `mise exec -- uv run --locked --script tools/setup.py` for checkout setup.
+Run `mise exec -- uv run --locked --script tools/check.py` for Ruff, strict Pyright, and pytest. Keep generated outputs and installed caches outside authored edits.
 
 ## Core Skill Evals
 

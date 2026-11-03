@@ -25,7 +25,8 @@ with the applicable provenance and distribution authority.
 Keep `SKILL.md` as a focused router.
 Place concrete variants and examples in references.
 Use scripts for deterministic work with a real consumer.
-Default new automation to `python-tooling`: required uv, PEP 723, committed locks, `tool.uv.no-build = true`, strict Pyright, Ruff, and pytest.
+Use `python-tooling` for automation. Pin uv with mise. Use PEP 723 headers and adjacent locks for portable scripts.
+Use strict Pyright, Ruff, and pytest.
 Keep decisions pure and effect adapters explicit.
 
 ## Workflow

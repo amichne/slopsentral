@@ -30,4 +30,4 @@ This file applies to `source/plugins/`.
 
 - Run `node tools/validate-source-graph.mjs`.
 - For focused composition checks, run
-  `python3 source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>`.
+  `uv run --locked --script source/skills/plugin-composition-authoring/scripts/check_plugin_composition --plugin <name>`.

@@ -91,7 +91,8 @@ test('portable script metadata carries the existing uv minimum and an adjacent l
       const metadata = text.match(/^# \/\/\/ script\n([\s\S]*?)^# \/\/\/$/m)?.[1];
       assert.ok(metadata, `${root}/${relative}: script metadata must exist`);
       assert.match(metadata, /^# required-version = ">=0\.12\.9"$/m, `${root}/${relative}`);
-      assert.ok(fs.existsSync(`${file}.lock`), `${root}/${relative}: missing script lock`);
+      const lock = file.endsWith('.tmpl') ? file.slice(0, -5) + '.lock.tmpl' : file + '.lock';
+      assert.ok(fs.existsSync(lock), `${root}/${relative}: missing script lock`);
     }
   }
 });
@@ -117,3 +118,28 @@ test(`the source gate rejects a portable consumer with ${mutation}`, t => {
   assert.ok((result.stdout + result.stderr).includes(relative));
 });
 }
+
+test('the source gate rejects new shell tools and uv launchers without dependency headers', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'automation-policy-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  for (const entry of ['source', 'tools', 'docs', '.github']) {
+    fs.cpSync(path.join(repo, entry), path.join(root, entry), { recursive: true });
+  }
+  for (const [name, contents] of [
+    ['shell-tool', '#!/usr/bin/env bash\nexit 0\n'],
+    ['ambient.py', '#!/usr/bin/env python3\nprint(1)\n'],
+    ['helper.zsh', 'print hello\n'],
+    ['missing-header.py', '#!/usr/bin/env -S uv run --locked --script\nprint("hello")\n'],
+    ['missing-deps.py', fs.readFileSync(path.join(repo, 'tools/check.py'), 'utf8')
+      .replace('# dependencies = []\n', '')],
+  ]) {
+    fs.writeFileSync(path.join(root, 'tools', name), contents);
+  }
+  fs.copyFileSync(path.join(repo, 'tools/check.py.lock'), path.join(root, 'tools/missing-deps.py.lock'));
+  const result = spawnSync(process.execPath, [path.join(repo, 'tools/validate-source-graph.mjs'), '--repo', root],
+    { encoding: 'utf8' });
+  assert.equal(result.status, 1, result.stdout + result.stderr);
+  for (const name of ['shell-tool', 'ambient.py', 'helper.zsh', 'missing-header.py', 'missing-deps.py']) {
+    assert.ok((result.stdout + result.stderr).includes('tools/' + name), result.stdout + result.stderr);
+  }
+});

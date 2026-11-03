@@ -1,6 +1,7 @@
 # Reproducible toolchain
 
-Require uv before setup. Declare Python in `.python-version` and `requires-python`.
+Install mise before setup. Pin uv in `mise.toml`. Review and trust that file.
+Use `mise install` to install the selected version. Run portable scripts with `mise exec -- uv run --locked --script PATH`. Declare Python in `.python-version` and `requires-python`.
 Use `tool.uv.package = false` for automation that is not a distributable package;
 `tool.uv.no-build = true` forbids source builds of dependencies. These are separate
 settings. A missing wheel is a setup failure, not permission to disable no-build.

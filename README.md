@@ -59,16 +59,21 @@ See [installation, updates, rollback, and native checks](docs/pkl-projection.md#
 
 ## Automation
 
-Install uv 0.12.9 or newer. Run the checkout setup and its gates:
+Install mise before checkout setup. Review `mise.toml` before you run `mise trust`.
+The file pins uv for contributors and CI. Setup needs Node.js and npm.
+The prose tests need Vale 3.24.0 on `PATH` or at the path in `VALE_BIN`.
+The marketplace projector needs Pkl 0.32.0 on `PATH` or at the path in `PKL_BIN`.
 
 ```text
-uv run --locked tools/setup.py
-uv run --locked tools/check.py
-npm run verify
+mise install
+mise exec -- uv run --locked --script tools/setup.py
+mise exec -- uv run --locked --script tools/check.py
+mise exec -- npm run verify
 ```
 
 The project locks Pyright, Ruff, pytest, PyYAML, and the optional LibCST group.
-Portable Python scripts declare PEP 723 metadata and adjacent locks.
+Write repository automation in Python. Declare each portable script’s Python range and dependencies in its PEP 723 header.
+Use `dependencies = []` when the standard library supplies every import. Commit the adjacent `.lock` file.
 The configuration disables source builds with `tool.uv.no-build = true`.
 
 New automation uses strict types, finite outcomes, literal argument arrays, and focused tests.

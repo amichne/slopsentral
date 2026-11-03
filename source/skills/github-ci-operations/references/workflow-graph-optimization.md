@@ -23,7 +23,7 @@ keep it report-only until the sample floor is met.
 Run the bundled checker:
 
 ```sh
-python3 "<path-to-skill>/scripts/ci_workflow_model.py" workflow-model.json
+uv run --locked --script "<path-to-skill>/scripts/ci_workflow_model.py" workflow-model.json
 ```
 
 The input contract is

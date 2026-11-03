@@ -56,7 +56,7 @@ queues the nearest existing guide for source changes, including root changes.
    carries the generated marker, read its `hash:` line.
 4. Compute the current source-hash:
    ```bash
-   python3 scripts/gen-agents-local.py <dir> --hash-only
+   uv run --locked --script scripts/gen-agents-local.py <dir> --hash-only
    ```
    If hashes match and no source-change marker or explicit refresh requests review, skip.
    A matching shallow hash does not prove nested sources or same-size edits are unchanged.
@@ -76,7 +76,7 @@ queues the nearest existing guide for source changes, including root changes.
    ```
 2. Generate the root summary, then walk one level deep:
    ```bash
-   python3 <agent-root>/scripts/gen-agents-local.py . --depth 2
+   uv run --locked --script <agent-root>/scripts/gen-agents-local.py . --depth 2
    ```
 3. Report which directories were written and which were skipped (hash matched).
 
@@ -86,7 +86,7 @@ When `OUTDATED.local.md` exists at the repo root:
 1. Read it — each non-blank line is a directory path relative to repo root.
 2. For each path, regenerate its `AGENTS.md`:
    ```bash
-   python3 <agent-root>/scripts/gen-agents-local.py <path>
+   uv run --locked --script <agent-root>/scripts/gen-agents-local.py <path>
    ```
 3. Clear `OUTDATED.local.md` only after every entry is successfully reviewed.
    Preserve the marker when any refresh fails.

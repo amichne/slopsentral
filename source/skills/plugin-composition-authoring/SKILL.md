@@ -46,7 +46,7 @@ The helper below checks this source layout; it is not a generic host installer.
 
 ```sh
 node tools/validate-source-graph.mjs
-uv run --locked python <skill-dir>/scripts/check_plugin_composition --repo <repo> --plugin <name>
+uv run --locked --script <skill-dir>/scripts/check_plugin_composition --repo <repo> --plugin <name>
 node tools/project-marketplaces.mjs --source . --harness codex --out <fresh-codex-directory>
 node tools/project-marketplaces.mjs --source . --harness github-copilot --out <fresh-copilot-directory>
 node tools/project-marketplaces.mjs --source . --harness amp --out <fresh-amp-directory>

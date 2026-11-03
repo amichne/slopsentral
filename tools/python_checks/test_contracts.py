@@ -40,3 +40,13 @@ def test_pep723_isolation() -> None:
     )
     assert result.returncode == 0, result.stdout + result.stderr
     assert "4 passed" in result.stdout
+
+
+def test_scaffold_uses_checkout_uv_pin(tmp_path: Path) -> None:
+    script = ROOT / "source/skills/python-tooling/scripts/scaffold.py"
+    destination = tmp_path / "project with spaces"
+    _ = subprocess.run(
+        ["uv", "run", "--locked", "--script", str(script), "--out", str(destination)],
+        check=True,
+    )
+    assert (destination / "mise.toml").read_bytes() == (ROOT / "mise.toml").read_bytes()
