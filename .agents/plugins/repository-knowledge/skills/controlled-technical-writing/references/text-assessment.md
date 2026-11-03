@@ -3,7 +3,7 @@
 ## Contract
 
 Use `scripts/assess_text.py` as the only measurement entry point. Document
-purpose never selects a different formula, threshold, or writing mode. The
+purpose can select a Diataxis profile. All profiles use the same readability formula. The
 supported input is UTF-8 English prose in `.md`, `.mdx`, or `.txt` files.
 For other formats, supply a supported prose artifact.
 Do not infer prose from source code. Language is an explicit caller precondition, not an auto-detection
@@ -47,16 +47,17 @@ Use `--vale-bin /absolute/path/to/vale` when the pinned executable is not on
 PATH. Inputs must be explicit files. The procedure freezes each document and
 the glossary once. It disables global Vale configuration and strips `VALE_*` environment overrides.
 Its temporary configuration contains only the locked resources and glossary-derived literal rules. It never changes source
-files. Inline Vale suppression comments are rejected.
+files. The assessment rejects Vale controls in HTML and MDX comments outside fenced code.
+It neutralizes the comment opener in fenced examples before Vale reads the snapshot. Line and column positions stay the same.
+The report hashes the original bytes.
 
 Vale's native format parser determines prose boundaries, not a hand-written
 Markdown stripper. In markup, code spans and blocks, URLs, math, and frontmatter
 are excluded. Heading and table text can receive diction and terminology
 findings, but Vale's summary metric excludes headings and table cells. Lists,
 link labels, and blockquotes remain prose; review attributed quotes without
-silently rewriting them. Plain text has no markup exclusions. Identical prose
-receives the same measurement regardless of filename or document purpose;
-equivalent rendered content is not claimed for arbitrary markup dialects.
+silently rewriting them. Plain text has no markup exclusions. Run from the repository root to preserve document-type paths.
+The same prose can produce different structural findings in a tutorial and a reference.
 
 ## Outcomes
 
@@ -102,10 +103,9 @@ Review targets have no replacement action.
 The wrapper never fetches citation URLs.
 The generated Markdown view remains a reader artifact, not another editable contract.
 
-The assessment uses `assets/vale/assessment.ini` for its fixed measurements.
-The distributed `.vale.ini` supplies commit and Diataxis defaults for direct CLI use.
-Both configurations use the same locked local resources.
-Do not treat the specialized CLI defaults as a different readability formula.
+The assessment and editor use the locked `assets/vale/.vale.ini`.
+The common prose rules include contractions, modal verbs, spelling, diction, and excessive claims.
+The document path selects tutorial, how-to, reference, or explanation rules. The wrapper also loads scoped glossary rules.
 
 ## Resource Maintenance
 

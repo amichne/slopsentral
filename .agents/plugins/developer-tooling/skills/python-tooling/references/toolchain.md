@@ -1,6 +1,7 @@
 # Reproducible toolchain
 
-Require uv before setup. Declare Python in `.python-version` and `requires-python`.
+Install mise before setup. Pin uv in `mise.toml`. Review and trust that file.
+Use `mise install` to install the selected version. Run portable scripts with `mise exec -- uv run --locked --script PATH`. Declare Python in `.python-version` and `requires-python`.
 Use `tool.uv.package = false` for automation that is not a distributable package;
 `tool.uv.no-build = true` forbids source builds of dependencies. These are separate
 settings. A missing wheel is a setup failure, not permission to disable no-build.
@@ -19,8 +20,7 @@ LSP session. Host LSP or typed symbol tools can supply semantic references; if
 unavailable, name that limitation and validate a bounded LibCST refactor with
 strict checking and independent tests. Do not advertise a nonexistent TSP API.
 
-The declared pyright nodejs extra provides the Node runtime through uv; project
-JavaScript and Pkl tools remain separately owned capabilities. Use LibCST from
+The `pyright[nodejs]` dependency supplies Node.js through uv. Project JavaScript and Pkl tools use their own toolchains. Use LibCST from
 the refactor dependency group with `uv sync --locked --group refactor`.
 
 Sources: [uv scripts](https://docs.astral.sh/uv/guides/scripts/),
