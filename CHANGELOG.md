@@ -1,5 +1,25 @@
 # Changelog
 
+## [4.0.7](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.6...slopsentral-v4.0.7) (2026-11-03)
+
+
+### Features
+
+* add the Slopsentral installer and lifecycle command ([4b40b99](https://github.com/amichne/slopsentral/commit/4b40b99dfbc5db31daddd6879ea5c3247bbc9ce2))
+* add the Slopsentral installer and lifecycle command ([371bd72](https://github.com/amichne/slopsentral/commit/371bd72e4dbbfadfe38c1d841407d51e458c4b1a))
+* expose checkout setup and checks on the project PATH ([22ce985](https://github.com/amichne/slopsentral/commit/22ce9856568ab5779089f63f5f90df1ebfc4db73))
+* expose portable CLI commands without file extensions ([78a6921](https://github.com/amichne/slopsentral/commit/78a6921e4998b82d9b2dca7514c930694f6b29d7))
+* gate changed prose with the trusted Vale policy ([08688b8](https://github.com/amichne/slopsentral/commit/08688b8bae814661900f6f37d11c7003e0a13d8a))
+* prove CI artifact reuse and Gradle task cacheability ([83716fe](https://github.com/amichne/slopsentral/commit/83716fea331e1743c0502080c570838c43511e02))
+* standardize Python automation on mise-managed uv ([77cc24c](https://github.com/amichne/slopsentral/commit/77cc24c37316b41f120b0338e2ca8c887c88d126))
+
+
+### Bug Fixes
+
+* align installer receipts and root instructions ([e63cda9](https://github.com/amichne/slopsentral/commit/e63cda9b30e753243c61e4a671c39ade0256ad5b))
+* **ci:** bind PR waits to a revision and resume timeouts ([696bfb8](https://github.com/amichne/slopsentral/commit/696bfb8b10051f96f91d7490f76d56f05c6b370d))
+* preserve prose coverage across renames and reduce spelling noise ([34734c5](https://github.com/amichne/slopsentral/commit/34734c51860e9e456b8e8be0c6e745fa833f5c61))
+
 ## [4.0.6](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.5...slopsentral-v4.0.6) (2026-10-28)
 
 
