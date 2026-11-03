@@ -29,6 +29,8 @@ builds; discover the actual targets instead of assuming
 - Leave bounded stage/outcome instrumentation at a diagnosed opaque boundary;
   exclude credentials, source contents, and arbitrary environment dumps.
 
+For a cacheable task or a suspected false hit, use the [cacheability experiment](references/cacheability.md).
+
 ## Workflow
 
 1. Define the experiment.
