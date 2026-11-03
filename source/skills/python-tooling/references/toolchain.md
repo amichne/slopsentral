@@ -20,8 +20,7 @@ LSP session. Host LSP or typed symbol tools can supply semantic references; if
 unavailable, name that limitation and validate a bounded LibCST refactor with
 strict checking and independent tests. Do not advertise a nonexistent TSP API.
 
-The declared pyright nodejs extra provides the Node runtime through uv; project
-JavaScript and Pkl tools remain separately owned capabilities. Use LibCST from
+The `pyright[nodejs]` dependency supplies Node.js through uv. Project JavaScript and Pkl tools use their own toolchains. Use LibCST from
 the refactor dependency group with `uv sync --locked --group refactor`.
 
 Sources: [uv scripts](https://docs.astral.sh/uv/guides/scripts/),

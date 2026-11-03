@@ -249,9 +249,10 @@ def test_real_assessment_uses_json_rules_and_preserves_scope(tmp_path: Path) -> 
     assert {finding["rule"] for finding in first["findings"]} == {
         "Slopsentral.Terminology",
         "Slopsentral.TerminologyReview",
+        "Vale.Spelling",
     }
     assert first["terminology"]["type"] == "IN_SCOPE"
-    assert not second["findings"]
+    assert {finding["rule"] for finding in second["findings"]} == {"Vale.Spelling"}
     assert second["terminology"]["type"] == "OUT_OF_SCOPE"
     assert report["comprehension"]["type"] == "NOT_ASSESSED"
 

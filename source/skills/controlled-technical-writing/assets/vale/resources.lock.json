@@ -3,8 +3,7 @@
   "schemaVersion": 1,
   "valeVersion": "3.24.0",
   "files": {
-    ".vale.ini": "1d0c5184a807a038537de2ae47695b700dbce1d6c87601631b9d405db0e0a5fa",
-    "assessment.ini": "f20ba19d6c7b22d03f21de4dbe1afe65334449f977f03c20358bca74ddb27afc",
+    ".vale.ini": "ad9deb5787bb35a512d0eb27a1508200c165c467c62ad55cd9256296e778a6d3",
     "licenses/Commits/LICENSE": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074",
     "licenses/Commits/NOTICE": "59f50430ab07c2ce3ada06ce613cf6b3ae80fff1ce3a646a0deb3279cdb42284",
     "licenses/Diataxis/LICENSE": "aa431e1653f927cf92be0fcc77fe388b97780b5f0f541085e30c4abe626b1074",

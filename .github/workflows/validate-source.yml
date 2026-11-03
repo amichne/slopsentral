@@ -40,6 +40,21 @@ jobs:
         run: uv run --locked python -m tools.release_version check --github-output "$GITHUB_OUTPUT"
       - name: Install checksum-verified native tools
         run: uv run --locked tools/ci.py native
+      - name: Assess changed prose with the proposed policy
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: >-
+          mise exec -- slopsentral-prose changed --base "$BASE_SHA" --head "$HEAD_SHA"
+          --github > "$RUNNER_TEMP/prose-preview.json"
+      - name: Save the proposed policy report
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: prose-preview-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/prose-preview.json
+          if-no-files-found: error
       - name: Validate source, Python, schemas, and retained contracts
         run: uv run --locked tools/ci.py validate
       - name: Run offline skill eval controls

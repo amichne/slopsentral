@@ -106,6 +106,43 @@ class AssessTextTest(unittest.TestCase):
                                  str(document)], capture_output=True, text=True)
         self.assertEqual(json.loads(result.stdout)["failure"]["type"], "INVALID_INPUT")
 
+    def test_mdx_controls_and_fenced_examples(self):
+        for directive in ("{/* vale off */}", "{/* vale Slopsentral.Diction = NO */}"):
+            code, result, _ = self.run_assessment("Use the tool.\n\n" + directive + "\nUtilize the tool.\n", "guide.mdx")
+            self.assertEqual((code, result.get("failure", {}).get("type")), (2, "POLICY_OVERRIDE"))
+        for syntax in ("{/* vale off */}", "<!-- vale off -->"):
+            text = f"Use the tool.\n\n````text\n```\n{syntax}\n````\n\nUtilize the tool.\n"
+            code, result, _ = self.run_assessment(text, "guide.mdx")
+            self.assertEqual(code, 1, result)
+            self.assertIn("Slopsentral.Diction", {f["rule"] for f in result["documents"][0]["findings"]})
+
+    def test_encoded_and_html_declaration_controls_cannot_disable_rules(self):
+        for marker in ("<!--&#118;ale off-->", "<div>\n<!vale off>\n</div>"):
+            code, result, _ = self.run_assessment("Use the tool.\n\n" + marker + "\n\nUtilize the tool.\n")
+            self.assertEqual((code, result.get("failure", {}).get("type")), (2, "POLICY_OVERRIDE"))
+
+    def test_editor_rules_reach_the_assessment(self):
+        (self.root / "docs/how-to").mkdir(parents=True)
+        code, result, _ = self.run_assessment(
+            "# Save the file\n\nYou should save it. You can't read the file.\n",
+            "docs/how-to/save.md")
+        self.assertEqual(code, 1, result)
+        rules = {f["rule"] for f in result["documents"][0]["findings"]}
+        self.assertTrue({"Slopsentral.Modals", "Slopsentral.Contractions", "HowTo.Steps"} <= rules, rules)
+        _, control, _ = self.run_assessment("The tool's file contains `should`.\n")
+        self.assertEqual(control["documents"][0]["findings"], [])
+
+    def test_external_absolute_path_and_uppercase_suffix_keep_profile(self):
+        (self.root / "docs/how-to").mkdir(parents=True)
+        doc = self.root / "docs/how-to/example.MD"
+        doc.write_text("Run the tool.\n")
+        run = subprocess.run([sys.executable, str(SCRIPT), "--vale-bin", VALE,
+                              "--glossary", str(self.glossary), str(doc)],
+                             cwd=SCRIPT.parent, capture_output=True, text=True)
+        report = json.loads(run.stdout)
+        self.assertEqual(run.returncode, 1, report)
+        self.assertIn("HowTo.Steps", {f["rule"] for f in report["documents"][0]["findings"]})
+
     def test_unavailable_and_wrong_version_engines_are_rejected(self):
         document = self.root / "test.md"
         document.write_text("The cat sat on the mat.\n")
@@ -197,7 +234,7 @@ class AssessTextTest(unittest.TestCase):
 
         def change_after_acceptance():
             result = original()
-            (copy / "assessment.ini").write_text("StylesPath = /missing\n[*]\nBasedOnStyles = Missing\n")
+            (copy / ".vale.ini").write_text("StylesPath = /missing\n[*]\nBasedOnStyles = Missing\n")
             return result
 
         with mock.patch.object(assess_text, "POLICY", copy), mock.patch.object(

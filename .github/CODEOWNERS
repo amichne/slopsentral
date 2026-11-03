@@ -1,0 +1,10 @@
+# Changes to the gate and its execution environment need policy-owner review.
+/.github/CODEOWNERS @amichne
+/.github/workflows/ @amichne
+/.github/actions/ @amichne
+/bin/ @amichne
+/mise.toml @amichne
+/docs/glossary.json @amichne
+/source/skills/controlled-technical-writing/ @amichne
+/tools/prose.py* @amichne
+/tools/python_checks/test_prose_command.py @amichne

@@ -95,6 +95,28 @@ uv run --locked tools/install_skill.py pkl-engineering
 
 The installer rejects conflicting local content. It copies no generated plugin payload into authored source.
 
+## Assess changed prose
+
+Run `mise exec -- slopsentral-prose changed` from the checkout. On Windows, run `mise exec -- uv run --locked --script tools/prose.py changed`.
+The command compares the worktree with its common ancestor with `origin/main`. It includes untracked prose.
+For committed inputs, supply `--base BASE_SHA --head HEAD_SHA`. The checker reads Git blobs at those revisions.
+
+The first run downloads the pinned Vale archive. Later runs reuse the cached archive after a digest check.
+The JSON report lists selected documents, exclusions, source digests, findings, and the findings that block the change.
+Exit 0 permits the change. Exit 1 blocks it for prose findings. Exit 2 means the checker lacks a complete assessment.
+
+- Errors block the change. A new `Slopsentral.Diction` warning also blocks it.
+  The checker compares the message, source line, and occurrence count with the earlier document.
+- Other warnings appear in the report and as CI annotations. Grade and sentence length are advisories.
+- An active Vale control, a nonregular prose file, an unavailable engine, or a document without measurable prose fails assessment.
+  A fenced code example can contain a literal control. Python modules and code examples keep their technical terms.
+
+The candidate job runs the proposed policy. After this workflow lands on `main`, the trusted job uses the base checker and glossary.
+It reads the PR head as data and posts `slopsentral/prose` to that commit. Both jobs save their JSON reports.
+After the first trusted run, select `slopsentral/prose` as a required status check for `main`.
+Select the GitHub Actions source for the status. Require an up-to-date branch and code-owner review for policy changes.
+Review an exception with its rule, passage, and reason in the PR. A review comment cannot override a failed status.
+
 ## Source and delivery
 
 Author skills, hooks, concepts, agents, schemas, and plugin references under `source/`.

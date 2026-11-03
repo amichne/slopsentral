@@ -1,0 +1,81 @@
+name: Trusted prose assessment
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review, edited]
+
+permissions: {}
+
+concurrency:
+  group: trusted-prose-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  pending:
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    steps:
+      - name: Mark the PR head pending
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA"
+          -f context=slopsentral/prose -f state=pending
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+  assess:
+    needs: pending
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          version: 2026.9.1
+          cache: false
+      # Fetch the candidate as Git objects. Only the trusted base is checked out.
+      - name: Fetch the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: git -c credential.helper= -c "credential.helper=!gh auth git-credential" fetch --no-tags origin "refs/pull/$PR_NUMBER/head"
+      - name: Assess the exact candidate with the base policy
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: >-
+          mise exec -- slopsentral-prose changed --base "$BASE_SHA" --head "$HEAD_SHA"
+          --github > "$RUNNER_TEMP/prose.json"
+      - name: Save the assessment
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: trusted-prose-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/prose.json
+          if-no-files-found: error
+
+  report:
+    if: always() && !cancelled()
+    needs: assess
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    steps:
+      - name: Set the status on the assessed PR head
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          STATE: ${{ needs.assess.result == 'success' && 'success' || 'failure' }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA"
+          -f context=slopsentral/prose -f state="$STATE"
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
