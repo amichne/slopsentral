@@ -4,7 +4,7 @@ okf_version: "0.2"
 
 # Files
 
-- [Slopsentral quickstart](quickstart.md) - Choose a plugin or consumer installation, prepare a maintainer checkout, and find source-backed authoring, projection, release, and documentation procedures.
+- [Slopsentral quickstart](quickstart.md) - Select an engineering procedure, install a consumer, or change the source with linked documentation and executable evidence.
 
 # Directories
 
@@ -12,4 +12,5 @@ okf_version: "0.2"
 - [concepts](concepts/)
 - [integrations](integrations/)
 - [operations](operations/)
+- [testing](testing/)
 - [workflows](workflows/)

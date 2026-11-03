@@ -1,3 +1,4 @@
 # Files
 
-- [Versioning and tested-byte releases](releases.md) - Trace the shared product version from validation and retained artifacts to immutable releases, separate harness publication, and Release Please proposals.
+- [Skill and plugin evaluation evidence](evaluations.md) - Separate routing expectations, decision responses, native execution traces, independent verification, and historical field records.
+- [Unified versions and tested-byte publication](releases.md) - Trace the shared product version from App-authored proposals through exact-head admission, saved candidate bytes, release downloads, and completion labels.

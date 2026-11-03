@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:3aafba7c3609104508b72f0771cba20283ec17eea6300d0aa2a93d9f7fcf23db",
+  "claims": [
+    {
+      "id": "claim_4b9f7bb147ed453d9d7e11653311c518",
+      "statement": "The Slopsentral command needs an explicit host, requires selected plugins for Codex, Copilot, and Amp, and delegates Pi operations to its existing setup owner.",
+      "evidence": [
+        {
+          "resource": "repo://tools/slopsentral.py#L669-L713",
+          "version": "repo-lines-v1:sha256:98ac7424dfe89c5ad160b9652a5e911d93f41a2315d925d4418d028628f42cce:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMzk3OTMzYTI0YTgwMWVlOTIzMzI3YmQ2OWEwMTA0OWMwNzc5MTUwMjFjZjJlYzM5ZGRhNGY4MWFhODM3ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiNjRlOTIwMDBhMTljYTM4NTkzYTRlNmEwYmFjNzcwOTZkMWU5ODY5NDlhM2I2MjgyNmI3Y2VhNGY3M2Q5ZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5ZWUxOTMyODRlODJmYjc2YWY0ZjRmNTgzZTQzZjA1MDdiNWYxMzJiMTY0ZTZkMzUyM2JhZmI5NGMwYzdiMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8aa7ed9ac22d4bda964a6213e8e7e1bd",
+      "statement": "Native Codex and Copilot operations preserve a recognized marketplace source, preserve enabled choices on repeated installation, and reject a Codex update for a disabled selected plugin.",
+      "evidence": [
+        {
+          "resource": "repo://tools/slopsentral.py#L417-L483",
+          "version": "repo-lines-v1:sha256:d4c92ac548ae377b5e589af895fbbd9d353d61686e88073c92cf746fdca003ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1MGQ0YjlmNjkwODNmNTFjZGYyOWZmYjI4MWE0ODM0MTAyNjdmZThhYmJmODk2OTk3MmFlNjQwYWJhYTRjOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2ZDdjMjM0OTFjMzA1ZTUxOTUzOGFmZGE5ODVjM2E4NzVhZTg4ZGFiZDRlMTQ5NmRhYTYyZjMxYjg0NDZlMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0Nzc5YTlhMzQyYzNhYTkyMjEwZjQ5Mjk4ZGJhNTA2YTM0ZmNmYzNiMWQ0NjdjYTBhMTU3MDk4ZWFkZjhiMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZlNjVmNWU2MzU2YzhhMDQ2ZmI3ODdiNTY5OTA1ZmU3ZjY2YTdjNjQ1ZGQzZDFkZDI0YWRjNDc5MTM3MDQ2MTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a15edf711c9742a8a05cfc45cc077bd9",
+      "statement": "Self-management examines managed file digests and preserves edited command copies or launchers instead of deleting or replacing them.",
+      "evidence": [
+        {
+          "resource": "repo://tools/slopsentral.py#L256-L290",
+          "version": "repo-lines-v1:sha256:fc46bdefd8e820e1efe631447879697c4376f3eaa288081e49d8ac172b1667b3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlYzIyZTA3YmFiMTYyZGU5ODYwOGJmOTA1NTdkNDhkOWI1YTQwMjgyMWZmMTYwZjA3YmZmOGY3Mzc5MDI2NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTYwMGE3M2QyZTAyZjM1MmI5MGZlZjFkOGQ2MzgxMWJhNGE4ZWUwYzFiZWFhN2FlNDY1OGYzNmFhMmUxOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkMmY2YWVkODI0NjQwYmViN2EwYzg2OTlhMzkzZWJlYTkzMTk0MDQ3ZjI0ZTQyNDdlN2FmNDllMGQ1YzEwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1NDE4MzNlYzg4ZGRkYWE3OGZiYmNlMWM2YjExNTM5MDZlYWUwOWFiYmY3YjNjMzU0N2RmMmQzMjUxNjFlMzAifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-03T17:57:45.987Z"
+  }
+}

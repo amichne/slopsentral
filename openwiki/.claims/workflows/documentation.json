@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:fb2c4d25f805898da80a756600cd68c8268776b0ec550aaa0c32709c6fa79903",
+  "pageVersion": "sha256:f87aea171c0756ed974791e83ce5a00f0ada7883425a44041ccaf9c73b9941a1",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -89,10 +89,52 @@
           "version": "repo-lines-v1:sha256:e1d607ab2cf093e0adc0384412a7b697cfe93cc4dc0fc81e30f54984eb05acf1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNWU0ZWEyYjg5YjM3MTc5ZWFjMTUyYWRiYjA2ODQ5OWUzNjMzMmJhY2M3MTViYzE3Y2RhZGZiYWIyYWQ3NTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxOTk3Mzk1MjYwYWE4MjZhNTgxMTVlOWFiOTJiMzU4MjM5ZjI5ZDYxNGJjMjY5MDZkZjI3MmU4ZGNkZTVlOGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMzIxNWQ2Yzk5MjhlY2NkNTJlMjNmZjI4NWFlYzNlNmVkMmUxZjE4NTgyMTk0M2E1YzU3NGMxMjhkMjAyYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1MTU3NWE5YTY4NzJiOTM5Y2RlYjc4Nzk3ZThhOGQ3MDM1NGQwMTRkMTJjMDVjYTc2M2Q5NWUyNzhkMTM4OTIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_194103921ab94b43a18b84111812c8bc",
+      "statement": "The repository documentation gate maps maintained areas to sources and OKF explanations, rejects broken structure and incomplete native state, and compares current source and page fingerprints with an explicit review record.",
+      "evidence": [
+        {
+          "resource": "repo://docs/coverage.json",
+          "version": "repo-file-v1:sha256:5752f34bd7b9e88962f903b01ecc4b051a250dc0c16c6d16aa20f07250ffc8a2"
+        },
+        {
+          "resource": "repo://tools/documentation.py#L106-L139",
+          "version": "repo-lines-v1:sha256:7a24077ea8f21cc651ce57a1c0d50afff7001fcdef8684590c874c3807db4b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxZDkxYzkwMjc4ZDFmYWU1ZjkzMzA5NmRmZjkyZjI2MjI5M2ZjMzdiYTlkNzg3ZDJlMjhjMTY0YWYwMTQ2NjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZGU4YzdjOWEzNzlmZWM4MmZjZjQyNjE2YjE2MmVkMGZiYTE2NzVjZjNjZDM5MGI1OTRkZDA4OTdkZDQ2NTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxNjY4ZDU2YzNiYWRkYjg1ZTkzYzc1N2ZjMTYwNTE3ZDdmYjNlY2ViY2ExMjFkMGM2ZjQ5MjhjMzc5ZDYzOTYifQ"
+        },
+        {
+          "resource": "repo://tools/documentation.py#L285-L416",
+          "version": "repo-lines-v1:sha256:c962cc4cd29484713f92497d10ffebb94dbdc55c813d4db5cb99911a81302642:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxNzFkOGI1MjkzN2NlZGIwZmM2NmI2OWQyMjRmNjcyYTE0MjIwMWUyNjlkMWJjMTQ1YzIzYzQ3NmFlNDZjMWI4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNzAxNDllMDY5YWQ2N2VjY2Y0NzM2NDZmZjFjNzUwMDUwZDMyOWQxMTAwMThkYzU3NjY4NzhlYWZhMWQ2MDdkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4MTcyNmZmOGIxY2JiNTkyMGU4NjYxZDRmYTRlN2JlODI0ZmM4MThlZTk1ZTg1MGJhMzBkNTUwZDhmN2EwOWMxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_ff4d827cc1564487b182ba2a9e4fb631",
+      "statement": "The shared engineering baseline connects behavior changes to maintained source-backed knowledge and distinguishes byte agreement from semantic correctness and reader comprehension.",
+      "evidence": [
+        {
+          "resource": "repo://source/instructions/engineering-design.md#L58-L70",
+          "version": "repo-lines-v1:sha256:edbea0e4eae828374e18c6f0f76492ab75124770cae603bad80c802c25ecd158:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMmJhMDRiOWY5ZmNjYmNmNjVmOGMwZTAwNDI3MjZlM2Q5MTc0NjIyZGViZmU3ZjBjMzQ0NzBhYTYzZjM1NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNjQ2MGM5ZDBiMGY1MmYzODlhZDk5NTI5MDM0MjQ3MTI0OTc0Yjg4OWMyYzJjZTFkYTI0OGU2NzNmNWExNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmMGE3Mzc5MmIwZGM0OGRiODY0MjQyM2ZiODc4OTM1ZTNlNGM5YTQyZDQ2NDRmNWNiNDk4NDQ1NmIzNWI5ODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_606e751901fb4163be98184502e6812b",
+      "statement": "The review record fingerprints native Claim sidecars and completion metadata, so later changes invalidate the recorded agreement.",
+      "evidence": [
+        {
+          "resource": "repo://tools/documentation.py#L355-L368",
+          "version": "repo-lines-v1:sha256:ce0aad848229a18c7138c4f70cf719b52031b2d71633c99d9dd9091c8ca5c6af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1MzY3YTU3Y2I3ZWJhMjMwYjRiODI0MTUyNjFkZDQ2NTJkNDI5ODZhZmNmNTRhYmE4Yjk5MDBlNGJjZDY2MDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4ZmI4YTcxZGRiM2YyZGVlYWNmZjAyODkwY2UwNTI1YmYzMDNmZDNlMmNlZjI4NWI4NjA4OTgwYzk3MmIzY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2Y2Q1ZmUzZGFiNzlkNGU3NTNjYzIxMWY1ZDM0ZjdlNzNiYzUzZDc1N2Q1OWZiYjQ2YzQwYzQ2NzJmM2M4OTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwMjE0YjJmZWQxMjY0M2M5MjZhZjI3ZDgxYjlkNGI0MzkzMDZlYTY2ODljYTNhZWQ0YzE4YmFkNjI5MWYwYzcifQ"
+        },
+        {
+          "resource": "repo://tools/python_checks/test_documentation.py#L181-L187",
+          "version": "repo-lines-v1:sha256:fde8fd312074315942995501e0dc0f8752c4f106e71a60ca2c3122bd15fcb97f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Y3Y2E3NWQ0MTEwMDBiNmUzZDljNDJiNmJjZmM4MTdjYWZhY2QzYTEyN2RlZjA5Y2VjMGY5MGY4ZDQyNWRiNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGZjN2ViNDE5ODhjMGMxMzllZTlkZmEyNGMzNzdhNTkzMGFkNDIyYjhmMDNlMWE0MzE4MWZlOWQ2MDBlYThjNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjBhMzcxMWZiYzAwZTlkNGQ1ZGFjZTE1NGNkODYwMjQwZjdmYjEyMmJkNjU3MGIyNjViN2ZkM2UzNzY1ZGY5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-10-26T11:35:00.921Z"
+    "at": "2026-11-03T18:18:32.121Z"
   }
 }

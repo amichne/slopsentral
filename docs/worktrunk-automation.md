@@ -1,49 +1,60 @@
-# Worktrunk Automation
+# Use Worktrunk automation
 
-Use the upstream `worktrunk@worktrunk` plugin alongside Software Engineering.
-See the [marketplace reference](agent-marketplaces.md) for installation and
-provenance. Slopsentral extends git-change-flow with worktree isolation, current
-remote bases, task staging, and blocking verification.
+Use the upstream `worktrunk@worktrunk` plugin for CLI-owned worktrees.
+Software Engineering supplies Git scope and delivery rules.
+Host-managed worktrees keep their host lifecycle.
+The [marketplace guide](agent-marketplaces.md) names the upstream owner.
 
-The repository's [project configuration](../.config/wt.toml) automates:
+## Project commands
 
-| Boundary | Command | Effect |
+The [project configuration](../.config/wt.toml) declares these operations:
+
+| Worktrunk operation | Command | Result |
 | --- | --- | --- |
-| Worktree creation | `npm ci` | Installs locked dependencies before agent handoff |
-| Worktrunk commit | `npm run check:source` | Validates source graph, catalog freshness, and diff whitespace |
-| Worktrunk local merge | `npm run verify` | Rechecks source, runs Node tests, projects both providers, and tests projected Codex hook output |
-| Manual verification | `wt verify` or `npm run verify` | Runs that verification without committing or merging |
+| Pre-start | `mise exec -- slopsentral-setup` | Prepare locked checkout dependencies before handoff |
+| Pre-commit | `npm run check:source` | Examine source graph, catalog freshness, and diff whitespace |
+| Pre-merge | `npm run verify` | Run repository gates before local integration |
+| `wt verify` | `npm run verify` | Run the same gates without a commit or merge |
 
-Worktrunk parses the TOML and previews hooks with `wt hook show --expanded`.
-Project commands need Worktrunk approval before their first execution. Inspect
-the expanded commands and use existing authorization for the reviewed task;
-do not treat skipped commands as successful verification.
+Inspect expanded commands with `wt hook show --expanded`.
+Worktrunk owns approval for project hooks. A skipped hook supplies no passing result.
 
-`npm run verify` requires Node dependencies and Pkl 0.32.0 on PATH (or `PKL_BIN`). Use
-the checksum-verified `tools/install-projection-pkl.mjs` setup command. The projection
-script creates a unique temporary directory per invocation and removes only
-that directory on success or failure. Generated provider trees in the checkout
-are updated by the existing publication workflow.
+`npm run verify` needs locked Node dependencies and Pkl 0.32.0.
+Use the [projection setup](pkl-projection.md#runtime-and-commands) for the exact runtime.
+Temporary projections stay outside authored output.
 
-For a fresh CLI worktree, fetch the intended base, resolve its full commit,
-and pass it to `wt switch --create <branch> --base <commit> --format=json`.
-Verify the returned path and its HEAD before working there. Stage only task
-files before `wt step commit --stage=none`; Worktrunk's default stages all
-changes. Host-managed worktrees use the host's creation and archival tools.
+## Create and commit a CLI worktree
 
-The hooks run on Worktrunk operations. Raw Git and host tools must invoke the
-canonical verification command explicitly. Source verification checks unstaged,
-staged, and committed task changes using `origin/main...HEAD` for the committed
-range. Fetch the `main` base before verification; an unavailable base or merge
-base fails the gate. Local merge automation and upstream
-activity markers do not authorize remote publication, extra agent sessions,
-deployment, or worktree deletion. Required hosted CI still needs terminal
-success at the exact current PR head.
+Fetch the intended base before a new worktree.
+Resolve its complete commit SHA.
+Use that SHA with the new branch:
 
-Run `node --test tools/tests/worktrunk-automation.test.mjs` with `wt` on PATH
-to exercise lifecycle success and rejection paths. Those tests skip locally
-when the CLI is unavailable. CI installs checksum-pinned Worktrunk v0.53.0;
-a missing CLI fails the lifecycle tests. Projection runner tests are always
-part of `npm test`.
-These executable checks establish hook and command behavior; native model
-routing and host consumption need separate observation.
+```sh
+wt switch --create <branch> --base <commit> --format=json
+```
+
+Examine the returned path and HEAD before edits.
+Stage only task files before this command:
+
+```sh
+wt step commit --stage=none
+```
+
+Worktrunk's default staging can include unrelated changes.
+Raw Git and host operations do not run these Worktrunk hooks.
+Run the repository gates explicitly for those operations.
+
+## Evidence limits
+
+Source gates examine unstaged, staged, and committed task changes.
+The committed range uses `origin/main...HEAD`.
+An absent remote base or merge base fails that gate.
+
+Local hooks grant no remote merge, deployment, or deletion authority.
+Hosted CI still needs terminal results for the exact PR head.
+The [authoring workflow](../openwiki/workflows/authoring.md) connects local gates to delivery.
+
+The [lifecycle tests](../tools/tests/worktrunk-automation.test.mjs) use disposable repositories and real `wt` commands.
+Run them with `node --test tools/tests/worktrunk-automation.test.mjs`.
+They skip locally without `wt`. CI treats a missing pinned executable as failure.
+Those results prove hook behavior, not host consumption or model outcomes.

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8ad1b75c73574921c61563518f94fa7c948fde82fd175f6400727c82f307693d",
+  "claims": [
+    {
+      "id": "claim_0d9e521c633f4bb3a461cb047b9b3e1b",
+      "statement": "The shared engineering baseline treats maintained source-backed knowledge as part of a behavior change, with source review, conceptual links, and freshness evidence kept distinct from semantic correctness.",
+      "evidence": [
+        {
+          "resource": "repo://source/instructions/engineering-design.md#L58-L70",
+          "version": "repo-lines-v1:sha256:edbea0e4eae828374e18c6f0f76492ab75124770cae603bad80c802c25ecd158:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMmJhMDRiOWY5ZmNjYmNmNjVmOGMwZTAwNDI3MjZlM2Q5MTc0NjIyZGViZmU3ZjBjMzQ0NzBhYTYzZjM1NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNjQ2MGM5ZDBiMGY1MmYzODlhZDk5NTI5MDM0MjQ3MTI0OTc0Yjg4OWMyYzJjZTFkYTI0OGU2NzNmNWExNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmMGE3Mzc5MmIwZGM0OGRiODY0MjQyM2ZiODc4OTM1ZTNlNGM5YTQyZDQ2NDRmNWNiNDk4NDQ1NmIzNWI5ODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aba9b45ca98a4a158199262d51ef5700",
+      "statement": "Repository documentation coverage maps maintained areas to source selections and explanations, and its explicit record operation stores reviewed fingerprints without proving semantic accuracy.",
+      "evidence": [
+        {
+          "resource": "repo://tools/documentation.py#L108-L141",
+          "version": "repo-lines-v1:sha256:18dd6df429b43e3a86d421ec16afed2a53ffbac587b3366712047400aaa329c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMWJhNGE5OTViNzE3MThjMGNkMzA5MjY3YzlkZjhhYzhhOWY1MmMxNjcxMmU2Zjk4YzFjOWMxMDhkMTgyOTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzOTg5NWYxODM3NjQ4MzlhYmE3YmUwYjhjMDIyNzVkODhiNzAxNjRlNjdlMmZiY2MzZWRmMzBiM2ZjYmEzNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxMzRjZDQ3MmZjZWI4MjcxMGFmN2Y0MGUzZjU2ZWU5N2Q3MzBjN2MxZDU0OThiNzhlNGRmMmNiYTBiM2Y3YTgifQ"
+        },
+        {
+          "resource": "repo://tools/documentation.py#L393-L416",
+          "version": "repo-lines-v1:sha256:6222ac12367f51932633035371ef32811100d7a80981cb8266729d2594d0019e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4YTRjMzdkMWQ0MTMxY2E3OWI3YTc5NjljNzQ2NzY3ZjVhZDI5YmY3MmVlZGFiMzEwMjhjOWVkMzRkZjZhOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxNzI2ZmY4YjFjYmI1OTIwZTg2NjFkNGZhNGU3YmU4MjRmYzgxOGVlOTVlODUwYmEzMGQ1NTBkOGY3YTA5YzEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-03T18:20:38.306Z"
+  }
+}

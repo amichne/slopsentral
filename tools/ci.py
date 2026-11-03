@@ -268,6 +268,7 @@ def main() -> int:
             return commands(
                 (
                     ("npm", "run", "check:source"),
+                    ("npm", "run", "check:docs"),
                     ("uv", "run", "--locked", "tools/check.py"),
                     ("node", "tools/run-routing-evals.mjs", "--require-all-fixtures"),
                     *(

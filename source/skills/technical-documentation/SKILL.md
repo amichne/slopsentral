@@ -28,7 +28,12 @@ Use controlled-technical-writing for prose assessment and code-knowledge-base fo
    Preserve the current framework unless the user requests a migration.
 5. Generate API and command references from their authoritative registry when one exists.
    Change the generator for generated pages. Derive diagrams from real components, states, calls, or schemas.
-6. Examine commands, examples, defaults, links, and page claims against their sources.
+6. Connect each changed mechanism to its consumer, invariant, implementation,
+   executable evidence, and explanation. Examine the existing coverage map and
+   source-impact report when present. Refresh affected concepts and their inbound
+   links within the authorized scope. Reject missing sources and incomplete
+   evidence rather than a successful empty drift report.
+   Examine commands, examples, defaults, links, and page claims against their sources.
    Run the repository's documentation build after navigation, configuration, layout, link, or generated-page changes.
 7. Apply controlled-technical-writing's source and terminology checks.
    Run the repository's prose checks; use the bundled assessment when requested

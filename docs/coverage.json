@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "areas": [
+    {
+      "id": "engineering",
+      "sources": [
+        "source/instructions/",
+        "source/concepts/",
+        "source/skills/"
+      ],
+      "pages": [
+        "README.md",
+        "source/ARCHITECTURE.md",
+        "docs/engineering-excellence.md",
+        "docs/examples/global/AGENTS.md",
+        "openwiki/concepts/evidence.md",
+        "openwiki/concepts/source-ownership.md"
+      ]
+    },
+    {
+      "id": "composition",
+      "sources": [
+        "source/adaptable.marketplace.json",
+        "source/plugins/",
+        "source/profiles/",
+        "source/agents/",
+        "source/schemas/",
+        "source/templates/",
+        "source/AGENTS.md",
+        "source/ARCHITECTURE.md",
+        "source/CATALOG.md",
+        "source/MIGRATION.md",
+        "source/UPSTREAM.md"
+      ],
+      "pages": [
+        "docs/agent-marketplaces.md",
+        "docs/workflow-resources.md",
+        "openwiki/concepts/source-ownership.md"
+      ]
+    },
+    {
+      "id": "projection",
+      "sources": [
+        "tools/projection/",
+        "tools/project-marketplaces.mjs"
+      ],
+      "pages": [
+        "docs/pkl-projection.md",
+        "openwiki/architecture/projection.md"
+      ]
+    },
+    {
+      "id": "hooks",
+      "sources": [
+        "source/hooks/"
+      ],
+      "pages": [
+        "docs/agents-md-scope.md",
+        "openwiki/architecture/hooks.md"
+      ]
+    },
+    {
+      "id": "installation",
+      "sources": [
+        "tools/slopsentral.py",
+        "tools/install-pi.sh",
+        "tools/setup-pi.mts"
+      ],
+      "pages": [
+        "docs/cli-install.md",
+        "docs/pi-install.md",
+        "docs/personal-setup.md",
+        "openwiki/integrations/cli.md",
+        "openwiki/integrations/installation.md"
+      ]
+    },
+    {
+      "id": "profiles",
+      "sources": [
+        "tools/profile-lifecycle.mjs"
+      ],
+      "pages": [
+        "docs/profile-lifecycle.md",
+        "openwiki/integrations/profiles.md"
+      ]
+    },
+    {
+      "id": "portable-instructions",
+      "sources": [
+        "tools/install_global_agents.py"
+      ],
+      "pages": [
+        "docs/global-agents.md",
+        "openwiki/integrations/global-instructions.md"
+      ]
+    },
+    {
+      "id": "releases",
+      "sources": [
+        ".github/workflows/release-pi.yml",
+        ".github/workflows/release-please.yml",
+        "tools/release_version.py",
+        "release-please-config.json"
+      ],
+      "pages": [
+        "docs/releases.md",
+        "openwiki/operations/releases.md"
+      ]
+    },
+    {
+      "id": "evaluations",
+      "sources": [
+        "source/evals/",
+        "tools/promptfoo/"
+      ],
+      "pages": [
+        "docs/skill-evals.md",
+        "openwiki/operations/evaluations.md"
+      ]
+    },
+    {
+      "id": "knowledge",
+      "sources": [
+        "source/skills/code-knowledge-base/",
+        "source/skills/technical-documentation/",
+        "source/skills/controlled-technical-writing/",
+        "tools/documentation.py",
+        ".github/workflows/openwiki-update.yml"
+      ],
+      "pages": [
+        "docs/documentation.md",
+        "openwiki/workflows/documentation.md",
+        "openwiki/concepts/evidence.md"
+      ]
+    },
+    {
+      "id": "automation",
+      "sources": [
+        "tools/",
+        ".github/workflows/",
+        ".config/",
+        "mise.toml",
+        "AGENTS.md"
+      ],
+      "pages": [
+        "docs/worktrunk-automation.md",
+        "openwiki/testing/validation.md",
+        "openwiki/workflows/authoring.md",
+        "openwiki/quickstart.md"
+      ]
+    }
+  ],
+  "archives": [
+    "docs/plugin-choice-audit.md",
+    "docs/session-grounded-skill-campaign.md",
+    "docs/session-grounded-skill-cases.md",
+    "docs/skill-plugin-reassessment.md",
+    "docs/tdd-astra-audit.md",
+    "docs/three-plugin-audit.md"
+  ]
+}

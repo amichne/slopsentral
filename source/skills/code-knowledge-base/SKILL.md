@@ -25,7 +25,12 @@ Treat indexes as navigation aids whose claims still need source evidence.
    Keep source facts, accepted decisions, proposals, and unresolved gaps distinct.
 5. Change the selected pages and their indexes together.
    Update inbound links after a rename. Keep historical `log.md` links unchanged.
-6. Run the format and source-evidence procedures from [knowledge-page-contract.md](references/knowledge-page-contract.md).
+6. Use the repository's coverage and freshness gates when present. Map changed
+   sources to explanations, executable evidence, and conceptual neighbors. Review
+   source drift before refreshing a digest. A digest establishes agreement with
+   reviewed input, not semantic correctness. Preserve the selected backend's
+   lifecycle and avoid a second store.
+   Run the format and source-evidence procedures from [knowledge-page-contract.md](references/knowledge-page-contract.md).
    Record each command and result. An impact list does not prove page correctness.
 7. Assess changed prose with controlled-technical-writing.
    Report missing tools, unresolved citations, and unproved host behavior.
@@ -36,7 +41,7 @@ Treat indexes as navigation aids whose claims still need source evidence.
 - For tracked or sibling storage, read [knowledge-overlay.md](references/knowledge-overlay.md) before a write.
 - For OpenWiki or a backend migration, read [knowledge-backend-handoff.md](references/knowledge-backend-handoff.md).
 - For imported notes or exports, read [knowledge-migration.md](references/knowledge-migration.md).
-- For Kotlin or Gradle sources, read [kotlin-gradle-okf-principles.md](references/kotlin-gradle-okf-principles.md).
+- For Kotlin or Gradle sources, read [Kotlin and Gradle principles](references/kotlin-gradle-okf-principles.md).
 - For generated signatures, read [signature-contract.md](references/signature-contract.md).
 - For upstream assets or inherited format behavior, read [provenance.md](references/provenance.md).
 

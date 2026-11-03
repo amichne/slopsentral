@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e94894c08cbf4733344b641b034e15b939f9d8deabea3d2bc6897e7b0c2e07af",
+  "claims": [
+    {
+      "id": "claim_9531bb3bbe9e4648b03a7049e4d79602",
+      "statement": "The instruction-scope adapter runs on UserPromptSubmit and Stop, while the initial baseline does not create a retrospective review obligation for preexisting changes.",
+      "evidence": [
+        {
+          "resource": "repo://source/hooks/agents-md-scope.py#L624-L651",
+          "version": "repo-lines-v1:sha256:2f34cf9d4c76dd3678776be68c9cfc5ab5184e5b5e9cc451d1cb409447402151:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTYwNmY5OGYwNDNkZDYxYzEwYjE1YWEzNDk0NjJmZjFiMmIwOWJhOWI1MjEzYWMxNGMwZTE4N2QzYjA5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyOTU0MWRmNDllYTYwYWU5Y2ExNWQ5YmZmMTZmMTM5ZThlMDU5NmM2YjM5M2Y4NmRlNGYxM2E4MzdmZjA0OTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYjMxZDYxNDUyN2JhYmJkNGVmMTdmNTMzNTQ2ZmNkMDhjMWNmMzhlZmY0OWE2NzViNzY4NTU2YWU5YmE3NDIifQ"
+        },
+        {
+          "resource": "repo://source/hooks/codex/agents-md-scope.hooks.json#L3-L29",
+          "version": "repo-lines-v1:sha256:25b716075155db4b6689b3616b17dbd8ffc0f930de7172c4366ae5292125bd6f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3NWQ1NjE2YjAyNDIxOTI2NGUxNTU0M2FjYjNhMDE2MjY3M2E1OTNmOTFmZjk1MTgyOTI4ODcwMWQzYzFjNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhYTc2OTA5NDhlZjU0NGZhNWE3ZWQwMWE0ZTFlM2Q0MTE0OGJmMzk3ZGIyODczY2EzZDM0Mzk4ODAzZWQ4MTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5737b38af89466b8794ff43818a6624",
+      "statement": "Pi blocks tool calls after failed request admission and permits one automatic repair turn after a blocked Stop result.",
+      "evidence": [
+        {
+          "resource": "repo://source/hooks/pi/adapter.ts#L106-L122",
+          "version": "repo-lines-v1:sha256:f1406a1a47d21ea9cb031be2514e495453b3af740342da95938837a30c4c1046:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5MzAxZmQxMWU0MzQ2ODI0MmEyYTM2MTU5YjNjMjQ2YjI0OWM0OTkxYTY5NGNkMzFlODI3N2ZmOTJkMDJkZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmNGQwMTVmYmMyYjcwMTA2NjM3NjQ1MGVjODMyMWZjYzZkYmFkYjk5MjViODUxMmQyMmVkZDliNzAyYjRlMGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_069b6299e9a44461893aab1ef8d038d2",
+      "statement": "Disabled Pi hooks start no hook process, and malformed persisted choices reject hook effects.",
+      "evidence": [
+        {
+          "resource": "repo://source/hooks/pi/adapter.ts#L73-L79",
+          "version": "repo-lines-v1:sha256:5bafcea0a419337796b6d379161e3ae6f3c9557e151618bc672939245219e46c:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODA5NDJmOTYxYzM1NzU5Zjg5ZjNkMTg1NzlhZmZiNzk1MTRlZWM2ZDIzYTNlNzAwYzZkOGI1YzY2NDBiMDg0OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDJhMmNiMjVhMTIyYjQ0MjIxYTYyMzRlYzY2MGE3YjVmYjdmOWJkZTdiM2I5ZTJiM2M1NTlhMGQ5NmZhYzczOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmIyNzlhYzM3OGIwYjdjNDczZTVmMDg1YjdmNzVkZjliZTdlMzAzNGQ4OTA0YTc0NTY0ZGQwODAzOGYzMzlkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTgxYmRiOWZjMjYzNDEwM2U1NmY2MTgwODFmNjlkZTY4NWQ3ZTZmOWYzYTAzNmZkZDQwNzBlNzE0ZjY2NGFkMyJ9"
+        },
+        {
+          "resource": "repo://source/hooks/pi/controls.ts#L36-L63",
+          "version": "repo-lines-v1:sha256:a0d0043c5703410eef285e730b4c1bec191f5af599ea0f19393861a1718d00c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzNWYzNmY0NjI1ZGVkOTY2OTlmMzlhMWY0NjZiMGIwNzlhY2RlMzdjMzRkYTlkZjUyY2NiNzliYzk0YTkwYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2YjlhYmYwYmEyZTFiOTFjN2Q4N2EyODM2NDE3MTU1NzU2NjIyYjBlZjljYzEzNmFlYTY4NWU3NGIzYjE4MjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlNDhjNzFiN2E2MDk4YWRhMmZhOTdjZjhlZjFlNzkyMDE2Yjc3MDg5M2QzMDY2ZDcyMDY5ZGNmMDA2OTYwNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzN2Q0YzE4MjQ0OWNkMmEzZTk4YTc2YzkwYmU4NmZjZWI2ZmVlZTAyYmZjMzEzYTVjNDc1ZGE3ZmEwNGY3N2YifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-03T17:57:45.987Z"
+  }
+}

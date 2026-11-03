@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:746bb9cd0fd61f5158cdc43934c4a93466dbdacf3e442b08df1fe205cc845cc6",
+  "claims": [
+    {
+      "id": "claim_68463121d0f748239e2c063cad7c76ae",
+      "statement": "The TDD procedure fixes the executable oracle through initial failure and success, rejects zero selected assertions as proof, and widens only for required policy, changed consumers, or a named risk.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/tdd/SKILL.md#L13-L60",
+          "version": "repo-lines-v1:sha256:79bb013604bf372734833c2ce4d1d2b36cff8554ff8502420ba3c2bd51ff2eec:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmN2Y2Yjk5ODI4ZmFmZGNhMTdlMWM5YjIzYmI3ZmUxYzc1N2YzMDJiNmE4NDBkNDFiOGZhMTY2NzA4OWQzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYmJmYTk5NjFkYTFkMzIyMTVlY2UyOTAzNDU2MGI3NWRmM2I2YzczMjRjZDM4MGQyM2I0MmFkMDY0NjllNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNjk5OTkzOGU4Njc2ZjIzMDc3ZjAyZWJkYTJjMDE4OTc3ZWI4ZmMzYjc1ODM2YzZlOTVhNTA5NGYyMTVkODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkYzdlNTEzMGExMzkxODA3M2IwYzdjYTQyNWE1NmUxZWI1OWY4MGYxZDU3ODE1ZGE4ZTE0MjAwZTc2MTU0YjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fb25b05265584a63897f7d1f9fde9d69",
+      "statement": "The repository Python command runs ordered Ruff formatting, Ruff lint, Pyright, and pytest stages, and stops on a failed or unavailable stage.",
+      "evidence": [
+        {
+          "resource": "repo://tools/check.py#L21-L40",
+          "version": "repo-lines-v1:sha256:0a5ab2c4c19d8179c85b3c256f6aa806986a0e96ae601a4ba9d767162893a2b3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMzk3OTMzYTI0YTgwMWVlOTIzMzI3YmQ2OWEwMTA0OWMwNzc5MTUwMjFjZjJlYzM5ZGRhNGY4MWFhODM3ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiNjRlOTIwMDBhMTljYTM4NTkzYTRlNmEwYmFjNzcwOTZkMWU5ODY5NDlhM2I2MjgyNmI3Y2VhNGY3M2Q5ZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2Y2YxZDJlZGU2OTc1ZjExZDhmMDM1OWRiMDIyZmUxNDhhZWJiMGYzMWY3OTk0NjFhYTE4OGZjYjA4YzFjOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tools/python_checks/gates.py#L66-L72",
+          "version": "repo-lines-v1:sha256:3b5dd81ef317b1793b83abff7c73a03c8d0921d939e126a4cb6bea994bf808a2:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc0ZGYzMzU0MWNiZDc4ZmJkYzVhZjE4NGI1ZjQ5ZGI0OTllMzczYWFhYjg4NThlMWFkNWRkMjJmMjNkNTMxNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBjMWYxODhmMTQyZWQ3YTgyNDY4MGIyMDcxNzJjNTUxOWJjNjE0YTQ4ZmRhN2NmMTY3ZWRiOGRkZjc5OTU2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWViNzM3MjNjZDA2MGQ0NzRjN2MyNjlkZTgwY2RhODI1ZDhjOWM3ZTk0OWI4YTA1Y2M5MTg3MmQ1ODM1ZGUyNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3f434d60ae2b4a3386a32fa6c8e2eabb",
+      "statement": "The documentation gate rejects absent coverage, broken local links or anchors, invalid OKF concepts, missing Claims, incomplete native state, and stale reviewed fingerprints.",
+      "evidence": [
+        {
+          "resource": "repo://tools/documentation.py#L234-L284",
+          "version": "repo-lines-v1:sha256:6d5f782e349424a18af6743ee6603e5c9d22e3aa02e0a75497d02fd05a14e4ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwOWFiNDFmZDc2MmRmYzlkMzExZWU3N2VkNDkzNTZhNzk4ZmEyZThmYzYzMTc4YjQzMzgzODIzZGY1ODJlMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MjIzMTA2ZmQ4NzQyYjcwZWEyMzNmOWRjMzU5ZjRiMDJiYmIwNjliNzI4M2VlZjc2MjQ5OTUxNmJkN2I5YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4MzU4MjdjMTc3YzhmYjQ2NmJhZTUyNjg4MzAyYTkwNjg3YTQxZWE5N2ZiZTI1M2JiNjc5YzU0YzQ4ZjE2ODMifQ"
+        },
+        {
+          "resource": "repo://tools/documentation.py#L285-L369",
+          "version": "repo-lines-v1:sha256:7a3e1c381b09862367a843f4a18933470984c93e5dfbf24611f9b1270dfadfc2:eyJzZWxlY3RlZExpbmVDb3VudCI6ODUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MWQ4YjUyOTM3Y2VkYjBmYzY2YjY5ZDIyNGY2NzJhMTQyMjAxZTI2OWQxYmMxNDVjMjNjNDc2YWU0NmMxYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MDE0OWUwNjlhZDY3ZWNjZjQ3MzY0NmZmMWM3NTAwNTBkMzI5ZDExMDAxOGRjNTc2Njg3OGVhZmExZDYwN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlY2UzMGRiNTY2ZmNkNDdkZTJhYWI5MmMzMWJiMWIyN2EzNTlmZjNjOTNkNzViNWVlNzYxNDdlOTk2MmE0ZDQifQ"
+        },
+        {
+          "resource": "repo://tools/documentation.py#L372-L416",
+          "version": "repo-lines-v1:sha256:fbe82952eff4e97b44caac87ca6d8a0cc9848c831f15a9ac3f059795574c6224:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwNDgwNTVkMzQxMWJhNDgxODNiNGIzY2I1ZTcxYzc2NWYwNWMzY2FjZThhMTM3MTM1OGRmNzRjYjA2Nzg3NzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwMjE0YjJmZWQxMjY0M2M5MjZhZjI3ZDgxYjlkNGI0MzkzMDZlYTY2ODljYTNhZWQ0YzE4YmFkNjI5MWYwYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxNzI2ZmY4YjFjYmI1OTIwZTg2NjFkNGZhNGU3YmU4MjRmYzgxOGVlOTVlODUwYmEzMGQ1NTBkOGY3YTA5YzEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-03T18:18:32.121Z"
+  }
+}

@@ -1,36 +1,64 @@
-# Agent Marketplaces
+# Choose a marketplace
 
-Slopsentral authors reusable agent workflows and consumes Worktrunk for CLI
-worktree automation. Plugin payloads remain with their owning marketplaces.
+Use the host marketplace for plugin selection. Keep authored source, published provider output, and installed caches separate.
+The [catalog](../source/CATALOG.md) lists the current plugins and their canonical assets.
+The [source-ownership concept](../openwiki/concepts/source-ownership.md) explains that relationship.
 
-| Provider | Marketplace | Source | Entrypoint | Selected capability |
-| --- | --- | --- | --- | --- |
-| Codex | slopsentral | https://github.com/amichne/slopsentral/tree/harness/codex | `.agents/plugins/marketplace.json` | Software Engineering and Agent Tooling for marketplace work |
-| GitHub Copilot | slopsentral | https://github.com/amichne/slopsentral/tree/harness/github-copilot | `.github/plugin/marketplace.json` | Same authored workflows through the local Pkl projector |
-| Codex | worktrunk | https://github.com/max-sixty/worktrunk | `.agents/plugins/marketplace.json` | `worktrunk@worktrunk` configuration guidance and upstream host hooks |
+## Sources and entry points
 
-The Worktrunk source was reviewed at
-`dea4029c593a89a39fb141da9d0849e4d10dae19` on 2026-10-06. This is review
-provenance, not a claim that every consumer installed that revision. The source
-tracks upstream unless the consumer pins its marketplace ref.
+| Consumer | Source | Entry point |
+| --- | --- | --- |
+| Codex | `amichne/slopsentral`, `harness/codex` | `.agents/plugins/marketplace.json` |
+| GitHub Copilot | `amichne/slopsentral` | `.github/plugin/marketplace.json` |
+| Amp | Stable release archive or `harness/amp` | Complete `.amp/plugins/<plugin>/` directories |
+| Pi | Qualified stable release | Native aggregate package |
+| Codex with Worktrunk | `max-sixty/worktrunk` | Upstream `.agents/plugins/marketplace.json` |
 
-For requested installation, inspect the configured source first:
+The [Slopsentral command](cli-install.md) preserves recognized Codex and Copilot sources.
+An unknown source named `slopsentral` stops an operation.
+Provider branches advance. A recorded commit identifies the exact provider bytes.
+Stable release archives keep their published versions.
+
+## Select capabilities
+
+Start with Software Engineering. Add Kotlin Engineering for Kotlin work.
+Add another specialty for a concrete task.
+A plugin supplies procedures and resources. Selection grants no authority to publish or change personal configuration.
+
+For the supported host installer, use explicit selections:
+
+```sh
+slopsentral install --host codex --plugin software-engineering --plugin kotlin-engineering
+slopsentral install --host copilot --plugin software-engineering
+```
+
+These commands change the selected host configuration. They need an authorized installation task.
+Use the [command guide](cli-install.md) for prerequisites, updates, and removal.
+
+## Add Worktrunk when requested
+
+Examine the configured marketplace before an installation:
 
 ```sh
 codex plugin marketplace list --json
+```
+
+If the upstream marketplace is absent, add it:
+
+```sh
 codex plugin marketplace add max-sixty/worktrunk
 codex plugin add worktrunk@worktrunk --json
 codex plugin list --json
 ```
 
-Add the marketplace only when absent; preserve an existing matching source.
-Install `wt` separately if needed. A new host session must load the selected
-plugin before its skill or hooks can run. Installation evidence does not prove
-native hook consumption.
+Keep a matching existing source. Install the `wt` executable separately.
+Use [Worktrunk automation](worktrunk-automation.md) for project commands and their limits.
+A new host session must discover the plugin. Inventory alone proves neither hook delivery nor model behavior.
 
-Follow [Worktrunk automation](worktrunk-automation.md) for project hooks,
-verification, and managed checkout ownership. `.config/wt.toml` is parsed by
-Worktrunk; `wt hook show --expanded` validates and previews its configured hooks.
-The integration tests exercise success and failure with the actual installed
-CLI in disposable repositories. User hook trust and configuration stay owned
-by the user and host.
+## Source evidence
+
+[Host selection](../tools/slopsentral.py) owns marketplace reconciliation.
+[Publication](../.github/workflows/publish-harnesses.yml) owns provider branches.
+The [host-command tests](../tools/python_checks/test_slopsentral.py) cover recognized sources, conflicts, and disabled choices.
+The historical Worktrunk review used `dea4029c593a89a39fb141da9d0849e4d10dae19` on 2026-10-06.
+That record does not identify a current installation.

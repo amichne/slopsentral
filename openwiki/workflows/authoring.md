@@ -1,11 +1,11 @@
 ---
-type: workflow
-title: Author and validate a change
-description: Select a canonical edit surface, run checks suited to its contract, and separate static acceptance, model decisions, and actual host behavior.
-tags: [authoring, validation, testing, evidence]
+type: Workflow
+title: Change source with linked evidence
+description: Prepare a focused engineering contract, change the authoritative owner, and examine executable proof and affected knowledge together.
+tags: [authoring, workflow, checks, knowledge]
 verified:
   - by: openwiki/0.6.1
-    at: 2026-10-26T01:49:39.323Z
+    at: 2026-11-03T17:57:45.987Z
 sources:
   - id: openwiki-source-29733941fb1d8a282d0caafb
     resource: repo://.github/workflows/validate-source.yml
@@ -17,83 +17,74 @@ sources:
     resource: repo://tools/promptfoo/suite.mts
   - id: openwiki-source-6706911967b481bbbe3dfbe8
     resource: repo://tools/setup.py
-generated: { by: "amp", at: "2026-10-26T01:49:39.323Z" }
+generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
 ---
 
-# Author and validate a change
+# Change source with linked evidence
 
-Start at the [source owner](../concepts/source-ownership.md). Change the primitive,
-composition manifest, or projector mapping responsible for the requested
-behavior. Generated provider trees and installed caches are not edit surfaces.
+A source change ends with the requested behavior, its decisive evidence, and current explanations of the affected system.
+The [engineering baseline](../../source/instructions/engineering-design.md) supplies the shared rules.
+Specialized skills supply language and domain procedures.
 
-## Prepare the checkout explicitly
+## Establish the contract before design
 
-Install uv 0.12.9 or later and a Node version accepted by `package.json`, then:
+Name the consumer, observable outcome, invariant, scope, and non-goals.
+Examine the checkout revision, local changes, owning implementation, direct callers, schemas, and existing tests.
+Trace one real execution path when the behavior crosses components.
 
-```sh
-uv run --locked tools/setup.py
-```
+Choose reuse, extension, a new owner, or investigation from that evidence.
+A plan or inherited summary cannot establish that a feature is absent.
+Define the smallest faithful oracle, its expected result, and its nearby rejection case.
+State what the oracle cannot prove and what evidence ends the task.
 
-Setup synchronizes locked Python dependencies, including the refactor group,
-and runs `npm ci --ignore-scripts`. It does not silently install uv.
-For projection, install Pkl 0.32.0 through the checksum-verified boundary:
+For a behavior change, first establish failure for the intended missing behavior.
+A missing dependency, zero selected assertions, or an unrelated timeout does not establish product failure.
+For reuse or a behavior-preserving refactor, start from passing characterization.
 
-```sh
-node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl-new/pkl
-```
+## Prepare the checkout
 
-## Match the check to the changed contract
-
-| Changed surface | Checks |
-| --- | --- |
-| Composition or marketplace | Source graph, catalog freshness, and fresh provider projections. |
-| Python automation | `uv run --locked tools/check.py` plus focused behavior checks. |
-| Shared product versions or release behavior | `npm run check:release` and the actual Release Please updater test. |
-| Pi installer or release | Type checks, native Pi tests, and focused Python Pi checks. |
-| Skill decision cases | Offline controls, then fresh live model responses. |
-| Documentation | Source claims, links, glossary, and the selected backend's native lifecycle. |
-
-After a composition edit, regenerate the catalog with
-`node tools/catalog.mjs --write`, then use fresh output paths:
+Install the declared mise tool and use the checkout commands:
 
 ```sh
-node tools/validate-source-graph.mjs
-node tools/catalog.mjs --check
-PKL_BIN=/tmp/slopsentral-pkl-new/pkl node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex-new
-PKL_BIN=/tmp/slopsentral-pkl-new/pkl node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
-PKL_BIN=/tmp/slopsentral-pkl-new/pkl node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp-new
-git diff --check
+mise install
+mise exec -- slopsentral-setup
 ```
 
-The [projection runbook](../../docs/pkl-projection.md) explains isolation,
-provenance, and provider-specific checks. Projection never replaces an existing
-output. `tools/check.py` stops on the first failed or unavailable stage;
-`pyproject.toml` defines strict static-analysis coverage, not a claim that every
-legacy Python helper meets the same coverage.
+Setup synchronizes locked Python dependencies and runs `npm ci --ignore-scripts`.
+It does not silently install uv.
+Projection accepts exactly Pkl 0.32.0 through the separate runtime setup procedure.
+Keep local output and installed consumer caches outside authored edits.
 
-After changing a portable snapshot asset, review and refresh its
-[manifest](../integrations/global-instructions.md). Keep installed snapshots
-outside authored edits.
+## Change the authoritative owner
 
-## Keep evidence classes separate
+Edit primitives under `source/` and maintenance effects under `tools/`.
+Plugins reference primitives instead of copying their payloads.
+Pkl owns projected shapes. Regenerate provider trees from source instead of editing them.
+Use [ownership](../concepts/source-ownership.md) and [projection](../architecture/projection.md) to find the responsible owner.
 
-`source/evals/promptfoo/cases.mts` owns decision cases and expected answers.
-Extend it rather than creating another decision catalog. `npm run check:evals`
-runs type checks and offline controls. `npm run eval:skills` obtains fresh
-responses with supplied skill text and a paired no-skill control. The suite
-records skill, reference, prompt, and grader hashes; it disables tool use in
-these decision tasks. These responses do not prove automatic skill routing or
-real tool execution.
+Keep domain decisions pure and effects explicit.
+A successful parse or transition carries the facts that later consumers need.
+Closed failures preserve the case that prevented the invariant.
+The public contract excludes named illegal calls where the language can express that limit.
 
-Plugin execution scenarios use `npm run eval:execution` and an explicit ignored
-fixture registry. Missing fixtures are nonpassing `BLOCKED_SETUP`, not synthetic
-model scores. See the [eval guide](../../docs/skill-evals.md) for evidence limits.
+## Examine proof and affected knowledge
 
-`Validate Source` runs offline controls without paid model calls. It also checks
-native packages and retains source-bound artifacts for
-[release admission](../operations/releases.md). Local passing checks do not
-establish a successful Actions run, release, host discovery, or model compliance.
+Run the focused oracle under the same setup as its initial failure or characterization.
+Then run the [required gates](../testing/validation.md) for the edited surface.
+Composition edits need the source graph and fresh Codex, Copilot, and Amp projections.
+Python changes need Ruff, strict Pyright, and pytest within the declared scope.
+The Python gate stops on the first failed or unavailable stage and keeps a distinct unavailable exit.
 
-For OKF pages and missing-glossary handling, follow the
-[documentation workflow](documentation.md). End each change with the checks
-that actually ran and the obligations that remain unverified.
+Examine the explanations linked to the changed owner in `docs/coverage.json`.
+Recheck affected material Claims through OpenWiki.
+Change inaccurate prose and links, or record the reason that current prose remains accurate.
+After native finalization, run the [documentation procedures](documentation.md).
+
+Report passed, failed, skipped, and not-run evidence with its actual scope.
+Decision evaluation uses canonical skill text and explicit references with hashes and no-skill controls.
+Its runner disables tools, automatic discovery, and network search.
+`Validate Source` runs offline skill controls and keeps verified provider archives.
+It does not run the live skill suite during normal CI.
+Offline fixtures do not establish live model behavior.
+Local installation does not establish host consumption or a published release.
+Commit and PR delivery obey the repository's authorization rules. A code PR does not authorize a merge or release.

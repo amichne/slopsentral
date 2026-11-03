@@ -1,131 +1,106 @@
 ---
-type: workflow
-title: Maintain documentation and glossaries
-description: Use the external OpenWiki integration for native OKF and Claims updates, reuse or bootstrap a source-backed glossary, and configure review-only documentation PRs.
-tags: [documentation, openwiki, okf, glossary, automation]
+type: Workflow
+title: Maintain source-backed documentation
+description: Rewrite and refresh OKF explanations through native Claim review, coverage and freshness checks, local prose assessment, and review-only automation.
+tags: [documentation, okf, claims, freshness, glossary]
 sources:
   - id: openwiki-source-6d4b4e707b8d60b6ccfa3425
     resource: repo://.github/workflows/openwiki-update.yml
+  - id: openwiki-source-2bf8a58918c9cbf16d14dae1
+    resource: repo://docs/coverage.json
   - id: openwiki-source-77749248b9076e3dac86353b
     resource: repo://docs/glossary.json
+  - id: openwiki-source-e14c3521bbc2e703193cadf9
+    resource: repo://source/instructions/engineering-design.md
   - id: openwiki-source-62bf20b2fca146abb9011c20
     resource: repo://source/skills/code-knowledge-base/references/knowledge-backend-handoff.md
   - id: openwiki-source-5aeb8b8adffe48c4411461e5
     resource: repo://source/skills/controlled-technical-writing/references/glossary-authoring.md
-generated: { by: "amp", at: "2026-10-26T11:32:19.597Z" }
+  - id: openwiki-source-47ec153299eb0886a6e326f4
+    resource: repo://tools/documentation.py
+  - id: openwiki-source-00110e15b75d856174b63939
+    resource: repo://tools/python_checks/test_documentation.py
+generated: { by: "codex", at: "2026-11-03T18:18:32.121Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-10-26T11:35:00.921Z
+    at: 2026-11-03T18:18:32.121Z
 ---
 
-# Maintain documentation and glossaries
+# Maintain source-backed documentation
 
-Use the Repository Knowledge plugin for source-backed documentation work.
-`technical-documentation` owns document structure, `code-knowledge-base` owns
-the backend handoff, and `controlled-technical-writing` owns terminology and
-prose checks. The external `openwiki` integration owns this wiki's run state,
-page assignments, Claims, indexes, and finalization.
+Documentation forms part of the engineering change contract.
+A reader must reach the responsible source, understand the mechanism, and see the limits of its evidence.
+The [documentation practice](../../docs/documentation.md) owns the concrete repository procedure.
 
-## Reuse the glossary before drafting
+## Establish coverage before prose
 
-This repository already has `docs/glossary.json` and its generated
-[reader view](../../docs/GLOSSARY.md). The controlled scope includes
-`openwiki/**/*.md`. Do not create another glossary merely because the backend
-changes. Definitions remain provisional until source evidence and independent
-reader review support adoption.
+Start with the reader's action or decision.
+Map functional areas to their entry points, owners, state, failures, direct consumers, and executable evidence.
+Use `docs/coverage.json` to connect those areas with the current guides and OKF explanations.
+Page counts and directory inventories do not establish mechanism coverage.
 
-For an authorized generation, rewrite, or migration in a repository without a
-glossary, first search its writing rules, documentation roots, and knowledge
-configuration. Reuse an existing JSON or Markdown owner if found. Otherwise,
-create the smallest source-backed provisional glossary before the page queue.
-Default to `docs/glossary.json` and generated `docs/GLOSSARY.md` only when no
-local convention supplies another location.
+Reuse `docs/glossary.json` and its generated [reader view](../../docs/GLOSSARY.md).
+The glossary already covers the wiki.
+Its definitions remain provisional because independent reader review remains absent.
+A rewrite in another repository creates a minimal source-backed glossary only when no owner exists.
+Assessment alone and ordinary code work do not authorize glossary creation.
 
-Keep source locations, examined domain references, examples, and distinctions.
-Keep unsupported terms as gaps; do not invent definitions or replacement rules.
-If no entries have enough evidence, continue supported documentation work
-and report terminology coverage as `INCOMPLETE`. Reading, assessment alone,
-ordinary code changes, and small wording edits do not trigger glossary creation.
-The [authoring procedure](../../source/skills/controlled-technical-writing/references/glossary-authoring.md)
-defines the evidence and review requirements.
+## Complete the native lifecycle
 
-## Complete the native OpenWiki lifecycle
+Resolve the exact Git top-level before the OpenWiki run.
+Start or resume an `update` run through the external integration.
+If planning is necessary, submit canonical page paths with source seeds and useful neighbors.
+Do not plan generated indexes as content pages.
 
-Resolve the absolute Git top-level and use the external integration:
+Consume one assigned page at a time.
+Examine current source, write valid OKF frontmatter, and reconcile its material Claims.
+Confirm stale Claims only after source review.
+Keep unchanged identities, revise the same proposition under its existing identity, and retract propositions the page no longer asserts.
 
-1. Begin an `init` or `update` run; resume its durable state if one exists.
-2. If planning is required, map the relevant systems and submit a source-backed
-   page plan with useful related pages. A no-op needs no page work.
-3. Consume one assigned page at a time. Research current source, write that
-   page with OKF frontmatter, and submit material Claims with bounded `repo://`
-   evidence. Recheck stale Claims and preserve unchanged Claim identities.
-4. Continue the queue, then call finish. Report completion only when native
-   finalization returns `complete`.
+Continue the persisted queue until the integration returns `complete`.
+Then finish the run through OpenWiki.
+Native finalization owns indexes, sidecars, source versions, provenance, and completion metadata.
+Never repair those files by hand or substitute standalone OKF validation.
 
-Do not change executable source during generation, write unassigned pages,
-or directly edit Claims, indexes, provenance, or run metadata. The standalone
-OKF checker is not a substitute for native submission. Source drift requires
-the integration's replan path. Keep glossary setup outside the managed queue.
+## Examine links, freshness, and prose
 
-## Review-only GitHub Action
-
-[Update Repository Documentation](../../.github/workflows/openwiki-update.yml)
-runs on relevant pushes to `main`, manual dispatch on `main`, and daily at
-09:17 UTC. It checks out trusted main source with full history and no persisted
-checkout credentials. Concurrent update jobs are serialized. It pins OpenWiki
-0.6.1 and model `gpt-5.6-terra`, then runs `openwiki code --update --print`.
-
-A maintainer must configure these repository Actions secrets before use:
-
-| Secret | Purpose and scope |
-| --- | --- |
-| `OPENAI_API_KEY` | Authenticate the OpenAI model used for generation. The selected model must be available to this credential. |
-| `OPENWIKI_PR_TOKEN` | A separate repository-scoped token with Contents and Pull requests write permissions for `amichne/slopsentral`. |
-
-Use GitHub's private secret-entry interface. Never put credential values in
-source, issues, wiki pages, or an agent conversation. Do not reuse generation
-credentials as the PR token. The workflow fails before generation when either
-secret is absent. Model generation processes repository content through the
-configured provider; `.openwikiignore` excludes consumer trees, local caches,
-dependencies, and environment files. Review exclusions before adding sensitive
-source material; the ignore list is not a general secret scanner.
-
-The built-in workflow token has read-only contents permission. The generation
-process does not receive the PR token. Successful generation and glossary checks
-must precede the PR step. It proposes only `openwiki/` changes, excluding transient
-`.run.json` and authored `INSTRUCTIONS.md`, on `openwiki/update`. It does not
-auto-merge, deploy, or publish executable source changes. Generated wiki-only
-merges are outside its push-path filter, avoiding a self-triggered update loop.
-
-The PR step runs only when generated pages, indexes, or Claims change. Native
-no-ops can refresh `.last-update.json` and `.page-manifest.json`; those files
-alone do not select a PR. Both remain included when substantive changes do
-select a PR. The check covers staged, unstaged, new, and deleted generated files
-without discarding native state.
-
-## Validation and recovery
-
-The action validates the glossary and reader-view freshness before generation,
-then checks terminology in the wiki. Locally, run those same checks:
+After native finalization, use the repository gate:
 
 ```sh
-uv run --locked --script source/skills/controlled-technical-writing/scripts/check_glossary.py docs/glossary.json --check-render docs/GLOSSARY.md
-uv run --locked --script source/skills/controlled-technical-writing/scripts/check_glossary.py docs/glossary.json openwiki
+mise exec -- slopsentral-docs check
 ```
 
-Before proposing a PR, the action also requires native metadata status
-`complete` and no active `.run.json`. OpenWiki 0.6.1 can exit zero after skipping
-a failed page while leaving status `interrupted`. A successful process exit
-alone is therefore not enough to admit documentation changes.
+A changed source or page invalidates the recorded byte agreement.
+The review record also binds native Claim sidecars and completion metadata.
+A later change needs another review.
+Review the affected explanations and rejected links before the explicit `record` operation.
+Keep the receipt diff with the reviewed source diff.
+The gate establishes coverage and byte agreement. It does not grade the meaning of a Claim.
 
-These checks establish structure and configured terminology rules, not that
-every definition or page is semantically correct. Check source citations and
-links, and apply the pinned local Vale assessment when selected. Keep reports
-separate from human comprehension evidence.
+Assess changed technical prose with the pinned Vale procedure:
 
-For missing credentials or model access, correct the private configuration
-before retrying. For generation failure, inspect native lifecycle evidence and
-resume through OpenWiki rather than editing its sidecars. Review PR citations
-and scope before merging. A locally validated workflow is not evidence of a
-successful Actions run or configured secrets; that needs the actual main run.
-No remote enablement or publication follows from a local documentation edit.
+```sh
+mise exec -- slopsentral-prose changed
+```
+
+Keep the report and examine findings at their reported lines.
+An `ASSESSED` result does not mean that the report is clean.
+Readability measurements do not prove reader comprehension.
+
+## Recurring updates propose review
+
+[Update Repository Documentation](../../.github/workflows/openwiki-update.yml) runs on selected main pushes, manual dispatch on main, and daily at 09:17 UTC.
+It serializes runs, reads trusted main source, and does not persist checkout credentials.
+The runtime is OpenWiki 0.6.1 with model `gpt-5.6-terra`.
+
+The workflow needs separate `OPENAI_API_KEY` and `OPENWIKI_PR_TOKEN` repository secrets.
+The first authenticates generation. The second needs repository Contents and Pull requests write access for the documentation PR.
+Keep values in the private secret interface.
+
+The workflow rejects a noncomplete native checkpoint or an active run file.
+It checks the glossary and proposes only generated wiki changes.
+Checkpoint-only changes do not select a PR.
+When substantive changes select a PR, `.last-update.json` and `.page-manifest.json` remain eligible.
+The path allowlist excludes `.run.json` and authored `INSTRUCTIONS.md`.
+It neither auto-merges nor publishes executable source changes.
+A locally accepted workflow does not prove that its credentials exist or that an Actions run succeeded.

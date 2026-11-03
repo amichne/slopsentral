@@ -6,11 +6,11 @@
   "files": [
     {
       "path": "docs/examples/global/AGENTS.md",
-      "sha256": "6fc6f8801f30895b2993f86a4a28b49b7b271325c4b7412280f1291fb3656dc8"
+      "sha256": "6d545372bc9ce6a520fbaa707feb4fa30a08ed156c184d174cef9518688709bd"
     },
     {
       "path": "docs/global-agents.md",
-      "sha256": "424376b66bd76de805f31bcf3eeb07135709c97ee3f9c7de747d7660c5e6b642"
+      "sha256": "bb8a27c914ad2b2310adb5546733f86f6b3e7019c3830d0de8f0588a8daec6ad"
     },
     {
       "path": "source/concepts/type-safety/core.md",
@@ -46,7 +46,7 @@
     },
     {
       "path": "source/instructions/engineering-design.md",
-      "sha256": "9a59984310d19a8eb6c9b19e49fbc1f339d1e909f3f801dddbbed2a345230765"
+      "sha256": "73dafab2e45f17871c446456b94a95cce4ab3ac0c8616707ac21359fae4c0cc2"
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",
@@ -669,12 +669,52 @@
       "sha256": "63ead6a549adeb001d69ce674f0141e660e6fe24aeaaf3446ff26dc6fdd1c8c3"
     },
     {
+      "path": "source/skills/technical-documentation/SKILL.md",
+      "sha256": "f4696540bffd786597958e2315bf072b0126dcad18d85be679ef8a02a0f67dfa"
+    },
+    {
+      "path": "source/skills/technical-documentation/references/document-contracts.md",
+      "sha256": "a2b5167326745871cec5a1af2894d900001e2b70626a3dd2c92ce02828e5fe0d"
+    },
+    {
+      "path": "source/skills/technical-documentation/references/mkdocs.md",
+      "sha256": "f71e92346b16f6f7d00375d15f8df2d947e507f494a4a76337191edb7bb4241c"
+    },
+    {
+      "path": "source/skills/technical-documentation/references/page-structures.md",
+      "sha256": "b2ba8028c3a7015d0881cde3c8833d615da16d1d3e1d983ade9dffcf1c373983"
+    },
+    {
+      "path": "source/skills/technical-documentation/references/prose-structure.md",
+      "sha256": "2464ee7771a1fdb5a993d5aa4d0dc6d4c64a0e4678b305bbde5562b0d22e8439"
+    },
+    {
+      "path": "source/skills/technical-documentation/references/provenance.md",
+      "sha256": "4ca9711e34b8694ba6f4ce3f37241fe758284f11a2ffec1905ac38e1b54cb730"
+    },
+    {
+      "path": "source/skills/technical-documentation/references/reader-testing.md",
+      "sha256": "dafba4d7d04fb610ad0126b8c7a306b71e873df99598eeec077d1fac8547fef0"
+    },
+    {
+      "path": "source/skills/technical-documentation/references/rendered-site-proof.md",
+      "sha256": "1cd66edd2c2e85915255d277eec236c4a70d686c0c5da41974cb7206c5e6c22b"
+    },
+    {
+      "path": "source/skills/technical-documentation/references/zensical.md",
+      "sha256": "9facb997d00b3e5c929fc0f4d0735b157d7397c4caa6b9f7da3dbcb261a17fba"
+    },
+    {
       "path": "tools/install_global_agents.py",
       "sha256": "3cbacf5e35addeb1edc0940c364c61b32c40ed09c6d1ec637b6fd2224a9d94d3"
     },
     {
       "path": "tools/install_global_agents.py.lock",
       "sha256": "eca3e0b69e385460e8b3c6b121629b74b988a32f239e60986cd30a6d986d3b73"
+    },
+    {
+      "path": "tools/python_checks/test_global_agents.py",
+      "sha256": "0c64098a94769b67f9bb474812fb747040493d3bcf40fa5ee377c1ef3ef4b15a"
     }
   ]
 }
