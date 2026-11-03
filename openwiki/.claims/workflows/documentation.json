@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:fb2c4d25f805898da80a756600cd68c8268776b0ec550aaa0c32709c6fa79903",
+  "pageVersion": "sha256:0f487e1d671bd1e96372946d721996597121a5463c55a1b19a8677e4dcbd13b9",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -89,10 +89,76 @@
           "version": "repo-lines-v1:sha256:e1d607ab2cf093e0adc0384412a7b697cfe93cc4dc0fc81e30f54984eb05acf1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNWU0ZWEyYjg5YjM3MTc5ZWFjMTUyYWRiYjA2ODQ5OWUzNjMzMmJhY2M3MTViYzE3Y2RhZGZiYWIyYWQ3NTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxOTk3Mzk1MjYwYWE4MjZhNTgxMTVlOWFiOTJiMzU4MjM5ZjI5ZDYxNGJjMjY5MDZkZjI3MmU4ZGNkZTVlOGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMzIxNWQ2Yzk5MjhlY2NkNTJlMjNmZjI4NWFlYzNlNmVkMmUxZjE4NTgyMTk0M2E1YzU3NGMxMjhkMjAyYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1MTU3NWE5YTY4NzJiOTM5Y2RlYjc4Nzk3ZThhOGQ3MDM1NGQwMTRkMTJjMDVjYTc2M2Q5NWUyNzhkMTM4OTIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_194103921ab94b43a18b84111812c8bc",
+      "statement": "The repository documentation gate maps maintained areas to sources and OKF explanations, rejects broken structure and incomplete native state, and compares current source and page fingerprints with an explicit review record.",
+      "evidence": [
+        {
+          "resource": "repo://docs/coverage.json",
+          "version": "repo-file-v1:sha256:290d558cc3641c73f234439de93de91eba6888a23e58c495536436c5caee69b2"
+        },
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L230-L280",
+          "version": "repo-lines-v1:sha256:0766f943b6d379275e70d4b8e269a77fabc000ccdb6608ae76316db6be084d73:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MWQxMmU4MDQxZmVlYjdlMWM5OWFiNmQ0MGIyYjMyMWYwOTIzMDUwZjAyODdmNjA4OWM5MzAwNjQ3MmMwMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlN2ViZWNhYmVlYTk4MjYzYzgyZDAzMmRiNzc5N2E4NTc3OWQxNjA4MDgxMWRiYmFhMTkwZjQwMTZiZGYwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZDY3YTBlOWE3MDE3YmNjY2VmN2Y1MmY4ZGNkY2Q2ZGNmMjU2NTg5Y2NmNWExYjVhNzY1MjBkMzc2MDU5ZTAifQ"
+        },
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L435-L544",
+          "version": "repo-lines-v1:sha256:183e10e3615c5261d59dfb5e05d4bc127ac7277bb1c73197b2202202a75d0b8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3NmYwZmEwMzY1MjhkMDA5MGUxYjY0MmFjZjExNTc2MzBjNTRhYzE4ZjlmY2NhY2ViY2IyMzdmMjhiZGM5MzlhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMzFjNDAwODQ2ODk0MThhZjU0YmEyODMyMDE4NTAzODI3Y2IxMzFhMmU4YzBkYjczY2E3ZDY0ODRmNzcyNWFkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNzAxNDllMDY5YWQ2N2VjY2Y0NzM2NDZmZjFjNzUwMDUwZDMyOWQxMTAwMThkYzU3NjY4NzhlYWZhMWQ2MDdkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiZGJiYTRjMzE2ODgxNzYzNzY2ZjQ2N2U3NzdhZjVhYTUyZDNmMmFkNDQ0YzBiYjgxYmIzMjIwZWIyOTA4YTEzIn0"
+        },
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L574-L682",
+          "version": "repo-lines-v1:sha256:8923741ea3aeaa07b75269f9a8dfa6a31101d1ac19961d29cc1ce3ecbf20f41f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5ZjlkYmIyZTMzYTAzZjY1ODIzNDFiYWZlMjBhYzRlYzU5OWJkYzE4M2YxNTU2MDc4Mjg3OThjOTk0ZDFlMGEyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0ZmJkMDA5MzE0YmMyNzA4NDE2NzM0YTAyYWU1ZmYzOWExZTQ4YTA1MGJlOTFmNDNiMmZhYTkyMDAyYzYyYmZjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzMjYxY2E0MmMxNjc0YTkxMzRmY2ExZjZjZTc5M2U0NTYyZjhkMDliMzEyMGM4OGEzZDMzZDM0MzY2MDJlOWIyIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_ff4d827cc1564487b182ba2a9e4fb631",
+      "statement": "The shared engineering baseline connects behavior changes to maintained source-backed knowledge and distinguishes byte agreement from semantic correctness and reader comprehension.",
+      "evidence": [
+        {
+          "resource": "repo://source/instructions/engineering-design.md#L58-L70",
+          "version": "repo-lines-v1:sha256:edbea0e4eae828374e18c6f0f76492ab75124770cae603bad80c802c25ecd158:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMmJhMDRiOWY5ZmNjYmNmNjVmOGMwZTAwNDI3MjZlM2Q5MTc0NjIyZGViZmU3ZjBjMzQ0NzBhYTYzZjM1NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNjQ2MGM5ZDBiMGY1MmYzODlhZDk5NTI5MDM0MjQ3MTI0OTc0Yjg4OWMyYzJjZTFkYTI0OGU2NzNmNWExNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmMGE3Mzc5MmIwZGM0OGRiODY0MjQyM2ZiODc4OTM1ZTNlNGM5YTQyZDQ2NDRmNWNiNDk4NDQ1NmIzNWI5ODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_606e751901fb4163be98184502e6812b",
+      "statement": "The review record fingerprints native Claim sidecars and completion metadata, so later changes invalidate the recorded agreement.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L534-L546",
+          "version": "repo-lines-v1:sha256:8f291c224f99b5fc0e28403487e0636b08d7723e3078a4b1d5eecacd6311bd02:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkZGNjMGVmMjJkYmY5MmExNWRkN2E0ZjRhZDZmM2Y1NmY2NjQzNjNmZDgxY2M0YTNmZDgxZmM3OTc2NjMzZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4ZmI4YTcxZGRiM2YyZGVlYWNmZjAyODkwY2UwNTI1YmYzMDNmZDNlMmNlZjI4NWI4NjA4OTgwYzk3MmIzY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3MzUyNTdkYjYzN2IwM2Y1ODE1YjdlYjY3MjM1YjNkMGE5OGMzNjU1Njc3YzlkNDdiMmFiM2JmNTc5NjQ3ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhYTcwNmVkNzAzMGI4YWIyYWJmNTY0NTk3OTFjODRkMmM4NTFmYThmMWMwYzg1NmFiZTU1MzU4MDlhNDU5ZWYifQ"
+        },
+        {
+          "resource": "repo://tools/python_checks/test_documentation.py#L186-L195",
+          "version": "repo-lines-v1:sha256:e0cf7e9b1468da98e4c6de9b712e8da1fec5b5076a6330c5586a6676d4dbac7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MjgwYzczMGQyZmFlZTAzMzU2N2E1YThiY2NhZGQyMzMzODEwZmEwZmY5OGFiM2NiNTdmMTEzODVlNWFjODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNGEyMTE1YTk5M2U1OWI1NzYyODhmMjRhOGJkY2VlNTZiMDg1ODJkNWNmZDU2MTkyMzdlYWVjZTE5MDE1MDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmNTIzMmY4OTFjMTM4MmIyMTE4Nzg3NzcwNmQ1ODVmNGVhYTY3ZDlmODkzZDE0NDM5NzQwNzZjMDg1ZGEzYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d0514a7fb94d497aaabbfcd7d8404bb8",
+      "statement": "The distributed adoption procedure uses a configured OKF or OpenWiki backend and a pinned script with its lock, while CI examines reviewed fingerprints without generating pages or recording new expectations.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/code-knowledge-base/references/portable-documentation.md",
+          "version": "repo-file-v1:sha256:d361ea010047317bac9df6c3bbd6d706f7a0017d590c2e29c6b655335081b561"
+        }
+      ]
+    },
+    {
+      "id": "claim_3fe44e265e524f30b1f267a54a3fa64f",
+      "statement": "Review-lock admission rejects every prepared input as the target and requires a declared review kind and valid structure before replacing an existing file.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L584-L647",
+          "version": "repo-lines-v1:sha256:060fa8d2797a4d3d68af87b28f61ff29c55463f82db8a42751e8711b07624b45:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlM2EzZTBmMTg3N2JjMjg0ZDcwOTQ5OWE3MGY5MTZmMTI5MDdlYzRlNmQ5MGU0YjgxMzA4NDA0ZTgyMWQ4OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzMjQ5ZmY4MTI0ODFmMDIyYWNiMzQ0MTEwOGZlNTFlYzgyODIyZTBkOTMwYTBjMWQzYjAxNzU2YWVkMDhhNDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMjc4MmQ5M2JkMWYwNmNhNWU3NzVmOTgyYzYzYTY3YjUyMDhjZTE5Mzc2YmQ1NzkzZjdjMDkzY2ExZGY0OWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0M2NjNjQ5MWFkYWQwYWViODY2OTBmNDUwYmEzM2Y4ZWVjNTE5MWViMTYzNzg4Y2U3YjEyNTAyMjE4Y2JmNGMifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-10-26T11:35:00.921Z"
+    "at": "2026-11-03T20:36:31.743Z"
   }
 }

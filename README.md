@@ -1,74 +1,58 @@
 # Slopsentral
 
-Slopsentral ships five plugins and 28 skills for Kotlin-first engineering.
-The shared rules prioritize safety, correctness, proof, scope, pure functions, and atomic units.
-New automation uses locked uv Python environments.
+Slopsentral supplies five plugins for source-backed software engineering.
+Software contracts carry established facts. Executable evidence supports behavior claims. Linked OKF pages explain the system and its source owners.
 
-Start with the [source-backed OpenWiki quickstart](openwiki/quickstart.md) for
-authoring, projection, validation, installation, and release workflows.
-The wiki uses OKF pages and OpenWiki-managed Claims. It reuses the
-[repository glossary](docs/GLOSSARY.md).
-See [documentation updates](openwiki/workflows/documentation.md) for the
-review-only GitHub Action and required secrets.
+Start with the [documentation index](docs/index.md) for a reader journey.
+Use the [OpenWiki quickstart](openwiki/quickstart.md) for system explanations and source-linked workflows.
+The [documentation practice](docs/documentation.md) defines links, source review, freshness, and evidence limits.
 
-Use the [Slopsentral command](docs/cli-install.md) for explicit installation, updates, and removal.
-Its public bootstrap needs a release that includes the new command assets.
+## Choose capabilities
 
-## Choose a plugin
+Start with Software Engineering. Add Kotlin Engineering for Kotlin work.
+Select other specialties for the task in scope.
 
-Start with Software Engineering and Kotlin Engineering for Kotlin work.
-Add a specialty only for the requested task.
+| Plugin | Purpose |
+| --- | --- |
+| Software Engineering | Invariants, proof, tests, Python automation, Git, PRs, and CI |
+| Kotlin Engineering | Kotlin design, review, application libraries, compiler proof, and Gradle |
+| IntelliJ Plugin Development | Plugin delivery, PSI, indexes, platform tests, and live diagnostics |
+| Developer Tooling | CLIs, agent resources, schemas, OpenAPI, Pkl, and personal configuration |
+| Repository Knowledge | OKF knowledge, repository navigation, technical documents, glossaries, and prose assessment |
 
-| Plugin | Purpose | Skills |
-| --- | --- | --- |
-| Software Engineering | Proof-preserving design, tests, Python automation, Git, PRs, and CI | 8 |
-| Kotlin Engineering | Kotlin design, review, application libraries, compiler proof, and Gradle | 6 |
-| IntelliJ Plugin Development | Plugin delivery, PSI/indexing, and platform tests with live diagnostics | 3 |
-| Developer Tooling | CLIs, agent resources, schemas, OpenAPI, Pkl, and personal configuration | 8 |
-| Repository Knowledge | Source-backed knowledge, navigation, technical documents, and prose assessment | 4 |
+The [catalog](source/CATALOG.md) owns exact identifiers and composition.
+Python Tooling has one source and appears in two plugins.
+The [migration map](source/MIGRATION.md) maps retired names to current owners.
+Installation grants no authority to publish, deploy, or change personal configuration.
 
-Python Tooling appears in two bundles. The marketplace has 28 unique skills.
-The [catalog](source/CATALOG.md) gives exact identifiers and composition.
-The [migration map](source/MIGRATION.md) lists every retired skill and its replacement.
+## Install for a host
 
-Installation makes a skill available. It grants no authority to publish, deploy, or change personal configuration.
-Developer Tooling adds no automatic hooks. Repository Knowledge remains optional for Kotlin work.
+The [Slopsentral command](docs/cli-install.md) installs, updates, and removes selected plugins for Codex, Copilot, Amp, or Pi.
+The public bootstrap needs a qualified release with the command assets.
+From this checkout, install the command with:
 
-For Pi, use the [published installer](docs/pi-install.md).
-It selects the latest stable release by default.
-
-All provider releases and authored plugins share one Slopsentral version.
-See [Release Please, version policy, and required App setup](docs/releases.md).
-
-## Use Slopsentral in Amp
-
-Amp provides native skill discovery and turn-start instructions, without
-automatic hooks, workflow profiles, custom modes, or MCP connections.
-From a prepared checkout, generate the complete directory plugins:
-
-```bash
-node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp-new
+```sh
+mise exec -- uv run --locked --script tools/slopsentral.py self install
 ```
 
-Copy selected complete bundles from the output's `.amp/plugins/` into your
-project's `.amp/plugins/`, without replacing existing directories. Start with
-`software-engineering`; add `kotlin-engineering` for Kotlin. Reload Amp plugins.
-Do not copy only `index.js`: skills, scripts, references, and instructions travel together.
-Use `amp skill info software-engineering:semantic-ratchet` to check discovery.
+Then select the host and plugins explicitly:
 
-Each bundle declares its limits in `capabilities.json`. Publication targets
-`harness/amp`, not `main`, so this checkout does not activate every bundle.
-See [installation, updates, rollback, and native checks](docs/pkl-projection.md#amp-native-plugins).
+```sh
+slopsentral install --host codex --plugin software-engineering --plugin kotlin-engineering
+```
 
-## Automation
+Use the [Pi guide](docs/pi-install.md) for its aggregate package, project scope, hooks, and recovery.
+Use the [projection guide](docs/pkl-projection.md#amp-native-plugins) for Amp directory packages and capability limits.
+A successful installation does not prove native discovery, host consumption, or a live semantic result.
 
-Install mise before checkout setup. Review `mise.toml` before you run `mise trust`.
-The file pins uv for contributors and CI. On POSIX systems, mise adds the checkout’s `bin` directory to `PATH`.
-Setup needs Node.js and npm.
-The prose tests need Vale 3.24.0 on `PATH` or at the path in `VALE_BIN`.
-The marketplace projector needs Pkl 0.32.0 on `PATH` or at the path in `PKL_BIN`.
+## Prepare a checkout
 
-```text
+Review `mise.toml` before `mise trust`.
+Install mise, Node.js, and npm before setup.
+The checkout pins uv. The projector needs Pkl 0.32.0.
+The prose procedure uses Vale 3.24.0.
+
+```sh
 mise install
 mise exec -- slopsentral-setup
 mise exec -- slopsentral-check
@@ -76,143 +60,51 @@ mise exec -- npm run verify
 ```
 
 On Windows, use `mise exec -- uv run --locked --script tools/setup.py` for setup.
-Use `mise exec -- uv run --locked --script tools/check.py` for the Python checks.
+Use `mise exec -- uv run --locked --script tools/check.py` for the Python gates.
+Install the checksum-pinned Pkl runtime explicitly when needed:
 
-The project locks Pyright, Ruff, pytest, PyYAML, and the optional LibCST group.
-Write repository automation in Python. Declare each portable script’s Python range and dependencies in its PEP 723 header.
-Use `dependencies = []` when the standard library supplies every import. Commit the adjacent `.lock` file.
-Give public commands executable names without extensions. Put each command and its lock in a directory on `PATH`.
-The configuration disables source builds with `tool.uv.no-build = true`.
-
-New automation uses strict types, finite outcomes, literal argument arrays, and focused tests.
-The explicit include lists in `pyproject.toml` define strict Pyright and Ruff coverage.
-Older Python helpers retain their tests but do not all meet that strict coverage.
-Kotlin compilers, Pkl evaluation, and Node schema tools keep their own contracts.
-The parent-shell history adapter remains because a child process cannot read that state.
-
-For one skill without a plugin, use:
-
-```text
-uv run --locked tools/install_skill.py pkl-engineering
-```
-
-The installer rejects conflicting local content. It copies no generated plugin payload into authored source.
-
-## Assess changed prose
-
-Run `mise exec -- slopsentral-prose changed` from the checkout. On Windows, run `mise exec -- uv run --locked --script tools/prose.py changed`.
-The command compares the worktree with its common ancestor with `origin/main`. It includes untracked prose.
-For committed inputs, supply `--base BASE_SHA --head HEAD_SHA`. The checker reads Git blobs at those revisions.
-
-The first run downloads the pinned Vale archive. Later runs reuse the cached archive after a digest check.
-The JSON report lists selected documents, exclusions, source digests, findings, and the findings that block the change.
-Exit 0 permits the change. Exit 1 blocks it for prose findings. Exit 2 means the checker lacks a complete assessment.
-
-- Errors block the change. A new `Slopsentral.Diction` warning also blocks it.
-  The checker compares the message, source line, and occurrence count with the earlier document.
-- Other warnings appear in the report and as CI annotations. Grade and sentence length are advisories.
-- An active Vale control, a nonregular prose file, an unavailable engine, or a document without measurable prose fails assessment.
-  A fenced code example can contain a literal control. Python modules and code examples keep their technical terms.
-
-The candidate job runs the proposed policy. After this workflow lands on `main`, the trusted job uses the base checker and glossary.
-It reads the PR head as data and posts `slopsentral/prose` to that commit. Both jobs save their JSON reports.
-After the first trusted run, select `slopsentral/prose` as a required status check for `main`.
-Select GitHub Actions as the status source. Enable the rule for up-to-date branches.
-Enable code-owner review for policy changes once a code owner other than the PR author can approve them.
-Review an exception with its rule, passage, and reason in the PR. A review comment cannot override a failed status.
-
-## Source and delivery
-
-Author skills, hooks, concepts, agents, schemas, and plugin references under `source/`.
-Keep shared maintenance tools under `tools/`.
-Plugins reference canonical primitives. They do not own copies of those primitives.
-Installed caches and generated provider trees remain consumers.
-
-Software Engineering delivers concise policies through its context hook.
-That hook covers startup, resume, clear, and compact.
-Kotlin Engineering selects no hooks. Its skills carry the Kotlin guidance when selected.
-Negative Capability Proof supports implicit selection. Kotlin Gradle Validation needs explicit user selection.
-The four Kotlin hook primitives remain available for explicit custom compositions.
-Their output does not prove that the host consumed the policy or that a model obeyed it.
-Full procedures and examples remain in task-selected skills and references.
-
-Software Engineering also composes [scope maintenance for `AGENTS.md`](docs/agents-md-scope.md).
-That hook requests source-backed instruction updates and permits a documented no-change review.
-
-Standalone source, Pkl, API-context, and skill-read hooks remain explicit primitives.
-The five plugin bundles do not select those hooks.
-A repository must explicitly compose a hook before it can use that automatic behavior.
-The historical `pkl-checked-repository` profile now selects guidance only.
-
-Profiles select plugins without implicit installation or startup mutation.
-Inspect the Kotlin selection with:
-
-```text
-node tools/catalog.mjs --profile kotlin-repo-default --json
-```
-
-Use the [profile lifecycle](docs/profile-lifecycle.md) for explicit setup and saved transaction rollback.
-Use the upstream Worktrunk plugin for worktree automation.
-The [Worktrunk procedure](docs/worktrunk-automation.md) describes project setup and gates.
-
-The local Pkl projector creates Codex and GitHub Copilot output from authored source.
-Publication updates `.agents/plugins` and `.github/plugin` on `main` and the corresponding harness branches.
-Local edits and temporary projections do not publish those trees or change installed caches.
-Read the [architecture](source/ARCHITECTURE.md) for ownership and evidence limits.
-
-## Local evidence
-
-The projector needs Node.js 22.22.0 or later, locked dependencies, and Pkl 0.32.0.
-Install its pinned runtime explicitly:
-
-```text
-npm ci
+```sh
 node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
 ```
 
-For projection alone, `npm ci --omit=dev --ignore-scripts` installs the schema dependencies without the evaluation toolchain.
-The full maintainer suite needs the development dependencies.
-See [download and dependency failures](docs/pi-install.md#download-failures) for certificate, proxy, and registry errors.
+Set `PKL_BIN` to that executable. Use fresh projection destinations.
+The [authoring workflow](openwiki/workflows/authoring.md) connects source edits to the smallest faithful proof.
+The [Worktrunk guide](docs/worktrunk-automation.md) describes setup and gates for CLI-owned worktrees.
 
-Set `PKL_BIN` to that executable in the process environment.
-Use fresh output paths for each projection.
+## Change software and its explanation
 
-```text
-node tools/validate-source-graph.mjs
-node tools/catalog.mjs --check
-node tools/run-routing-evals.mjs --require-all-fixtures
-uv run --locked tools/compile_kotlin_concepts.py
-uv run --locked tools/verify_marketplaces.py
-git diff --check
+Inspect the implementation, public contract, consumers, tests, and linked knowledge before a substantial change.
+Use the [engineering baseline](source/instructions/engineering-design.md) for invariant ownership, legal transitions, explicit effects, and finite failures.
+
+Keep the implementation, its executable evidence, and the affected explanation consistent.
+A source change can make a page stale even when its links still resolve.
+Review the affected pages against current source. Preserve an accurate page when no prose change is needed.
+Use the [documentation procedure](docs/documentation.md) for source coverage, links, freshness, and the native OpenWiki lifecycle.
+
+For changed prose, run:
+
+```sh
+mise exec -- slopsentral-prose changed
 ```
 
-The catalog test caps the distribution at five plugins and 30 skills.
-It also rejects hidden discoverable skill directories and unrelated hooks in Kotlin defaults.
-Graph and projection tests reject duplicate identities, conflicting paths, cycles, and duplicate hook selection.
-Compiler and schema examples exercise legal values and forbidden calls.
+Keep the JSON report. Grade and sentence length remain advisories.
+An `ASSESSED` result describes measurement, not comprehension or factual correctness.
+The [glossary](docs/GLOSSARY.md) uses one source for domain terms and remains provisional.
 
-Golden routing fixtures express expected contracts. They do not record model behavior.
-Field records keep historical route identities and evidence.
-Records whose skills retired need a fresh replay before they support the replacement route.
-Plugin execution definitions live under `source/evals/promptfoo/execution/`.
-No live model benchmark runs during the normal gates.
+## Understand evidence and delivery
 
-Run `npm run check:evals` for offline promptfoo controls.
-Run `npm run eval:skills` for 22 live decision cases across ten skills, each
-paired with a no-skill control. This includes the ten session-grounded
-regressions from #102; their historical tool-run audit remains separate.
-Run `npm run eval:execution` for all 45 plugin execution scenarios. Supply an
-ignored fixture registry through `SLOPSENTRAL_EXECUTION_FIXTURES`; cases without
-ready fixtures record nonpassing `BLOCKED_SETUP` without a model call. Each ready
-case needs an isolated worktree, a real tool trace, and independent host verification.
-No ready fixture is currently supplied, so the integration claims no live passes
-or measured improvement. Execution reports use `.promptfoo/results/execution.json`;
-retained evidence stays under ignored `.promptfoo/execution/`.
-Read [the skill eval guide](docs/skill-evals.md) for setup, reports, and evidence limits.
+The [architecture](source/ARCHITECTURE.md) explains primitive composition, provider projection, hooks, installation, and release ownership.
+Authored source lives under `source/` and `tools/`.
+Generated provider trees and installed caches remain consumers.
 
-## Kast
+The [eval guide](docs/skill-evals.md) separates offline controls, supplied-instruction decisions, routing records, and live execution.
+Missing execution fixtures produce nonpassing `BLOCKED_SETUP` without a model call.
+Normal repository gates make no live model requests.
 
-Kotlin Engineering retains its existing Kast MCP connection.
-Kast owns runtime installation and workspace discovery.
-Examine the configured server and use a fresh semantic query before a claim of installed readiness.
-Plugin installation alone proves neither runtime availability nor workspace enrollment.
+The [release guide](docs/releases.md) explains the shared product version and promotion of tested bytes.
+`Publish Harnesses` owns moving provider branches. `Release Slopsentral` owns immutable versioned artifacts.
+A local edit or projection publishes neither.
+
+Kotlin Engineering composes the Kast connection. Kast owns runtime installation and workspace discovery.
+A fresh semantic query in the exact workspace supports a readiness claim.
+Plugin installation alone does not establish that result.

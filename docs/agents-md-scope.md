@@ -1,84 +1,70 @@
 # Maintain scoped instructions
 
-The `agents-md-scope` hook requests instruction maintenance after Git changes.
-It names the affected scopes and includes changed instruction text in its response.
-The agent must examine the source before it changes instructions.
+The `agents-md-scope` hook maps Git changes to instruction scopes.
+The agent examines those scopes and records either an instruction change or a source-backed no-change decision.
+A receipt records that review. It does not prove that the instructions are correct.
 
-Shared rules belong in the ancestor that owns them.
-The agent creates a child `AGENTS.md` only when source evidence supports a local difference.
-Commands, source ownership, generated files, and local rules can justify that difference.
-The hook does not create placeholder files or copy parent rules into children.
+Shared rules belong in their owning ancestor.
+Create a child `AGENTS.md` only when commands, source ownership, or local behavior support a distinct rule.
+Keep generated provider instructions with their authored owners.
 
 ## Events and review
 
-`UserPromptSubmit` establishes the first baseline without a review obligation for preexisting edits.
-Later prompts and `Stop` compare actual Git changes against the previous snapshot.
-Changes include untracked files, renames, deletions, committed edits, and edits from external tools between events.
-The comparison includes changes from failed tools.
+The first `UserPromptSubmit` creates a baseline without an obligation for preexisting edits.
+Later prompts and `Stop` compare actual changes with that snapshot.
+The comparison includes committed edits, untracked files, renames, deletions, failed-tool changes, and external edits between events.
 
-Source changes from a proven remote refresh create no task review obligation.
-The hook keeps a hash and length of the worktree's HEAD reflog at each snapshot.
-It accepts a later checkout, reset, or fast-forward only when the recorded transitions form an unbroken chain to a remote-backed commit.
-A local commit in that chain keeps the source review, even after a push.
-Missing, expired, rewritten, or unsupported history keeps the full source review.
-Older state without a reflog checkpoint also keeps that conservative behavior for its next HEAD change.
+Changed instructions also create a review of descendant scopes.
+The hook reads repository and ancestor `AGENTS.md` and `AGENTS.override.md` files.
+It includes the global instruction scope under `CODEX_HOME` and rejects instruction symlinks.
 
-Remote refreshes preserve pending reviews and new local edits.
-Unchanged preexisting edits create no new obligation.
-Changed instruction files still refresh context and need their normal scope review, including when they arrive from a remote.
+A proven remote refresh exempts source changes from a new task obligation.
+The hook uses an unbroken HEAD reflog chain to a remote-backed commit for that decision.
+Local commits in the chain keep their review obligation, including after a push.
+Missing or rewritten history keeps the conservative source review.
+Remote refreshes preserve pending reviews and local edits.
+Changed instruction files still need their scope review.
 
-Changed instructions trigger a review of their descendants.
-The hook reads `AGENTS.md` and `AGENTS.override.md` in the repository and its ancestors.
-It also reads the global instructions under `CODEX_HOME`.
-The hook rejects instruction symlinks and keeps source payloads outside diagnostic logs.
-Generated Slopsentral projections under `.agents/plugins` and `.github/plugin` stay with their authored owners.
-
-`Stop` requests a continuation until the agent records its scope review.
-The response contains exact `status` and `review` commands for that repository and session.
-The agent replaces the sample note with its source-backed result.
-A no-change result is valid when the existing instructions still describe the source.
-Later source edits create a new review obligation.
+`Stop` requests continuation while a review remains pending.
+Use its exact `status` command to examine affected paths.
+Read each instruction chain before its exact `review` command.
+Replace the sample note with the source-backed decision.
+Later source edits create another obligation.
 
 ## Install on this computer
 
-The Software Engineering plugin composes the canonical hook.
-The repository also declares the hook in `.codex/hooks.json`.
-Both use the same repository-and-session state, so duplicate events do not create duplicate obligations.
+Software Engineering composes the hook.
+The checkout also declares it in `.codex/hooks.json`.
+Both use shared repository-and-session state, so duplicate events do not duplicate obligations.
 
-For a global installation from an unpublished checkout, use the explicit installer:
+For an authorized global installation from this checkout, use:
 
 ```sh
 uv run --locked tools/install_agents_hook.py
 ```
 
-The installer needs `features.hooks = true` in the user configuration.
-It copies the authored script and lock into a directory whose name contains their combined digest.
-It removes the old `PostToolUse` scope hook, preserves other hooks, and saves `hooks.json` before a change.
-The installed command does not depend on this worktree.
+The installer needs `features.hooks = true`.
+It copies the script and lock into a directory with their combined digest.
+It preserves other hooks and saves the prior `hooks.json`.
+It also removes the retired `PostToolUse` scope hook.
+The installed command does not depend on this checkout.
 
 Review and trust the exact definitions through Codex `/hooks`.
-Installation alone does not establish host trust or prove hook execution.
-Local hook definitions also need host trust.
-Use a new session after installation if the active session does not reload hooks.
-
-To reverse the global installation, restore its `hooks.json.before-agents-md-scope-*` backup.
-Keep later unrelated hook changes when you restore the configuration.
+If the current session does not reload hooks, start a new session.
+Installation alone proves neither trust nor event delivery.
+To reverse installation, restore the recorded `hooks.json.before-agents-md-scope-*` backup while preserving later unrelated changes.
 
 ## Evidence limits
 
-The hook compares files at lifecycle events.
-It is not a continuous file watcher.
-The first baseline cannot prove earlier changes.
-Reflog evidence describes Git transitions on this computer, not the identity of the person or tool that caused them.
-A local Git actor can rewrite reflog messages or remote refs.
-The hook trusts those local records.
-A directory outside a readable Git repository receives an explicit skip result.
+The hook compares files at lifecycle events. It does not watch files continuously.
+The first baseline cannot prove earlier work.
+A local Git actor can change reflog messages and remote refs that the hook trusts.
 
-State stays under `$CODEX_HOME/state/agents-md-scope`, outside the repository.
-Each repository and session has a separate state file and lock.
-A missing baseline reports unproved earlier coverage.
-Malformed state or instruction failures block `Stop` with an explicit failure code.
+State resides under `$CODEX_HOME/state/agents-md-scope` with a file and lock for each repository and session.
+Malformed state and instruction failures block `Stop` with explicit failure codes.
+An unreadable Git repository receives a skip result.
+Instruction payloads stay outside diagnostic logs.
 
-A recorded review proves that the agent acknowledged the current snapshot.
-It does not prove that the resulting prose is complete or correct.
-The agent must examine source evidence and do the normal prose assessment for instruction changes.
+[Hook implementation](../source/hooks/agents-md-scope.py), [installer](../tools/install_agents_hook.py), and
+[focused tests](../tools/python_checks/test_agents_scope_hook.py) own this behavior.
+Use the [documentation workflow](../openwiki/workflows/documentation.md) for source-backed instruction prose.

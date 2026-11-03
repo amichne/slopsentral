@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:98608a9d9eef55ba2de4bcd41baa9c0f9370d3fe97fde57109991ae4acf9cdf7",
+  "pageVersion": "sha256:ae29cc609aa6cd48ba3d0a72443ac40bafaa13e235a621ce9ac9650b2f4e2317",
   "claims": [
     {
       "id": "claim_bc6d8aad02404020823dda2dc37e4a40",
@@ -17,7 +17,7 @@
       "statement": "Composition edits require source graph validation and fresh Codex, Copilot and Amp projections through Pkl 0.32.0, with generated consumers left untouched.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L66-L85",
+          "resource": "repo://AGENTS.md#L90-L109",
           "version": "repo-lines-v1:sha256:d4c5ebcf74b94b860faa836197773520987efdf43294e93ed6afaf24f4f75d17:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhODE5ZjVmODExYTkyZjg5ZTFiNTEzMTIxZjc4OWVlMWViMTUzZjE5NjgzMGUxNzUwNWE4OWNkMGNlYjVlNzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlYmFlNjhmYzYzNDQxYmFlMjE4ZmYxMWEzZTk0ZGY1ZDVjNzQ2NjQ2ZWYyMjZlYzRkNzZkYzc3Yjc2MDM2NDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMzOWE5ZWEyMDkwMjgzMjZlNzAwMmU2NjBmNTM4N2U2YjM4YWFhNjZlZTY1YjdkMDRkNmJlMzFjNDAxN2NkODEifQ"
         },
         {
@@ -41,12 +41,12 @@
       "statement": "The decision suite loads canonical skill text and explicit references, records their hashes, pairs no-skill controls, and disables tool execution and network search.",
       "evidence": [
         {
-          "resource": "repo://tools/promptfoo/suite.mts#L14-L55",
-          "version": "repo-lines-v1:sha256:0164e7a9aceecfa2012eb680762eef8f3e348bf54f771c946f3ed3bc0dd16a09:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiNGNhZjU3MjE0YjE4NzJhMDI4ODcyMGFkMTk0NDkyNDAzNzQ1MWFjOWQxZDM2YTVhZDgzNzdjYmRkODMxZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNjM3YjRhZjZmNzg4ZWRhNmY0N2YwYWVhODZiOWU2MWJlM2IwNzcxZDg4YzViMTQ2ZWU1N2JkNDViODVkZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlZTkwMDE1Yjk1ZjYxNmJkNjRhYzkyMzU5MGEwYmRlMmNlOTA4NDJjYTgzNjQ0OTk2ODQwYzgxMWZkYmUyYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkYzBiMWY1ZTFlMjczMmU3Njk2YTY4NTQ0MGFmOGUwMjRlZWZkN2FiNjY5ZDc5MGUwM2ViZWZhYTZhZTBkZTkifQ"
+          "resource": "repo://tools/promptfoo/suite.mts#L28-L59",
+          "version": "repo-lines-v1:sha256:04a8df1cf306b64b47cb3a6c8a654f3cb5762875e104b40dd201f2eafa24b522:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiYjJkODc1ZWM5NGQxNTk0MTY0MGMwYTU4ZGFjMGUwNmFkOGFmZjk4ZTEwYzg1NjFhNWZiODVlNGNjZDI1ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzZTkyY2U0NGYwNDI0MzI0Zjc4NzdiN2NiMzAxOGJhYTZjNTkzNmVjNjgzZDIzYWM4MzhjYjdkZjA4MWFiOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzZTZkY2M0ODI3OWNhYTE1MTk0NjJhYTk3MGZjZjAyZWY0OWY2NzZiZDE0YzgzMTJjOTkxMjk4OWFmZTNjN2MifQ"
         },
         {
           "resource": "repo://tools/promptfoo/suite.mts#L60-L94",
-          "version": "repo-lines-v1:sha256:72af0505d19a0fe8f1a94951b6708938f7c0d677852f255e839593c840794007:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYjVjZTg4MTkxNmEzMGU3NDg3M2Y5OTlhYTIwY2JhODA1MmY4NmU0MjBjODBhMDQxYWU3MTc5OWE1YzRjMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+          "version": "repo-lines-v1:sha256:79a8b4d53c226cdeb88d502ac59e950fb4447395c8545a15022b35c736030c18:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYjVjZTg4MTkxNmEzMGU3NDg3M2Y5OTlhYTIwY2JhODA1MmY4NmU0MjBjODBhMDQxYWU3MTc5OWE1YzRjMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -55,7 +55,7 @@
       "statement": "Validate Source runs offline skill controls and retains verified provider archives rather than running the live skill suite as a normal CI gate.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/validate-source.yml#L44-L72",
+          "resource": "repo://.github/workflows/validate-source.yml#L58-L86",
           "version": "repo-lines-v1:sha256:1bb9ec77828993a9d29b23829c753e2b92f14388ffd1c5db5a83c0bb558a2055:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyOTE0YTQyMjgwMzQzNmMzYzkyMTEwYjkxYzU3NTU1ZjhiMGVlMmU5OTFhYjMxZDZkMWIwZjJkNTUyYWMzZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMzJhYzIwODBhMTM0NWM2NDY4ZDBlMGUwOWE0OTMyMDE1MTc2NzQzZjkyYTUyNTM1NWNmZGZkNTg5N2NmZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiN2M5ZTBiZmFhODc3ZmE0ZjMzMWMxNWQ4OWYxYmUzZWQ2ZWFhMDkzYzVlYjlmMTE1NmIzNGY2Yjk3YTdhY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMDgzNWQ1MDUwYzMwOWQ1MGZiN2RlYmU0ZWM1MTE0Yzc1NWYxMTcwOTIzNGI5ODFiMTc3ZTZhNzA4NzAyYzUifQ"
         }
       ]
@@ -63,6 +63,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-10-26T01:49:39.323Z"
+    "at": "2026-11-03T17:57:45.987Z"
   }
 }

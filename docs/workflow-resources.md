@@ -1,32 +1,27 @@
-# Workflow guidance and runtime resources
+# Compose workflow resources
 
-This decision is for maintainers composing workflow packages and automatic
-checks. Use a full skill reference when the user needs its procedure. Use a
-resource reference when a consumer needs one executable or data file.
+Use a skill reference when the consumer needs a procedure.
+Use a `RESOURCE` reference when it needs one executable or data file.
+Both references point to canonical authored assets.
+A resource does not introduce another implementation or a skill discovery entry.
+
+The [source-ownership concept](../openwiki/concepts/source-ownership.md) explains primitive ownership.
+The [projection guide](pkl-projection.md) explains copied bytes and sealed reference digests.
 
 ## Decision
 
-A hook previously had to depend on an entire skill to receive its executable
-helper. That dependency also packaged the skill's discovery entry and guidance.
-The source graph now has a `RESOURCE` variant for one authored file. Its
-identity, dependencies, bytes, mode, and digest remain part of the checked graph.
-It adds no `SKILL.md` or skill listing to a consumer's package.
-
-This boundary follows the public guidance on focused workflows and progressive
-disclosure. OpenAI describes skills as repeatable procedures with optional
-scripts, references, and assets. Anthropic recommends concise discovery and
-executable helpers for deterministic work.
-[OpenAI skills](https://developers.openai.com/plugins/concepts/skills),
-[Anthropic skill authoring](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
-The resource variant is a local authoring decision inferred from that guidance.
-It is not a new lab requirement or provider manifest feature.
+A hook can need an executable without its complete authoring procedure.
+`RESOURCE` supplies that file and its declared resource dependencies.
+The graph keeps its identity, canonical path, bytes, mode, and digest.
+Keep a skill dependency when the consumer actually needs the guidance.
+Distribution size alone does not justify removal of a needed procedure.
 
 ## Resource contract
 
-Declare the resource once in `source/adaptable.marketplace.json`. A plugin may
-select it through `resources`, or a primitive may reference it through
-`dependsOn`. Resource dependencies may contain only resources. Other primitive
-kinds retain their existing dependency choices.
+Declare the canonical reference in `source/adaptable.marketplace.json`.
+A plugin can select it through `resources`.
+A primitive can select it through `dependsOn`.
+Resource dependencies can contain only resources.
 
 ```json
 {
@@ -45,77 +40,59 @@ kinds retain their existing dependency choices.
 }
 ```
 
-The path names one regular file under a skill's `scripts/` or `assets/`, or
-under `source/schemas/`. It excludes directory copies, symlinks, traversal,
-empty segments, and any case variant of `SKILL.md`. The projector preserves
-the authored path inside each bundle. There is no destination alias.
+A resource path names one regular file under a skill's `scripts/` or `assets/`, or under `source/schemas/`.
+Directories, symlinks, traversal, empty path segments, and case variants of `SKILL.md` fail admission.
+The projector preserves the authored path. No destination alias exists.
 
-The [JSON contract](../source/schemas/primitives/resource-reference.schema.json)
-refines the reference before graph traversal. Filesystem checks prove that
-the file exists and has no symlink ancestor. The closed Pkl asset union proves
-the projection shape. Frozen reads and digest sealing preserve the payload
-through publication. Repeated references to one identity are idempotent;
-conflicting definitions and dependency cycles remain failures.
-
-Keep a skill dependency when the consumer requires the workflow guidance.
-Do not replace a real instructional requirement merely to reduce discovery.
-Shared helpers stay in their canonical authored folder; no payload moves or
-second implementations are needed.
+[Reference schema](../source/schemas/primitives/resource-reference.schema.json) owns the JSON shape.
+[Graph validation](../tools/validate-source-graph.mjs) owns filesystem and dependency rules.
+[Pkl schema](../tools/projection/Schema.pkl) owns the finite asset variants for projection.
+Repeated identical references share one identity.
+Conflicting definitions and dependency cycles fail.
 
 ## Pkl composition
 
-Developer Tooling includes the single Pkl Engineering skill and no automatic Pkl hooks.
-Pkl Engineering owns configuration contracts, tool setup, source evidence, and modeling references.
-Both Pkl profiles now select Software Engineering and Developer Tooling.
-The historical `pkl-checked-repository` identifier no longer selects automatic checks.
+Developer Tooling supplies Pkl Engineering and selects no automatic Pkl hooks.
+Both Pkl profiles select Software Engineering and Developer Tooling.
+The historical `pkl-checked-repository` name does not imply automatic checks.
 
-The three Pkl hooks remain standalone source primitives.
-A repository can compose them explicitly with the `pkl-agent-runtime` resource.
-The focused tests use a disposable composition to prove resource-only delivery.
-They add no wrapper to the shipped marketplace.
+The three Pkl hooks remain standalone primitives for explicit custom compositions.
+A disposable test composition selects the runtime resource without a skill entry point.
+It does not add another shipped plugin.
 
-The helper is a Python program. The hooks use uv with locked Python scripts.
-The `pkl-agent-runtime` resource depends on `pkl-agent-runtime-lock`.
-Both files reach the same scripts directory. Locked execution rejects missing or stale locks.
-The helper needs a separate Pkl `>=0.31.1,<0.34.0` executable through `PKL_BIN` or `PATH`.
-The repository projector needs exactly Pkl 0.32.0.
-Evaluation hooks need explicit modules in `.intelligence/pkl-entrypoints`.
-Hooks skip when their input scope contains no eligible files.
-A skipped hook proves no evaluation or test result.
+`pkl-agent-runtime` depends on `pkl-agent-runtime-lock`.
+Both reach the same scripts directory.
+uv locked execution rejects a missing or stale script lock.
+The helper accepts a Pkl executable in `>=0.31.1,<0.34.0` through `PKL_BIN` or `PATH`.
+The repository projector separately needs exactly Pkl 0.32.0.
+
+Evaluation hooks read explicit modules from `.intelligence/pkl-entrypoints`.
+Without eligible input files, a hook reports a skip.
+A skip supplies no evaluation or test result.
 
 ## Historical compatibility bundles
 
 The marketplace retired `pkl-configuration`, `pkl-workflows`, and `pkl-repository-checks`.
-Software Engineering supplies the policy from the retired Engineering Excellence plugin.
-The current profiles select the surviving owners and contain no automatic Pkl hooks.
-
+Software Engineering owns the shared policy from Engineering Excellence.
+Use the [migration ledger](../source/MIGRATION.md) for current replacements.
+Catalog schema v3 includes `RESOURCE`. The closed v3 reader rejects v1 and v2 reports.
+Profile contracts keep their own versions.
 
 ## Evidence and limits
 
-Both provider projections preserve the executable's bytes and mode. The disposable runtime-only
-fixture contains no skill entry point. Developer Tooling declares no hooks.
-Tests execute each projected evaluation hook command against actual Pkl:
-a valid module completes, a type error fails, and a missing helper fails.
-Failure output is bounded and excludes the fixture's private source text.
-
-These checks establish packaging and configured command execution. Native host
-discovery, hook activation, model routing, and token use still need separate
-observations. New routing cases are expected contracts, not observed model runs.
-The existing provider compatibility fixtures remain unchanged.
-
-Catalog JSON moves to schema v3 because its closed asset-kind union now includes
-`RESOURCE`. Update consumers before reading this report; v1 and v2 reports are
-rejected by the v3 schema. Profile contracts retain their versions.
-
-Run the focused check with the pinned runtime:
+Run the focused resource proof with pinned Pkl:
 
 ```sh
 PKL_BIN=/absolute/path/to/pkl-0.32.0 node --test tools/tests/workflow-resources.test.mjs
 node tools/validate-source-graph.mjs
 ```
 
-Then run both fresh provider projections and the required repository checks.
-Other workflow/integration splits can reuse this boundary after their actual
-runtime dependencies have been traced. See the
-[redesign direction](skill-plugin-reassessment.md) and
-[migration ledger](../source/MIGRATION.md#plugin-replacements).
+The [resource tests](../tools/tests/workflow-resources.test.mjs) exercise projected commands against actual Pkl.
+They include accepted input, a type error, and a missing helper.
+They also examine copied bytes and modes without a skill discovery entry.
+Failure output stays bounded and excludes private fixture source.
+
+These results establish packaging and configured commands.
+Native discovery, hook trust, model routing, and token use need separate evidence.
+Routing fixtures express expected behavior rather than observed model outcomes.
+Use the repository's full projection gates after a composition change.

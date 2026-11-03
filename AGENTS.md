@@ -152,6 +152,21 @@ identities, initial/final status and diffs, and verifier outputs under ignored
 Keep routing fixtures and archived assessments separate from both live suites.
 Integration and offline checks do not establish live passes or measured improvement.
 
+## Documentation as engineering
+
+Read [the documentation practice](docs/documentation.md) for source-linked explanations, coverage, and freshness.
+Use OpenWiki as the single OKF owner. Keep operational commands in `docs/`.
+`source/skills/code-knowledge-base/scripts/documentation.py` owns the portable gate and its adjacent lock.
+`bin/slopsentral-docs` points to that distributed runtime. Keep project policy in `docs/coverage.json`.
+The skill bundles its schema, adoption procedure, and independent-project template.
+Run `PKL_BIN=/path/to/pkl-0.32.0 node --test tools/tests/documentation-portability.test.mjs` after runtime or package changes.
+For source changes, examine affected explanations and refresh them within the task scope.
+Complete the native page queue before a documentation admission claim.
+Run `mise exec -- slopsentral-docs check` for coverage, links, native completion, and reviewed fingerprints.
+After source review and native finalization, run `mise exec -- slopsentral-docs record` to refresh the reviewed inputs.
+Review the lock diff with the page changes. A matching digest does not prove semantic accuracy.
+Historical audits keep their original evidence and do not establish current results.
+
 ## Portable Global Instructions
 
 `tools/install_global_agents.py` owns the portable installation and its local

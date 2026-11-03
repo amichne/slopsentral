@@ -53,3 +53,21 @@ Use Semantic Ratchet for invariant and API design, Python Tooling for automation
 and language/domain specialties for concrete syntax and local verification.
 Complete the smallest useful implementation and the repository's required
 checks. Retain useful existing contracts; remove redundant owners and paths.
+
+
+Treat source-backed knowledge as part of software engineering. Before a behavior
+change, read the existing explanation and trace its claims to code and executable
+evidence. Connect the consumer, invariant, owning implementation, rejection case,
+and explanation. Refresh affected knowledge within the authorized task scope.
+Keep current behavior, decisions, historical results, and unknowns distinct.
+
+Use the repository's existing OKF owner for maintained system knowledge. Keep
+concepts atomic, source citations explicit, and conceptual links useful. Use
+versioned evidence and impact checks to find stale explanations. Reject missing
+sources and incomplete coverage rather than reporting no drift. A matching digest
+proves byte agreement, not semantic accuracy or reader comprehension. Preserve
+OpenWiki's native Claims and finalization when it owns the store. Ordinary code
+work needs focused retrieval and impact review, not automatic wiki generation.
+Dogfood the same distributed procedures and runtime that other projects use.
+Keep project roots, backend selection, and fingerprint exceptions in configuration.
+Use Code Knowledge Base for portable adoption, then prove the packaged runtime in an independent project.

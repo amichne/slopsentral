@@ -1,3 +1,4 @@
 # Files
 
-- [Projection and provider boundaries](projection.md) - How authored primitives become provider packages through frozen inputs, typed Pkl plans, sealed digests, and no-replace publication.
+- [Hook delivery and instruction review](hooks.md) - Trace canonical hook selection through Codex lifecycle events and Pi adapters, with explicit trust and evidence limits.
+- [Source-bound provider projection](projection.md) - Follow frozen authored bytes through Pkl evaluation, sealed payload digests, and publication that never replaces a destination.

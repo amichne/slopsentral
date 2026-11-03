@@ -1,4 +1,4 @@
 # Files
 
-- [Author and validate a change](authoring.md) - Select a canonical edit surface, run checks suited to its contract, and separate static acceptance, model decisions, and actual host behavior.
-- [Maintain documentation and glossaries](documentation.md) - Use the external OpenWiki integration for native OKF and Claims updates, reuse or bootstrap a source-backed glossary, and configure review-only documentation PRs.
+- [Change source with linked evidence](authoring.md) - Prepare a focused engineering contract, change the authoritative owner, and examine executable proof and affected knowledge together.
+- [Maintain source-backed documentation](documentation.md) - Rewrite and refresh OKF explanations through native Claim review, coverage and freshness checks, local prose assessment, and review-only automation.

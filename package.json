@@ -15,11 +15,12 @@
     "check:evals": "tsc --project tools/promptfoo/tsconfig.json && node --test tools/tests/promptfoo-*.test.mjs && npm run eval:skills:smoke",
     "check:source": "node tools/validate-source-graph.mjs && node tools/catalog.mjs --check && git diff --check && git diff --cached --check && git diff --check origin/main...HEAD",
     "verify:marketplaces": "uv run --locked tools/verify_marketplaces.py",
-    "verify": "npm run check:python && npm run check:source && npm run check:evals && npm test && npm run verify:marketplaces",
+    "verify": "npm run check:python && npm run check:source && npm run check:docs && npm run check:evals && npm test && npm run verify:marketplaces",
     "validate:profile-contracts": "node tools/validate-profile-contracts.mjs",
     "check:python": "uv run --locked tools/check.py",
     "check:release": "uv run --locked python -m tools.release_version check",
-    "check:pi": "tsc --project tools/pi-tsconfig.json"
+    "check:pi": "tsc --project tools/pi-tsconfig.json",
+    "check:docs": "mise exec -- slopsentral-docs check"
   },
   "dependencies": {
     "ajv": "^8.20.0",

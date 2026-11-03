@@ -1,88 +1,79 @@
 ---
-type: integration
-title: Portable global instructions
-description: Install and verify a manifest-pinned instruction snapshot without overwriting an existing destination or confusing byte integrity with agent compliance.
-tags: [instructions, installation, integrity, recovery]
+type: Integration
+title: Portable instructions and pinned references
+description: Install self-contained engineering principles with a digest-named local source snapshot, then examine agreement without implicit replacement.
+tags: [instructions, portable, installation, snapshots]
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-03T18:14:45.754Z
 sources:
   - id: openwiki-source-36ad8fcb548ba122b2048846
     resource: repo://docs/global-agents.md
   - id: openwiki-source-a21310cda5a734a20e146119
     resource: repo://tools/install_global_agents.py
-generated: { by: "amp", at: "2026-10-26T01:58:25.745Z" }
-verified:
-  - by: openwiki/0.6.1
-    at: 2026-10-26T01:58:25.745Z
+generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
 ---
 
-# Portable global instructions
+# Portable instructions and pinned references
 
-Use the portable installer when you need a self-contained `AGENTS.md` and its
-local reference material. This is separate from
-[installing provider plugins](installation.md): an instruction snapshot does
-not install or load a plugin.
+The [portable AGENTS.md](../../docs/examples/global/AGENTS.md) expresses engineering principles without a plugin dependency.
+Its rules connect invariant design, explicit effects, faithful evidence, knowledge maintenance, and authorized delivery.
+The [source map](../../docs/global-agents.md) links those principles to their authored origins.
 
-## What the snapshot contains
+## Capture one selected source snapshot
 
-`docs/examples/global/AGENTS.md` expresses portable engineering principles.
-`tools/global_agents.lock.json` pins the source assets and their SHA-256 hashes.
-The installer follows local Markdown links and includes companion assets from
-linked skills. It preserves repository-relative paths under
-`.slopsentral/<manifest-sha256>/`, so local references survive without the
-checkout. External URLs remain network citations.
+The [installer](../../tools/install_global_agents.py) reads the committed asset manifest and examines each referenced source digest.
+The manifest includes transitive Markdown references and necessary companion files.
+It preserves repository-relative paths inside the snapshot.
+External URLs remain citations that need network access.
 
-The installed root file retains the principles and links to this local source
-map. A hash establishes agreement with the selected manifest; it does not
-authenticate an attacker-controlled script and manifest.
-
-## Install into an explicit destination
-
-The destination must already be a real directory. The installer requires uv
-and Python 3.12 or 3.13. From the checkout root:
+The destination must already exist as a real directory.
+Installation needs uv and Python 3.12 or 3.13.
+The explicit destination can represent a host instruction directory or a repository root.
+The tool does not select the user's destination implicitly.
 
 ```sh
 uv run --locked tools/install_global_agents.py manifest
-uv run --locked tools/install_global_agents.py install --destination "$HOME/.codex"
-uv run --locked tools/install_global_agents.py verify --destination "$HOME/.codex"
+uv run --locked tools/install_global_agents.py install --destination /absolute/instruction/directory
 ```
 
-Select the repository root instead for a repository-scoped installation.
-The default Codex global path is `~/.codex/AGENTS.md`; a different `CODEX_HOME`
-changes that location. Check the target host's discovery rules before choosing
-a destination. A home-directory `~/AGENTS.md` is not Codex's documented global
-location.
+The installer places `AGENTS.md` beside `.slopsentral/<manifest-sha256>/`.
+That snapshot contains the pinned source map and referenced assets.
+The installed root file links to those local references.
+A source checkout is unnecessary for later document reads.
 
-## Publication and recovery
+## Publish without replacement
 
-The installer captures and verifies source bytes before writing. It stages and
-checks the snapshot, then publishes `AGENTS.md` last without replacing a file.
-A different existing root file or snapshot is a conflict. An identical complete
-installation returns `UNCHANGED`. Verification examines the selected snapshot
-without repairing it and rejects changed, missing, unexpected, or symlinked
-assets.
+Source bytes enter a prepared representation only after digest examination.
+The installer stages the snapshot, examines its written assets, and publishes the root instructions last.
+Publication rejects an existing target instead of replacing it.
+A different existing installation is preserved as a conflict.
+An identical installation returns `UNCHANGED` without another write.
 
-A failed publication removes only a new snapshot whose unchanged ownership
-the installer can establish. If cleanup cannot prove ownership, it returns
-`RECOVERY_NEEDED` and leaves the paths for inspection. Interruption can leave
-a partial snapshot; a later install rejects it rather than silently completing
-or overwriting it. The destination parent must be trusted. These operations do
-not establish crash durability or resistance to a hostile concurrent writer.
+If publication fails, cleanup removes only the unchanged new snapshot that the operation owns.
+Unproved cleanup ownership produces `RECOVERY_NEEDED` and preserves paths for inspection.
+A process interruption can leave a partial snapshot without `AGENTS.md`.
+The next installation rejects that partial state instead of guessing its ownership.
 
-## Refresh source without changing installed consumers
+## Examine agreement and refresh deliberately
 
-After changing a bundled source, review the portable guidance and run:
+Use the same explicit destination for inspection:
 
 ```sh
-uv run --locked tools/install_global_agents.py manifest --write
-uv run --locked tools/install_global_agents.py manifest
+uv run --locked tools/install_global_agents.py verify --destination /absolute/instruction/directory
 ```
 
-New linked files must be in the Git index before manifest refresh because the
-inventory uses tracked files. Installation never refreshes expected digests.
-Existing snapshots remain pinned; replacing one is a separate deliberate
-operation. See the [source map and recovery runbook](../../docs/global-agents.md)
-for copied-installer commands and digest binding.
+The command rejects changed, missing, unexpected, or symlinked assets.
+The installed snapshot includes the installer and its lock, so inspection can use that copy after the checkout disappears.
+The [source map](../../docs/global-agents.md#refresh-and-recovery) gives the exact copied command.
 
-The [authoring workflow](../workflows/authoring.md) checks source consistency.
-A verified installation proves bytes and paths, not that a fresh agent session
-loads or follows the instructions. Keep that distinction in
-[documentation evidence](../workflows/documentation.md).
+After a deliberate source review, refresh the committed asset manifest with `manifest --write`.
+New linked files must first enter Git's index.
+The refresh changes expected source digests without changing installed snapshots.
+A different installed snapshot needs its own deliberate installation choice.
+
+SHA-256 establishes agreement with the selected manifest.
+It does not authenticate an attacker-controlled script and manifest.
+The procedure assumes a trusted destination parent and does not prove crash durability or resistance to a hostile concurrent writer.
+[Installer tests](../../tools/python_checks/test_global_agents.py) exercise real file effects.
+A successful installation does not prove that a fresh agent session loads or obeys the instructions.

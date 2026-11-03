@@ -1,111 +1,90 @@
-# Codex Profile Lifecycle
+# Maintain a Codex profile
 
-Normal plugin use relies on the host marketplace and passive plugin
-instructions. There is no Slopsentral global binary, launch wrapper, or automatic
-repository-profile hook.
+Use the profile lifecycle for an explicit named Codex configuration.
+Ordinary plugin use needs no Slopsentral launcher or repository-profile startup hook.
+The lifecycle owns the named overlay, while native Codex owns marketplace and plugin operations.
 
-For explicit maintenance, run `node tools/profile-lifecycle.mjs` from this
-checkout after `npm ci` (Node 20.11 or newer). The tool materializes an authored
-workflow profile as a named Codex user profile without changing the base user
-config. It also restores saved transactions from the retired CLI.
-
-The lifecycle ensures the declared marketplace, installs selected plugins, and
-owns `${CODEX_HOME}/<profile>.config.toml`. The overlay enables selected
-`slopsentral` plugins and disables unselected ones under the default
-`DISABLE_UNSELECTED` reconciliation policy. Foreign marketplaces and plugins
-are preserved. Profile operations require Codex CLI 0.134.0 or newer.
+Use a prepared checkout with locked Node dependencies and Codex CLI 0.134.0 or later.
+[Profile schema](../source/schemas/profiles/workflow-profile.schema.json) version 2 defines selection and reconciliation.
+[Implementation](../tools/profile-lifecycle.mjs) owns planning, writes, and recovery.
 
 ## Plan And Apply
 
-`plan` and `status` are read-only:
+Inspect the requested profile without writes:
 
-```bash
+```sh
 node tools/profile-lifecycle.mjs plan --profile local-development-default
 node tools/profile-lifecycle.mjs status --profile local-development-default
 ```
 
-They inspect the Codex version, configured marketplaces, installed plugins, and
-the target overlay. `plan` returns an ordered operation list such as
-`MARKETPLACE_ADD_PLANNED`, `PLUGIN_INSTALL_PLANNED`, and
-`FILE_CREATE_PLANNED`. `status` returns `PROFILE_CHANGES_REQUIRED` until those
-operations have been applied.
+The plan examines the Codex version, configured marketplace, selected inventory, and target overlay.
+It lists ordered operations such as `MARKETPLACE_ADD_PLANNED` and `FILE_CREATE_PLANNED`.
+Status returns `PROFILE_CHANGES_REQUIRED` until the needed operations complete.
+Failed inventory returns `PLUGIN_INVENTORY_FAILED` before writes.
+Reports exclude raw native output.
 
-Plugin inventory reads are restricted to installed Slopsentral plugins. Reports
-include `inventoryObservation` with the marketplace and observed count. A failed
-inventory returns a closed `PLUGIN_INVENTORY_FAILED` outcome identifying the
-stage and reason, without recording command output or proceeding with writes.
+For an authorized apply, use:
 
-Apply a profile:
-
-```bash
+```sh
 node tools/profile-lifecycle.mjs apply --profile local-development-default
 ```
 
-The command refuses to replace a pre-existing file that does not carry the
-matching Slopsentral ownership marker. Adopt such a file only when replacement
-is intentional; its original bytes and mode are backed up before the write:
+The overlay resides at `${CODEX_HOME}/<profile>.config.toml`.
+The lifecycle preserves base configuration and foreign plugin selections.
+A matching managed overlay with identical content creates no transaction.
+An unmanaged target stops apply before marketplace or plugin changes.
 
-```bash
-node tools/profile-lifecycle.mjs apply --profile local-development-default \
-  --replace-existing
+Use `--replace-existing` only for an intentional replacement:
+
+```sh
+node tools/profile-lifecycle.mjs apply --profile local-development-default --replace-existing
 ```
 
-An unchanged managed profile is a no-op and does not create a transaction.
-Apply checks for an unmanaged target before adding a marketplace or plugin, so
-a profile-file conflict cannot leave those external changes half-applied.
+The lifecycle saves original bytes and mode before replacement.
 
 ## Hook Review
 
-Profiles no longer duplicate a list of plugin-owned hooks. The lifecycle derives
-that list from the selected plugin manifests and returns `HOOK_REVIEW_REQUIRED`
-with the configured `OFF`, `ADVISORY`, or `ENFORCING` policy. It never writes
-Codex's runtime-owned hook trust state. Review and trust non-managed hooks in
-Codex with `/hooks`. When Codex appends `[hooks.state]` to a managed profile
-overlay, later lifecycle operations preserve that section byte-for-byte.
+The lifecycle derives selected hooks from plugin manifests.
+It reports `HOOK_REVIEW_REQUIRED` with `OFF`, `ADVISORY`, or `ENFORCING` policy.
+Codex owns runtime hook trust. Review exact definitions through `/hooks`.
+The lifecycle never writes runtime trust state.
+It preserves a host-appended `[hooks.state]` section byte-for-byte.
 
-`required-skill-read` remains a standalone primitive for explicit custom compositions.
-No shipped plugin or default profile selects it.
-Software Engineering injects its concise policies at startup, resume, clear, and compact.
-Kotlin Engineering selects no hooks. Kotlin guidance loads through selected skills.
-Its four standalone hook primitives need explicit custom composition.
-The host owns trust and context consumption.
+Software Engineering supplies concise context and instruction-scope hooks.
+Kotlin Engineering selects no hooks. Its standalone hooks need explicit custom composition.
+The shipped profiles do not select `required-skill-read`.
+Hook inventory does not prove host trust, event delivery, or instruction adherence.
 
 ## Profile Contract
 
-Workflow profile schema version 2 owns these policies:
+`plugins` names the selected Slopsentral plugins.
+`reconciliation.unselected` chooses one of these outcomes:
 
-- `plugins` names the enabled Slopsentral plugin set.
-- `reconciliation.unselected` is `PRESERVE`, `DISABLE_UNSELECTED`, or
-  `REMOVE_UNSELECTED`; authored defaults use `DISABLE_UNSELECTED` and never
-  uninstall plugins.
-- `hookPolicy.mode` is `OFF`, `ADVISORY`, or `ENFORCING`.
-- `standaloneSkills` uses typed `PRESENT`, `ABSENT`, and `PRESERVE` states.
-  `PRESENT` installs a missing marketplace skill at the stable
-  `${CODEX_HOME}/skills/<name>` path and enables it in the overlay. `ABSENT`
-  disables that path without deleting it, and `PRESERVE` omits the override.
-  A different pre-existing skill directory is a conflict and is never replaced.
+- `PRESERVE` keeps unselected choices.
+- `DISABLE_UNSELECTED` disables unselected plugins in the named overlay.
+- `REMOVE_UNSELECTED` schedules native removal of unselected installed plugins.
+
+Authored defaults use `DISABLE_UNSELECTED` and do not uninstall plugins.
+Standalone skills use explicit `PRESENT`, `ABSENT`, or `PRESERVE` states.
+`PRESENT` installs and enables a missing canonical skill.
+`ABSENT` disables its path without deletion.
+`PRESERVE` omits an override.
+A conflicting skill directory is never replaced.
 
 ## Retired Repository Activation
 
-The repository-root `activation` field, `context` commands, and
-`repository-profile` startup hook have been removed. Profiles with the retired
-field fail schema validation. Select plugins through the host or run an explicit
-profile operation above; a `settings.gradle.kts` marker does not alter configuration.
-
-Existing repository `.codex/config.toml` blocks and named overlays are preserved.
-The transaction schema still accepts saved `APPLY_REPOSITORY_PROFILE` records so
-rollback can restore their recorded preimages. Use the exact saved manifest and
-backup root as described below. Refresh the plugin after publication to retire
-its installed startup hook; editing this checkout does not update installed caches.
+The retired `activation` field and repository-profile startup hook are absent.
+The current schema rejects that field.
+A source marker such as `settings.gradle.kts` does not change configuration.
+Existing project configuration and saved transaction records remain intact.
+Saved `APPLY_REPOSITORY_PROFILE` records remain readable for recovery.
+Use their exact manifest and backup root.
 
 ## Backup Location
 
-The default transaction root is
-`${CODEX_HOME:-$HOME/.codex}/backups/slopsentral`. Override it for one command
-with `--backup-root`, or set `SLOPSENTRAL_BACKUP_ROOT`. The command-line option
-takes precedence.
-
-Transactions use unique, never-reused directories:
+The default root is `${CODEX_HOME:-$HOME/.codex}/backups/slopsentral`.
+`--backup-root` takes precedence over `SLOPSENTRAL_BACKUP_ROOT`.
+Transactions use unique directories:
 
 ```text
 <backup-root>/<profile>/<transaction-id>/
@@ -113,77 +92,57 @@ Transactions use unique, never-reused directories:
   files/000-before
 ```
 
-`files/000-before` exists when the target existed. A creation instead records a
-typed `FILE_ABSENT` preimage. The manifest records SHA-256, byte length, and Unix
-mode, and conforms to
-`source/schemas/profiles/profile-transaction.schema.json`.
-The manifest advances from prepared to committed; the preimage is created
-exclusively and is never overwritten.
+A preexisting target has a saved preimage with bytes, SHA-256, length, and mode.
+A new target records `FILE_ABSENT` instead.
+The [transaction schema](../source/schemas/profiles/profile-transaction.schema.json) declares those variants.
+Preimages are created exclusively.
 
 ## Transaction States
 
-An apply has two persisted states:
+`PREPARED_TRANSACTION` records a saved preimage before the target write.
+`COMMITTED_TRANSACTION` records the completed atomic target write.
 
-1. `PREPARED_TRANSACTION`: the target's preimage has been copied and its digest
-   verified. The atomic target write may not have happened yet.
-2. `COMMITTED_TRANSACTION`: the target write completed and the manifest records
-   its completion time.
-
-The transaction directory and prepared manifest are written before the target.
-The target is then replaced atomically. If interruption leaves a prepared
-manifest after the target write, `rollback` recognizes the after-image,
-finalizes that transaction, and reverses it. If the target still matches its
-before-image, rollback reports that it is already restored.
+If interruption leaves a prepared record after the write, rollback recognizes its after-image.
+It completes the record before reversal.
+If the target matches the preimage, rollback reports that restoration already holds.
 
 ## Roll Back
 
-Use the exact `manifestPath` returned by `apply`:
+Use the exact `manifestPath` from apply:
 
-```bash
-node tools/profile-lifecycle.mjs rollback \
-  --transaction /absolute/backup/root/local-development-default/<transaction-id>/manifest.json \
-  --backup-root /absolute/backup/root
+```sh
+node tools/profile-lifecycle.mjs rollback --transaction /absolute/backup/root/local-development-default/<transaction-id>/manifest.json --backup-root /absolute/backup/root
 ```
 
-Rollback validates the transaction schema and path identity, verifies the
-stored preimage, and requires the live target to match the recorded after-image.
-If the target changed later, it returns `PROFILE_CONFLICT` and writes nothing.
+Rollback examines schema, path identity, saved bytes, and the current target.
+A later target edit returns `PROFILE_CONFLICT` without writes.
+Rollback creates a new transaction, so its manifest can restore the previous state again.
 
-Rollback is itself a new versioned transaction. It captures the file it is
-about to replace or remove, so passing that rollback transaction's
-`manifestPath` to `rollback` reapplies the prior state.
-
-Transactions cover the generated TOML overlay. Marketplace and plugin changes
-are delegated to Codex, and newly installed standalone skills are preserved;
-these effects are not reversed by profile rollback. The default reconciliation
-policy does not uninstall plugins or delete skills. It disables unselected
-Slopsentral plugins only in the named overlay.
+Transactions cover the TOML overlay.
+They do not reverse native marketplace changes or remove newly installed standalone skills.
+Keep this limit distinct from restored file bytes.
 
 ## Paths, JSON, And Exit Codes
 
-Pass `--codex-home PATH` or `--backup-root PATH` to any profile operation. The
-environment variables `CODEX_HOME` and `SLOPSENTRAL_BACKUP_ROOT` remain the
-defaults when those flags are absent.
+`--codex-home` overrides `CODEX_HOME`.
+`--backup-root` overrides `SLOPSENTRAL_BACKUP_ROOT`.
+Operational commands emit JSON.
 
-All operational commands emit JSON. The exit status is part of the interface:
-
-- `0`: success
-- `1`: runtime or I/O failure
-- `2`: invalid command, request, profile, or contract
-- `3`: a safe-write or rollback conflict
-
-Removing a previous global package does not delete profiles or transaction
-history. See [CLI retirement](../source/MIGRATION.md#retiring-the-global-cli).
+| Status | Meaning |
+| --- | --- |
+| `0` | Success |
+| `1` | Runtime or I/O failure |
+| `2` | Invalid request or contract |
+| `3` | Safe-write or rollback conflict |
 
 ## Verify The Contracts
 
-```bash
+```sh
 npm run validate:profile-contracts
 node --test tools/tests/profile-lifecycle.test.mjs
 node tools/validate-source-graph.mjs
 ```
 
-The workflow profile schema is
-`source/schemas/profiles/workflow-profile.schema.json`. The source-graph gate
-validates every authored profile against it before checking referenced plugin
-and hook ownership.
+The [focused tests](../tools/tests/profile-lifecycle.test.mjs) exercise planning, ownership conflicts, transaction states, and recovery.
+They do not establish fresh-session host consumption.
+The [installation concept](../openwiki/integrations/installation.md) connects profiles with native plugin selection.

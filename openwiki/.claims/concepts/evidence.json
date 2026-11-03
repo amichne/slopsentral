@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8326da8711dcd607629e516eb09d4398baa19a198ba27702055d0ce27fe0bdd1",
+  "claims": [
+    {
+      "id": "claim_0d9e521c633f4bb3a461cb047b9b3e1b",
+      "statement": "The shared engineering baseline treats maintained source-backed knowledge as part of a behavior change, with source review, conceptual links, and freshness evidence kept distinct from semantic correctness.",
+      "evidence": [
+        {
+          "resource": "repo://source/instructions/engineering-design.md#L58-L70",
+          "version": "repo-lines-v1:sha256:edbea0e4eae828374e18c6f0f76492ab75124770cae603bad80c802c25ecd158:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMmJhMDRiOWY5ZmNjYmNmNjVmOGMwZTAwNDI3MjZlM2Q5MTc0NjIyZGViZmU3ZjBjMzQ0NzBhYTYzZjM1NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNjQ2MGM5ZDBiMGY1MmYzODlhZDk5NTI5MDM0MjQ3MTI0OTc0Yjg4OWMyYzJjZTFkYTI0OGU2NzNmNWExNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmMGE3Mzc5MmIwZGM0OGRiODY0MjQyM2ZiODc4OTM1ZTNlNGM5YTQyZDQ2NDRmNWNiNDk4NDQ1NmIzNWI5ODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aba9b45ca98a4a158199262d51ef5700",
+      "statement": "Repository documentation coverage maps maintained areas to source selections and explanations, and its explicit record operation stores reviewed fingerprints without proving semantic accuracy.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L230-L280",
+          "version": "repo-lines-v1:sha256:0766f943b6d379275e70d4b8e269a77fabc000ccdb6608ae76316db6be084d73:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MWQxMmU4MDQxZmVlYjdlMWM5OWFiNmQ0MGIyYjMyMWYwOTIzMDUwZjAyODdmNjA4OWM5MzAwNjQ3MmMwMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlN2ViZWNhYmVlYTk4MjYzYzgyZDAzMmRiNzc5N2E4NTc3OWQxNjA4MDgxMWRiYmFhMTkwZjQwMTZiZGYwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZDY3YTBlOWE3MDE3YmNjY2VmN2Y1MmY4ZGNkY2Q2ZGNmMjU2NTg5Y2NmNWExYjVhNzY1MjBkMzc2MDU5ZTAifQ"
+        },
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L574-L682",
+          "version": "repo-lines-v1:sha256:8923741ea3aeaa07b75269f9a8dfa6a31101d1ac19961d29cc1ce3ecbf20f41f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5ZjlkYmIyZTMzYTAzZjY1ODIzNDFiYWZlMjBhYzRlYzU5OWJkYzE4M2YxNTU2MDc4Mjg3OThjOTk0ZDFlMGEyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0ZmJkMDA5MzE0YmMyNzA4NDE2NzM0YTAyYWU1ZmYzOWExZTQ4YTA1MGJlOTFmNDNiMmZhYTkyMDAyYzYyYmZjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzMjYxY2E0MmMxNjc0YTkxMzRmY2ExZjZjZTc5M2U0NTYyZjhkMDliMzEyMGM4OGEzZDMzZDM0MzY2MDJlOWIyIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3a011f77c2e416689641b43764bdff4",
+      "statement": "The portable documentation runtime selects standalone OKF or native OpenWiki through project configuration, without imposing OpenWiki completion state on the standalone backend.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L150-L162",
+          "version": "repo-lines-v1:sha256:23728d482ca9b8254e350e4ee3adace04640e68fa48004f295a90da0cb710321:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZGFhMzU1ZDQ0Mzk2Yjc3NTU0MDBkM2Y2ZGYwOTdjZDhiZDZmYzRiNDVhNjlhOWRlZWRiMmFiYTg5ZDdkOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2YWVkZmM4Y2RkZDY2NzY5OTI1NmZiOTkyYWEzMTRlZDFhOTJlN2Q0ODRiMmQ0NTQ2ZDVlNmI3YmQ1ODAwYjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZTI1MGVlMzljN2RhOWJlYWFlMWQzOWNiOTUwNmUwMmVjNDVlYWMxMzVkZGIyNjE1Y2E0YjI2MWU3NTk4MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1YTYxYmJmYjNhZWI2YjJkZWY5ZTM3NmQ4NDAwYzc1YWU5YmFiYjBkNTE4ODM1ZjMwNjNjOTY0MTlhM2UxYjUifQ"
+        },
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L435-L471",
+          "version": "repo-lines-v1:sha256:4a5616f7cf817de70729e3825b78247d79c79a15ac85368e6e9a221cd4b0ec54:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2ZjBmYTAzNjUyOGQwMDkwZTFiNjQyYWNmMTE1NzYzMGM1NGFjMThmOWZjY2FjZWJjYjIzN2YyOGJkYzkzOWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTYwMGE3M2QyZTAyZjM1MmI5MGZlZjFkOGQ2MzgxMWJhNGE4ZWUwYzFiZWFhN2FlNDY1OGYzNmFhMmUxOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MDE0OWUwNjlhZDY3ZWNjZjQ3MzY0NmZmMWM3NTAwNTBkMzI5ZDExMDAxOGRjNTc2Njg3OGVhZmExZDYwN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3ZmQ4N2MyZWJkOWJiODVjOGI0M2NiMjRhNmI4MmZmYWZkMjIxZTAyYTBlZjMyNmZhMWNlNTJlNmY0MjJiZmMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-03T20:36:31.743Z"
+  }
+}

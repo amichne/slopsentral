@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:eae9877b43f6d69c38f8fcb50bacb14edad5fc28604596119aa784a9ccd391ff",
+  "claims": [
+    {
+      "id": "claim_d7e9d4a7075f48ebb828e74b6f5f28c5",
+      "statement": "Decision evaluations supply canonical skill text and explicit routed references with source hashes, pair no-skill controls, and disable automatic discovery, tools, network access, apps, and plugins.",
+      "evidence": [
+        {
+          "resource": "repo://tools/promptfoo/suite.mts#L28-L59",
+          "version": "repo-lines-v1:sha256:04a8df1cf306b64b47cb3a6c8a654f3cb5762875e104b40dd201f2eafa24b522:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiYjJkODc1ZWM5NGQxNTk0MTY0MGMwYTU4ZGFjMGUwNmFkOGFmZjk4ZTEwYzg1NjFhNWZiODVlNGNjZDI1ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzZTkyY2U0NGYwNDI0MzI0Zjc4NzdiN2NiMzAxOGJhYTZjNTkzNmVjNjgzZDIzYWM4MzhjYjdkZjA4MWFiOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzZTZkY2M0ODI3OWNhYTE1MTk0NjJhYTk3MGZjZjAyZWY0OWY2NzZiZDE0YzgzMTJjOTkxMjk4OWFmZTNjN2MifQ"
+        },
+        {
+          "resource": "repo://tools/promptfoo/suite.mts#L60-L94",
+          "version": "repo-lines-v1:sha256:79a8b4d53c226cdeb88d502ac59e950fb4447395c8545a15022b35c736030c18:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYjVjZTg4MTkxNmEzMGU3NDg3M2Y5OTlhYTIwY2JhODA1MmY4NmU0MjBjODBhMDQxYWU3MTc5OWE1YzRjMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a488649078104db99672d4ed5614db69",
+      "statement": "Execution cases without a pinned fixture receive nonpassing BLOCKED_SETUP without a model call.",
+      "evidence": [
+        {
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L202-L207",
+          "version": "repo-lines-v1:sha256:b417a37ec68c4ab1ab62d3a6d70ea4b5c2621fba3064f65eefbd7b4a5d684db2:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODBiOGRhNjI1MmRkN2FkMjAyNGExMzI3ODFiMDJkZWY4ZmM0ZDJiNjhkMGMxNjc1YmFjYmJkN2FhMjk5MTkzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGY5NWM3MzM3YTMzZDE4OWYzZDg2ZjlmNWNmMWYwMzM5ZmQ4Y2U1NzIzMjE1ZDUxZjJlOGI3NzVjNDQ3MGFlMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTA0MDExZGM2YmYyNmQ2YzFjMTBkN2E2N2U4YzJjMDBiMjdlYjY0Y2VkMjEzN2Q0MWYyMmU2ZmE4MTRlMGVlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGNlMTYxYTExMmExM2VkMDU1NTRkMDQ4NWIyMWQ0YWZmMDQzMzJmYTM3Y2I2OWNhMGQ1ZDcwNjQ4YWM0NTcwNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_41850940eb3e47cf942f78b12bfe65f3",
+      "statement": "Execution grading requires a completed run and independent passing evidence for every checklist item, route, and scope; missing evidence cannot pass.",
+      "evidence": [
+        {
+          "resource": "repo://tools/promptfoo/execution.mts#L140-L158",
+          "version": "repo-lines-v1:sha256:1e16892a0b2cd606daaafdac3ae513b6134a735462f29b467b522e8745c12116:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3YTk4MjExMDQzZTVjNDE2NzkzOTNiZTcxOGM4Nzk0MjY3MDFlNGMzYTdkNmY2YzYxZjY3ZDI3ZTZlM2I3YmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3NGVkMDg1YWNlM2JlMjUyNzM4NTY1MGRiZmE2MGY1YzNlNjYwZDg5M2E2ODQ1ZDk0OGIzYzg1ZWFiMmM5MTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2783728a3fea499f9d053e4bac43f460",
+      "statement": "Ready execution cases use isolated private worktrees, native plugin installation, retained streamed events, and the benchmark model, sandbox, and approval settings with network and web search disabled.",
+      "evidence": [
+        {
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L110-L129",
+          "version": "repo-lines-v1:sha256:e9770ef3e1f663ae00fab175e1e9aa3aad94a75d77ca52ea212b541705edb498:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2MTljYjI0ZDE3NWY3OTdkOTNkNjlhOWFkNGRiZjFlNGU1MWNhMTNhODFiMDk4MDgyYzY1YjEwZWY3MDJlOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmZDM0NmNmNTNhYjZhZDM3ODAzMWQ3YTAyMzUxYzM4OTExZWUxZDk1M2MxMGU0MjlmMGYyYzk5OTExMDE1YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3NDMzNzg0ZDFmZGJmYjhlOWU5YTZkOWU1ZTU2MGM1MDVmOGMxYzlkNTlmNDRiZDdhN2RhYWZhYThkYTNiMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjYmY2M2FiNzEyM2Q0NzczZmYyNmQ4ZTU3OTcxODgxMDM2ZjMxNzA0ZDllZjdkMTMzYzQ2ZTBiODdmOWE2YzAifQ"
+        },
+        {
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L72-L116",
+          "version": "repo-lines-v1:sha256:daeb9c9b4e83ea09cf91dcfeab4d5964c2ea1d89080b2368a3bf96691b758b74:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4ZTFjNzY3YjIzNTIxNDBlNzcwMDIxNGNlMWFjYzg2MzMwMGUzMTFkYzM0Njk1NGM3YmMzNGU1OTI4MWI2ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkNjk2NDVmY2ZkZTcyNjljMzIyYTIwNDdjZWY5YzcwODEwOGIyNzQ2MDk3N2JkOWM5YWU4ZGMyYjBkZTlmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyZTU3ODcyNmRmOWEyMWIxYTMzODEzODAzY2IzMWZlYzg2ZWEwOTdkYTQ1MGJkYmYzYTBkMDEwMjhjOTAxYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlN2FlMGE3Y2NkNGFlZmQ2MzQzMjMzODdhMGIzY2I4MWUxYmViMTRhMGQwNzBiZWFkNmU2MzUwZjhhMWQzNWEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-03T17:57:45.987Z"
+  }
+}

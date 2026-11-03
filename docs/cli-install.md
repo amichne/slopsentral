@@ -1,36 +1,32 @@
 # Install and manage Slopsentral
 
-The `slopsentral` command uses a locked Python script and uv.
-It installs, updates, and removes plugins for one explicitly selected host.
-The supported hosts are Codex CLI, GitHub Copilot CLI, Amp, and Pi.
+The `slopsentral` command installs, updates, and removes plugins for one explicit host.
+It supports Codex CLI, GitHub Copilot CLI, Amp, and Pi.
+The command uses a locked Python script through uv.
 
 ## Install the command
 
-The public bootstrap needs a qualified release that includes the new command assets.
-Until that release exists, use this checkout:
-
-```sh
-mise exec -- uv run --locked --script tools/slopsentral.py self install
-```
-
-After publication, use the release bootstrap:
+Use a qualified release that includes `install.sh`, `slopsentral.py`, and its lock:
 
 ```sh
 bash -o pipefail -c 'curl -fsSL https://github.com/amichne/slopsentral/releases/latest/download/install.sh | sh'
 ```
 
-The shell downloads uv 0.12.9 only when `uv` is absent from `PATH`.
-It downloads the Python script and its adjacent lock, then invokes Python through uv.
-The uv installer uses its documented [unmanaged installation](https://docs.astral.sh/uv/reference/installer/#unmanaged-installations) mode.
-It preserves shell startup files.
-An older installed uv fails the script's minimum-version rule without an implicit replacement.
+For installation from a prepared source checkout, use:
 
-The command installs at `~/.local/bin/slopsentral`.
-Its launcher records absolute paths to uv and an immutable copy of the Python script.
-The script needs Python 3.12 or 3.13. uv can download that runtime.
-The command does not need a source checkout, npm, or Pkl.
+```sh
+mise exec -- uv run --locked --script tools/slopsentral.py self install
+```
 
-If the command directory is absent from `PATH`, use:
+The bootstrap installs uv 0.12.9 only when `uv` is absent from `PATH`.
+An older installed uv fails the minimum-version rule without an implicit replacement.
+The bootstrap preserves shell startup files.
+The command needs Python 3.12 or 3.13. uv can download that runtime.
+Consumers need no checkout, npm, or Pkl.
+
+The launcher resides at `~/.local/bin/slopsentral`.
+It records absolute paths to uv and an immutable script copy.
+If that directory is absent from `PATH`, add it for the shell:
 
 ```sh
 export PATH="$HOME/.local/bin:$PATH"
@@ -38,9 +34,10 @@ export PATH="$HOME/.local/bin:$PATH"
 
 ## Select a host and plugins
 
-Bootstrap installs the command only. Each host operation needs `--host`.
-Codex, Copilot, and Amp also need one or more explicit `--plugin` selections.
-Pi uses its existing aggregate package.
+Bootstrap installs the command only.
+Each host operation needs `--host`.
+Codex, Copilot, and Amp need explicit `--plugin` selections.
+Pi uses the aggregate package and rejects plugin selections.
 
 ```sh
 slopsentral install --host codex --plugin software-engineering --plugin kotlin-engineering
@@ -49,27 +46,21 @@ slopsentral install --host amp --plugin developer-tooling
 slopsentral install --host pi
 ```
 
-| Host | Installation owner | Update source |
+| Host | Owner | Update channel |
 | --- | --- | --- |
-| Codex CLI | Native marketplace and plugin commands | Configured marketplace, with `harness/codex` for a new registration |
-| GitHub Copilot CLI | Native marketplace and plugin commands | Configured marketplace, with the repository default for a new registration |
-| Amp | Managed links in the system plugin directory | Stable release archive |
-| Pi | Existing native installer and transaction code | Qualified stable release |
+| Codex | Native marketplace and plugin commands | Existing source, or `harness/codex` for a new registration |
+| Copilot | Native marketplace and plugin commands | Existing source, or repository default for a new registration |
+| Amp | Managed links under the system plugin directory | Stable release archive |
+| Pi | Native setup and transaction code | Qualified stable release |
 
 Codex and Copilot need their host commands on `PATH`.
-Pi needs Node.js and the dependencies described in the [Pi guide](pi-install.md).
-Amp loads directory plugins from `$XDG_CONFIG_HOME/amp/plugins` or `~/.config/amp/plugins`.
-The command preserves a different existing plugin directory.
-
-A recognized Codex or Copilot marketplace keeps its existing source.
-An unknown source with the name `slopsentral` stops the operation.
-An existing plugin keeps its enabled state when `install` repeats.
-Codex rejects updates for selected disabled plugins because its reinstall command can enable them.
-Copilot uses its native update command.
+Amp uses `$XDG_CONFIG_HOME/amp/plugins` or `~/.config/amp/plugins`.
+Pi needs the dependencies in the [Pi guide](pi-install.md).
+A different existing Amp directory or an unknown marketplace named `slopsentral` stops installation.
 
 ## Update and remove plugins
 
-Use the same explicit selections for updates and removal:
+Use the same explicit scope for updates and removal:
 
 ```sh
 slopsentral update --host codex --plugin software-engineering
@@ -83,20 +74,18 @@ slopsentral remove --host pi
 ```
 
 Amp and Pi accept `--version X.Y.Z` for a named stable release.
-Codex and Copilot use their configured marketplace channels and reject `--version`.
-Each operation uses personal or system scope. Project registrations remain outside this command's scope.
+Codex and Copilot reject that option because native marketplaces own their channels.
+These commands use personal or system scope. Project registrations stay outside their scope.
 
-Amp removal deletes managed links and keeps cached package bytes.
-Amp compares installed files with the cached release archive before replacement or removal.
-Pi removal deletes recognized Slopsentral registrations and its marked instructions from personal scope.
-It preserves unrelated settings, project registrations, installed payloads, and private recovery records.
-Pi removal uses the same recoverable transaction code as installation.
-The existing Pi bootstrap still owns project installation and rollback.
+Repeated installation preserves enabled choices.
+Codex rejects an update for a disabled selected plugin because its reinstall operation can enable it.
+Copilot uses its native update operation.
+A failed native operation stops the command. Earlier successful operations remain in effect.
 
-Native commands own their host configuration and caches.
-The command stops at the first failed native operation.
-Earlier successful operations remain in effect.
-Installation does not prove that a new host session loads the plugin or obeys its instructions.
+Amp compares installed bytes with the cached release before replacement or removal.
+Removal deletes managed links and keeps cached bytes.
+Pi removal preserves unrelated settings, project registrations, payloads, and private recovery records.
+Its [native bootstrap](pi-install.md#scope-updates-and-recovery) owns project installation and rollback.
 
 ## Update or remove the command
 
@@ -106,20 +95,25 @@ slopsentral self update --version 4.0.7
 slopsentral self remove
 ```
 
-The example version needs a published release with the command assets.
-Self-update examines each downloaded asset's origin, size, and GitHub SHA-256 digest.
-Amp uses the same digest procedure and rejects archive traversal, links, and special files.
-The bootstrap trusts the selected GitHub release before Python starts.
-Release digests establish agreement with GitHub metadata, without a separate signature authority.
+A named version needs published command assets.
+Downloaded assets must match their GitHub origin, size, and SHA-256 metadata.
+Amp also rejects archive traversal, links, and special files.
+GitHub metadata supplies the trust source. The digest is not a separate signature.
 
-Command files reside under `$XDG_DATA_HOME/slopsentral/command` or `~/.local/share/slopsentral/command`.
-Self-update keeps earlier command copies until removal.
-Self-removal examines the recorded file digests before it deletes those copies and the launcher.
-Changed files stop replacement or removal. The command preserves those files for inspection.
-Self-removal preserves uv and host plugins.
+Command copies reside under `$XDG_DATA_HOME/slopsentral/command` or `~/.local/share/slopsentral/command`.
+Self-update keeps previous copies.
+Self-removal examines their recorded digests before deletion and preserves edited files.
+It preserves uv and installed host plugins.
+Interrupted updates can leave an incomplete receipt or lock that later operations preserve as a conflict.
 
-Every completed operation prints one JSON object on stdout.
+## Results and source evidence
+
+Completed operations emit one JSON object on stdout.
 Failures return a nonzero status. Native diagnostics use stderr.
-Argument errors use argparse's exit status 2.
-An interrupted command update can leave a lock or an incomplete receipt.
-A subsequent operation preserves that state and reports the conflict.
+Argument errors return argparse status 2.
+Installation proves neither new-session discovery nor instruction adherence.
+
+[Command implementation](../tools/slopsentral.py), [bootstrap](../install.sh), and
+[host-command tests](../tools/python_checks/test_slopsentral.py) own this interface.
+[Setup packaging](../tools/setup_assets.py) binds its release assets.
+The [installation concept](../openwiki/integrations/installation.md) connects host setup to source ownership and release qualification.

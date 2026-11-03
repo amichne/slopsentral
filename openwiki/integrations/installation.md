@@ -1,99 +1,85 @@
 ---
-type: integration
-title: Install Pi and Amp consumers
-description: Choose Pi's verified release installer or Amp's complete directory bundles, preserve installation scope, and recover without overwriting unrelated content.
-tags: [installation, pi, amp, recovery]
+type: Integration
+title: Consumer installation and recovery
+description: Separate the native Pi bootstrap from general host management, then trace qualification, preserved state, and guarded recovery.
+tags: [installation, pi, amp, recovery, consumers]
 verified:
   - by: openwiki/0.6.1
-    at: 2026-10-26T15:55:34.144Z
+    at: 2026-11-03T17:57:45.987Z
 sources:
-  - id: openwiki-source-8037e2358a2c4f9b2c722a11
-    resource: repo://AGENTS.md
-  - id: openwiki-source-a36608fe0211a909095a55f8
-    resource: repo://docs/pi-install.md
-  - id: openwiki-source-2a773b8dcd244b49fcf7a60f
-    resource: repo://docs/pkl-projection.md
-  - id: openwiki-source-23775c3de52f3ab95a13cb8b
-    resource: repo://README.md
+  - id: openwiki-source-59e94a76c36256a0ceee4f2d
+    resource: repo://source/hooks/pi/adapter.ts
   - id: openwiki-source-965e21463a3abc211c0d505e
     resource: repo://tools/install-pi.sh
+  - id: openwiki-source-fc855c6faec3d10981287a01
+    resource: repo://tools/projection/Amp.pkl
   - id: openwiki-source-755a3cefcf633172d98cf969
     resource: repo://tools/setup-pi.mts
-generated: { by: "amp", at: "2026-10-26T01:49:39.323Z" }
+  - id: openwiki-source-694f90ac01e419c575288a8d
+    resource: repo://tools/slopsentral.py
+generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
 ---
 
-# Install Pi and Amp consumers
+# Consumer installation and recovery
 
-Choose the host and installation scope first. Installation makes content
-available; it does not establish host discovery, project trust, or model
-compliance. Neither path turns an installed cache into authored source.
+Consumers install qualified release bytes or native marketplace packages.
+They do not need the projector's complete maintainer toolchain.
+The [general command](cli.md) owns explicit host operations. The separate Pi bootstrap preserves its original entry point and recovery path.
 
-## Pi: use the published installer
+## Install Pi through the native bootstrap
 
-On macOS or Linux, install Pi and Node.js 22.19 or later, and have curl and
-system tar available. From the project whose old registration needs migration:
+The [launcher](../../tools/install-pi.sh) needs macOS or Linux and Node.js 22.19 or later.
+It selects a stable release, examines the installer asset's origin, size, and digest, and delegates to those bytes.
+Consumer setup needs no checkout, npm installation, Python, uv, or Pkl.
 
-```sh
-bash -o pipefail -c 'curl -fsSL https://github.com/amichne/slopsentral/releases/latest/download/install-pi.sh | sh'
-```
+The [setup owner](../../tools/setup-pi.mts) qualifies the release tag, source identity, successful main run, archive digests, and receipts before configuration changes.
+Its archive contains the aggregate native package for all catalog plugins.
+Skills use native discovery. Agent procedures become native review prompts.
+The package also includes the selected instruction and hook adapters.
+The retired single-skill package does not describe the current release path.
 
-The launcher selects a stable release, verifies the installer asset size and
-SHA-256 digest, then delegates to those exact bytes. Consumer setup needs no
-checkout, npm installation, Python, uv, or Pkl. The native installer verifies
-release and source identity plus successful main validation before configuration
-changes.
+Setup preserves unrelated settings and migrates recognized Slopsentral registrations.
+It rejects ambiguous legacy extensions, edited installed bytes, foreign paths, and concurrent configuration changes.
+The host keeps its native trust decision.
+Installation does not prove every feature in an older Pi host.
 
-Personal scope is the default: `~/.pi/agent` or `PI_CODING_AGENT_DIR`.
-Use `--project` for project scope, or `--version X.Y.Z` for a published version.
-The [Pi runbook](../../docs/pi-install.md) gives the curl-to-shell argument
-forms. Restart Pi and verify `/skill:semantic-ratchet` afterward.
+## Keep setup and hook dependencies distinct
 
-The package contains only the canonical `semantic-ratchet` skill. It adds no
-extensions, hooks, commands, instruction policy, or model calls. A successful
-`pi --version` probe establishes executability, not native feature compatibility.
-Project trust remains Pi's decision.
+The bootstrap does not install uv or Python for consumers.
+When Pi invokes a Python hook, that hook still needs uv and its declared script dependencies on `PATH`.
+A missing dependency produces an explicit hook failure.
+A context failure blocks tool calls until a later request succeeds.
+The [hook lifecycle](../architecture/hooks.md) explains admission and the one-turn repair limit.
 
-## Pi updates and recovery preserve unrelated state
+Pi's `/hooks` controls persist Slopsentral hook choices separately from package installation.
+The maintainer dependency pins a host for executable evidence.
+Consumer setup uses the installed host best-effort instead of enforcing that exact version.
 
-Rerun the installer to update. It migrates recognized Slopsentral registrations
-in personal and current-project settings while preserving unrelated settings.
-It stores private recoverable preimages. Repeating an unchanged installation
-returns `CURRENT`; ambiguous legacy extensions or changed installed bytes stop
-setup rather than being overwritten.
+## Update and recover the selected scope
 
-Rollback uses the same project directory and scope. Pass `--rollback`, adding
-`--project` for project recovery. It still verifies the release, but needs neither
-Pi nor tar and never executes project-cached recovery code. If settings changed
-after installation, `CONFIG_CHANGED` preserves those edits for manual recovery.
+Personal scope uses Pi's global instruction directory by default.
+The native bootstrap also supports explicit project scope and a named stable release.
+The [Pi guide](../../docs/pi-install.md#scope-updates-and-recovery) gives exact arguments.
 
-## Amp: install a complete selected bundle
+Setup records private preimages before its writes.
+Repeating a current installation returns `CURRENT`.
+Rollback needs the original project directory and scope.
+It rejects later edits with `CONFIG_CHANGED` and preserves those files for manual recovery.
+Rollback still qualifies the release, but does not need Pi or tar and never executes project-cached recovery code.
 
-From a prepared checkout with the pinned Pkl runtime, generate a fresh package:
+Removal uses the same recoverable transaction owner.
+It preserves unrelated settings, installed payloads, and private recovery records.
+The general command removes only its personal-scope registrations.
 
-```sh
-node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp-new
-```
+## Install Amp as complete packages
 
-Copy selected whole directories from its `.amp/plugins/` into the project's
-`.amp/plugins/`, without replacing existing directories. Start with
-`software-engineering`; add `kotlin-engineering` for Kotlin work. Reload plugins,
-then check discovery with `amp plugins list` and
-`amp skill info software-engineering:semantic-ratchet`.
+The general command places managed links under Amp's system plugin directory.
+It compares installed bytes with the cached release before replacement or removal and preserves foreign paths.
+Manual project installation uses complete projected bundles, including skills, scripts, references, and instructions.
+Never copy only `index.js`.
 
-Skills, scripts, references, instructions, and `capabilities.json` travel
-together. Do not install only `index.js`. Amp supports skill registration and
-turn-start instructions; hooks, agents, and MCP configuration remain references.
-Workflow profiles are unsupported. See
-[projection boundaries](../architecture/projection.md) for the mapping.
-
-To update, stop sessions using the installation, move old bundles to a backup
-outside discovery roots, and copy complete replacements into vacant destinations.
-Do not merge directory contents: removed files must disappear. Reload and check
-each bundle. Restore the backup if discovery fails. Copied directories are not
-updated by `amp plugins update`.
-
-The [Amp runbook](../../docs/pkl-projection.md#amp-native-plugins) also covers
-user-local scope, prebuilt `harness/amp` payloads, revision recording, and native
-checks. Provider branches move; [release archives](../operations/releases.md)
-are versioned snapshots. For a separate instruction-only installation, use
-[portable global instructions](global-instructions.md).
+Amp supports native skill discovery and turn-start instructions.
+Referenced hooks, agents, and MCP configuration do not become active integrations.
+Profiles are unsupported.
+Use the [projection guide](../../docs/pkl-projection.md#amp-native-plugins) for capability and manual recovery details.
+[Native installation tests](../../tools/tests/pi-install.test.mjs) and [setup tests](../../tools/tests/pi-setup.test.mjs) exercise real package paths without model calls.

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4718863d5e2bcb27c90f45a544a784825215f73ac08d4f61656b746d77079a99",
+  "claims": [
+    {
+      "id": "claim_8c85a53e9b994f938db5130ed93377f0",
+      "statement": "Profile planning and status are read-only, while explicit apply checks ownership of the named overlay before marketplace or plugin changes.",
+      "evidence": [
+        {
+          "resource": "repo://tools/profile-lifecycle.mjs#L502-L518",
+          "version": "repo-lines-v1:sha256:1a17d07840b3c9b988b81e16b0e7eacb6657f317bd3857d8133aaf9bc9191bc1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OTJjODM3YjBhNDU4YzBjNTc4YmE1ZDc4OGY2ZTU1NDQ4YjY5ZmQ0Y2UzODllMmU3YjhiYTlhNDExZDllZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwYWRjMmQ0Y2RlNTYzOTQ4YzdhYzI4N2YxYWJhZTE5NWI2ZTQ2Y2Y3YWEwMDJiYmM0ZDhlZDk5NTQ3ZmU2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzN2RjNDRmNWI5NDZiNWFjODhhYzU3NGYwMDMwZGU0ZDk5Nzk4Mjk2MjVmYTg2YzhhOWJhYTMzMzk4MDA1ODIifQ"
+        },
+        {
+          "resource": "repo://tools/profile-lifecycle.mjs#L519-L560",
+          "version": "repo-lines-v1:sha256:02905a988548a70999640ad49dafaf5488ab2917acc15a436746afd484a3411a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5ZWZiZGZjNDE1ZjliYTE2YmQ1ZDhlZTU5NmIzM2Q4ZGIyOGRkOWIyM2M4ODQ4YjVjZDNiOWMyYzdmNWZmODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwMjg5MjFmZTIzMThjNTYyYzc2OTcyMmRmOGQ4ZjZhYWQxMzYyNGIzMjJmZGU3OGZiNGFlOTE5ZGUxOTdkZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxOTg0ZDIzNmJmYWZlNzRlZjQ4ZDRmZDZmOWViODU3MWQyMWIzMTcwNTYxNjVmMDg4ZjIzZDgyYjI3Y2NkOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d65f2782db245bc91395a2ff6ec8605",
+      "statement": "Profile writes persist a prepared preimage before atomic mutation and then record a committed transaction; rollback compares recorded images and rejects later target changes.",
+      "evidence": [
+        {
+          "resource": "repo://tools/profile-lifecycle.mjs#L396-L432",
+          "version": "repo-lines-v1:sha256:5d9fbd71047454162ba5206072cae4e96f1adec4bdeaaa198b9ecd344ce759b4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyNGM3ZGJiMjE4YTcxM2Q5YzIzZjJiZGViNzc0NjZlYzYzYjM5OGQ4MTYyYTA4ZDEwOTQ5NzIxYjM2OWM4OGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyOGM1NTdlY2I3ZTVhMzMxZmVjMWNmODEyYzAzNzg4ZjI2ZGQ4YTI4ODc3ZTUwYjRkYWYxYmJiYjU0ZmNjOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwNzc2MjE2MDQ4Y2NhY2JmZWY1MDY5Zjc0M2QzMmRiYjZkN2IyY2NlMTAyMDhjOWU4MmY0MTg3YTRlN2QwOTYifQ"
+        },
+        {
+          "resource": "repo://tools/profile-lifecycle.mjs#L607-L666",
+          "version": "repo-lines-v1:sha256:90efe04e306021a0a607a06456165f433b5a97fb84ccf5fca43945e4232a617a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzZTEyMmFmOTBkMGQ4NWExYjY5NTA1MmZlMDNjNjgwNjYyNDc5NWNjNTZkOTc3ZDlkM2Y2MmYyY2ZjNDg1MTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxODg3MGE4MDQwOWY4YzRjOTk0ODA3YWY4MjU5Y2MwNGJkMGM1Y2EyZTlmMWMzYjEzZGVmMTBiMTYyNzg2ZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0YmJhZTAxMDJhMTFmNWIyYjZjZmQxNmJiYjE4NThlMDYyOWI5ZmI0MGNmNmIyNmVhMmYwYjQ5YWIwNzhkZjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aaf7c4d07d8246b09b6988bee7bf9716",
+      "statement": "Hook review derives from selected manifests and does not write runtime-owned Codex trust state; managed overlays preserve a host-added hooks.state section.",
+      "evidence": [
+        {
+          "resource": "repo://tools/profile-lifecycle.mjs#L340-L348",
+          "version": "repo-lines-v1:sha256:4892b30d9a7b4b6ec46e9f8b4e8361daa4f13b00a521d29843c0bd5fe4ff4494:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ZhZjQ5ZGQ1ODZhNDc4ZmYwNGI2MjYxOGZlNGQwOGVjODRkM2VhZGFhZTdlMzVhM2VlYjA1OTEwZTBlYmY3OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzc5Mzk1NGRmM2VkNzVjYzQ5Yzg4MmVjZDUwYTUzZjMwZjAwN2U5MTg3YzZjYmVmYTQzZDg0MTJkYWZlNTJhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjVkNWU3ZGQxMWUwNGYyYjU2MmQ3ZDlhMzZjMjc2MjEyMWRhNDRmNWRjMmNhODBkMzBiYWYxYzUwMTBiOTcxYiJ9"
+        },
+        {
+          "resource": "repo://tools/profile-lifecycle.mjs#L469-L474",
+          "version": "repo-lines-v1:sha256:e70ee98d138ab5e23f96aaf604d20775642424e5721b67318d27c4dd9c3c2b9e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGU0MWFmNjhiYzE3YTczMWUzMmZhYzM2NGY0YTQyMmVlZGExMDJiN2FhZGVlODQ1MTc0ODJiY2E4NGE2MTE5YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTdlMjhiNWUwYjhhMTcwMjEwN2IyZWNmNzkwZjc4YWJmNDFhM2RlNWUyOGJlNDg0M2FmYTg2YzQyMTgyYzhlMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjNhMjhhYWZlZGYzN2UyNmUwZWQxYWQ3MjFhMGQ0Mzc2M2E1NjZlYmRmZmRiMzFkN2NiZjg1ODBlMWE4MDlhNiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-03T17:57:45.987Z"
+  }
+}
