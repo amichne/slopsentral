@@ -337,3 +337,28 @@ def test_offline_install_and_lint_under_network_denial(tmp_path: Path, archive_p
         timeout=30,
     )
     assert lint_result.returncode == 0 and json.loads(lint_result.stdout) == {}
+
+
+def test_archive_cache_rechecks_bytes_before_install(
+    tmp_path: Path, archive_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    cache = tmp_path / "cache"
+    raw = archive_path.read_bytes()
+
+    def download(_release: object) -> bytes:
+        return raw
+
+    def unexpected(_release: object) -> bytes:
+        pytest.fail("unexpected download")
+
+    monkeypatch.setattr(installer, "download", download)
+    assert isinstance(installer.setup(tmp_path / "first", None, cache), installer.Installed)
+    monkeypatch.setattr(installer, "download", unexpected)
+    assert isinstance(installer.setup(tmp_path / "second", None, cache), installer.Installed)
+    (cached,) = cache.iterdir()
+    _ = cached.write_bytes(b"damaged")
+    output = tmp_path / "third"
+    assert installer.setup(output, None, cache) == installer.Failure(
+        installer.FailureCode.DIGEST_MISMATCH
+    )
+    assert not output.exists()

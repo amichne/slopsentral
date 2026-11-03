@@ -9,10 +9,10 @@ when it has new information to process.
 Choose a concrete target and predicate:
 
 ```sh
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
   arm --run-id <run-id> --until status-change --timeout auto --json
 
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
   arm --pr <pr-number> --head-sha <published-head-sha> --required --until terminal --timeout auto --json
 ```
 
@@ -39,7 +39,7 @@ state path.
 After a successful arm, invoke one bounded wait:
 
 ```sh
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
 ```
 
 The command blocks until the predicate or bound is reached and returns the
@@ -69,14 +69,14 @@ Cancelled, startup-failure, and action-required runs do not influence automatic
 timeout selection. Inspect current knowledge with:
 
 ```sh
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
   profile show --json
 ```
 
 When the team wants portable timing knowledge, explicitly export and review it:
 
 ```sh
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
   profile export --output .ci/github-actions-duration-profile.json --json
 ```
 
@@ -100,9 +100,9 @@ A timeout keeps `active.json` and the original target, baseline, and predicate.
 Extend its deadline explicitly, then await the same request:
 
 ```sh
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
   resume --timeout auto --json
-python3 "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
 ```
 
 `resume` needs an expired active request and performs no remote reads.

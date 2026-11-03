@@ -1,6 +1,17 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --locked --script
+# /// script
+# requires-python = ">=3.12,<3.14"
+# dependencies = []
+# [tool.uv]
+# no-build = true
+# required-version = ">=0.12.9"
+# [[tool.uv.index]]
+# name = "pypi"
+# url = "https://pypi.org/simple"
+# default = true
+# ///
 """Parse JaCoCo XML coverage reports into structured JSON.
-Usage: python3 jacoco_report <project_root> [--module :name] [--threshold N]
+Usage: uv run --locked --script jacoco_report <project_root> [--module :name] [--threshold N]
 """
 import json, os, sys
 import xml.etree.ElementTree as ET
