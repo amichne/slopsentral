@@ -152,6 +152,8 @@ jobs:
             "$RUNNER_TEMP/marketplace-candidate/release-assets.json" \
             "$RUNNER_TEMP/pi-candidate/SHA256SUMS" "$RUNNER_TEMP/pi-candidate/candidate.json" \
             "$RUNNER_TEMP/setup-candidate/install-pi.sh" "$RUNNER_TEMP/setup-candidate/setup-pi.mts" \
+            "$RUNNER_TEMP/setup-candidate/install.sh" "$RUNNER_TEMP/setup-candidate/slopsentral.py" \
+            "$RUNNER_TEMP/setup-candidate/slopsentral.py.lock" \
             "$RUNNER_TEMP/setup-candidate/setup.json" "$RUNNER_TEMP/promotion.json" \
             --verify-tag --draft --title "Slopsentral $VERSION" --notes-file "$RUNNER_TEMP/release-notes.md"
       - name: Verify published downloads before making the release current
@@ -166,7 +168,7 @@ jobs:
           cmp "$RUNNER_TEMP/pi-candidate/candidate.json" "$RUNNER_TEMP/downloaded/candidate.json"
           cmp "$RUNNER_TEMP/promotion.json" "$RUNNER_TEMP/downloaded/promotion.json"
           cmp "$RUNNER_TEMP/marketplace-candidate/release-assets.json" "$RUNNER_TEMP/downloaded/release-assets.json"
-          for file in install-pi.sh setup-pi.mts setup.json; do cmp "$RUNNER_TEMP/setup-candidate/$file" "$RUNNER_TEMP/downloaded/$file"; done
+          for file in install-pi.sh setup-pi.mts install.sh slopsentral.py slopsentral.py.lock setup.json; do cmp "$RUNNER_TEMP/setup-candidate/$file" "$RUNNER_TEMP/downloaded/$file"; done
           gh release edit "slopsentral-v$VERSION" --draft=false --latest
       - name: Complete the Release Please PR lifecycle after publication
         env:

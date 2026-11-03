@@ -18,6 +18,7 @@ test('setup uses curl trust through an HTTP proxy and rejects untrusted TLS, HTT
     https.createServer({ key: fs.readFileSync(process.argv[1]), cert: fs.readFileSync(process.argv[2]) }, (request, response) => {
       if (request.headers.authorization) { response.writeHead(400); response.end('credential leak'); }
       else if (request.url === '/missing') { response.writeHead(404); response.end('absent'); }
+      else if (request.url === '/secure-redirect') { response.writeHead(302, { location: 'https://' + request.headers.host + '/qualified' }); response.end(); }
       else if (request.url === '/redirect') { response.writeHead(302, { location: 'http://localhost:9/plaintext' }); response.end(); }
       else { response.end('qualified bytes'); }
     }).listen(0, '127.0.0.1', function () {
@@ -61,4 +62,18 @@ test('setup uses curl trust through an HTTP proxy and rejects untrusted TLS, HTT
   await assert.rejects(download(url), /DOWNLOAD_FAILED: curl exit 60 from localhost/);
   await assert.rejects(download('http://localhost:9'), /INVALID_ORIGIN/);
   assert.deepEqual(fs.readFileSync(path.join(directory, 'proxy-requests'), 'utf8').trim().split('\n'), Array(4).fill('localhost:' + ports.tls));
+  // The Python manager must reach the HTTPS redirect target with curl's real option semantics.
+  const uv = process.env.UV_BIN ?? process.env.UV ?? 'uv';
+  const python = `import json, sys
+from tools.slopsentral import Rejected, fetch
+result = fetch(sys.argv[1])
+print(json.dumps({'reason': result.reason.value} if isinstance(result, Rejected) else {'bytes': result.decode()}))`;
+  process.env.CURL_CA_BUNDLE = cert;
+  const request = route => JSON.parse(execFileSync(uv, ['run', '--locked', 'python', '-c', python, url + route],
+    { cwd: path.resolve(import.meta.dirname, '../..'), env: process.env, encoding: 'utf8' }));
+  assert.deepEqual(request('/secure-redirect'), { bytes: 'qualified bytes' });
+  assert.deepEqual(request('/redirect'), { reason: 'DOWNLOAD_FAILED' });
+  delete process.env.CURL_CA_BUNDLE;
+  assert.deepEqual(request('/secure-redirect'), { reason: 'DOWNLOAD_FAILED' });
+
 });

@@ -332,3 +332,33 @@ test('the projected five-plugin archive installs, loads, and rolls back through 
   rollback(options);
   assert.equal(fs.existsSync(path.join(options.agentDir, 'settings.json')), false);
 });
+
+test('removal deletes only Slopsentral registrations and owned instructions', async t => {
+  const scope = workspace(t);
+  const setup = await import('../setup-pi.mts');
+  assert.equal(typeof setup.remove, 'function', 'native setup needs an explicit removal operation');
+  const packageDir = path.join(scope.directory, 'installed');
+  fs.mkdirSync(packageDir);
+  write(path.join(packageDir, 'package.json'), { name: 'slopsentral-pi' });
+  write(path.join(scope.agentDir, 'settings.json'), { theme: 'dark', packages: ['npm:unrelated', packageDir] });
+  fs.writeFileSync(path.join(scope.agentDir, 'AGENTS.md'), 'Keep this.\n<!-- slopsentral:begin -->\nRemove this.\n<!-- slopsentral:end -->\n');
+  write(path.join(scope.cwd, '.pi/settings.json'), { packages: ['npm:slopsentral-pi', 'npm:project-keep'] });
+  setup.remove(scope, '4.0.6');
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(scope.agentDir, 'settings.json'))), { theme: 'dark', packages: ['npm:unrelated'] });
+  assert.equal(fs.readFileSync(path.join(scope.agentDir, 'AGENTS.md'), 'utf8'), 'Keep this.\n\n');
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(scope.cwd, '.pi/settings.json'))).packages, ['npm:slopsentral-pi', 'npm:project-keep']);
+  setup.remove(scope, '4.0.6');
+  assert.ok(fs.existsSync(packageDir), 'removal preserves payloads and recovery evidence');
+});
+
+test('removal rejects conflicting markers before configuration changes', async t => {
+  const scope = workspace(t);
+  const setup = await import('../setup-pi.mts');
+  assert.equal(typeof setup.remove, 'function', 'native setup needs an explicit removal operation');
+  const settings = path.join(scope.agentDir, 'settings.json');
+  write(settings, { packages: ['npm:slopsentral-pi', 'npm:keep'] });
+  const before = fs.readFileSync(settings);
+  fs.writeFileSync(path.join(scope.agentDir, 'AGENTS.md'), '<!-- slopsentral:begin -->\nMissing end.');
+  assert.throws(() => setup.remove(scope, '4.0.6'), /UNSAFE_CONFIG/);
+  assert.deepEqual(fs.readFileSync(settings), before);
+});

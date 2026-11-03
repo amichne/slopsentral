@@ -397,6 +397,42 @@ function tree(root: string): Map<string, string> {
 }
 export function shellQuote(value: string): string { return "'" + value.replaceAll("'", "'\"'\"'") + "'"; }
 
+function commitChanges(context: Scope, version: string, changes: Snapshot[], write = atomic): void {
+  const previous = recordOf(context);
+  if (fs.existsSync(previous)) { const history = path.join(path.dirname(previous), 'history'); directory(history); fs.copyFileSync(previous, path.join(history, crypto.randomUUID() + '.json')); }
+  const transaction: Transaction = { schemaVersion: 1, status: 'pending', version, scope: context, files: changes };
+  saveTransaction(context, transaction);
+  try {
+    for (const item of changes) { if (!matches(item, item.before)) reject('CONFIG_CHANGED', 'Configuration changed during commit.'); write(item.path, item.after === null ? null : Buffer.from(item.after, 'base64'), item.mode); }
+    saveTransaction(context, { ...transaction, status: 'applied' });
+  } catch (error) { restore(context); throw error; }
+}
+
+export function remove(options: Scope, version: string): void {
+  if (!releaseVersion.test(version)) reject('INVALID_VERSION', 'Use a published X.Y.Z version.');
+  const context = normalized(options);
+  const release = acquire(path.join(stateOf(context), 'setup.lock'));
+  const scope = context.project ? path.join(context.cwd, '.pi') : context.agentDir;
+  const file = path.join(scope, 'settings.json');
+  let unlock: (() => void) | undefined;
+  try {
+    if (fs.existsSync(recordOf(context)) && trustedRecord(context, false).transaction.status === 'pending') reject('RECOVERY_REQUIRED', 'Run the installer with --rollback.');
+    unlock = acquire(file + '.lock');
+    const saved = settings(file);
+    const next = narrowed(saved.value, scope);
+    const instructionPath = path.join(context.project ? context.cwd : context.agentDir, 'AGENTS.md');
+    const instruction = snapshot(instructionPath);
+    const before = instruction.bytes?.toString('utf8') ?? '';
+    const after = ownedInstruction(before, '');
+    const files: Snapshot[] = [
+      { path: file, before: encode(saved.bytes), after: JSON.stringify(next) === JSON.stringify(saved.value) ? encode(saved.bytes) : encode(jsonBytes(next)), mode: saved.mode },
+      { path: instructionPath, before: encode(instruction.bytes), after: after === before ? encode(instruction.bytes) : encode(Buffer.from(after)), mode: instruction.mode },
+    ];
+    const changes = files.filter(item => item.before !== item.after);
+    if (changes.length) commitChanges(context, version, changes);
+  } finally { unlock?.(); release(); }
+}
+
 export async function install(qualified: Qualified, options: { agentDir: string; cwd: string; project: boolean; beforeCommit?: () => void; stage?: (source: string, target: string) => void; write?: (file: string, bytes: Buffer | null, mode: number) => void }): Promise<{ status: string; version: string; state: string }> {
   if (qualified[qualification] !== true) reject('UNQUALIFIED_RELEASE', 'Setup requires an admitted release.');
   options = { ...options, ...normalized(options) };
@@ -460,28 +496,24 @@ export async function install(qualified: Qualified, options: { agentDir: string;
     if (!changes.length) return { status: 'CURRENT', version: qualified.version, state };
     options.beforeCommit?.();
     for (const item of changes) if (!matches(item, item.before)) reject('CONFIG_CHANGED', 'Configuration changed during setup: ' + item.path);
-    if (fs.existsSync(previous)) { const history = path.join(path.dirname(previous), 'history'); directory(history); fs.copyFileSync(previous, path.join(history, crypto.randomUUID() + '.json')); }
-    const transaction: Transaction = { schemaVersion: 1, status: 'pending', version: qualified.version, scope: context, files: changes };
-    saveTransaction(context, transaction);
-    try {
-      for (const item of changes) { if (!matches(item, item.before)) reject('CONFIG_CHANGED', 'Configuration changed during commit.'); (options.write ?? atomic)(item.path, item.after === null ? null : Buffer.from(item.after, 'base64'), item.mode); }
-      saveTransaction(context, { ...transaction, status: 'applied' });
-    } catch (error) { restore(context); throw error; }
+    commitChanges(context, qualified.version, changes, options.write);
     return { status: 'INSTALLED', version: qualified.version, state };
   } finally { fs.rmSync(temporary, { recursive: true, force: true }); for (const unlock of locks.reverse()) unlock(); release(); }
 }
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
-  if (args.includes('--help')) { console.log('Slopsentral native Pi setup\nUsage: install-pi.sh [--project] [--version X.Y.Z] [--rollback]\nGlobal by default; migrates Slopsentral registrations in personal and current-project scope.\nDocumentation: https://slopsentral.michne.com/guides/pi'); return; }
+  if (args.includes('--help')) { console.log('Slopsentral native Pi setup\nUsage: setup-pi.mts [--project] [--version X.Y.Z] [--rollback | --remove]\nGlobal by default; migrates Slopsentral registrations in personal and current-project scope.\nDocumentation: https://slopsentral.michne.com/guides/pi'); return; }
   let version: string | undefined;
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--version') { version = args[++i]; if (!version) reject('INVALID_INVOCATION', 'Missing version.'); }
-    else if (!['--project', '--rollback'].includes(args[i]!)) reject('INVALID_INVOCATION', 'Unknown argument: ' + args[i]);
+    else if (!['--project', '--rollback', '--remove'].includes(args[i]!)) reject('INVALID_INVOCATION', 'Unknown argument: ' + args[i]);
   }
   const agentDir = path.resolve(process.env.PI_CODING_AGENT_DIR ?? path.join(os.homedir(), '.pi/agent'));
   const cwd = fs.realpathSync(process.cwd());
   const project = args.includes('--project');
+  if (args.includes('--rollback') && args.includes('--remove')) reject('INVALID_INVOCATION', 'Select rollback or removal.');
+  if (args.includes('--remove')) { const qualified = await qualify(live, version); remove({ agentDir, cwd, project }, qualified.version); console.log('REMOVED: Slopsentral registrations in the selected scope. Restart Pi.'); return; }
   if (args.includes('--rollback')) { await qualify(live, version); rollback({ agentDir, cwd, project }); console.log('RESTORED: prior configuration. Restart Pi.'); return; }
   if (!['darwin', 'linux'].includes(process.platform)) reject('UNSUPPORTED_PLATFORM', 'Use macOS or Linux.');
   const pi = spawnSync('pi', ['--version'], { encoding: 'utf8', timeout: 10000 });

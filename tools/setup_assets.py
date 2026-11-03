@@ -21,7 +21,7 @@ from tools.pi_candidate import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ("install-pi.sh", "setup-pi.mts")
+FILES = ("install-pi.sh", "setup-pi.mts", "install.sh", "slopsentral.py", "slopsentral.py.lock")
 
 
 def package(source: Path, candidate: Path, output: Path) -> None:
@@ -30,7 +30,7 @@ def package(source: Path, candidate: Path, output: Path) -> None:
     output.mkdir(parents=True, exist_ok=False)
     records: list[dict[str, object]] = []
     for name in FILES:
-        origin = source / "tools" / name
+        origin = source / name if name == "install.sh" else source / "tools" / name
         if origin.is_symlink() or not origin.is_file():
             raise CandidateError(Failure.PAYLOAD_MISMATCH)
         target = output / name

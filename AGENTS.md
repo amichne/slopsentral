@@ -26,11 +26,29 @@ by hand when the authored source can be fixed instead.
   `Publish Harnesses` publishes Amp only to `harness/amp`, not `main`, so the
   authored checkout does not automatically activate every bundle.
 
+## Slopsentral Command
+
+`install.sh` owns the minimal shell bootstrap for the `slopsentral` command.
+It downloads pinned uv only when `uv` is absent from `PATH`.
+`tools/slopsentral.py` owns the locked Python command and its installation, update, and removal operations.
+Host operations need `--host`. Codex, Copilot, and Amp also need explicit `--plugin` selections.
+Use native Codex and Copilot commands for their host configuration.
+Amp uses managed links to release archives. Pi delegates to `tools/setup-pi.mts`.
+`tools/setup_assets.py` keeps the bootstrap, Python script, lock, and setup receipt.
+`source/schemas/pi/setup.schema.json` owns the receipt contract.
+Keep both historical two-file and current five-file inventories valid.
+Reject partial inventories and duplicate filenames.
+Keep upload and download lists in `.github/workflows/release-pi.yml` synchronized with that inventory.
+Preserve edited managed files, foreign paths, and disabled plugin choices.
+Keep installed copies and cached archives outside authored source.
+Run `uv run --locked pytest tools/python_checks/test_slopsentral.py tools/python_checks/test_setup_assets.py` after command changes.
+The [command guide](docs/cli-install.md) describes installation from source and published assets.
+
 ## Pi Installation Entry Point
 
 `tools/install-pi.sh` preserves the documented curl-to-shell entry point.
 It delegates to the tested native installer from the selected stable release.
-`tools/setup-pi.mts` owns settings migration and private recovery.
+`tools/setup-pi.mts` owns settings migration, removal, and private recovery.
 `tools/projection/Pi.pkl` owns native packages for all catalog plugins.
 `source/hooks/pi/adapter.ts` maps canonical hooks to native Pi events.
 Skills and review prompts use native discovery. Shared skills register once.
@@ -40,7 +58,7 @@ archive validation and source-bound candidate/installer receipts.
 `Release Slopsentral` publishes retained tested bytes only after a successful main
 version increment. It is independent of `Publish Harnesses`; do not restore retired Pi extensions,
 workflow emulation, or the old documentation/projector stack.
-Consumer setup must not add Python, uv, Pkl, or npm prerequisites.
+`tools/install-pi.sh` must not add Python, uv, Pkl, or npm prerequisites.
 Run `npm run check:pi`, `node --test tools/tests/pi-*.test.mjs`, and the focused
 Python Pi checks after installer/release changes. Use `PKL_BIN` to exercise native
 projection and `SLOPSENTRAL_PI_ARCHIVE` to exercise archive installation.

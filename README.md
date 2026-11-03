@@ -11,6 +11,9 @@ The wiki uses OKF pages and OpenWiki-managed Claims. It reuses the
 See [documentation updates](openwiki/workflows/documentation.md) for the
 review-only GitHub Action and required secrets.
 
+Use the [Slopsentral command](docs/cli-install.md) for explicit installation, updates, and removal.
+Its public bootstrap needs a release that includes the new command assets.
+
 ## Choose a plugin
 
 Start with Software Engineering and Kotlin Engineering for Kotlin work.
