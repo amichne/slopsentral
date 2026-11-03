@@ -18,8 +18,7 @@ Use controlled-technical-writing for prose assessment and code-knowledge-base fo
    For generation or a rewrite, use controlled-technical-writing to reuse the
    repository glossary or bootstrap a missing one before drafting.
 3. Choose a focused structure with [document-contracts.md](references/document-contracts.md).
-   For a substantial specification, establish the decision and evidence before introductions.
-   Draft in small sections when the user requests that workflow.
+   For specifications, state the decision and evidence first.
    If OpenWiki is the selected backend, use code-knowledge-base's backend handoff
    and the external openwiki integration. Its native page queue and Claims
    validation own OKF publication; do not write a parallel knowledge store.
@@ -28,8 +27,11 @@ Use controlled-technical-writing for prose assessment and code-knowledge-base fo
    Preserve the current framework unless the user requests a migration.
 5. Generate API and command references from their authoritative registry when one exists.
    Change the generator for generated pages. Derive diagrams from real components, states, calls, or schemas.
-6. Examine commands, examples, defaults, links, and page claims against their sources.
-   Run the repository's documentation build after navigation, configuration, layout, link, or generated-page changes.
+6. Connect mechanisms to consumers, invariants, source, and executable evidence.
+   For maintained knowledge, use code-knowledge-base's portable adoption procedure.
+   Use existing coverage and freshness gates. Reject incomplete evidence.
+   Examine commands, examples, links, and claims against source.
+   Run the documentation build after site or generated-page changes.
 7. Apply controlled-technical-writing's source and terminology checks.
    Run the repository's prose checks; use the bundled assessment when requested
    or required by policy, and keep that report. Do not require a new assessment
