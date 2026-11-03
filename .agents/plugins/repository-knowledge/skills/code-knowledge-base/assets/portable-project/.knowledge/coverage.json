@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 2,
+  "knowledge": {
+    "type": "OKF",
+    "root": "knowledge"
+  },
+  "sourceRoots": ["app/"],
+  "documentRoots": ["README.md", "handbook/", "knowledge/"],
+  "entrypoints": ["README.md"],
+  "auxiliary": [],
+  "archives": [],
+  "fingerprintIgnores": [],
+  "areas": [
+    {
+      "id": "greeting",
+      "sources": ["app/"],
+      "pages": ["handbook/development.md", "knowledge/greeting.md"]
+    }
+  ]
+}
