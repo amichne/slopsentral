@@ -35,6 +35,9 @@ models whose critical path is too far from the observed workflow median.
 `provisional` timing mode reports those timing findings without letting early
 runner evidence become a false deterministic gate.
 
+For an artifact edge, examine the workflow selectors with the [partial retry fixture](artifact-retry.md).
+The graph model covers declared dependencies. The fixture covers the producer and consumer selectors.
+
 ## Dependency Ordering
 
 1. Put cheap, deterministic, high-fan-out checks first. A root preflight should

@@ -2,8 +2,7 @@
 
 Use `gradle-performance-engineering` for the Gradle measurement loop and
 Develocity model interpretation. This reference owns the Actions environment,
-workflow graph, cache transport, and evidence handoff. Assume full Develocity API
-access, but account for absent publishing credentials in untrusted PR contexts.
+workflow graph, cache transport, and evidence handoff. Examine Develocity access before collection. Record missing credentials or metrics as unavailable.
 
 ## Establish the CI Baseline
 
@@ -42,7 +41,7 @@ reduction predicts an improvement; matched observed runs must confirm it.
 - Use the organization's configured Develocity instance and publishing policy.
   Do not change scan terms, publish to a public service, or dump environment
   variables as part of optimization. Report scan links and bounded metrics in
-  job summaries; retain only needed diagnostic artifacts with defined retention.
+  job summaries. Keep only needed diagnostic artifacts with defined retention.
 
 ## Work Selection and Quality Gates
 

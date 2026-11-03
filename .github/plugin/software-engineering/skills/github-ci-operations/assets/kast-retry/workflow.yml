@@ -1,0 +1,17 @@
+# Reduced from amichne/kast@2d4a2d1a1ca1b60acb76fedb6d570676a3ae10d7.
+# Preserve the upload and download selectors from run 41557509358.
+jobs:
+  native:
+    steps:
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: native-executable-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/handoff-output/
+          retention-days: 7
+  assembly:
+    needs: [scope, native]
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: native-executable-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/handoff-input/
