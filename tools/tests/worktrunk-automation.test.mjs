@@ -30,7 +30,7 @@ case "$*" in
   *) exit 99 ;;
 esac
 `, { mode: 0o755 });
-  fs.writeFileSync(path.join(bin, 'uv'), `#!/bin/sh
+  fs.writeFileSync(path.join(bin, 'mise'), `#!/bin/sh
 printf '%s\\n' "$PWD:$*" >> "$WT_TEST_LOG"
 exit "\${WT_TEST_SETUP_EXIT:-0}"
 `, { mode: 0o755 });
@@ -65,14 +65,14 @@ test('creation runs blocking setup in the new worktree before handoff', { skip: 
   const f = fixture(t);
   const success = f.run(wt, ['switch', '--create', 'task', '--base=main', '--yes', '--no-cd', '--format=json']);
   assert.equal(success.status, 0, success.stderr);
-  assert.equal(fs.readFileSync(f.log, 'utf8').trim(), `${path.join(f.root, 'task')}:run --locked tools/setup.py`);
+  assert.equal(fs.readFileSync(f.log, 'utf8').trim(), `${path.join(f.root, 'task')}:exec -- slopsentral-setup`);
   const handoff = path.join(f.root, 'handoff');
   const failed = f.run(wt, ['switch', '--create', 'failed-task', '--base=main', '--yes', '--no-cd',
     '--execute', 'touch', '--', handoff], { WT_TEST_SETUP_EXIT: '17' });
   assert.equal(failed.error, undefined);
   assert.equal(failed.signal, null);
   assert.notEqual(failed.status, 0, failed.stderr);
-  assert.match(fs.readFileSync(f.log, 'utf8'), /failed-task:run --locked tools\/setup.py/);
+  assert.match(fs.readFileSync(f.log, 'utf8'), /failed-task:exec -- slopsentral-setup/);
   assert.equal(fs.existsSync(handoff), false, 'failed setup must prevent agent handoff');
 });
 

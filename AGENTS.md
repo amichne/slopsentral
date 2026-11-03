@@ -97,8 +97,8 @@ hook; language and domain instructions refine it.
 Write repository automation in Python. Install the uv version from `mise.toml` with `mise install`.
 Give public CLI commands executable names without file extensions. Install them in a directory on `PATH`.
 Declare dependencies in PEP 723 headers and commit adjacent locks. Use `tool.uv.no-build = true`.
-Run `mise exec -- uv run --locked --script tools/setup.py` for checkout setup.
-Run `mise exec -- uv run --locked --script tools/check.py` for Ruff, strict Pyright, and pytest. Keep generated outputs and installed caches outside authored edits.
+Run `mise exec -- slopsentral-setup` for checkout setup.
+Run `mise exec -- slopsentral-check` for Ruff, strict Pyright, and pytest. Keep generated outputs and installed caches outside authored edits.
 
 ## Core Skill Evals
 

@@ -34,7 +34,7 @@ jobs:
         with:
           version: 2026.9.1
       - name: Set up locked Python and schema tools
-        run: uv run --locked tools/setup.py
+        run: mise exec -- slopsentral-setup
       - name: Check the unified release version
         id: version
         run: uv run --locked python -m tools.release_version check --github-output "$GITHUB_OUTPUT"

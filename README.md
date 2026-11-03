@@ -60,16 +60,20 @@ See [installation, updates, rollback, and native checks](docs/pkl-projection.md#
 ## Automation
 
 Install mise before checkout setup. Review `mise.toml` before you run `mise trust`.
-The file pins uv for contributors and CI. Setup needs Node.js and npm.
+The file pins uv for contributors and CI. On POSIX systems, mise adds the checkout’s `bin` directory to `PATH`.
+Setup needs Node.js and npm.
 The prose tests need Vale 3.24.0 on `PATH` or at the path in `VALE_BIN`.
 The marketplace projector needs Pkl 0.32.0 on `PATH` or at the path in `PKL_BIN`.
 
 ```text
 mise install
-mise exec -- uv run --locked --script tools/setup.py
-mise exec -- uv run --locked --script tools/check.py
+mise exec -- slopsentral-setup
+mise exec -- slopsentral-check
 mise exec -- npm run verify
 ```
+
+On Windows, use `mise exec -- uv run --locked --script tools/setup.py` for setup.
+Use `mise exec -- uv run --locked --script tools/check.py` for the Python checks.
 
 The project locks Pyright, Ruff, pytest, PyYAML, and the optional LibCST group.
 Write repository automation in Python. Declare each portable script’s Python range and dependencies in its PEP 723 header.

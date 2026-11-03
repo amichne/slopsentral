@@ -144,7 +144,7 @@ function relativeToRepo(absolutePath) {
 const shellInterfaces = new Set(["tools/install-pi.sh", "source/skills/cli-creator/assets/personal-size.zsh"]);
 
 // Portable consumers carry the existing project minimum without an ambient project.
-for (const root of ["source", "tools"]) {
+for (const root of ["bin", "source", "tools"]) {
   for (const file of listFiles(root, file => !file.split(path.sep).includes("__pycache__"))) {
     const script = fs.readFileSync(file, "utf8");
     const relative = relativeToRepo(file);
