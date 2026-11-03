@@ -88,6 +88,8 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
 - Load [workflow-graph-optimization.md](references/workflow-graph-optimization.md)
   when changing `needs`, matrices, fan-out gates, Gradle/cache grouping, OCI
   image validation, or workflow/task cardinality.
+- For partial retries, use the [artifact retry fixture](references/artifact-retry.md).
+- For a PR performance report, use the [attempt signals](references/attempt-signals.md).
 - Load [gradle-ci-performance.md](references/gradle-ci-performance.md) for
   Gradle on GitHub Actions, Develocity correlation, cache ownership, affected-task
   selection, measured latency/runner consumption, and CI/CD handoff. Use
