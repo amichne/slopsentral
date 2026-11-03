@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.8](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.7...slopsentral-v4.0.8) (2026-11-03)
+
+
+### Features
+
+* distribute and dogfood source-backed documentation ([#124](https://github.com/amichne/slopsentral/issues/124)) ([7fab294](https://github.com/amichne/slopsentral/commit/7fab29428fe059e9c93b95c3d1d2a1b3d92a006b))
+
 ## [4.0.7](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.6...slopsentral-v4.0.7) (2026-11-03)
 
 
