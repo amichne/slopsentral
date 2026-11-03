@@ -99,3 +99,13 @@ The [eval guide](../docs/skill-evals.md) defines these distinct evidence surface
 
 The [migration map](MIGRATION.md) records previous owners and replacements.
 Historical audits remain evidence of their original runs, not current qualification.
+
+
+## Portable knowledge admission
+
+Code Knowledge Base owns the distributed documentation runtime, schema, adoption procedure, and example project.
+Slopsentral's `bin/slopsentral-docs` uses that exact runtime.
+`docs/coverage.json` selects this project's roots, OpenWiki backend, and fingerprint exceptions.
+Another project can select its own roots and plain OKF without native OpenWiki state.
+Fresh projections for all four providers exercise the runtime in independent projects.
+These assertions establish package bytes and portable behavior, without model or native host consumption evidence.

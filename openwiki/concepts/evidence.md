@@ -5,13 +5,13 @@ description: Connect a system claim to its source owner, executable oracle, rela
 tags: [evidence, okf, claims, freshness, engineering]
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T18:20:38.306Z
+    at: 2026-11-03T20:23:45.331Z
 sources:
   - id: openwiki-source-e14c3521bbc2e703193cadf9
     resource: repo://source/instructions/engineering-design.md
-  - id: openwiki-source-47ec153299eb0886a6e326f4
-    resource: repo://tools/documentation.py
-generated: { by: "codex", at: "2026-11-03T18:20:38.306Z" }
+  - id: openwiki-source-fce7a6054d61269783034ac4
+    resource: repo://source/skills/code-knowledge-base/scripts/documentation.py
+generated: { by: "codex", at: "2026-11-03T20:23:45.331Z" }
 ---
 
 # Evidence and knowledge freshness
@@ -60,6 +60,18 @@ A source change invalidates the old byte agreement even when the explanation rem
 Review the affected claim before recording another receipt.
 A no-change page decision needs a source-backed reason in the PR description or an existing task review receipt.
 The receipt records reviewed bytes. It does not prove claim completeness or semantic correctness.
+
+## Use the same portable mechanism
+
+The [distributed runtime](../../source/skills/code-knowledge-base/scripts/documentation.py) owns coverage, links, admission prerequisites, and reviewed fingerprints.
+Slopsentral invokes that runtime through `bin/slopsentral-docs`.
+The Code Knowledge Base package ships its script, adjacent lock, schema, adoption procedure, and independent-project template.
+Project policy stays in the coverage configuration.
+
+A project selects its source roots, document roots, entrypoints, and fingerprint exceptions.
+A standalone OKF store needs no OpenWiki checkpoint or Claim sidecars.
+An OpenWiki store keeps its native lifecycle and completion prerequisites.
+The [portable procedure](../../source/skills/code-knowledge-base/references/portable-documentation.md) explains adoption without a Slopsentral checkout.
 
 ## Keep the practice proportional
 

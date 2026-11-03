@@ -68,3 +68,6 @@ sources and incomplete coverage rather than reporting no drift. A matching diges
 proves byte agreement, not semantic accuracy or reader comprehension. Preserve
 OpenWiki's native Claims and finalization when it owns the store. Ordinary code
 work needs focused retrieval and impact review, not automatic wiki generation.
+Dogfood the same distributed procedures and runtime that other projects use.
+Keep project roots, backend selection, and fingerprint exceptions in configuration.
+Use Code Knowledge Base for portable adoption, then prove the packaged runtime in an independent project.

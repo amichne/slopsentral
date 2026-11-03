@@ -2,12 +2,17 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
 import subprocess
 from pathlib import Path
+from typing import TYPE_CHECKING
 
+import documentation as docs
 import pytest
+from jsonschema import Draft202012Validator
 
-from tools import documentation as docs
+if TYPE_CHECKING:
+    from jsonschema.protocols import Validator
 
 
 def write(root: Path, name: str, content: str) -> None:
@@ -19,13 +24,14 @@ def write(root: Path, name: str, content: str) -> None:
 def fixture(root: Path) -> None:
     _ = subprocess.run(["git", "init", "--quiet", str(root)], check=True)
     write(root, "source/service.py", "def run(): return 1\n")
-    write(root, "docs/index.md", "[Guide](guide.md)\n[Knowledge](../openwiki/flow.md)\n")
+    write(root, "docs/index.md", "[Guide](guide.md)\n[Knowledge](../openwiki/index.md)\n")
     write(root, "docs/guide.md", "# Guide\n\nUse the [source](../source/service.py).\n")
     write(
         root,
         "openwiki/flow.md",
         "---\ntype: Runtime Flow\ntitle: Flow\ndescription: Service behavior.\n---\n# Flow\n\n[Guide](../docs/guide.md)\n",
     )
+    write(root, "openwiki/index.md", "[Flow](flow.md)\n")
     write(root, "openwiki/.last-update.json", '{"status":"complete"}')
     write(root, "openwiki/.claims/flow.json", '{"claims":[{"id":"claim-1"}]}')
     write(
@@ -33,7 +39,13 @@ def fixture(root: Path) -> None:
         "docs/coverage.json",
         json.dumps(
             {
-                "schemaVersion": 1,
+                "schemaVersion": 2,
+                "knowledge": {"type": "OPENWIKI", "root": "openwiki"},
+                "sourceRoots": ["source/"],
+                "documentRoots": ["docs/", "openwiki/"],
+                "entrypoints": ["docs/index.md", "openwiki/index.md"],
+                "auxiliary": [],
+                "fingerprintIgnores": [],
                 "areas": [
                     {
                         "id": "service",
@@ -131,17 +143,18 @@ def test_missing_repository_and_duplicate_keys_fail(tmp_path: Path) -> None:
 
 
 def test_product_version_exception_preserves_composition_evidence() -> None:
-    name = "source/plugins/software-engineering/plugin.json"
-    assert docs.source_bytes(name, b'{"version":"4.0.7","skills":[]}') == docs.source_bytes(
-        name, b'{"version":"4.0.8","skills":[]}'
+    name = "plugins/core.json"
+    rules = (docs.FingerprintIgnore(name, (("version",),)),)
+    assert docs.source_bytes(name, b'{"version":"1.0.0","skills":[]}', rules) == docs.source_bytes(
+        name, b'{"version":"1.0.1","skills":[]}', rules
     )
-    assert docs.source_bytes(name, b'{"version":"4.0.8","skills":["new"]}') != docs.source_bytes(
-        name, b'{"version":"4.0.8","skills":[]}'
-    )
-    marketplace = "source/adaptable.marketplace.json"
     assert docs.source_bytes(
-        marketplace, b'{"plugins":[{"plugin":{"name":"a","version":"4.0.7"}}]}'
-    ) == docs.source_bytes(marketplace, b'{"plugins":[{"plugin":{"name":"a","version":"4.0.8"}}]}')
+        name, b'{"version":"1.0.1","skills":["new"]}', rules
+    ) != docs.source_bytes(name, b'{"version":"1.0.1","skills":[]}', rules)
+    # Another project receives no implicit Slopsentral version exception.
+    assert docs.source_bytes(name, b'{"version":"1.0.0"}') != docs.source_bytes(
+        name, b'{"version":"1.0.1"}'
+    )
 
 
 def test_mapped_but_unreachable_page_is_rejected(tmp_path: Path) -> None:
@@ -158,6 +171,9 @@ def test_mapped_but_unreachable_page_is_rejected(tmp_path: Path) -> None:
 def test_unmapped_source_is_not_silently_covered(tmp_path: Path) -> None:
     fixture(tmp_path)
     write(tmp_path, "tools/new.py", "pass\n")
+    spec = json.loads((tmp_path / "docs/coverage.json").read_text())
+    spec["sourceRoots"].append("tools/")
+    write(tmp_path, "docs/coverage.json", json.dumps(spec))
     status, report = docs.run(tmp_path, "record")
     assert status == 2
     assert "tools/new.py" in str(report)
@@ -185,3 +201,140 @@ def test_claim_receipt_change_invalidates_reviewed_evidence(tmp_path: Path) -> N
     status, report = docs.run(tmp_path, "check")
     assert status == 1
     assert "openwiki/.claims/flow.json" in str(report)
+
+
+def test_standalone_project_layout_uses_explicit_configuration(tmp_path: Path) -> None:
+    _ = subprocess.run(["git", "init", "--quiet", str(tmp_path)], check=True)
+    write(tmp_path, "app/service.py", "def run(): return 1\n")
+    write(tmp_path, "README.md", "[Service](knowledge/service.md)\n[Guide](handbook/guide.md)\n")
+    write(tmp_path, "handbook/guide.md", "# Guide\n[Code](../app/service.py)\n")
+    write(
+        tmp_path,
+        "knowledge/service.md",
+        "---\ntype: Service\ntitle: Service\ndescription: App behavior.\n---\n# Service\n[Guide](../handbook/guide.md)\n",
+    )
+    write(
+        tmp_path,
+        ".knowledge/coverage.json",
+        json.dumps(
+            {
+                "schemaVersion": 2,
+                "knowledge": {"type": "OKF", "root": "knowledge"},
+                "sourceRoots": ["app/"],
+                "documentRoots": ["README.md", "handbook/", "knowledge/"],
+                "entrypoints": ["README.md"],
+                "auxiliary": [],
+                "archives": [],
+                "fingerprintIgnores": [],
+                "areas": [
+                    {
+                        "id": "service",
+                        "sources": ["app/"],
+                        "pages": ["handbook/guide.md", "knowledge/service.md"],
+                    }
+                ],
+            }
+        ),
+    )
+    script = Path(docs.__file__)
+    for command in ("record", "check"):
+        result = subprocess.run(
+            [
+                "uv",
+                "run",
+                "--locked",
+                "--script",
+                str(script),
+                command,
+                "--repo",
+                str(tmp_path),
+                "--config",
+                ".knowledge/coverage.json",
+                "--lock",
+                ".knowledge/review.lock.json",
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert result.returncode == 0, result.stdout + result.stderr
+    assert (tmp_path / ".knowledge/review.lock.json").is_file()
+    assert not (tmp_path / "docs").exists()
+    assert not (tmp_path / "openwiki").exists()
+
+
+def test_record_preserves_a_symlinked_foreign_lock(tmp_path: Path) -> None:
+    fixture(tmp_path)
+    foreign = tmp_path.parent / (tmp_path.name + "-private.json")
+    _ = foreign.write_text("private bytes\n")
+    (tmp_path / "docs/knowledge.lock.json").symlink_to(foreign)
+    assert docs.run(tmp_path, "record")[0] == 2
+    assert foreign.read_text() == "private bytes\n"
+
+
+def test_config_cannot_hide_knowledge_from_document_scope(tmp_path: Path) -> None:
+    fixture(tmp_path)
+    spec = json.loads((tmp_path / "docs/coverage.json").read_text())
+    spec["documentRoots"] = ["docs/"]
+    write(tmp_path, "docs/coverage.json", json.dumps(spec))
+    assert docs.run(tmp_path, "record")[0] == 2
+
+
+def schema_validator() -> Validator:
+    schema = json.loads(
+        (Path(docs.__file__).parents[1] / "references/documentation.schema.json").read_text()
+    )
+    Draft202012Validator.check_schema(schema)
+    return Draft202012Validator(schema)
+
+
+def test_configurations_match_the_distributed_schema(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[2]
+    validator = schema_validator()
+    fixture(tmp_path)
+    for source in (
+        root / "docs/coverage.json",
+        tmp_path / "docs/coverage.json",
+        Path(docs.__file__).parents[1] / "assets/portable-project/.knowledge/coverage.json",
+    ):
+        spec = json.loads(source.read_text())
+        assert not list(validator.iter_errors(spec))
+        assert isinstance(docs.coverage(spec), docs.Coverage)
+    invalid = json.loads((tmp_path / "docs/coverage.json").read_text())
+    invalid["knowledge"]["type"] = "UNSUPPORTED"
+    assert list(validator.iter_errors(invalid))
+    assert isinstance(docs.coverage(invalid), docs.Rejected)
+
+
+def test_bundled_template_is_current_in_an_independent_repository(tmp_path: Path) -> None:
+    source = Path(docs.__file__).parents[1] / "assets/portable-project"
+    _ = shutil.copytree(source, tmp_path, dirs_exist_ok=True)
+    _ = subprocess.run(["git", "init", "--quiet", str(tmp_path)], check=True)
+    status, report = docs.run(
+        tmp_path, "check", ".knowledge/coverage.json", ".knowledge/review.lock.json"
+    )
+    assert status == 0, report
+    assert report["type"] == "CURRENT"
+    result = subprocess.run(
+        [
+            "uv",
+            "run",
+            "--no-project",
+            "--python",
+            "3.12",
+            "python",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "app",
+            "-p",
+            "greeting_examples.py",
+        ],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "Ran 2 tests" in result.stderr

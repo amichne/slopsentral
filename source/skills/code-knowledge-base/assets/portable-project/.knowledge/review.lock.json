@@ -1,0 +1,18 @@
+{
+  "areas": {
+    "greeting": {
+      "app/greeting.py": "37be15ec547774fb4ef5bc239dacea5133f67c929283dbeb28d6721fdbbb23c1",
+      "app/greeting_examples.py": "1e5c496442f0243aab813170f8c475cf4e8845c300c2f7287ba57f970b597488",
+      "handbook/development.md": "e67ae7f858ea5d4bac7fe0b2f1dc8e9125890d1f390f3c624b46fc2e49c16917",
+      "knowledge/greeting.md": "8d7069a7b18adc530ceefb74d68fd77950fdfa93a04e3a4d3016bceb21ec5876"
+    },
+    "navigation": {
+      "README.md": "99420cb5e67dd2f37838f56664c36fff92bc6b011f5aa8343f0d4fa991369734",
+      "handbook/development.md": "e67ae7f858ea5d4bac7fe0b2f1dc8e9125890d1f390f3c624b46fc2e49c16917",
+      "knowledge/greeting.md": "8d7069a7b18adc530ceefb74d68fd77950fdfa93a04e3a4d3016bceb21ec5876",
+      "knowledge/index.md": "b4349c6678aeca7dbf100e41390d893abe7bb72bc75c1c7a3a43ccb0e1573f34"
+    }
+  },
+  "coverageSha256": "475653dc3158ea208661857ec3967535e45932049b6717690c4a875d581f8ec7",
+  "schemaVersion": 2
+}

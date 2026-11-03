@@ -3,17 +3,23 @@ type: Architecture
 title: Source ownership and plugin composition
 description: Canonical primitives compose into plugins and profiles while generated provider packages remain consumers.
 tags: [ownership, composition, marketplace, resources]
-verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-03T17:57:45.987Z
 sources:
+  - id: openwiki-source-8037e2358a2c4f9b2c722a11
+    resource: repo://AGENTS.md
+  - id: openwiki-source-2bf8a58918c9cbf16d14dae1
+    resource: repo://docs/coverage.json
   - id: openwiki-source-38f77ed28e29446493d61df3
     resource: repo://source/AGENTS.md
   - id: openwiki-source-817f5a68830289f58734f532
     resource: repo://source/plugins/repository-knowledge/plugin.json
   - id: openwiki-source-0de19b70b13c7683e196f562
     resource: repo://tools/project-marketplaces.mjs
-generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
+  - id: openwiki-source-2402abcd09d5c9c6105c476c
+    resource: repo://tools/tests/documentation-portability.test.mjs
+generated: { by: "codex", at: "2026-11-03T20:23:45.331Z" }
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-03T20:23:45.331Z
 ---
 
 # Source ownership and plugin composition
@@ -62,6 +68,18 @@ Its dependencies can select only resources.
 This variant lets a hook consume a runtime helper without installing the helper's entire authoring procedure.
 The source identity, bytes, mode, and digest remain part of the graph.
 Use the [resource guide](../../docs/workflow-resources.md) for declaration examples and focused checks.
+
+## Distribute the practice that this repository uses
+
+Code Knowledge Base owns the portable documentation runtime and its dependency lock.
+Its package also includes a configuration schema, adoption procedure, and complete independent-project template.
+Slopsentral's `bin/slopsentral-docs` points to that same runtime.
+Project roots, backend selection, and fingerprint exceptions stay in `docs/coverage.json`.
+
+The [portable procedure](../../source/skills/code-knowledge-base/references/portable-documentation.md) supports another project without a Slopsentral checkout.
+The [package proof](../testing/validation.md) exercises unchanged shipped bytes through all four provider projections.
+A copied runtime remains a pinned consumer with explicit upstream provenance.
+Do not fork project-specific policy into another runtime implementation.
 
 ## Change an owner safely
 

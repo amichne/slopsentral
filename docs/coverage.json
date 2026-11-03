@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "areas": [
     {
       "id": "engineering",
@@ -124,7 +124,7 @@
         "source/skills/code-knowledge-base/",
         "source/skills/technical-documentation/",
         "source/skills/controlled-technical-writing/",
-        "tools/documentation.py",
+        "source/skills/code-knowledge-base/scripts/documentation.py",
         ".github/workflows/openwiki-update.yml"
       ],
       "pages": [
@@ -157,5 +157,71 @@
     "docs/skill-plugin-reassessment.md",
     "docs/tdd-astra-audit.md",
     "docs/three-plugin-audit.md"
+  ],
+  "knowledge": {
+    "type": "OPENWIKI",
+    "root": "openwiki"
+  },
+  "sourceRoots": [
+    "source/",
+    "tools/",
+    ".github/workflows/"
+  ],
+  "documentRoots": [
+    "README.md",
+    "docs/",
+    "openwiki/",
+    "source/ARCHITECTURE.md"
+  ],
+  "entrypoints": [
+    "README.md",
+    "docs/index.md",
+    "openwiki/index.md"
+  ],
+  "auxiliary": [
+    "docs/GLOSSARY.md",
+    "openwiki/INSTRUCTIONS.md"
+  ],
+  "fingerprintIgnores": [
+    {
+      "path": "source/plugins/software-engineering/plugin.json",
+      "pointers": [
+        "/version"
+      ]
+    },
+    {
+      "path": "source/plugins/kotlin-engineering/plugin.json",
+      "pointers": [
+        "/version"
+      ]
+    },
+    {
+      "path": "source/plugins/intellij-plugin-development/plugin.json",
+      "pointers": [
+        "/version"
+      ]
+    },
+    {
+      "path": "source/plugins/developer-tooling/plugin.json",
+      "pointers": [
+        "/version"
+      ]
+    },
+    {
+      "path": "source/plugins/repository-knowledge/plugin.json",
+      "pointers": [
+        "/version"
+      ]
+    },
+    {
+      "path": "source/adaptable.marketplace.json",
+      "pointers": [
+        "/plugins/0/plugin/version",
+        "/plugins/1/plugin/version",
+        "/plugins/2/plugin/version",
+        "/plugins/3/plugin/version",
+        "/plugins/4/plugin/version"
+      ]
+    }
   ]
 }

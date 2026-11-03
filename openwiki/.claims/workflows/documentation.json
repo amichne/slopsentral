@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:f87aea171c0756ed974791e83ce5a00f0ada7883425a44041ccaf9c73b9941a1",
+  "pageVersion": "sha256:2a1f4cf7edda0af34927a50efa464d8606d19a0aa7893e4f23159e67c4f446bc",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -96,15 +96,19 @@
       "evidence": [
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:5752f34bd7b9e88962f903b01ecc4b051a250dc0c16c6d16aa20f07250ffc8a2"
+          "version": "repo-file-v1:sha256:290d558cc3641c73f234439de93de91eba6888a23e58c495536436c5caee69b2"
         },
         {
-          "resource": "repo://tools/documentation.py#L106-L139",
-          "version": "repo-lines-v1:sha256:7a24077ea8f21cc651ce57a1c0d50afff7001fcdef8684590c874c3807db4b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxZDkxYzkwMjc4ZDFmYWU1ZjkzMzA5NmRmZjkyZjI2MjI5M2ZjMzdiYTlkNzg3ZDJlMjhjMTY0YWYwMTQ2NjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZGU4YzdjOWEzNzlmZWM4MmZjZjQyNjE2YjE2MmVkMGZiYTE2NzVjZjNjZDM5MGI1OTRkZDA4OTdkZDQ2NTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxNjY4ZDU2YzNiYWRkYjg1ZTkzYzc1N2ZjMTYwNTE3ZDdmYjNlY2ViY2ExMjFkMGM2ZjQ5MjhjMzc5ZDYzOTYifQ"
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L229-L279",
+          "version": "repo-lines-v1:sha256:0766f943b6d379275e70d4b8e269a77fabc000ccdb6608ae76316db6be084d73:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MWQxMmU4MDQxZmVlYjdlMWM5OWFiNmQ0MGIyYjMyMWYwOTIzMDUwZjAyODdmNjA4OWM5MzAwNjQ3MmMwMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlN2ViZWNhYmVlYTk4MjYzYzgyZDAzMmRiNzc5N2E4NTc3OWQxNjA4MDgxMWRiYmFhMTkwZjQwMTZiZGYwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZDY3YTBlOWE3MDE3YmNjY2VmN2Y1MmY4ZGNkY2Q2ZGNmMjU2NTg5Y2NmNWExYjVhNzY1MjBkMzc2MDU5ZTAifQ"
         },
         {
-          "resource": "repo://tools/documentation.py#L285-L416",
-          "version": "repo-lines-v1:sha256:c962cc4cd29484713f92497d10ffebb94dbdc55c813d4db5cb99911a81302642:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxNzFkOGI1MjkzN2NlZGIwZmM2NmI2OWQyMjRmNjcyYTE0MjIwMWUyNjlkMWJjMTQ1YzIzYzQ3NmFlNDZjMWI4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNzAxNDllMDY5YWQ2N2VjY2Y0NzM2NDZmZjFjNzUwMDUwZDMyOWQxMTAwMThkYzU3NjY4NzhlYWZhMWQ2MDdkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4MTcyNmZmOGIxY2JiNTkyMGU4NjYxZDRmYTRlN2JlODI0ZmM4MThlZTk1ZTg1MGJhMzBkNTUwZDhmN2EwOWMxIn0"
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L432-L544",
+          "version": "repo-lines-v1:sha256:c16acc360a9b29a3152a1552217a53d028f2681baf6da99daf2e25f87b1d914a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3NmYwZmEwMzY1MjhkMDA5MGUxYjY0MmFjZjExNTc2MzBjNTRhYzE4ZjlmY2NhY2ViY2IyMzdmMjhiZGM5MzlhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNzAxNDllMDY5YWQ2N2VjY2Y0NzM2NDZmZjFjNzUwMDUwZDMyOWQxMTAwMThkYzU3NjY4NzhlYWZhMWQ2MDdkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3ZDNkMzU0MjM3MmY5ZDA1ODEzYzQzNGI3MDg2NzhlZTQ0YjEwYzRiZDkyMWIxZGEwM2Y5MDY5N2IwMWYzMGEwIn0"
+        },
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L571-L621",
+          "version": "repo-lines-v1:sha256:1c8f7bbbd135e9304e4cf64354d72230f85c0bbb34c9066d830c8374671fae99:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlM2EzZTBmMTg3N2JjMjg0ZDcwOTQ5OWE3MGY5MTZmMTI5MDdlYzRlNmQ5MGU0YjgxMzA4NDA0ZTgyMWQ4OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkYWFmMjcyYWM4MDc5OTJlY2NhNDY4ODc1N2E5MzljYjhlNDY5MGU0MjE5NmZhYjU0YTI3MmEzZDY3MmZmMzAifQ"
         }
       ]
     },
@@ -123,18 +127,28 @@
       "statement": "The review record fingerprints native Claim sidecars and completion metadata, so later changes invalidate the recorded agreement.",
       "evidence": [
         {
-          "resource": "repo://tools/documentation.py#L355-L368",
-          "version": "repo-lines-v1:sha256:ce0aad848229a18c7138c4f70cf719b52031b2d71633c99d9dd9091c8ca5c6af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1MzY3YTU3Y2I3ZWJhMjMwYjRiODI0MTUyNjFkZDQ2NTJkNDI5ODZhZmNmNTRhYmE4Yjk5MDBlNGJjZDY2MDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4ZmI4YTcxZGRiM2YyZGVlYWNmZjAyODkwY2UwNTI1YmYzMDNmZDNlMmNlZjI4NWI4NjA4OTgwYzk3MmIzY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2Y2Q1ZmUzZGFiNzlkNGU3NTNjYzIxMWY1ZDM0ZjdlNzNiYzUzZDc1N2Q1OWZiYjQ2YzQwYzQ2NzJmM2M4OTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwMjE0YjJmZWQxMjY0M2M5MjZhZjI3ZDgxYjlkNGI0MzkzMDZlYTY2ODljYTNhZWQ0YzE4YmFkNjI5MWYwYzcifQ"
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L531-L543",
+          "version": "repo-lines-v1:sha256:8f291c224f99b5fc0e28403487e0636b08d7723e3078a4b1d5eecacd6311bd02:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkZGNjMGVmMjJkYmY5MmExNWRkN2E0ZjRhZDZmM2Y1NmY2NjQzNjNmZDgxY2M0YTNmZDgxZmM3OTc2NjMzZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4ZmI4YTcxZGRiM2YyZGVlYWNmZjAyODkwY2UwNTI1YmYzMDNmZDNlMmNlZjI4NWI4NjA4OTgwYzk3MmIzY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3MzUyNTdkYjYzN2IwM2Y1ODE1YjdlYjY3MjM1YjNkMGE5OGMzNjU1Njc3YzlkNDdiMmFiM2JmNTc5NjQ3ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhYTcwNmVkNzAzMGI4YWIyYWJmNTY0NTk3OTFjODRkMmM4NTFmYThmMWMwYzg1NmFiZTU1MzU4MDlhNDU5ZWYifQ"
         },
         {
-          "resource": "repo://tools/python_checks/test_documentation.py#L181-L187",
-          "version": "repo-lines-v1:sha256:fde8fd312074315942995501e0dc0f8752c4f106e71a60ca2c3122bd15fcb97f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Y3Y2E3NWQ0MTEwMDBiNmUzZDljNDJiNmJjZmM4MTdjYWZhY2QzYTEyN2RlZjA5Y2VjMGY5MGY4ZDQyNWRiNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGZjN2ViNDE5ODhjMGMxMzllZTlkZmEyNGMzNzdhNTkzMGFkNDIyYjhmMDNlMWE0MzE4MWZlOWQ2MDBlYThjNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjBhMzcxMWZiYzAwZTlkNGQ1ZGFjZTE1NGNkODYwMjQwZjdmYjEyMmJkNjU3MGIyNjViN2ZkM2UzNzY1ZGY5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+          "resource": "repo://tools/python_checks/test_documentation.py#L186-L195",
+          "version": "repo-lines-v1:sha256:e0cf7e9b1468da98e4c6de9b712e8da1fec5b5076a6330c5586a6676d4dbac7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MjgwYzczMGQyZmFlZTAzMzU2N2E1YThiY2NhZGQyMzMzODEwZmEwZmY5OGFiM2NiNTdmMTEzODVlNWFjODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNGEyMTE1YTk5M2U1OWI1NzYyODhmMjRhOGJkY2VlNTZiMDg1ODJkNWNmZDU2MTkyMzdlYWVjZTE5MDE1MDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmNTIzMmY4OTFjMTM4MmIyMTE4Nzg3NzcwNmQ1ODVmNGVhYTY3ZDlmODkzZDE0NDM5NzQwNzZjMDg1ZGEzYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d0514a7fb94d497aaabbfcd7d8404bb8",
+      "statement": "The distributed adoption procedure uses a configured OKF or OpenWiki backend and a pinned script with its lock, while CI examines reviewed fingerprints without generating pages or recording new expectations.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/code-knowledge-base/references/portable-documentation.md",
+          "version": "repo-file-v1:sha256:e47bf9890aba1130d485a3287721ae464591e64affee7f04ea18c03185b52fb8"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T18:18:32.121Z"
+    "at": "2026-11-03T20:23:45.331Z"
   }
 }

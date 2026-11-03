@@ -18,10 +18,10 @@ sources:
     resource: repo://tools/python_checks/gates.py
   - id: openwiki-source-6706911967b481bbbe3dfbe8
     resource: repo://tools/setup.py
-generated: { by: "codex", at: "2026-11-03T18:20:38.306Z" }
+generated: { by: "codex", at: "2026-11-03T20:23:45.331Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T18:20:38.306Z
+    at: 2026-11-03T20:23:45.331Z
 ---
 
 # Slopsentral quickstart
@@ -45,6 +45,7 @@ A plugin installation grants no authority to publish, deploy, or change personal
 | Install portable instructions | [Global instructions](integrations/global-instructions.md) | [Source map](../docs/global-agents.md) |
 | Examine a release or failed publication | [Release lifecycle](operations/releases.md) | [Release guide](../docs/releases.md) |
 | Distinguish fixtures from live evidence | [Evaluations](operations/evaluations.md) | [Evaluation guide](../docs/skill-evals.md) |
+| Adopt this practice in another project | [Portable documentation](workflows/documentation.md#adopt-the-same-practice-in-another-project) | [Packaged procedure](../source/skills/code-knowledge-base/references/portable-documentation.md) |
 | Review stale knowledge | [Evidence model](concepts/evidence.md) | [Documentation workflow](workflows/documentation.md) |
 | Select the decisive gate | [Validation](testing/validation.md) | [Guide index](../docs/index.md) |
 
@@ -78,6 +79,8 @@ Retrieve the smallest explanation that answers the current question, then examin
 These OKF pages preserve Claims and source evidence through OpenWiki.
 The repository gate links functional areas to explanations and compares reviewed source bytes.
 Neither a fresh digest nor valid Markdown proves factual accuracy, host consumption, or model compliance.
+Slopsentral uses the same distributed documentation runtime that the portable procedure supplies to other projects.
+The package assertions exercise that runtime in independent projects through all four provider projections.
 Historical audits keep their original evidence scope in the [guide index](../docs/index.md).
 
 Documentation automation proposes generated wiki changes for review.

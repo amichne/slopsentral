@@ -14,16 +14,18 @@ sources:
     resource: repo://source/instructions/engineering-design.md
   - id: openwiki-source-62bf20b2fca146abb9011c20
     resource: repo://source/skills/code-knowledge-base/references/knowledge-backend-handoff.md
+  - id: openwiki-source-29299f56541b8236fc4f50d6
+    resource: repo://source/skills/code-knowledge-base/references/portable-documentation.md
+  - id: openwiki-source-fce7a6054d61269783034ac4
+    resource: repo://source/skills/code-knowledge-base/scripts/documentation.py
   - id: openwiki-source-5aeb8b8adffe48c4411461e5
     resource: repo://source/skills/controlled-technical-writing/references/glossary-authoring.md
-  - id: openwiki-source-47ec153299eb0886a6e326f4
-    resource: repo://tools/documentation.py
   - id: openwiki-source-00110e15b75d856174b63939
     resource: repo://tools/python_checks/test_documentation.py
-generated: { by: "codex", at: "2026-11-03T18:18:32.121Z" }
+generated: { by: "codex", at: "2026-11-03T20:23:45.331Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T18:18:32.121Z
+    at: 2026-11-03T20:23:45.331Z
 ---
 
 # Maintain source-backed documentation
@@ -44,6 +46,26 @@ The glossary already covers the wiki.
 Its definitions remain provisional because independent reader review remains absent.
 A rewrite in another repository creates a minimal source-backed glossary only when no owner exists.
 Assessment alone and ordinary code work do not authorize glossary creation.
+
+## Adopt the same practice in another project
+
+Code Knowledge Base ships the [portable runtime](../../source/skills/code-knowledge-base/scripts/documentation.py), its lock, a schema, and a complete example project.
+The [adoption procedure](../../source/skills/code-knowledge-base/references/portable-documentation.md) explains configuration and consumer provenance.
+It does not need the Slopsentral checkout, its Node dependencies, or its project tooling.
+
+Schema version 2 selects source roots, document roots, entrypoints, auxiliary pages, areas, archives, and explicit fingerprint exceptions.
+It also selects `OKF` or `OPENWIKI` with the knowledge root.
+An ordinary OKF project needs no native Claim sidecars or completion checkpoint.
+An OpenWiki project keeps the native lifecycle and its stronger admission prerequisites.
+
+Slopsentral's `bin/slopsentral-docs` uses that same runtime.
+Its project policy lives in `docs/coverage.json`, including the deliberate product-version exceptions.
+The runtime contains no implicit Slopsentral paths or release exceptions.
+The [package assertions](../testing/validation.md#exercise-the-distributed-practice-independently) run shipped bytes in independent Git projects for all four providers.
+
+Review affected source and explanations before `record`.
+CI runs `check` without refreshing expected fingerprints or generating pages.
+A copied script and lock remain pinned consumer assets whose upstream revision and digests need a deliberate update.
 
 ## Complete the native lifecycle
 

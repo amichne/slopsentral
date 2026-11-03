@@ -16,18 +16,18 @@
       "completedRunId": "44ce81a1-8589-4c3b-94b6-d6ed66e51013"
     },
     "/openwiki/concepts/evidence.md": {
-      "pageVersion": "sha256:8ad1b75c73574921c61563518f94fa7c948fde82fd175f6400727c82f307693d",
+      "pageVersion": "sha256:4091eec17dee4f12cb62fe88b10233c8435dbfd664068becd2cce93d1a8f656c",
       "completedBy": "codex",
-      "completedRunId": "0cdd8a48-5652-4758-b8cb-2b89cde15531",
-      "gitHead": "4c81732811cdc8633b7f753267f7fcf51544fc21",
-      "sourceFingerprint": "sha256:f337be00e2c6d081c7d7e59c5136fa1f313ac620e475aa00a07c18e8f6f89cbf"
+      "completedRunId": "e92deb46-cd25-4f11-a5ba-57508677f3d8",
+      "gitHead": "0a28dab0e001a15bb5e4ac5ccbbc10b223d2f106",
+      "sourceFingerprint": "sha256:6abc1f098c9b952fce68d20b8d4876530fc5a0352d58a69c16af2bca8cc44cdb"
     },
     "/openwiki/concepts/source-ownership.md": {
-      "gitHead": "4c81732811cdc8633b7f753267f7fcf51544fc21",
-      "sourceFingerprint": "sha256:3418c5f51709aa4dea36d80460d99d67a90e4d01d6c0278891e1e86cd5b7eabc",
-      "pageVersion": "sha256:d2bd7d2416d67843d625aee2f54997b9c8a06c5581afee1ec5bf4c5c2a347648",
+      "pageVersion": "sha256:a3084aaa3d1eb810d28d8f084ebcee51cafe6dfa71d5fe6218c89ee3518927ab",
       "completedBy": "codex",
-      "completedRunId": "44ce81a1-8589-4c3b-94b6-d6ed66e51013"
+      "completedRunId": "e92deb46-cd25-4f11-a5ba-57508677f3d8",
+      "gitHead": "0a28dab0e001a15bb5e4ac5ccbbc10b223d2f106",
+      "sourceFingerprint": "sha256:6abc1f098c9b952fce68d20b8d4876530fc5a0352d58a69c16af2bca8cc44cdb"
     },
     "/openwiki/integrations/cli.md": {
       "gitHead": "4c81732811cdc8633b7f753267f7fcf51544fc21",
@@ -72,18 +72,18 @@
       "completedRunId": "44ce81a1-8589-4c3b-94b6-d6ed66e51013"
     },
     "/openwiki/quickstart.md": {
-      "pageVersion": "sha256:2dd4f53e7e943f6fad6ca613d3222c07ab11e0e1a94eb53ba415c5b6ada76fe4",
+      "pageVersion": "sha256:4f629bd4f42eff715070553502960893feff59250e69dc32b2f218f2e2cf2499",
       "completedBy": "codex",
-      "completedRunId": "0cdd8a48-5652-4758-b8cb-2b89cde15531",
-      "gitHead": "4c81732811cdc8633b7f753267f7fcf51544fc21",
-      "sourceFingerprint": "sha256:f337be00e2c6d081c7d7e59c5136fa1f313ac620e475aa00a07c18e8f6f89cbf"
+      "completedRunId": "e92deb46-cd25-4f11-a5ba-57508677f3d8",
+      "gitHead": "0a28dab0e001a15bb5e4ac5ccbbc10b223d2f106",
+      "sourceFingerprint": "sha256:6abc1f098c9b952fce68d20b8d4876530fc5a0352d58a69c16af2bca8cc44cdb"
     },
     "/openwiki/testing/validation.md": {
-      "gitHead": "4c81732811cdc8633b7f753267f7fcf51544fc21",
-      "sourceFingerprint": "sha256:c8e6483fa1238dabd4fb75867d0ffbfcce7b62ce138fe8bcada5a04865bd8139",
-      "pageVersion": "sha256:746bb9cd0fd61f5158cdc43934c4a93466dbdacf3e442b08df1fe205cc845cc6",
+      "pageVersion": "sha256:22ca179d23b435dc6a9c603e39079aebb59baf707c8d347b10d97d382db6eaf4",
       "completedBy": "codex",
-      "completedRunId": "3a70f509-d0e3-4385-b5ee-64522e12c3c8"
+      "completedRunId": "e92deb46-cd25-4f11-a5ba-57508677f3d8",
+      "gitHead": "0a28dab0e001a15bb5e4ac5ccbbc10b223d2f106",
+      "sourceFingerprint": "sha256:6abc1f098c9b952fce68d20b8d4876530fc5a0352d58a69c16af2bca8cc44cdb"
     },
     "/openwiki/workflows/authoring.md": {
       "gitHead": "4c81732811cdc8633b7f753267f7fcf51544fc21",
@@ -93,11 +93,11 @@
       "completedRunId": "44ce81a1-8589-4c3b-94b6-d6ed66e51013"
     },
     "/openwiki/workflows/documentation.md": {
-      "gitHead": "4c81732811cdc8633b7f753267f7fcf51544fc21",
-      "sourceFingerprint": "sha256:c8e6483fa1238dabd4fb75867d0ffbfcce7b62ce138fe8bcada5a04865bd8139",
-      "pageVersion": "sha256:f87aea171c0756ed974791e83ce5a00f0ada7883425a44041ccaf9c73b9941a1",
+      "pageVersion": "sha256:2a1f4cf7edda0af34927a50efa464d8606d19a0aa7893e4f23159e67c4f446bc",
       "completedBy": "codex",
-      "completedRunId": "3a70f509-d0e3-4385-b5ee-64522e12c3c8"
+      "completedRunId": "e92deb46-cd25-4f11-a5ba-57508677f3d8",
+      "gitHead": "0a28dab0e001a15bb5e4ac5ccbbc10b223d2f106",
+      "sourceFingerprint": "sha256:6abc1f098c9b952fce68d20b8d4876530fc5a0352d58a69c16af2bca8cc44cdb"
     }
   }
 }

@@ -156,6 +156,10 @@ Integration and offline checks do not establish live passes or measured improvem
 
 Read [the documentation practice](docs/documentation.md) for source-linked explanations, coverage, and freshness.
 Use OpenWiki as the single OKF owner. Keep operational commands in `docs/`.
+`source/skills/code-knowledge-base/scripts/documentation.py` owns the portable gate and its adjacent lock.
+`bin/slopsentral-docs` points to that distributed runtime. Keep project policy in `docs/coverage.json`.
+The skill bundles its schema, adoption procedure, and independent-project template.
+Run `PKL_BIN=/path/to/pkl-0.32.0 node --test tools/tests/documentation-portability.test.mjs` after runtime or package changes.
 For source changes, examine affected explanations and refresh them within the task scope.
 Complete the native page queue before a documentation admission claim.
 Run `mise exec -- slopsentral-docs check` for coverage, links, native completion, and reviewed fingerprints.

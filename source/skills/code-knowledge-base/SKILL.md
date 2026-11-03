@@ -1,6 +1,6 @@
 ---
 name: code-knowledge-base
-description: "Create or refresh source-backed OKF concepts, migrate notes, assess source drift, or generate deterministic signature indexes. Use for knowledge bundles and backend handoffs."
+description: "Create or refresh source-backed OKF concepts, migrate notes, assess source drift, adopt portable coverage and freshness gates, or generate signature indexes. Use for knowledge bundles and backend handoffs."
 ---
 
 # Code Knowledge Base
@@ -37,6 +37,7 @@ Treat indexes as navigation aids whose claims still need source evidence.
 
 ## Select the Necessary Reference
 
+- For adoption in another project, use [portable-documentation.md](references/portable-documentation.md) and the bundled runtime. Keep project policy in its coverage configuration.
 - For concept fields, links, history, format checks, or graph output, read [knowledge-page-contract.md](references/knowledge-page-contract.md).
 - For tracked or sibling storage, read [knowledge-overlay.md](references/knowledge-overlay.md) before a write.
 - For OpenWiki or a backend migration, read [knowledge-backend-handoff.md](references/knowledge-backend-handoff.md).

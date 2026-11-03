@@ -46,7 +46,7 @@
     },
     {
       "path": "source/instructions/engineering-design.md",
-      "sha256": "73dafab2e45f17871c446456b94a95cce4ab3ac0c8616707ac21359fae4c0cc2"
+      "sha256": "5d06b5c2990d46f25978150f4aaf9c9a8c61fde5fcc8af9e55961842de8125e5"
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",
@@ -670,7 +670,7 @@
     },
     {
       "path": "source/skills/technical-documentation/SKILL.md",
-      "sha256": "f4696540bffd786597958e2315bf072b0126dcad18d85be679ef8a02a0f67dfa"
+      "sha256": "9ae162fcc221e717af7acf1a497eac38850753a974d2010e1bd5b613a379592c"
     },
     {
       "path": "source/skills/technical-documentation/references/document-contracts.md",

@@ -21,6 +21,18 @@ Use the existing store in another repository.
 Create a new store only for an authorized documentation task with no existing owner.
 An ordinary code task needs focused retrieval and impact review, without an automatic full rewrite.
 
+## Use the distributed practice
+
+Code Knowledge Base ships the runtime, dependency lock, configuration schema, adoption procedure, and complete example project.
+The [portable procedure](../source/skills/code-knowledge-base/references/portable-documentation.md) supports a different project layout and a standalone OKF store.
+It needs no Slopsentral checkout or OpenWiki state for that backend.
+An OpenWiki project keeps its native lifecycle.
+
+Slopsentral uses that same authored runtime through `bin/slopsentral-docs`.
+Project policy lives in [coverage.json](coverage.json), without a checkout-only implementation.
+The [package tests](../tools/tests/documentation-portability.test.mjs) exercise the shipped runtime in independent projects through all four provider projections.
+They prove byte identity and portable command behavior, without host registration or model calls.
+
 ## Connect a change to its explanation
 
 1. Read the owning code, public contract, callers, and focused tests.
@@ -41,6 +53,9 @@ Keep current behavior, accepted decisions, examples, historical results, and unk
 ## Maintain the coverage map
 
 [coverage.json](coverage.json) maps each maintained area to source selections and documents.
+Schema version 2 also declares the knowledge backend, source roots, document roots, entrypoints, auxiliary pages, and fingerprint exceptions.
+The bundled [schema](../source/skills/code-knowledge-base/references/documentation.schema.json) describes the external shape.
+The runtime also rejects invalid path relationships and missing inputs.
 A selection names one exact file or a directory prefix with a final slash.
 Each area needs nonempty sources and at least one OKF explanation.
 Each authored guide needs an area or an explicit historical classification.
@@ -58,7 +73,7 @@ The [documentation index](index.md) separates those records from current guides.
 
 ## Examine freshness
 
-The [documentation command](../tools/documentation.py) supplements native Claims with a repository-wide review record.
+The [documentation command](../source/skills/code-knowledge-base/scripts/documentation.py) supplements native Claims with a repository-wide review record.
 It reads Git's tracked and unignored file inventory, including local new files.
 It compares reviewed source and document fingerprints with `knowledge.lock.json`.
 New, changed, renamed, and deleted selected inputs invalidate that record.
@@ -79,7 +94,8 @@ Its local link procedure examines Markdown links, reference links, images, and h
 External URLs and embedded HTML links need separate examination.
 Historical audit links remain historical and receive no live-link guarantee.
 
-Product-version fields in canonical plugin manifests and marketplace plugin references do not affect mechanism fingerprints.
+This project explicitly excludes product-version fields in canonical plugin manifests and marketplace references through `fingerprintIgnores`.
+The portable runtime has no implicit Slopsentral paths or version exceptions.
 Every other field still affects the fingerprint.
 This exception permits Release Please's existing version-only updates.
 Version admission and synchronization remain with the [release owner](releases.md).

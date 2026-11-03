@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d2bd7d2416d67843d625aee2f54997b9c8a06c5581afee1ec5bf4c5c2a347648",
+  "pageVersion": "sha256:a3084aaa3d1eb810d28d8f084ebcee51cafe6dfa71d5fe6218c89ee3518927ab",
   "claims": [
     {
       "id": "claim_d1bc8d787e7348afa9f084f58f304d0e",
@@ -63,10 +63,28 @@
           "version": "repo-lines-v1:sha256:dc8cdac76976588a6323af2acae3d730f42cd47c8820e3ceb3f3f80e856deab5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMDViNjJkZDhmM2NkYTAyZjhjZDczNTEwNmRhMjBlNDBiY2I5ZDRjZDQ5YjcyN2VkYTdhMzE1NGZiMjhhMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNDI1YzFkNjgxNjE0OWRmYzEyYTJhNjM3ODliZTY3YzIzMzhiYzA0MzllZmRkMmY0OTkzYmIyYWMzZDVkODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhNDYxNjgxNzhiYzEwNzAxMzY4NjEwOTBlOTc1ZjBkMzU5ZDdmYzdiMTMxNzQ4NGNlNzVhYzM1ZGU1MTAyMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzNmFkM2Q4ZWY1MTA5ZWNkN2JiZWI4OTA1ZWI4MGJmNGFhZGM5MzBiYzAyOWIyNTE4OWQzZTY4ZmYwNWVmNDcifQ"
         }
       ]
+    },
+    {
+      "id": "claim_f93eb7b64bdb487282f083e3d624ffff",
+      "statement": "Code Knowledge Base bundles the portable runtime and adoption assets, while Slopsentral's coverage configuration supplies its project policy.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L158-L171",
+          "version": "repo-lines-v1:sha256:ec87fed5120fd204544fb32ff892571b20b4b8fae73f8c9fb05153be6a3dba46:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYWY2MmViNjZmYTIyYjAxMzQzM2E0ODA1ZmY3MTRjN2QzZWY1Y2Y0MjVhYjUxZGViNmZmY2IwYmRiYWY3YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNmU0NTM4Zjc3Yzc5NzI0MGZhMmE5ODZhYWE4MGI4MTk3N2U5MDUzMjEyODIxNTM0ZDJlMGUzM2JhNWIxNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5N2NkZTRmZmEzODRkZGNjMjQxOTM1NGVkODcyNjc4NmQ1ZmViZDY3ODQ3ZjljN2ZiMzAyYjg1M2U4MzkxNDEifQ"
+        },
+        {
+          "resource": "repo://docs/coverage.json",
+          "version": "repo-file-v1:sha256:290d558cc3641c73f234439de93de91eba6888a23e58c495536436c5caee69b2"
+        },
+        {
+          "resource": "repo://tools/tests/documentation-portability.test.mjs#L90-L113",
+          "version": "repo-lines-v1:sha256:996bf4da6a19982c3831fca034f4ef764c878db7d917438cacb74da57f9c2fc7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0YzlkZTE2NDlmYjg0MGVlY2FiNmY4ZDcxMDIwY2ZkNjYyNzJjNmU0NzkzYWQxMmQwMzM5MjJjMTRmZDZmNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3NzlhYjk5YTc1NDQ2M2Q2MWYyYTY3YjIzYTNiN2ZiMjYyYWZjYTk1ZDNiMjY3OWU0Yjk2NTQxNGM4NDE4N2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiZTFjZTdmOGJlYWU2N2U1MDhhNGFiOWEyY2NiOGZhYjg0NDhkZTgzZmMxODJjOTM0NzVhMjA0ZDk3MGQwZDgifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T17:57:45.987Z"
+    "at": "2026-11-03T20:23:45.331Z"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:8ad1b75c73574921c61563518f94fa7c948fde82fd175f6400727c82f307693d",
+  "pageVersion": "sha256:4091eec17dee4f12cb62fe88b10233c8435dbfd664068becd2cce93d1a8f656c",
   "claims": [
     {
       "id": "claim_0d9e521c633f4bb3a461cb047b9b3e1b",
@@ -17,18 +17,32 @@
       "statement": "Repository documentation coverage maps maintained areas to source selections and explanations, and its explicit record operation stores reviewed fingerprints without proving semantic accuracy.",
       "evidence": [
         {
-          "resource": "repo://tools/documentation.py#L108-L141",
-          "version": "repo-lines-v1:sha256:18dd6df429b43e3a86d421ec16afed2a53ffbac587b3366712047400aaa329c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMWJhNGE5OTViNzE3MThjMGNkMzA5MjY3YzlkZjhhYzhhOWY1MmMxNjcxMmU2Zjk4YzFjOWMxMDhkMTgyOTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzOTg5NWYxODM3NjQ4MzlhYmE3YmUwYjhjMDIyNzVkODhiNzAxNjRlNjdlMmZiY2MzZWRmMzBiM2ZjYmEzNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxMzRjZDQ3MmZjZWI4MjcxMGFmN2Y0MGUzZjU2ZWU5N2Q3MzBjN2MxZDU0OThiNzhlNGRmMmNiYTBiM2Y3YTgifQ"
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L229-L279",
+          "version": "repo-lines-v1:sha256:0766f943b6d379275e70d4b8e269a77fabc000ccdb6608ae76316db6be084d73:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MWQxMmU4MDQxZmVlYjdlMWM5OWFiNmQ0MGIyYjMyMWYwOTIzMDUwZjAyODdmNjA4OWM5MzAwNjQ3MmMwMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlN2ViZWNhYmVlYTk4MjYzYzgyZDAzMmRiNzc5N2E4NTc3OWQxNjA4MDgxMWRiYmFhMTkwZjQwMTZiZGYwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZDY3YTBlOWE3MDE3YmNjY2VmN2Y1MmY4ZGNkY2Q2ZGNmMjU2NTg5Y2NmNWExYjVhNzY1MjBkMzc2MDU5ZTAifQ"
         },
         {
-          "resource": "repo://tools/documentation.py#L393-L416",
-          "version": "repo-lines-v1:sha256:6222ac12367f51932633035371ef32811100d7a80981cb8266729d2594d0019e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4YTRjMzdkMWQ0MTMxY2E3OWI3YTc5NjljNzQ2NzY3ZjVhZDI5YmY3MmVlZGFiMzEwMjhjOWVkMzRkZjZhOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxNzI2ZmY4YjFjYmI1OTIwZTg2NjFkNGZhNGU3YmU4MjRmYzgxOGVlOTVlODUwYmEzMGQ1NTBkOGY3YTA5YzEifQ"
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L571-L621",
+          "version": "repo-lines-v1:sha256:1c8f7bbbd135e9304e4cf64354d72230f85c0bbb34c9066d830c8374671fae99:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlM2EzZTBmMTg3N2JjMjg0ZDcwOTQ5OWE3MGY5MTZmMTI5MDdlYzRlNmQ5MGU0YjgxMzA4NDA0ZTgyMWQ4OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkYWFmMjcyYWM4MDc5OTJlY2NhNDY4ODc1N2E5MzljYjhlNDY5MGU0MjE5NmZhYjU0YTI3MmEzZDY3MmZmMzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3a011f77c2e416689641b43764bdff4",
+      "statement": "The portable documentation runtime selects standalone OKF or native OpenWiki through project configuration, without imposing OpenWiki completion state on the standalone backend.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L149-L161",
+          "version": "repo-lines-v1:sha256:23728d482ca9b8254e350e4ee3adace04640e68fa48004f295a90da0cb710321:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZGFhMzU1ZDQ0Mzk2Yjc3NTU0MDBkM2Y2ZGYwOTdjZDhiZDZmYzRiNDVhNjlhOWRlZWRiMmFiYTg5ZDdkOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2YWVkZmM4Y2RkZDY2NzY5OTI1NmZiOTkyYWEzMTRlZDFhOTJlN2Q0ODRiMmQ0NTQ2ZDVlNmI3YmQ1ODAwYjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZTI1MGVlMzljN2RhOWJlYWFlMWQzOWNiOTUwNmUwMmVjNDVlYWMxMzVkZGIyNjE1Y2E0YjI2MWU3NTk4MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1YTYxYmJmYjNhZWI2YjJkZWY5ZTM3NmQ4NDAwYzc1YWU5YmFiYjBkNTE4ODM1ZjMwNjNjOTY0MTlhM2UxYjUifQ"
+        },
+        {
+          "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L432-L469",
+          "version": "repo-lines-v1:sha256:bf779959b5576c3e32b644d769ea5497aa25a67063ea3a726d0716d2ec0c53e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2ZjBmYTAzNjUyOGQwMDkwZTFiNjQyYWNmMTE1NzYzMGM1NGFjMThmOWZjY2FjZWJjYjIzN2YyOGJkYzkzOWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MDE0OWUwNjlhZDY3ZWNjZjQ3MzY0NmZmMWM3NTAwNTBkMzI5ZDExMDAxOGRjNTc2Njg3OGVhZmExZDYwN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmZjAyY2M1MDgzMTBjNmU1ODI1MmQ1ZjgwYzFmOWRmMmQwMTVkYjNiNTAyMDEyNmFjYzczNmUyZTE5YTU1YTgifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T18:20:38.306Z"
+    "at": "2026-11-03T20:23:45.331Z"
   }
 }
