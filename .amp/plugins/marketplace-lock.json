@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T12:19:13-05:00",
+  "generatedAt": "2026-11-03T12:32:00-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -27,7 +27,7 @@
         },
         {
           "name": "engineering-design",
-          "sha256": "sha256:6115727dd4cb243c521d25eccb90b58a7eedafc37f026b8eba2a2c7e193738cd",
+          "sha256": "sha256:9a59984310d19a8eb6c9b19e49fbc1f339d1e909f3f801dddbbed2a345230765",
           "sourcePath": "source/instructions/engineering-design.md",
           "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
@@ -41,14 +41,14 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:d605e5a43f8fbdd666c5084e4f7dc8bbd94443cce99f31ab3e6809776fe5edf4",
+          "sha256": "sha256:bef0fc2c8c98372f695cc3abe8127b419cf4b3e0bcf6378648af7dcfefd2e439",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
         },
         {
           "name": "issue-tracker-operations",
-          "sha256": "sha256:8c173b2a57c7298f9b06c168404ace207b5b7cacd32b256547bf0b2df0a319ec",
+          "sha256": "sha256:514dc6590ceb3361faed8b0ad805b5d44e0e676a2c0a6b02cb7f0edb58fa6f97",
           "sourcePath": "source/skills/issue-tracker-operations",
           "targetPath": "skills/issue-tracker-operations",
           "type": "SKILL"
@@ -62,14 +62,14 @@
         },
         {
           "name": "pull-request-lifecycle",
-          "sha256": "sha256:fd3ea8df9e465d90fcdf97784610d6b59e65ae4616f31e699a5a40855dce2696",
+          "sha256": "sha256:93bc6410505d9f1afbf6b59d24d5f692978305421a060e562eae2c45bb69d42c",
           "sourcePath": "source/skills/pull-request-lifecycle",
           "targetPath": "skills/pull-request-lifecycle",
           "type": "SKILL"
         },
         {
           "name": "python-tooling",
-          "sha256": "sha256:37c4b2c78383e758f15add3e9c546e50ddeff8d421728931962702c346037dcb",
+          "sha256": "sha256:0cbcd3f2a340e9734ae13fa248334fce7a404c2acec6a2120a8dc18727f0b6ac",
           "sourcePath": "source/skills/python-tooling",
           "targetPath": "skills/python-tooling",
           "type": "SKILL"
@@ -118,7 +118,7 @@
         },
         {
           "name": "kotlin-gradle-validation",
-          "sha256": "sha256:225b3806d41e44dcf555a61004408d593b36824f6316fc5bb60374585ae6433f",
+          "sha256": "sha256:0f40335a0e4814ebc3eb5391004dc4a2c78657b27b3fc86798ccc0201f8b477b",
           "sourcePath": "source/skills/kotlin-gradle-validation",
           "targetPath": "skills/kotlin-gradle-validation",
           "type": "SKILL"
@@ -146,7 +146,7 @@
       "references": [
         {
           "name": "intellij-platform-testing",
-          "sha256": "sha256:4c0be75be1b85879f8c30ea09701e9a68412fe0e90ab07c60a420df054188c21",
+          "sha256": "sha256:2f717e12de0d988849a1bfac7c23a3bfdbc598e06f7cf767713f260e245435c2",
           "sourcePath": "source/skills/intellij-platform-testing",
           "targetPath": "skills/intellij-platform-testing",
           "type": "SKILL"
@@ -188,14 +188,14 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:6e9d066a88edb6bfbd1e46c68d92b75fcbcc87b7be31209e979661c2ea40f2dc",
+          "sha256": "sha256:7682f074dfc3bc71650e5c1d7c6833e52baa0faf1ca48aa91d8fc52f48b33d05",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
         },
         {
           "name": "controlled-technical-writing",
-          "sha256": "sha256:35347a380f5046c23d5be7df51c492a2ee6a3d406c4986aba3a2d50f60c99f74",
+          "sha256": "sha256:41931c07e780b563412a0416247c473d3ff599035373944d32e29215096ff8a8",
           "sourcePath": "source/skills/controlled-technical-writing",
           "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
@@ -244,7 +244,7 @@
         },
         {
           "name": "cli-creator",
-          "sha256": "sha256:259fa9e6236979f9b64b886f77cafc8968fee806ee3be44991f546ff12e7b336",
+          "sha256": "sha256:8540cfdc5ff45bdd27cd81e2470726caabaeeaf9827370e0d59e4194947ae7ec",
           "sourcePath": "source/skills/cli-creator",
           "targetPath": "skills/cli-creator",
           "type": "SKILL"
@@ -286,21 +286,21 @@
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:ae4cb824f252d56a7f6217a3ca8a6e1365999c43da650acdb76f381ae0ecff01",
+          "sha256": "sha256:2121c82a60ecfa7e4a5eb4c7e4af8de8184787091148c019eff2fbb6e821ce68",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
         },
         {
           "name": "python-tooling",
-          "sha256": "sha256:37c4b2c78383e758f15add3e9c546e50ddeff8d421728931962702c346037dcb",
+          "sha256": "sha256:0cbcd3f2a340e9734ae13fa248334fce7a404c2acec6a2120a8dc18727f0b6ac",
           "sourcePath": "source/skills/python-tooling",
           "targetPath": "skills/python-tooling",
           "type": "SKILL"
         },
         {
           "name": "skill-primitive-authoring",
-          "sha256": "sha256:90926a2ee571cc55f79b2c2ca4d71e31da6151f153a6c6d81f8fecd6465de605",
+          "sha256": "sha256:3a0989c373b6d5fe79053b8670ad939d7588dc1c422aa2b73f39f49e9d447cc8",
           "sourcePath": "source/skills/skill-primitive-authoring",
           "targetPath": "skills/skill-primitive-authoring",
           "type": "SKILL"
@@ -311,6 +311,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "fb1d5bd421b7ec548cce22885d3d8191cc60bf09",
+  "sourceSha": "b9499f01b87df5c01b1f7588edaf029b2e532ba2",
   "type": "HYDRATED_MARKETPLACE"
 }

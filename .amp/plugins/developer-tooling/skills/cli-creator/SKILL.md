@@ -12,10 +12,13 @@ Preserve the project's language and existing command contracts.
 ## Implementation Baseline
 
 Use Kotlin and the existing toolchain for Kotlin applications.
-Default new automation to `python-tooling`: required uv, PEP 723 or a locked project, strict Pyright, Ruff, and pytest.
+Use `python-tooling` for automation. Pin uv with mise. Use PEP 723 headers and adjacent locks for portable scripts.
+Use strict Pyright, Ruff, and pytest.
 Commit dependency locks and set `tool.uv.no-build = true`.
 Parse external inputs once into constrained values.
 Keep decisions pure and file, process, network, and terminal effects in explicit adapters.
+Give public CLI commands executable names without file extensions. Install them in a directory on `PATH`.
+Invoke the installed name from another directory in the acceptance test.
 Use argument arrays for processes.
 Keep shell only where the parent shell owns state or a host needs a launcher.
 

@@ -9,3 +9,13 @@ Ruff
 pytest
 uv
 projeKtor
+Gradle
+Pkl
+Worktrunk
+Kast
+[Ff]rontmatter
+[Tt]oolchains?
+[Ll]ockfiles?
+[Ww]orktrees?
+[Ss]tdout
+[Ss]tderr

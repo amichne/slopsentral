@@ -103,7 +103,7 @@ def main(arguments: list[str]) -> int:
 
         return int(pytest.main([str(Path(__file__).resolve()), "-q", "-o", "addopts="]))
     if arguments in (["--help"], ["-h"]):
-        print("usage: standalone.py PATH | --self-test")
+        print(f"usage: {Path(sys.argv[0]).name} PATH | --self-test")
         return 0
     if len(arguments) != 1:
         print(json.dumps({"type": "INVALID_ARGUMENTS"}))
