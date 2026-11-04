@@ -1,7 +1,8 @@
 ---
 type: Runtime Flow
 title: Hook delivery and instruction review
-description: Trace canonical hook selection through Codex lifecycle events and Pi adapters, with explicit trust and evidence limits.
+description: Trace canonical hook selection through Codex lifecycle events and
+  Pi adapters, with explicit trust and evidence limits.
 tags:
   - hooks
   - instructions
@@ -10,7 +11,7 @@ tags:
   - lifecycle
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-04T15:10:06.076Z
+    at: 2026-11-04T16:19:46.795Z
 sources:
   - id: openwiki-source-fdb0ae7333144f405ddb6914
     resource: repo://source/hooks/agents-md-scope.py
@@ -20,9 +21,11 @@ sources:
     resource: repo://source/hooks/pi/adapter.ts
   - id: openwiki-source-f0043ad3faf0db0ee3e62248
     resource: repo://source/hooks/pi/controls.ts
+  - id: openwiki-source-36f60eb53c76242699a18af1
+    resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3
     resource: repo://tools/tests/pi-runtime.test.mjs
-generated: { by: "codex", at: "2026-11-04T15:10:06.076Z" }
+generated: { by: "codex", at: "2026-11-04T16:19:46.795Z" }
 ---
 
 # Hook delivery and instruction review
@@ -83,6 +86,9 @@ Isolated imports and disabled bytecode writes keep invocation independent of sys
 The current hooks declare no third-party Python dependencies; a different dependency contract requires an explicit runtime update.
 Direct native package installation bypasses that provisioning and retains the external uv requirement.
 The [installation lifecycle](../integrations/installation.md) separates setup-time downloads from hook execution.
+The hook's emitted status and review commands keep the private interpreter and instruction scope across recovery.
+The runtime marker must name the running interpreter before those commands use it.
+Other installations keep their uv launcher.
 
 ## Match evidence to the claim
 

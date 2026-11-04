@@ -130,8 +130,13 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   const repeated = await settled();
   assert.equal(repeated.continue, false);
   assert.match(JSON.stringify(repeated.entries), /Unresolved hook result/);
-  execFileSync(python ?? 'uv', [...(managed ? ['-I', '-B'] : ['run', '--locked', '--script']), path.join(pkg, 'software-engineering/hooks/agents-md-scope.py'),
-    'review', '--cwd', cwd, '--session-id', session.sessionManager.getSessionId(), '--note', 'The value change obeys the repository instructions.'], { cwd, env: { ...process.env, SLOPSENTRAL_SCOPE_HOME: agentDir } });
+  const feedback = blocked.entries.map(entry => typeof entry.content === 'string' ? entry.content : '').join('\n');
+  const inventory = feedback.split('Full path inventory:\n')[1]?.split('\n')[0];
+  assert.ok(inventory, 'The hook must supply an executable status command.');
+  const status = JSON.parse(execFileSync('/bin/sh', ['-c', inventory], { cwd, env: process.env, encoding: 'utf8' }));
+  const review = status.reviewCommand;
+  assert.ok(review, 'The hook must supply an executable recovery command.');
+  execFileSync('/bin/sh', ['-c', review.replace('REPLACE WITH SOURCE-BACKED REVIEW RESULT', 'The value change obeys the repository instructions.')], { cwd, env: process.env });
   const reviewed = await settled();
   assert.equal(reviewed.continue, false);
   assert.equal(reviewed.entries.some(e => JSON.stringify(e).includes('Unresolved')), false);

@@ -76,6 +76,7 @@ The runtime targets macOS and Linux with glibc on arm64 and x64.
 
 Managed hooks invoke the private interpreter directly, with isolated imports and bytecode writes disabled.
 Hook execution needs neither network access nor system Python or uv.
+Emitted status and review commands keep the private interpreter and instruction scope, including when status returns the next review command.
 The runtime receipt binds the platform, relative executable path, and interpreter digest.
 Repeat setup verifies the interpreter before reporting it ready.
 Setup writes no host settings when runtime preparation fails.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:916fb8638ef27b0b3680b5f635e157bf163f66cb2db7bb4c0142583d0c70eee9",
+  "pageVersion": "sha256:a117c0566f104f63670bee26a6ba07f932f93e9792ffde748fcc79b2ae9ac95f",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
@@ -74,11 +74,15 @@
     },
     {
       "id": "claim_bf8e6356d2944d5f9b1db07c23916cf0",
-      "statement": "The native Pi host test exercises private-runtime prompt admission, tool calls, settlement rejection, and review recovery with only Git on PATH; runtime boundary tests reject unverified archives, foreign paths, symlink receipts, and project-controlled executable authority without a model request.",
+      "statement": "The native Pi test exercises private-runtime admission, settlement rejection, and recovery by executing emitted status and review commands with only Git on PATH; scope tests cover literal paths, and runtime boundary tests reject unverified archives, foreign paths, symlink receipts, and project-controlled executable authority without model requests.",
       "evidence": [
         {
+          "resource": "repo://tools/python_checks/test_agents_scope_hook.py#L101-L150",
+          "version": "repo-lines-v1:sha256:a736f4b5fc33ddb3cf6fe58c412a360eeae0c509006523a015b6dd4063e4e72c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNTllNGUyY2VlZjRlYmJmNjY0ZGI3YjA5MWRlM2MwYmI4ZWU0MTY1OTJjMWNiYWYwOTYzOTkzYjhiYmVlY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlMzdjNTRlMDlhMDVjYjNkOGIxZDAxZWNiZGEyYjdkZTFjNDlhMjUwZTQ4ZWUxZDgzMTY4OTZlMDJkNDA1ZTcifQ"
+        },
+        {
           "resource": "repo://tools/tests/pi-host.test.mjs",
-          "version": "repo-file-v1:sha256:c0faeb1a891d739e86203ffda3db489b50da6cbc5ddf109b0781669b50b40961"
+          "version": "repo-file-v1:sha256:b319d3b4647d5974febbe4d8864e4f28a45a220bdc818b97a244ef8a465ab130"
         },
         {
           "resource": "repo://tools/tests/pi-runtime.test.mjs",
@@ -89,6 +93,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-04T15:10:06.076Z"
+    "at": "2026-11-04T16:07:53.128Z"
   }
 }

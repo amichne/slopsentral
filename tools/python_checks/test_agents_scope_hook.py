@@ -98,6 +98,56 @@ def review(repo: Path, session: str = "session-a") -> dict[str, object]:
     )
 
 
+def test_emitted_private_runtime_review_runs_without_uv(
+    workspace: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home = workspace.parent / "private home"
+    home.mkdir()
+    tools = workspace.parent / "only git"
+    tools.mkdir()
+    (tools / "git").symlink_to("/usr/bin/git")
+    scope = home / "pi agent"
+    scope.mkdir()
+    monkeypatch.setenv("HOME", str(home))
+    monkeypatch.setenv("PATH", str(tools))
+    monkeypatch.setenv("SLOPSENTRAL_SCOPE_HOME", str(scope))
+    monkeypatch.setenv("SLOPSENTRAL_PYTHON", sys.executable)
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    _ = (workspace / "module/main.py").write_text("changed source\n")
+    stopped = invoke(workspace, "Stop")
+    inventory = str(stopped["reason"]).split("Full path inventory:\n", 1)[1].splitlines()[0]
+    inspected = subprocess.run(
+        ["/bin/sh", "-c", inventory],
+        cwd=workspace.parent,
+        env={"HOME": str(home), "PATH": str(tools)},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert inspected.returncode == 0, inspected.stderr
+    status = json.loads(inspected.stdout)
+    command = status["reviewCommand"]
+    assert isinstance(command, str)
+    completed = subprocess.run(
+        [
+            "/bin/sh",
+            "-c",
+            command.replace(
+                "REPLACE WITH SOURCE-BACKED REVIEW RESULT",
+                "The root instructions still describe this source.",
+            ),
+        ],
+        cwd=workspace.parent,
+        env={"HOME": str(home), "PATH": str(tools)},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert json.loads(completed.stdout)["type"] == "REVIEW_RECORDED"
+    assert invoke(workspace, "Stop") == {}
+
+
 def test_preexisting_dirt_and_read_only_tools_do_not_need_edits(workspace: Path) -> None:
     _ = (workspace / "module/main.py").write_text("preexisting\n")
     assert invoke(workspace, "UserPromptSubmit") == {}

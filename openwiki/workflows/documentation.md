@@ -25,7 +25,7 @@ sources:
 generated: { by: "codex", at: "2026-11-03T20:36:31.743Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T20:36:31.743Z
+    at: 2026-11-04T16:07:53.128Z
 ---
 
 # Maintain source-backed documentation

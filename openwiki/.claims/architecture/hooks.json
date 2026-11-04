@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:730bf1bc746bb62f0f275069908e87dfe17a9df6e235fe4a6f58db3e6f596995",
+  "pageVersion": "sha256:8e4993ab516e577e74df1fb68e0b716984717bef043ac1cd159eaea95fb31455",
   "claims": [
     {
       "id": "claim_9531bb3bbe9e4648b03a7049e4d79602",
       "statement": "The instruction-scope adapter runs on UserPromptSubmit and Stop, while the initial baseline does not create a retrospective review obligation for preexisting changes.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/agents-md-scope.py#L624-L651",
+          "resource": "repo://source/hooks/agents-md-scope.py#L634-L661",
           "version": "repo-lines-v1:sha256:2f34cf9d4c76dd3678776be68c9cfc5ab5184e5b5e9cc451d1cb409447402151:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTYwNmY5OGYwNDNkZDYxYzEwYjE1YWEzNDk0NjJmZjFiMmIwOWJhOWI1MjEzYWMxNGMwZTE4N2QzYjA5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyOTU0MWRmNDllYTYwYWU5Y2ExNWQ5YmZmMTZmMTM5ZThlMDU5NmM2YjM5M2Y4NmRlNGYxM2E4MzdmZjA0OTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYjMxZDYxNDUyN2JhYmJkNGVmMTdmNTMzNTQ2ZmNkMDhjMWNmMzhlZmY0OWE2NzViNzY4NTU2YWU5YmE3NDIifQ"
         },
         {
@@ -67,10 +67,24 @@
           "version": "repo-lines-v1:sha256:9117a6e514d3a6e5a1a8b786c5a9fa6f560eadecf485d7b7a3408d92360d7c18:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1MTVkZjQwNjFhY2QxNTVjMWFiOTQ2NjMzYzc0ZTZjMmYxMzMxZTg2ZTIzYzU3OWYyZDRmZTJhMzdiNTNmODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMTYyNTdlNDA3ZGRjZmUyNGU1YzJlN2M3ZWRkOGE5NzQzNjVjY2U1NzY0YTE2YTNlYTM3OTgzZDhkYWIzNGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_cb2055cb34eb49169076e7d11b2fc85e",
+      "statement": "Scope-hook status and review commands retain the private interpreter and instruction scope across the recovery sequence; the private-runtime marker selects only the running interpreter, while other installations retain uv.",
+      "evidence": [
+        {
+          "resource": "repo://source/hooks/agents-md-scope.py#L604-L633",
+          "version": "repo-lines-v1:sha256:5878387fbf928b8145c47e985d497e24c08187c77b952f61386441d0bdc79e45:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NzkxMzdkZjljNDE5Nzk2NTQzNmQzNmJjMzE3ODgwNmVmZjU5MzFlNDM5YzRkZTAwZmU4N2E1MGY4NjE2ZWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1NzMyMmM4NmU1MTIzNTI0ZGI3NWZhNDlkNTAzMTIzYjQ0NGRiMWFlYmQyZGE1MWNhNjgzMTcwMjQwYmY4M2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxY2MzYjNiM2MwNGRhYjRlYjExNmVjOTc0YTkwNzliZjZlZGU5Mzk1YWY0OTE4YTUxOGM4NGNjM2ViNWNhMDIifQ"
+        },
+        {
+          "resource": "repo://tools/tests/pi-host.test.mjs#L130-L143",
+          "version": "repo-lines-v1:sha256:199be30c69f17ebd714609c379ae22b41924bf536396aac6da3f6a6589c1ff81:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjYWMzYzE1YmI0ODk4MTgwODBiZDBhOTg1ZTdjYzA4NDZkYWFkZmQ2ZmQ0OTcwNTY2MWIzM2RmNGYwYjE3MTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhNDhmMzBmOTMyNTI3NDQ1MmVhZTJlZGE3ODM4NmJmYTQ0MjU4NDhiZTY0Y2FkMmRlMTEyYzc4MTUxODA3NGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNWEyYWZlYTM1ZTgyNDZjYzI5ZDk2YWI3NWMzMmRhMjRhMDgzMGM1MmRlMTBjY2NlNjUyZDY0ZjY5MGM5ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiZjdlOWRjZTlkYTBhOWU0MjhiMWUyOGJlNzViMTk5N2I4NDk2MTMyODQxYzA0ZDQ2NzI5NDE4NDU1OTY5MTUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-04T15:10:06.076Z"
+    "at": "2026-11-04T16:19:46.795Z"
   }
 }

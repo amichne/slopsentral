@@ -19,7 +19,7 @@ sources:
 generated: { by: "codex", at: "2026-11-03T20:23:45.331Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T20:23:45.331Z
+    at: 2026-11-04T16:07:53.128Z
 ---
 
 # Source ownership and plugin composition

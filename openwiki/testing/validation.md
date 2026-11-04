@@ -9,7 +9,7 @@ tags:
   - contracts
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-04T15:10:06.076Z
+    at: 2026-11-04T16:07:53.128Z
 sources:
   - id: openwiki-source-fce7a6054d61269783034ac4
     resource: repo://source/skills/code-knowledge-base/scripts/documentation.py
@@ -19,6 +19,8 @@ sources:
     resource: repo://tools/check.py
   - id: openwiki-source-b796202ab127e6e56e465638
     resource: repo://tools/python_checks/gates.py
+  - id: openwiki-source-d13b0baee21f61f7d567fec9
+    resource: repo://tools/python_checks/test_agents_scope_hook.py
   - id: openwiki-source-00110e15b75d856174b63939
     resource: repo://tools/python_checks/test_documentation.py
   - id: openwiki-source-2402abcd09d5c9c6105c476c
@@ -27,7 +29,7 @@ sources:
     resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3
     resource: repo://tools/tests/pi-runtime.test.mjs
-generated: { by: "codex", at: "2026-11-04T15:10:06.076Z" }
+generated: { by: "codex", at: "2026-11-04T16:07:53.128Z" }
 ---
 
 # Match checks to the engineering claim
@@ -87,6 +89,8 @@ The [adoption procedure](../../source/skills/code-knowledge-base/references/port
 ## Exercise Pi without ambient runtimes
 
 The [native host test](../../tools/tests/pi-host.test.mjs) provisions a private interpreter and runs prompt admission, tool calls, settlement rejection, and review recovery with only Git on `PATH`.
+Recovery executes the hook's emitted status command, then the review command returned by that process.
+The [scope test](../../tools/python_checks/test_agents_scope_hook.py) also exercises this sequence with literal paths containing spaces and shell punctuation.
 Its external-runtime case still verifies missing uv and missing-script failures.
 The [runtime boundary tests](../../tools/tests/pi-runtime.test.mjs) reject an unverified archive, a foreign executable path, a symlink receipt, and a project-controlled runtime receipt.
 The [archive test](../../tools/tests/pi-install.test.mjs) installs through Pi with a command allowlist and no inherited credentials.

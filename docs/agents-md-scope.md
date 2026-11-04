@@ -29,6 +29,8 @@ Changed instruction files still need their scope review.
 Use its exact `status` command to examine affected paths.
 Read each instruction chain before its exact `review` command.
 Replace the sample note with the source-backed decision.
+Managed Pi commands keep their private interpreter and instruction scope through the status-to-review sequence.
+They need no system Python or uv. Other installations keep their uv launcher.
 Later source edits create another obligation.
 
 ## Install on this computer
