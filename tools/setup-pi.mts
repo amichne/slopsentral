@@ -256,6 +256,78 @@ function normalized(scope: Scope): Scope {
   return value;
 }
 function stateOf(scope: Scope): string { return path.join(scope.project ? path.join(scope.cwd, '.pi') : scope.agentDir, 'slopsentral-setup'); }
+const hookPython = '3.12.14';
+const runtimeSources: Readonly<Record<string, readonly [string, string]>> = {
+  'darwin-arm64': ['aarch64-apple-darwin', '301f72afaf54060f92da7016cb0115bd077f43a9c8e39c1d8170a0bac80fd398'],
+  'darwin-x64': ['x86_64-apple-darwin', 'e1ca175824f1056589ce9908f7631879ebc3c36535b5e63dc06510beb370b4c1'],
+  'linux-arm64': ['aarch64-unknown-linux-gnu', 'c36fe17937ff6bd16dc42fc13854b5465999fcab2efe0af559381e945e3c6001'],
+  'linux-x64': ['x86_64-unknown-linux-gnu', 'ec7a99cd05e0cd7f80243f135ce1361c76835cb0ee60055d14d20eba8eba1460'],
+};
+// uv is a pinned setup tool. Hook execution uses only the private interpreter.
+export async function prepareHookRuntime(state: string, bytes: (url: string) => Promise<Buffer> = download): Promise<string> {
+  directory(state);
+  const info = fs.statSync(state);
+  if (info.uid !== process.getuid?.() || (info.mode & 0o077)) reject('UNSAFE_CONFIG', 'Hook runtime storage must be private and owned by you.');
+  const platform = process.platform + '-' + process.arch;
+  const source = runtimeSources[platform];
+  if (!source) reject('HOOK_RUNTIME_UNSUPPORTED', 'No pinned hook runtime for ' + platform + '.');
+  const receipt = path.join(state, 'hook-runtime.json');
+  const verify = (executable: string, env: NodeJS.ProcessEnv): void => {
+    const result = spawnSync(executable, ['-I', '-B', '-c', 'import fcntl, hashlib, json, pathlib, subprocess, sys; assert sys.version_info[:3] == (3, 12, 14)'], { env, encoding: 'utf8', timeout: 10000, maxBuffer: 1024 * 1024 });
+    if (result.status !== 0) reject('HOOK_RUNTIME_UNAVAILABLE', 'The private interpreter failed its hook runtime check.');
+  };
+  const unlock = acquire(path.join(state, 'hook-runtime.lock'));
+  try {
+    if (fs.lstatSync(receipt, { throwIfNoEntry: false })) {
+      const saved = snapshot(receipt).bytes;
+      if (saved === null) reject('HOOK_RUNTIME_CHANGED', 'The runtime receipt disappeared.');
+      const value = parse(saved);
+      const relative = text(value.executable);
+      if (Object.keys(value).sort().join() !== 'executable,platform,python,schemaVersion,sha256'
+        || value.schemaVersion !== 1 || value.platform !== platform || value.python !== hookPython
+        || !relative.startsWith('hook-runtime-' + hookPython + '-' + platform + '/')
+        || relative.split('/').some(part => !part || part === '.' || part === '..')) reject('HOOK_RUNTIME_CHANGED', 'Invalid private runtime receipt.');
+      const executable = path.join(state, relative);
+      direct(executable);
+      const executableInfo = fs.statSync(executable);
+      if (!executableInfo.isFile() || executableInfo.size > maxBytes || !(executableInfo.mode & 0o111)) reject('HOOK_RUNTIME_CHANGED', 'Invalid private interpreter.');
+      same(hash(fs.readFileSync(executable)), value.sha256, 'Private interpreter bytes differ.');
+      verify(executable, { HOME: state, PATH: '' });
+      return executable;
+    }
+    const temporary = fs.mkdtempSync(path.join(state, '.hook-runtime-'));
+    try {
+      const archive = await bytes('https://github.com/astral-sh/uv/releases/download/0.12.9/uv-' + source[0] + '.tar.gz');
+      same(hash(archive), source[1], 'Pinned uv archive checksum differs.');
+      const file = path.join(temporary, 'uv.tgz');
+      fs.writeFileSync(file, archive, { mode: 0o600 });
+      const member = 'uv-' + source[0] + '/uv';
+      const unpacked = spawnSync('tar', ['-xzf', file, '-C', temporary, member], { encoding: 'utf8', timeout: 30000, maxBuffer: 1024 * 1024 });
+      if (unpacked.status !== 0) reject('HOOK_RUNTIME_UNAVAILABLE', 'Cannot unpack the pinned setup tool.');
+      const uv = path.join(temporary, member);
+      direct(uv);
+      const env: NodeJS.ProcessEnv = { HOME: temporary, PATH: '', UV_PYTHON_INSTALL_DIR: path.join(temporary, 'python'), UV_CACHE_DIR: path.join(temporary, 'cache') };
+      for (const name of ['HTTPS_PROXY', 'HTTP_PROXY', 'ALL_PROXY', 'NO_PROXY', 'https_proxy', 'http_proxy', 'all_proxy', 'no_proxy', 'SSL_CERT_FILE', 'SSL_CERT_DIR'])
+        if (process.env[name]) env[name] = process.env[name];
+      const installed = spawnSync(uv, ['--no-config', '--system-certs', 'python', 'install', '--no-bin', hookPython], { env, encoding: 'utf8', timeout: 180000, maxBuffer: 1024 * 1024 });
+      if (installed.status !== 0) reject('HOOK_RUNTIME_UNAVAILABLE', 'Pinned private Python provisioning failed. No configuration was activated.');
+      const found = spawnSync(uv, ['--no-config', 'python', 'find', '--managed-python', '--no-python-downloads', hookPython], { env, encoding: 'utf8', timeout: 10000, maxBuffer: 1024 * 1024 });
+      if (found.status !== 0) reject('HOOK_RUNTIME_UNAVAILABLE', 'The private interpreter was not found.');
+      const pythonRoot = path.join(temporary, 'python');
+      const relative = path.relative(pythonRoot, found.stdout.trim());
+      if (!relative || path.isAbsolute(relative) || relative.split(path.sep).some(part => part === '..')) reject('HOOK_RUNTIME_UNAVAILABLE', 'The interpreter escaped private storage.');
+      const destination = path.join(state, 'hook-runtime-' + hookPython + '-' + platform);
+      direct(destination);
+      if (fs.existsSync(destination)) reject('HOOK_RUNTIME_CHANGED', 'An incomplete runtime already exists; preserve it for inspection.');
+      fs.renameSync(pythonRoot, destination);
+      const executable = path.join(destination, relative);
+      direct(executable);
+      verify(executable, env);
+      atomic(receipt, Buffer.from(JSON.stringify({ schemaVersion: 1, platform, python: hookPython, executable: path.relative(state, executable).split(path.sep).join('/'), sha256: hash(fs.readFileSync(executable)) }) + '\n'), 0o600);
+      return executable;
+    } finally { fs.rmSync(temporary, { recursive: true, force: true }); }
+  } finally { unlock(); }
+}
 function recordOf(scope: Scope): string {
   // Recovery authority belongs to the personal home, never to a cloned project.
   const home = fs.realpathSync(os.homedir());
@@ -520,8 +592,14 @@ async function main(): Promise<void> {
   if (pi.status !== 0) reject('PI_UNAVAILABLE', 'Ensure pi --version succeeds within 10 seconds; see https://slopsentral.michne.com/guides/pi.');
   // A version string cannot prove native package or skill discovery support.
   console.error('PI_COMPATIBILITY_UNVERIFIED: using installed Pi best-effort. Restart Pi after setup and verify native skill discovery.');
-  console.error('HOOK_READINESS_UNVERIFIED: setup installs native resources only. Enabled hooks need uv and their script dependencies. Context-hook failures block tool calls. See https://slopsentral.michne.com/guides/pi.');
-  const result = await install(await qualify(live, version), { agentDir, cwd, project });
+  const qualified = await qualify(live, version);
+  const scope = normalized({ agentDir, cwd, project });
+  recordOf(scope);
+  const runtime = path.join(fs.realpathSync(os.homedir()), '.pi', 'slopsentral-hook-runtime');
+  if (runtime === cwd || runtime.startsWith(cwd + path.sep) && cwd !== fs.realpathSync(os.homedir())) reject('UNSAFE_CONFIG', 'Personal hook runtime storage is inside this project.');
+  await prepareHookRuntime(runtime);
+  console.error('HOOK_RUNTIME_READY: private Python ' + hookPython + '. Hook execution needs no system Python or uv.');
+  const result = await install(qualified, scope);
   console.log(result.status + ': Slopsentral ' + result.version + '. Restart Pi for native discovery.');
   console.log('Recovery: rerun the documented installer in this directory with' + (project ? ' --project' : '') + ' --rollback.');
 }
