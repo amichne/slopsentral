@@ -602,11 +602,12 @@ def state_directory() -> Path:
 
 
 def review_command(event: Event, mode: Mode) -> str:
+    private_runtime = os.environ.get("SLOPSENTRAL_PYTHON") == sys.executable
+    launcher = (
+        [sys.executable, "-I", "-B"] if private_runtime else ["uv", "run", "--locked", "--script"]
+    )
     command = [
-        "uv",
-        "run",
-        "--locked",
-        "--script",
+        *launcher,
         str(Path(__file__).resolve()),
         mode.value,
         "--cwd",
@@ -616,8 +617,17 @@ def review_command(event: Event, mode: Mode) -> str:
     ]
     if mode == Mode.REVIEW:
         command.extend(["--note", "REPLACE WITH SOURCE-BACKED REVIEW RESULT"])
+    environment: list[str] = []
+    if private_runtime:
+        environment.append("SLOPSENTRAL_PYTHON=" + sys.executable)
     if "SLOPSENTRAL_SCOPE_HOME" in os.environ:
-        command = ["env", "SLOPSENTRAL_SCOPE_HOME=" + str(scope_home()), *command]
+        environment.append("SLOPSENTRAL_SCOPE_HOME=" + str(scope_home()))
+    if environment:
+        command = [
+            "/usr/bin/env" if private_runtime else "env",
+            *environment,
+            *command,
+        ]
     return shlex.join(command)
 
 
