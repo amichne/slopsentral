@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T21:02:24Z",
+  "generatedAt": "2026-11-04T14:54:35Z",
   "plugins": [
     {
       "name": "software-engineering",
@@ -90,7 +90,7 @@
         }
       ],
       "sourceManifest": "source/plugins/software-engineering/plugin.json",
-      "version": "4.0.8"
+      "version": "4.0.9"
     },
     {
       "name": "kotlin-engineering",
@@ -139,7 +139,7 @@
         }
       ],
       "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
-      "version": "4.0.8"
+      "version": "4.0.9"
     },
     {
       "name": "intellij-plugin-development",
@@ -167,7 +167,7 @@
         }
       ],
       "sourceManifest": "source/plugins/intellij-plugin-development/plugin.json",
-      "version": "4.0.8"
+      "version": "4.0.9"
     },
     {
       "name": "repository-knowledge",
@@ -216,7 +216,7 @@
         }
       ],
       "sourceManifest": "source/plugins/repository-knowledge/plugin.json",
-      "version": "4.0.8"
+      "version": "4.0.9"
     },
     {
       "name": "developer-tooling",
@@ -272,7 +272,7 @@
         },
         {
           "name": "personal-setup-management",
-          "sha256": "sha256:657744122024d16b407bb4893f44c6b69ce6e6af30e2fee8deb1ed1923b0bc4f",
+          "sha256": "sha256:eace048343a64970731443af4779d7afbbb4c43b6581fd20cb8efe165e037d7d",
           "sourcePath": "source/skills/personal-setup-management",
           "targetPath": "skills/personal-setup-management",
           "type": "SKILL"
@@ -307,10 +307,10 @@
         }
       ],
       "sourceManifest": "source/plugins/developer-tooling/plugin.json",
-      "version": "4.0.8"
+      "version": "4.0.9"
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "b7edaa4dfbcef7c6735c0b0a7e97ebda5964f731",
+  "sourceSha": "12992db02dd1dd37b733f6346590c979fdfe51fd",
   "type": "HYDRATED_MARKETPLACE"
 }
