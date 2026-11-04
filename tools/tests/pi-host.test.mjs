@@ -5,9 +5,10 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { createAgentSession, DefaultResourceLoader, ModelRuntime, SessionManager, SettingsManager } from '@earendil-works/pi-coding-agent';
+import { prepareHookRuntime } from '../setup-pi.mts';
 
 const root = path.resolve(import.meta.dirname, '../..');
-test('native Pi delivers plugin instructions and enforces instruction review before settlement', {
+for (const managed of [false, true]) test(`native Pi delivers instructions and enforces review (${managed ? 'private runtime' : 'external runtime'})`, {
   skip: !process.env.SLOPSENTRAL_PI_PACKAGE && !process.env.PKL_BIN,
 }, async t => {
   const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi-native-default-')));
@@ -22,6 +23,16 @@ test('native Pi delivers plugin instructions and enforces instruction review bef
     const privatePackage = path.join(directory, 'package');
     fs.cpSync(pkg, privatePackage, { recursive: true });
     pkg = privatePackage;
+  }
+  let python;
+  if (managed) {
+    const state = path.join(directory, 'slopsentral-setup');
+    python = await prepareHookRuntime(state);
+    assert.equal(await prepareHookRuntime(state, () => assert.fail('A current runtime must not download again')), python);
+    const destination = path.join(state, 'packages', 'fixture');
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    fs.renameSync(pkg, destination);
+    pkg = destination;
   }
   const manifest = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')));
   assert.equal(manifest.pi.skills.length, 30);
@@ -60,22 +71,35 @@ test('native Pi delivers plugin instructions and enforces instruction review bef
   assert.equal(session.getActiveToolNames().some(name => name.startsWith('slopsentral')), false);
   assert.equal([...session.extensionRunner.getFlags().keys()].some(name => name.startsWith('slopsentral')), false);
   const runner = session.extensionRunner;
+  if (managed) {
+    const previousPath = process.env.PATH;
+    const bin = path.join(directory, 'runtime-bin');
+    fs.mkdirSync(bin);
+    fs.symlinkSync('/usr/bin/git', path.join(bin, 'git'));
+    process.env.PATH = bin;
+    t.after(() => { if (previousPath === undefined) delete process.env.PATH; else process.env.PATH = previousPath; });
+  }
   assert.equal(runner.getRegisteredCommands().filter(command => command.name === 'hooks').length, 1);
   assert.deepEqual(runner.getCommandDiagnostics(), []);
   const prompt = () => runner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine the fixture.' }, { cwd });
   const read = id => runner.emitToolCall({ type: 'tool_call', toolCallId: id, toolName: 'read', input: { path: 'example.py' } });
   // Resource discovery alone does not prove that installed hooks can run.
   // Hide every host runtime; Pi itself remains loaded in this process.
-  const previousPath = process.env.PATH;
-  const emptyBin = path.join(directory, 'empty-bin');
-  fs.mkdirSync(emptyBin);
-  process.env.PATH = emptyBin;
-  try {
-    const unavailable = await prompt();
-    assert.match(unavailable.systemPromptOptions.forceSystemPrompt, /HOOK_EXIT_127/);
-    assert.match((await read('missing-uv')).reason, /HOOK_EXIT_127/);
-  } finally {
-    if (previousPath === undefined) delete process.env.PATH; else process.env.PATH = previousPath;
+  if (!managed) {
+    const previousPath = process.env.PATH;
+    const emptyBin = path.join(directory, 'empty-bin');
+    fs.mkdirSync(emptyBin);
+    process.env.PATH = emptyBin;
+    try {
+      const unavailable = await prompt();
+      assert.match(unavailable.systemPromptOptions.forceSystemPrompt, /HOOK_EXIT_127/);
+      assert.match((await read('missing-uv')).reason, /HOOK_EXIT_127/);
+    } finally {
+      if (previousPath === undefined) delete process.env.PATH; else process.env.PATH = previousPath;
+    }
+  } else {
+    await prompt();
+    assert.equal(await read('no-system-python-or-uv'), undefined);
   }
   // Break a real bundled script after discovery and require a later request to
   // establish admission again, without reloading the extension or the session.
@@ -83,8 +107,9 @@ test('native Pi delivers plugin instructions and enforces instruction review bef
   fs.renameSync(hookScript, hookScript + '.fixture-backup');
   try {
     const unavailable = await prompt();
-    assert.match(unavailable.systemPromptOptions.forceSystemPrompt, /HOOK_EXIT_2/);
-    assert.match((await read('missing-script')).reason, /HOOK_EXIT_2/);
+    const reason = managed ? /HOOK_SCRIPT_UNAVAILABLE/ : /HOOK_EXIT_2/;
+    assert.match(unavailable.systemPromptOptions.forceSystemPrompt, reason);
+    assert.match((await read('missing-script')).reason, reason);
   } finally {
     fs.renameSync(hookScript + '.fixture-backup', hookScript);
   }
@@ -104,7 +129,7 @@ test('native Pi delivers plugin instructions and enforces instruction review bef
   const repeated = await settled();
   assert.equal(repeated.continue, false);
   assert.match(JSON.stringify(repeated.entries), /Unresolved hook result/);
-  execFileSync('uv', ['run', '--locked', '--script', path.join(pkg, 'software-engineering/hooks/agents-md-scope.py'),
+  execFileSync(python ?? 'uv', [...(managed ? ['-I', '-B'] : ['run', '--locked', '--script']), path.join(pkg, 'software-engineering/hooks/agents-md-scope.py'),
     'review', '--cwd', cwd, '--session-id', session.sessionManager.getSessionId(), '--note', 'The value change obeys the repository instructions.'], { cwd, env: { ...process.env, SLOPSENTRAL_SCOPE_HOME: agentDir } });
   const reviewed = await settled();
   assert.equal(reviewed.continue, false);

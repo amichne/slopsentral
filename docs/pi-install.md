@@ -5,7 +5,8 @@ For personal installation through the shared command, use the [command guide](cl
 Both paths use the same native setup owner.
 
 Consumers need macOS or Linux, Pi on `PATH`, Node.js 22.19 or later, curl, and system tar.
-The Pi bootstrap needs no checkout, npm installation, Python, or Pkl.
+The Pi bootstrap needs no checkout, npm installation, system Python, uv, or Pkl.
+Setup downloads its private hook runtime before activating configuration.
 
 ```sh
 bash -o pipefail -c 'curl -fsSL https://github.com/amichne/slopsentral/releases/latest/download/install-pi.sh | sh'
@@ -67,9 +68,21 @@ Drift reports remain advisory.
 Instruction-scope rejection requests one repair turn. Repeated rejection stays visible without an automatic loop.
 The adapter preserves earlier extension messages and continuation requests.
 
-Hook execution needs uv and each script's declared dependencies.
-Setup does not install those dependencies.
-Missing tools produce explicit failures.
+The bootstrap provisions CPython 3.12.14 in the selected scope's private setup directory.
+It verifies a pinned uv 0.12.9 archive, uses that setup tool to install Python, and removes the tool afterward.
+Setup needs network access for these downloads. It keeps TLS verification enabled.
+The runtime targets macOS and Linux with glibc on arm64 and x64.
+
+Managed hooks invoke the private interpreter directly, with isolated imports and bytecode writes disabled.
+Hook execution needs neither network access nor system Python or uv.
+The runtime receipt binds the platform, relative executable path, and interpreter digest.
+Repeat setup verifies the interpreter before reporting it ready.
+Setup writes no host settings when runtime preparation fails.
+
+Direct native package installation bypasses the bootstrap and retains the external uv requirement.
+The private runtime supports the current hooks, whose declared dependency lists are empty.
+A future hook with third-party dependencies requires an explicit runtime update and otherwise reports `HOOK_RUNTIME_UNSUPPORTED_DEPENDENCIES`.
+Missing or changed runtime files produce explicit failures.
 A context-hook failure blocks tool calls until a later request succeeds.
 Processes obey time limits, output limits, and cancellation.
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:4f629bd4f42eff715070553502960893feff59250e69dc32b2f218f2e2cf2499",
+  "pageVersion": "sha256:ac5602b63ac21260f1a999be9060f8859efebe12419d42f37cb27b99d78e8163",
   "claims": [
     {
       "id": "claim_00b3d0c940c943d0bb4ebf94bfc1c873",
@@ -53,10 +53,28 @@
           "version": "repo-lines-v1:sha256:69eabea017127c886115a1ace2c1de3aa69e9a724f01af3eb1932da8f281e793:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NTQ2M2Y5MDRhNzMxZjEzNzRlNzM4MmQ2YjEzYzYxZGZkZTVhMGUxMjhjMjNjZTcxMGVlNTQyZmU4MGQ1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYTFiYmMyOTA1ZTgzNGRmODQ2MmVhZDczOTM5M2E0MjllZTE1MzUxYzFlMTc4MDI3NDI2YmE3NjNiZWVjMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3YzU4YmUwMWE0OTc0NmRhOWY0MWNkOTQzZTZiMjAyZjg2Nzc1MWMyM2EzYzkyOTlhOGNiZDkyYzVkNzg3NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_46e7ae21e5a14f52b5826e82f5420722",
+      "statement": "The Pi bootstrap provisions its private hook interpreter before configuration activation, so managed hooks need no system Python or uv; direct native package installation bypasses that provisioning.",
+      "evidence": [
+        {
+          "resource": "repo://source/hooks/pi/adapter.ts#L15-L39",
+          "version": "repo-lines-v1:sha256:3cb66ce90bcf7bd37f8bd4d3625f420037f67a1710e70e63285172d7b65616d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhYWE4MDYwYWM3YmM3OTdmZWU4NDE4YmYwNzE1ZjU3OWIxNDMyMjk5MWI2YjFmNGZjNDNlN2Y5NTdhMzQwYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwNzAwY2ZjNzZkNjUzYTI1MGE0ZjY0ZmU1MmFiMTU2MzJjOGVlOWQ1ZWJiOWU0MzVjYjA2NWE4ZWMyMGM5NWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZGE3MzQzNzRiOWY3ODUwMzcyMjFhODk2NmUwMjQ0MTdhOGM3ZWFlZTQ1NGU4NGMxNjUzNDExZjI1YzZlZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViMzM1MTFiOWNjNDRhOTBlOTZlNDIzMzg5OWU0MjJjM2Q1MjY4NzY4Yjg1ZmVmODNhZmZkZDIwODI0OGQ3OGMifQ"
+        },
+        {
+          "resource": "repo://source/hooks/pi/adapter.ts#L58-L74",
+          "version": "repo-lines-v1:sha256:7ed1f795d3ed4ed682b9a84a133d7793cc82a86d3bbb87fb5077f2a05f02a5c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYzNkOTk2MTQ0ZGU5MGNhYzczY2UzYmU5MDA1YTkwOTJjMGEzZmRmNDFkNzIxNjcwMWZkMzgwZDE4ZjkyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0N2E3NDFhYTNiNzZjZjg3Y2ZlNTVhNjA4OTY1ZjJkNGY1ZjkwNjRhOGI2MTMzNGYzZDcxNmVjNDY0NzM2MzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiOWMwOWNhMGU0NDU3OGJiNTllYjg1NzBhY2UxOWFkOTYwYzQ5NGM5MzZiNjYyYzg2ZmE1M2IxNDVlMmZkNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0MzhjOGU3NmY1N2RjYWI3YTI5Y2M5MGY0YmUzYTNkNjM5MTE4MjhlZDk5MzMzY2I4MTBkOTA1MTlkMjFiMGIifQ"
+        },
+        {
+          "resource": "repo://tools/setup-pi.mts#L595-L602",
+          "version": "repo-lines-v1:sha256:7a446e9590d656b3cf1383423a60d5014e095b1a6a3162de1b88bfa509ce0b15:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdhNjc3NzdkNjc3NzhjMzQwZTIyNTFlZDlhYzBjZTMxZTU1Y2ZhMDZmNGM2ZTI5ZjE0MjljNGQ5NWUxMWFiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc5MjQ1YWRlYTM1NmVmMjNmMmMxOTBiNGZhNWNiMzk2MWExZmM0ZTA5YzQwMGRlODkzODkzYjFmOWI0MDBjNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWQxZDZlNzcyYWQyNWE0YzUwN2JmNTIzNmFmOGQzZDZhMTU1ZWNkNGViMDc2YjJkMTkxMjNjMWQ4MGE1MzFjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmZhZjRhMTJmNTA4MGVmNzZmNTIwNjljMzJlYTA4N2NiNzY5MTE5NTQ0ZDUwMDVhMDc4NWI4NjMxZGVhYTcwNCJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T20:23:45.331Z"
+    "at": "2026-11-04T14:52:24.384Z"
   }
 }

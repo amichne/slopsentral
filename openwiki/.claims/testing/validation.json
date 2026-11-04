@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:0c6f233dea59d975081f3b3d0da8f3f472988a614361ead8c753f6d8d733b012",
+  "pageVersion": "sha256:b652ff34e67099c73d8d289b76decf287c82558304943dbdea48f2b50a2088f8",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
@@ -71,10 +71,24 @@
           "version": "repo-lines-v1:sha256:638a612358e94e1f84113361a3bc82c4301c9e462dfc82b94a2568bcb6c364f7:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRlNTMyN2JiODliMTAyOTNjYzU1ODM2OGU3Yjc0ZjY2NDA4ZTk0ZjE2MmRkZjE4NTdjNjM3YmY0ZTIwZDhmMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTZhNzE5MmVjNzIyZTAwODE4MjFhNjcwMTA1YWRmOTk5NWUxOTJkYTNlY2ZhNmNmNWFkMjgyYmVhMWNkNmIzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODgxM2Q5ZDY1OWZjZjI0YTcxM2RjZjcxZmNmZmQ5NTgzZjVlNWQ1ODhjMDJiM2VjNjk1MjAwM2IwOTU4MzBmMiJ9"
         }
       ]
+    },
+    {
+      "id": "claim_bf8e6356d2944d5f9b1db07c23916cf0",
+      "statement": "The native Pi host test exercises private-runtime prompt admission, tool calls, settlement rejection, and review recovery with only Git on PATH; runtime boundary tests separately reject unverified archives, foreign paths, and symlink receipts without a model request.",
+      "evidence": [
+        {
+          "resource": "repo://tools/tests/pi-host.test.mjs",
+          "version": "repo-file-v1:sha256:ee9b475a5a147b51c6f93cb512e8abfa9314351460af222cfd014686f6527b58"
+        },
+        {
+          "resource": "repo://tools/tests/pi-runtime.test.mjs",
+          "version": "repo-file-v1:sha256:312ec8af54179e271a5be929034ae7b15e62be723822aa25535a83b3310a5c0c"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T20:36:31.743Z"
+    "at": "2026-11-04T14:52:24.384Z"
   }
 }

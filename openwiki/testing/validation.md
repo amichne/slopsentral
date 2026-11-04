@@ -1,8 +1,16 @@
 ---
 type: Validation Strategy
 title: Match checks to the engineering claim
-description: Select the smallest faithful gate for source, contracts, packages, knowledge, host behavior, and live model outcomes.
-tags: [validation, tests, evidence, contracts]
+description: Select the smallest faithful gate for source, contracts, packages, knowledge,
+  host behavior, and live model outcomes.
+tags:
+- validation
+- tests
+- evidence
+- contracts
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-04T14:52:24.384Z
 sources:
   - id: openwiki-source-fce7a6054d61269783034ac4
     resource: repo://source/skills/code-knowledge-base/scripts/documentation.py
@@ -16,10 +24,11 @@ sources:
     resource: repo://tools/python_checks/test_documentation.py
   - id: openwiki-source-2402abcd09d5c9c6105c476c
     resource: repo://tools/tests/documentation-portability.test.mjs
-generated: { by: "codex", at: "2026-11-03T20:36:31.743Z" }
-verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-03T20:36:31.743Z
+  - id: openwiki-source-36f60eb53c76242699a18af1
+    resource: repo://tools/tests/pi-host.test.mjs
+  - id: openwiki-source-59bfb60d11af1188e2f7c0c3
+    resource: repo://tools/tests/pi-runtime.test.mjs
+generated: { by: "codex", at: "2026-11-04T14:52:24.384Z" }
 ---
 
 # Match checks to the engineering claim
@@ -75,6 +84,17 @@ The [Python tests](../../tools/python_checks/test_documentation.py) also exercis
 They reject a foreign lock symlink and a configuration that hides its declared knowledge pages.
 These results establish portable package behavior, without model responses or native host registration.
 The [adoption procedure](../../source/skills/code-knowledge-base/references/portable-documentation.md) uses the same runtime that Slopsentral invokes.
+
+## Exercise Pi without ambient runtimes
+
+The [native host test](../../tools/tests/pi-host.test.mjs) provisions a private interpreter and runs prompt admission, tool calls, settlement rejection, and review recovery with only Git on `PATH`.
+Its external-runtime case still verifies missing uv and missing-script failures.
+The [runtime boundary tests](../../tools/tests/pi-runtime.test.mjs) reject an unverified archive, a foreign executable path, and a symlink receipt.
+The [archive test](../../tools/tests/pi-install.test.mjs) installs through Pi with a command allowlist and no inherited credentials.
+
+These checks separate private-runtime readiness from direct package installation, which bypasses provisioning.
+Setup downloads remain network-dependent; hook invocation uses the retained interpreter.
+The tests make no model request, and one host or platform run does not establish every mapped target's compatibility.
 
 ## Name the next system layer
 

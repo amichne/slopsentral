@@ -68,7 +68,7 @@ for (const version of ['1.3.0', '1.4.0', '2.0.0-dev+local', 'custom-build', ''])
     const result = spawnSync(process.execPath, [setup], options);
     assert.equal(result.status, 1, result.stderr);
     assert.match(result.stderr, /PI_COMPATIBILITY_UNVERIFIED/);
-    assert.match(result.stderr, /HOOK_READINESS_UNVERIFIED:.*uv.*dependencies.*block tool calls/);
+    assert.doesNotMatch(result.stderr, /HOOK_RUNTIME_READY/);
     assert.match(result.stderr, /DOWNLOAD_FAILED: HTTP 404/);
     assert.doesNotMatch(result.stderr, /PI_UNAVAILABLE/);
     assert.equal(fs.readFileSync(options.env.PI_TEST_CALLS, 'utf8'), '--version\n');

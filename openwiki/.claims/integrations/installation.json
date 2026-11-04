@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:513c4195d9ffb0cb8c2d2af4c7d34f12a544df4df3e0532054f6617fdd088d4f",
+  "pageVersion": "sha256:5e997f960015637272e728ed609343903f787b5f433d0418f6584e157198f239",
   "claims": [
     {
       "id": "claim_468cefd833044a5fb8a8fba715593e3a",
@@ -21,7 +21,7 @@
       "statement": "Pi setup verifies release identity before migrating recognized registrations, preserves unrelated settings, and stops on ambiguous legacy content or changed installed bytes.",
       "evidence": [
         {
-          "resource": "repo://tools/setup-pi.mts#L436-L503",
+          "resource": "repo://tools/setup-pi.mts#L508-L575",
           "version": "repo-lines-v1:sha256:81abc441fc0b88bf68bfbb47ac805c148a450faba7136ff328767a17fdeff2f0:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjM2VlZDFhM2E5OWViMDVmYWU1YjM2MzFhZGE1NGQ1MjFlZDBkMDA2MmM4NzUyYWU5NDVlOWY2ZTgxNTY5MjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxM2NkYTcxMmVmOGQ2YzZkMzk4MjA0OGYxODE1OThmODkyYmVhNmFhNjFiMWVlM2Q3MWI4NTI2NGVmNDE3ZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyYTE2Y2RiMGEyMjUwMmE1YmJkNjY0N2MyN2ZlZDUzZjI2N2MwNmY5MWI0MzA0ZGJmZGEwM2QwMmI2YWIyMTUifQ"
         }
       ]
@@ -42,15 +42,19 @@
     },
     {
       "id": "claim_37a79ffc06154228ab44129c3c71f157",
-      "statement": "The separate Pi bootstrap needs no Python, uv, Pkl, npm installation, or source checkout for setup, while projected Python hooks need uv and their declared dependencies when invoked.",
+      "statement": "The Pi bootstrap needs no system Python or uv: after release qualification it provisions pinned private CPython with a checksum-verified temporary uv tool, removes that setup tool, and activates configuration only after runtime preparation succeeds; managed hooks invoke the private interpreter directly.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/pi/adapter.ts#L34-L67",
-          "version": "repo-lines-v1:sha256:584a77b4887c2d4451b51710ca1043f2b0de06a39581451949eed4b0e5e20417:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYzNkOTk2MTQ0ZGU5MGNhYzczY2UzYmU5MDA1YTkwOTJjMGEzZmRmNDFkNzIxNjcwMWZkMzgwZDE4ZjkyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzMGU2YjM5NjEwODg0NmIxM2Q3NDM4MjEwZDQ5ZjcyZTdlZWViNjAxYTY2NDMxNzE5YjY5N2JiOTRlODM3MWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiOWMwOWNhMGU0NDU3OGJiNTllYjg1NzBhY2UxOWFkOTYwYzQ5NGM5MzZiNjYyYzg2ZmE1M2IxNDVlMmZkNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwODdhZWI0MGFhNjU1MDc1NzdmNDY4ZTgwOWMwYmUxYmQ5ODRmYjc3M2VlNWFlNDhhMWZlOTZmYTBkNmViMzkifQ"
+          "resource": "repo://source/hooks/pi/adapter.ts#L58-L86",
+          "version": "repo-lines-v1:sha256:9beab4b2f1bc31e13518d76cd88a636e3ff21202b9b5201a9078d524452b66ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYzNkOTk2MTQ0ZGU5MGNhYzczY2UzYmU5MDA1YTkwOTJjMGEzZmRmNDFkNzIxNjcwMWZkMzgwZDE4ZjkyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYjkwNTAwZDQ4ODkzOTBlMDI0YzE1MjBmNDE5YWFlNDdjNWNkMWJiZDg4MTBkOGFhOGYyMmRmMDEwMWE0NDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiOWMwOWNhMGU0NDU3OGJiNTllYjg1NzBhY2UxOWFkOTYwYzQ5NGM5MzZiNjYyYzg2ZmE1M2IxNDVlMmZkNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExODkyZDk2YzMzZTUxMzUwYjJhYmZjNzAxODYyY2ViOGI0ZjA2YjUxMTQwYjVmMTdkYjUzOTYxOTRhZmI1YzEifQ"
         },
         {
-          "resource": "repo://tools/install-pi.sh#L3-L27",
-          "version": "repo-lines-v1:sha256:32406a5a3a5cdca3e70ae9539335d39a5b6283d775d5cfc50044f35e89a2d7e4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNzNlOGMwZjg3ZTRhZWU1NzVhNjBjY2U3OGIyYTBhNjgwYWYxYmE5ODVmYWFjNmY1ZTllNzBlYTJmYTQ4MmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzNGUzMzIwMDc3NzRkZWI4YTMyODY3ZTA2MzhkNTlmMDM0NjYxY2I0N2NmMWU0NTkyYzMxNTRiYWY1MmJjMTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYmE2YmU5ZmEyZGY4MThjMTY2MGY3MGY4MGYwZDA4N2VhZGUxMTI3YmEyYjQzMGFhYzNkYWMyNTAyNTU1YTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3ZjUxMGRhODIxODhlOWRkZjkwZjY3YTg2MWQwNjNhZjM2NGM2Y2NmYzQxNGZlYjk4YjlhYzY4ZmUzZWViNzAifQ"
+          "resource": "repo://tools/setup-pi.mts#L260-L343",
+          "version": "repo-lines-v1:sha256:ca615ae95b06ece1c6c0a44dcae659af95402ea58aa61d0afbc7fad77392c449:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1MzAyMTFjNzE0MTVlZDFhYmQ2OGMyMzViNmQxOTBhNWI2NWRmMGI1MDVmNmY5ZWY3ZDU3NmJjOTdlMmY2OTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGVkODlmNmEwYzA5NDlhNzFjYWFkNTRhYTU4M2FmMGVhYzE0ZmM3N2Y1MDQyM2JjYzQ5MzBkNzA1NTMwOTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxOWZhNTNiOWViYmQxNTQ4ZGEyZjRjYjQ0ODkwYTQ4NzA1NDhmMTRhZjMxMGY5MzkyYzM5ZDI3NzhlOWYxY2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1YTRiNzdhYzdhMzJhYWQzNzAwNjNhMjM2YWE2YTM5YTQzM2MzNjUwMDQxZTEwN2Y1ODRmZDE0ZTAwNTFjZGEifQ"
+        },
+        {
+          "resource": "repo://tools/setup-pi.mts#L576-L604",
+          "version": "repo-lines-v1:sha256:36683785f80dc86048c3732e9ea68db91241989fedf88b004d7ad9f1868e21bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxODQ0NjU1OThkZTI4ZTU3ZTVmMmFhNjNhYTg2YzYwZDVlMWZmZTFjZDAzMDY3ZDlhMTE5YzYzZTBiYmIwOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlZjFlODJiZTc1NzY1ODZmMTJlZmJjYWRjMzNjM2RhMjY2MjVlNWE5YjVmODEwYjQ3NTZkNDVlMTgyODhkNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2OWI3NzFiNWVkZmRmNDg2YjczODA3NzkwNzQ1ZTE0OWMyMGI1OWExZWM5ODFkM2JmYjFhZTI5ZjQxNGQyMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -59,7 +63,7 @@
       "statement": "Pi setup installs the qualified aggregate package, migrates recognized Slopsentral registrations, and preserves unrelated settings and private recovery preimages.",
       "evidence": [
         {
-          "resource": "repo://tools/setup-pi.mts#L436-L503",
+          "resource": "repo://tools/setup-pi.mts#L508-L575",
           "version": "repo-lines-v1:sha256:81abc441fc0b88bf68bfbb47ac805c148a450faba7136ff328767a17fdeff2f0:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjM2VlZDFhM2E5OWViMDVmYWU1YjM2MzFhZGE1NGQ1MjFlZDBkMDA2MmM4NzUyYWU5NDVlOWY2ZTgxNTY5MjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxM2NkYTcxMmVmOGQ2YzZkMzk4MjA0OGYxODE1OThmODkyYmVhNmFhNjFiMWVlM2Q3MWI4NTI2NGVmNDE3ZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyYTE2Y2RiMGEyMjUwMmE1YmJkNjY0N2MyN2ZlZDUzZjI2N2MwNmY5MWI0MzA0ZGJmZGEwM2QwMmI2YWIyMTUifQ"
         }
       ]
@@ -81,6 +85,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T17:57:45.987Z"
+    "at": "2026-11-04T14:52:24.384Z"
   }
 }

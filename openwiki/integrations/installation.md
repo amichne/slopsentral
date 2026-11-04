@@ -1,11 +1,17 @@
 ---
 type: Integration
 title: Consumer installation and recovery
-description: Separate the native Pi bootstrap from general host management, then trace qualification, preserved state, and guarded recovery.
-tags: [installation, pi, amp, recovery, consumers]
+description: Separate the native Pi bootstrap from general host management, then trace
+  qualification, preserved state, and guarded recovery.
+tags:
+- installation
+- pi
+- amp
+- recovery
+- consumers
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T17:57:45.987Z
+    at: 2026-11-04T14:52:24.384Z
 sources:
   - id: openwiki-source-59e94a76c36256a0ceee4f2d
     resource: repo://source/hooks/pi/adapter.ts
@@ -17,7 +23,7 @@ sources:
     resource: repo://tools/setup-pi.mts
   - id: openwiki-source-694f90ac01e419c575288a8d
     resource: repo://tools/slopsentral.py
-generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
+generated: { by: "codex", at: "2026-11-04T14:52:24.384Z" }
 ---
 
 # Consumer installation and recovery
@@ -30,7 +36,7 @@ The [general command](cli.md) owns explicit host operations. The separate Pi boo
 
 The [launcher](../../tools/install-pi.sh) needs macOS or Linux and Node.js 22.19 or later.
 It selects a stable release, examines the installer asset's origin, size, and digest, and delegates to those bytes.
-Consumer setup needs no checkout, npm installation, Python, uv, or Pkl.
+Consumer setup needs no checkout, npm installation, system Python, uv, or Pkl.
 
 The [setup owner](../../tools/setup-pi.mts) qualifies the release tag, source identity, successful main run, archive digests, and receipts before configuration changes.
 Its archive contains the aggregate native package for all catalog plugins.
@@ -45,11 +51,22 @@ Installation does not prove every feature in an older Pi host.
 
 ## Keep setup and hook dependencies distinct
 
-The bootstrap does not install uv or Python for consumers.
-When Pi invokes a Python hook, that hook still needs uv and its declared script dependencies on `PATH`.
-A missing dependency produces an explicit hook failure.
+After release qualification, the bootstrap prepares a private CPython 3.12.14 before activating new configuration.
+It verifies a pinned uv 0.12.9 archive, uses that setup tool to install Python, and removes the tool afterward.
+Setup needs network access and keeps TLS verification enabled.
+The mapped runtime targets are macOS and Linux with glibc on arm64 and x64.
+
+Managed hook processes invoke the private interpreter directly.
+They need neither system Python nor uv, and invocation needs no network access.
+The runtime receipt binds the platform, relative executable path, and interpreter digest.
+Repeat setup verifies that receipt and the interpreter's required standard-library imports.
+Missing or changed runtime files produce explicit failures.
 A context failure blocks tool calls until a later request succeeds.
 The [hook lifecycle](../architecture/hooks.md) explains admission and the one-turn repair limit.
+
+Direct native package installation bypasses runtime provisioning and retains the external uv requirement.
+The private interpreter supports the current hooks' empty third-party dependency lists.
+A different dependency contract requires an explicit runtime update rather than silently omitting dependencies.
 
 Pi's `/hooks` controls persist Slopsentral hook choices separately from package installation.
 The maintainer dependency pins a host for executable evidence.
