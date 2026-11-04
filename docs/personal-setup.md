@@ -5,13 +5,21 @@ The public source owns reusable configuration. Private settings, credentials, hi
 
 ## Establish the installed owner
 
-Read the resolved `config` and `dotfiles` launchers before a source change.
-Examine their Git directory, worktree, origin, status, layout manifest, and installer.
+Resolve the affected command or shell entrypoint before a source change.
+Read its launcher, necessary implementation, link target, public inventory and installer.
+Examine the source revision, Git directory, worktree, `core.bare`, origin and scoped status.
+Inspect bare metadata before supplying `--work-tree`, which changes Git's bare-state observation.
 If those facts conflict, stop dependent writes.
 A retained checkout or historical dotfiles layout cannot establish the installed owner.
 
 Keep existing overrides and unrelated edits.
-Use the established launcher, runtime, completion, and installation owners.
+Current `amichne/dotfiles` owns native HOME files through `df`, `.dotfiles.git` and `scripts/install.py`.
+Tracked HOME files are runtime files, rather than consumer links into another tree.
+Current `amichne/ayi` owns the reusable AI command registry and its installer.
+Resolve the installed Ayi links: an archive registry has a `.ayi-source` commit marker and can lack an origin.
+Record its local registry revision separately from that upstream marker and any developer checkout.
+Use historical `shell-config`, `config`/`dotfiles`, `runtime` or `links.json` only when actual discovery establishes that layout.
+Use the verified inventory, completion and installation owners; do not introduce a second installer.
 Stage explicit public paths only. A setup request alone grants no push authority.
 
 ## Prove the public change
@@ -22,8 +30,9 @@ Do not recursively copy live HOME.
 Private configuration, history, credentials, and unrelated links stay outside the fixture.
 
 A fixture result establishes public-source behavior.
-When installation forms part of the task, separately examine the installed link and a fresh shell.
-Report source and installed results separately.
+When installation forms part of the task, separately examine installed native files or consumer links and a fresh shell.
+A reviewed installer plan does not apply it. Source tests do not prove installation or current-session activation.
+Report source, installer, installed-consumer and shell results separately.
 
 ## Create a personal command
 
