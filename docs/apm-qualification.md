@@ -6,13 +6,14 @@ Automatic hook delivery, model behavior, remote acquisition, and other platforms
 
 Use the existing [host installer](cli-install.md) for normal Slopsentral installation.
 This guide records a separate APM qualification boundary.
-APM's [versioned contract](https://github.com/microsoft/apm/blob/v0.35.0/docs/src/content/docs/consumer/installing-from-marketplaces.md#codex-compatibility-bundles-through-apm) requires explicit executable approval and leaves activation, trust, and authentication with Codex.
+The [versioned APM contract](https://github.com/microsoft/apm/blob/v0.35.0/docs/src/content/docs/consumer/installing-from-marketplaces.md#codex-compatibility-bundles-through-apm) requires explicit executable approval and leaves activation, trust, and authentication with Codex.
 New registrations stay disabled.
 The version gate accepts only Codex 0.163.0; a newer installed Codex does not satisfy it.
 
 ## Run the isolated qualification
 
-The [qualification command](../tools/qualify_apm.py) needs Python 3.12 or 3.13, uv 0.12.9, APM 0.35.0, Codex 0.163.0, Git, and macOS arm64.
+The [qualification command](../tools/qualify_apm.py) runs on macOS arm64.
+It needs Python 3.12 or 3.13, uv 0.12.9, APM 0.35.0, Codex 0.163.0, and Git.
 Supply reviewed executables through absolute paths.
 Download separate binaries from the [APM release](https://github.com/microsoft/apm/releases/tag/v0.35.0) and [Codex release](https://github.com/openai/codex/releases/tag/rust-v0.163.0), and verify their published checksums.
 The command does not download tools, use credentials, or change active user configuration.
@@ -42,7 +43,7 @@ The harness never removes an existing directory or edits the source bundle.
 ## What the checks establish
 
 The published package under `.agents/plugins/<plugin>/` includes its compatibility manifest, skills, hooks, instructions, scripts, and locks.
-APM's native route transfers the complete package rather than deploying loose skills.
+The native APM route transfers the complete package rather than deploying loose skills.
 The [assertions](../tools/python_checks/test_qualify_apm.py) reject missing policy, incorrect events, byte or executable-bit changes, indirect payloads, and inherited configuration.
 
 The native qualification:
@@ -77,9 +78,9 @@ Only Software Engineering's context command receives semantic execution checks; 
 
 The separate Copilot control installs `.github/plugin/software-engineering` through APM with hook approval.
 Installation exits successfully and writes hook declarations, but the deployed command retains `$PLUGIN_ROOT` and fails when run without a plugin environment.
-APM's 0.35.0 [command-path parser](https://github.com/microsoft/apm/blob/v0.35.0/src/apm_cli/integration/hook_command_paths.py) recognizes braced plugin-root variables.
+The APM 0.35.0 [command-path parser](https://github.com/microsoft/apm/blob/v0.35.0/src/apm_cli/integration/hook_command_paths.py) recognizes braced plugin-root variables.
 Slopsentral's commands use unbraced `$PLUGIN_ROOT` and read sibling policy assets.
-Rewriting the variable alone would not establish a complete executable closure or the correct host event protocol.
+Rewriting the variable alone does not establish a complete executable closure or the correct host event protocol.
 
 The harness records this unsupported result and checks removal of the owned loose hook declaration.
 It does not run a Copilot agent or claim every loose primitive is unsupported.

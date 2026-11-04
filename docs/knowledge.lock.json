@@ -76,11 +76,14 @@
       "tools/python_checks/test_pi_release_workflows.py": "b7414c3281151ec16a0f8b7070fbd1a86060ef177a83b9b5cb450bb14bf3ed88",
       "tools/python_checks/test_prose_command.py": "6a76d4b3e99f1cd86d5fbbbbf0913a9c5889d459a20e477e61115f1cfe0df1a6",
       "tools/python_checks/test_publish.py": "f4922769182e841938bdfa59964aed1f98b8f2868b07b8e1665d3a51f1d5cd63",
+      "tools/python_checks/test_qualify_apm.py": "2ea3fc0e77ca5089437386783bf887dc4301af0ec6cfaa41c0a48b21cfc5d0e1",
       "tools/python_checks/test_release_assets.py": "76eb0f6d9b8ec18cd690a110c17bfad671888a89f6b7347907d029c211a482b3",
       "tools/python_checks/test_release_pr.py": "6a1d7a15f8e7b9de90491e7df4ced60501a5cadaca2740d31d8339fe3ac67ca2",
       "tools/python_checks/test_release_version.py": "9a0251bd2dc2e4ed09eda7c973df92a03e9d91d90b2788b68839712a52f6a7fe",
       "tools/python_checks/test_setup_assets.py": "0145d601f271972a6417a6aae5eab0243aa86aaf515c26e0db5e4207bdc5d769",
       "tools/python_checks/test_slopsentral.py": "916a97a056c6c3b5e05c60767fd355118ecc7c54d8faa3f6146aab959467f5ac",
+      "tools/qualify_apm.py": "b84bb838f4f8a535c57d753c758348e21a7d1ba0830e249226930c1eef44f989",
+      "tools/qualify_apm.py.lock": "493285fe04f5efab7e81bec868ca14f5408ee8e80f7139851a11491665598a3d",
       "tools/release_assets.py": "e3a392408b0e9c68a5a43e263e96161487bf062d27c396312003dc00b0cf6362",
       "tools/release_assets.py.lock": "493285fe04f5efab7e81bec868ca14f5408ee8e80f7139851a11491665598a3d",
       "tools/release_version.py": "73619e0acdaf435d4fc16dda148f77e0901966cfd6e50755fe5be7482aaa7a12",
@@ -175,7 +178,7 @@
       "tools/verify_marketplaces.py.lock": "493285fe04f5efab7e81bec868ca14f5408ee8e80f7139851a11491665598a3d"
     },
     "composition": {
-      "docs/agent-marketplaces.md": "bffdbaf574f75896efd39140fb209474edcf6296566abef70acee0b35443920c",
+      "docs/agent-marketplaces.md": "993b41ab864792aabbe6d59b8ceb8b7a3ec83f534217a498a0aad5f71384e520",
       "docs/workflow-resources.md": "0d5f0ea7eac294accb8fc89ccd14f652ab911e861403edc009a83bc5d07dba1e",
       "openwiki/concepts/source-ownership.md": "a3084aaa3d1eb810d28d8f084ebcee51cafe6dfa71d5fe6218c89ee3518927ab",
       "source/AGENTS.md": "ac851953b0c2e48f8391cd00338964a02bab84fe44963b279bff85c0a20f6deb",
@@ -804,12 +807,14 @@
       "source/hooks/tests/test_required_skill_read.py": "0b27f8f36b78185b7ade4cabef8a90dcca92415b4d81a980d59dfd1700cb8244"
     },
     "installation": {
+      "docs/apm-qualification.md": "2afcf7483d26608ad540dff3bd081a77348d706e4435a3ab46ab7eef225b42ff",
       "docs/cli-install.md": "b39228e124ec54862eb51005ccbf38cb93f043f282086daf5049136594a785ef",
       "docs/personal-setup.md": "577dcea11291932ad8489efe6e70d4b91ef728694b2e3b5efbf45f6471ff6523",
       "docs/pi-install.md": "c854e4bdcab171e6e9fe7d0c45a66532defe482efdc87902043bafd1f8198433",
       "openwiki/integrations/cli.md": "3aafba7c3609104508b72f0771cba20283ec17eea6300d0aa2a93d9f7fcf23db",
       "openwiki/integrations/installation.md": "513c4195d9ffb0cb8c2d2af4c7d34f12a544df4df3e0532054f6617fdd088d4f",
       "tools/install-pi.sh": "e74ca3e94225cc844f4b8fb1c4276cbd52355b60a96cbd2a3299299e66a9238e",
+      "tools/qualify_apm.py": "b84bb838f4f8a535c57d753c758348e21a7d1ba0830e249226930c1eef44f989",
       "tools/setup-pi.mts": "437f4fc019f9a3273775d0e09a3a159fa17e6c48df2d224961ea734164edc8cc",
       "tools/slopsentral.py": "73c328ea9a616203a01661219b8480706eb75bd3b5b0e04f6ae363f618c8ccdf"
     },
@@ -980,8 +985,9 @@
     "navigation": {
       "README.md": "a812e7b2c4480774786354b5257c1612ba91bc04505623ef66683af96ee8b765",
       "docs/GLOSSARY.md": "939990af4c2602d709d0c8f257fb7a99a70d49929e48383bddb09c376cebd09c",
-      "docs/agent-marketplaces.md": "bffdbaf574f75896efd39140fb209474edcf6296566abef70acee0b35443920c",
+      "docs/agent-marketplaces.md": "993b41ab864792aabbe6d59b8ceb8b7a3ec83f534217a498a0aad5f71384e520",
       "docs/agents-md-scope.md": "5814e2b2ca448b60f00beacb6feb68f8feebc7cc1906273bed33a13fbabf0d18",
+      "docs/apm-qualification.md": "2afcf7483d26608ad540dff3bd081a77348d706e4435a3ab46ab7eef225b42ff",
       "docs/cli-install.md": "b39228e124ec54862eb51005ccbf38cb93f043f282086daf5049136594a785ef",
       "docs/documentation.md": "f639b75382ac59ed394357f447c97ddc5dbb236bd30208d40791f44c156e4383",
       "docs/engineering-excellence.md": "9e2198f7bf047044b35ef89bc3c21aed3def352101e6b97aecf93160b270e2c2",
@@ -1068,7 +1074,7 @@
       "tools/release_version.py": "73619e0acdaf435d4fc16dda148f77e0901966cfd6e50755fe5be7482aaa7a12"
     }
   },
-  "coverageSha256": "290d558cc3641c73f234439de93de91eba6888a23e58c495536436c5caee69b2",
+  "coverageSha256": "73ebf57d8f8bc90a5f8a3259fe0aedb437cb67fac4c98983408f65c02b904c0a",
   "schemaVersion": 2,
   "type": "KNOWLEDGE_REVIEW"
 }
