@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5e997f960015637272e728ed609343903f787b5f433d0418f6584e157198f239",
+  "pageVersion": "sha256:e8da4a456b8d0e92d46fb629b491683a92a10bd3c0fc651bf55a255549aef0e2",
   "claims": [
     {
       "id": "claim_468cefd833044a5fb8a8fba715593e3a",
@@ -45,7 +45,7 @@
       "statement": "The Pi bootstrap needs no system Python or uv: after release qualification it provisions pinned private CPython with a checksum-verified temporary uv tool, removes that setup tool, and activates configuration only after runtime preparation succeeds; managed hooks invoke the private interpreter directly.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/pi/adapter.ts#L58-L86",
+          "resource": "repo://source/hooks/pi/adapter.ts#L60-L88",
           "version": "repo-lines-v1:sha256:9beab4b2f1bc31e13518d76cd88a636e3ff21202b9b5201a9078d524452b66ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYzNkOTk2MTQ0ZGU5MGNhYzczY2UzYmU5MDA1YTkwOTJjMGEzZmRmNDFkNzIxNjcwMWZkMzgwZDE4ZjkyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYjkwNTAwZDQ4ODkzOTBlMDI0YzE1MjBmNDE5YWFlNDdjNWNkMWJiZDg4MTBkOGFhOGYyMmRmMDEwMWE0NDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiOWMwOWNhMGU0NDU3OGJiNTllYjg1NzBhY2UxOWFkOTYwYzQ5NGM5MzZiNjYyYzg2ZmE1M2IxNDVlMmZkNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExODkyZDk2YzMzZTUxMzUwYjJhYmZjNzAxODYyY2ViOGI0ZjA2YjUxMTQwYjVmMTdkYjUzOTYxOTRhZmI1YzEifQ"
         },
         {
@@ -53,8 +53,8 @@
           "version": "repo-lines-v1:sha256:ca615ae95b06ece1c6c0a44dcae659af95402ea58aa61d0afbc7fad77392c449:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1MzAyMTFjNzE0MTVlZDFhYmQ2OGMyMzViNmQxOTBhNWI2NWRmMGI1MDVmNmY5ZWY3ZDU3NmJjOTdlMmY2OTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGVkODlmNmEwYzA5NDlhNzFjYWFkNTRhYTU4M2FmMGVhYzE0ZmM3N2Y1MDQyM2JjYzQ5MzBkNzA1NTMwOTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxOWZhNTNiOWViYmQxNTQ4ZGEyZjRjYjQ0ODkwYTQ4NzA1NDhmMTRhZjMxMGY5MzkyYzM5ZDI3NzhlOWYxY2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1YTRiNzdhYzdhMzJhYWQzNzAwNjNhMjM2YWE2YTM5YTQzM2MzNjUwMDQxZTEwN2Y1ODRmZDE0ZTAwNTFjZGEifQ"
         },
         {
-          "resource": "repo://tools/setup-pi.mts#L576-L604",
-          "version": "repo-lines-v1:sha256:36683785f80dc86048c3732e9ea68db91241989fedf88b004d7ad9f1868e21bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxODQ0NjU1OThkZTI4ZTU3ZTVmMmFhNjNhYTg2YzYwZDVlMWZmZTFjZDAzMDY3ZDlhMTE5YzYzZTBiYmIwOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlZjFlODJiZTc1NzY1ODZmMTJlZmJjYWRjMzNjM2RhMjY2MjVlNWE5YjVmODEwYjQ3NTZkNDVlMTgyODhkNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2OWI3NzFiNWVkZmRmNDg2YjczODA3NzkwNzQ1ZTE0OWMyMGI1OWExZWM5ODFkM2JmYjFhZTI5ZjQxNGQyMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://tools/setup-pi.mts#L576-L606",
+          "version": "repo-lines-v1:sha256:0529077a34348e51b4e5e37299287490bc801ab88f16a2010ea4dcf4f665c884:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxODQ0NjU1OThkZTI4ZTU3ZTVmMmFhNjNhYTg2YzYwZDVlMWZmZTFjZDAzMDY3ZDlhMTE5YzYzZTBiYmIwOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlZjFlODJiZTc1NzY1ODZmMTJlZmJjYWRjMzNjM2RhMjY2MjVlNWE5YjVmODEwYjQ3NTZkNDVlMTgyODhkNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2OWI3NzFiNWVkZmRmNDg2YjczODA3NzkwNzQ1ZTE0OWMyMGI1OWExZWM5ODFkM2JmYjFhZTI5ZjQxNGQyMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -81,10 +81,24 @@
           "version": "repo-lines-v1:sha256:94d94b89f8b59d827a3d45eebcfbf4d6068f49ea88aa0c2e94fee8bcc3d685bc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjYmFmYmU2YzM3YTc2MjY4ZDZkNTYwZTI2NjU2ZmQ3ZDE2ODgwODBkYmM5ZmQ4YmRiYmYwODNhMjlhNzM2ODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMzdmNzk5YzQxYTkwMjAzNDlhMTBkNjE4MDk5NTViZTg1OTc4MGI2MmVjMjMwMTEzODJiYWUyOGNmYjc3NDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxYmIwZmJiMGQyNGRhZTBkZTRlOTAyM2YzODFhZjkyNTg5M2E0YjZhMmNhMTFmYjRlN2ExOWE4NjFiMDU2YTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzNGMxYTY0N2Q2ZTU0ZWY5ZTM1ZDRhZTA4M2NjYjAxYzA2MDcxMTYxODg3ZGFkY2ZjNjkzZjMxY2Q5MmM1NGYifQ"
         }
       ]
+    },
+    {
+      "id": "claim_86c347f1900543c19781c0411e365314",
+      "statement": "Personal and project Pi installations share a runtime under the user’s private home; setup rejects runtime storage inside the project, and the adapter does not use project-provided runtime receipts.",
+      "evidence": [
+        {
+          "resource": "repo://source/hooks/pi/adapter.ts#L16-L42",
+          "version": "repo-lines-v1:sha256:72ae1edd6d81803af63aaa0603ebf90dabdef98172accab0e348b2d14067a2b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhYWE4MDYwYWM3YmM3OTdmZWU4NDE4YmYwNzE1ZjU3OWIxNDMyMjk5MWI2YjFmNGZjNDNlN2Y5NTdhMzQwYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1OTQzYjVkMmE0NjEyY2QyYzg4MWIzZmYwMTBhNTBkNWQ2MDNkNjRhMWQ4MWIxNDU1MzQ4MTI0OWZjYWM4ZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZGE3MzQzNzRiOWY3ODUwMzcyMjFhODk2NmUwMjQ0MTdhOGM3ZWFlZTQ1NGU4NGMxNjUzNDExZjI1YzZlZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwNDVjZWNlZTU2OTcyZmQ2MWMyMWUyMjQ3MzdkNDI3NjMyYjYyMzI0MDNiNWFhMjAwMTQzNWMwYTg2NjYzYTQifQ"
+        },
+        {
+          "resource": "repo://tools/setup-pi.mts#L595-L606",
+          "version": "repo-lines-v1:sha256:dd4548c91d149b1e1f2640dd818aaf77664d6751006c624a539ceea668e8c5d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YTY3Nzc3ZDY3Nzc4YzM0MGUyMjUxZWQ5YWMwY2UzMWU1NWNmYTA2ZjRjNmUyOWYxNDI5YzRkOTVlMTFhYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlZjFlODJiZTc1NzY1ODZmMTJlZmJjYWRjMzNjM2RhMjY2MjVlNWE5YjVmODEwYjQ3NTZkNDVlMTgyODhkNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMWQ2ZTc3MmFkMjVhNGM1MDdiZjUyMzZhZjhkM2Q2YTE1NWVjZDRlYjA3NmIyZDE5MTIzYzFkODBhNTMxYzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-04T14:52:24.384Z"
+    "at": "2026-11-04T15:10:06.076Z"
   }
 }

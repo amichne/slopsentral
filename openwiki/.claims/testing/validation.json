@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b652ff34e67099c73d8d289b76decf287c82558304943dbdea48f2b50a2088f8",
+  "pageVersion": "sha256:916fb8638ef27b0b3680b5f635e157bf163f66cb2db7bb4c0142583d0c70eee9",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
@@ -74,21 +74,21 @@
     },
     {
       "id": "claim_bf8e6356d2944d5f9b1db07c23916cf0",
-      "statement": "The native Pi host test exercises private-runtime prompt admission, tool calls, settlement rejection, and review recovery with only Git on PATH; runtime boundary tests separately reject unverified archives, foreign paths, and symlink receipts without a model request.",
+      "statement": "The native Pi host test exercises private-runtime prompt admission, tool calls, settlement rejection, and review recovery with only Git on PATH; runtime boundary tests reject unverified archives, foreign paths, symlink receipts, and project-controlled executable authority without a model request.",
       "evidence": [
         {
           "resource": "repo://tools/tests/pi-host.test.mjs",
-          "version": "repo-file-v1:sha256:ee9b475a5a147b51c6f93cb512e8abfa9314351460af222cfd014686f6527b58"
+          "version": "repo-file-v1:sha256:c0faeb1a891d739e86203ffda3db489b50da6cbc5ddf109b0781669b50b40961"
         },
         {
           "resource": "repo://tools/tests/pi-runtime.test.mjs",
-          "version": "repo-file-v1:sha256:312ec8af54179e271a5be929034ae7b15e62be723822aa25535a83b3310a5c0c"
+          "version": "repo-file-v1:sha256:ed7ee826e62afae93bd2c24beaa88344483d54a94a231bd6327ceedabedea52e"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-04T14:52:24.384Z"
+    "at": "2026-11-04T15:10:06.076Z"
   }
 }

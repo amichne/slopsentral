@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:ca3004498573a8be70eba99451730e3fd311070a47e8bec7d394cb4a501b0fe9",
+  "pageVersion": "sha256:730bf1bc746bb62f0f275069908e87dfe17a9df6e235fe4a6f58db3e6f596995",
   "claims": [
     {
       "id": "claim_9531bb3bbe9e4648b03a7049e4d79602",
@@ -21,7 +21,7 @@
       "statement": "Pi blocks tool calls after failed request admission and permits one automatic repair turn after a blocked Stop result.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/pi/adapter.ts#L141-L157",
+          "resource": "repo://source/hooks/pi/adapter.ts#L143-L159",
           "version": "repo-lines-v1:sha256:f1406a1a47d21ea9cb031be2514e495453b3af740342da95938837a30c4c1046:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5MzAxZmQxMWU0MzQ2ODI0MmEyYTM2MTU5YjNjMjQ2YjI0OWM0OTkxYTY5NGNkMzFlODI3N2ZmOTJkMDJkZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmNGQwMTVmYmMyYjcwMTA2NjM3NjQ1MGVjODMyMWZjYzZkYmFkYjk5MjViODUxMmQyMmVkZDliNzAyYjRlMGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
@@ -31,7 +31,7 @@
       "statement": "Disabled Pi hooks start no hook process, and malformed persisted choices reject hook effects.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/pi/adapter.ts#L108-L114",
+          "resource": "repo://source/hooks/pi/adapter.ts#L110-L116",
           "version": "repo-lines-v1:sha256:5bafcea0a419337796b6d379161e3ae6f3c9557e151618bc672939245219e46c:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODA5NDJmOTYxYzM1NzU5Zjg5ZjNkMTg1NzlhZmZiNzk1MTRlZWM2ZDIzYTNlNzAwYzZkOGI1YzY2NDBiMDg0OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDJhMmNiMjVhMTIyYjQ0MjIxYTYyMzRlYzY2MGE3YjVmYjdmOWJkZTdiM2I5ZTJiM2M1NTlhMGQ5NmZhYzczOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmIyNzlhYzM3OGIwYjdjNDczZTVmMDg1YjdmNzVkZjliZTdlMzAzNGQ4OTA0YTc0NTY0ZGQwODAzOGYzMzlkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTgxYmRiOWZjMjYzNDEwM2U1NmY2MTgwODFmNjlkZTY4NWQ3ZTZmOWYzYTAzNmZkZDQwNzBlNzE0ZjY2NGFkMyJ9"
         },
         {
@@ -45,18 +45,32 @@
       "statement": "Managed Pi packages verify a private interpreter receipt and invoke the canonical dependency-free Python hooks directly with isolated imports and bytecode writes disabled; missing or changed runtime files reject admission, while direct native package installation retains external uv.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/pi/adapter.ts#L15-L43",
-          "version": "repo-lines-v1:sha256:1432dcbce25e7ef0bc7a9bcc0358f9976147ac4cb5655aa4b18ccbc259f3c485:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhYWE4MDYwYWM3YmM3OTdmZWU4NDE4YmYwNzE1ZjU3OWIxNDMyMjk5MWI2YjFmNGZjNDNlN2Y5NTdhMzQwYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5NjZkNWVmMTJiM2Y1MDlkNWI2MzQ1MmE1MjcyMWZmZWNmOThiYmM1NDFmOTkyZDM2MGVmZTQ0NjRhODNkM2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZGE3MzQzNzRiOWY3ODUwMzcyMjFhODk2NmUwMjQ0MTdhOGM3ZWFlZTQ1NGU4NGMxNjUzNDExZjI1YzZlZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU5ZWJhZDFmMTY0YTJkMzFmNGQzOWNiYmJjMjliM2UzZjI0OWEyODA1MmZmZWQxMjlmYWQyNGRmMDY2MzRhYjQifQ"
+          "resource": "repo://source/hooks/pi/adapter.ts#L16-L45",
+          "version": "repo-lines-v1:sha256:e37b5571e3770774926fb5fd8e6dbd0f42f13e92ee16a4c78cbb41b94cb88283:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhYWE4MDYwYWM3YmM3OTdmZWU4NDE4YmYwNzE1ZjU3OWIxNDMyMjk5MWI2YjFmNGZjNDNlN2Y5NTdhMzQwYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5NjZkNWVmMTJiM2Y1MDlkNWI2MzQ1MmE1MjcyMWZmZWNmOThiYmM1NDFmOTkyZDM2MGVmZTQ0NjRhODNkM2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZGE3MzQzNzRiOWY3ODUwMzcyMjFhODk2NmUwMjQ0MTdhOGM3ZWFlZTQ1NGU4NGMxNjUzNDExZjI1YzZlZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU5ZWJhZDFmMTY0YTJkMzFmNGQzOWNiYmJjMjliM2UzZjI0OWEyODA1MmZmZWQxMjlmYWQyNGRmMDY2MzRhYjQifQ"
         },
         {
-          "resource": "repo://source/hooks/pi/adapter.ts#L58-L81",
+          "resource": "repo://source/hooks/pi/adapter.ts#L60-L83",
           "version": "repo-lines-v1:sha256:94252aaf5d191bcf77e50f2c6b8c6fdb641697dc9efbfb82748fbce9ee6fc223:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYzNkOTk2MTQ0ZGU5MGNhYzczY2UzYmU5MDA1YTkwOTJjMGEzZmRmNDFkNzIxNjcwMWZkMzgwZDE4ZjkyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YzFkOGY5M2Q5NzAyZTM3ZDllMjUzZDJlZWJjYWNiYTA3M2IxZWFkYzE3ZmE2YWMyZDhlMWQ0YWZmOWMxYjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiOWMwOWNhMGU0NDU3OGJiNTllYjg1NzBhY2UxOWFkOTYwYzQ5NGM5MzZiNjYyYzg2ZmE1M2IxNDVlMmZkNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxMzQ3NjI4ZDEzMjdmMThlMGIwZDE2ZTg4ZWE2ZmQxM2RlMzQ4YTM0ODJlYmE0NjU0NmYyMDMxMzdkYjNjMDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f0b41e1bf1cf4babae9d2d8307e605c8",
+      "statement": "The Pi adapter reads runtime authority from personal home storage, so a project-controlled runtime receipt cannot authorize an executable for a managed package.",
+      "evidence": [
+        {
+          "resource": "repo://source/hooks/pi/adapter.ts#L16-L42",
+          "version": "repo-lines-v1:sha256:72ae1edd6d81803af63aaa0603ebf90dabdef98172accab0e348b2d14067a2b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhYWE4MDYwYWM3YmM3OTdmZWU4NDE4YmYwNzE1ZjU3OWIxNDMyMjk5MWI2YjFmNGZjNDNlN2Y5NTdhMzQwYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1OTQzYjVkMmE0NjEyY2QyYzg4MWIzZmYwMTBhNTBkNWQ2MDNkNjRhMWQ4MWIxNDU1MzQ4MTI0OWZjYWM4ZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZGE3MzQzNzRiOWY3ODUwMzcyMjFhODk2NmUwMjQ0MTdhOGM3ZWFlZTQ1NGU4NGMxNjUzNDExZjI1YzZlZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwNDVjZWNlZTU2OTcyZmQ2MWMyMWUyMjQ3MzdkNDI3NjMyYjYyMzI0MDNiNWFhMjAwMTQzNWMwYTg2NjYzYTQifQ"
+        },
+        {
+          "resource": "repo://tools/tests/pi-runtime.test.mjs#L51-L74",
+          "version": "repo-lines-v1:sha256:9117a6e514d3a6e5a1a8b786c5a9fa6f560eadecf485d7b7a3408d92360d7c18:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1MTVkZjQwNjFhY2QxNTVjMWFiOTQ2NjMzYzc0ZTZjMmYxMzMxZTg2ZTIzYzU3OWYyZDRmZTJhMzdiNTNmODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMTYyNTdlNDA3ZGRjZmUyNGU1YzJlN2M3ZWRkOGE5NzQzNjVjY2U1NzY0YTE2YTNlYTM3OTgzZDhkYWIzNGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-04T14:52:24.384Z"
+    "at": "2026-11-04T15:10:06.076Z"
   }
 }

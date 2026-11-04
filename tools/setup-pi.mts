@@ -595,7 +595,9 @@ async function main(): Promise<void> {
   const qualified = await qualify(live, version);
   const scope = normalized({ agentDir, cwd, project });
   recordOf(scope);
-  await prepareHookRuntime(stateOf(scope));
+  const runtime = path.join(fs.realpathSync(os.homedir()), '.pi', 'slopsentral-hook-runtime');
+  if (runtime === cwd || runtime.startsWith(cwd + path.sep) && cwd !== fs.realpathSync(os.homedir())) reject('UNSAFE_CONFIG', 'Personal hook runtime storage is inside this project.');
+  await prepareHookRuntime(runtime);
   console.error('HOOK_RUNTIME_READY: private Python ' + hookPython + '. Hook execution needs no system Python or uv.');
   const result = await install(qualified, scope);
   console.log(result.status + ': Slopsentral ' + result.version + '. Restart Pi for native discovery.');

@@ -1,17 +1,16 @@
 ---
 type: Integration
 title: Consumer installation and recovery
-description: Separate the native Pi bootstrap from general host management, then trace
-  qualification, preserved state, and guarded recovery.
+description: Separate the native Pi bootstrap from general host management, then trace qualification, preserved state, and guarded recovery.
 tags:
-- installation
-- pi
-- amp
-- recovery
-- consumers
+  - installation
+  - pi
+  - amp
+  - recovery
+  - consumers
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-04T14:52:24.384Z
+    at: 2026-11-04T15:10:06.076Z
 sources:
   - id: openwiki-source-59e94a76c36256a0ceee4f2d
     resource: repo://source/hooks/pi/adapter.ts
@@ -23,7 +22,7 @@ sources:
     resource: repo://tools/setup-pi.mts
   - id: openwiki-source-694f90ac01e419c575288a8d
     resource: repo://tools/slopsentral.py
-generated: { by: "codex", at: "2026-11-04T14:52:24.384Z" }
+generated: { by: "codex", at: "2026-11-04T15:10:06.076Z" }
 ---
 
 # Consumer installation and recovery
@@ -52,6 +51,8 @@ Installation does not prove every feature in an older Pi host.
 ## Keep setup and hook dependencies distinct
 
 After release qualification, the bootstrap prepares a private CPython 3.12.14 before activating new configuration.
+The shared runtime lives under `~/.pi/slopsentral-hook-runtime`, including for project-scoped installations.
+Project files cannot choose that interpreter.
 It verifies a pinned uv 0.12.9 archive, uses that setup tool to install Python, and removes the tool afterward.
 Setup needs network access and keeps TLS verification enabled.
 The mapped runtime targets are macOS and Linux with glibc on arm64 and x64.

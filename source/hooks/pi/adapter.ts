@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { getAgentDir, type ExtensionAPI, type ExtensionContext } from '@earendil-works/pi-coding-agent';
 import { readHookSettings, registerHookControls, type Adapter, type Hook, type HookEvent, type HookSettings } from './controls.ts';
@@ -14,9 +15,10 @@ const object = (value: unknown): value is Record<string, unknown> => typeof valu
 
 function privatePython(root: string): { type: 'external' } | { type: 'ready'; executable: string } | { type: 'failed'; reason: string } {
   const packages = path.dirname(path.dirname(root));
-  const state = path.dirname(packages);
-  if (path.basename(packages) !== 'packages' || path.basename(state) !== 'slopsentral-setup') return { type: 'external' };
+  const packageState = path.dirname(packages);
+  if (path.basename(packages) !== 'packages' || path.basename(packageState) !== 'slopsentral-setup') return { type: 'external' };
   try {
+    const state = path.join(fs.realpathSync(os.homedir()), '.pi', 'slopsentral-hook-runtime');
     const receipt = path.join(state, 'hook-runtime.json');
     const info = fs.lstatSync(receipt);
     if (!info.isFile() || info.size > 64 * 1024 || fs.realpathSync(receipt) !== receipt) return { type: 'failed', reason: 'HOOK_RUNTIME_INVALID' };

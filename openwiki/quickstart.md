@@ -1,16 +1,15 @@
 ---
 type: Guide
 title: Slopsentral quickstart
-description: Select an engineering procedure, install a consumer, or change the source
-  with linked documentation and executable evidence.
+description: Select an engineering procedure, install a consumer, or change the source with linked documentation and executable evidence.
 tags:
-- quickstart
-- navigation
-- engineering
-- okf
+  - quickstart
+  - navigation
+  - engineering
+  - okf
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-04T14:52:24.384Z
+    at: 2026-11-04T15:10:06.076Z
 sources:
   - id: openwiki-source-6d4b4e707b8d60b6ccfa3425
     resource: repo://.github/workflows/openwiki-update.yml
@@ -30,7 +29,7 @@ sources:
     resource: repo://tools/setup-pi.mts
   - id: openwiki-source-6706911967b481bbbe3dfbe8
     resource: repo://tools/setup.py
-generated: { by: "codex", at: "2026-11-04T14:52:24.384Z" }
+generated: { by: "codex", at: "2026-11-04T15:10:06.076Z" }
 ---
 
 # Slopsentral quickstart
@@ -79,6 +78,7 @@ Consumers use qualified release assets instead of the maintainer toolchain.
 The general command uses uv and Python.
 The separate Pi launcher needs neither system Python nor uv: setup downloads and verifies a private hook interpreter before activating configuration.
 Managed hooks then run without system Python or uv and need no network access.
+Personal home storage owns runtime authority for project installations, too.
 Direct native package installation bypasses that provisioning; the [Pi guide](../docs/pi-install.md) explains its external runtime requirement.
 
 ## Read and change knowledge with the source

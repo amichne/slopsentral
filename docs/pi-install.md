@@ -68,7 +68,8 @@ Drift reports remain advisory.
 Instruction-scope rejection requests one repair turn. Repeated rejection stays visible without an automatic loop.
 The adapter preserves earlier extension messages and continuation requests.
 
-The bootstrap provisions CPython 3.12.14 in the selected scope's private setup directory.
+The bootstrap provisions CPython 3.12.14 under `~/.pi/slopsentral-hook-runtime`.
+Personal and project packages share that private runtime; project files cannot select its executable.
 It verifies a pinned uv 0.12.9 archive, uses that setup tool to install Python, and removes the tool afterward.
 Setup needs network access for these downloads. It keeps TLS verification enabled.
 The runtime targets macOS and Linux with glibc on arm64 and x64.

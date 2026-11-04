@@ -13,6 +13,9 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
 }, async t => {
   const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi-native-default-')));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const previousHome = process.env.HOME;
+  process.env.HOME = directory;
+  t.after(() => { if (previousHome === undefined) delete process.env.HOME; else process.env.HOME = previousHome; });
   let pkg = process.env.SLOPSENTRAL_PI_PACKAGE;
   if (!pkg) {
     const out = path.join(directory, 'projection');
@@ -27,8 +30,9 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   let python;
   if (managed) {
     const state = path.join(directory, 'slopsentral-setup');
-    python = await prepareHookRuntime(state);
-    assert.equal(await prepareHookRuntime(state, () => assert.fail('A current runtime must not download again')), python);
+    const runtime = path.join(directory, '.pi', 'slopsentral-hook-runtime');
+    python = await prepareHookRuntime(runtime);
+    assert.equal(await prepareHookRuntime(runtime, () => assert.fail('A current runtime must not download again')), python);
     const destination = path.join(state, 'packages', 'fixture');
     fs.mkdirSync(path.dirname(destination), { recursive: true });
     fs.renameSync(pkg, destination);
@@ -51,9 +55,6 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   process.env.PI_CODING_AGENT_DIR = agentDir;
   t.after(() => { if (previousAgentDir === undefined) delete process.env.PI_CODING_AGENT_DIR; else process.env.PI_CODING_AGENT_DIR = previousAgentDir; });
   fs.writeFileSync(path.join(agentDir, 'AGENTS.md'), 'Pi global instructions.\n');
-  const previousHome = process.env.HOME;
-  process.env.HOME = directory;
-  t.after(() => { if (previousHome === undefined) delete process.env.HOME; else process.env.HOME = previousHome; });
   const settingsManager = SettingsManager.inMemory({ packages: [pkg] });
   const resourceLoader = new DefaultResourceLoader({ cwd, agentDir, settingsManager });
   await resourceLoader.reload();

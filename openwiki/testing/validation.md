@@ -1,16 +1,15 @@
 ---
 type: Validation Strategy
 title: Match checks to the engineering claim
-description: Select the smallest faithful gate for source, contracts, packages, knowledge,
-  host behavior, and live model outcomes.
+description: Select the smallest faithful gate for source, contracts, packages, knowledge, host behavior, and live model outcomes.
 tags:
-- validation
-- tests
-- evidence
-- contracts
+  - validation
+  - tests
+  - evidence
+  - contracts
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-04T14:52:24.384Z
+    at: 2026-11-04T15:10:06.076Z
 sources:
   - id: openwiki-source-fce7a6054d61269783034ac4
     resource: repo://source/skills/code-knowledge-base/scripts/documentation.py
@@ -28,7 +27,7 @@ sources:
     resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3
     resource: repo://tools/tests/pi-runtime.test.mjs
-generated: { by: "codex", at: "2026-11-04T14:52:24.384Z" }
+generated: { by: "codex", at: "2026-11-04T15:10:06.076Z" }
 ---
 
 # Match checks to the engineering claim
@@ -89,7 +88,7 @@ The [adoption procedure](../../source/skills/code-knowledge-base/references/port
 
 The [native host test](../../tools/tests/pi-host.test.mjs) provisions a private interpreter and runs prompt admission, tool calls, settlement rejection, and review recovery with only Git on `PATH`.
 Its external-runtime case still verifies missing uv and missing-script failures.
-The [runtime boundary tests](../../tools/tests/pi-runtime.test.mjs) reject an unverified archive, a foreign executable path, and a symlink receipt.
+The [runtime boundary tests](../../tools/tests/pi-runtime.test.mjs) reject an unverified archive, a foreign executable path, a symlink receipt, and a project-controlled runtime receipt.
 The [archive test](../../tools/tests/pi-install.test.mjs) installs through Pi with a command allowlist and no inherited credentials.
 
 These checks separate private-runtime readiness from direct package installation, which bypasses provisioning.
