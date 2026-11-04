@@ -1,5 +1,7 @@
 import { spawn } from 'node:child_process';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { getAgentDir, type ExtensionAPI, type ExtensionContext } from '@earendil-works/pi-coding-agent';
 import { readHookSettings, registerHookControls, type Adapter, type Hook, type HookEvent, type HookSettings } from './controls.ts';
@@ -10,6 +12,30 @@ export type Result =
   | { readonly type: 'failed'; readonly reason: string };
 const limit = 1024 * 1024;
 const object = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
+
+function privatePython(root: string): { type: 'external' } | { type: 'ready'; executable: string } | { type: 'failed'; reason: string } {
+  const packages = path.dirname(path.dirname(root));
+  const packageState = path.dirname(packages);
+  if (path.basename(packages) !== 'packages' || path.basename(packageState) !== 'slopsentral-setup') return { type: 'external' };
+  try {
+    const state = path.join(fs.realpathSync(os.homedir()), '.pi', 'slopsentral-hook-runtime');
+    const receipt = path.join(state, 'hook-runtime.json');
+    const info = fs.lstatSync(receipt);
+    if (!info.isFile() || info.size > 64 * 1024 || fs.realpathSync(receipt) !== receipt) return { type: 'failed', reason: 'HOOK_RUNTIME_INVALID' };
+    const value: unknown = JSON.parse(fs.readFileSync(receipt, 'utf8'));
+    if (!object(value) || Object.keys(value).sort().join() !== 'executable,platform,python,schemaVersion,sha256'
+      || value.schemaVersion !== 1 || value.platform !== process.platform + '-' + process.arch || value.python !== '3.12.14'
+      || typeof value.executable !== 'string' || typeof value.sha256 !== 'string'
+      || !value.executable.startsWith('hook-runtime-3.12.14-' + value.platform + '/')
+      || value.executable.split('/').some(part => !part || part === '.' || part === '..')) return { type: 'failed', reason: 'HOOK_RUNTIME_INVALID' };
+    const executable = path.join(state, value.executable);
+    const executableInfo = fs.statSync(executable);
+    if (fs.realpathSync(executable) !== executable || !executableInfo.isFile() || executableInfo.size > 64 * 1024 * 1024
+      || !(executableInfo.mode & 0o111)
+      || crypto.createHash('sha256').update(fs.readFileSync(executable)).digest('hex') !== value.sha256) return { type: 'failed', reason: 'HOOK_RUNTIME_CHANGED' };
+    return { type: 'ready', executable };
+  } catch { return { type: 'failed', reason: 'HOOK_RUNTIME_UNAVAILABLE' }; }
+}
 
 export function decode(text: string): Result {
   let value: unknown;
@@ -34,9 +60,20 @@ export function decode(text: string): Result {
 export function runHook(hook: Hook, root: string, cwd: string, session: string, signal?: AbortSignal): Promise<Result> {
   return new Promise(resolve => {
     if (signal?.aborted) { resolve({ type: 'failed', reason: 'HOOK_CANCELLED' }); return; }
-    const command = hook.command.replace(/\bhooks\/[A-Za-z0-9_.-]+/g, file => '"$PLUGIN_ROOT/' + file + '"');
+    const runtime = privatePython(root);
+    if (runtime.type === 'failed') { resolve(runtime); return; }
+    const script = /^uv run --locked --script (hooks\/[A-Za-z0-9_.-]+\.py)(?: |$)/.exec(hook.command)?.[1];
+    if (runtime.type === 'ready') {
+      if (!script) { resolve({ type: 'failed', reason: 'HOOK_RUNTIME_UNSUPPORTED_COMMAND' }); return; }
+      let source: string;
+      try { source = fs.readFileSync(path.join(root, script), 'utf8'); }
+      catch { resolve({ type: 'failed', reason: 'HOOK_SCRIPT_UNAVAILABLE' }); return; }
+      if (!/^# dependencies = \[\]$/m.test(source)) { resolve({ type: 'failed', reason: 'HOOK_RUNTIME_UNSUPPORTED_DEPENDENCIES' }); return; }
+    }
+    const selected = runtime.type === 'ready' ? hook.command.replace(/^uv run --locked --script /, '"$SLOPSENTRAL_PYTHON" -I -B ') : hook.command;
+    const command = selected.replace(/\bhooks\/[A-Za-z0-9_.-]+/g, file => '"$PLUGIN_ROOT/' + file + '"');
     const child = spawn('/bin/sh', ['-c', 'exec ' + command], {
-      cwd, env: { ...process.env, PLUGIN_ROOT: root, SLOPSENTRAL_SCOPE_HOME: getAgentDir() }, detached: true, stdio: ['pipe', 'pipe', 'pipe'],
+      cwd, env: { ...process.env, PLUGIN_ROOT: root, SLOPSENTRAL_SCOPE_HOME: getAgentDir(), ...(runtime.type === 'ready' ? { SLOPSENTRAL_PYTHON: runtime.executable } : {}) }, detached: true, stdio: ['pipe', 'pipe', 'pipe'],
     });
     let stdout = '', bytes = 0, failure: string | undefined;
     const stop = (reason: string) => {

@@ -1,11 +1,17 @@
 ---
 type: Runtime Flow
 title: Hook delivery and instruction review
-description: Trace canonical hook selection through Codex lifecycle events and Pi adapters, with explicit trust and evidence limits.
-tags: [hooks, instructions, codex, pi, lifecycle]
+description: Trace canonical hook selection through Codex lifecycle events and
+  Pi adapters, with explicit trust and evidence limits.
+tags:
+  - hooks
+  - instructions
+  - codex
+  - pi
+  - lifecycle
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T17:57:45.987Z
+    at: 2026-11-04T16:19:46.795Z
 sources:
   - id: openwiki-source-fdb0ae7333144f405ddb6914
     resource: repo://source/hooks/agents-md-scope.py
@@ -15,7 +21,11 @@ sources:
     resource: repo://source/hooks/pi/adapter.ts
   - id: openwiki-source-f0043ad3faf0db0ee3e62248
     resource: repo://source/hooks/pi/controls.ts
-generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
+  - id: openwiki-source-36f60eb53c76242699a18af1
+    resource: repo://tools/tests/pi-host.test.mjs
+  - id: openwiki-source-59bfb60d11af1188e2f7c0c3
+    resource: repo://tools/tests/pi-runtime.test.mjs
+generated: { by: "codex", at: "2026-11-04T16:19:46.795Z" }
 ---
 
 # Hook delivery and instruction review
@@ -67,7 +77,18 @@ The `/hooks` controls persist each Slopsentral hook choice in Pi's global instru
 Disabled hooks start no script processes.
 Malformed saved choices stop hook effects instead of silently changing the selection.
 Hook processes have time limits, output limits, and cancellation support.
-They need uv and their script dependencies at invocation time.
+For packages managed by the bootstrap, the adapter verifies the private runtime receipt and invokes its pinned interpreter directly.
+The receipt binds the platform, relative executable path, and interpreter digest.
+Runtime authority lives in personal home storage for both personal and project packages.
+A project-local receipt cannot select an executable.
+Missing or changed runtime files stop admission with an explicit failure.
+Isolated imports and disabled bytecode writes keep invocation independent of system Python and uv.
+The current hooks declare no third-party Python dependencies; a different dependency contract requires an explicit runtime update.
+Direct native package installation bypasses that provisioning and retains the external uv requirement.
+The [installation lifecycle](../integrations/installation.md) separates setup-time downloads from hook execution.
+The hook's emitted status and review commands keep the private interpreter and instruction scope across recovery.
+The runtime marker must name the running interpreter before those commands use it.
+Other installations keep their uv launcher.
 
 ## Match evidence to the claim
 

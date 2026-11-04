@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:0f487e1d671bd1e96372946d721996597121a5463c55a1b19a8677e4dcbd13b9",
+  "pageVersion": "sha256:773a45981fac0094e680a46b27b3ad2aa4aaa7ee94fc931c0f66b45f15a2ce0d",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -96,7 +96,7 @@
       "evidence": [
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:290d558cc3641c73f234439de93de91eba6888a23e58c495536436c5caee69b2"
+          "version": "repo-file-v1:sha256:73ebf57d8f8bc90a5f8a3259fe0aedb437cb67fac4c98983408f65c02b904c0a"
         },
         {
           "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L230-L280",
@@ -159,6 +159,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T20:36:31.743Z"
+    "at": "2026-11-04T16:07:53.128Z"
   }
 }
