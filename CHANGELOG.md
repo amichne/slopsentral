@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.10](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.9...slopsentral-v4.0.10) (2026-11-04)
+
+
+### Bug Fixes
+
+* provision a private runtime for managed Pi hooks ([#130](https://github.com/amichne/slopsentral/issues/130)) ([f3b0d12](https://github.com/amichne/slopsentral/commit/f3b0d1231fddcb0d0d854ca2e54fc18f2fe615cf))
+
 ## [4.0.9](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.8...slopsentral-v4.0.9) (2026-11-04)
 
 
