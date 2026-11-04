@@ -19,11 +19,15 @@ import hashlib
 import json
 import os
 import platform
+import re
 import shutil
 import subprocess
 import tempfile
 import tomllib
-from dataclasses import dataclass
+import urllib.error
+import urllib.request
+from dataclasses import dataclass, replace
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, TypeGuard
 
@@ -103,6 +107,237 @@ def failure_response(stdout: str, code: str) -> None:
     reason = response.get("stopReason")
     require(isinstance(reason, str) and code in reason, f"Missing failure code: {code}")
     require("hookSpecificOutput" not in response, "Failure also claimed policy delivery")
+
+
+ROLES = ("apm", "codex", "uv")
+VERSION = r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)"
+DEFAULT_COMPATIBILITY = Path(__file__).resolve().with_name("apm-compatibility.json")
+RELEASES = {
+    "apm": ("https://api.github.com/repos/microsoft/apm/releases/latest", "v"),
+    "codex": ("https://api.github.com/repos/openai/codex/releases/latest", "rust-v"),
+    "uv": ("https://api.github.com/repos/astral-sh/uv/releases/latest", ""),
+}
+
+
+def stable_version(value: object) -> str:
+    require(
+        isinstance(value, str) and re.fullmatch(VERSION, value) is not None,
+        "Expected an exact stable version",
+    )
+    return str(value)
+
+
+@dataclass(frozen=True)
+class Versions:
+    apm: str
+    codex: str
+    uv: str
+
+    @classmethod
+    def parse(cls, value: object) -> Versions:
+        data = object_at(value)
+        require(set(data) == set(ROLES), "Expected exactly apm, codex, and uv versions")
+        return cls(*(stable_version(data[name]) for name in ROLES))
+
+    def data(self) -> dict[str, str]:
+        return {"apm": self.apm, "codex": self.codex, "uv": self.uv}
+
+
+@dataclass(frozen=True)
+class Compatibility:
+    qualified: Versions
+    latest: Versions
+    checked_at: str
+    upstream_apm: str
+    upstream_codex: str
+    source_commit: str
+
+    @classmethod
+    def parse(cls, value: object) -> Compatibility:
+        data = object_at(value)
+        require(
+            set(data)
+            == {
+                "$schema",
+                "schemaVersion",
+                "qualified",
+                "latestObserved",
+                "upstreamCodexAdmission",
+            },
+            "Unsupported compatibility fields",
+        )
+        require(
+            data["$schema"] == "../source/schemas/apm/compatibility.schema.json"
+            and type(data["schemaVersion"]) is int
+            and data["schemaVersion"] == 1,
+            "Unsupported compatibility schema",
+        )
+        latest = object_at(data["latestObserved"])
+        require(set(latest) == {*ROLES, "checkedAt"}, "Unsupported release observation fields")
+        checked_at = str(latest["checkedAt"])
+        require(
+            date.fromisoformat(checked_at).isoformat() == checked_at,
+            "Expected an ISO observation date",
+        )
+        upstream = object_at(data["upstreamCodexAdmission"])
+        require(
+            set(upstream) == {"apm", "codex", "sourceCommit", "sourceUrl"},
+            "Unsupported admission evidence fields",
+        )
+        commit = str(upstream["sourceCommit"])
+        require(
+            re.fullmatch(r"[0-9a-f]{40}", commit) is not None,
+            "Expected an immutable upstream source commit",
+        )
+        require(
+            upstream["sourceUrl"]
+            == f"https://github.com/microsoft/apm/blob/{commit}/src/apm_cli/codex_plugins/client.py",
+            "Admission URL and source commit differ",
+        )
+        return cls(
+            Versions.parse(data["qualified"]),
+            Versions.parse({name: latest[name] for name in ROLES}),
+            checked_at,
+            stable_version(upstream["apm"]),
+            stable_version(upstream["codex"]),
+            commit,
+        )
+
+    def data(self) -> dict[str, object]:
+        return {
+            "$schema": "../source/schemas/apm/compatibility.schema.json",
+            "schemaVersion": 1,
+            "qualified": self.qualified.data(),
+            "latestObserved": {"checkedAt": self.checked_at, **self.latest.data()},
+            "upstreamCodexAdmission": {
+                "apm": self.upstream_apm,
+                "codex": self.upstream_codex,
+                "sourceCommit": self.source_commit,
+                "sourceUrl": f"https://github.com/microsoft/apm/blob/{self.source_commit}/src/apm_cli/codex_plugins/client.py",
+            },
+        }
+
+
+def compatibility_at(path: Path) -> tuple[Compatibility, str]:
+    raw = path.read_bytes()
+    return Compatibility.parse(json.loads(raw)), hashlib.sha256(raw).hexdigest()
+
+
+def write_new_json(path: Path, value: dict[str, object]) -> None:
+    with path.open("x", encoding="utf-8") as stream:
+        _ = stream.write(json.dumps(value, indent=2) + "\n")
+
+
+def release_version(role: str, value: object) -> str:
+    data = object_at(value)
+    require(
+        data.get("draft") is False and data.get("prerelease") is False,
+        "Latest release must be stable and published",
+    )
+    tag = data.get("tag_name")
+    prefix = RELEASES[role][1]
+    require(isinstance(tag, str) and tag.startswith(prefix), "Unexpected release tag")
+    return stable_version(str(tag).removeprefix(prefix))
+
+
+def fetch_latest(role: str) -> str:
+    request = urllib.request.Request(  # noqa: S310 -- role selects a fixed official HTTPS endpoint
+        RELEASES[role][0],
+        headers={
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "slopsentral-apm-qualification",
+        },
+    )
+    with urllib.request.urlopen(request, timeout=30) as response:  # noqa: S310 -- fixed official HTTPS release endpoints
+        raw = response.read(2 * 1024 * 1024 + 1)
+    require(len(raw) <= 2 * 1024 * 1024, "Release metadata exceeds the evidence limit")
+    return release_version(role, json.loads(raw))
+
+
+def refresh_latest(record: Compatibility) -> Compatibility:
+    return replace(
+        record,
+        latest=Versions(*(fetch_latest(role) for role in ROLES)),
+        checked_at=datetime.now(UTC).date().isoformat(),
+    )
+
+
+def propose_pins(record: Compatibility, digest: str, report: dict[str, object]) -> Compatibility:
+    require(
+        report.get("status") == "CANDIDATE_QUALIFIED_MECHANISMS"
+        and report.get("mode") == "candidate",
+        "Candidate did not pass; no pin proposal is permitted",
+    )
+    require(
+        report.get("compatibilitySha256") == digest,
+        "Compatibility record changed since the candidate run",
+    )
+    require(
+        report.get("qualifierSha256") == hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "Qualifier changed since the candidate run",
+    )
+    for key in (
+        "native_transport",
+        "direct_session_start",
+        "frozen",
+        "owned_cleanup",
+        "approval_and_scope_refusal",
+    ):
+        require(report.get(key) == "PASS", f"Candidate is missing proof: {key}")
+    require(
+        report.get("loose_copilot") == "UNSUPPORTED_REPRODUCED",
+        "Candidate is missing the loose conversion control",
+    )
+    observations = object_at(report.get("observedVersions"))
+    pins = Versions.parse({name: observations.get(name) for name in ROLES})
+    hashes = object_at(report.get("executable_sha256"))
+    require(
+        set(hashes) == {*ROLES, "python"}
+        and all(
+            isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+            for value in hashes.values()
+        ),
+        "Candidate is missing executable identities",
+    )
+    files = object_at(report.get("files"))
+    require(
+        set(files) == set(PLUGINS)
+        and all(type(count) is int and count > 0 for count in files.values()),
+        "Candidate is missing the complete payload inventory",
+    )
+    return replace(record, qualified=pins)
+
+
+@dataclass(frozen=True)
+class UpstreamRefusal:
+    required_codex: str
+
+
+def upstream_refusal(
+    result: subprocess.CompletedProcess[str], observed_codex: str
+) -> UpstreamRefusal | None:
+    text = " ".join((result.stdout + result.stderr).split())
+    match = re.search(
+        r"Codex native registration is qualified only for Codex CLI (" + VERSION + r")\.", text
+    )
+    if result.returncode != 0 and match is not None and match[1] != observed_codex:
+        return UpstreamRefusal(match[1])
+    return None
+
+
+def observed_version(role: str, stdout: str) -> str:
+    patterns = {
+        "apm": r"Agent Package Manager \(APM\) CLI version (" + VERSION + r")(?: \([^\n]*\))?",
+        "codex": r"codex-cli (" + VERSION + r")",
+        "uv": r"uv (" + VERSION + r")(?: \([^\n]*\))?",
+        "python": r"Python (" + VERSION + r")",
+    }
+    match = re.fullmatch(patterns[role], stdout.strip())
+    require(match is not None, f"Cannot establish actual {role} version")
+    if match is None:
+        message = f"Cannot establish actual {role} version"
+        raise QualificationError(message)
+    return stable_version(match[1])
 
 
 @dataclass(frozen=True)
@@ -284,7 +519,23 @@ def check_catalog(source: Path) -> None:
     )
 
 
-def native_trial(trial: Trial, source: Path) -> dict[str, object]:
+def install_native(trial: Trial, codex_version: str) -> UpstreamRefusal | None:
+    before = trial.config.read_bytes()
+    install = trial.run("install", [str(trial.programs.apm), "install", "-g", "--target", "codex"])
+    refusal = upstream_refusal(install, codex_version)
+    if refusal is not None:
+        require(
+            trial.config.read_bytes() == before and not trial.journal.exists(),
+            "Upstream refusal changed native state",
+        )
+        return refusal
+    require(install.returncode == 0, "Native installation failed; inspect install.json")
+    return None
+
+
+def native_trial(
+    trial: Trial, source: Path, codex_version: str
+) -> dict[str, object] | UpstreamRefusal:
     check_catalog(source)
     sources = [source / ".agents/plugins" / name for name in PLUGINS]
     expected = {name: inventory(path) for name, path in zip(PLUGINS, sources, strict=True)}
@@ -293,7 +544,9 @@ def native_trial(trial: Trial, source: Path) -> dict[str, object]:
         encoding="utf-8",
     )
     trial.declare(sources, approved=True)
-    _ = trial.apm("install", "install", "-g", "--target", "codex")
+    refusal = install_native(trial, codex_version)
+    if refusal is not None:
+        return refusal
     records = object_at(read_object(trial.journal)["plugins"])
     require(len(records) == len(PLUGINS), "Missing native registrations")
     installed_roots: dict[str, Path] = {}
@@ -448,7 +701,14 @@ def self_test() -> None:
         require("script.py.lock" in inventory(root), "Inventory omitted the lock")
 
 
-def qualify(source: Path, output: Path, programs: Programs) -> dict[str, object]:
+def qualify(
+    source: Path,
+    output: Path,
+    programs: Programs,
+    *,
+    compatibility: Path = DEFAULT_COMPATIBILITY,
+    candidate: bool = False,
+) -> dict[str, object]:
     require(
         platform.system() == "Darwin" and platform.machine() == "arm64",
         "This qualification requires macOS arm64",
@@ -461,34 +721,24 @@ def qualify(source: Path, output: Path, programs: Programs) -> dict[str, object]
     )
     for path in (programs.apm, programs.codex, programs.uv, programs.python):
         require(path.is_file() and os.access(path, os.X_OK), f"Missing executable: {path}")
+    record, digest = compatibility_at(compatibility)
     output = output.resolve()
     output.mkdir()
     trial = Trial.create(output / "native", programs)
-    for name, executable, expected in (
-        ("apm", programs.apm, "CLI version 0.35.0 "),
-        ("codex", programs.codex, "codex-cli 0.163.0"),
-        ("uv", programs.uv, "uv 0.12.9 "),
-    ):
-        result = trial.run(f"version-{name}", [str(executable), "--version"])
-        version_matches = (
-            result.stdout.strip() == expected if name == "codex" else expected in result.stdout
-        )
-        require(result.returncode == 0 and version_matches, f"Unqualified {name} version")
-    result = native_trial(trial, source)
-    rejection_trial(Trial.create(output / "rejections", programs), source)
-    loose_copilot_trial(Trial.create(output / "loose-copilot", programs), source)
-    return {
-        "status": "QUALIFIED_MECHANISMS",
+    observations: dict[str, str] = {}
+    report: dict[str, object] = {
+        "status": "REJECTED",
+        "mode": "candidate" if candidate else "pinned",
         "platform": "macOS arm64",
-        "apm": "0.35.0",
-        "codex": "0.163.0",
         "scope": "disposable user home",
-        **result,
-        "approval_and_scope_refusal": "PASS",
+        "compatibilitySha256": digest,
+        "qualifiedPins": record.qualified.data(),
+        "qualifierSha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "observedVersions": observations,
         "automatic_hook_delivery": "NOT_TESTED",
         "model_behavior": "NOT_TESTED",
         "remote_acquisition": "NOT_TESTED",
-        "loose_copilot": "UNSUPPORTED_REPRODUCED",
+        "evidence": str(output),
         "executable_sha256": {
             name: hashlib.sha256(path.read_bytes()).hexdigest()
             for name, path in (
@@ -498,45 +748,119 @@ def qualify(source: Path, output: Path, programs: Programs) -> dict[str, object]
                 ("python", programs.python),
             )
         },
-        "evidence": str(output),
     }
+    try:
+        for name, executable in (
+            ("apm", programs.apm),
+            ("codex", programs.codex),
+            ("uv", programs.uv),
+            ("python", programs.python),
+        ):
+            result = trial.run(f"version-{name}", [str(executable), "--version"])
+            require(result.returncode == 0, f"Cannot inspect {name} version")
+            observations[name] = observed_version(name, result.stdout)
+        if not candidate:
+            require(
+                all(
+                    observations[name] == version
+                    for name, version in record.qualified.data().items()
+                ),
+                "Unqualified versions; use --candidate to collect isolated evidence",
+            )
+        result = native_trial(trial, source, observations["codex"])
+        if isinstance(result, UpstreamRefusal):
+            report.update(
+                status="UPSTREAM_REFUSED",
+                upstreamRefusal={
+                    "requiredCodex": result.required_codex,
+                    "observedCodex": observations["codex"],
+                },
+                native_transport="UPSTREAM_REFUSED",
+            )
+        else:
+            report.update(result)
+            rejection_trial(Trial.create(output / "rejections", programs), source)
+            report["approval_and_scope_refusal"] = "PASS"
+            loose_copilot_trial(Trial.create(output / "loose-copilot", programs), source)
+            report.update(
+                status="CANDIDATE_QUALIFIED_MECHANISMS" if candidate else "QUALIFIED_MECHANISMS",
+                loose_copilot="UNSUPPORTED_REPRODUCED",
+            )
+    except (QualificationError, OSError, ValueError, subprocess.SubprocessError) as error:
+        report.update(status="REJECTED", reason=str(error))
+    write_new_json(output / "report.json", report)
+    return report
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    _ = parser.add_argument(
+    modes = parser.add_mutually_exclusive_group()
+    _ = modes.add_argument(
         "--self-test", action="store_true", help="Check the portable oracle without external tools"
     )
+    _ = modes.add_argument("--show-compatibility", action="store_true")
+    _ = modes.add_argument(
+        "--check-updates",
+        action="store_true",
+        help="Read official stable release metadata; preserve qualified pins",
+    )
+    _ = modes.add_argument(
+        "--propose-pins",
+        type=Path,
+        help="Propose pins from a passing candidate report; never edit the source record",
+    )
+    _ = modes.add_argument(
+        "--candidate",
+        action="store_true",
+        help="Observe unpinned executables; upstream admission remains authoritative",
+    )
+    _ = parser.add_argument("--compatibility", type=Path, default=DEFAULT_COMPATIBILITY)
     _ = parser.add_argument("--source", type=Path)
     _ = parser.add_argument(
-        "--out",
-        type=Path,
-        required=False,
-        help="New directory; retained with logs and disposable homes",
+        "--out", type=Path, help="Fresh run directory, or fresh JSON file for maintenance modes"
     )
-    for name in ("apm", "codex", "uv", "python"):
+    for name in (*ROLES, "python"):
         _ = parser.add_argument(f"--{name}", type=Path)
     args = parser.parse_args()
-    if args.self_test:
-        self_test()
-        print(json.dumps({"status": "SELF_TEST_PASS"}))
-        return 0
-    if any(
-        getattr(args, name) is None for name in ("source", "out", "apm", "codex", "uv", "python")
-    ):
-        parser.error(
-            "--source, --out, --apm, --codex, --uv, and --python are required for qualification"
-        )
-    programs = Programs(
-        *(getattr(args, name).resolve() for name in ("apm", "codex", "uv", "python"))
-    )
     try:
-        report = qualify(args.source.resolve(), args.out.absolute(), programs)
-    except (QualificationError, OSError, ValueError, subprocess.SubprocessError) as error:
-        print(json.dumps({"status": "REJECTED", "reason": str(error), "evidence": str(args.out)}))
-        return 1
+        if args.self_test:
+            self_test()
+            report: dict[str, object] = {"status": "SELF_TEST_PASS"}
+        elif args.show_compatibility or args.check_updates or args.propose_pins:
+            record, digest = compatibility_at(args.compatibility)
+            if args.check_updates:
+                record = refresh_latest(record)
+            elif args.propose_pins:
+                require(args.out is not None, "Pin proposals require a fresh --out JSON file")
+                record = propose_pins(record, digest, read_object(args.propose_pins))
+            report = record.data()
+            if args.out is not None:
+                write_new_json(args.out, report)
+        else:
+            if any(getattr(args, name) is None for name in ("source", "out", *ROLES, "python")):
+                parser.error(
+                    "--source, --out, --apm, --codex, --uv, and --python are required for qualification"
+                )
+            programs = Programs(*(getattr(args, name).resolve() for name in (*ROLES, "python")))
+            report = qualify(
+                args.source.resolve(),
+                args.out.absolute(),
+                programs,
+                compatibility=args.compatibility,
+                candidate=args.candidate,
+            )
+    except (
+        QualificationError,
+        OSError,
+        ValueError,
+        urllib.error.URLError,
+        subprocess.SubprocessError,
+    ) as error:
+        report = {"status": "REJECTED", "reason": str(error)}
     print(json.dumps(report))
-    return 0
+    return (
+        3 if report.get("status") == "UPSTREAM_REFUSED" else int(report.get("status") == "REJECTED")
+    )
 
 
 if __name__ == "__main__":

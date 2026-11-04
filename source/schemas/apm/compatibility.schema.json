@@ -4,37 +4,94 @@
   "title": "APM qualification compatibility record",
   "type": "object",
   "additionalProperties": false,
-  "required": ["$schema", "schemaVersion", "qualified", "latestObserved", "upstreamCodexAdmission"],
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "qualified",
+    "latestObserved",
+    "upstreamCodexAdmission"
+  ],
   "properties": {
-    "$schema": {"const": "../source/schemas/apm/compatibility.schema.json"},
-    "schemaVersion": {"const": 1},
-    "qualified": {"$ref": "#/$defs/versions"},
+    "$schema": {
+      "const": "../source/schemas/apm/compatibility.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "qualified": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/versions"
+        }
+      ],
+      "unevaluatedProperties": false
+    },
     "latestObserved": {
-      "allOf": [{"$ref": "#/$defs/versions"}],
-      "required": ["checkedAt"],
-      "properties": {"checkedAt": {"type": "string", "format": "date"}}
+      "allOf": [
+        {
+          "$ref": "#/$defs/versions"
+        }
+      ],
+      "required": [
+        "checkedAt"
+      ],
+      "properties": {
+        "checkedAt": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "unevaluatedProperties": false
     },
     "upstreamCodexAdmission": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["apm", "codex", "sourceCommit", "sourceUrl"],
+      "required": [
+        "apm",
+        "codex",
+        "sourceCommit",
+        "sourceUrl"
+      ],
       "properties": {
-        "apm": {"$ref": "#/$defs/version"},
-        "codex": {"$ref": "#/$defs/version"},
-        "sourceCommit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-        "sourceUrl": {"type": "string", "pattern": "^https://github\\.com/microsoft/apm/blob/[0-9a-f]{40}/src/apm_cli/codex_plugins/client\\.py$"}
+        "apm": {
+          "$ref": "#/$defs/version"
+        },
+        "codex": {
+          "$ref": "#/$defs/version"
+        },
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "sourceUrl": {
+          "type": "string",
+          "pattern": "^https://github\\.com/microsoft/apm/blob/[0-9a-f]{40}/src/apm_cli/codex_plugins/client\\.py$"
+        }
       }
     }
   },
   "$defs": {
-    "version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
     "versions": {
       "type": "object",
-      "required": ["apm", "codex", "uv"],
+      "required": [
+        "apm",
+        "codex",
+        "uv"
+      ],
       "properties": {
-        "apm": {"$ref": "#/$defs/version"},
-        "codex": {"$ref": "#/$defs/version"},
-        "uv": {"$ref": "#/$defs/version"}
+        "apm": {
+          "$ref": "#/$defs/version"
+        },
+        "codex": {
+          "$ref": "#/$defs/version"
+        },
+        "uv": {
+          "$ref": "#/$defs/version"
+        }
       }
     }
   }

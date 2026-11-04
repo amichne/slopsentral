@@ -4,7 +4,7 @@
   "qualified": {
     "apm": "0.35.0",
     "codex": "0.163.0",
-    "uv": "0.12.9"
+    "uv": "0.13.7"
   },
   "latestObserved": {
     "checkedAt": "2026-11-04",
