@@ -126,8 +126,8 @@ def test_cli_exposes_central_compatibility_without_runtime_effects(tmp_path: Pat
     )
     assert result.returncode == 0, result.stderr
     report = json.loads(result.stdout)
-    assert report["qualified"]["codex"] == "0.163.0"
-    assert report["latestObserved"]["codex"] == "0.166.0"
+    expected = json.loads(script.with_name("apm-compatibility.json").read_text())
+    assert report == expected
     assert not list(tmp_path.iterdir())
 
 
@@ -262,3 +262,21 @@ def test_copied_bundle_exposes_record_and_refuses_missing_record(tmp_path: Path)
     )
     assert missing.returncode != 0
     assert json.loads(missing.stdout)["status"] == "REJECTED"
+
+
+def test_record_pin_changes_need_no_qualifier_edits(tmp_path: Path) -> None:
+    script = Path(__file__).resolve().parents[1] / "qualify_apm.py"
+    record = json.loads(script.with_name("apm-compatibility.json").read_text())
+    record["qualified"] = {"apm": "0.99.0", "codex": "0.999.0", "uv": "0.99.0"}
+    custom = tmp_path / "candidate compatibility.json"
+    _ = custom.write_text(json.dumps(record))
+    result = subprocess.run(
+        [sys.executable, str(script), "--show-compatibility", "--compatibility", str(custom)],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=10,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout)["qualified"] == record["qualified"]
