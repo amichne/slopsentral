@@ -139,40 +139,43 @@
       "id": "repository-consumer-setup-uses-current-marketplace-cli",
       "type": "WRONG_PRIMITIVE",
       "source": {
-        "type": "MEMORY_INDEX",
-        "capturedAt": "2026-06-20",
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-11-04",
         "evidenceRefs": [
-          "intelligence Kotlin-primary routing memory",
-          "slopsentral marketplace source-of-truth memory"
+          "docs/cli-install.md",
+          "tools/slopsentral.py",
+          "source/skills/git-change-flow/references/checked-in-marketplace-reference.md"
         ]
       },
-      "prompt": "Set up a repository to consume this marketplace, install plugins, and keep the resolved marketplace state locked and validated.",
+      "prompt": "Set up a repository to consume Slopsentral. Inspect the configured marketplaces and requested host, select the needed plugins, and record immutable source and installation evidence without copying installed payloads into source.",
       "expectedPrimitive": {
         "type": "SKILL",
         "name": "git-change-flow"
       },
       "observedRoute": {
         "type": "ROUTING_ROUTE_OBSERVATION",
-        "summary": "Older Intelligence memories can route setup work toward deprecated APM, Node, Python, or package-manager-era flows.",
-        "risk": "Agents use obsolete commands and miss the current source-of-truth split between marketplace source and CLI validation.",
+        "summary": "Unobserved regression scenario: older Intelligence installation guidance can override the current Slopsentral command and native host owners.",
+        "risk": "Agents invoke retired commands, omit explicit host or plugin scope, or confuse installation with host consumption.",
         "loadedPrimitives": []
       },
       "allowedActions": [
-        "Prefer the current intelligence CLI for marketplace import, install, inspect, and validate workflows.",
-        "Treat slopsentral source files as canonical marketplace content.",
-        "Use git-change-flow for consumer-repo setup and baseline marketplace guidance."
+        "Use the current slopsentral command owned by tools/slopsentral.py for explicit host installation, update and removal; preserve native Codex and Copilot ownership.",
+        "Require --host and explicit --plugin selections for Codex, Copilot and Amp; Pi uses its aggregate package.",
+        "Treat Slopsentral authored source as canonical and use git-change-flow for the consumer repository reference.",
+        "Record immutable source identities, selected plugins, observed installation state and pending host evidence."
       ],
       "forbiddenActions": [
-        "Route current setup through deprecated APM, NPM, Node, Python, or wrapper-era implementation paths.",
-        "Invent a new marketplace schema when import, install, and lock behavior already exist.",
-        "Vendor generated provider payloads into a consumer repository as the durable source of truth."
+        "Use the retired intelligence import/install workflow or reject the current Python owner merely because it uses Python.",
+        "Invent an import or lock command absent from the current owner.",
+        "Vendor generated provider payloads or installed caches into a consumer repository as durable source.",
+        "Claim native discovery, hook delivery or model behavior from installation alone."
       ],
-      "recoveryExpectation": "When older memory conflicts with current source, agents should re-check the source checkout and current intelligence CLI before acting.",
-      "notes": "This preserves current workflow attribution: slopsentral owns marketplace source; intelligence owns CLI validation and install flows.",
-      "productiveOutcome": "Repository setup uses the current marketplace CLI and source-of-truth split, avoiding obsolete package-manager paths.",
+      "recoveryExpectation": "When older memory conflicts with current source, inspect README, docs/cli-install.md, tools/slopsentral.py and the native host contract before acting.",
+      "notes": "The original motivation came from historical Intelligence setup memories. This is now a current-source contract and synthetic replay control, not a fresh model observation or evidence of improved outcomes.",
+      "productiveOutcome": "Consumer setup uses the actual Slopsentral and native host owners with explicit scope, immutable source references and honest installation evidence.",
       "verificationEvidence": [
-        "Commands refer to the current intelligence marketplace workflow.",
-        "Consumer setup preserves source manifests and lock/install evidence instead of vendoring generated payloads."
+        "Commands match the current Slopsentral host and plugin contract.",
+        "The consumer reference preserves source identities and separates installation state from pending host-consumption evidence."
       ]
     },
     {

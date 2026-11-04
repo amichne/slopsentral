@@ -85,3 +85,21 @@ test('standalone skill retains discovery, archive, legacy, privacy and activatio
     assert.match(entry.notes, /not an observed model routing result/);
   }
 });
+
+test('consumer setup contract follows the current installer without manufacturing field evidence', () => {
+  const readJson = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+  const id = 'repository-consumer-setup-uses-current-marketplace-cli';
+  const entry = readJson('source/evals/routing/marketplace-workflows.json').cases.find(value => value.id === id);
+  assert.equal(entry.source.type, 'CURRENT_SOURCE');
+  assert.ok(entry.source.evidenceRefs.includes('tools/slopsentral.py'));
+  assert.match(fs.readFileSync(path.join(root, 'README.md'), 'utf8'), /tools\/slopsentral\.py self install/);
+  assert.ok(entry.allowedActions.some(value => value.includes('tools/slopsentral.py')));
+  assert.ok(entry.allowedActions.some(value => value.includes('--host') && value.includes('--plugin')));
+  assert.ok(!entry.allowedActions.some(value => /intelligence/i.test(value)));
+  assert.deepEqual(entry.observedRoute.loadedPrimitives, []);
+  const golden = readJson('source/evals/routing/fixtures/golden-routing-observations.json')
+    .observations.find(value => value.caseId === id);
+  assert.deepEqual(golden.satisfiedAllowedActions, entry.allowedActions);
+  assert.deepEqual(golden.avoidedForbiddenActions, entry.forbiddenActions);
+  assert.match(golden.notes, /Synthetic golden contract fixture/);
+});
