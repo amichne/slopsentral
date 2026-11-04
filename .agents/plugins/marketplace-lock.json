@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T21:02:24Z",
+  "generatedAt": "2026-11-04T09:41:21-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -272,7 +272,7 @@
         },
         {
           "name": "personal-setup-management",
-          "sha256": "sha256:657744122024d16b407bb4893f44c6b69ce6e6af30e2fee8deb1ed1923b0bc4f",
+          "sha256": "sha256:eace048343a64970731443af4779d7afbbb4c43b6581fd20cb8efe165e037d7d",
           "sourcePath": "source/skills/personal-setup-management",
           "targetPath": "skills/personal-setup-management",
           "type": "SKILL"
@@ -311,6 +311,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "b7edaa4dfbcef7c6735c0b0a7e97ebda5964f731",
+  "sourceSha": "3479893713fb2400f392e18c14ca930e8ef6bc5e",
   "type": "HYDRATED_MARKETPLACE"
 }
