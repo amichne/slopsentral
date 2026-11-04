@@ -35,6 +35,13 @@ slopsentral install --host copilot --plugin software-engineering
 These commands change the selected host configuration. They need an authorized installation task.
 Use the [command guide](cli-install.md) for prerequisites, updates, and removal.
 
+## Qualify an APM installation
+
+The [APM guide](apm-qualification.md) records complete-bundle transport through APM 0.35.0 and Codex 0.163.0 on macOS arm64.
+Its isolated checks cover installed contents, direct context execution, admission refusals, and ownership-safe cleanup.
+Automatic hook delivery and model behavior remain untested.
+The loose Copilot conversion fails the executable control.
+
 ## Add Worktrunk when requested
 
 Examine the configured marketplace before an installation:

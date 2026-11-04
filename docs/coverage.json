@@ -64,14 +64,16 @@
       "sources": [
         "tools/slopsentral.py",
         "tools/install-pi.sh",
-        "tools/setup-pi.mts"
+        "tools/setup-pi.mts",
+        "tools/qualify_apm.py"
       ],
       "pages": [
         "docs/cli-install.md",
         "docs/pi-install.md",
         "docs/personal-setup.md",
         "openwiki/integrations/cli.md",
-        "openwiki/integrations/installation.md"
+        "openwiki/integrations/installation.md",
+        "docs/apm-qualification.md"
       ]
     },
     {
