@@ -62,6 +62,32 @@ test('native Pi delivers plugin instructions and enforces instruction review bef
   const runner = session.extensionRunner;
   assert.equal(runner.getRegisteredCommands().filter(command => command.name === 'hooks').length, 1);
   assert.deepEqual(runner.getCommandDiagnostics(), []);
+  const prompt = () => runner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine the fixture.' }, { cwd });
+  const read = id => runner.emitToolCall({ type: 'tool_call', toolCallId: id, toolName: 'read', input: { path: 'example.py' } });
+  // Resource discovery alone does not prove that installed hooks can run.
+  // Hide every host runtime; Pi itself remains loaded in this process.
+  const previousPath = process.env.PATH;
+  const emptyBin = path.join(directory, 'empty-bin');
+  fs.mkdirSync(emptyBin);
+  process.env.PATH = emptyBin;
+  try {
+    const unavailable = await prompt();
+    assert.match(unavailable.systemPromptOptions.forceSystemPrompt, /HOOK_EXIT_127/);
+    assert.match((await read('missing-uv')).reason, /HOOK_EXIT_127/);
+  } finally {
+    if (previousPath === undefined) delete process.env.PATH; else process.env.PATH = previousPath;
+  }
+  // Break a real bundled script after discovery and require a later request to
+  // establish admission again, without reloading the extension or the session.
+  const hookScript = path.join(pkg, 'software-engineering/hooks/agents-md-scope.py');
+  fs.renameSync(hookScript, hookScript + '.fixture-backup');
+  try {
+    const unavailable = await prompt();
+    assert.match(unavailable.systemPromptOptions.forceSystemPrompt, /HOOK_EXIT_2/);
+    assert.match((await read('missing-script')).reason, /HOOK_EXIT_2/);
+  } finally {
+    fs.renameSync(hookScript + '.fixture-backup', hookScript);
+  }
   const start = await runner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine the fixture.' }, { cwd });
   assert.ok(start.systemPromptOptions.forceSystemPrompt.includes(fs.readFileSync(path.join(pkg, 'software-engineering/instructions/engineering-design.md'), 'utf8')));
   assert.equal(await runner.emitToolCall({ type: 'tool_call', toolCallId: 'read-1', toolName: 'read', input: { path: 'example.py' } }), undefined);

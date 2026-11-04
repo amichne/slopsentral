@@ -520,6 +520,7 @@ async function main(): Promise<void> {
   if (pi.status !== 0) reject('PI_UNAVAILABLE', 'Ensure pi --version succeeds within 10 seconds; see https://slopsentral.michne.com/guides/pi.');
   // A version string cannot prove native package or skill discovery support.
   console.error('PI_COMPATIBILITY_UNVERIFIED: using installed Pi best-effort. Restart Pi after setup and verify native skill discovery.');
+  console.error('HOOK_READINESS_UNVERIFIED: setup installs native resources only. Enabled hooks need uv and their script dependencies. Context-hook failures block tool calls. See https://slopsentral.michne.com/guides/pi.');
   const result = await install(await qualify(live, version), { agentDir, cwd, project });
   console.log(result.status + ': Slopsentral ' + result.version + '. Restart Pi for native discovery.');
   console.log('Recovery: rerun the documented installer in this directory with' + (project ? ' --project' : '') + ' --rollback.');
