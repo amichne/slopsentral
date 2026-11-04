@@ -144,6 +144,7 @@
         "evidenceRefs": [
           "docs/cli-install.md",
           "tools/slopsentral.py",
+          "tools/slopsentral.py.lock",
           "source/skills/git-change-flow/references/checked-in-marketplace-reference.md"
         ]
       },

@@ -92,6 +92,8 @@ test('consumer setup contract follows the current installer without manufacturin
   const entry = readJson('source/evals/routing/marketplace-workflows.json').cases.find(value => value.id === id);
   assert.equal(entry.source.type, 'CURRENT_SOURCE');
   assert.ok(entry.source.evidenceRefs.includes('tools/slopsentral.py'));
+  assert.ok(entry.source.evidenceRefs.includes('tools/slopsentral.py.lock'),
+    'frozen source validation needs the portable script dependency lock');
   assert.match(fs.readFileSync(path.join(root, 'README.md'), 'utf8'), /tools\/slopsentral\.py self install/);
   assert.ok(entry.allowedActions.some(value => value.includes('tools/slopsentral.py')));
   assert.ok(entry.allowedActions.some(value => value.includes('--host') && value.includes('--plugin')));
