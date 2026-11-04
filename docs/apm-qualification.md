@@ -10,6 +10,11 @@ The [versioned APM contract](https://github.com/microsoft/apm/blob/v0.35.0/docs/
 New registrations stay disabled.
 The version gate accepts only Codex 0.163.0; a newer installed Codex does not satisfy it.
 
+The [compatibility record](../tools/apm-compatibility.json) separates qualified pins from observed stable releases and the upstream Codex admission rule.
+APM 0.35.0 is current, while stable Codex 0.166.0 exceeds its admitted version.
+The current stable uv release is 0.13.7.
+Version-maintenance work will qualify candidate binaries before proposing a pin change.
+
 ## Run the isolated qualification
 
 The [qualification command](../tools/qualify_apm.py) runs on macOS arm64.

@@ -98,3 +98,16 @@ def test_existing_output_is_preserved_before_external_processes(
     with pytest.raises(QualificationError, match="fresh path"):
         _ = qualify(tmp_path / "source", output, programs)
     assert sentinel.read_bytes() == b"foreign"
+
+
+def test_cli_exposes_central_compatibility_without_runtime_effects(tmp_path: Path) -> None:
+    script = Path(__file__).resolve().parents[1] / "qualify_apm.py"
+    result = subprocess.run(
+        [sys.executable, str(script), "--show-compatibility"],
+        cwd=tmp_path, text=True, capture_output=True, check=False, timeout=10,
+    )
+    assert result.returncode == 0, result.stderr
+    report = json.loads(result.stdout)
+    assert report["qualified"]["codex"] == "0.163.0"
+    assert report["latestObserved"]["codex"] == "0.166.0"
+    assert not list(tmp_path.iterdir())

@@ -1,0 +1,21 @@
+{
+  "$schema": "../source/schemas/apm/compatibility.schema.json",
+  "schemaVersion": 1,
+  "qualified": {
+    "apm": "0.35.0",
+    "codex": "0.163.0",
+    "uv": "0.12.9"
+  },
+  "latestObserved": {
+    "checkedAt": "2026-11-04",
+    "apm": "0.35.0",
+    "codex": "0.166.0",
+    "uv": "0.13.7"
+  },
+  "upstreamCodexAdmission": {
+    "apm": "0.35.0",
+    "codex": "0.163.0",
+    "sourceCommit": "2920043258932f0f67e6f01df7b9047eb42f358c",
+    "sourceUrl": "https://github.com/microsoft/apm/blob/2920043258932f0f67e6f01df7b9047eb42f358c/src/apm_cli/codex_plugins/client.py"
+  }
+}
