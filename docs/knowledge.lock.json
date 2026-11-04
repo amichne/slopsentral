@@ -16,6 +16,7 @@
       "openwiki/testing/validation.md": "a117c0566f104f63670bee26a6ba07f932f93e9792ffde748fcc79b2ae9ac95f",
       "openwiki/workflows/authoring.md": "ae29cc609aa6cd48ba3d0a72443ac40bafaa13e235a621ce9ac9650b2f4e2317",
       "tools/__init__.py": "38b5756e16f1301d74aa81c716a27bf87ee782fe6d2e10ac79f0198753cb6dcf",
+      "tools/apm-compatibility.json": "0510d7c9aca320ace2d9d61f0068d0f0db55d381b44fbbcc1bcffe1f568bd645",
       "tools/catalog.mjs": "dc999d933d4ed0500b3ee01fbdeb11e043e9f238e72e84310f51834a461cd8b8",
       "tools/check.py": "6b48fe615939ea5ea843317b632e218570fbfbacbc1ba26b3cf31974376b346f",
       "tools/check.py.lock": "493285fe04f5efab7e81bec868ca14f5408ee8e80f7139851a11491665598a3d",
@@ -76,13 +77,13 @@
       "tools/python_checks/test_pi_release_workflows.py": "b7414c3281151ec16a0f8b7070fbd1a86060ef177a83b9b5cb450bb14bf3ed88",
       "tools/python_checks/test_prose_command.py": "6a76d4b3e99f1cd86d5fbbbbf0913a9c5889d459a20e477e61115f1cfe0df1a6",
       "tools/python_checks/test_publish.py": "f4922769182e841938bdfa59964aed1f98b8f2868b07b8e1665d3a51f1d5cd63",
-      "tools/python_checks/test_qualify_apm.py": "2ea3fc0e77ca5089437386783bf887dc4301af0ec6cfaa41c0a48b21cfc5d0e1",
+      "tools/python_checks/test_qualify_apm.py": "911de33891aff40338bce00e1cc3b51e91e76bda2a3b8db86b0cfdd5f28cc6ee",
       "tools/python_checks/test_release_assets.py": "76eb0f6d9b8ec18cd690a110c17bfad671888a89f6b7347907d029c211a482b3",
       "tools/python_checks/test_release_pr.py": "6a1d7a15f8e7b9de90491e7df4ced60501a5cadaca2740d31d8339fe3ac67ca2",
       "tools/python_checks/test_release_version.py": "9a0251bd2dc2e4ed09eda7c973df92a03e9d91d90b2788b68839712a52f6a7fe",
       "tools/python_checks/test_setup_assets.py": "0145d601f271972a6417a6aae5eab0243aa86aaf515c26e0db5e4207bdc5d769",
       "tools/python_checks/test_slopsentral.py": "916a97a056c6c3b5e05c60767fd355118ecc7c54d8faa3f6146aab959467f5ac",
-      "tools/qualify_apm.py": "b84bb838f4f8a535c57d753c758348e21a7d1ba0830e249226930c1eef44f989",
+      "tools/qualify_apm.py": "70f33142f5c8d4f9786c1cb6948771cb039be331902c796fc8887c5f3c66bd10",
       "tools/qualify_apm.py.lock": "493285fe04f5efab7e81bec868ca14f5408ee8e80f7139851a11491665598a3d",
       "tools/release_assets.py": "e3a392408b0e9c68a5a43e263e96161487bf062d27c396312003dc00b0cf6362",
       "tools/release_assets.py.lock": "493285fe04f5efab7e81bec868ca14f5408ee8e80f7139851a11491665598a3d",
@@ -220,6 +221,7 @@
       "source/profiles/personal-configuration-default.json": "c763061b8f6cfb73c4d9744f143d0b244b15d644bf8070690a816c61f1c50114",
       "source/profiles/pkl-checked-repository.json": "e198b22a1428892362fa3ffd75b167c8c3ce75921eea789825c86a1ca1a4ed3d",
       "source/profiles/pkl-workflow-default.json": "54adcfba69bbc80a5bc995d53f7226cf7ad02c8de01bd0264dbd32beca7bf994",
+      "source/schemas/apm/compatibility.schema.json": "2a012cc72eabec743fbb67a6e700f86b2d89b4186e511a2269479e034b759fe2",
       "source/schemas/catalog/catalog.schema.json": "fb84b89f818b436927ee58076be414aadc31bf87a6fda34a09ff1ea80d2791b2",
       "source/schemas/evals/plugin-eval-benchmark.schema.json": "4f61b739064c22272bd94e38bda4d2212fe6bae34d4ee46bf02e62bfb7bacd76",
       "source/schemas/evals/routing-cases.schema.json": "27cb62e4cbecbf5b9c0dc60268beb7866ce01bf8f966c827841b7818fc1f5f48",
@@ -808,14 +810,16 @@
       "source/hooks/tests/test_required_skill_read.py": "0b27f8f36b78185b7ade4cabef8a90dcca92415b4d81a980d59dfd1700cb8244"
     },
     "installation": {
-      "docs/apm-qualification.md": "2afcf7483d26608ad540dff3bd081a77348d706e4435a3ab46ab7eef225b42ff",
+      "docs/apm-qualification.md": "81b7ea51c267645a13f9ba8c607ce1d725d15277a808ab2bd8a08edbad8f6f19",
       "docs/cli-install.md": "b39228e124ec54862eb51005ccbf38cb93f043f282086daf5049136594a785ef",
       "docs/personal-setup.md": "577dcea11291932ad8489efe6e70d4b91ef728694b2e3b5efbf45f6471ff6523",
       "docs/pi-install.md": "c2ad6f7f5e0ddbb3c460ea42e0b7d3cc3e32f5ff66fb23c531973a27dcc3c18c",
       "openwiki/integrations/cli.md": "3aafba7c3609104508b72f0771cba20283ec17eea6300d0aa2a93d9f7fcf23db",
       "openwiki/integrations/installation.md": "e8da4a456b8d0e92d46fb629b491683a92a10bd3c0fc651bf55a255549aef0e2",
+      "source/schemas/apm/compatibility.schema.json": "2a012cc72eabec743fbb67a6e700f86b2d89b4186e511a2269479e034b759fe2",
+      "tools/apm-compatibility.json": "0510d7c9aca320ace2d9d61f0068d0f0db55d381b44fbbcc1bcffe1f568bd645",
       "tools/install-pi.sh": "e74ca3e94225cc844f4b8fb1c4276cbd52355b60a96cbd2a3299299e66a9238e",
-      "tools/qualify_apm.py": "b84bb838f4f8a535c57d753c758348e21a7d1ba0830e249226930c1eef44f989",
+      "tools/qualify_apm.py": "70f33142f5c8d4f9786c1cb6948771cb039be331902c796fc8887c5f3c66bd10",
       "tools/setup-pi.mts": "ef3e9357668802f3e1066ad11e37db091b7333bde0bd47078d5249a2aee4c7a8",
       "tools/slopsentral.py": "73c328ea9a616203a01661219b8480706eb75bd3b5b0e04f6ae363f618c8ccdf"
     },
@@ -988,7 +992,7 @@
       "docs/GLOSSARY.md": "939990af4c2602d709d0c8f257fb7a99a70d49929e48383bddb09c376cebd09c",
       "docs/agent-marketplaces.md": "993b41ab864792aabbe6d59b8ceb8b7a3ec83f534217a498a0aad5f71384e520",
       "docs/agents-md-scope.md": "730013be5c4ff446df68adb4fa6081176c3e3b4183522a38be261c7f8ec2da45",
-      "docs/apm-qualification.md": "2afcf7483d26608ad540dff3bd081a77348d706e4435a3ab46ab7eef225b42ff",
+      "docs/apm-qualification.md": "81b7ea51c267645a13f9ba8c607ce1d725d15277a808ab2bd8a08edbad8f6f19",
       "docs/cli-install.md": "b39228e124ec54862eb51005ccbf38cb93f043f282086daf5049136594a785ef",
       "docs/documentation.md": "f639b75382ac59ed394357f447c97ddc5dbb236bd30208d40791f44c156e4383",
       "docs/engineering-excellence.md": "9e2198f7bf047044b35ef89bc3c21aed3def352101e6b97aecf93160b270e2c2",
@@ -1075,7 +1079,7 @@
       "tools/release_version.py": "73619e0acdaf435d4fc16dda148f77e0901966cfd6e50755fe5be7482aaa7a12"
     }
   },
-  "coverageSha256": "73ebf57d8f8bc90a5f8a3259fe0aedb437cb67fac4c98983408f65c02b904c0a",
+  "coverageSha256": "4b4b84d422f34ea0a4a77dee18d265220abdfcf1d4a248e7f0065c3e81a4a776",
   "schemaVersion": 2,
   "type": "KNOWLEDGE_REVIEW"
 }

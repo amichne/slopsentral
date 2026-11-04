@@ -10,10 +10,15 @@ The [versioned APM contract](https://github.com/microsoft/apm/blob/v0.35.0/docs/
 New registrations stay disabled.
 The version gate accepts only Codex 0.163.0; a newer installed Codex does not satisfy it.
 
+The [compatibility record](../tools/apm-compatibility.json) separates qualified pins from observed stable releases and the upstream Codex admission rule.
+APM 0.35.0 is current, while stable Codex 0.166.0 exceeds its admitted version.
+uv 0.13.7 passed the complete candidate qualification and is now the qualified uv pin.
+The record owns qualification pins. Repository tooling and Pi provisioning keep their separate version owners.
+
 ## Run the isolated qualification
 
 The [qualification command](../tools/qualify_apm.py) runs on macOS arm64.
-It needs Python 3.12 or 3.13, uv 0.12.9, APM 0.35.0, Codex 0.163.0, and Git.
+It needs Python 3.12 or 3.13, the executables pinned in the compatibility record, and Git.
 Supply reviewed executables through absolute paths.
 Download separate binaries from the [APM release](https://github.com/microsoft/apm/releases/tag/v0.35.0) and [Codex release](https://github.com/openai/codex/releases/tag/rust-v0.163.0), and verify their published checksums.
 The command does not download tools, use credentials, or change active user configuration.
@@ -24,21 +29,65 @@ slopsentral-qualify-apm \
   --out /tmp/slopsentral-apm-qualification \
   --apm /absolute/path/to/apm-0.35.0 \
   --codex /absolute/path/to/codex-0.163.0 \
-  --uv /absolute/path/to/uv-0.12.9 \
+  --uv /absolute/path/to/uv-0.13.7 \
   --python /absolute/path/to/python3.12
 ```
 
 Add the checkout's `bin/` directory to the command's `PATH`, or invoke the script with `uv run --locked --script tools/qualify_apm.py` and the same arguments.
-The script and adjacent lock can also be copied together and run outside the checkout.
+Copy the script, adjacent lock, and `apm-compatibility.json` together to run outside the checkout.
+The compatibility record belongs beside the copied script, or at an explicit `--compatibility` path.
+The runtime validates the record without fetching its editor schema or importing checkout code.
 Use `--self-test` for its dependency-free oracle check.
 
 The output directory must be new.
 It retains disposable homes, per-command JSON logs, and the independent payload inventory.
-The final JSON response identifies executable digests, observed outcomes, and untested layers.
+The final JSON response and retained `report.json` identify actual executable versions, digests, observed outcomes, and untested layers.
+They also bind the qualifier and compatibility record digests.
 `QUALIFIED_MECHANISMS` requires every positive and negative control to pass.
 If the loose conversion changes, the current negative control stops for reassessment.
 After reviewing evidence, remove only that run's output directory.
 The harness never removes an existing directory or edits the source bundle.
+
+## Maintain qualified pins
+
+Use `--show-compatibility` to inspect the record without runtime or network effects.
+The [schema](../source/schemas/apm/compatibility.schema.json) and runtime parser reject ranges, missing fields, and unsupported shapes.
+Qualified pins and latest release observations have different meanings.
+Finding a newer release does not establish support.
+
+Refresh stable release observations through the official GitHub endpoints:
+
+```sh
+slopsentral-qualify-apm --check-updates --out /tmp/apm-latest.json
+```
+
+This creates a new record with fresh release observations and unchanged qualified pins.
+It installs nothing and does not edit the checked-in record.
+Download and verify candidate binaries separately.
+Repeat the qualification command above with `--candidate`, `--compatibility /tmp/apm-latest.json`, fresh output, and the candidate executable paths.
+Candidate mode permits unpinned inputs at the local version check. APM still owns native admission.
+
+`CANDIDATE_QUALIFIED_MECHANISMS` means every existing mechanism and rejection control passed for the observed versions.
+`UPSTREAM_REFUSED` exits 3 and records the required and observed Codex versions.
+Other check failures are `REJECTED` and exit 1.
+Refused and failed candidates cannot generate pin proposals.
+On 2026-11-04, APM 0.35.0 explicitly refused stable Codex 0.166.0; the command preserved that refusal without enabling a fallback.
+
+After a passing candidate run, generate a separate proposed record:
+
+```sh
+slopsentral-qualify-apm \
+  --compatibility /tmp/apm-latest.json \
+  --propose-pins /tmp/apm-candidate/report.json \
+  --out /tmp/apm-proposed.json
+```
+
+The proposal requires complete control results and the same qualifier and compatibility record digests.
+Changing either input requires another candidate run.
+Review the logs and proposed diff, then replace `tools/apm-compatibility.json` with the proposed bytes.
+Rerun the normal pinned qualification and the focused Python checks before committing the record and guide.
+Source admission evidence names an immutable upstream commit; refresh it only after examining that source.
+These operations do not edit APM code, authorize native activation, or change the user's active configuration.
 
 ## What the checks establish
 

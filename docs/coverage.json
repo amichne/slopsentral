@@ -65,7 +65,9 @@
         "tools/slopsentral.py",
         "tools/install-pi.sh",
         "tools/setup-pi.mts",
-        "tools/qualify_apm.py"
+        "tools/qualify_apm.py",
+        "tools/apm-compatibility.json",
+        "source/schemas/apm/compatibility.schema.json"
       ],
       "pages": [
         "docs/cli-install.md",
