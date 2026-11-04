@@ -13,7 +13,7 @@ The version gate accepts only Codex 0.163.0; a newer installed Codex does not sa
 The [compatibility record](../tools/apm-compatibility.json) separates qualified pins from observed stable releases and the upstream Codex admission rule.
 APM 0.35.0 is current, while stable Codex 0.166.0 exceeds its admitted version.
 uv 0.13.7 passed the complete candidate qualification and is now the qualified uv pin.
-The record owns qualification pins. Repository tooling and Pi provisioning retain their separate version owners.
+The record owns qualification pins. Repository tooling and Pi provisioning keep their separate version owners.
 
 ## Run the isolated qualification
 
@@ -69,7 +69,7 @@ Candidate mode permits unpinned inputs at the local version check. APM still own
 
 `CANDIDATE_QUALIFIED_MECHANISMS` means every existing mechanism and rejection control passed for the observed versions.
 `UPSTREAM_REFUSED` exits 3 and records the required and observed Codex versions.
-Other failures are `REJECTED` and exit 1.
+Other check failures are `REJECTED` and exit 1.
 Refused and failed candidates cannot generate pin proposals.
 On 2026-11-04, APM 0.35.0 explicitly refused stable Codex 0.166.0; the command preserved that refusal without enabling a fallback.
 
