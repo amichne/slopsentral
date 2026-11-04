@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.9](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.8...slopsentral-v4.0.9) (2026-11-04)
+
+
+### Bug Fixes
+
+* discover installed personal setup ownership ([#126](https://github.com/amichne/slopsentral/issues/126)) ([7034caa](https://github.com/amichne/slopsentral/commit/7034caa1d0af8256e987e6d98cbdcf21cd65a8c7))
+* distinguish Pi installation from hook readiness ([#127](https://github.com/amichne/slopsentral/issues/127)) ([f37ce8b](https://github.com/amichne/slopsentral/commit/f37ce8bceddb564fb0faf15917a5146df559d9a8))
+
 ## [4.0.8](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.7...slopsentral-v4.0.8) (2026-11-03)
 
 
