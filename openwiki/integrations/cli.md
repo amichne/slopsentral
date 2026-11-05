@@ -5,31 +5,48 @@ description: Trace explicit host and plugin selection through native commands, m
 tags: [cli, installation, consumers, recovery]
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-03T17:57:45.987Z
+    at: 2026-11-05T15:45:23.454Z
 sources:
   - id: openwiki-source-694f90ac01e419c575288a8d
     resource: repo://tools/slopsentral.py
-generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
+  - id: openwiki-source-7b856c75d4b229196420362d
+    resource: repo://tools/slopsentral.py.lock
+generated: { by: "codex", at: "2026-11-05T15:45:23.454Z" }
 ---
 
 # Slopsentral command lifecycle
 
-The `slopsentral` command installs, updates, and removes selected plugins for one explicit host.
+The `slopsentral` command installs, updates, and removes selected plugins for selected harnesses.
 The [Python owner](../../tools/slopsentral.py) uses locked dependencies and uv.
 The [bootstrap](../../install.sh) installs the command itself, without selecting host plugins.
 
-## Preserve explicit selection
+## Select the operation and harnesses
 
-Every host operation needs `--host`.
-Codex, Copilot, and Amp also need one or more `--plugin` selections.
+`slopsentral` and `slopsentral setup` open guided setup in a terminal.
+The fzf selector offers **Install all plugins** and **Update all installed plugins**.
+Users can filter the list and select several harnesses with Tab or Ctrl-A.
+An action summary precedes host effects. Escape or Ctrl-C cancels with status 130.
+The locked uv environment supplies fzf. Personal `FZF_*` options do not change the selector.
+`NO_COLOR` disables color. Terminal input and stderr remain necessary when stdout is redirected.
+
+Explicit operations use `--host`.
+Codex, Copilot, and Amp accept `--plugin` selections or `--all`.
 Pi uses its aggregate package and rejects plugin selections.
 Amp and Pi accept a named stable version. Native Codex and Copilot channels reject `--version`.
 
 ```sh
 slopsentral install --host codex --plugin software-engineering
 slopsentral update --host amp --plugin developer-tooling
+slopsentral install --host codex --all
+slopsentral update --host codex --all
 slopsentral remove --host pi
 ```
+
+`install --all` reads the published catalog after the release archive passes digest examination.
+`update --all` selects installed Slopsentral plugins from native inventories or managed Amp links.
+An empty update starts no host changes. Pi keeps its existing aggregate setup path.
+Bulk operations without `--host` open the harness selector.
+Removal keeps explicit selections and rejects `--all`.
 
 These operations use personal or system scope.
 Project registrations remain outside the general command's scope.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e8da4a456b8d0e92d46fb629b491683a92a10bd3c0fc651bf55a255549aef0e2",
+  "pageVersion": "sha256:3f1c421f13c7082c532d84669c2060a03ecc37342688e57ec7d29c28e1ebab58",
   "claims": [
     {
       "id": "claim_468cefd833044a5fb8a8fba715593e3a",
@@ -73,12 +73,12 @@
       "statement": "The Slopsentral command manages Amp as guarded links to release bundles and preserves foreign directories or changed installed bytes.",
       "evidence": [
         {
-          "resource": "repo://tools/slopsentral.py#L537-L572",
+          "resource": "repo://tools/slopsentral.py#L613-L648",
           "version": "repo-lines-v1:sha256:f35c68415578ca1c3e7f998fce5d4464b5e603bed37286400e30604a4051526e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5M2FjMDI2NjI4ZGE2NmE3ZjVhOTIyNGFkM2Y4ZmEzZjc0ZDY2MDdmMjc3N2QyN2I0YWFkMGRkZDkyNTlkYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmZGVkMTc1MDAxNzI3YjBiYzkzYjIyN2QzNTZmYjhkMzMwN2RjMjVmZTM5Zjg5ZjcyMzk3YmNhOWFiYWJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiYzc2Zjg3MDI5ZDBlMmEyZGY2MmZhZWMwY2Y0Y2FmNDI2M2Y0Y2FkY2Y5YmM3ZTM1N2E3MjJjODhmOGNiYjMifQ"
         },
         {
-          "resource": "repo://tools/slopsentral.py#L600-L627",
-          "version": "repo-lines-v1:sha256:94d94b89f8b59d827a3d45eebcfbf4d6068f49ea88aa0c2e94fee8bcc3d685bc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjYmFmYmU2YzM3YTc2MjY4ZDZkNTYwZTI2NjU2ZmQ3ZDE2ODgwODBkYmM5ZmQ4YmRiYmYwODNhMjlhNzM2ODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMzdmNzk5YzQxYTkwMjAzNDlhMTBkNjE4MDk5NTViZTg1OTc4MGI2MmVjMjMwMTEzODJiYWUyOGNmYjc3NDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxYmIwZmJiMGQyNGRhZTBkZTRlOTAyM2YzODFhZjkyNTg5M2E0YjZhMmNhMTFmYjRlN2ExOWE4NjFiMDU2YTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzNGMxYTY0N2Q2ZTU0ZWY5ZTM1ZDRhZTA4M2NjYjAxYzA2MDcxMTYxODg3ZGFkY2ZjNjkzZjMxY2Q5MmM1NGYifQ"
+          "resource": "repo://tools/slopsentral.py#L676-L741",
+          "version": "repo-lines-v1:sha256:43cd68380152f6f9f60af2c964c37729edc13718f7705e3632123976147df119:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNjI2MTJjYmQ0MzVkZmIxMTk3ZGZlOGYwYmM4Mzk2ZDEzMGU1OGU0MjIzNDI2MTE3NGFhYjI3MzMyM2E4ODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMzdmNzk5YzQxYTkwMjAzNDlhMTBkNjE4MDk5NTViZTg1OTc4MGI2MmVjMjMwMTEzODJiYWUyOGNmYjc3NDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxYmIwZmJiMGQyNGRhZTBkZTRlOTAyM2YzODFhZjkyNTg5M2E0YjZhMmNhMTFmYjRlN2ExOWE4NjFiMDU2YTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzNGMxYTY0N2Q2ZTU0ZWY5ZTM1ZDRhZTA4M2NjYjAxYzA2MDcxMTYxODg3ZGFkY2ZjNjkzZjMxY2Q5MmM1NGYifQ"
         }
       ]
     },
@@ -99,6 +99,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-04T15:10:06.076Z"
+    "at": "2026-11-05T15:45:23.454Z"
   }
 }
