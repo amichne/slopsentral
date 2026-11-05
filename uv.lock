@@ -64,6 +64,24 @@ wheels = [
 ]
 
 [[package]]
+name = "fzf-bin"
+version = "0.73.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4d/32/9fa55076913e18e8ca5c6567e158ae5e467cbbaf3ef2af4915d9d743a84e/fzf_bin-0.73.1.tar.gz", hash = "sha256:06c30b9160962b1a21a2632a67be5679752991afab0e805477fbf3f440ffcbb4", size = 437342, upload-time = "2026-05-26T01:53:35.127Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/96/84/a959c197f3e42c9c9f0a545bd05aafc3d17edf0436ad9062da51ef8e7062/fzf_bin-0.73.1-py3-none-android_33_arm64_v8a.whl", hash = "sha256:1c77c82a2d34c54a97f5e0fb321d893e21503007b5c547e9631b543934d10dbf", size = 1843323, upload-time = "2026-05-26T01:53:16.07Z" },
+    { url = "https://files.pythonhosted.org/packages/39/3f/71044e74f231edcc4f3618c7ef41ff401e2d75e07087ce279a444663a4ce/fzf_bin-0.73.1-py3-none-macosx_12_0_arm64.whl", hash = "sha256:7ff01ee6e60b3b5933d3909cfbd2f3a2f15f7a623138000baee3ae04a89610e9", size = 1812565, upload-time = "2026-05-26T01:53:18.269Z" },
+    { url = "https://files.pythonhosted.org/packages/73/f2/16b54f49db361df79fe2dfe80549da69705c950d7e5cd913fb00b6356a58/fzf_bin-0.73.1-py3-none-macosx_12_0_x86_64.whl", hash = "sha256:3d573b2440e411801ee15d383ed1bcc94fb9c07b17fae0f97d35076779ce2517", size = 1952216, upload-time = "2026-05-26T01:53:20.183Z" },
+    { url = "https://files.pythonhosted.org/packages/af/a8/5fee661501c817f403ff16aac7d34d6ff6adcda2bc640ef562f6d70a8d57/fzf_bin-0.73.1-py3-none-manylinux_2_28_aarch64.musllinux_1_2_aarch64.whl", hash = "sha256:a317f85799916998420d1b89800b1cb9d92b7ba6cb1fee9d04257a8a111eef81", size = 1765429, upload-time = "2026-05-26T01:53:22.003Z" },
+    { url = "https://files.pythonhosted.org/packages/94/cc/cf4ceb787d578711374c9783557c662b8ced2af5375792b400af7bcfcc09/fzf_bin-0.73.1-py3-none-manylinux_2_28_ppc64le.musllinux_1_2_ppc64le.whl", hash = "sha256:6a513c68eff71e08b7d0a0f0a684920a0fc8ee9c889fec1e4fd2c0d5ff29ad30", size = 1796812, upload-time = "2026-05-26T01:53:24.065Z" },
+    { url = "https://files.pythonhosted.org/packages/39/6c/5d6263a1fcf9e520459513360c15fac91f6c42084eb9de1dbe75cd233a0c/fzf_bin-0.73.1-py3-none-manylinux_2_28_riscv64.musllinux_1_2_riscv64.whl", hash = "sha256:c947aac916ce0a070f262d0484feb0bb2099cc4f678e8d60afa4105556445d13", size = 1804611, upload-time = "2026-05-26T01:53:25.613Z" },
+    { url = "https://files.pythonhosted.org/packages/c5/fd/0a0be30184975bb6c9c83c774ab628f4c5d3d293f12e41e12309e172b03b/fzf_bin-0.73.1-py3-none-manylinux_2_28_s390x.musllinux_1_2_s390x.whl", hash = "sha256:fea5d53d6a6db3f2ffe5f5950b5c461fb68ea3030ddfbcdc1f3f360ae3be4061", size = 1908013, upload-time = "2026-05-26T01:53:27.604Z" },
+    { url = "https://files.pythonhosted.org/packages/24/8c/295984ba55037a550b441d68f7811d75f8710797d8079bcd3445b5c18015/fzf_bin-0.73.1-py3-none-manylinux_2_28_x86_64.musllinux_1_2_x86_64.whl", hash = "sha256:42572a8bb8b3cd0eb00fcbb242e5d627ece788e76fe45d2929174010bbc02eb8", size = 1943313, upload-time = "2026-05-26T01:53:29.539Z" },
+    { url = "https://files.pythonhosted.org/packages/81/19/8cf29756f506b17b7dda431541827f01b53331a398c59f70863f52d2f05e/fzf_bin-0.73.1-py3-none-win_amd64.whl", hash = "sha256:dfc9c059eac285a9e848761aa94dcc2d4f60835a986d573ddfe9c5f53a168c7d", size = 2118445, upload-time = "2026-05-26T01:53:31.58Z" },
+    { url = "https://files.pythonhosted.org/packages/20/56/b412922aa81794a5e8025408289fc3c28fe9acfef2037a17ea2f95b27164/fzf_bin-0.73.1-py3-none-win_arm64.whl", hash = "sha256:c5b05e2f7b3c50b9f8f7b4d0f1cfb1427526cd14f0144780369e9bbb5637310d", size = 1906241, upload-time = "2026-05-26T01:53:33.235Z" },
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -405,6 +423,7 @@ source = { virtual = "." }
 
 [package.dev-dependencies]
 dev = [
+    { name = "fzf-bin" },
     { name = "jsonschema" },
     { name = "markdown-it-py" },
     { name = "pyright", extra = ["nodejs"] },
@@ -422,6 +441,7 @@ refactor = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "fzf-bin", specifier = "==0.73.1" },
     { name = "jsonschema", specifier = "==4.26.0" },
     { name = "markdown-it-py", specifier = "==4.0.0" },
     { name = "pyright", extras = ["nodejs"], specifier = "==1.1.407" },

@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3aafba7c3609104508b72f0771cba20283ec17eea6300d0aa2a93d9f7fcf23db",
+  "pageVersion": "sha256:74dbdbd195ea059f3489582b620fdf6d485e29c5d7c67831cb6893d35e13579c",
   "claims": [
     {
       "id": "claim_4b9f7bb147ed453d9d7e11653311c518",
-      "statement": "The Slopsentral command needs an explicit host, requires selected plugins for Codex, Copilot, and Amp, and delegates Pi operations to its existing setup owner.",
+      "statement": "The Slopsentral command accepts explicit host and plugin selections or bulk actions through guided harness setup, and delegates Pi operations to its existing setup owner.",
       "evidence": [
         {
-          "resource": "repo://tools/slopsentral.py#L669-L713",
-          "version": "repo-lines-v1:sha256:98ac7424dfe89c5ad160b9652a5e911d93f41a2315d925d4418d028628f42cce:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMzk3OTMzYTI0YTgwMWVlOTIzMzI3YmQ2OWEwMTA0OWMwNzc5MTUwMjFjZjJlYzM5ZGRhNGY4MWFhODM3ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiNjRlOTIwMDBhMTljYTM4NTkzYTRlNmEwYmFjNzcwOTZkMWU5ODY5NDlhM2I2MjgyNmI3Y2VhNGY3M2Q5ZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5ZWUxOTMyODRlODJmYjc2YWY0ZjRmNTgzZTQzZjA1MDdiNWYxMzJiMTY0ZTZkMzUyM2JhZmI5NGMwYzdiMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://tools/slopsentral.py#L852-L971",
+          "version": "repo-lines-v1:sha256:23743a95b5b8a3b991b96bdf0fbf33a3a77bd49c758241eb2d10c20c616c3c33:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0M2EzNjc1Y2EzMTlkZTFlNjg0ZWIwZWI5MWJkZjA5MWM2Nzk4YWYxNzBjM2FlYTNhNjQ3OGIxNWVhNjkyZDQ0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmYjY0ZTkyMDAwYTE5Y2EzODU5M2E0ZTZhMGJhYzc3MDk2ZDFlOTg2OTQ5YTNiNjI4MjZiN2NlYTRmNzNkOWU5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjOGMxMGJiYjcyYTFjNWY1NmQ4NTY4NzBlZDUyYjU2ZTA4YWE5ZDIwYjA3YzQwM2I5ZDhmZmJkM2E0NzU4N2Y1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
         }
       ]
     },
@@ -17,8 +17,8 @@
       "statement": "Native Codex and Copilot operations preserve a recognized marketplace source, preserve enabled choices on repeated installation, and reject a Codex update for a disabled selected plugin.",
       "evidence": [
         {
-          "resource": "repo://tools/slopsentral.py#L417-L483",
-          "version": "repo-lines-v1:sha256:d4c92ac548ae377b5e589af895fbbd9d353d61686e88073c92cf746fdca003ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1MGQ0YjlmNjkwODNmNTFjZGYyOWZmYjI4MWE0ODM0MTAyNjdmZThhYmJmODk2OTk3MmFlNjQwYWJhYTRjOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2ZDdjMjM0OTFjMzA1ZTUxOTUzOGFmZGE5ODVjM2E4NzVhZTg4ZGFiZDRlMTQ5NmRhYTYyZjMxYjg0NDZlMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0Nzc5YTlhMzQyYzNhYTkyMjEwZjQ5Mjk4ZGJhNTA2YTM0ZmNmYzNiMWQ0NjdjYTBhMTU3MDk4ZWFkZjhiMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZlNjVmNWU2MzU2YzhhMDQ2ZmI3ODdiNTY5OTA1ZmU3ZjY2YTdjNjQ1ZGQzZDFkZDI0YWRjNDc5MTM3MDQ2MTUifQ"
+          "resource": "repo://tools/slopsentral.py#L489-L555",
+          "version": "repo-lines-v1:sha256:4e7a7b73a3e0037fd3f3bb7a779f8c698db5877bbc1bbe0b92bd625a7f5e58b3:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1MGQ0YjlmNjkwODNmNTFjZGYyOWZmYjI4MWE0ODM0MTAyNjdmZThhYmJmODk2OTk3MmFlNjQwYWJhYTRjOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2ZDdjMjM0OTFjMzA1ZTUxOTUzOGFmZGE5ODVjM2E4NzVhZTg4ZGFiZDRlMTQ5NmRhYTYyZjMxYjg0NDZlMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0Nzc5YTlhMzQyYzNhYTkyMjEwZjQ5Mjk4ZGJhNTA2YTM0ZmNmYzNiMWQ0NjdjYTBhMTU3MDk4ZWFkZjhiMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZlNjVmNWU2MzU2YzhhMDQ2ZmI3ODdiNTY5OTA1ZmU3ZjY2YTdjNjQ1ZGQzZDFkZDI0YWRjNDc5MTM3MDQ2MTUifQ"
         }
       ]
     },
@@ -27,14 +27,46 @@
       "statement": "Self-management examines managed file digests and preserves edited command copies or launchers instead of deleting or replacing them.",
       "evidence": [
         {
-          "resource": "repo://tools/slopsentral.py#L256-L290",
+          "resource": "repo://tools/slopsentral.py#L328-L362",
           "version": "repo-lines-v1:sha256:fc46bdefd8e820e1efe631447879697c4376f3eaa288081e49d8ac172b1667b3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlYzIyZTA3YmFiMTYyZGU5ODYwOGJmOTA1NTdkNDhkOWI1YTQwMjgyMWZmMTYwZjA3YmZmOGY3Mzc5MDI2NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTYwMGE3M2QyZTAyZjM1MmI5MGZlZjFkOGQ2MzgxMWJhNGE4ZWUwYzFiZWFhN2FlNDY1OGYzNmFhMmUxOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkMmY2YWVkODI0NjQwYmViN2EwYzg2OTlhMzkzZWJlYTkzMTk0MDQ3ZjI0ZTQyNDdlN2FmNDllMGQ1YzEwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1NDE4MzNlYzg4ZGRkYWE3OGZiYmNlMWM2YjExNTM5MDZlYWUwOWFiYmY3YjNjMzU0N2RmMmQzMjUxNjFlMzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_821b08693d514d52876fee477c4155df",
+      "statement": "Bulk installation reads the release catalog after its digest examination, while bulk updates select native installed plugins or managed Amp links.",
+      "evidence": [
+        {
+          "resource": "repo://tools/slopsentral.py#L227-L288",
+          "version": "repo-lines-v1:sha256:405f7d741f6484261c6e8739658276320570f4b555ed315e5839d31d5f40a3d3:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNWNmMmZmZjdmZjkzNDE5ZDFkZjcyNjdkMjJhMTg5ZjIxMmI5YzljMzJlM2RhM2JlNTQ1MzlkMjBjYjBjYzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5YWJhMDA3ZTU2MTIwMzVmNDFlMDdjYTJhYTUzNDAxMTc3MGVjYzhiY2I0MTQzZThhN2IxYjEyNDhjZWVlY2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0ZTQyZmQyYzY3OGNkNmRjNTJlNGE1MWNlNTdiODY2ZTUyYTYwN2NjNmIxODdiMWYyYjU2ZjYzODczZTY0Y2QifQ"
+        },
+        {
+          "resource": "repo://tools/slopsentral.py#L552-L574",
+          "version": "repo-lines-v1:sha256:83fded8e588d653621cd240b18daef4858849acba7a6d86316bd78b452371b04:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YjU1Y2I2YmZkOWIxYTllMjUxMDFmMzQ1YjllOWJhZDNmZjdjOWFmOWIxNjA0NWJjY2Y3OGVlOTcwMDYyZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTVjNjZlMTdiMTQ1Mzk3ODM0YjhjODU0ZGM0MTkzZTIxMjUxODBhODk5NmExNGMzMTg4MzMyNmIyZWZiY2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4YjE2YTdhZjFkZDFlYzI4OTY3MWRhMWU5MmExY2UzN2I4MTA0YWFlYjZlYjU3MzY1NmU4NWVhMzU0YTNhY2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZkZTM5OWZmNDI2MTI4ODM4NGYwM2FmNDNlZTI5Y2MxYTJkZjdjODM4NDMwNzNlNjJiYzAyZjlkMTA4MTE0Y2YifQ"
+        },
+        {
+          "resource": "repo://tools/slopsentral.py#L676-L708",
+          "version": "repo-lines-v1:sha256:daf2c62660487cbd7cc64a1fb2aead2777fde5ed71794510d4a08e87e645fcd2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNjI2MTJjYmQ0MzVkZmIxMTk3ZGZlOGYwYmM4Mzk2ZDEzMGU1OGU0MjIzNDI2MTE3NGFhYjI3MzMyM2E4ODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkOTRiOGQ1ZjNmNTliZjRmNzY0MmRlMTc5OTM0NDVlODI0YzZjZjNhNjEzNWViZmQ4NWUxOGM4OTMxMjgwNTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxYmIwZmJiMGQyNGRhZTBkZTRlOTAyM2YzODFhZjkyNTg5M2E0YjZhMmNhMTFmYjRlN2ExOWE4NjFiMDU2YTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5NWM0OTM3ZmM2MTllMzVhNTg5ZTNiMGYwM2JkMTc5ZjUzMzhkZmQwZjBlZTIxY2MzYTFhYzhiNDJhNjFlYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_42c96cb83b734a70b3fbe5346a1f5e06",
+      "statement": "The guided selector uses locked fzf, ignores personal FZF options, honors NO_COLOR, and accepts the action summary before host effects.",
+      "evidence": [
+        {
+          "resource": "repo://tools/slopsentral.py#L783-L904",
+          "version": "repo-lines-v1:sha256:03cc4f030b31d930ec07a3e3a2c2d4b6fd8b7183037625ab793229b0c0fc6b72:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0ZGQwMDIzYzk0ZTJmNDgwNjMwNzA2NjNlMzk3MjcwMmIwOGNkMGUwYjdlYjNhMDhjMjA4N2FiYTkyNGYzMjQ0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MDM1YzQ1MTIxZTU0YTUxMTg1MGNkYjM0MzI0NjJkY2QzMWU5MzQ3MzBkYWM3Yzg1NWRhMGM3ZWEyYTlmOGU3IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiOWVlMTkzMjg0ZTgyZmI3NmFmNGY0ZjU4M2U0M2YwNTA3YjVmMTMyYjE2NGU2ZDM1MjNiYWZiOTRjMGM3YjFlIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjZTQ5MDhmZjExY2FhNzg5YzUzMWM1NjBkZjcwYmZhNjA1MDYxODBlZGVlNzc2NjhiMDBiZjYyMTJjM2U3NDI2In0"
+        },
+        {
+          "resource": "repo://tools/slopsentral.py.lock",
+          "version": "repo-file-v1:sha256:88461e60440b68fb291c113bf3a0b9f3c0887d768115ee6716eb1aefe606e01a"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T17:57:45.987Z"
+    "at": "2026-11-05T15:45:23.454Z"
   }
 }

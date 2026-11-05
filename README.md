@@ -36,9 +36,10 @@ From this checkout, install the command with:
 mise exec -- uv run --locked --script tools/slopsentral.py self install
 ```
 
-Then select the host and plugins explicitly:
+Then open guided setup or select the host and plugins explicitly:
 
 ```sh
+slopsentral setup
 slopsentral install --host codex --plugin software-engineering --plugin kotlin-engineering
 ```
 

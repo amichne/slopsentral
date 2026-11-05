@@ -4,13 +4,20 @@ import hashlib
 import io
 import json
 import os
+import pty
+import select
 import shutil
+import signal
 import subprocess
 import sys
 import tarfile
+import termios
+import time
 from pathlib import Path
 
 import pytest
+
+from tools import slopsentral as cli
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "tools/slopsentral.py"
@@ -242,6 +249,260 @@ def amp_archive(*, malicious: bool = False) -> bytes:
         member.size = len(payload)
         archive.addfile(member, io.BytesIO(payload))
     return output.getvalue()
+
+
+def catalog_archive(
+    names: tuple[str, ...] = ("software-engineering", "kotlin-engineering"),
+) -> bytes:
+    output = io.BytesIO()
+    with tarfile.open(fileobj=output, mode="w:gz") as archive:
+        payload = json.dumps(
+            {"name": "slopsentral", "plugins": [{"name": name} for name in names]}
+        ).encode()
+        member = tarfile.TarInfo(".agents/plugins/marketplace.json")
+        member.size = len(payload)
+        archive.addfile(member, io.BytesIO(payload))
+    return output.getvalue()
+
+
+@pytest.mark.parametrize("host", ["codex", "copilot"])
+def test_install_all_uses_release_catalog(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, host: str
+) -> None:
+    log = host_fixture(tmp_path, host)
+    _ = release_fixture(tmp_path, {"slopsentral-codex.tar.gz": catalog_archive()})
+    monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
+    result = invoke(tmp_path, "install", "--host", host, "--all")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(result.stdout)["plugins"] == ["software-engineering", "kotlin-engineering"]
+    calls = [json.loads(line) for line in log.read_text().splitlines()]
+    assert calls[-1] == [
+        "plugin",
+        "add" if host == "codex" else "install",
+        "kotlin-engineering@slopsentral",
+        *(["--json"] if host == "codex" else []),
+    ]
+    assert all("software-engineering@slopsentral" not in call for call in calls)
+
+
+@pytest.mark.parametrize("host", ["codex", "copilot"])
+def test_update_all_uses_installed_inventory(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, host: str
+) -> None:
+    log = host_fixture(tmp_path, host)
+    monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
+    result = invoke(tmp_path, "update", "--host", host, "--all")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(result.stdout)["plugins"] == ["software-engineering"]
+    assert "kotlin-engineering" not in log.read_text()
+
+
+def test_bulk_update_preserves_disabled_codex_plugin(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    log = host_fixture(tmp_path, "codex", disabled=True)
+    monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
+    result = invoke(tmp_path, "update", "--host", "codex", "--all")
+    assert result.returncode == 1
+    assert json.loads(result.stdout)["reason"] == "PLUGIN_DISABLED"
+    assert all("list" in json.loads(line) for line in log.read_text().splitlines())
+
+
+def test_bulk_catalog_rejection_precedes_native_mutation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    log = host_fixture(tmp_path, "codex")
+    _ = release_fixture(tmp_path, {"slopsentral-codex.tar.gz": catalog_archive(("../foreign",))})
+    monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
+    result = invoke(tmp_path, "install", "--host", "codex", "--all")
+    assert result.returncode == 1
+    assert json.loads(result.stdout)["reason"] == "INVALID_RELEASE"
+    assert not log.exists() or all(
+        "list" in json.loads(line) for line in log.read_text().splitlines()
+    )
+
+
+def test_bulk_selection_rejects_ambiguous_or_destructive_requests(tmp_path: Path) -> None:
+    for args in [
+        ("install", "--host", "codex", "--all", "--plugin", "software-engineering"),
+        ("remove", "--host", "codex", "--all"),
+    ]:
+        result = invoke(tmp_path, *args)
+        assert result.returncode == 2
+    assert not (tmp_path / "data").exists()
+
+
+def test_amp_update_all_preserves_foreign_plugins(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _ = release_fixture(tmp_path, {"slopsentral-amp.tar.gz": amp_archive()})
+    monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
+    monkeypatch.setenv("XDG_CONFIG_HOME", str(tmp_path / "config"))
+    assert (
+        invoke(tmp_path, "install", "--host", "amp", "--plugin", "software-engineering").returncode
+        == 0
+    )
+    foreign = tmp_path / "config/amp/plugins/foreign"
+    foreign.mkdir()
+    _ = (foreign / "index.js").write_text("keep")
+    result = invoke(tmp_path, "update", "--host", "amp", "--all")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(result.stdout)["plugins"] == ["software-engineering"]
+    assert (foreign / "index.js").read_text() == "keep"
+
+
+def test_guided_setup_has_no_effect_before_acceptance(monkeypatch: pytest.MonkeyPatch) -> None:
+    picks = iter([("install",), ("codex", "amp"), ("cancel",)])
+    calls: list[cli.Host] = []
+
+    def dispatch(
+        _action: cli.Action, host: cli.Host, _plugins: cli.Selection, _version: str | None
+    ) -> dict[str, object]:
+        calls.append(host)
+        return {"type": "COMPLETED"}
+
+    def choose(
+        _title: str, _rows: tuple[tuple[str, str], ...], *, multiple: bool = False
+    ) -> tuple[str, ...]:
+        _ = multiple
+        return next(picks)
+
+    monkeypatch.setattr(cli, "choose", choose)
+    monkeypatch.setattr(cli, "dispatch", dispatch)
+    result = cli.setup()
+    assert isinstance(result, cli.Rejected)
+    assert result.reason.value == "CANCELLED"
+    assert not calls
+
+
+def test_guided_setup_stops_after_host_failure(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list[cli.Host] = []
+
+    def dispatch(
+        _action: cli.Action, host: cli.Host, plugins: cli.Selection, _version: str | None
+    ) -> cli.Result[dict[str, object]]:
+        assert plugins is cli.AllPlugins.ALL
+        calls.append(host)
+        return (
+            cli.Rejected(cli.Reason.HOST_FAILED, "fixture failure")
+            if host is cli.Host.COPILOT
+            else {"type": "COMPLETED"}
+        )
+
+    monkeypatch.setattr(cli, "dispatch", dispatch)
+    result = cli.apply_hosts(cli.Action.UPDATE, ("codex", "copilot", "pi"), None)
+    assert isinstance(result, cli.Rejected)
+    assert calls == [cli.Host.CODEX, cli.Host.COPILOT]
+
+
+def test_bulk_empty_inventory_does_not_mutate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    log = host_fixture(tmp_path, "codex")
+    host = tmp_path / "bin/codex"
+    _ = host.write_text(
+        host.read_text().replace(
+            "'installed': [{'name': 'software-engineering', 'marketplaceName': 'slopsentral', 'enabled': True}]",
+            "'installed': []",
+        )
+    )
+    monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
+    result = invoke(tmp_path, "update", "--host", "codex", "--all")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(result.stdout)["plugins"] == []
+    assert all("list" in json.loads(line) for line in log.read_text().splitlines())
+
+
+def test_pi_bulk_delegates_once(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _ = release_fixture(tmp_path, {"setup-pi.mts": b"// fixture installer"})
+    node = tmp_path / "bin/node"
+    _ = node.write_text(
+        f"#!{sys.executable}\nimport sys\nassert sys.argv[2:] == ['--version', '4.0.7']\n"
+    )
+    node.chmod(0o755)
+    monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
+    result = invoke(tmp_path, "install", "--host", "pi", "--all")
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("names", [(), ("software-engineering", "software-engineering")])
+def test_bulk_rejects_empty_or_duplicate_catalog(names: tuple[str, ...]) -> None:
+    result = cli.catalog_bytes(catalog_archive(names))
+    assert isinstance(result, bytes)
+    rejected = cli.catalog_names(cli.parse(result))
+    assert isinstance(rejected, cli.Rejected)
+    assert rejected.reason is cli.Reason.INVALID_RELEASE
+
+
+def test_redirected_setup_rejects_without_effects(tmp_path: Path) -> None:
+    result = invoke(tmp_path, "setup")
+    assert result.returncode == 1
+    assert json.loads(result.stdout)["reason"] == "TERMINAL_REQUIRED"
+    assert not (tmp_path / "data").exists()
+
+
+@pytest.mark.parametrize("width", [80, 40])
+def test_real_selector_keyboard_and_terminal_restoration(tmp_path: Path, width: int) -> None:
+    stdout = tmp_path / "stdout.json"
+    environment = {
+        **os.environ,
+        "HOME": str(tmp_path),
+        "NO_COLOR": "1",
+        "TERM": "xterm-256color",
+        "FZF_DEFAULT_OPTS": "--filter=untrusted",
+    }
+    terminal, slave = pty.openpty()
+    with stdout.open("wb") as output:
+        process = subprocess.Popen(
+            [sys.executable, str(SCRIPT), "setup"],
+            cwd=tmp_path,
+            env=environment,
+            stdin=slave,
+            stderr=slave,
+            stdout=output,
+            start_new_session=True,
+        )
+    transcript = bytearray()
+
+    def wait_for(text: bytes) -> None:
+        end = time.monotonic() + 10
+        chunk = bytearray()
+        while text not in chunk and time.monotonic() < end:
+            ready, _, _ = select.select([terminal], [], [], 0.1)
+            if ready:
+                data = os.read(terminal, 65536)
+                chunk.extend(data)
+                transcript.extend(data)
+                if b"\x1b[6n" in data:
+                    _ = os.write(terminal, b"\x1b[1;1R")
+        assert text in chunk, bytes(chunk)
+
+    try:
+        termios.tcsetwinsize(terminal, (24, width))
+        wait_for(b"Install all plugins")
+        _ = os.write(terminal, b"\r")
+        wait_for(b"Copilot")
+        _ = os.write(terminal, b"\x01\r")
+        wait_for(b"Install all for")
+        _ = os.write(terminal, b"\x1b")
+        end = time.monotonic() + 10
+        while process.poll() is None and time.monotonic() < end:
+            ready, _, _ = select.select([terminal], [], [], 0.1)
+            if ready:
+                transcript.extend(os.read(terminal, 65536))
+        assert process.wait(timeout=1) == 130
+        assert json.loads(stdout.read_text())["reason"] == "CANCELLED"
+        flags = termios.tcgetattr(terminal)[3]
+        assert flags & termios.ECHO
+        assert flags & termios.ICANON
+        assert not (tmp_path / ".local").exists()
+        assert b"\x1b[?25h" in transcript
+    finally:
+        if process.poll() is None:
+            os.killpg(process.pid, signal.SIGKILL)
+            _ = process.wait(timeout=5)
+        os.close(slave)
+        os.close(terminal)
 
 
 def test_amp_install_update_remove_preserves_foreign_directory(

@@ -8,9 +8,6 @@ tags:
   - amp
   - recovery
   - consumers
-verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-04T15:10:06.076Z
 sources:
   - id: openwiki-source-59e94a76c36256a0ceee4f2d
     resource: repo://source/hooks/pi/adapter.ts
@@ -23,6 +20,9 @@ sources:
   - id: openwiki-source-694f90ac01e419c575288a8d
     resource: repo://tools/slopsentral.py
 generated: { by: "codex", at: "2026-11-04T15:10:06.076Z" }
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-05T15:45:23.454Z
 ---
 
 # Consumer installation and recovery
