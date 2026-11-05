@@ -154,6 +154,40 @@ Self-removal examines their recorded digests before deletion and preserves edite
 It preserves uv and installed host plugins.
 Interrupted updates can leave an incomplete receipt or lock that later operations preserve as a conflict.
 
+## Inspect Kotlin package layout
+
+Use the advisory detector without a host or plugin installation:
+
+```sh
+slopsentral kotlin-horizontalization
+slopsentral kotlin-horizontalization --repo /path/to/project --all
+slopsentral kotlin-horizontalization --changed-file src/main/kotlin/example/Owner.kt
+slopsentral kotlin-horizontalization --all --format text
+slopsentral kotlin-horizontalization --all --summary
+```
+
+The default scope includes staged, unstaged, and untracked Kotlin files under the current directory.
+`--repo` selects another directory. `--all` also supports directories outside Git.
+The detector inspects packages under `src/main/kotlin`, `src/test/kotlin`, and `src/integrationTest/kotlin`.
+It also inspects their ancestor packages within each source root.
+Other Kotlin source sets remain outside this heuristic.
+
+Repeat `--changed-file` for explicit paths.
+Use `--changed-files-file` for a UTF-8 list of repository-relative paths, one per line.
+An empty explicit list inspects no packages.
+Missing repositories, unreadable lists, paths outside `--repo`, and failed Git discovery return a nonzero status.
+
+JSON is the default output format. `--format text` selects text.
+`--summary` emits JSON with `ok`, `status`, and `findingCount`.
+A completed inspection returns status 0, including findings with `status: advisory`.
+File counts and filename clusters cannot prove semantic defects.
+The command changes no Kotlin files and needs no host command, checkout, npm, or Pkl.
+The installed command bundles the [canonical detector](https://github.com/amichne/slopsentral/blob/main/source/hooks/kotlin-horizontalization-check) and its lock.
+
+If an update from an older command reports an absent helper, run `slopsentral self update` again.
+Older command versions downloaded only the Python entry point and its lock.
+The second update uses the new inventory and fetches the helper.
+
 ## Results and source evidence
 
 Completed operations emit one JSON object on stdout.

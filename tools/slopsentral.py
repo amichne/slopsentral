@@ -10,7 +10,7 @@
 # url = "https://pypi.org/simple"
 # default = true
 # ///
-"""Install, update, or remove Slopsentral through an explicit host."""
+"""Manage Slopsentral plugins and inspect Kotlin package layout."""
 
 from __future__ import annotations
 
@@ -39,6 +39,8 @@ DOWNLOAD = f"https://github.com/{REPOSITORY}/releases/download"
 MAX_BYTES = 64 * 1024 * 1024
 VERSION = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\Z")
 IDENTITY = re.compile(r"[a-z][a-z0-9-]*\Z")
+LAYOUT_HELPER = "kotlin-horizontalization-check"
+COMMAND_FILES = ("slopsentral.py", "slopsentral.py.lock", LAYOUT_HELPER, LAYOUT_HELPER + ".lock")
 
 
 class PluginName(str):
@@ -362,35 +364,66 @@ def admit_command(directory: Path, executable: Path) -> Result[None]:
     return None
 
 
-def command_source(action: Action, version: str | None) -> Result[tuple[bytes, bytes]]:
+def helper_source() -> Path:
+    script = Path(__file__).resolve()
+    if script.parent.name == "tools":
+        return script.parent.parent / "source/hooks" / LAYOUT_HELPER
+    return script.with_name(LAYOUT_HELPER)
+
+
+@dataclass(frozen=True)
+class CommandPayload:
+    script: bytes
+    script_lock: bytes
+    helper: bytes
+    helper_lock: bytes
+
+    def files(self) -> tuple[tuple[str, bytes], ...]:
+        return tuple(
+            zip(
+                COMMAND_FILES,
+                (self.script, self.script_lock, self.helper, self.helper_lock),
+                strict=True,
+            )
+        )
+
+
+def command_source(action: Action, version: str | None) -> Result[CommandPayload]:
     if action == "update":
         release = _Release.latest(version)
         if isinstance(release, Rejected):
             return release
-        script, script_lock = release.asset("slopsentral.py"), release.asset("slopsentral.py.lock")
+        assets = {name: release.asset(name) for name in COMMAND_FILES}
     else:
         source = Path(__file__).resolve()
-        script, script_lock = source.read_bytes(), Path(str(source) + ".lock").read_bytes()
-    if isinstance(script, Rejected):
-        return script
-    if isinstance(script_lock, Rejected):
-        return script_lock
-    return script, script_lock
+        helper = helper_source()
+        assets = {
+            "slopsentral.py": source.read_bytes(),
+            "slopsentral.py.lock": Path(str(source) + ".lock").read_bytes(),
+            LAYOUT_HELPER: helper.read_bytes(),
+            LAYOUT_HELPER + ".lock": Path(str(helper) + ".lock").read_bytes(),
+        }
+    files: dict[str, bytes] = {}
+    for name, asset in assets.items():
+        if isinstance(asset, Rejected):
+            return asset
+        files[name] = asset
+    return CommandPayload(*(files[name] for name in COMMAND_FILES))
 
 
 def publish_command(
-    directory: Path, executable: Path, script: bytes, script_lock: bytes
+    directory: Path, executable: Path, payload: CommandPayload
 ) -> Result[dict[str, object]]:
     receipt = directory / "receipt.json"
     uv = shutil.which(os.environ.get("UV", "uv"))
     if uv is None:
         return Rejected(Reason.HOST_UNAVAILABLE, "uv")
-    identity = hashlib.sha256(script + script_lock).hexdigest()
+    identity = hashlib.sha256(b"".join(data for _, data in payload.files())).hexdigest()
     bundle = directory / identity
     directory.mkdir(exist_ok=True)
     bundle.mkdir(exist_ok=True)
-    atomic(bundle / "slopsentral.py", script)
-    atomic(bundle / "slopsentral.py.lock", script_lock)
+    for name, data in payload.files():
+        atomic(bundle / name, data)
     launcher = f'#!/bin/sh\nexec {shlex.quote(uv)} run --locked --script {shlex.quote(str(bundle / "slopsentral.py"))} "$@"\n'
     files = {
         path.relative_to(directory).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
@@ -423,7 +456,7 @@ def locked_command(
     source = command_source(action, version)
     if isinstance(source, Rejected):
         return source
-    return publish_command(directory, executable, *source)
+    return publish_command(directory, executable, source)
 
 
 def native_marketplace(host: NativeHost) -> Result[Marketplace]:
@@ -780,6 +813,24 @@ def version_number(value: str) -> str:
     return value
 
 
+def horizontalization(arguments: list[str]) -> int:
+    helper = helper_source()
+    if not helper.is_file():
+        print(
+            json.dumps(
+                {
+                    "type": "REJECTED",
+                    "reason": "NOT_INSTALLED",
+                    "detail": "The layout helper is absent. Run slopsentral self update to complete the command installation.",
+                }
+            )
+        )
+        return 1
+    return subprocess.run(
+        [sys.executable, str(helper), "--format", "json", *arguments], check=False
+    ).returncode
+
+
 def choose(
     title: str, rows: tuple[tuple[str, str], ...], *, multiple: bool = False
 ) -> Result[tuple[str, ...]]:
@@ -922,9 +973,14 @@ def host_operation(
     return dispatch(action, host, plugins, args.version)
 
 
-def main() -> int:
+def manage() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="action")
+    _ = sub.add_parser(
+        "kotlin-horizontalization",
+        help="Inspect Kotlin package layout without edits.",
+        add_help=False,
+    )
     for action in ("install", "update", "remove"):
         operation = sub.add_parser(action)
         _ = operation.add_argument("--host", type=Host, choices=tuple(Host))
@@ -965,6 +1021,12 @@ def main() -> int:
         return 130 if result.reason is Reason.CANCELLED else 1
     print(json.dumps(result))
     return 0
+
+
+def main() -> int:
+    if sys.argv[1:2] == ["kotlin-horizontalization"]:
+        return horizontalization(sys.argv[2:])
+    return manage()
 
 
 if __name__ == "__main__":

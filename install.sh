@@ -22,7 +22,7 @@ if ! command -v uv >/dev/null 2>&1; then
   export PATH
 fi
 release=https://github.com/amichne/slopsentral/releases/latest/download
-for asset in slopsentral.py slopsentral.py.lock; do
+for asset in slopsentral.py slopsentral.py.lock kotlin-horizontalization-check kotlin-horizontalization-check.lock; do
   curl --fail --silent --show-error --no-insecure --no-proxy-insecure --no-location-trusted --location --proto '=https' --proto-redir '=https' \
     --max-time 60 "$release/$asset" -o "$workspace/$asset"
 done

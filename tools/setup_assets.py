@@ -21,7 +21,23 @@ from tools.pi_candidate import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ("install-pi.sh", "setup-pi.mts", "install.sh", "slopsentral.py", "slopsentral.py.lock")
+FILES = (
+    "install-pi.sh",
+    "setup-pi.mts",
+    "install.sh",
+    "slopsentral.py",
+    "slopsentral.py.lock",
+    "kotlin-horizontalization-check",
+    "kotlin-horizontalization-check.lock",
+)
+
+
+def asset_source(source: Path, name: str) -> Path:
+    if name == "install.sh":
+        return source / name
+    if name.startswith("kotlin-horizontalization-check"):
+        return source / "source/hooks" / name
+    return source / "tools" / name
 
 
 def package(source: Path, candidate: Path, output: Path) -> None:
@@ -30,7 +46,7 @@ def package(source: Path, candidate: Path, output: Path) -> None:
     output.mkdir(parents=True, exist_ok=False)
     records: list[dict[str, object]] = []
     for name in FILES:
-        origin = source / name if name == "install.sh" else source / "tools" / name
+        origin = asset_source(source, name)
         if origin.is_symlink() or not origin.is_file():
             raise CandidateError(Failure.PAYLOAD_MISMATCH)
         target = output / name
