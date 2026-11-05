@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.12](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.11...slopsentral-v4.0.12) (2026-11-05)
+
+
+### Features
+
+* add bulk plugin actions and guided harness setup ([#136](https://github.com/amichne/slopsentral/issues/136)) ([0ebab26](https://github.com/amichne/slopsentral/commit/0ebab2646d9f190b3d26362ac1cd2eaeaecff3c6))
+
 ## [4.0.11](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.10...slopsentral-v4.0.11) (2026-11-05)
 
 
