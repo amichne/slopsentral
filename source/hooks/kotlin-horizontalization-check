@@ -80,24 +80,20 @@ def parse_args() -> argparse.Namespace:
 
 def git_changed_files(repo: Path) -> list[str]:
     commands = [
-        ["git", "-C", str(repo), "diff", "--name-only", "--diff-filter=ACMRTUXB", "--", "*.kt"],
-        ["git", "-C", str(repo), "diff", "--cached", "--name-only", "--diff-filter=ACMRTUXB", "--", "*.kt"],
-        ["git", "-C", str(repo), "ls-files", "--others", "--exclude-standard", "--", "*.kt"],
+        ["git", "-C", str(repo), "diff", "--name-only", "-z", "--relative", "--diff-filter=ACMRTUXB", "--", "*.kt"],
+        ["git", "-C", str(repo), "diff", "--cached", "--name-only", "-z", "--relative", "--diff-filter=ACMRTUXB", "--", "*.kt"],
+        ["git", "-C", str(repo), "ls-files", "-z", "--others", "--exclude-standard", "--", "*.kt"],
     ]
     values: list[str] = []
     for command in commands:
-        try:
-            result = subprocess.run(
-                command,
-                check=False,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.DEVNULL,
-                text=True,
-            )
-        except FileNotFoundError:
-            continue
-        if result.returncode == 0:
-            values.extend(line.strip() for line in result.stdout.splitlines() if line.strip())
+        result = subprocess.run(
+            command,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+        )
+        values.extend(value for value in result.stdout.split("\0") if value)
     return values
 
 
@@ -124,13 +120,12 @@ def changed_file_values(args: argparse.Namespace, repo: Path) -> list[str]:
     values = list(args.changed_file)
     if args.changed_files_file:
         state_file = (repo / args.changed_files_file).resolve()
-        if state_file.exists():
-            values.extend(
-                line.strip()
-                for line in state_file.read_text(encoding="utf-8").splitlines()
-                if line.strip()
-            )
-    if not values:
+        values.extend(
+            line.strip()
+            for line in state_file.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        )
+    if not args.changed_file and args.changed_files_file is None:
         values.extend(git_changed_files(repo))
     return values
 
@@ -142,6 +137,8 @@ def changed_kotlin_files(repo: Path, values: list[str]) -> list[Path]:
         if not path.is_absolute():
             path = repo / path
         path = path.resolve()
+        if not path.is_relative_to(repo):
+            raise ValueError("Changed paths must stay inside --repo.")
         if path.suffix == ".kt" and path.exists():
             files.append(path)
     return sorted(set(files))
@@ -323,8 +320,14 @@ def write_json(findings: list[Finding], summary: bool = False) -> None:
 def main() -> int:
     args = parse_args()
     repo = Path(args.repo).resolve()
-    changed_files = read_changed_files(args, repo)
-    findings = collect_findings(repo, changed_files)
+    try:
+        if not repo.is_dir():
+            raise ValueError("--repo must name an existing directory.")
+        changed_files = read_changed_files(args, repo)
+        findings = collect_findings(repo, changed_files)
+    except (OSError, ValueError, subprocess.CalledProcessError) as error:
+        print(json.dumps({"type": "REJECTED", "reason": "INSPECTION_FAILED", "detail": str(error)}))
+        return 1
 
     if args.format == "json" or args.summary:
         write_json(findings, args.summary)

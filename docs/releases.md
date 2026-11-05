@@ -100,7 +100,9 @@ Do not remove a pending label to imply publication success.
 [Provider candidates](../tools/release_assets.py), [Pi candidates](../tools/pi_candidate.py), and
 [setup packaging](../tools/setup_assets.py) own their receipts.
 The [publisher workflow](../.github/workflows/release-pi.yml) composes those owners.
-Setup receipts accept historical two-file and current five-file inventories, with complete inventory and duplicate-name rejection.
+Setup receipts accept complete two-file, five-file, and seven-file inventories.
+The seven-file inventory adds the canonical Kotlin detector and its lock.
+Partial inventories and duplicate filenames fail admission.
 Receipt schema 2 binds the version to `package.json` at the admitted source commit.
 Run identity and producer attempts remain separate facts.
 

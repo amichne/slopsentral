@@ -16,6 +16,7 @@ function hookCommand(name) {
 function fixture(context) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "kotlin-stop-"));
   context.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  assert.equal(spawnSync("git", ["init", "-q", root]).status, 0);
   return root;
 }
 function run(command, root, input = { stop_hook_active: false }) {

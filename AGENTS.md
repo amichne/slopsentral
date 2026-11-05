@@ -36,7 +36,9 @@ Use native Codex and Copilot commands for their host configuration.
 Amp uses managed links to release archives. Pi delegates to `tools/setup-pi.mts`.
 `tools/setup_assets.py` keeps the bootstrap, Python script, lock, and setup receipt.
 `source/schemas/pi/setup.schema.json` owns the receipt contract.
-Keep both historical two-file and current five-file inventories valid.
+Keep historical two-file and five-file inventories valid alongside the seven-file inventory.
+The command bundles the canonical Kotlin detector and its lock from `source/hooks/`.
+Keep layout findings advisory. Inspection failures must return a nonzero status.
 Reject partial inventories and duplicate filenames.
 Keep upload and download lists in `.github/workflows/release-pi.yml` synchronized with that inventory.
 Preserve edited managed files, foreign paths, and disabled plugin choices.

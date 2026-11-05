@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -30,12 +31,198 @@ def invoke(home: Path, *args: str) -> subprocess.CompletedProcess[str]:
 def test_public_help_and_explicit_host(tmp_path: Path) -> None:
     result = invoke(tmp_path, "--help")
     assert result.returncode == 0, result.stderr
-    for command in ["install", "update", "remove", "self"]:
+    for command in ["install", "update", "remove", "self", "kotlin-horizontalization"]:
         assert command in result.stdout
     rejected = invoke(tmp_path, "install")
     assert rejected.returncode == 2
     assert "--host" in rejected.stderr
     assert not (tmp_path / "data").exists()
+
+
+def test_installed_horizontalization_is_offline_and_advisory(tmp_path: Path) -> None:
+    assert invoke(tmp_path, "self", "install").returncode == 0
+    repo = tmp_path / "Kotlin project ; literal"
+    package = repo / "src/main/kotlin/example"
+    package.mkdir(parents=True)
+    names = ("Apple", "Birch", "Cedar", "Dogwood", "Elm", "Fir", "Gum", "Hazel")
+    for name in names:
+        _ = (package / f"{name}.kt").write_text(f"class {name}\n")
+    before = {p: p.read_bytes() for p in package.iterdir()}
+    environment = {
+        **os.environ,
+        "HOME": str(tmp_path),
+        "XDG_DATA_HOME": str(tmp_path / "data"),
+        "UV_OFFLINE": "1",
+        "PATH": str(tmp_path / ".local/bin") + os.pathsep + os.environ["PATH"],
+    }
+
+    def audit(*args: str) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            ["slopsentral", "kotlin-horizontalization", "--repo", str(repo), *args],
+            cwd=tmp_path,
+            env=environment,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+    result = audit("--all")
+    assert result.returncode == 0, result.stdout + result.stderr
+    report = json.loads(result.stdout)
+    assert report["status"] == "advisory"
+    assert report["findings"] == [
+        {
+            "severity": "concern",
+            "path": "src/main/kotlin/example",
+            "message": "package directory has 8 or more direct Kotlin files",
+            "evidence": {"directKotlinFiles": 8},
+        }
+    ]
+    assert {p: p.read_bytes() for p in package.iterdir()} == before
+    assert json.loads(audit("--all", "--summary").stdout)["findingCount"] == 1
+    assert "8 or more" in audit("--all", "--format", "text").stdout
+    for name in names[3:]:
+        (package / f"{name}.kt").unlink()
+    assert json.loads(audit("--all").stdout)["findings"] == []
+    # The helper is a shipped file, not an import from the checkout.
+    assert (
+        len(list((tmp_path / "data/slopsentral/command").glob("*/kotlin-horizontalization-check")))
+        == 1
+    )
+    assert invoke(tmp_path, "self", "remove").returncode == 0
+
+
+@pytest.mark.parametrize("mode", ["repo", "list", "outside", "git"])
+def test_horizontalization_rejects_incomplete_inspection(tmp_path: Path, mode: str) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    outside = tmp_path / "src/main/kotlin/Outside.kt"
+    outside.parent.mkdir(parents=True)
+    _ = outside.write_text("class Outside\n")
+    arguments = {
+        "repo": ["--repo", str(repo / "absent"), "--all"],
+        "list": ["--repo", str(repo), "--changed-files-file", "absent.txt"],
+        "outside": ["--repo", str(repo), "--changed-file", str(outside)],
+        "git": ["--repo", str(repo)],
+    }[mode]
+    result = invoke(tmp_path, "kotlin-horizontalization", *arguments)
+    assert result.returncode != 0
+    assert json.loads(result.stdout)["reason"] == "INSPECTION_FAILED"
+    assert not (tmp_path / "data").exists()
+
+
+def test_horizontalization_discovers_changes_and_preserves_explicit_scope(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _ = subprocess.run(["git", "init", "-q", str(repo)], check=True)
+    package = repo / "src/test/kotlin/example"
+    package.mkdir(parents=True)
+    for name in ("OrderReader", "OrderWriter", "OrderStore"):
+        _ = (package / f"{name}.kt").write_text(f"class {name}\n")
+    result = invoke(tmp_path, "kotlin-horizontalization", "--repo", str(repo))
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(result.stdout)["findings"][0]["evidence"]["prefix"] == "Order"
+    paths = repo / "changes.txt"
+    _ = paths.write_text("README.md\n")
+    explicit = invoke(
+        tmp_path,
+        "kotlin-horizontalization",
+        "--repo",
+        str(repo),
+        "--changed-files-file",
+        str(paths),
+    )
+    assert explicit.returncode == 0, explicit.stdout + explicit.stderr
+    assert json.loads(explicit.stdout)["findings"] == []
+    _ = paths.write_text("")
+    empty = invoke(
+        tmp_path,
+        "kotlin-horizontalization",
+        "--repo",
+        str(repo),
+        "--changed-files-file",
+        str(paths),
+    )
+    assert empty.returncode == 0, empty.stdout + empty.stderr
+    assert json.loads(empty.stdout)["findings"] == []
+
+
+def test_horizontalization_preserves_edited_installed_helper(tmp_path: Path) -> None:
+    assert invoke(tmp_path, "self", "install").returncode == 0
+    helper = next((tmp_path / "data/slopsentral/command").glob("*/kotlin-horizontalization-check"))
+    _ = helper.write_text("edited helper\n")
+    removed = invoke(tmp_path, "self", "remove")
+    assert removed.returncode == 1
+    assert json.loads(removed.stdout)["reason"] == "OWNERSHIP_CONFLICT"
+    assert helper.read_text() == "edited helper\n"
+
+
+def test_old_two_file_command_reports_missing_helper_and_recovers(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # An older self-update downloads only the new entry point and its lock.
+    directory = tmp_path / "data/slopsentral/command"
+    standalone = directory / "old-copy"
+    standalone.mkdir(parents=True)
+    script = standalone / "slopsentral.py"
+    _ = shutil.copyfile(SCRIPT, script)
+    _ = shutil.copyfile(Path(str(SCRIPT) + ".lock"), Path(str(script) + ".lock"))
+    result = subprocess.run(
+        [sys.executable, str(script), "kotlin-horizontalization", "--all"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert json.loads(result.stdout)["reason"] == "NOT_INSTALLED"
+    assert "slopsentral self update" in json.loads(result.stdout)["detail"]
+    executable = tmp_path / ".local/bin/slopsentral"
+    executable.parent.mkdir(parents=True)
+    launcher = f'#!/bin/sh\nexec {shlex.quote(sys.executable)} {shlex.quote(str(script))} "$@"\n'
+    _ = executable.write_text(launcher)
+    executable.chmod(0o755)
+    files = {
+        p.relative_to(directory).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in standalone.iterdir()
+    }
+    _ = (directory / "receipt.json").write_text(json.dumps({"files": files, "launcher": launcher}))
+    _ = release_fixture(
+        tmp_path,
+        {
+            "slopsentral.py": SCRIPT.read_bytes(),
+            "slopsentral.py.lock": Path(str(SCRIPT) + ".lock").read_bytes(),
+            "kotlin-horizontalization-check": (
+                ROOT / "source/hooks/kotlin-horizontalization-check"
+            ).read_bytes(),
+            "kotlin-horizontalization-check.lock": (
+                ROOT / "source/hooks/kotlin-horizontalization-check.lock"
+            ).read_bytes(),
+        },
+    )
+    environment = {
+        **os.environ,
+        "HOME": str(tmp_path),
+        "XDG_DATA_HOME": str(tmp_path / "data"),
+        "PATH": str(tmp_path / "bin") + os.pathsep + os.environ["PATH"],
+    }
+    monkeypatch.setenv("PATH", environment["PATH"])
+    updated = subprocess.run(
+        [str(executable), "self", "update"],
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert updated.returncode == 0, updated.stdout + updated.stderr
+    audit = subprocess.run(
+        [str(executable), "kotlin-horizontalization", "--repo", str(tmp_path), "--all"],
+        env={**environment, "UV_OFFLINE": "1"},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert audit.returncode == 0, audit.stdout + audit.stderr
+    assert json.loads(audit.stdout)["status"] == "advisory"
 
 
 def test_command_install_repeat_remove_and_foreign_file(tmp_path: Path) -> None:
@@ -316,6 +503,12 @@ def test_self_update_uses_release_bytes_and_keeps_old_command_on_rejection(
         {
             "slopsentral.py": SCRIPT.read_bytes() + b"\n# next release\n",
             "slopsentral.py.lock": Path(str(SCRIPT) + ".lock").read_bytes(),
+            "kotlin-horizontalization-check": (
+                ROOT / "source/hooks/kotlin-horizontalization-check"
+            ).read_bytes(),
+            "kotlin-horizontalization-check.lock": (
+                ROOT / "source/hooks/kotlin-horizontalization-check.lock"
+            ).read_bytes(),
         },
     )
     monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
@@ -383,7 +576,7 @@ def test_shell_bootstrap_reuses_or_installs_uv(
         f"root = Path({str(ROOT)!r})\ninstaller = Path({str(installer)!r})\n"
         "url = next(arg for arg in sys.argv if arg.startswith('https://'))\n"
         "name = url.split('/')[-1]\n"
-        "source = installer if 'astral.sh' in url else root / 'tools' / name\n"
+        "source = installer if 'astral.sh' in url else root / ('source/hooks' if name.startswith('kotlin-horizontalization-check') else 'tools') / name\n"
         "shutil.copyfile(source, sys.argv[sys.argv.index('-o') + 1])\n"
     )
     curl.chmod(0o755)
