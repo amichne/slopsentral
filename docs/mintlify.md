@@ -81,6 +81,10 @@ mise exec -- slopsentral-site live
 
 The command compares every projected page's normalized rendered Markdown content with the expected canonical blocks.
 The comparison preserves link destinations and code indentation.
+
+Mintlify rewrites homepage links and table separators.
+The comparison treats those forms as equivalent.
+Table rows, cells, content, and alignment remain part of the comparison.
 It rejects a missing page or a different body.
 This comparison establishes returned content, rather than browser layout or an exact hosted build SHA.
 Mintlify's deployment status and a browser visit supply separate evidence.

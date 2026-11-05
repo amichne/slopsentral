@@ -34,10 +34,10 @@ sources:
     resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3
     resource: repo://tools/tests/pi-runtime.test.mjs
-generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
+generated: { by: "codex", at: "2026-11-05T05:47:29.999Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-05T05:22:10.565Z
+    at: 2026-11-05T05:47:29.999Z
 ---
 
 # Match checks to the engineering claim
@@ -137,7 +137,8 @@ The ordinary source workflow also runs the projection gate without a path filter
 The [CLI cases](../../tools/python_checks/test_public_docs.py) use independent Markdown fixtures and a real local HTTP server.
 Missing source, missing output, changed prose, missing assets, and invalid destinations reject admission.
 The live comparison preserves link destinations and code indentation.
-Only Mintlify's known same-origin route transformation normalizes.
+Mintlify's known homepage links and Markdown table separators normalize.
+Table rows, cells, content, and alignment remain part of the comparison.
 A changed query, fragment, external destination, or conditional code block cannot pass as the expected content.
 A login page or visible HTML body also rejects.
 

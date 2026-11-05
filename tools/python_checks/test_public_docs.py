@@ -452,3 +452,99 @@ def test_live_preserves_query_fragment_and_external_target(tmp_path: Path, chang
         rejected = cli(root, "live", "--base-url", url, "--timeout", "0")
     assert rejected.returncode == 1, rejected.stdout + rejected.stderr
     assert report(rejected)["type"] == "STALE"
+
+
+@pytest.mark.parametrize("homepage", ["", "/", "/index", "/index.md"])
+def test_live_accepts_only_native_homepage_aliases(tmp_path: Path, homepage: str) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    responses = live_responses()
+    responses["/index.md"] = (
+        HTTPStatus.OK,
+        "text/markdown",
+        HOME.replace("docs/guide.md", "{{ORIGIN}}/guide.md")
+        + "\nRead the [homepage]({{ORIGIN}}/index.md?mode=read#intro).\n",
+    )
+    with site_server(responses) as (url, _requests):
+        write(
+            root, "README.md", HOME + f"\nRead the [homepage]({url}{homepage}?mode=read#intro).\n"
+        )
+        synced_result = cli(root, "sync")
+        assert synced_result.returncode == 0, synced_result.stdout + synced_result.stderr
+        result = cli(root, "live", "--base-url", url, "--timeout", "0")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert report(result)["type"] == "LIVE"
+
+
+@pytest.mark.parametrize("change", ["path", "query", "fragment", "external"])
+def test_native_homepage_equivalence_keeps_destination_semantics(
+    tmp_path: Path, change: str
+) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    replacements = {
+        "path": ("/index.md?", "/index.mdx?"),
+        "query": ("mode=read", "mode=delete"),
+        "fragment": ("#intro", "#obsolete"),
+        "external": ("{{ORIGIN}}/index.md?", "https://obsolete.invalid/index.md?"),
+    }
+    target = "{{ORIGIN}}/index.md?mode=read#intro"
+    before, after = replacements[change]
+    responses = live_responses()
+    responses["/index.md"] = (
+        HTTPStatus.OK,
+        "text/markdown",
+        HOME.replace("docs/guide.md", "{{ORIGIN}}/guide.md")
+        + f"\nRead the [homepage]({target.replace(before, after)}).\n",
+    )
+    with site_server(responses) as (url, _requests):
+        write(root, "README.md", HOME + f"\nRead the [homepage]({url}?mode=read#intro).\n")
+        synced_result = cli(root, "sync")
+        assert synced_result.returncode == 0, synced_result.stdout + synced_result.stderr
+        result = cli(root, "live", "--base-url", url, "--timeout", "0")
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert report(result)["type"] == "STALE"
+
+
+TABLE = "\n| Action | Outcome |\n| --- | --- |\n| keep | accepted |\n"
+
+
+def test_live_accepts_native_table_separator_width(tmp_path: Path) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    write(root, "docs/guide.md", GUIDE + TABLE)
+    synced_result = cli(root, "sync")
+    assert synced_result.returncode == 0, synced_result.stdout + synced_result.stderr
+    responses = live_responses()
+    responses["/guide.md"] = (
+        HTTPStatus.OK,
+        "text/markdown",
+        GUIDE + TABLE.replace("| --- | --- |", "| - | - |"),
+    )
+    with site_server(responses) as (url, _requests):
+        result = cli(root, "live", "--base-url", url, "--timeout", "0")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert report(result)["type"] == "LIVE"
+
+
+@pytest.mark.parametrize("change", ["content", "columns", "structure"])
+def test_native_table_equivalence_preserves_cells_and_structure(
+    tmp_path: Path, change: str
+) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    write(root, "docs/guide.md", GUIDE + TABLE)
+    synced_result = cli(root, "sync")
+    assert synced_result.returncode == 0, synced_result.stdout + synced_result.stderr
+    tables = {
+        "content": "\n| Action | Outcome |\n| - | - |\n| keep | rejected |\n",
+        "columns": "\n| Outcome | Action |\n| - | - |\n| accepted | keep |\n",
+        # The flattened text order matches the original two-column table.
+        "structure": "\n| Action |\n| - |\n| Outcome |\n| keep |\n| accepted |\n",
+    }
+    responses = live_responses()
+    responses["/guide.md"] = (HTTPStatus.OK, "text/markdown", GUIDE + tables[change])
+    with site_server(responses) as (url, _requests):
+        result = cli(root, "live", "--base-url", url, "--timeout", "0")
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert report(result)["type"] == "STALE"

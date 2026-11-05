@@ -574,7 +574,31 @@ class _CodeBlock:
     content: str
 
 
-type _Block = _Prose | _CodeBlock
+class _TablePart(StrEnum):
+    TABLE_OPEN = "table_open"
+    TABLE_CLOSE = "table_close"
+    HEAD_OPEN = "thead_open"
+    HEAD_CLOSE = "thead_close"
+    BODY_OPEN = "tbody_open"
+    BODY_CLOSE = "tbody_close"
+    ROW_OPEN = "tr_open"
+    ROW_CLOSE = "tr_close"
+    HEADER_CELL_OPEN = "th_open"
+    HEADER_CELL_CLOSE = "th_close"
+    CELL_OPEN = "td_open"
+    CELL_CLOSE = "td_close"
+
+
+_TABLE_PARTS = {part.value: part for part in _TablePart}
+
+
+@dataclass(frozen=True, slots=True)
+class _TableMark:
+    part: _TablePart
+    style: str
+
+
+type _Block = _Prose | _CodeBlock | _TableMark
 
 
 def comparable_href(href: str, origin: _Origin) -> str:
@@ -585,7 +609,12 @@ def comparable_href(href: str, origin: _Origin) -> str:
     if same_origin or local_path:
         # Mintlify's Markdown endpoint expands local routes into absolute .md
         # links. Queries, fragments, and external destinations stay exact.
-        return urlunsplit(("", "", url.path.removesuffix(".md"), url.query, url.fragment))
+        path = (
+            "/index"
+            if url.path in {"", "/", "/index", "/index.md"}
+            else url.path.removesuffix(".md")
+        )
+        return urlunsplit(("", "", path, url.query, url.fragment))
     return href
 
 
@@ -630,7 +659,7 @@ def prose_parts(tokens: list[Token], origin: _Origin) -> tuple[_Inline, ...]:
 
 def blocks(body: str, origin: _Origin) -> tuple[_Block, ...]:
     result: list[_Block] = []
-    for token in MarkdownIt().parse(body):
+    for token in MarkdownIt().enable("table").parse(body):
         if token.type == "inline":
             parts = prose_parts(token.children or [], origin)
             if parts:
@@ -640,6 +669,11 @@ def blocks(body: str, origin: _Origin) -> tuple[_Block, ...]:
             if language.startswith("theme="):
                 language = ""
             result.append(_CodeBlock(language, token.content))
+        elif token.type in _TABLE_PARTS:
+            style = token.attrGet("style")
+            result.append(
+                _TableMark(_TABLE_PARTS[token.type], style if isinstance(style, str) else "")
+            )
     return tuple(result)
 
 
