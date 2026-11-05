@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a117c0566f104f63670bee26a6ba07f932f93e9792ffde748fcc79b2ae9ac95f",
+  "pageVersion": "sha256:3356f52fa73a6898185a75cffb2c6d14649880a1083d4057d6ed520a0c2f7d39",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
@@ -89,10 +89,46 @@
           "version": "repo-file-v1:sha256:ed7ee826e62afae93bd2c24beaa88344483d54a94a231bd6327ceedabedea52e"
         }
       ]
+    },
+    {
+      "id": "claim_637ad751d8624c069c0ac1ed42f1ff5b",
+      "statement": "The public-site gate rejects absent or stale projected input before the pinned native Mintlify build and link checks.",
+      "evidence": [
+        {
+          "resource": "repo://tools/ci.py",
+          "version": "repo-file-v1:sha256:f7296ec719e7331887812f0b7135d02e9b7a722ff5dbec0d8eadca2daf9439d4"
+        },
+        {
+          "resource": "repo://tools/public_docs.py",
+          "version": "repo-file-v1:sha256:ef52d712e490259da1bfb09ebe7b8231ed704fc89691ef72eefed4fca970275f"
+        },
+        {
+          "resource": "repo://tools/python_checks/test_public_docs.py",
+          "version": "repo-file-v1:sha256:5f1e81d4a4800028db097665db8dfd8e4e91fbc844acf61a7971f5dc2eb5d3c9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f1ac58f81afc4d9093bb80a93e052460",
+      "statement": "The live content comparison preserves link destinations and code indentation, while the main workflow fails stale deployments and keeps the expected source identity and response digests.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/documentation-site.yml",
+          "version": "repo-file-v1:sha256:c2f7d90882484cbec1f58b6dedfa3f76fe5437d5e43267a957654eccdc524c69"
+        },
+        {
+          "resource": "repo://tools/public_docs.py",
+          "version": "repo-file-v1:sha256:ef52d712e490259da1bfb09ebe7b8231ed704fc89691ef72eefed4fca970275f"
+        },
+        {
+          "resource": "repo://tools/python_checks/test_public_docs.py",
+          "version": "repo-file-v1:sha256:5f1e81d4a4800028db097665db8dfd8e4e91fbc844acf61a7971f5dc2eb5d3c9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-04T16:07:53.128Z"
+    "at": "2026-11-05T05:22:10.565Z"
   }
 }

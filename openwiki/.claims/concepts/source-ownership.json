@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d455e164237de104ea390be62c1d29c3b312ad0f2ed4681144c7a97ba130e91c",
+  "pageVersion": "sha256:52dd05410a2b883c01c1456647452c6c201f4853dfb1aab0e7d31ca65da5e1fa",
   "claims": [
     {
       "id": "claim_d1bc8d787e7348afa9f084f58f304d0e",
@@ -69,12 +69,12 @@
       "statement": "Code Knowledge Base bundles the portable runtime and adoption assets, while Slopsentral's coverage configuration supplies its project policy.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L158-L171",
-          "version": "repo-lines-v1:sha256:ec87fed5120fd204544fb32ff892571b20b4b8fae73f8c9fb05153be6a3dba46:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYWY2MmViNjZmYTIyYjAxMzQzM2E0ODA1ZmY3MTRjN2QzZWY1Y2Y0MjVhYjUxZGViNmZmY2IwYmRiYWY3YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNmU0NTM4Zjc3Yzc5NzI0MGZhMmE5ODZhYWE4MGI4MTk3N2U5MDUzMjEyODIxNTM0ZDJlMGUzM2JhNWIxNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5N2NkZTRmZmEzODRkZGNjMjQxOTM1NGVkODcyNjc4NmQ1ZmViZDY3ODQ3ZjljN2ZiMzAyYjg1M2U4MzkxNDEifQ"
+          "resource": "repo://AGENTS.md#L158-L179",
+          "version": "repo-lines-v1:sha256:45e4d725965efa5b2caf02cf5a0eff8b05e30d2eec73c7f279db5c38c198e398:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYWY2MmViNjZmYTIyYjAxMzQzM2E0ODA1ZmY3MTRjN2QzZWY1Y2Y0MjVhYjUxZGViNmZmY2IwYmRiYWY3YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNmU0NTM4Zjc3Yzc5NzI0MGZhMmE5ODZhYWE4MGI4MTk3N2U5MDUzMjEyODIxNTM0ZDJlMGUzM2JhNWIxNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5N2NkZTRmZmEzODRkZGNjMjQxOTM1NGVkODcyNjc4NmQ1ZmViZDY3ODQ3ZjljN2ZiMzAyYjg1M2U4MzkxNDEifQ"
         },
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:73ebf57d8f8bc90a5f8a3259fe0aedb437cb67fac4c98983408f65c02b904c0a"
+          "version": "repo-file-v1:sha256:61db57f64dbb1b52fd8b0b4799887ced81cc12df8ed0ac9387f217446109ea49"
         },
         {
           "resource": "repo://tools/tests/documentation-portability.test.mjs#L90-L113",
@@ -85,6 +85,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-04T16:07:53.128Z"
+    "at": "2026-11-05T05:22:10.565Z"
   }
 }

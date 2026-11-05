@@ -215,7 +215,7 @@ export function renderCatalog(catalog) {
         if (refs.length) lines.push(`**${field[0].toUpperCase() + field.slice(1)}:** ${refs.map(id => {
           const [type, name] = id.split('/');
           const ref = catalog.marketplace[field].find(r => r.type === type && r.name === name);
-          return `[${name}](${ref.path}${type === 'SKILL' ? '/SKILL.md' : ''})`;
+          return `[\`${name}\`](${ref.path}${type === 'SKILL' ? '/SKILL.md' : ''})`;
         }).join(', ')}.`, '');
       }
     }
@@ -223,18 +223,18 @@ export function renderCatalog(catalog) {
   lines.push('## Profiles', '');
   for (const profile of [...catalog.profiles].sort((a,b) => a.name.localeCompare(b.name,'en'))) {
     const view = catalogReport(catalog, profile.name);
-    lines.push(`- [${profile.name}](profiles/${profile.name}.json): ${profile.plugins.join(' + ')}. ${view.totals.instructionWords} instruction words.`, '');
+    lines.push(`- [\`${profile.name}\`](profiles/${profile.name}.json): ${profile.plugins.join(' + ')}. ${view.totals.instructionWords} instruction words.`, '');
   }
   lines.push('## Reused assets', '',
     'Each asset has one canonical source. Plugins may compose it in several bundles.',
     'Profiles may share skills, agents, and instructions. Select each hook through one plugin to avoid duplicate execution.', '',
     '| Asset | Composed by |', '| --- | --- |');
   for (const asset of report.assets.filter(asset => asset.plugins.length > 1)) {
-    lines.push(`| [${asset.primitiveType}/${asset.name}](${asset.path}${asset.primitiveType === 'SKILL' ? '/SKILL.md' : ''}) | ${asset.plugins.join(', ')} |`);
+    lines.push(`| [\`${asset.primitiveType}/${asset.name}\`](${asset.path}${asset.primitiveType === 'SKILL' ? '/SKILL.md' : ''}) | ${asset.plugins.join(', ')} |`);
   }
   lines.push('', '## Standalone skills', '',
     'Advanced alternatives outside the plugin chooser. They require explicit standalone setup; normal plugin selection does not depend on installing individual skills.', '',
-    report.standaloneSkills.map(name => `[${name}](skills/${name}/SKILL.md)`).join(', ') + '.', '',
+    report.standaloneSkills.map(name => `[\`${name}\`](skills/${name}/SKILL.md)`).join(', ') + '.', '',
     '## Evidence', '',
     'Counts describe source instruction text, not actual prompt loading or token use.',
     'The graph gate checks canonical identity, dependencies, profile hook activation, and projection inputs.',

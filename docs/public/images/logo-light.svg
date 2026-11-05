@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="205" height="32" viewBox="0 0 205 32" role="img" aria-label="Slopsentral">
+  <rect width="30" height="30" x="1" y="1" rx="7" fill="#059669"/>
+  <path d="M21 9H12L9 12L21 20L18 23H9" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+  <text x="42" y="23" font-family="system-ui, sans-serif" font-size="23" font-weight="650" fill="#111827">Slopsentral</text>
+</svg>

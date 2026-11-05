@@ -21,6 +21,7 @@ import os
 import shutil
 import subprocess
 import tarfile
+import tempfile
 import urllib.error
 import urllib.request
 import zipfile
@@ -41,6 +42,8 @@ class Task(StrEnum):
     UNIT = "unit"
     KOTLIN = "kotlin"
     PKL = "pkl"
+    DOCS = "docs"
+    PREVIEW = "preview"
 
 
 class SetupFailure(StrEnum):
@@ -94,11 +97,16 @@ def install(artifact: Artifact, target: Path) -> Installed | SetupFailure:
         return SetupFailure.FILESYSTEM
 
 
-def commands(items: tuple[tuple[str, ...], ...], *, env: dict[str, str] | None = None) -> int:
+def commands(
+    items: tuple[tuple[str, ...], ...],
+    *,
+    env: dict[str, str] | None = None,
+    cwd: Path = ROOT,
+) -> int:
     for command in items:
         print(json.dumps({"stage": "process", "tool": command[0], "type": "STARTED"}), flush=True)
         try:
-            result = subprocess.run(command, cwd=ROOT, env=env, check=False)
+            result = subprocess.run(command, cwd=cwd, env=env, check=False)
         except OSError:
             print(json.dumps({"stage": "process", "tool": command[0], "type": "UNAVAILABLE"}))
             return 2
@@ -240,13 +248,31 @@ def pkl_fixture(temporary: Path, registry_port: int) -> int:
     )
 
 
+def documentation(task: Task) -> int:
+    status = commands((("uv", "run", "--locked", "--script", "tools/public_docs.py", "check"),))
+    if status:
+        return status
+    mint = str(ROOT / "docs/tooling/node_modules/.bin/mint")
+    operations = (
+        ((mint, "dev", "--no-open"),)
+        if task is Task.PREVIEW
+        else (
+            (mint, "validate"),
+            (mint, "broken-links", "--check-anchors", "--check-redirects"),
+        )
+    )
+    return commands(operations, cwd=ROOT / "docs/public")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     _ = parser.add_argument("task", type=Task, choices=list(Task))
     task: Task = parser.parse_args().task
-    temporary = Path(os.environ["RUNNER_TEMP"]) / "slopsentral-ci"
+    temporary = Path(os.environ.get("RUNNER_TEMP", tempfile.gettempdir())) / "slopsentral-ci"
     temporary.mkdir(exist_ok=True)
     match task:
+        case Task.DOCS | Task.PREVIEW:
+            return documentation(task)
         case Task.NATIVE:
             return native(temporary)
         case Task.UNIT:

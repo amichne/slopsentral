@@ -22,6 +22,7 @@ def main() -> int:
     commands = (
         Command(Stage.SETUP, "uv", ("sync", "--locked", "--group", "refactor")),
         Command(Stage.SETUP, "npm", ("ci", "--ignore-scripts")),
+        Command(Stage.SETUP, "npm", ("ci", "--ignore-scripts", "--prefix", "docs/tooling")),
     )
     for command in commands:
         if not isinstance(run(command, root), Completed):

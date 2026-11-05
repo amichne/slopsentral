@@ -7,9 +7,6 @@ tags:
   - navigation
   - engineering
   - okf
-verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-04T15:10:06.076Z
 sources:
   - id: openwiki-source-6d4b4e707b8d60b6ccfa3425
     resource: repo://.github/workflows/openwiki-update.yml
@@ -29,7 +26,10 @@ sources:
     resource: repo://tools/setup-pi.mts
   - id: openwiki-source-6706911967b481bbbe3dfbe8
     resource: repo://tools/setup.py
-generated: { by: "codex", at: "2026-11-04T15:10:06.076Z" }
+generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-05T05:22:10.565Z
 ---
 
 # Slopsentral quickstart
@@ -55,6 +55,7 @@ A plugin installation grants no authority to publish, deploy, or change personal
 | Distinguish fixtures from live evidence | [Evaluations](operations/evaluations.md) | [Evaluation guide](../docs/skill-evals.md) |
 | Adopt this practice in another project | [Portable documentation](workflows/documentation.md#adopt-the-same-practice-in-another-project) | [Packaged procedure](../source/skills/code-knowledge-base/references/portable-documentation.md) |
 | Review stale knowledge | [Evidence model](concepts/evidence.md) | [Documentation workflow](workflows/documentation.md) |
+| Publish current documentation | [Documentation workflow](workflows/documentation.md#project-canonical-explanations-to-the-public-site) | [Site guide](../docs/mintlify.md) |
 | Select the decisive gate | [Validation](testing/validation.md) | [Guide index](../docs/index.md) |
 
 ## Prepare a maintainer checkout

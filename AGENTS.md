@@ -167,6 +167,14 @@ After source review and native finalization, run `mise exec -- slopsentral-docs 
 Review the lock diff with the page changes. A matching digest does not prove semantic accuracy.
 Historical audits keep their original evidence and do not establish current results.
 
+`docs/site.json` maps canonical documents to the Mintlify site in `docs/public`.
+`tools/public_docs.py` owns that projection. Do not edit its generated pages by hand.
+Run `npm run docs:sync` after a mapped source change.
+Run `npm run docs:check` before a site PR.
+Keep the site check in `npm run check:docs` even if the site workflow changes.
+For a deployment claim, examine Mintlify status, `slopsentral-site live`, and the actual pages in a browser.
+Read [the site guide](docs/mintlify.md) for source ownership and recovery.
+
 ## Portable Global Instructions
 
 `tools/install_global_agents.py` owns the portable installation and its local

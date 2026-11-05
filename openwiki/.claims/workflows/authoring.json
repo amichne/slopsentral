@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:ae29cc609aa6cd48ba3d0a72443ac40bafaa13e235a621ce9ac9650b2f4e2317",
+  "pageVersion": "sha256:25e97d9af0d550e0c04ab1ddf4285ba30fd7b3379eb90bac3596b9f10bb1faa9",
   "claims": [
     {
       "id": "claim_bc6d8aad02404020823dda2dc37e4a40",
-      "statement": "Explicit checkout setup synchronizes locked Python dependencies and runs npm ci with scripts disabled, while uv remains a prerequisite.",
+      "statement": "Explicit checkout setup synchronizes locked Python dependencies and installs root and documentation Node dependencies with lifecycle scripts disabled, while uv remains a prerequisite.",
       "evidence": [
         {
-          "resource": "repo://tools/setup.py#L13-L29",
-          "version": "repo-lines-v1:sha256:580ec8ecbd5cd5639ce9f560dc68ce86c94558f960bf12b5aaaf4ce20b60a8b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhMTYyMTg3MGEwNzBiNDk5ZWM0NjM1NTNhN2ZjZDk2NTU1MzFiM2RiNzY3NjI2NDUwMDRkZjBjOWQxMThhMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzNWVkZGYyNjY5OTlhNGQ0YzBmNDYxOGNhMjJlYmUwZWVkYTQzNWQ5MWUyNDM3YWE0MTRiZjIwODA2MTFiYjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+          "resource": "repo://tools/setup.py#L13-L33",
+          "version": "repo-lines-v1:sha256:de92ab7c1fdf5386462d004f7ca711b9d4d66ace886b1ae37ddc9b848e1a46b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhMTYyMTg3MGEwNzBiNDk5ZWM0NjM1NTNhN2ZjZDk2NTU1MzFiM2RiNzY3NjI2NDUwMDRkZjBjOWQxMThhMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0ODZmZjVjZjkzNjNiNDQyOTMzNjgwM2IyYzk2MGU3M2RhOGM0N2ZhMGM2ZjY3NjU4ZDE0YjMyM2NkMjJkMzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzNWVkZGYyNjY5OTlhNGQ0YzBmNDYxOGNhMjJlYmUwZWVkYTQzNWQ5MWUyNDM3YWE0MTRiZjIwODA2MTFiYjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiNjRlOTIwMDBhMTljYTM4NTkzYTRlNmEwYmFjNzcwOTZkMWU5ODY5NDlhM2I2MjgyNmI3Y2VhNGY3M2Q5ZTkifQ"
         }
       ]
     },
@@ -63,6 +63,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T17:57:45.987Z"
+    "at": "2026-11-05T05:22:10.565Z"
   }
 }

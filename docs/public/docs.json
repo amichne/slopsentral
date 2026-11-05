@@ -1,0 +1,162 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Slopsentral",
+  "description": "Source-backed engineering plugins, linked OKF explanations, and portable documentation checks.",
+  "colors": {
+    "primary": "#059669",
+    "light": "#10B981",
+    "dark": "#34D399"
+  },
+  "logo": {
+    "light": "/images/logo-light.svg",
+    "dark": "/images/logo-dark.svg"
+  },
+  "favicon": "/images/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guide",
+        "groups": [
+          {
+            "group": "Start",
+            "pages": [
+              "index",
+              "guides/overview",
+              "guides/install",
+              "guides/pi",
+              "guides/choose-plugins"
+            ]
+          },
+          {
+            "group": "Use Slopsentral",
+            "pages": [
+              "guides/engineering-baseline",
+              "guides/workflows",
+              "guides/scoped-instructions",
+              "guides/controlled-writing",
+              "guides/personal-setup"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Contracts",
+            "pages": [
+              "reference/architecture",
+              "reference/catalog",
+              "reference/migration",
+              "reference/profiles",
+              "reference/releases",
+              "reference/glossary",
+              "reference/engineering-standard",
+              "reference/global-instructions"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Knowledge",
+        "groups": [
+          {
+            "group": "Concepts",
+            "pages": [
+              "knowledge/quickstart",
+              "knowledge/concepts/evidence",
+              "knowledge/concepts/source-ownership"
+            ]
+          },
+          {
+            "group": "Mechanisms",
+            "pages": [
+              "knowledge/architecture/hooks",
+              "knowledge/architecture/projection",
+              "knowledge/integrations/cli",
+              "knowledge/integrations/installation",
+              "knowledge/integrations/profiles",
+              "knowledge/integrations/global-instructions"
+            ]
+          },
+          {
+            "group": "Workflows",
+            "pages": [
+              "knowledge/operations/evaluations",
+              "knowledge/operations/releases",
+              "knowledge/workflows/documentation",
+              "knowledge/workflows/authoring",
+              "knowledge/testing/validation"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Maintainers",
+        "groups": [
+          {
+            "group": "Maintain and deliver",
+            "pages": [
+              "maintainers/contribute",
+              "maintainers/projection",
+              "maintainers/documentation",
+              "maintainers/portable-documentation",
+              "maintainers/site",
+              "maintainers/evaluations",
+              "maintainers/global-instructions",
+              "maintainers/apm-qualification"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/amichne/slopsentral"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/amichne/slopsentral"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/plugins/software-engineering",
+      "destination": "/reference/catalog#software-engineering"
+    },
+    {
+      "source": "/plugins/kotlin-engineering",
+      "destination": "/reference/catalog#kotlin-engineering"
+    },
+    {
+      "source": "/plugins/intellij-plugin-development",
+      "destination": "/reference/catalog#intellij-plugin-development"
+    },
+    {
+      "source": "/plugins/developer-tooling",
+      "destination": "/reference/catalog#developer-tooling"
+    },
+    {
+      "source": "/plugins/repository-knowledge",
+      "destination": "/reference/catalog#repository-knowledge"
+    },
+    {
+      "source": "/guides/troubleshooting",
+      "destination": "/guides/pi#download-failures"
+    },
+    {
+      "source": "/reference/pi-migration",
+      "destination": "/guides/pi"
+    },
+    {
+      "source": "/reference/external-references",
+      "destination": "/reference/architecture"
+    }
+  ]
+}

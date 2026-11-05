@@ -11,6 +11,7 @@ Its native lifecycle owns page assignments, Claims, source versions, indexes, an
 The guides in `docs/` own operational commands and recovery procedures.
 The [glossary](GLOSSARY.md) supplies provisional definitions from `glossary.json`.
 Generated provider trees and installed caches consume these authored sources.
+The [Mintlify site](mintlify.md) also consumes the canonical guides and OKF pages through a checked projection.
 
 [OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) represents concepts as Markdown with YAML frontmatter.
 The bundled validator implements its established minimal format contract.
@@ -148,3 +149,4 @@ They cover accepted input, source drift, page drift, broken links, missing cover
 CI and `npm run verify` run the same documentation gate.
 A generated documentation PR still needs source review and an updated review record before admission.
 No documentation command installs a plugin, publishes a release, or changes a deployed site.
+The separate [site procedure](mintlify.md) examines deployable input and current live content before a website publication claim.

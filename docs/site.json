@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "site": {
+    "$schema": "https://mintlify.com/docs.json",
+    "theme": "mint",
+    "name": "Slopsentral",
+    "description": "Source-backed engineering plugins, linked OKF explanations, and portable documentation checks.",
+    "colors": {
+      "primary": "#059669",
+      "light": "#10B981",
+      "dark": "#34D399"
+    },
+    "logo": {
+      "light": "/images/logo-light.svg",
+      "dark": "/images/logo-dark.svg"
+    },
+    "favicon": "/images/favicon.svg",
+    "navigation": {
+      "tabs": [
+        {
+          "tab": "Guide",
+          "groups": [
+            {
+              "group": "Start",
+              "pages": [
+                "index",
+                "guides/overview",
+                "guides/install",
+                "guides/pi",
+                "guides/choose-plugins"
+              ]
+            },
+            {
+              "group": "Use Slopsentral",
+              "pages": [
+                "guides/engineering-baseline",
+                "guides/workflows",
+                "guides/scoped-instructions",
+                "guides/controlled-writing",
+                "guides/personal-setup"
+              ]
+            }
+          ]
+        },
+        {
+          "tab": "Reference",
+          "groups": [
+            {
+              "group": "Contracts",
+              "pages": [
+                "reference/architecture",
+                "reference/catalog",
+                "reference/migration",
+                "reference/profiles",
+                "reference/releases",
+                "reference/glossary",
+                "reference/engineering-standard",
+                "reference/global-instructions"
+              ]
+            }
+          ]
+        },
+        {
+          "tab": "Knowledge",
+          "groups": [
+            {
+              "group": "Concepts",
+              "pages": [
+                "knowledge/quickstart",
+                "knowledge/concepts/evidence",
+                "knowledge/concepts/source-ownership"
+              ]
+            },
+            {
+              "group": "Mechanisms",
+              "pages": [
+                "knowledge/architecture/hooks",
+                "knowledge/architecture/projection",
+                "knowledge/integrations/cli",
+                "knowledge/integrations/installation",
+                "knowledge/integrations/profiles",
+                "knowledge/integrations/global-instructions"
+              ]
+            },
+            {
+              "group": "Workflows",
+              "pages": [
+                "knowledge/operations/evaluations",
+                "knowledge/operations/releases",
+                "knowledge/workflows/documentation",
+                "knowledge/workflows/authoring",
+                "knowledge/testing/validation"
+              ]
+            }
+          ]
+        },
+        {
+          "tab": "Maintainers",
+          "groups": [
+            {
+              "group": "Maintain and deliver",
+              "pages": [
+                "maintainers/contribute",
+                "maintainers/projection",
+                "maintainers/documentation",
+                "maintainers/portable-documentation",
+                "maintainers/site",
+                "maintainers/evaluations",
+                "maintainers/global-instructions",
+                "maintainers/apm-qualification"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "navbar": {
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/amichne/slopsentral"
+        }
+      ]
+    },
+    "footer": {
+      "socials": {
+        "github": "https://github.com/amichne/slopsentral"
+      }
+    },
+    "redirects": [
+      {
+        "source": "/plugins/software-engineering",
+        "destination": "/reference/catalog#software-engineering"
+      },
+      {
+        "source": "/plugins/kotlin-engineering",
+        "destination": "/reference/catalog#kotlin-engineering"
+      },
+      {
+        "source": "/plugins/intellij-plugin-development",
+        "destination": "/reference/catalog#intellij-plugin-development"
+      },
+      {
+        "source": "/plugins/developer-tooling",
+        "destination": "/reference/catalog#developer-tooling"
+      },
+      {
+        "source": "/plugins/repository-knowledge",
+        "destination": "/reference/catalog#repository-knowledge"
+      },
+      {
+        "source": "/guides/troubleshooting",
+        "destination": "/guides/pi#download-failures"
+      },
+      {
+        "source": "/reference/pi-migration",
+        "destination": "/guides/pi"
+      },
+      {
+        "source": "/reference/external-references",
+        "destination": "/reference/architecture"
+      }
+    ]
+  },
+  "pages": [
+    {
+      "source": "README.md",
+      "route": "index",
+      "description": "Choose Slopsentral plugins, install a host, and connect software changes to source-backed explanations."
+    },
+    {
+      "source": "docs/index.md",
+      "route": "guides/overview",
+      "description": "Find current installation, engineering, maintenance, and historical documentation."
+    },
+    {
+      "source": "docs/cli-install.md",
+      "route": "guides/install",
+      "description": "Install, update, and remove selected plugins for an explicit host."
+    },
+    {
+      "source": "docs/pi-install.md",
+      "route": "guides/pi",
+      "description": "Install native Pi packages and examine scope, failures, and recovery."
+    },
+    {
+      "source": "docs/agent-marketplaces.md",
+      "route": "guides/choose-plugins",
+      "description": "Select a marketplace and keep authored source separate from provider output."
+    },
+    {
+      "source": "docs/engineering-excellence.md",
+      "route": "guides/engineering-baseline",
+      "description": "Connect invariant design, executable evidence, and source-backed explanations."
+    },
+    {
+      "source": "docs/workflow-resources.md",
+      "route": "guides/workflows",
+      "description": "Compose canonical skill and resource references without a second implementation."
+    },
+    {
+      "source": "docs/agents-md-scope.md",
+      "route": "guides/scoped-instructions",
+      "description": "Review instruction scopes after source changes and record the supported decision."
+    },
+    {
+      "source": "docs/personal-setup.md",
+      "route": "guides/personal-setup",
+      "description": "Establish the installed owner before a personal-configuration change."
+    },
+    {
+      "source": "source/skills/controlled-technical-writing/SKILL.md",
+      "route": "guides/controlled-writing",
+      "description": "Use stable terminology, source-backed prose, and the local assessment procedure."
+    },
+    {
+      "source": "source/ARCHITECTURE.md",
+      "route": "reference/architecture",
+      "description": "Understand source ownership, provider projection, runtime effects, and evidence limits."
+    },
+    {
+      "source": "source/CATALOG.md",
+      "route": "reference/catalog",
+      "description": "Find current plugin identifiers, skill composition, and shared assets."
+    },
+    {
+      "source": "source/MIGRATION.md",
+      "route": "reference/migration",
+      "description": "Find current owners for retired plugins, skills, and procedures."
+    },
+    {
+      "source": "docs/profile-lifecycle.md",
+      "route": "reference/profiles",
+      "description": "Plan, apply, and recover an explicit named Codex configuration."
+    },
+    {
+      "source": "docs/releases.md",
+      "route": "reference/releases",
+      "description": "Understand unified version admission and promotion of tested retained artifacts."
+    },
+    {
+      "source": "docs/GLOSSARY.md",
+      "route": "reference/glossary",
+      "description": "Use the provisional source-backed definitions for Slopsentral terms."
+    },
+    {
+      "source": "source/instructions/engineering-design.md",
+      "route": "reference/engineering-standard",
+      "description": "Preserve established facts, legal transitions, explicit effects, and decisive evidence."
+    },
+    {
+      "source": "docs/examples/global/AGENTS.md",
+      "route": "reference/global-instructions",
+      "description": "Read the self-contained portable engineering instructions."
+    },
+    {
+      "source": "openwiki/quickstart.md",
+      "route": "knowledge/quickstart",
+      "description": "Select a procedure, install a consumer, or change source with linked executable evidence."
+    },
+    {
+      "source": "openwiki/concepts/evidence.md",
+      "route": "knowledge/concepts/evidence",
+      "description": "Connect claims to source owners, executable evidence, and freshness limits."
+    },
+    {
+      "source": "openwiki/concepts/source-ownership.md",
+      "route": "knowledge/concepts/source-ownership",
+      "description": "Keep canonical source, generated provider output, and installed consumers distinct."
+    },
+    {
+      "source": "openwiki/architecture/hooks.md",
+      "route": "knowledge/architecture/hooks",
+      "description": "Understand native hook adapters, event ownership, scope review, and evidence limits."
+    },
+    {
+      "source": "openwiki/architecture/projection.md",
+      "route": "knowledge/architecture/projection",
+      "description": "Trace frozen source through typed Pkl projection and sealed provider packages."
+    },
+    {
+      "source": "openwiki/integrations/cli.md",
+      "route": "knowledge/integrations/cli",
+      "description": "Understand the Slopsentral command and its explicit host operations."
+    },
+    {
+      "source": "openwiki/integrations/installation.md",
+      "route": "knowledge/integrations/installation",
+      "description": "Understand native installation, retained source evidence, and recovery."
+    },
+    {
+      "source": "openwiki/integrations/profiles.md",
+      "route": "knowledge/integrations/profiles",
+      "description": "Understand named Codex configuration and its managed lifecycle."
+    },
+    {
+      "source": "openwiki/integrations/global-instructions.md",
+      "route": "knowledge/integrations/global-instructions",
+      "description": "Understand portable instructions and their pinned local reference snapshot."
+    },
+    {
+      "source": "openwiki/operations/evaluations.md",
+      "route": "knowledge/operations/evaluations",
+      "description": "Separate offline controls, decision evidence, and independently assessed live execution."
+    },
+    {
+      "source": "openwiki/operations/releases.md",
+      "route": "knowledge/operations/releases",
+      "description": "Trace shared versions and qualified source to immutable release bytes."
+    },
+    {
+      "source": "openwiki/workflows/documentation.md",
+      "route": "knowledge/workflows/documentation",
+      "description": "Connect native OpenWiki Claims, source review, portable gates, and finalization."
+    },
+    {
+      "source": "openwiki/workflows/authoring.md",
+      "route": "knowledge/workflows/authoring",
+      "description": "Trace an authored change through focused evidence and source-owned delivery."
+    },
+    {
+      "source": "openwiki/testing/validation.md",
+      "route": "knowledge/testing/validation",
+      "description": "Choose a faithful repository gate and state the mechanism that it proves."
+    },
+    {
+      "source": "docs/worktrunk-automation.md",
+      "route": "maintainers/contribute",
+      "description": "Use repository setup and delivery gates with CLI-owned Worktrunk worktrees."
+    },
+    {
+      "source": "docs/pkl-projection.md",
+      "route": "maintainers/projection",
+      "description": "Project provider packages with the pinned Pkl runtime and fresh destinations."
+    },
+    {
+      "source": "docs/documentation.md",
+      "route": "maintainers/documentation",
+      "description": "Maintain source links, declared coverage, native Claims, and reviewed fingerprints."
+    },
+    {
+      "source": "docs/skill-evals.md",
+      "route": "maintainers/evaluations",
+      "description": "Run skill decision and execution suites with their distinct evidence limits."
+    },
+    {
+      "source": "docs/global-agents.md",
+      "route": "maintainers/global-instructions",
+      "description": "Install portable engineering instructions and preserve the authored source map."
+    },
+    {
+      "source": "docs/apm-qualification.md",
+      "route": "maintainers/apm-qualification",
+      "description": "Examine the isolated Microsoft APM qualification and its exact tool pins."
+    },
+    {
+      "source": "source/skills/code-knowledge-base/references/portable-documentation.md",
+      "route": "maintainers/portable-documentation",
+      "description": "Adopt the distributed documentation gate in a project with its own layout and OKF owner."
+    },
+    {
+      "source": "docs/mintlify.md",
+      "route": "maintainers/site",
+      "description": "Project current docs, examine Mintlify input, and prove the published site content."
+    }
+  ]
+}
