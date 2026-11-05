@@ -34,10 +34,10 @@ sources:
     resource: repo://tools/public_docs.py
   - id: openwiki-source-00110e15b75d856174b63939
     resource: repo://tools/python_checks/test_documentation.py
-generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
+generated: { by: "codex", at: "2026-11-05T06:09:49.273Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-05T05:47:29.999Z
+    at: 2026-11-05T06:12:53.115Z
 ---
 
 # Maintain source-backed documentation
@@ -172,3 +172,8 @@ It compares all mapped pages, including link destinations and code indentation, 
 Missing pages and stale bodies fail within its bounded retry interval.
 A matching response does not establish browser layout or Mintlify's exact hosted build SHA.
 Use the [site procedure](../../docs/mintlify.md) for deployment status, browser evidence, and recovery.
+
+An authorized manual run on another branch compares its checker with `main` documents.
+This mode reads the site and does not publish pending prose.
+Normal main runs compare their own source.
+The receipt records the checker commit and expected document commit separately.

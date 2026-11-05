@@ -70,9 +70,10 @@ jobs:
         env:
           EXPECTED_REPO: ${{ steps.published.outcome == 'success' && '.site-expected' || '.' }}
           SLOPSENTRAL_SITE_EXPECTED_COMMIT: ${{ steps.published.outputs.commit || github.sha }}
+          COMPARE_TIMEOUT: ${{ steps.published.outcome == 'success' && '0' || '900' }}
         run: >-
           uv run --locked --script tools/public_docs.py live
-          --repo "$EXPECTED_REPO" --timeout 900
+          --repo "$EXPECTED_REPO" --timeout "$COMPARE_TIMEOUT"
           > "$RUNNER_TEMP/documentation-live.json"
       - name: Keep the source-bound content receipt even after failure
         if: always()

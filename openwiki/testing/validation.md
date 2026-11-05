@@ -34,10 +34,10 @@ sources:
     resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3
     resource: repo://tools/tests/pi-runtime.test.mjs
-generated: { by: "codex", at: "2026-11-05T05:47:29.999Z" }
+generated: { by: "codex", at: "2026-11-05T06:12:53.115Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-05T05:47:29.999Z
+    at: 2026-11-05T06:12:53.115Z
 ---
 
 # Match checks to the engineering claim
@@ -148,3 +148,12 @@ A stale or missing deployment fails and keeps a source-bound content receipt.
 The receipt names the expected commit and response digests.
 It does not establish Mintlify's exact hosted build commit, browser layout, or reader comprehension.
 Examine the actual changed pages and Mintlify's deployment status before a live-site claim.
+
+A complete comparison needs fresh responses for every page before `LIVE`.
+Earlier responses aid failure diagnosis only.
+A deadline cannot turn an unstarted request into a transport failure.
+The receipt keeps bounded rejection reasons without response bodies or secrets.
+
+Manual candidate probes use checker code from the selected branch and expected documents from `main`.
+Their receipts keep both commit identities.
+They examine host access without a claim that pending candidate prose is live.

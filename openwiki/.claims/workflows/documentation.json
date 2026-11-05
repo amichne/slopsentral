@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:4c2b11b88afa30abe42a4a9d75068dcd443fbcf734cad8b338f139b1e7d18d20",
+  "pageVersion": "sha256:3afc4cb6d30a3726e427169b5618f7a5a95addea49bc256b080777483e75badb",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -162,7 +162,7 @@
       "evidence": [
         {
           "resource": "repo://docs/mintlify.md",
-          "version": "repo-file-v1:sha256:64e5a9894514dbf85d4db26ba0a396ea3285c8cf83a4d5466a85cfc6c81e261a"
+          "version": "repo-file-v1:sha256:4261a1b5e0a788795aa762318d5430d28134d402c22dab4b0e26e5252a2da3fc"
         },
         {
           "resource": "repo://docs/site.json",
@@ -170,7 +170,7 @@
         },
         {
           "resource": "repo://tools/public_docs.py",
-          "version": "repo-file-v1:sha256:4ac30aaf15cf82d7708ef0f5d0535f0489656a5c70bf8edd7ee647e825e76cee"
+          "version": "repo-file-v1:sha256:2231c0bcdfde2a8c9d6eab380b8cec2096bbc537bfd53944b929e685e9342598"
         }
       ]
     },
@@ -180,11 +180,11 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/documentation-site.yml",
-          "version": "repo-file-v1:sha256:c2f7d90882484cbec1f58b6dedfa3f76fe5437d5e43267a957654eccdc524c69"
+          "version": "repo-file-v1:sha256:bfcbc742204e88b957f13adc029ba76d8772879bf92343e6dba0b584fc4381d2"
         },
         {
           "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:f966268adfe972052acd0554699d58ea362903d145298da3e9b73fa56d09828e"
+          "version": "repo-file-v1:sha256:886d01c6eb4dc0bc107a55ccd16a314f93de79753a121de81acdbc3c6550f8ff"
         },
         {
           "resource": "repo://tools/ci.py",
@@ -192,13 +192,31 @@
         },
         {
           "resource": "repo://tools/public_docs.py",
-          "version": "repo-file-v1:sha256:4ac30aaf15cf82d7708ef0f5d0535f0489656a5c70bf8edd7ee647e825e76cee"
+          "version": "repo-file-v1:sha256:2231c0bcdfde2a8c9d6eab380b8cec2096bbc537bfd53944b929e685e9342598"
+        }
+      ]
+    },
+    {
+      "id": "claim_7be840c63c33402c85830deb5f3c68f3",
+      "statement": "A manual candidate probe runs the candidate's locked checker against separately checked-out main documents with read-only permissions, and the receipt separates checker and expected document commits.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/documentation-site.yml",
+          "version": "repo-file-v1:sha256:bfcbc742204e88b957f13adc029ba76d8772879bf92343e6dba0b584fc4381d2"
+        },
+        {
+          "resource": "repo://docs/mintlify.md",
+          "version": "repo-file-v1:sha256:4261a1b5e0a788795aa762318d5430d28134d402c22dab4b0e26e5252a2da3fc"
+        },
+        {
+          "resource": "repo://tools/public_docs.py",
+          "version": "repo-file-v1:sha256:2231c0bcdfde2a8c9d6eab380b8cec2096bbc537bfd53944b929e685e9342598"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-05T05:47:29.999Z"
+    "at": "2026-11-05T06:12:53.115Z"
   }
 }

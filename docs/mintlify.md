@@ -99,6 +99,7 @@ gh workflow run documentation-site.yml --repo amichne/slopsentral --ref <candida
 A non-main manual run compares the candidate runtime against `main` source and the current site.
 The receipt records separate commits for the checker and expected documents.
 This probe does not expect pending candidate prose on the site.
+A candidate probe requests each page once.
 
 Before a live-site claim, examine the homepage, installation guide, documentation practice, and portable adoption guide in a browser.
 Use the navigation to reach the changed pages.

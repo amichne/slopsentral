@@ -76,6 +76,7 @@ A merge to `main` supplies Mintlify's configured source.
 The [site workflow](https://github.com/amichne/slopsentral/blob/main/.github/workflows/documentation-site.yml) waits for current content within a bounded interval.
 It fails when the site continues to serve stale content.
 Its retained receipt records the comparison result.
+After a timeout, the receipt keeps the last response results and their rejection reasons.
 Package publication and a passing source build do not establish website publication.
 
 Examine the live site with:
@@ -93,6 +94,17 @@ Table rows, cells, content, and alignment remain part of the comparison.
 It rejects a missing page or a different body.
 This comparison establishes returned content, rather than browser layout or an exact hosted build SHA.
 Mintlify's deployment status and a browser visit supply separate evidence.
+
+For a candidate checker probe, dispatch the workflow from its branch:
+
+```sh
+gh workflow run documentation-site.yml --repo amichne/slopsentral --ref <candidate-branch>
+```
+
+A non-main manual run compares the candidate runtime against `main` source and the current site.
+The receipt records separate commits for the checker and expected documents.
+This probe does not expect pending candidate prose on the site.
+A candidate probe requests each page once.
 
 Before a live-site claim, examine the homepage, installation guide, documentation practice, and portable adoption guide in a browser.
 Use the navigation to reach the changed pages.
