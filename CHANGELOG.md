@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.11](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.10...slopsentral-v4.0.11) (2026-11-05)
+
+
+### Bug Fixes
+
+* restore source-backed Mintlify deployment ([#133](https://github.com/amichne/slopsentral/issues/133)) ([d2df023](https://github.com/amichne/slopsentral/commit/d2df0232b372c3dd3ebfdd1d758b20ebc2e15792))
+
 ## [4.0.10](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.9...slopsentral-v4.0.10) (2026-11-04)
 
 
