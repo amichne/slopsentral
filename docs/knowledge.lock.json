@@ -10,7 +10,7 @@
       ".github/workflows/release-pi.yml": "9c482fbc8105f7b23498cfb908f22a463fcca6b026f8f6cccb0e4d9abc5f9e7c",
       ".github/workflows/release-please.yml": "45a9beccaa635da92fa06177f97f2e04780eebf93db212c11046a0037fb210f2",
       ".github/workflows/validate-source.yml": "78deb6cfbefe6700d335e8945ac57f48ddbd40083f5b6662ef055fc263ef21b1",
-      "AGENTS.md": "83c9197605ae19f3942d93998ad036ec6628dd517663bedd5f4fde3a8cf2738f",
+      "AGENTS.md": "629da78af36ca01c89f50ed70e29be5fb4124b5d571b15830047f19c3ba0e75d",
       "docs/worktrunk-automation.md": "f33b6e3f5503be981c7768fd627e7386a226a83d491bb0cf2d12e3f8eaba3a34",
       "mise.toml": "addc28488050ae094f82fe43276160567827843743d91c57130e4c2a5ff70251",
       "openwiki/quickstart.md": "ab9cc4e97e823f6cc7a1321511cbf1de1a1cd9caa4e5bd48bb5890d208929754",
