@@ -1,0 +1,7 @@
+{
+  "name": "slopsentral-documentation-tools",
+  "private": true,
+  "devDependencies": {
+    "mint": "4.2.879"
+  }
+}

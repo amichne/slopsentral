@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:773a45981fac0094e680a46b27b3ad2aa4aaa7ee94fc931c0f66b45f15a2ce0d",
+  "pageVersion": "sha256:e9db2b4b2426f742e8364b772d4432cdfc03e79289e3d48e3e36dcb64ff1b690",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -96,7 +96,7 @@
       "evidence": [
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:73ebf57d8f8bc90a5f8a3259fe0aedb437cb67fac4c98983408f65c02b904c0a"
+          "version": "repo-file-v1:sha256:61db57f64dbb1b52fd8b0b4799887ced81cc12df8ed0ac9387f217446109ea49"
         },
         {
           "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L230-L280",
@@ -155,10 +155,50 @@
           "version": "repo-lines-v1:sha256:060fa8d2797a4d3d68af87b28f61ff29c55463f82db8a42751e8711b07624b45:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlM2EzZTBmMTg3N2JjMjg0ZDcwOTQ5OWE3MGY5MTZmMTI5MDdlYzRlNmQ5MGU0YjgxMzA4NDA0ZTgyMWQ4OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzMjQ5ZmY4MTI0ODFmMDIyYWNiMzQ0MTEwOGZlNTFlYzgyODIyZTBkOTMwYTBjMWQzYjAxNzU2YWVkMDhhNDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMjc4MmQ5M2JkMWYwNmNhNWU3NzVmOTgyYzYzYTY3YjUyMDhjZTE5Mzc2YmQ1NzkzZjdjMDkzY2ExZGY0OWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0M2NjNjQ5MWFkYWQwYWViODY2OTBmNDUwYmEzM2Y4ZWVjNTE5MWViMTYzNzg4Y2U3YjEyNTAyMjE4Y2JmNGMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_84ff7abc5b5a4785899ee792a6452bd3",
+      "statement": "The public Mintlify site is a deterministic projection of canonical guides and OKF concepts through an explicit route map, while OpenWiki remains the knowledge owner.",
+      "evidence": [
+        {
+          "resource": "repo://docs/mintlify.md",
+          "version": "repo-file-v1:sha256:2ade00197f2e443f96c96cbbf673dbe3ce3ee0346be294f6b1ec506025c01cdf"
+        },
+        {
+          "resource": "repo://docs/site.json",
+          "version": "repo-file-v1:sha256:d87d9dcb04d6095b0d5e6ce23a24b7d5f8f77af6769002add7437106d1557570"
+        },
+        {
+          "resource": "repo://tools/public_docs.py",
+          "version": "repo-file-v1:sha256:ef52d712e490259da1bfb09ebe7b8231ed704fc89691ef72eefed4fca970275f"
+        }
+      ]
+    },
+    {
+      "id": "claim_766798ad15474a4ca3a4e288f7066cbe",
+      "statement": "The ordinary source gate rejects stale site input, and a separate post-main job compares every mapped deployed page while keeping content proof distinct from browser rendering and hosted commit identity.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/documentation-site.yml",
+          "version": "repo-file-v1:sha256:c2f7d90882484cbec1f58b6dedfa3f76fe5437d5e43267a957654eccdc524c69"
+        },
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:f966268adfe972052acd0554699d58ea362903d145298da3e9b73fa56d09828e"
+        },
+        {
+          "resource": "repo://tools/ci.py",
+          "version": "repo-file-v1:sha256:f7296ec719e7331887812f0b7135d02e9b7a722ff5dbec0d8eadca2daf9439d4"
+        },
+        {
+          "resource": "repo://tools/public_docs.py",
+          "version": "repo-file-v1:sha256:ef52d712e490259da1bfb09ebe7b8231ed704fc89691ef72eefed4fca970275f"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-04T16:07:53.128Z"
+    "at": "2026-11-05T05:22:10.565Z"
   }
 }

@@ -152,6 +152,22 @@
         "openwiki/workflows/authoring.md",
         "openwiki/quickstart.md"
       ]
+    },
+    {
+      "id": "public-site",
+      "sources": [
+        "tools/public_docs.py",
+        "tools/public_docs.py.lock",
+        "docs/site.json",
+        ".github/workflows/documentation-site.yml",
+        "docs/tooling/package.json",
+        "docs/tooling/package-lock.json",
+        "docs/public/"
+      ],
+      "pages": [
+        "docs/mintlify.md",
+        "openwiki/workflows/documentation.md"
+      ]
     }
   ],
   "archives": [
@@ -184,7 +200,8 @@
   ],
   "auxiliary": [
     "docs/GLOSSARY.md",
-    "openwiki/INSTRUCTIONS.md"
+    "openwiki/INSTRUCTIONS.md",
+    "docs/.mintlify/product-brief.md"
   ],
   "fingerprintIgnores": [
     {

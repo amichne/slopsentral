@@ -4,6 +4,7 @@ Slopsentral supplies five plugins for source-backed software engineering.
 Software contracts carry established facts. Executable evidence supports behavior claims. Linked OKF pages explain the system and its source owners.
 
 Start with the [documentation index](docs/index.md) for a reader journey.
+Read the same current guides and explanations on the [public site](https://slopsentral.michne.com).
 Use the [OpenWiki quickstart](openwiki/quickstart.md) for system explanations and source-linked workflows.
 The [documentation practice](docs/documentation.md) defines links, source review, freshness, and evidence limits.
 
@@ -104,6 +105,7 @@ Normal repository gates make no live model requests.
 The [release guide](docs/releases.md) explains the shared product version and promotion of tested bytes.
 `Publish Harnesses` owns moving provider branches. `Release Slopsentral` owns immutable versioned artifacts.
 A local edit or projection publishes neither.
+The [site guide](docs/mintlify.md) describes the Mintlify projection, source gates, and live-content evidence.
 
 Kotlin Engineering composes the Kast connection. Kast owns runtime installation and workspace discovery.
 A fresh semantic query in the exact workspace supports a readiness claim.

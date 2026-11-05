@@ -45,11 +45,11 @@ Use the [JSON Schema](references/glossary.schema.json) and [entry example](asset
    definition or blocking unrelated edits.
 4. Draft or revise only the requested text.
 5. Check facts, terminology, and the requested shape. For short replies and
-   small edits, this review is sufficient unless repository policy requires
+   small edits, this review is enough unless repository policy requires
    more. Use the repository's existing prose checks for durable documents.
 6. Run the bundled assessment when the user requests measurement or the
    repository selects it. Use the same pinned procedure across document types;
-   do not tune thresholds to obtain a passing score. Resolve findings without
+   do not tune thresholds to get a passing score. Resolve findings without
    changing facts or quotations, then rerun after edits.
 
 ## One Measurement Procedure

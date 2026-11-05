@@ -3,9 +3,6 @@ type: Workflow
 title: Change source with linked evidence
 description: Prepare a focused engineering contract, change the authoritative owner, and examine executable proof and affected knowledge together.
 tags: [authoring, workflow, checks, knowledge]
-verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-03T17:57:45.987Z
 sources:
   - id: openwiki-source-29733941fb1d8a282d0caafb
     resource: repo://.github/workflows/validate-source.yml
@@ -17,7 +14,10 @@ sources:
     resource: repo://tools/promptfoo/suite.mts
   - id: openwiki-source-6706911967b481bbbe3dfbe8
     resource: repo://tools/setup.py
-generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
+generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-05T05:22:10.565Z
 ---
 
 # Change source with linked evidence
@@ -51,6 +51,7 @@ mise exec -- slopsentral-setup
 ```
 
 Setup synchronizes locked Python dependencies and runs `npm ci --ignore-scripts`.
+It installs the pinned documentation tools from `docs/tooling` with lifecycle scripts disabled.
 It does not silently install uv.
 Projection accepts exactly Pkl 0.32.0 through the separate runtime setup procedure.
 Keep local output and installed consumer caches outside authored edits.

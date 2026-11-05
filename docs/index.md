@@ -2,6 +2,7 @@
 
 Start with the [OKF quickstart](../openwiki/quickstart.md) for system explanations and conceptual neighbors.
 Use these guides for exact commands and recovery procedures.
+The [public site](https://slopsentral.michne.com) presents the same canonical guides and maintained OKF explanations.
 The [documentation practice](documentation.md) defines source links, declared coverage, native Claims, and freshness admission.
 
 ## Install and select capabilities
@@ -29,6 +30,7 @@ The [documentation practice](documentation.md) defines source links, declared co
 - [Publish unified releases](releases.md).
 - [Install portable instructions](global-agents.md).
 - [Read the portable instruction source](examples/global/AGENTS.md).
+- [Maintain and examine the public site](mintlify.md).
 
 ## Read historical evidence
 

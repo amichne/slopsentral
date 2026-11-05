@@ -4,12 +4,20 @@ title: Maintain source-backed documentation
 description: Rewrite and refresh OKF explanations through native Claim review, coverage and freshness checks, local prose assessment, and review-only automation.
 tags: [documentation, okf, claims, freshness, glossary]
 sources:
+  - id: openwiki-source-dcf38279ea35c3c91917811a
+    resource: repo://.github/workflows/documentation-site.yml
   - id: openwiki-source-6d4b4e707b8d60b6ccfa3425
     resource: repo://.github/workflows/openwiki-update.yml
   - id: openwiki-source-2bf8a58918c9cbf16d14dae1
     resource: repo://docs/coverage.json
   - id: openwiki-source-77749248b9076e3dac86353b
     resource: repo://docs/glossary.json
+  - id: openwiki-source-7165a6dbdabe3fcefb4e2a4e
+    resource: repo://docs/mintlify.md
+  - id: openwiki-source-1c7a3779ec83cce228ff9a9e
+    resource: repo://docs/site.json
+  - id: openwiki-source-5b54a58d1b51cd490b0e7162
+    resource: repo://package.json
   - id: openwiki-source-e14c3521bbc2e703193cadf9
     resource: repo://source/instructions/engineering-design.md
   - id: openwiki-source-62bf20b2fca146abb9011c20
@@ -20,12 +28,16 @@ sources:
     resource: repo://source/skills/code-knowledge-base/scripts/documentation.py
   - id: openwiki-source-5aeb8b8adffe48c4411461e5
     resource: repo://source/skills/controlled-technical-writing/references/glossary-authoring.md
+  - id: openwiki-source-2bcafe0f5357d25a9920e218
+    resource: repo://tools/ci.py
+  - id: openwiki-source-ce19ceaef5961f90bb6decb5
+    resource: repo://tools/public_docs.py
   - id: openwiki-source-00110e15b75d856174b63939
     resource: repo://tools/python_checks/test_documentation.py
-generated: { by: "codex", at: "2026-11-03T20:36:31.743Z" }
+generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-04T16:07:53.128Z
+    at: 2026-11-05T05:22:10.565Z
 ---
 
 # Maintain source-backed documentation
@@ -132,3 +144,31 @@ When substantive changes select a PR, `.last-update.json` and `.page-manifest.js
 The path allowlist excludes `.run.json` and authored `INSTRUCTIONS.md`.
 It neither auto-merges nor publishes executable source changes.
 A locally accepted workflow does not prove that its credentials exist or that an Actions run succeeded.
+
+## Project canonical explanations to the public site
+
+[site.json](../../docs/site.json) maps current guides and OKF concepts to Mintlify routes, navigation, and redirects.
+The [site runtime](../../tools/public_docs.py) projects those sources into `docs/public`.
+OpenWiki remains the knowledge owner.
+The public copy removes native producer metadata and keeps the canonical body.
+Repository links become public routes or GitHub source links.
+Code examples keep their literal content.
+
+After source review and native finalization, refresh the public projection:
+
+```sh
+mise exec -- slopsentral-site sync
+npm run docs:check
+```
+
+The first command changes generated site input.
+The second rejects stale input before the native Mintlify build and link assessment.
+An absent `docs/public` tree cannot pass as an empty selection.
+The ordinary source gate also invokes this projection admission.
+
+Mintlify reads `main/docs/public` from `amichne/slopsentral`.
+The [site workflow](../../.github/workflows/documentation-site.yml) separately examines deployed content after a main build.
+It compares all mapped pages, including link destinations and code indentation, with the expected canonical content.
+Missing pages and stale bodies fail within its bounded retry interval.
+A matching response does not establish browser layout or Mintlify's exact hosted build SHA.
+Use the [site procedure](../../docs/mintlify.md) for deployment status, browser evidence, and recovery.

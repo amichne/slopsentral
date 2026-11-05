@@ -7,29 +7,37 @@ tags:
   - tests
   - evidence
   - contracts
-verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-04T16:07:53.128Z
 sources:
+  - id: openwiki-source-dcf38279ea35c3c91917811a
+    resource: repo://.github/workflows/documentation-site.yml
   - id: openwiki-source-fce7a6054d61269783034ac4
     resource: repo://source/skills/code-knowledge-base/scripts/documentation.py
   - id: openwiki-source-bc02d03ee1199b9d70e47f54
     resource: repo://source/skills/tdd/SKILL.md
   - id: openwiki-source-66c6b4ed1002f7045a480f19
     resource: repo://tools/check.py
+  - id: openwiki-source-2bcafe0f5357d25a9920e218
+    resource: repo://tools/ci.py
+  - id: openwiki-source-ce19ceaef5961f90bb6decb5
+    resource: repo://tools/public_docs.py
   - id: openwiki-source-b796202ab127e6e56e465638
     resource: repo://tools/python_checks/gates.py
   - id: openwiki-source-d13b0baee21f61f7d567fec9
     resource: repo://tools/python_checks/test_agents_scope_hook.py
   - id: openwiki-source-00110e15b75d856174b63939
     resource: repo://tools/python_checks/test_documentation.py
+  - id: openwiki-source-31a7d0ec7a75d874de2e1ef5
+    resource: repo://tools/python_checks/test_public_docs.py
   - id: openwiki-source-2402abcd09d5c9c6105c476c
     resource: repo://tools/tests/documentation-portability.test.mjs
   - id: openwiki-source-36f60eb53c76242699a18af1
     resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3
     resource: repo://tools/tests/pi-runtime.test.mjs
-generated: { by: "codex", at: "2026-11-04T16:07:53.128Z" }
+generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-05T05:22:10.565Z
 ---
 
 # Match checks to the engineering claim
@@ -118,3 +126,24 @@ Report the exact command and passed, failed, skipped, or not-run outcome.
 Keep useful failure output and the reason for a skipped mechanism.
 Stop when the focused proof and necessary repository gates pass.
 A local pass does not establish hosted CI or release publication for another revision.
+
+## Examine the public documentation separately
+
+The [site guide](../../docs/mintlify.md) separates source admission, native Mintlify results, returned content, and browser evidence.
+`npm run docs:check` first rejects missing or stale projected pages.
+It then runs the pinned Mintlify build and examines links, heading anchors, and redirects.
+The ordinary source workflow also runs the projection gate without a path filter.
+
+The [CLI cases](../../tools/python_checks/test_public_docs.py) use independent Markdown fixtures and a real local HTTP server.
+Missing source, missing output, changed prose, missing assets, and invalid destinations reject admission.
+The live comparison preserves link destinations and code indentation.
+Only Mintlify's known same-origin route transformation normalizes.
+A changed query, fragment, external destination, or conditional code block cannot pass as the expected content.
+A login page or visible HTML body also rejects.
+
+The [site workflow](../../.github/workflows/documentation-site.yml) runs the native build for each PR and main push.
+Its main job waits for all projected pages to match within a bounded interval.
+A stale or missing deployment fails and keeps a source-bound content receipt.
+The receipt names the expected commit and response digests.
+It does not establish Mintlify's exact hosted build commit, browser layout, or reader comprehension.
+Examine the actual changed pages and Mintlify's deployment status before a live-site claim.
