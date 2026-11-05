@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3356f52fa73a6898185a75cffb2c6d14649880a1083d4057d6ed520a0c2f7d39",
+  "pageVersion": "sha256:5f61f38a0433d51c19e1a8f8fee8a50644b1656ee565a614d18fb61dc6fa9c0c",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
@@ -100,11 +100,11 @@
         },
         {
           "resource": "repo://tools/public_docs.py",
-          "version": "repo-file-v1:sha256:ef52d712e490259da1bfb09ebe7b8231ed704fc89691ef72eefed4fca970275f"
+          "version": "repo-file-v1:sha256:2231c0bcdfde2a8c9d6eab380b8cec2096bbc537bfd53944b929e685e9342598"
         },
         {
           "resource": "repo://tools/python_checks/test_public_docs.py",
-          "version": "repo-file-v1:sha256:5f1e81d4a4800028db097665db8dfd8e4e91fbc844acf61a7971f5dc2eb5d3c9"
+          "version": "repo-file-v1:sha256:0f1152e0880ba6f1f685a98f7b6c59c6ed9f2c04e46fc93d20a8559312b63c14"
         }
       ]
     },
@@ -114,21 +114,35 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/documentation-site.yml",
-          "version": "repo-file-v1:sha256:c2f7d90882484cbec1f58b6dedfa3f76fe5437d5e43267a957654eccdc524c69"
+          "version": "repo-file-v1:sha256:bfcbc742204e88b957f13adc029ba76d8772879bf92343e6dba0b584fc4381d2"
         },
         {
           "resource": "repo://tools/public_docs.py",
-          "version": "repo-file-v1:sha256:ef52d712e490259da1bfb09ebe7b8231ed704fc89691ef72eefed4fca970275f"
+          "version": "repo-file-v1:sha256:2231c0bcdfde2a8c9d6eab380b8cec2096bbc537bfd53944b929e685e9342598"
         },
         {
           "resource": "repo://tools/python_checks/test_public_docs.py",
-          "version": "repo-file-v1:sha256:5f1e81d4a4800028db097665db8dfd8e4e91fbc844acf61a7971f5dc2eb5d3c9"
+          "version": "repo-file-v1:sha256:0f1152e0880ba6f1f685a98f7b6c59c6ed9f2c04e46fc93d20a8559312b63c14"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f8e126e55794561bae660834ef49f04",
+      "statement": "Live admission needs fresh matching responses for every page in one complete comparison. Retained earlier responses only aid failure diagnosis, and timeout evidence distinguishes unstarted requests from bounded transport failures.",
+      "evidence": [
+        {
+          "resource": "repo://tools/public_docs.py",
+          "version": "repo-file-v1:sha256:2231c0bcdfde2a8c9d6eab380b8cec2096bbc537bfd53944b929e685e9342598"
+        },
+        {
+          "resource": "repo://tools/python_checks/test_public_docs.py",
+          "version": "repo-file-v1:sha256:0f1152e0880ba6f1f685a98f7b6c59c6ed9f2c04e46fc93d20a8559312b63c14"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-05T05:22:10.565Z"
+    "at": "2026-11-05T06:12:53.115Z"
   }
 }

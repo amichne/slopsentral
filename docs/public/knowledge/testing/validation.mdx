@@ -100,7 +100,8 @@ The ordinary source workflow also runs the projection gate without a path filter
 The [CLI cases](https://github.com/amichne/slopsentral/blob/main/tools/python_checks/test_public_docs.py) use independent Markdown fixtures and a real local HTTP server.
 Missing source, missing output, changed prose, missing assets, and invalid destinations reject admission.
 The live comparison preserves link destinations and code indentation.
-Only Mintlify's known same-origin route transformation normalizes.
+Mintlify's known homepage links and Markdown table separators normalize.
+Table rows, cells, content, and alignment remain part of the comparison.
 A changed query, fragment, external destination, or conditional code block cannot pass as the expected content.
 A login page or visible HTML body also rejects.
 
@@ -110,3 +111,12 @@ A stale or missing deployment fails and keeps a source-bound content receipt.
 The receipt names the expected commit and response digests.
 It does not establish Mintlify's exact hosted build commit, browser layout, or reader comprehension.
 Examine the actual changed pages and Mintlify's deployment status before a live-site claim.
+
+A complete comparison needs fresh responses for every page before `LIVE`.
+Earlier responses aid failure diagnosis only.
+A deadline cannot turn an unstarted request into a transport failure.
+The receipt keeps bounded rejection reasons without response bodies or secrets.
+
+Manual candidate probes use checker code from the selected branch and expected documents from `main`.
+Their receipts keep both commit identities.
+They examine host access without a claim that pending candidate prose is live.

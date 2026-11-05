@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
+import urllib.error
 from contextlib import contextmanager
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -12,6 +14,8 @@ from typing import TYPE_CHECKING
 from urllib.parse import urlsplit
 
 import pytest
+
+from tools import public_docs
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -452,3 +456,278 @@ def test_live_preserves_query_fragment_and_external_target(tmp_path: Path, chang
         rejected = cli(root, "live", "--base-url", url, "--timeout", "0")
     assert rejected.returncode == 1, rejected.stdout + rejected.stderr
     assert report(rejected)["type"] == "STALE"
+
+
+@pytest.mark.parametrize("homepage", ["", "/", "/index", "/index.md"])
+def test_live_accepts_only_native_homepage_aliases(tmp_path: Path, homepage: str) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    responses = live_responses()
+    responses["/index.md"] = (
+        HTTPStatus.OK,
+        "text/markdown",
+        HOME.replace("docs/guide.md", "{{ORIGIN}}/guide.md")
+        + "\nRead the [homepage]({{ORIGIN}}/index.md?mode=read#intro).\n",
+    )
+    with site_server(responses) as (url, _requests):
+        write(
+            root, "README.md", HOME + f"\nRead the [homepage]({url}{homepage}?mode=read#intro).\n"
+        )
+        synced_result = cli(root, "sync")
+        assert synced_result.returncode == 0, synced_result.stdout + synced_result.stderr
+        result = cli(root, "live", "--base-url", url, "--timeout", "0")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert report(result)["type"] == "LIVE"
+
+
+@pytest.mark.parametrize("change", ["path", "query", "fragment", "external"])
+def test_native_homepage_equivalence_keeps_destination_semantics(
+    tmp_path: Path, change: str
+) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    replacements = {
+        "path": ("/index.md?", "/index.mdx?"),
+        "query": ("mode=read", "mode=delete"),
+        "fragment": ("#intro", "#obsolete"),
+        "external": ("{{ORIGIN}}/index.md?", "https://obsolete.invalid/index.md?"),
+    }
+    target = "{{ORIGIN}}/index.md?mode=read#intro"
+    before, after = replacements[change]
+    responses = live_responses()
+    responses["/index.md"] = (
+        HTTPStatus.OK,
+        "text/markdown",
+        HOME.replace("docs/guide.md", "{{ORIGIN}}/guide.md")
+        + f"\nRead the [homepage]({target.replace(before, after)}).\n",
+    )
+    with site_server(responses) as (url, _requests):
+        write(root, "README.md", HOME + f"\nRead the [homepage]({url}?mode=read#intro).\n")
+        synced_result = cli(root, "sync")
+        assert synced_result.returncode == 0, synced_result.stdout + synced_result.stderr
+        result = cli(root, "live", "--base-url", url, "--timeout", "0")
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert report(result)["type"] == "STALE"
+
+
+TABLE = "\n| Action | Outcome |\n| --- | --- |\n| keep | accepted |\n"
+
+
+def test_live_accepts_native_table_separator_width(tmp_path: Path) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    write(root, "docs/guide.md", GUIDE + TABLE)
+    synced_result = cli(root, "sync")
+    assert synced_result.returncode == 0, synced_result.stdout + synced_result.stderr
+    responses = live_responses()
+    responses["/guide.md"] = (
+        HTTPStatus.OK,
+        "text/markdown",
+        GUIDE + TABLE.replace("| --- | --- |", "| - | - |"),
+    )
+    with site_server(responses) as (url, _requests):
+        result = cli(root, "live", "--base-url", url, "--timeout", "0")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert report(result)["type"] == "LIVE"
+
+
+@pytest.mark.parametrize("change", ["content", "columns", "structure"])
+def test_native_table_equivalence_preserves_cells_and_structure(
+    tmp_path: Path, change: str
+) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    write(root, "docs/guide.md", GUIDE + TABLE)
+    synced_result = cli(root, "sync")
+    assert synced_result.returncode == 0, synced_result.stdout + synced_result.stderr
+    tables = {
+        "content": "\n| Action | Outcome |\n| - | - |\n| keep | rejected |\n",
+        "columns": "\n| Outcome | Action |\n| - | - |\n| accepted | keep |\n",
+        # The flattened text order matches the original two-column table.
+        "structure": "\n| Action |\n| - |\n| Outcome |\n| keep |\n| accepted |\n",
+    }
+    responses = live_responses()
+    responses["/guide.md"] = (HTTPStatus.OK, "text/markdown", GUIDE + tables[change])
+    with site_server(responses) as (url, _requests):
+        result = cli(root, "live", "--base-url", url, "--timeout", "0")
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert report(result)["type"] == "STALE"
+
+
+def test_live_timeout_keeps_last_actual_response_evidence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    projection = public_docs.prepare(root)
+    origin = public_docs.admit_origin("https://docs.example.test")
+    assert not isinstance(projection, public_docs.Rejected)
+    assert not isinstance(origin, public_docs.Rejected)
+    stale_body = "# Earlier deployment\n\nKeep the old explanation.\n"
+    fetch_calls: list[float] = []
+    clock = [0.0]
+
+    def monotonic() -> float:
+        return clock[0]
+
+    def sleep(seconds: float) -> None:
+        clock[0] += seconds
+
+    def fetch(_origin: object, _page: object, timeout: float) -> str:
+        fetch_calls.append(timeout)
+        return stale_body
+
+    monkeypatch.setattr(public_docs.time, "monotonic", monotonic)
+    monkeypatch.setattr(public_docs.time, "sleep", sleep)
+    monkeypatch.setattr(public_docs, "fetch", fetch)
+    result = public_docs.live(projection, origin, timeout=5)
+    assert result["type"] == "STALE"
+    assert len(fetch_calls) == 2
+    assert clock == [5.0]
+    pages = result["pages"]
+    assert public_docs.sequence(pages)
+    expected_digest = hashlib.sha256(stale_body.encode()).hexdigest()
+    for page in pages:
+        assert public_docs.mapping(page)
+        assert page["outcome"] == "CONTENT_MISMATCH"
+        assert page["responseSha256"] == expected_digest
+
+
+@pytest.mark.parametrize(
+    ("status", "content_type", "detail"),
+    [
+        (HTTPStatus.FORBIDDEN, "text/plain", "http-status:403"),
+        (HTTPStatus.OK, "text/html; private=secret-token", "content-type:text/html"),
+    ],
+)
+def test_live_fetch_failure_keeps_bounded_diagnosis(
+    tmp_path: Path, status: int, content_type: str, detail: str
+) -> None:
+    root = tmp_path / "project"
+    synced(root)
+    responses = live_responses()
+    responses["/guide.md"] = (status, content_type, "private payload secret-token")
+    with site_server(responses) as (url, _requests):
+        result = cli(root, "live", "--base-url", url, "--timeout", "0")
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert detail in result.stdout
+    assert "private payload" not in result.stdout
+    assert "secret-token" not in result.stdout
+
+
+def test_deadline_does_not_become_http_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    projection = public_docs.prepare(root)
+    origin = public_docs.admit_origin("https://docs.example.test")
+    assert not isinstance(projection, public_docs.Rejected)
+    assert not isinstance(origin, public_docs.Rejected)
+
+    def fetch(_origin: object, _page: object, _timeout: float) -> str:
+        pytest.fail("expired attempt invoked transport")
+
+    monkeypatch.setattr(public_docs.time, "monotonic", lambda: 10.0)
+    monkeypatch.setattr(public_docs, "fetch", fetch)
+    result = public_docs.live_page(origin, projection.pages[0], deadline=5)
+    assert result["outcome"] == "NOT_FETCHED"
+    assert result["reason"] == "DEADLINE"
+    assert "failure" not in result
+
+
+def test_transport_failure_reports_class_without_exception_payload(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    projection = public_docs.prepare(root)
+    origin = public_docs.admit_origin("https://docs.example.test")
+    assert not isinstance(projection, public_docs.Rejected)
+    assert not isinstance(origin, public_docs.Rejected)
+
+    def unavailable(_request: object, *, timeout: float) -> None:
+        assert timeout > 0
+        raise urllib.error.URLError(TimeoutError("private credential secret-token"))
+
+    monkeypatch.setattr(public_docs.urllib.request, "urlopen", unavailable)
+    result = public_docs.fetch(origin, projection.pages[0], timeout=1)
+    assert isinstance(result, public_docs.Rejected)
+    assert result.code == public_docs.Code.FETCH
+    assert result.detail == "transport:TimeoutError"
+    assert "secret-token" not in result.detail
+
+
+def test_response_admission_rejects_cross_origin_and_size_without_url_payload() -> None:
+    origin = public_docs.admit_origin("https://docs.example.test")
+    assert not isinstance(origin, public_docs.Rejected)
+    redirected = public_docs.response_failure(
+        origin, "text/markdown", "https://foreign.invalid/private?token=secret-token", 1
+    )
+    assert isinstance(redirected, public_docs.Rejected)
+    assert redirected.detail == "cross-origin-response"
+    assert "secret-token" not in redirected.detail
+    oversized = public_docs.response_failure(
+        origin, "text/markdown", "https://docs.example.test/guide.md", 2_000_001
+    )
+    assert isinstance(oversized, public_docs.Rejected)
+    assert oversized.detail == "response-size-limit:2000000"
+
+
+def test_live_receipt_keeps_expected_data_and_checker_commits_separate(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    origin = public_docs.admit_origin("https://docs.example.test")
+    assert not isinstance(origin, public_docs.Rejected)
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    monkeypatch.setenv("SLOPSENTRAL_SITE_EXPECTED_COMMIT", "b" * 40)
+    result = public_docs.live_receipt(origin, [], "STALE")
+    assert result["expectedCommit"] == "b" * 40
+    assert result["checkerCommit"] == "a" * 40
+
+
+def test_live_needs_one_complete_fresh_attempt_for_success(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = tmp_path / "project"
+    fixture(root)
+    projection = public_docs.prepare(root)
+    origin = public_docs.admit_origin("https://docs.example.test")
+    assert not isinstance(projection, public_docs.Rejected)
+    assert not isinstance(origin, public_docs.Rejected)
+    routes = {id(page): page.route for page in projection.pages}
+    calls = {"index": 0, "guide": 0}
+    clock = [0.0]
+
+    def sleep(seconds: float) -> None:
+        clock[0] += seconds
+
+    def inspect(_origin: object, page: object, _deadline: float) -> dict[str, object]:
+        route = routes[id(page)]
+        calls[route] += 1
+        if calls[route] == 1:
+            return {
+                "route": route,
+                "outcome": "MATCH" if route == "index" else "CONTENT_MISMATCH",
+                "responseSha256": "a" * 64,
+            }
+        clock[0] = 45.0
+        return (
+            {"route": route, "outcome": "NOT_FETCHED", "reason": "DEADLINE"}
+            if route == "index"
+            else {"route": route, "outcome": "MATCH", "responseSha256": "b" * 64}
+        )
+
+    monkeypatch.setattr(public_docs.time, "monotonic", lambda: clock[0])
+    monkeypatch.setattr(public_docs.time, "sleep", sleep)
+    monkeypatch.setattr(public_docs, "live_page", inspect)
+    result = public_docs.live(projection, origin, timeout=45)
+    assert calls == {"index": 2, "guide": 2}
+    assert result["type"] == "STALE"
+    pages = result["pages"]
+    assert public_docs.sequence(pages)
+    index = pages[0]
+    assert public_docs.mapping(index)
+    assert index["outcome"] == "MATCH"
+    assert index["responseSha256"] == "a" * 64
+    assert index["lastAttempt"] == {"outcome": "NOT_FETCHED", "reason": "DEADLINE"}
