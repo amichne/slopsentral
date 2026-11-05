@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T16:49:38Z",
+  "generatedAt": "2026-11-05T00:40:48-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -27,7 +27,7 @@
         },
         {
           "name": "engineering-design",
-          "sha256": "sha256:5d06b5c2990d46f25978150f4aaf9c9a8c61fde5fcc8af9e55961842de8125e5",
+          "sha256": "sha256:63e88eaf8775cf93aab2ee6b98e5665096de61e3be95dfd5c81d9c4ed8857b3b",
           "sourcePath": "source/instructions/engineering-design.md",
           "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
@@ -195,7 +195,7 @@
         },
         {
           "name": "controlled-technical-writing",
-          "sha256": "sha256:41931c07e780b563412a0416247c473d3ff599035373944d32e29215096ff8a8",
+          "sha256": "sha256:91ddecac51b8aede60a426cde058bcef9b5ac096eb019886192ee09367cf95c8",
           "sourcePath": "source/skills/controlled-technical-writing",
           "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
@@ -311,6 +311,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "42593176469854574f38be7d26aea0ac6d1f8db1",
+  "sourceSha": "921185262c8c48290daa3226b2e9635b714f1282",
   "type": "HYDRATED_MARKETPLACE"
 }

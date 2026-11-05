@@ -52,7 +52,7 @@ Existing language toolchains remain authoritative for their code.
 Use Semantic Ratchet for invariant and API design, Python Tooling for automation,
 and language/domain specialties for concrete syntax and local verification.
 Complete the smallest useful implementation and the repository's required
-checks. Retain useful existing contracts; remove redundant owners and paths.
+checks. Keep useful existing contracts; remove redundant owners and paths.
 
 
 Treat source-backed knowledge as part of software engineering. Before a behavior
