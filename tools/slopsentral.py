@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run --locked --script
 # /// script
 # requires-python = ">=3.12,<3.14"
-# dependencies = []
+# dependencies = ["fzf-bin==0.73.1"]
 # [tool.uv]
 # no-build = true
 # required-version = ">=0.12.9"
@@ -69,6 +69,13 @@ class Host(StrEnum):
 type NativeHost = Literal[Host.CODEX, Host.COPILOT]
 
 
+class AllPlugins(StrEnum):
+    ALL = "all"
+
+
+type Selection = tuple[PluginName, ...] | AllPlugins
+
+
 class Marketplace(StrEnum):
     ABSENT = "absent"
     REGISTERED = "registered"
@@ -87,6 +94,9 @@ class Reason(StrEnum):
     UNSAFE_ARCHIVE = "UNSAFE_ARCHIVE"
     OWNERSHIP_CONFLICT = "OWNERSHIP_CONFLICT"
     IO_FAILED = "IO_FAILED"
+    TERMINAL_REQUIRED = "TERMINAL_REQUIRED"
+    SELECTOR_FAILED = "SELECTOR_FAILED"
+    CANCELLED = "CANCELLED"
 
 
 @dataclass(frozen=True)
@@ -214,6 +224,68 @@ class _Release:
         ):
             return Rejected(Reason.CHECKSUM_MISMATCH, name)
         return data
+
+
+def catalog_bytes(data: bytes) -> Result[bytes]:
+    try:
+        decoder = zlib.decompressobj(16 + zlib.MAX_WBITS)
+        expanded = decoder.decompress(data, MAX_BYTES + 1)
+        if len(expanded) > MAX_BYTES or not decoder.eof or decoder.unused_data:
+            return Rejected(Reason.UNSAFE_ARCHIVE, "Oversized or incomplete catalog archive.")
+        with tarfile.open(fileobj=io.BytesIO(expanded), mode="r:") as archive:
+            members = [
+                item
+                for item in archive.getmembers()
+                if item.name == ".agents/plugins/marketplace.json"
+            ]
+            if len(members) != 1 or not members[0].isfile():
+                return Rejected(Reason.INVALID_RELEASE, "Missing unique plugin catalog.")
+            source = archive.extractfile(members[0])
+            if source is None:
+                return Rejected(Reason.INVALID_RELEASE, "Missing plugin catalog bytes.")
+            with source:
+                return source.read(MAX_BYTES + 1)
+    except (tarfile.TarError, zlib.error, EOFError):
+        return Rejected(Reason.UNSAFE_ARCHIVE, "Invalid catalog archive.")
+
+
+def catalog_names(value: object) -> Result[tuple[PluginName, ...]]:
+    rows = value.get("plugins") if mapping(value) and value.get("name") == "slopsentral" else None
+    if not sequence(rows) or not rows:
+        return Rejected(Reason.INVALID_RELEASE, "Expected a nonempty plugin catalog.")
+    names: list[PluginName] = []
+    for row in rows:
+        name = row.get("name") if mapping(row) else None
+        if not isinstance(name, str):
+            return Rejected(Reason.INVALID_RELEASE, "Invalid catalog plugin.")
+        try:
+            names.append(PluginName(name))
+        except ValueError:
+            return Rejected(Reason.INVALID_RELEASE, "Invalid catalog plugin identity.")
+    if len(set(names)) != len(names):
+        return Rejected(Reason.INVALID_RELEASE, "Duplicate catalog plugin.")
+    return tuple(names)
+
+
+def release_plugins(release: _Release) -> Result[tuple[PluginName, ...]]:
+    data = release.asset("slopsentral-codex.tar.gz")
+    if isinstance(data, Rejected):
+        return data
+    catalog = catalog_bytes(data)
+    return catalog if isinstance(catalog, Rejected) else catalog_names(parse(catalog))
+
+
+def all_names(version: str | None = None) -> Result[tuple[PluginName, ...]]:
+    release = _Release.latest(version)
+    return release if isinstance(release, Rejected) else release_plugins(release)
+
+
+def native_selection(
+    action: Action, plugins: Selection, own: dict[PluginName, InstalledPlugin]
+) -> Result[tuple[PluginName, ...]]:
+    if not isinstance(plugins, AllPlugins):
+        return plugins
+    return all_names() if action is Action.INSTALL else tuple(own)
 
 
 def direct(path: Path) -> bool:
@@ -454,6 +526,8 @@ def native_plan(
     selected: Marketplace,
     own: dict[PluginName, InstalledPlugin],
 ) -> Result[list[list[str]]]:
+    if not plugins:
+        return []
     if action == "update" and any(plugin not in own for plugin in plugins):
         return Rejected(Reason.NOT_INSTALLED, "Update needs installed plugins.")
     if (
@@ -508,15 +582,17 @@ def native_plan(
     return commands
 
 
-def native(
-    action: Action, host: NativeHost, plugins: tuple[PluginName, ...]
-) -> Result[dict[str, object]]:
+def native(action: Action, host: NativeHost, plugins: Selection) -> Result[dict[str, object]]:
     selected = native_marketplace(host)
     if isinstance(selected, Rejected):
         return selected
     own = native_plugins(host)
     if isinstance(own, Rejected):
         return own
+    names = native_selection(action, plugins, own)
+    if isinstance(names, Rejected):
+        return names
+    plugins = names
     commands = native_plan(action, host, plugins, selected, own)
     if isinstance(commands, Rejected):
         return commands
@@ -630,13 +706,49 @@ def stage_amp(release: _Release, plugins: tuple[PluginName, ...], cache: Path) -
     return destination
 
 
-def amp(
-    action: Action, plugins: tuple[PluginName, ...], version: str | None
-) -> Result[dict[str, object]]:
+def amp_selection(
+    action: Action, plugins: Selection, version: str | None, root: Path, cache: Path
+) -> Result[tuple[tuple[PluginName, ...], _Release | None]]:
+    if not isinstance(plugins, AllPlugins):
+        return plugins, None
+    if action is Action.INSTALL:
+        release = _Release.latest(version)
+        if isinstance(release, Rejected):
+            return release
+        names = release_plugins(release)
+        return names if isinstance(names, Rejected) else (names, release)
+    installed_names: list[PluginName] = []
+    for target in sorted(root.iterdir()) if root.exists() else ():
+        if target.is_symlink() and target.readlink().parent.parent == cache:
+            try:
+                installed_names.append(PluginName(target.name))
+            except ValueError:
+                return Rejected(Reason.OWNERSHIP_CONFLICT, "Invalid managed Amp plugin identity.")
+    return tuple(installed_names), None
+
+
+def amp(action: Action, plugins: Selection, version: str | None) -> Result[dict[str, object]]:
     root = Path(os.environ.get("XDG_CONFIG_HOME", str(Path.home() / ".config"))) / "amp/plugins"
     cache = data_home() / "amp"
     if not direct(root) or not direct(cache):
         return Rejected(Reason.OWNERSHIP_CONFLICT, "Indirect Amp path.")
+    selected = amp_selection(action, plugins, version, root, cache)
+    if isinstance(selected, Rejected):
+        return selected
+    plugins, release = selected
+    if not plugins:
+        return {"type": "COMPLETED", "host": "amp", "action": action, "plugins": []}
+    return amp_apply(action, plugins, version, (root, cache), release)
+
+
+def amp_apply(
+    action: Action,
+    plugins: tuple[PluginName, ...],
+    version: str | None,
+    paths: tuple[Path, Path],
+    release: _Release | None,
+) -> Result[dict[str, object]]:
+    root, cache = paths
     targets = tuple(root / plugin for plugin in plugins)
     admitted = admit_amp_links(action, targets, cache)
     if isinstance(admitted, Rejected):
@@ -645,9 +757,11 @@ def amp(
         for target in targets:
             target.unlink(missing_ok=True)
         return {"type": "REMOVED", "host": "amp", "plugins": plugins}
-    release = _Release.latest(version)
-    if isinstance(release, Rejected):
-        return release
+    if release is None:
+        found = _Release.latest(version)
+        if isinstance(found, Rejected):
+            return found
+        release = found
     destination = stage_amp(release, plugins, cache)
     if isinstance(destination, Rejected):
         return destination
@@ -717,9 +831,151 @@ def horizontalization(arguments: list[str]) -> int:
     ).returncode
 
 
+def choose(
+    title: str, rows: tuple[tuple[str, str], ...], *, multiple: bool = False
+) -> Result[tuple[str, ...]]:
+    if not sys.stdin.isatty() or not sys.stderr.isatty():
+        return Rejected(
+            Reason.TERMINAL_REQUIRED,
+            "Use an interactive terminal or explicit --host and --all options.",
+        )
+    executable = Path(sys.executable).parent / ("fzf.exe" if os.name == "nt" else "fzf")
+    if not executable.is_file():
+        return Rejected(
+            Reason.SELECTOR_FAILED,
+            "Start slopsentral through its locked uv launcher to supply fzf.",
+        )
+    environment = {key: value for key, value in os.environ.items() if not key.startswith("FZF_")}
+    controls = "Tab select | Ctrl-A all | Ctrl-D none\n" if multiple else ""
+    arguments = [
+        str(executable),
+        "--layout=reverse",
+        "--height=80%",
+        "--border=rounded",
+        "--border-label= Slopsentral ",
+        "--prompt=" + title + " > ",
+        "--header=" + controls + "Enter accept | Esc cancel",
+        "--delimiter=\t",
+        "--with-nth=2..",
+        "--no-sort",
+        "--no-mouse",
+        *(["--multi", "--bind=ctrl-a:select-all,ctrl-d:deselect-all"] if multiple else []),
+        *(
+            ["--no-color"]
+            if "NO_COLOR" in environment
+            else ["--color=border:blue,label:blue,prompt:cyan,pointer:cyan,marker:green"]
+        ),
+        *(["--no-unicode"] if environment.get("TERM") == "dumb" else []),
+    ]
+    result = subprocess.run(
+        arguments,
+        input="".join(key + "\t" + label + "\n" for key, label in rows),
+        stdout=subprocess.PIPE,
+        text=True,
+        check=False,
+        env=environment,
+    )
+    if result.returncode in {1, 130, -2}:
+        return Rejected(Reason.CANCELLED, "No host operation started.")
+    if result.returncode:
+        return Rejected(Reason.SELECTOR_FAILED, f"fzf exited {result.returncode}.")
+    selected = tuple(line.split("\t", 1)[0] for line in result.stdout.splitlines())
+    if (
+        not selected
+        or len(set(selected)) != len(selected)
+        or any(key not in dict(rows) for key in selected)
+        or (not multiple and len(selected) != 1)
+    ):
+        return Rejected(Reason.SELECTOR_FAILED, "Invalid selector result.")
+    return selected
+
+
+def dispatch(
+    action: Action, host: Host, plugins: Selection, version: str | None
+) -> Result[dict[str, object]]:
+    if host is Host.CODEX or host is Host.COPILOT:
+        return native(action, host, plugins)
+    if host is Host.AMP:
+        return amp(action, plugins, version)
+    return pi(action, version)
+
+
+def setup(action: Action | None = None, version: str | None = None) -> Result[dict[str, object]]:
+    if action is None:
+        selected = choose(
+            "Action",
+            (("install", "Install all plugins"), ("update", "Update all installed plugins")),
+        )
+        if isinstance(selected, Rejected):
+            return selected
+        action = Action(selected[0])
+    hosts = choose(
+        "Harnesses",
+        tuple(
+            (host.value, host.value.title() + ("  [on PATH]" if shutil.which(host.value) else ""))
+            for host in Host
+        ),
+        multiple=True,
+    )
+    if isinstance(hosts, Rejected):
+        return hosts
+    if version is not None and any(host in {"codex", "copilot"} for host in hosts):
+        return Rejected(
+            Reason.INVALID_RELEASE,
+            "Codex and Copilot use their native marketplace channel; omit --version.",
+        )
+    accepted = choose(
+        "Apply",
+        (
+            ("apply", f"{action.value.title()} all for {', '.join(hosts)}"),
+            ("cancel", "Cancel without changes"),
+        ),
+    )
+    if isinstance(accepted, Rejected):
+        return accepted
+    if accepted != ("apply",):
+        return Rejected(Reason.CANCELLED, "No host operation started.")
+    return apply_hosts(action, hosts, version)
+
+
+def apply_hosts(
+    action: Action, hosts: tuple[str, ...], version: str | None
+) -> Result[dict[str, object]]:
+    completed: list[dict[str, object]] = []
+    for selected_host in hosts:
+        print(f"{action.value}: {selected_host}", file=sys.stderr, flush=True)
+        result = dispatch(action, Host(selected_host), AllPlugins.ALL, version)
+        if isinstance(result, Rejected):
+            print(
+                f"Stopped at {selected_host}. Completed harnesses: {', '.join(hosts[: len(completed)]) or 'none'}.",
+                file=sys.stderr,
+            )
+            return result
+        completed.append(result)
+    return {"type": "COMPLETED", "action": action, "hosts": completed}
+
+
+def host_operation(
+    parser: argparse.ArgumentParser, args: argparse.Namespace
+) -> Result[dict[str, object]]:
+    action = Action(args.action)
+    all_plugins = getattr(args, "all", False) is True
+    if args.host is None:
+        if not all_plugins:
+            parser.error("Use --host, or --all for interactive harness selection.")
+        return setup(action, args.version)
+    host = Host(args.host)
+    plugins: Selection = AllPlugins.ALL if all_plugins else tuple(dict.fromkeys(args.plugin))
+    if (host is Host.PI and args.plugin) or (host is not Host.PI and not plugins):
+        parser.error("Pi uses its aggregate package; other hosts need --plugin or --all.")
+    if host in {Host.CODEX, Host.COPILOT} and args.version is not None:
+        parser.error("Codex and Copilot use their configured native marketplace channel.")
+    return dispatch(action, host, plugins, args.version)
+
+
 def manage() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    sub = parser.add_subparsers(dest="action", required=True)
+    sub = parser.add_subparsers(dest="action")
     _ = sub.add_parser(
         "kotlin-horizontalization",
         help="Inspect Kotlin package layout without edits.",
@@ -727,40 +983,42 @@ def manage() -> int:
     )
     for action in ("install", "update", "remove"):
         operation = sub.add_parser(action)
-        _ = operation.add_argument("--host", type=Host, choices=tuple(Host), required=True)
-        _ = operation.add_argument("--plugin", type=identity, action="append", default=[])
+        _ = operation.add_argument("--host", type=Host, choices=tuple(Host))
+        selection = operation.add_mutually_exclusive_group()
+        _ = selection.add_argument("--plugin", type=identity, action="append", default=[])
+        if action != "remove":
+            _ = selection.add_argument(
+                "--all",
+                action="store_true",
+                help="Install the catalog or update installed Slopsentral plugins.",
+            )
         _ = operation.add_argument("--version", type=version_number)
+    _ = sub.add_parser("setup", help="Select a bulk action and harnesses interactively.")
     own = sub.add_parser("self", help="Install, update, or remove the executable command.")
     _ = own.add_argument("operation", type=Action, choices=tuple(Action))
     _ = own.add_argument("--version", type=version_number)
     args = parser.parse_args()
     try:
-        if args.action == "self":
+        if args.action in {None, "setup"}:
+            result = setup()
+        elif args.action == "self":
             if args.version is not None and args.operation != Action.UPDATE:
                 parser.error("Only self update accepts --version.")
             result = command(Action(args.operation), args.version)
         else:
-            host, action = Host(args.host), Action(args.action)
-            plugins: tuple[PluginName, ...] = tuple(dict.fromkeys(args.plugin))
-            if (host == "pi" and plugins) or (host != "pi" and not plugins):
-                parser.error(
-                    "Pi uses its aggregate package; other hosts need explicit --plugin selections."
-                )
-            if host in {"codex", "copilot"} and args.version is not None:
-                parser.error("Codex and Copilot use their configured native marketplace channel.")
-            if host is Host.CODEX or host is Host.COPILOT:
-                result = native(action, host, plugins)
-            elif host == "amp":
-                result = amp(action, plugins, args.version)
-            else:
-                result = pi(action, args.version)
+            result = host_operation(parser, args)
+    except KeyboardInterrupt:
+        result = Rejected(
+            Reason.CANCELLED,
+            "Operation interrupted; earlier completed host operations remain in effect.",
+        )
     except OSError as error:
         result = Rejected(Reason.IO_FAILED, f"Filesystem operation failed: {error.strerror}")
     if isinstance(result, Rejected):
         print(
             json.dumps({"type": "REJECTED", "reason": result.reason.value, "detail": result.detail})
         )
-        return 1
+        return 130 if result.reason is Reason.CANCELLED else 1
     print(json.dumps(result))
     return 0
 

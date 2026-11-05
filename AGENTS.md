@@ -31,7 +31,10 @@ by hand when the authored source can be fixed instead.
 `install.sh` owns the minimal shell bootstrap for the `slopsentral` command.
 It downloads pinned uv only when `uv` is absent from `PATH`.
 `tools/slopsentral.py` owns the locked Python command and its installation, update, and removal operations.
-Host operations need `--host`. Codex, Copilot, and Amp also need explicit `--plugin` selections.
+Explicit host operations use `--host`.
+Codex, Copilot, and Amp accept `--plugin` selections or `--all` for installation and updates.
+`slopsentral setup` selects a bulk action and harnesses interactively.
+Bulk commands without `--host` open the harness selector. Removal keeps explicit selections.
 Use native Codex and Copilot commands for their host configuration.
 Amp uses managed links to release archives. Pi delegates to `tools/setup-pi.mts`.
 `tools/setup_assets.py` keeps the bootstrap, Python script, lock, and setup receipt.
