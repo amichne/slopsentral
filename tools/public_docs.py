@@ -723,6 +723,23 @@ def admit_origin(origin: str) -> _Origin | Rejected:
     return _Origin(origin.rstrip("/"), url.netloc)
 
 
+def response_failure(
+    origin: _Origin, content_type: str, response_url: object, size: int
+) -> Rejected | None:
+    if not isinstance(response_url, str) or urlsplit(response_url).netloc != origin.authority:
+        return Rejected(Code.FETCH, "cross-origin-response")
+    if content_type not in {"text/markdown", "text/plain"}:
+        bounded = (
+            content_type
+            if re.fullmatch(r"[a-zA-Z0-9.+-]{1,32}/[a-zA-Z0-9.+-]{1,48}", content_type)
+            else "unrecognized"
+        )
+        return Rejected(Code.FETCH, f"content-type:{bounded}")
+    if size > MAX_RESPONSE_BYTES:
+        return Rejected(Code.FETCH, f"response-size-limit:{MAX_RESPONSE_BYTES}")
+    return None
+
+
 def fetch(origin: _Origin, page: _Page, timeout: float) -> str | Rejected:
     url = f"{origin.value}/{page.route}.md"
     request = urllib.request.Request(  # noqa: S310 -- URL consists only of an admitted origin and canonical page route
@@ -733,40 +750,36 @@ def fetch(origin: _Origin, page: _Page, timeout: float) -> str | Rejected:
             mime = response.headers.get("Content-Type", "").split(";", 1)[0]
             data = response.read(MAX_RESPONSE_BYTES + 1)
             response_url: object = response.url
-            if (
-                mime not in {"text/markdown", "text/plain"}
-                or not isinstance(response_url, str)
-                or urlsplit(response_url).netloc != origin.authority
-                or len(data) > MAX_RESPONSE_BYTES
-            ):
-                return Rejected(Code.FETCH, url)
-            return data.decode("utf-8")
-    except (urllib.error.URLError, TimeoutError, UnicodeError, OSError):
-        return Rejected(Code.FETCH, url)
+            failure = response_failure(origin, mime, response_url, len(data))
+            return failure if failure is not None else data.decode("utf-8")
+    except urllib.error.HTTPError as error:
+        return Rejected(Code.FETCH, f"http-status:{error.code}")
+    except urllib.error.URLError as error:
+        return Rejected(Code.FETCH, f"transport:{type(error.reason).__name__[:64]}")
+    except UnicodeError as error:
+        return Rejected(Code.FETCH, f"decode:{type(error).__name__[:64]}")
+    except (TimeoutError, OSError) as error:
+        return Rejected(Code.FETCH, f"transport:{type(error).__name__[:64]}")
 
 
 def live_page(origin: _Origin, page: _Page, deadline: float) -> dict[str, object]:
-    remaining = deadline - time.monotonic()
-    remote = (
-        fetch(origin, page, min(15, remaining))
-        if remaining > 0
-        else Rejected(Code.FETCH, "attempt deadline expired")
-    )
-    outcome = (
-        "FETCH_FAILED"
-        if isinstance(remote, Rejected)
-        else "MATCH"
-        if content_matches(page, remote, origin)
-        else "CONTENT_MISMATCH"
-    )
     evidence: dict[str, object] = {
         "route": page.route,
         "source": page.source,
-        "outcome": outcome,
         "expectedSha256": hashlib.sha256(page.body.encode()).hexdigest(),
     }
-    if isinstance(remote, str):
-        evidence["responseSha256"] = hashlib.sha256(remote.encode()).hexdigest()
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        return {**evidence, "outcome": "NOT_FETCHED", "reason": "DEADLINE"}
+    remote = fetch(origin, page, min(15, remaining))
+    if isinstance(remote, Rejected):
+        return {
+            **evidence,
+            "outcome": "FETCH_FAILED",
+            "failure": {"code": remote.code, "detail": remote.detail},
+        }
+    evidence["outcome"] = "MATCH" if content_matches(page, remote, origin) else "CONTENT_MISMATCH"
+    evidence["responseSha256"] = hashlib.sha256(remote.encode()).hexdigest()
     return evidence
 
 
@@ -774,14 +787,18 @@ def live_receipt(
     origin: _Origin, results: list[dict[str, object]], outcome: str
 ) -> dict[str, object]:
     receipt: dict[str, object] = {"type": outcome, "origin": origin.value, "pages": results}
-    source_commit = os.environ.get("GITHUB_SHA", "")
+    checker_commit = os.environ.get("GITHUB_SHA", "")
+    source_commit = os.environ.get("SLOPSENTRAL_SITE_EXPECTED_COMMIT", checker_commit)
     if re.fullmatch(r"[0-9a-f]{40}", source_commit):
         receipt["expectedCommit"] = source_commit
+    if re.fullmatch(r"[0-9a-f]{40}", checker_commit):
+        receipt["checkerCommit"] = checker_commit
     return receipt
 
 
 def live(projection: _Projection, origin: _Origin, timeout: int) -> dict[str, object]:
     end = time.monotonic() + timeout
+    results: list[dict[str, object]] = []
     while True:
         # Timeout zero requests one pass. Timed retries do not start network
         # effects after their deadline. Eight workers limit transport overrun.
@@ -790,12 +807,28 @@ def live(projection: _Projection, origin: _Origin, timeout: int) -> dict[str, ob
             futures = [
                 workers.submit(live_page, origin, page, deadline) for page in projection.pages
             ]
-            results = [future.result() for future in futures]
-        if all(result["outcome"] == "MATCH" for result in results):
+            latest = [future.result() for future in futures]
+        results = (
+            [
+                {
+                    **previous,
+                    "lastAttempt": {"outcome": "NOT_FETCHED", "reason": current["reason"]},
+                }
+                if current["outcome"] == "NOT_FETCHED"
+                else current
+                for previous, current in zip(results, latest, strict=True)
+            ]
+            if results
+            else latest
+        )
+        # Retained responses aid diagnosis. Only one complete fresh pass grants LIVE.
+        if all(result["outcome"] == "MATCH" for result in latest):
             return live_receipt(origin, results, "LIVE")
         if time.monotonic() >= end:
             return live_receipt(origin, results, "STALE")
         time.sleep(min(30, max(0, end - time.monotonic())))
+        if time.monotonic() >= end:
+            return live_receipt(origin, results, "STALE")
 
 
 def live_command(
