@@ -1,45 +1,25 @@
-# Slopsentral documentation
+# Documentation
 
-Start with the [OKF quickstart](../openwiki/quickstart.md) for system explanations and conceptual neighbors.
-Use these guides for exact commands and recovery procedures.
-The [public site](https://slopsentral.michne.com) presents the same canonical guides and maintained OKF explanations.
-The [documentation practice](documentation.md) defines source links, declared coverage, native Claims, and freshness admission.
+Use these three pages to start:
 
-## Install and select capabilities
+- [How to install](cli-install.md): Install plugins for your host, then update or remove them.
+- [What you get](../README.md): Choose among the five plugins.
+- [Key aspects of the codebase](codebase.md): Understand source ownership, host support, and delivery.
 
-- [Install and manage the command](cli-install.md).
-- [Choose a marketplace](agent-marketplaces.md).
-- [Install Pi packages](pi-install.md).
-- [Use explicit Codex profiles](profile-lifecycle.md).
-- [Change personal configuration](personal-setup.md).
+## Developer docs
 
-## Author and understand software
+- [Skills, agents, and shared guidance](developers/procedures.md): Author procedures, review agents, instructions, concepts, and templates.
+- [Plugins and profiles](developers/composition.md): Compose canonical assets and repeatable plugin selections.
+- [Hooks and resources](developers/hooks.md): Connect event adapters to shared instructions and executable files.
+- [Schemas and evaluations](developers/contracts-and-evals.md): Define external contracts and distinguish each evidence layer.
+- [Contribute and maintain](developers/contribute.md): Prepare a checkout, choose gates, and maintain docs and releases.
 
-- [Use the engineering practice](engineering-excellence.md).
-- [Examine source ownership](../source/ARCHITECTURE.md).
-- [Compose workflow resources](workflow-resources.md).
-- [Maintain scoped instructions](agents-md-scope.md).
-- [Maintain source-backed documentation](documentation.md).
-- [Use the provisional glossary](GLOSSARY.md).
+## Focused references
 
-## Maintain and deliver Slopsentral
+Use these runbooks when the task needs their detail:
 
-- [Project provider packages](pkl-projection.md).
-- [Use Worktrunk automation](worktrunk-automation.md).
-- [Assess skills and plugins](skill-evals.md).
-- [Publish unified releases](releases.md).
-- [Install portable instructions](global-agents.md).
-- [Read the portable instruction source](examples/global/AGENTS.md).
-- [Maintain and examine the public site](mintlify.md).
-
-## Read historical evidence
-
-These records preserve past proposals, observations, and evaluation conditions.
-Read current guides and source before a new operational decision.
-
-- [Plugin choice audit](plugin-choice-audit.md).
-- [Three-plugin audit](three-plugin-audit.md).
-- [Skill and plugin reassessment](skill-plugin-reassessment.md).
-- [TDD and Astra audit](tdd-astra-audit.md).
-- [Session-grounded improvement campaign](session-grounded-skill-campaign.md).
-- [Historical execution cases](session-grounded-skill-cases.md).
+[Command reference](cli-reference.md), [Pi setup and recovery](pi-install.md), [provider projection](pkl-projection.md),
+[profile lifecycle](profile-lifecycle.md), [release procedure](releases.md), and [site maintenance](mintlify.md).
+The [catalog](../source/CATALOG.md) lists exact assets.
+The [OpenWiki quickstart](../openwiki/quickstart.md) links maintained system explanations.
+Historical audits remain in this directory with their original evidence limits.

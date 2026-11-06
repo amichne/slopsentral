@@ -14,7 +14,8 @@
         "docs/engineering-excellence.md",
         "docs/examples/global/AGENTS.md",
         "openwiki/concepts/evidence.md",
-        "openwiki/concepts/source-ownership.md"
+        "openwiki/concepts/source-ownership.md",
+        "docs/developers/procedures.md"
       ]
     },
     {
@@ -35,7 +36,9 @@
       "pages": [
         "docs/agent-marketplaces.md",
         "docs/workflow-resources.md",
-        "openwiki/concepts/source-ownership.md"
+        "openwiki/concepts/source-ownership.md",
+        "docs/developers/composition.md",
+        "docs/codebase.md"
       ]
     },
     {
@@ -56,7 +59,8 @@
       ],
       "pages": [
         "docs/agents-md-scope.md",
-        "openwiki/architecture/hooks.md"
+        "openwiki/architecture/hooks.md",
+        "docs/developers/hooks.md"
       ]
     },
     {
@@ -75,7 +79,8 @@
         "docs/personal-setup.md",
         "openwiki/integrations/cli.md",
         "openwiki/integrations/installation.md",
-        "docs/apm-qualification.md"
+        "docs/apm-qualification.md",
+        "docs/cli-reference.md"
       ]
     },
     {
@@ -119,7 +124,8 @@
       ],
       "pages": [
         "docs/skill-evals.md",
-        "openwiki/operations/evaluations.md"
+        "openwiki/operations/evaluations.md",
+        "docs/developers/contracts-and-evals.md"
       ]
     },
     {
@@ -150,7 +156,8 @@
         "docs/worktrunk-automation.md",
         "openwiki/testing/validation.md",
         "openwiki/workflows/authoring.md",
-        "openwiki/quickstart.md"
+        "openwiki/quickstart.md",
+        "docs/developers/contribute.md"
       ]
     },
     {

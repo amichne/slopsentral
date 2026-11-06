@@ -26,3 +26,10 @@ The user asks for linked OKF knowledge, source coverage, freshness checks, porta
 Canonical documents own the prose.
 The public site remains a checked consumer of those documents.
 Generated pages and a successful build do not establish semantic accuracy or reader comprehension.
+
+## Documentation structure
+
+The main navigation has three entry pages: How to install, What you get, and Key aspects of the codebase.
+Five developer guides explain the source assets and contribution procedures.
+Focused runbooks and OpenWiki projections remain available through direct links in a hidden reference group.
+Canonical documents own the prose, and `docs/site.json` owns navigation.

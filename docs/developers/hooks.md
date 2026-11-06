@@ -1,0 +1,54 @@
+# Hooks and resources
+
+Use hooks for configured host events.
+Use resources when a consumer needs one executable or data file without a discoverable skill.
+
+## Hook declarations and effects
+
+`source/hooks/*.hook.json` declares canonical hooks and dependencies.
+Host-specific files under `source/hooks/codex/` describe native commands.
+Python helpers own most shared effects.
+`source/hooks/pi/adapter.ts` maps them to Pi events.
+
+The [Software Engineering context hook](../../source/hooks/software-engineering-context.hook.json) depends on shared instruction files.
+The [context helper](../../source/hooks/inject-instruction-context.py) emits their content.
+The host owns event delivery and context consumption.
+Helper output alone cannot prove that a model used those instructions.
+
+Software Engineering selects context and instruction-scope hooks.
+Repository Knowledge selects knowledge hooks.
+The other plugins select no automatic hooks.
+A standalone hook declaration does not imply automatic installation.
+
+## Native adapters
+
+Codex consumes native hook configuration.
+Pi maps canonical hooks to `before_agent_start`, `tool_call`, and `agent_before_settle`.
+Its adapter preserves earlier extension messages and continuation requests.
+Amp supplies turn-start instructions, while its hooks remain reference-only.
+
+Use [instruction scope](../agents-md-scope.md) for scope receipts and repair.
+Use [Pi setup and recovery](../pi-install.md) for runtime preparation, `/hooks` controls, and event failures.
+The [projection runbook](../pkl-projection.md) defines other provider limits.
+
+## Resources
+
+A `RESOURCE` reference names one regular file and its resource dependencies.
+Supported locations include a skill's `scripts/` or `assets/`, and `source/schemas/`.
+A plugin selects resources directly, or a primitive selects them through `dependsOn`.
+
+The [resource contract](../../source/schemas/primitives/resource-reference.schema.json) rejects unsupported external shapes.
+Graph admission also rejects directories, symlinks, skill entry points, conflicting definitions, and dependency cycles.
+Resource dependencies contain resources only.
+
+For example, the Pkl helper resource depends on its adjacent lock.
+The consumer gets both files without a second skill entry point.
+[Workflow resources](../workflow-resources.md) supplies the full declaration and focused proof.
+
+## Change evidence
+
+Run the helper's focused tests and the source graph gate after a hook change.
+After an adapter change, exercise that adapter's actual event path.
+Use a rejection case for missing dependencies or invalid input.
+Keep adapter results separate from native host evidence.
+The [contribution guide](contribute.md#choose-the-smallest-gate) lists repository commands.
