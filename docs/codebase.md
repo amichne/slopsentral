@@ -1,0 +1,61 @@
+# Key aspects of the codebase
+
+Slopsentral authors assets once, composes them by reference, and projects them into native host packages.
+The [developer docs](developers/contribute.md) explain how to change those assets.
+
+## One source per asset
+
+| Location | Owns |
+| --- | --- |
+| `source/adaptable.marketplace.json` | Marketplace entries and canonical primitive references |
+| `source/plugins/` and `source/profiles/` | Plugin composition and repeatable selections |
+| `source/skills/` and `source/agents/` | Task procedures, bundled resources, and review agents |
+| `source/instructions/` and `source/concepts/` | Shared policy and reusable semantic guidance |
+| `source/hooks/` | Event declarations, executable effects, and host adapters |
+| `source/schemas/` and `source/evals/` | External contracts and evaluation definitions |
+| `source/templates/` | Primitive scaffolds |
+| `tools/` | Graph admission, projection, installation, release, and repository automation |
+| `docs/` and `openwiki/` | Operational guides and source-backed system explanations |
+
+Generated provider trees and installed caches consume authored source.
+Change the source owner, then regenerate its consumers.
+The [architecture reference](../source/ARCHITECTURE.md) explains the detailed mechanisms.
+
+## From source to a host
+
+A plugin manifest selects canonical references, such as `skills/semantic-ratchet`.
+The graph resolver admits their identities, paths, and dependencies.
+The projector freezes source bytes, evaluates provider models with Pkl 0.32.0, and seals the output digests.
+It rejects an existing output directory.
+
+The Slopsentral command then uses the host's installation path.
+Native host discovery, trust, and event delivery remain host responsibilities.
+See [plugins and profiles](developers/composition.md) and [hooks and resources](developers/hooks.md) for concrete examples.
+
+## Host support
+
+| Host | Package and capability limits |
+| --- | --- |
+| Codex | Native marketplace plugins, skills, agents, hooks, and explicit workflow profiles |
+| GitHub Copilot | Native plugin projection with provider-specific adapters |
+| Amp | Directory plugins with skills and turn-start instructions. Hooks, agents, and MCP configuration remain reference-only. Profiles are unsupported. |
+| Pi | Native packages, skills, review prompts, and event adapters. The shared command installs the aggregate. |
+
+The [projection guide](pkl-projection.md) owns exact provider details.
+A projected file establishes packaged content. A real host session establishes discovery and consumption.
+
+## Delivery and evidence
+
+`package.json` owns the shared product version.
+Harness publication updates moving provider branches.
+Release publication promotes qualified retained bytes into versioned artifacts.
+These operations have separate owners in the [release procedure](releases.md).
+
+Tests and schema gates support specific contract claims.
+Decision evaluations examine supplied instructions.
+Execution evaluations need pinned repositories and independent host evidence.
+See [schemas and evaluations](developers/contracts-and-evals.md) for those limits.
+
+`docs/site.json` maps canonical pages into `docs/public` for Mintlify.
+OpenWiki keeps its native Claims and lifecycle.
+The [documentation procedure](documentation.md) connects source review, links, coverage, and freshness.

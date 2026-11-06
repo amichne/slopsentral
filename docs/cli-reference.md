@@ -1,0 +1,196 @@
+# Slopsentral command reference
+
+The `slopsentral` command installs, updates, and removes plugins for selected harnesses.
+It supports Codex CLI, GitHub Copilot CLI, Amp, and Pi.
+The command uses a locked Python script through uv.
+
+## Install the command
+
+Use a qualified release that includes `install.sh`, `slopsentral.py`, and its lock:
+
+```sh
+bash -o pipefail -c 'curl -fsSL https://github.com/amichne/slopsentral/releases/latest/download/install.sh | sh'
+```
+
+For installation from a prepared source checkout, use:
+
+```sh
+mise exec -- uv run --locked --script tools/slopsentral.py self install
+```
+
+The bootstrap installs uv 0.12.9 only when `uv` is absent from `PATH`.
+An older installed uv fails the minimum-version rule without an implicit replacement.
+The bootstrap preserves shell startup files.
+The command needs Python 3.12 or 3.13. uv can download that runtime.
+Consumers need no checkout, npm, or Pkl.
+
+The launcher resides at `~/.local/bin/slopsentral`.
+It records absolute paths to uv and an immutable script copy.
+If that directory is absent from `PATH`, add it for the shell:
+
+```sh
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+## Guided setup
+
+Start the selector with either command:
+
+```sh
+slopsentral
+slopsentral setup
+```
+
+Choose **Install all plugins** or **Update all installed plugins**.
+Select one or more harnesses, then accept the action summary.
+Type to filter each list. Press Tab to select a harness.
+Press Ctrl-A to select all visible harnesses. Press Ctrl-D to deselect them.
+Press Enter to accept the selection. Press Escape or Ctrl-C to cancel.
+Cancellation before acceptance starts no host operation and returns status 130.
+
+The locked `fzf-bin` dependency supplies fzf 0.73.1 through the existing uv runtime.
+A separate fzf installation is unnecessary.
+The selector ignores personal `FZF_*` options and honors `NO_COLOR`.
+It needs terminal input and stderr. Redirected stdout still contains one JSON result.
+For automation, supply `--host` and `--all` without a selector.
+
+## Install or update all plugins
+
+```sh
+slopsentral install --host codex --all
+slopsentral update --host codex --all
+slopsentral install --all
+slopsentral update --all
+```
+
+Without `--host`, these bulk commands open the harness selector and action summary.
+`install --all` reads the catalog from the stable release archive after its digest examination.
+It installs every catalog plugin. Existing native installations keep their enabled choices.
+`update --all` selects installed Slopsentral plugins for Codex and Copilot.
+For Amp, it selects links that the command manages.
+An empty update succeeds without host changes. Foreign plugins remain outside the selection.
+Pi delegates its aggregate operation to the existing qualified installer.
+
+`--all` and `--plugin` are mutually exclusive. Removal needs explicit selections.
+The command stops at the first harness failure and names completed harnesses on stderr.
+Earlier successful operations remain in effect.
+
+## Select a host and plugins
+
+Bootstrap installs the command only.
+Explicit host operations use `--host`.
+Codex, Copilot, and Amp accept `--plugin` selections or `--all`.
+Pi uses the aggregate package and rejects plugin selections.
+
+```sh
+slopsentral install --host codex --plugin software-engineering --plugin kotlin-engineering
+slopsentral install --host copilot --plugin software-engineering
+slopsentral install --host amp --plugin developer-tooling
+slopsentral install --host pi
+```
+
+| Host | Owner | Update channel |
+| --- | --- | --- |
+| Codex | Native marketplace and plugin commands | Existing source, or `harness/codex` for a new registration |
+| Copilot | Native marketplace and plugin commands | Existing source, or repository default for a new registration |
+| Amp | Managed links under the system plugin directory | Stable release archive |
+| Pi | Native setup and transaction code | Qualified stable release |
+
+Codex and Copilot need their host commands on `PATH`.
+Amp uses `$XDG_CONFIG_HOME/amp/plugins` or `~/.config/amp/plugins`.
+Pi needs the dependencies in the [Pi guide](pi-install.md).
+A different existing Amp directory or an unknown marketplace named `slopsentral` stops installation.
+
+## Update and remove plugins
+
+Use the same explicit scope for updates and removal:
+
+```sh
+slopsentral update --host codex --plugin software-engineering
+slopsentral update --host copilot --plugin software-engineering
+slopsentral update --host amp --plugin developer-tooling
+slopsentral update --host pi
+slopsentral remove --host codex --plugin software-engineering
+slopsentral remove --host copilot --plugin software-engineering
+slopsentral remove --host amp --plugin developer-tooling
+slopsentral remove --host pi
+```
+
+Amp and Pi accept `--version X.Y.Z` for a named stable release.
+Codex and Copilot reject that option because native marketplaces own their channels.
+These commands use personal or system scope. Project registrations stay outside their scope.
+
+Repeated installation preserves enabled choices.
+Codex rejects an update for a disabled selected plugin because its reinstall operation can enable it.
+Copilot uses its native update operation.
+A failed native operation stops the command. Earlier successful operations remain in effect.
+
+Amp compares installed bytes with the cached release before replacement or removal.
+Removal deletes managed links and keeps cached bytes.
+Pi removal preserves unrelated settings, project registrations, payloads, and private recovery records.
+Its [native bootstrap](pi-install.md#scope-updates-and-recovery) owns project installation and rollback.
+
+## Update or remove the command
+
+```sh
+slopsentral self update
+slopsentral self update --version 4.0.7
+slopsentral self remove
+```
+
+A named version needs published command assets.
+Downloaded assets must match their GitHub origin, size, and SHA-256 metadata.
+Amp also rejects archive traversal, links, and special files.
+GitHub metadata supplies the trust source. The digest is not a separate signature.
+
+Command copies reside under `$XDG_DATA_HOME/slopsentral/command` or `~/.local/share/slopsentral/command`.
+Self-update keeps previous copies.
+Self-removal examines their recorded digests before deletion and preserves edited files.
+It preserves uv and installed host plugins.
+Interrupted updates can leave an incomplete receipt or lock that later operations preserve as a conflict.
+
+## Inspect Kotlin package layout
+
+Use the advisory detector without a host or plugin installation:
+
+```sh
+slopsentral kotlin-horizontalization
+slopsentral kotlin-horizontalization --repo /path/to/project --all
+slopsentral kotlin-horizontalization --changed-file src/main/kotlin/example/Owner.kt
+slopsentral kotlin-horizontalization --all --format text
+slopsentral kotlin-horizontalization --all --summary
+```
+
+The default scope includes staged, unstaged, and untracked Kotlin files under the current directory.
+`--repo` selects another directory. `--all` also supports directories outside Git.
+The detector inspects packages under `src/main/kotlin`, `src/test/kotlin`, and `src/integrationTest/kotlin`.
+It also inspects their ancestor packages within each source root.
+Other Kotlin source sets remain outside this heuristic.
+
+Repeat `--changed-file` for explicit paths.
+Use `--changed-files-file` for a UTF-8 list of repository-relative paths, one per line.
+An empty explicit list inspects no packages.
+Missing repositories, unreadable lists, paths outside `--repo`, and failed Git discovery return a nonzero status.
+
+JSON is the default output format. `--format text` selects text.
+`--summary` emits JSON with `ok`, `status`, and `findingCount`.
+A completed inspection returns status 0, including findings with `status: advisory`.
+File counts and filename clusters cannot prove semantic defects.
+The command changes no Kotlin files and needs no host command, checkout, npm, or Pkl.
+The installed command bundles the [canonical detector](../source/hooks/kotlin-horizontalization-check) and its lock.
+
+If an update from an older command reports an absent helper, run `slopsentral self update` again.
+Older command versions downloaded only the Python entry point and its lock.
+The second update uses the new inventory and fetches the helper.
+
+## Results and source evidence
+
+Completed operations emit one JSON object on stdout.
+Failures return a nonzero status. Native diagnostics use stderr.
+Argument errors return argparse status 2.
+Installation proves neither new-session discovery nor instruction adherence.
+
+[Command implementation](../tools/slopsentral.py), [bootstrap](../install.sh), and
+[host-command tests](../tools/python_checks/test_slopsentral.py) own this interface.
+[Setup packaging](../tools/setup_assets.py) binds its release assets.
+The [installation concept](../openwiki/integrations/installation.md) connects host setup to source ownership and release qualification.

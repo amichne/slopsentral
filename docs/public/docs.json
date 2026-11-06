@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Slopsentral",
-  "description": "Source-backed engineering plugins, linked OKF explanations, and portable documentation checks.",
+  "description": "Install Slopsentral, choose your plugins, and understand the authored assets.",
   "colors": {
     "primary": "#059669",
     "light": "#10B981",
@@ -14,100 +14,68 @@
   },
   "favicon": "/images/favicon.svg",
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Guide",
-        "groups": [
-          {
-            "group": "Start",
-            "pages": [
-              "index",
-              "guides/overview",
-              "guides/install",
-              "guides/pi",
-              "guides/choose-plugins"
-            ]
-          },
-          {
-            "group": "Use Slopsentral",
-            "pages": [
-              "guides/engineering-baseline",
-              "guides/workflows",
-              "guides/scoped-instructions",
-              "guides/controlled-writing",
-              "guides/personal-setup"
-            ]
-          }
+        "group": "Start here",
+        "pages": [
+          "guides/install",
+          "index",
+          "guides/codebase"
         ]
       },
       {
-        "tab": "Reference",
-        "groups": [
-          {
-            "group": "Contracts",
-            "pages": [
-              "reference/architecture",
-              "reference/catalog",
-              "reference/migration",
-              "reference/profiles",
-              "reference/releases",
-              "reference/glossary",
-              "reference/engineering-standard",
-              "reference/global-instructions"
-            ]
-          }
+        "group": "Developer docs",
+        "pages": [
+          "developers/procedures",
+          "developers/composition",
+          "developers/hooks",
+          "developers/contracts-and-evals",
+          "developers/contribute"
         ]
       },
       {
-        "tab": "Knowledge",
-        "groups": [
-          {
-            "group": "Concepts",
-            "pages": [
-              "knowledge/quickstart",
-              "knowledge/concepts/evidence",
-              "knowledge/concepts/source-ownership"
-            ]
-          },
-          {
-            "group": "Mechanisms",
-            "pages": [
-              "knowledge/architecture/hooks",
-              "knowledge/architecture/projection",
-              "knowledge/integrations/cli",
-              "knowledge/integrations/installation",
-              "knowledge/integrations/profiles",
-              "knowledge/integrations/global-instructions"
-            ]
-          },
-          {
-            "group": "Workflows",
-            "pages": [
-              "knowledge/operations/evaluations",
-              "knowledge/operations/releases",
-              "knowledge/workflows/documentation",
-              "knowledge/workflows/authoring",
-              "knowledge/testing/validation"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Maintainers",
-        "groups": [
-          {
-            "group": "Maintain and deliver",
-            "pages": [
-              "maintainers/contribute",
-              "maintainers/projection",
-              "maintainers/documentation",
-              "maintainers/portable-documentation",
-              "maintainers/site",
-              "maintainers/evaluations",
-              "maintainers/global-instructions",
-              "maintainers/apm-qualification"
-            ]
-          }
+        "group": "Focused references",
+        "hidden": true,
+        "pages": [
+          "guides/overview",
+          "guides/pi",
+          "guides/choose-plugins",
+          "guides/engineering-baseline",
+          "guides/workflows",
+          "guides/scoped-instructions",
+          "guides/personal-setup",
+          "guides/controlled-writing",
+          "reference/architecture",
+          "reference/catalog",
+          "reference/migration",
+          "reference/profiles",
+          "reference/releases",
+          "reference/glossary",
+          "reference/engineering-standard",
+          "reference/global-instructions",
+          "knowledge/quickstart",
+          "knowledge/concepts/evidence",
+          "knowledge/concepts/source-ownership",
+          "knowledge/architecture/hooks",
+          "knowledge/architecture/projection",
+          "knowledge/integrations/cli",
+          "knowledge/integrations/installation",
+          "knowledge/integrations/profiles",
+          "knowledge/integrations/global-instructions",
+          "knowledge/operations/evaluations",
+          "knowledge/operations/releases",
+          "knowledge/workflows/documentation",
+          "knowledge/workflows/authoring",
+          "knowledge/testing/validation",
+          "maintainers/contribute",
+          "maintainers/projection",
+          "maintainers/documentation",
+          "maintainers/evaluations",
+          "maintainers/global-instructions",
+          "maintainers/apm-qualification",
+          "maintainers/portable-documentation",
+          "maintainers/site",
+          "reference/command"
         ]
       }
     ]
