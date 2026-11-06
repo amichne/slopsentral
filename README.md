@@ -41,4 +41,5 @@ Installation grants no permission to publish, deploy, or change personal configu
 
 Read [key aspects of the codebase](docs/codebase.md) for ownership and the path from source to installed plugins.
 Use the [developer guide](docs/developers/contribute.md) for checkout setup and change-specific gates.
+From a prepared checkout, install the command with `mise exec -- uv run --locked --script tools/slopsentral.py self install`.
 Read these same pages on the [public site](https://slopsentral.michne.com).

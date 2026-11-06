@@ -253,7 +253,7 @@
       "source/templates/primitives/skill/SKILL.md.tmpl": "112bb996efe20eda90424308641ae4c86e29e011d912f28806e675077edeb80b"
     },
     "engineering": {
-      "README.md": "7c7a16f013248a1c696f8a5f94ee7f051d304f91fd2633da29db0d28ef72cf12",
+      "README.md": "efa64cbf0b2e78d81470e5e13156bd6813665bd1a4be96be65d04183730379f6",
       "docs/developers/procedures.md": "6058fde7104e492f77fcf55359ba2a2b30c33008369b5d38a728aadc1447cf7f",
       "docs/engineering-excellence.md": "9e2198f7bf047044b35ef89bc3c21aed3def352101e6b97aecf93160b270e2c2",
       "docs/examples/global/AGENTS.md": "6d545372bc9ce6a520fbaa707feb4fa30a08ed156c184d174cef9518688709bd",
@@ -999,7 +999,7 @@
       "source/skills/technical-documentation/references/zensical.md": "9facb997d00b3e5c929fc0f4d0735b157d7397c4caa6b9f7da3dbcb261a17fba"
     },
     "navigation": {
-      "README.md": "7c7a16f013248a1c696f8a5f94ee7f051d304f91fd2633da29db0d28ef72cf12",
+      "README.md": "efa64cbf0b2e78d81470e5e13156bd6813665bd1a4be96be65d04183730379f6",
       "docs/.mintlify/product-brief.md": "11fc43a1e7509d8390b7e406b9dcb2846e953d050ecd424db3ef4af30c43a47a",
       "docs/GLOSSARY.md": "939990af4c2602d709d0c8f257fb7a99a70d49929e48383bddb09c376cebd09c",
       "docs/agent-marketplaces.md": "993b41ab864792aabbe6d59b8ceb8b7a3ec83f534217a498a0aad5f71384e520",
@@ -1112,7 +1112,7 @@
       "docs/public/images/favicon.svg": "928bd018ee4e840a835823caf0d335bc8ffa8ddda5a16fe56a5e7e58f2c3cbac",
       "docs/public/images/logo-dark.svg": "527e004b68d4abc66daf5a5e81396863b39560ceb24d7899ae14cae6d124849e",
       "docs/public/images/logo-light.svg": "7a8b4ca635c9d74716885f9fb1432bcae521bc6325c39a918430e289deba3031",
-      "docs/public/index.mdx": "fefb091b8d2a0a9cd158312ece485afa0d7a35a9ac1de6920d5e6e3d104e0b14",
+      "docs/public/index.mdx": "4e1a2cbfed26ac5dd343a4c736c6494662b0f71431ef07e4573dd6328c4dfa51",
       "docs/public/knowledge/architecture/hooks.mdx": "ad297e1df80f4809c52cffa310c066ba0728c115798584327082fef5fa8bea2d",
       "docs/public/knowledge/architecture/projection.mdx": "41896dc5e0f0e9f9b97f99f8beaadac58cc1c7bd9751f4c13d6999a73a3b3809",
       "docs/public/knowledge/concepts/evidence.mdx": "0ddad59ece0b8584952b642253d78286a0ccd58d6ed7c40d9f3f1a471a5d0c1b",
