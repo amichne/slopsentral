@@ -105,6 +105,14 @@ def test_preexisting_dirt_and_read_only_tools_do_not_need_edits(workspace: Path)
     assert invoke(workspace, "Stop") == {}
 
 
+def test_committing_unchanged_preexisting_edits_does_not_create_review(workspace: Path) -> None:
+    _ = (workspace / "module/main.py").write_text("preexisting\n")
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    git(workspace, "add", ".")
+    git(workspace, "commit", "-qm", "retain preexisting bytes")
+    assert invoke(workspace, "Stop") == {}
+
+
 def test_source_changes_gate_completion_and_no_change_review_is_valid(workspace: Path) -> None:
     assert invoke(workspace, "UserPromptSubmit") == {}
     _ = (workspace / "module/main.py").write_text("new source\n")
@@ -120,7 +128,9 @@ def test_source_changes_gate_completion_and_no_change_review_is_valid(workspace:
     assert invoke(workspace, "Stop")["decision"] == "block"
 
 
-def test_instruction_changes_refresh_context_and_name_descendants(workspace: Path) -> None:
+def test_instruction_changes_refresh_once_without_blanket_descendant_review(
+    workspace: Path,
+) -> None:
     _ = (workspace / "module/AGENTS.md").write_text("# Local\nUse the module command.\n")
     git(workspace, "add", ".")
     git(workspace, "commit", "-qm", "child guidance")
@@ -128,9 +138,12 @@ def test_instruction_changes_refresh_context_and_name_descendants(workspace: Pat
     _ = (workspace / "AGENTS.md").write_text("# Repository\nUse the new root command.\n")
     output = json.dumps(invoke(workspace))
     assert "Use the new root command." in output
-    assert "module/AGENTS.md" in output
-    assert "propagation" in output
+    assert "module/AGENTS.md" not in output
+    assert "Review descendants" not in output
     assert invoke(workspace) == {}
+    stopped = invoke(workspace, "Stop")
+    assert stopped["decision"] == "block"
+    assert "Use the new root command." not in str(stopped["reason"])
 
 
 def test_new_scope_and_deleted_instruction_need_review(workspace: Path) -> None:
@@ -377,17 +390,19 @@ def test_remote_refresh_with_new_task_edit_reviews_only_the_edit(workspace: Path
     assert status["pending"] == ["module/main.py"]
 
 
-def test_remote_refresh_preserves_instruction_review_and_context(workspace: Path) -> None:
+def test_remote_instruction_refresh_is_context_not_a_review(workspace: Path) -> None:
     assert invoke(workspace, "UserPromptSubmit") == {}
     remote_change(workspace, instructions=True)
     git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
     output = invoke(workspace, "Stop")
-    assert output["decision"] == "block"
-    assert "Use the upstream command." in str(output["reason"])
+    assert "decision" not in output
+    assert "Use the upstream command." in json.dumps(output)
+    assert "reviewCommand" not in json.dumps(output)
     status = invoke(
         workspace, arguments=("status", "--cwd", str(workspace), "--session-id", "session-a")
     )
-    assert status["pending"] == ["AGENTS.md"]
+    assert status["pending"] == []
+    assert invoke(workspace, "Stop") == {}
 
 
 def test_pushed_task_commit_is_not_a_remote_refresh(workspace: Path) -> None:
@@ -497,3 +512,158 @@ def test_installed_command_accepts_refresh_and_blocks_task_edit(workspace: Path)
     assert event("Stop") == {}
     _ = (workspace / "module/main.py").write_text("installed task edit\n")
     assert event("Stop")["decision"] == "block"
+
+
+def status(repo: Path) -> dict[str, object]:
+    return invoke(repo, arguments=("status", "--cwd", str(repo), "--session-id", "session-a"))
+
+
+def scoped_stop(repo: Path, *paths: Path) -> dict[str, object]:
+    return invoke(
+        repo,
+        raw=json.dumps(
+            {
+                "hook_event_name": "Stop",
+                "cwd": str(repo),
+                "session_id": "session-a",
+                "scope_paths": [str(path) for path in paths],
+            }
+        ),
+    )
+
+
+def test_remote_child_guides_are_deferred_until_their_scope_is_used(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    remote_change(workspace)
+    upstream = workspace.parent / "upstream"
+    for directory in ("module", "unrelated"):
+        (upstream / directory).mkdir(exist_ok=True)
+        _ = (upstream / directory / "AGENTS.md").write_text(f"{directory} upstream guidance\n")
+    git(upstream, "add", ".")
+    git(upstream, "commit", "-qm", "upstream guides")
+    git(workspace, "fetch", "-q", "upstream", "HEAD:refs/remotes/upstream/main")
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    assert invoke(workspace, "Stop") == {}
+    assert status(workspace)["pending"] == []
+    assert status(workspace)["instructionRefreshes"] == ["module/AGENTS.md", "unrelated/AGENTS.md"]
+    output = scoped_stop(workspace, workspace / "module/main.py")
+    assert "decision" not in output
+    assert "module upstream guidance" in json.dumps(output)
+    assert "unrelated" not in json.dumps(output)
+    assert scoped_stop(workspace, workspace / "module/main.py") == {}
+    assert status(workspace)["instructionRefreshes"] == ["unrelated/AGENTS.md"]
+
+
+def test_remote_instruction_refresh_preserves_local_instruction_edits(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    remote_change(workspace, instructions=True)
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    _ = (workspace / "AGENTS.md").write_text("Local override after pull\n")
+    output = invoke(workspace, "Stop")
+    assert output["decision"] == "block"
+    assert "Local override after pull" in str(output["reason"])
+    assert status(workspace)["provenance"] == {"local": ["AGENTS.md"], "unattributed": []}
+
+
+def test_remote_instruction_refresh_preserves_existing_review(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    _ = (workspace / "module/main.py").write_text("local task edit\n")
+    assert invoke(workspace, "Stop")["decision"] == "block"
+    remote_change(workspace, instructions=True)
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    output = invoke(workspace, "Stop")
+    assert output["decision"] == "block"
+    assert "Use the upstream command." in str(output["reason"])
+    assert status(workspace)["pending"] == ["module/main.py"]
+
+
+def test_unknown_head_provenance_is_retained_after_snapshot_advances(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    _ = (workspace / "module/main.py").write_text("committed task edit\n")
+    git(workspace, "add", ".")
+    git(workspace, "commit", "-qm", "task edit")
+    assert invoke(workspace, "Stop")["decision"] == "block"
+    assert status(workspace)["provenance"] == {"local": [], "unattributed": ["module/main.py"]}
+    assert invoke(workspace, "Stop")["decision"] == "block"
+    assert status(workspace)["provenance"] == {"local": [], "unattributed": ["module/main.py"]}
+
+
+def test_review_summary_groups_paths_and_leaves_full_inventory_on_demand(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    for index in range(1005):
+        _ = (workspace / "module" / f"file-{index:04}.py").write_text("task edit\n")
+    output = invoke(workspace, "Stop")
+    reason = str(output["reason"])
+    assert output["decision"] == "block"
+    assert len(reason.encode()) < 6000
+    assert reason.count('Scope "AGENTS.md"') == 1
+    assert "1005 changed paths" in reason
+    assert "file-1004.py" not in reason
+    assert status(workspace)["pending"] == [f"module/file-{index:04}.py" for index in range(1005)]
+    assert review(workspace)["paths"] == 1005
+
+
+def test_large_remote_instruction_is_referenced_without_truncation_or_review(
+    workspace: Path,
+) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    remote_change(workspace, instructions=True)
+    upstream = workspace.parent / "upstream"
+    _ = (upstream / "AGENTS.md").write_text("large-private-guidance\n" * 2000)
+    git(upstream, "add", ".")
+    git(upstream, "commit", "-qm", "large upstream guide")
+    git(workspace, "fetch", "-q", "upstream", "HEAD:refs/remotes/upstream/main")
+    git(workspace, "merge", "--ff-only", "refs/remotes/upstream/main")
+    output = invoke(workspace, "Stop")
+    assert "decision" not in output
+    assert "AGENTS.md" in json.dumps(output)
+    assert "large-private-guidance" not in json.dumps(output)
+    assert len(json.dumps(output)) < 2000
+    assert status(workspace)["pending"] == []
+    assert invoke(workspace, "Stop") == {}
+
+
+@pytest.mark.parametrize(
+    "paths", [None, "module/main.py", ["relative/path"], [17], ["/bad\u0000path"]]
+)
+def test_invalid_scope_evidence_is_rejected(workspace: Path, paths: object) -> None:
+    output = invoke(
+        workspace,
+        raw=json.dumps(
+            {
+                "hook_event_name": "Stop",
+                "cwd": str(workspace),
+                "session_id": "session-a",
+                "scope_paths": paths,
+            }
+        ),
+    )
+    assert "INVALID_EVENT" in json.dumps(output)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [("refresh", None), ("refresh", ["main.py"]), ("pending", {"local": []}), ("version", True)],
+)
+def test_invalid_provenance_state_cannot_release_review(
+    workspace: Path, field: str, value: object
+) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    file = next((workspace.parent / "codex/state/agents-md-scope").glob("*.json"))
+    state = json.loads(file.read_text())
+    state[field] = value
+    _ = file.write_text(json.dumps(state))
+    output = invoke(workspace, "Stop")
+    assert output["decision"] == "block"
+    assert "INVALID_STATE" in str(output["reason"])
+
+
+def test_legacy_pending_review_is_migrated_as_unattributed(workspace: Path) -> None:
+    assert invoke(workspace, "UserPromptSubmit") == {}
+    file = next((workspace.parent / "codex/state/agents-md-scope").glob("*.json"))
+    state = json.loads(file.read_text())
+    state.update(version=1, pending=["module/main.py"])
+    state.pop("refresh", None)
+    _ = file.write_text(json.dumps(state))
+    assert invoke(workspace, "Stop")["decision"] == "block"
+    assert status(workspace)["provenance"] == {"local": [], "unattributed": ["module/main.py"]}

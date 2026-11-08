@@ -16,6 +16,24 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/interactive-views",
+      "name": "interactive-views"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/reviewable-artifacts",
+      "name": "reviewable-artifacts"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/code-knowledge-base",
       "name": "code-knowledge-base"
     },
@@ -71,7 +89,7 @@
   ],
   "metadata": {
     "composition": "referential",
-    "dailyDriver": "Choose for documentation, glossary bootstrapping, source-backed OKF knowledge, OpenWiki handoffs, navigation, or sibling knowledge overlays.",
+    "dailyDriver": "Choose for documentation, reviewable HTML artifacts, interactive visualizations, glossary bootstrapping, source-backed OKF knowledge, OpenWiki handoffs, navigation, or sibling knowledge overlays.",
     "harness": "provider-neutral",
     "notFor": "Automatic knowledge generation during ordinary code tasks or treating documentation as source authority.",
     "owner": "repository-knowledge",

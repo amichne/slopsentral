@@ -4,6 +4,24 @@ Reviewed 2026-09-05. Local skills retain task-specific ideas and use original
 wording and examples instead of importing a second full skill collection.
 Per-skill provenance travels with standalone installations.
 
+## Portable Interactive Views
+
+`interactive-views` adapts Amp's `creating-views` version `0ed58f1025f027d5` into
+host-neutral HTML visualizations. Its kit, examples, detailed guidance, and local renderer
+retain the upstream approach without a proprietary inline renderer or injected resources.
+[Per-skill provenance](skills/interactive-views/references/provenance.md) records input
+hashes, retained icon attribution, changes, and unresolved redistribution terms. Confirm
+those terms before publishing the adapted materials.
+
+## Portable HTML Artifacts
+
+`reviewable-artifacts` adapts Amp's `creating-artifacts` version `17d8ed06bb277c26`
+for host-neutral local use. It retains the reader-first document and visual guidance,
+with an adapted template and checker, but removes orb and portal dependencies.
+[Per-skill provenance](skills/reviewable-artifacts/references/provenance.md) records
+input hashes, changes, and the unresolved upstream redistribution terms. Confirm those
+terms before publishing the adapted materials; this local addition is not a license grant.
+
 ## Model Guidance
 
 [OpenAI model guidance, GPT-6 Astra](https://developers.openai.com/api/docs/guides/latest-model)

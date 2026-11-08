@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { getAgentDir, type ExtensionAPI, type ExtensionContext } from '@earendil-works/pi-coding-agent';
 import { readHookSettings, registerHookControls, type Adapter, type Hook, type HookEvent, type HookSettings } from './controls.ts';
@@ -31,7 +32,7 @@ export function decode(text: string): Result {
 
 // The host adapter supplies the legacy wire shape to the canonical hook implementation.
 // Neither tool arguments nor model text enter the shell command.
-export function runHook(hook: Hook, root: string, cwd: string, session: string, signal?: AbortSignal): Promise<Result> {
+export function runHook(hook: Hook, root: string, cwd: string, session: string, signal?: AbortSignal, scopePaths: readonly string[] = []): Promise<Result> {
   return new Promise(resolve => {
     if (signal?.aborted) { resolve({ type: 'failed', reason: 'HOOK_CANCELLED' }); return; }
     const command = hook.command.replace(/\bhooks\/[A-Za-z0-9_.-]+/g, file => '"$PLUGIN_ROOT/' + file + '"');
@@ -58,7 +59,7 @@ export function runHook(hook: Hook, root: string, cwd: string, session: string, 
         ? { type: 'failed', reason: `HOOK_EXIT_${code ?? 'SIGNAL'}: ${hook.name}. Examine uv and the hook dependencies.` }
         : decode(stdout));
     });
-    child.stdin.end(JSON.stringify({ hook_event_name: hook.event, cwd, session_id: session, source: 'startup', stop_hook_active: false }));
+    child.stdin.end(JSON.stringify({ hook_event_name: hook.event, cwd, session_id: session, source: 'startup', stop_hook_active: false, scope_paths: scopePaths }));
   });
 }
 
@@ -66,23 +67,26 @@ export function register(pi: ExtensionAPI, root: string, adapter: Adapter): void
   let sessionState: { type: 'cold' } | { type: 'ready'; context: string; revision: string } = { type: 'cold' };
   let admission: Result = { type: 'accepted', context: '' };
   let repairState: 'available' | 'used' = 'available';
+  const scopePaths = new Set<string>();
   registerHookControls(pi, root, adapter, () => { sessionState = { type: 'cold' }; });
   const run = async (event: HookEvent, ctx: ExtensionContext, settings: HookSettings): Promise<Result> => {
     if (settings.type === 'failed') return settings;
     const context: string[] = [];
     for (const hook of adapter.hooks.filter(h => h.event === event && !settings.disabled.has(adapter.plugin + '/' + h.name))) {
-      const result = await runHook(hook, root, ctx.cwd, ctx.sessionManager.getSessionId(), ctx.signal);
+      const result = await runHook(hook, root, ctx.cwd, ctx.sessionManager.getSessionId(), ctx.signal, [...scopePaths].sort());
       if (result.type !== 'accepted') return result;
       if (result.context) context.push(result.context);
     }
     return { type: 'accepted', context: context.join('\n\n') };
   };
   pi.on('session_start', () => {
+    scopePaths.clear();
     sessionState = { type: 'cold' };
     admission = { type: 'accepted', context: '' };
     repairState = 'available';
   });
   pi.on('before_agent_start', async (event, ctx) => {
+    if (event.messageType === 'user') scopePaths.clear();
     repairState = 'available';
     const settings = readHookSettings();
     const revision = settings.type === 'ready' ? JSON.stringify([...settings.disabled].sort()) : '';
@@ -107,6 +111,15 @@ export function register(pi: ExtensionAPI, root: string, adapter: Adapter): void
     const settings = readHookSettings();
     if (settings.type === 'failed') return { block: true, reason: settings.reason };
     return admission.type !== 'accepted' ? { block: true, reason: admission.reason } : undefined;
+  });
+  pi.on('tool_result', (event, ctx) => {
+    // Scope evidence only: no subprocess per tool and no parsing shell commands.
+    // Failed writes are still detected by the canonical Git snapshot at settlement.
+    if (!event.isError && ['read', 'edit', 'write'].includes(event.toolName)
+      && typeof event.input.path === 'string' && event.input.path && !event.input.path.includes('\0')) {
+      const file = event.input.path.startsWith('~/') ? path.join(os.homedir(), event.input.path.slice(2)) : event.input.path;
+      scopePaths.add(path.resolve(ctx.cwd, file));
+    }
   });
   pi.on('agent_before_settle', async (event, ctx) => {
     if (event.outcome !== 'completed') return;

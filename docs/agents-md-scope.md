@@ -1,7 +1,7 @@
 # Maintain scoped instructions
 
 The `agents-md-scope` hook requests instruction maintenance after Git changes.
-It names the affected scopes and includes changed instruction text in its response.
+It groups task changes by instruction scope and refreshes changed instructions only where they apply.
 The agent must examine the source before it changes instructions.
 
 Shared rules belong in the ancestor that owns them.
@@ -25,15 +25,29 @@ Older state without a reflog checkpoint also keeps that conservative behavior fo
 
 Remote refreshes preserve pending reviews and new local edits.
 Unchanged preexisting edits create no new obligation.
-Changed instruction files still refresh context and need their normal scope review, including when they arrive from a remote.
+Clean instruction changes from a proven remote refresh update context without creating a review obligation or an automatic repair turn.
+Local instruction edits still need review, even when they occur during a remote refresh.
+Global instruction changes and uncertain HEAD changes also retain their review.
 
-Changed instructions trigger a review of their descendants.
-The hook reads `AGENTS.md` and `AGENTS.override.md` in the repository and its ancestors.
-It also reads the global instructions under `CODEX_HOME`.
+The hook fingerprints `AGENTS.md` and `AGENTS.override.md` in the repository, its ancestors, and the host's global instruction directory.
+Fingerprinting does not put every guide into model context.
+Changed instruction text is delivered only for ancestors of the working directory, pending local scopes, or paths supplied by the host.
+Other changed guides remain queued until their scope is used.
+Pi supplies successful `read`, `edit`, and `write` paths for the current user task at the next hook boundary.
+It does not guess paths from shell commands or run a hook subprocess after every tool.
+Those operations rely on the working directory and Git changes for scope detection.
+
+Each refresh emits at most 8 KiB and does not repeat unchanged instruction text.
+Oversized guides are referenced rather than truncated; remaining guides stay queued.
+Review summaries use at most 4 KiB, group paths by their instruction owner, and show up to three examples per group.
+The `status` command exposes the full path inventory on demand.
+A changed guide no longer triggers a blanket descendant review.
+Review only descendants affected by a changed rule, not by timestamps or other metadata.
 The hook rejects instruction symlinks and keeps source payloads outside diagnostic logs.
 Generated Slopsentral projections under `.agents/plugins` and `.github/plugin` stay with their authored owners.
 
-`Stop` requests a continuation until the agent records its scope review.
+`Stop` blocks completion only when a maintenance review remains pending.
+The Pi adapter permits one automatic repair continuation per user request; context-only refreshes do not request one.
 The response contains exact `status` and `review` commands for that repository and session.
 The agent replaces the sample note with its source-backed result.
 A no-change result is valid when the existing instructions still describe the source.
@@ -74,7 +88,12 @@ A local Git actor can rewrite reflog messages or remote refs.
 The hook trusts those local records.
 A directory outside a readable Git repository receives an explicit skip result.
 
-State stays under `$CODEX_HOME/state/agents-md-scope`, outside the repository.
+State stays under `$SLOPSENTRAL_SCOPE_HOME/state/agents-md-scope`, falling back to `$CODEX_HOME/state/agents-md-scope`, outside the repository.
+Pi selects its own agent directory as `SLOPSENTRAL_SCOPE_HOME`.
+State version 2 keeps local changes, changes from uncertain HEAD transitions, and queued instruction refreshes separate.
+The `status` response retains `pending` and adds `provenance`, `instructionRefreshes`, and grouped `scopes`.
+Version 1 pending reviews migrate as unattributed changes; migration never clears them.
+Older hook versions reject version 2 state rather than silently dropping reviews.
 Each repository and session has a separate state file and lock.
 A missing baseline reports unproved earlier coverage.
 Malformed state or instruction failures block `Stop` with an explicit failure code.

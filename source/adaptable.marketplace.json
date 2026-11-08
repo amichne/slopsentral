@@ -194,6 +194,24 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/interactive-views",
+      "name": "interactive-views"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
+      "path": "skills/reviewable-artifacts",
+      "name": "reviewable-artifacts"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/lsp-management",
       "name": "lsp-management"
     },

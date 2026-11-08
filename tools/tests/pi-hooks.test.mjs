@@ -196,6 +196,29 @@ test('hook switches cannot bypass an unavailable shared instruction', async t =>
     { block: true, reason: 'INSTRUCTION_UNAVAILABLE' });
 });
 
+test('native scope evidence includes successful file tools, not shell guesses or failed reads', async t => {
+  const { directory, start, settle, runner } = await fixture(t);
+  fs.writeFileSync(path.join(directory, 'scope/hooks/fixture.mjs'), `
+    let text = ''; for await (const chunk of process.stdin) text += chunk;
+    console.log(JSON.stringify({hookSpecificOutput:{additionalContext:JSON.stringify(JSON.parse(text).scope_paths ?? [])}}));
+  `);
+  await start();
+  for (const [toolName, input, isError] of [
+    ['read', { path: 'module/main.py' }, false],
+    ['read', { path: 'missing/secret.py' }, true],
+    ['edit', { path: 'module/main.py' }, false],
+    ['write', { path: 'other/new.py' }, false],
+    ['bash', { command: 'cat unrelated/AGENTS.md' }, false],
+  ]) await runner.emitToolResult({ type: 'tool_result', toolCallId: toolName, toolName, input, content: [], isError, details: undefined });
+  const boundary = await settle();
+  const scope = boundary.entries.find(entry => entry.customType === 'slopsentral-scope');
+  assert.deepEqual(JSON.parse(scope.content), [path.join(directory, 'module/main.py'), path.join(directory, 'other/new.py')]);
+  assert.equal(boundary.continue, false);
+  // Starting another user task does not widen it with the previous task's read paths.
+  await start();
+  assert.deepEqual(JSON.parse((await settle()).entries.find(entry => entry.customType === 'slopsentral-scope').content), []);
+});
+
 test('the schema and runtime ingress reject nonbinary, duplicate, and malformed choices', () => {
   const schema = JSON.parse(fs.readFileSync(new URL('../../source/schemas/pi/hooks.schema.json', import.meta.url)));
   const validate = new Ajv2020({ strict: true }).compile(schema);
