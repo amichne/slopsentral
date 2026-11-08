@@ -30,11 +30,12 @@ from pathlib import Path, PurePosixPath
 from typing import Literal, TypeGuard
 
 MAX_BYTES = 16 * 1024 * 1024
-MAX_CONTEXT = 24 * 1024
+MAX_CONTEXT = 8 * 1024
+MAX_GUIDANCE = 4 * 1024
 MAX_SESSION = 256
 SHA256_LENGTH = 64
 STATUS_PREFIX = 3
-PATH_LIMIT = 60
+PATH_LIMIT = 3
 INSTRUCTIONS = frozenset({"AGENTS.md", "AGENTS.override.md"})
 MANIFESTS = frozenset(
     {
@@ -83,6 +84,7 @@ class Event:
     name: EventName
     session: str
     cwd: Path
+    scope_paths: tuple[Path, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -125,6 +127,11 @@ class UnattributedHeadChange:
 
 
 @dataclass(frozen=True)
+class UnchangedHead:
+    pass
+
+
+@dataclass(frozen=True)
 class Snapshot:
     head: Revision
     dirty: dict[str, str]
@@ -133,10 +140,33 @@ class Snapshot:
 
 
 @dataclass(frozen=True)
+class ReviewChanges:
+    local: tuple[str, ...] = ()
+    unattributed: tuple[str, ...] = ()
+
+    @property
+    def paths(self) -> tuple[str, ...]:
+        return tuple(sorted(set(self.local) | set(self.unattributed)))
+
+
+@dataclass(frozen=True)
+class Changes:
+    review: ReviewChanges
+    instructions: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class Refreshed:
+    context: str
+    remaining: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class State:
     snapshot: Snapshot
-    pending: tuple[str, ...]
+    pending: ReviewChanges
     note: str
+    refresh: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -177,7 +207,18 @@ def parse_event(raw: bytes) -> Event | Rejected:
             or not Path(cwd).is_absolute()
         ):
             return Rejected(Code.INVALID_EVENT)
-        return Event(EventName(name), session, Path(cwd))
+        scoped = value.get("scope_paths", [])
+        if not sequence(scoped) or not all(
+            isinstance(item, str) and "\0" not in item and Path(item).is_absolute()
+            for item in scoped
+        ):
+            return Rejected(Code.INVALID_EVENT)
+        return Event(
+            EventName(name),
+            session,
+            Path(cwd),
+            tuple(Path(os.path.normpath(item)) for item in scoped if isinstance(item, str)),
+        )
     except (ValueError, UnicodeDecodeError, RecursionError):
         return Rejected(Code.INVALID_EVENT)
 
@@ -447,7 +488,11 @@ def load(file: Path, root: Path) -> State | Rejected:
         value: object = json.loads(file.read_bytes())
     except (ValueError, UnicodeDecodeError, RecursionError):
         return Rejected(Code.INVALID_STATE)
-    if not mapping(value) or value.get("version") != 1:
+    if (
+        not mapping(value)
+        or type(value.get("version")) is not int
+        or value.get("version") not in (1, 2)
+    ):
         return Rejected(Code.INVALID_STATE)
     return parse_state(value, root)
 
@@ -459,6 +504,10 @@ def parse_state(value: dict[str, object], root: Path) -> State | Rejected:
     head = parse_revision(stored.get("head"))
     history = parse_history(stored.get("history"))
     note, pending = value.get("note"), value.get("pending")
+    if value.get("version") == 1:
+        legacy_pending: dict[str, object] = {"local": [], "unattributed": pending}
+        pending = legacy_pending
+    refresh = list[str]() if value.get("version") == 1 else value.get("refresh")
     dirty, instructions = string_map(stored.get("dirty")), string_map(stored.get("instructions"))
     if isinstance(dirty, Rejected) or isinstance(instructions, Rejected):
         return Rejected(Code.INVALID_STATE)
@@ -467,25 +516,48 @@ def parse_state(value: dict[str, object], root: Path) -> State | Rejected:
         isinstance(head, Rejected)
         or isinstance(history, Rejected)
         or not isinstance(note, str)
-        or not sequence(pending)
-        or not all(isinstance(item, str) for item in pending)
+        or not mapping(pending)
+        or set(pending) != {"local", "unattributed"}
     ):
         return Rejected(Code.INVALID_STATE)
-    names: tuple[str, ...] = tuple(item for item in pending if isinstance(item, str))
+    local = parse_names(pending.get("local"), allowed_external)
+    unattributed = parse_names(pending.get("unattributed"), allowed_external)
+    refreshed = parse_names(refresh, allowed_external)
+    if (
+        isinstance(local, Rejected)
+        or isinstance(unattributed, Rejected)
+        or isinstance(refreshed, Rejected)
+    ):
+        return Rejected(Code.INVALID_STATE)
     if (
         not all(authored(name) for name in dirty)
-        or not all(authored(name) or name in allowed_external for name in (*instructions, *names))
-        or not all(PurePosixPath(name).name in INSTRUCTIONS for name in instructions)
+        or not all(authored(name) or name in allowed_external for name in instructions)
+        or not all(PurePosixPath(name).name in INSTRUCTIONS for name in (*instructions, *refreshed))
     ):
         return Rejected(Code.INVALID_STATE)
-    return State(Snapshot(head, dirty, instructions, history), names, note)
+    return State(
+        Snapshot(head, dirty, instructions, history),
+        ReviewChanges(local, unattributed),
+        note,
+        refreshed,
+    )
 
 
-def changed(root: Path, before: Snapshot, after: Snapshot) -> tuple[str, ...] | Rejected:
-    candidates = set(before.dirty) | set(after.dirty)
-    if before.head != after.head and isinstance(
-        remote_refresh(root, before, after), UnattributedHeadChange
+def parse_names(value: object, allowed_external: set[str]) -> tuple[str, ...] | Rejected:
+    if not sequence(value) or not all(
+        isinstance(item, str) and (authored(item) or item in allowed_external) for item in value
     ):
+        return Rejected(Code.INVALID_STATE)
+    return tuple(sorted({item for item in value if isinstance(item, str)}))
+
+
+def changed(root: Path, before: Snapshot, after: Snapshot) -> Changes | Rejected:
+    candidates = set(before.dirty) | set(after.dirty)
+    transition = (
+        remote_refresh(root, before, after) if before.head != after.head else UnchangedHead()
+    )
+    committed_paths: tuple[str, ...] = ()
+    if before.head != after.head and isinstance(transition, UnattributedHeadChange):
         if not isinstance(after.head, Commit):
             return Rejected(Code.GIT_FAILED)
         committed = (
@@ -497,18 +569,33 @@ def changed(root: Path, before: Snapshot, after: Snapshot) -> tuple[str, ...] | 
         )
         if isinstance(committed, Rejected):
             return committed
-        candidates.update(paths(committed))
-    result = {
+        committed_paths = tuple(
+            name
+            for name in paths(committed)
+            if authored(name) and before.dirty.get(name) != fingerprint(root / name)
+        )
+    local = {
         name
         for name in candidates
         if authored(name) and before.dirty.get(name) != fingerprint(root / name)
     }
-    result.update(
-        name
-        for name in before.instructions.keys() | after.instructions.keys()
-        if before.instructions.get(name) != after.instructions.get(name)
+    instructions = tuple(
+        sorted(
+            name
+            for name in before.instructions.keys() | after.instructions.keys()
+            if before.instructions.get(name) != after.instructions.get(name)
+        )
     )
-    return tuple(sorted(result))
+    for name in instructions:
+        # Only clean repository instructions can be attributed to a proven refresh.
+        # Global instructions and simultaneous local edits retain their review.
+        if name not in committed_paths and not (
+            isinstance(transition, RemoteRefresh)
+            and not Path(name).is_absolute()
+            and name not in candidates
+        ):
+            local.add(name)
+    return Changes(ReviewChanges(tuple(sorted(local)), committed_paths), instructions)
 
 
 def scope(root: Path, name: str) -> str:
@@ -522,62 +609,86 @@ def scope(root: Path, name: str) -> str:
     return "AGENTS.md"
 
 
-def guidance(root: Path, names: tuple[str, ...], current: Snapshot) -> str | Rejected:
+def grouped_scopes(root: Path, names: tuple[str, ...]) -> dict[str, list[str]]:
+    groups: dict[str, list[str]] = {}
+    for name in names:
+        groups.setdefault(scope(root, name), []).append(name)
+    return groups
+
+
+def guidance(root: Path, names: tuple[str, ...]) -> str:
+    groups = grouped_scopes(root, names)
     lines = [
-        "AGENTS.md scope review and propagation:",
-        "Examine the source changes and inherited instructions for each affected scope.",
-        "Update instructions only when commands, ownership, or local rules change.",
-        "Create a child AGENTS.md only for a source-backed local difference. Keep shared rules in the ancestor.",
+        f"AGENTS.md scope review: {len(names)} changed paths in {len(groups)} scopes.",
+        "Review only task-relevant commands, ownership, and local rules. A no-change result is valid.",
+        "Reuse unchanged instructions already in context. Do not read every guide or source file.",
+        "Propagate a changed rule only to scopes it affects; metadata changes do not require descendant review.",
+        "Create child instructions only for source-backed local differences; shared rules stay in the ancestor.",
         "Keep generated files and installed caches under their source owners.",
     ]
-    for name in names[:PATH_LIMIT]:
-        lines.append(f"- {json.dumps(name)} -> review {json.dumps(scope(root, name))}")
-        if PurePosixPath(name).name in MANIFESTS:
-            candidate = str(PurePosixPath(name).parent / "AGENTS.md")
-            lines.append(
-                f"  Consider {json.dumps(candidate)} only if this scope needs local instructions."
-            )
-        if PurePosixPath(name).name in INSTRUCTIONS:
-            prefix = str(PurePosixPath(name).parent)
-            children = [
-                child
-                for child in current.instructions
-                if not Path(child).is_absolute()
-                and child != name
-                and (prefix == "." or child.startswith(prefix + "/"))
-            ]
-            lines.append(
-                "  Review descendants for propagation: " + json.dumps(children[:PATH_LIMIT])
-            )
-            file = Path(name) if Path(name).is_absolute() else root / name
-            if file.is_file():
-                if file.is_symlink():
-                    return Rejected(Code.UNSAFE_INSTRUCTION)
-                with file.open("rb") as stream:
-                    raw = stream.read(MAX_CONTEXT + 1)
-                if len(raw) > MAX_CONTEXT:
-                    lines.append(
-                        "  Read the current instruction file. Its content exceeds the context limit."
-                    )
-                else:
-                    try:
-                        text = raw.decode("utf-8")
-                    except UnicodeDecodeError:
-                        return Rejected(Code.UNSAFE_INSTRUCTION)
-                    lines.append(f"  Current instructions from {json.dumps(name)}:\n{text}")
-            else:
-                lines.append("  The instruction file was deleted. Reassess the inherited rules.")
-    if len(names) > PATH_LIMIT:
-        lines.append(f"Review all {len(names)} changed paths with the status command.")
-    text = "\n".join(lines)
-    if len(text.encode()) > MAX_CONTEXT:
-        # Keep the full path inventory in state. Never truncate an instruction's contents.
-        text = (
-            "AGENTS.md scope review needs more than the context limit. "
-            "Use the status command to examine every affected path and read its instruction chain. "
-            "Create child instructions only for source-backed local differences."
+    for owner, paths_in_scope in groups.items():
+        block = f"Scope {json.dumps(owner)}: {len(paths_in_scope)} changed paths; examples: {json.dumps(paths_in_scope[:PATH_LIMIT])}"
+        candidates = sorted(
+            {
+                str(PurePosixPath(name).parent / "AGENTS.md")
+                for name in paths_in_scope
+                if PurePosixPath(name).name in MANIFESTS
+            }
         )
-    return text
+        if candidates:
+            block += (
+                f"\n  Potential local scopes, only if needed: {json.dumps(candidates[:PATH_LIMIT])}"
+            )
+        if len(("\n".join(lines) + "\n" + block).encode()) > MAX_GUIDANCE - 150:
+            lines.append(
+                "More scopes omitted from this summary; the status command retains the full inventory."
+            )
+            break
+        lines.append(block)
+    return "\n".join(lines)
+
+
+def refresh_context(
+    root: Path, event: Event, names: tuple[str, ...], pending: tuple[str, ...]
+) -> Refreshed | Rejected:
+    directories = (
+        event.cwd,
+        *(file.parent for file in event.scope_paths),
+        *((root / name).parent for name in pending if not Path(name).is_absolute()),
+    )
+    lines = [
+        "Changed applicable instructions (context refresh, not an instruction-maintenance request):"
+    ]
+    remaining: list[str] = []
+    for name in names:
+        file = Path(name) if Path(name).is_absolute() else root / name
+        if not Path(name).is_absolute() and not any(
+            directory.is_relative_to(file.parent) for directory in directories
+        ):
+            remaining.append(name)
+            continue
+        if file.is_symlink():
+            return Rejected(Code.UNSAFE_INSTRUCTION)
+        if file.is_file():
+            with file.open("rb") as stream:
+                raw = stream.read(MAX_CONTEXT + 1)
+            if len(raw) > MAX_CONTEXT:
+                block = f"Read {json.dumps(name)} before further work in its scope; its content exceeds the refresh budget."
+            else:
+                try:
+                    text = raw.decode("utf-8")
+                except UnicodeDecodeError:
+                    return Rejected(Code.UNSAFE_INSTRUCTION)
+                block = f"Current instructions from {json.dumps(name)}:\n{text}"
+                if len((lines[0] + "\n" + block).encode()) > MAX_CONTEXT:
+                    block = f"Read {json.dumps(name)} before further work in its scope; its content exceeds the refresh budget."
+        else:
+            block = f"Instruction {json.dumps(name)} was deleted. Use the remaining ancestor instructions in this scope."
+        if len(("\n".join(lines) + "\n" + block).encode()) > MAX_CONTEXT:
+            remaining.append(name)
+            continue
+        lines.append(block)
+    return Refreshed("\n".join(lines) if len(lines) > 1 else "", tuple(remaining))
 
 
 def save(file: Path, state: State) -> None:
@@ -586,7 +697,7 @@ def save(file: Path, state: State) -> None:
     ) as stream:
         temporary = Path(stream.name)
         try:
-            _ = stream.write(json.dumps({"version": 1, **asdict(state)}, sort_keys=True) + "\n")
+            _ = stream.write(json.dumps({"version": 2, **asdict(state)}, sort_keys=True) + "\n")
         finally:
             stream.close()
     try:
@@ -646,7 +757,7 @@ def process(root: Path, event: Event, mode: Mode, note: str) -> dict[str, object
         if not file.exists():
             if mode == Mode.REVIEW:
                 return Rejected(Code.MISSING_REVIEW)
-            save(file, State(current, (), ""))
+            save(file, State(current, ReviewChanges(), ""))
             return (
                 {}
                 if event.name == EventName.START
@@ -668,36 +779,44 @@ def maintain(
     delta = changed(root, previous.snapshot, current)
     if isinstance(delta, Rejected):
         return delta
-    pending = tuple(sorted(set(previous.pending) | set(delta)))
+    pending = ReviewChanges(
+        tuple(sorted(set(previous.pending.local) | set(delta.review.local))),
+        tuple(sorted(set(previous.pending.unattributed) | set(delta.review.unattributed))),
+    )
+    refresh = tuple(sorted(set(previous.refresh) | set(delta.instructions)))
     if mode == Mode.REVIEW:
-        return record_review(file, State(current, pending, note))
+        return record_review(file, State(current, pending, note, refresh))
     if mode == Mode.STATUS:
         return {
             "type": "SCOPE_STATUS",
-            "pending": pending,
+            "pending": pending.paths,
+            "provenance": asdict(pending),
+            "instructionRefreshes": refresh,
+            "scopes": grouped_scopes(root, pending.paths),
             "reviewCommand": review_command(event, Mode.REVIEW),
         }
-    context = guidance(root, delta, current) if delta else ""
-    if isinstance(context, Rejected):
-        return context
-    save(file, State(current, pending, previous.note))
-    return hook_response(root, event, State(current, pending, previous.note), context)
+    refreshed = refresh_context(root, event, refresh, pending.paths)
+    if isinstance(refreshed, Rejected):
+        return refreshed
+    state = State(current, pending, previous.note, refreshed.remaining)
+    save(file, state)
+    return hook_response(root, event, state, refreshed.context, delta.review.paths)
 
 
 def record_review(file: Path, state: State) -> dict[str, object] | Rejected:
-    if not state.pending or not state.note.strip() or "REPLACE WITH" in state.note:
+    if not state.pending.paths or not state.note.strip() or "REPLACE WITH" in state.note:
         return Rejected(Code.MISSING_REVIEW)
-    save(file, State(state.snapshot, (), state.note))
-    return {"type": "REVIEW_RECORDED", "paths": len(state.pending), "note": state.note}
+    # The explicit review acknowledges current instructions in its reviewed scopes.
+    remaining = tuple(name for name in state.refresh if name not in state.pending.paths)
+    save(file, State(state.snapshot, ReviewChanges(), state.note, remaining))
+    return {"type": "REVIEW_RECORDED", "paths": len(state.pending.paths), "note": state.note}
 
 
 def hook_response(
-    root: Path, event: Event, state: State, context: str
-) -> dict[str, object] | Rejected:
-    if event.name == EventName.STOP and state.pending:
-        reason = guidance(root, state.pending, state.snapshot)
-        if isinstance(reason, Rejected):
-            return reason
+    root: Path, event: Event, state: State, context: str, delta: tuple[str, ...]
+) -> dict[str, object]:
+    if event.name == EventName.STOP and state.pending.paths:
+        reason = "\n\n".join(filter(None, (context, guidance(root, state.pending.paths))))
         return {
             "decision": "block",
             "reason": reason
@@ -706,13 +825,14 @@ def hook_response(
             + "\nFull path inventory:\n"
             + review_command(event, Mode.STATUS),
         }
+    if delta:
+        context = "\n\n".join(filter(None, (context, guidance(root, delta))))
+        context += "\nFull path inventory:\n" + review_command(event, Mode.STATUS)
     if context:
         return {
             "hookSpecificOutput": {
                 "hookEventName": event.name.value,
-                "additionalContext": context
-                + "\nFull path inventory:\n"
-                + review_command(event, Mode.STATUS),
+                "additionalContext": context,
             }
         }
     return {}

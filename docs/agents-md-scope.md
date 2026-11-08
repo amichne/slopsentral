@@ -1,6 +1,6 @@
 # Maintain scoped instructions
 
-The `agents-md-scope` hook maps Git changes to instruction scopes.
+The `agents-md-scope` hook groups task changes by instruction scope and refreshes changed instructions only where they apply.
 The agent examines those scopes and records either an instruction change or a source-backed no-change decision.
 A receipt records that review. It does not prove that the instructions are correct.
 
@@ -14,24 +14,41 @@ The first `UserPromptSubmit` creates a baseline without an obligation for preexi
 Later prompts and `Stop` compare actual changes with that snapshot.
 The comparison includes committed edits, untracked files, renames, deletions, failed-tool changes, and external edits between events.
 
-Changed instructions also create a review of descendant scopes.
-The hook reads repository and ancestor `AGENTS.md` and `AGENTS.override.md` files.
-It includes the global instruction scope under `CODEX_HOME` and rejects instruction symlinks.
-
 A proven remote refresh exempts source changes from a new task obligation.
 The hook uses an unbroken HEAD reflog chain to a remote-backed commit for that decision.
 Local commits in the chain keep their review obligation, including after a push.
 Missing or rewritten history keeps the conservative source review.
-Remote refreshes preserve pending reviews and local edits.
-Changed instruction files still need their scope review.
+Remote refreshes preserve pending reviews and new local edits.
+Unchanged preexisting edits create no new obligation.
+Clean instruction changes from a proven remote refresh update context without creating a review obligation or an automatic repair turn.
+Local instruction edits still need review, even when they occur during a remote refresh.
+Global instruction changes and uncertain HEAD changes also retain their review.
 
-`Stop` requests continuation while a review remains pending.
-Use its exact `status` command to examine affected paths.
-Read each instruction chain before its exact `review` command.
-Replace the sample note with the source-backed decision.
+The hook fingerprints `AGENTS.md` and `AGENTS.override.md` in the repository, its ancestors, and the host's global instruction directory.
+Fingerprinting does not put every guide into model context.
+Changed instruction text is delivered only for ancestors of the working directory, pending local scopes, or paths supplied by the host.
+Other changed guides remain queued until their scope is used.
+Pi supplies successful `read`, `edit`, and `write` paths for the current user task at the next hook boundary.
+It does not guess paths from shell commands or run a hook subprocess after every tool.
+Those operations rely on the working directory and Git changes for scope detection.
+
+Each refresh emits at most 8 KiB and does not repeat unchanged instruction text.
+Oversized guides are referenced rather than truncated; remaining guides stay queued.
+Review summaries use at most 4 KiB, group paths by their instruction owner, and show up to three examples per group.
+The `status` command exposes the full path inventory on demand.
+A changed guide no longer triggers a blanket descendant review.
+Review only descendants affected by a changed rule, not by timestamps or other metadata.
+The hook rejects instruction symlinks and keeps source payloads outside diagnostic logs.
+Generated Slopsentral projections under `.agents/plugins` and `.github/plugin` stay with their authored owners.
+
+`Stop` blocks completion only when a maintenance review remains pending.
+The Pi adapter permits one automatic repair continuation per user request; context-only refreshes do not request one.
+The response contains exact `status` and `review` commands for that repository and session.
+The agent replaces the sample note with its source-backed result.
+A no-change result is valid when the existing instructions still describe the source.
 Managed Pi commands keep their private interpreter and instruction scope through the status-to-review sequence.
 They need no system Python or uv. Other installations keep their uv launcher.
-Later source edits create another obligation.
+Later source edits create a new review obligation.
 
 ## Install on this computer
 
@@ -62,10 +79,16 @@ The hook compares files at lifecycle events. It does not watch files continuousl
 The first baseline cannot prove earlier work.
 A local Git actor can change reflog messages and remote refs that the hook trusts.
 
-State resides under `$CODEX_HOME/state/agents-md-scope` with a file and lock for each repository and session.
-Malformed state and instruction failures block `Stop` with explicit failure codes.
 An unreadable Git repository receives a skip result.
-Instruction payloads stay outside diagnostic logs.
+State stays under `$SLOPSENTRAL_SCOPE_HOME/state/agents-md-scope`, falling back to `$CODEX_HOME/state/agents-md-scope`, outside the repository.
+Pi selects its own agent directory as `SLOPSENTRAL_SCOPE_HOME`.
+State version 2 keeps local changes, changes from uncertain HEAD transitions, and queued instruction refreshes separate.
+The `status` response retains `pending` and adds `provenance`, `instructionRefreshes`, and grouped `scopes`.
+Version 1 pending reviews migrate as unattributed changes; migration never clears them.
+Older hook versions reject version 2 state rather than silently dropping reviews.
+Each repository and session has a separate state file and lock.
+A missing baseline reports unproved earlier coverage.
+Malformed state or instruction failures block `Stop` with an explicit failure code.
 
 [Hook implementation](../source/hooks/agents-md-scope.py), [installer](../tools/install_agents_hook.py), and
 [focused tests](../tools/python_checks/test_agents_scope_hook.py) own this behavior.

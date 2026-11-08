@@ -62,11 +62,11 @@ Outside this plugin: Everyday Git and hosted delivery, shell integration, and In
 
 Write technical documentation with source-backed glossaries and maintain OKF knowledge, OpenWiki handoffs, navigation, and overlays.
 
-Choose for documentation, glossary bootstrapping, source-backed OKF knowledge, OpenWiki handoffs, navigation, or sibling knowledge overlays.
+Choose for documentation, reviewable HTML artifacts, interactive visualizations, glossary bootstrapping, source-backed OKF knowledge, OpenWiki handoffs, navigation, or sibling knowledge overlays.
 
 Outside this plugin: Automatic knowledge generation during ordinary code tasks or treating documentation as source authority.
 
-**Skills:** [`code-knowledge-base`](skills/code-knowledge-base/SKILL.md), [`controlled-technical-writing`](skills/controlled-technical-writing/SKILL.md), [`local-repository-navigation`](skills/local-repository-navigation/SKILL.md), [`technical-documentation`](skills/technical-documentation/SKILL.md).
+**Skills:** [`code-knowledge-base`](skills/code-knowledge-base/SKILL.md), [`controlled-technical-writing`](skills/controlled-technical-writing/SKILL.md), [`interactive-views`](skills/interactive-views/SKILL.md), [`local-repository-navigation`](skills/local-repository-navigation/SKILL.md), [`reviewable-artifacts`](skills/reviewable-artifacts/SKILL.md), [`technical-documentation`](skills/technical-documentation/SKILL.md).
 
 **Hooks:** [`code-knowledge-drift`](hooks/code-knowledge-drift.hook.json), [`knowledge-overlay`](hooks/knowledge-overlay.hook.json).
 

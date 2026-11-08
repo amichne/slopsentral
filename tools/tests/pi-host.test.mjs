@@ -120,6 +120,31 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   const context = () => ({ contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: true });
   const settled = () => runner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, context);
   assert.equal((await settled()).continue, false);
+  // A remote update changes many sources and guides, but is not a new maintenance task.
+  const upstream = path.join(directory, 'upstream');
+  execFileSync('git', ['clone', '-q', cwd, upstream]);
+  fs.writeFileSync(path.join(upstream, 'AGENTS.md'), 'Updated upstream root instructions.\n');
+  for (const name of ['module', 'unrelated']) {
+    fs.mkdirSync(path.join(upstream, name));
+    fs.writeFileSync(path.join(upstream, name, 'AGENTS.md'), `${name} upstream instructions.\n`);
+    fs.writeFileSync(path.join(upstream, name, 'main.py'), 'value = 1\n');
+  }
+  for (let index = 0; index < 55; index++) fs.writeFileSync(path.join(upstream, `source-${index}.py`), 'upstream\n');
+  execFileSync('git', ['-C', upstream, 'add', '.']);
+  execFileSync('git', ['-C', upstream, '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.com', 'commit', '-qm', 'upstream update']);
+  execFileSync('git', ['-C', cwd, 'fetch', '-q', upstream, 'HEAD:refs/remotes/upstream/main']);
+  execFileSync('git', ['-C', cwd, 'merge', '--ff-only', 'refs/remotes/upstream/main']);
+  const refreshed = await settled();
+  assert.equal(refreshed.continue, false);
+  assert.match(JSON.stringify(refreshed.entries), /Updated upstream root instructions/);
+  assert.doesNotMatch(JSON.stringify(refreshed.entries), /scope review|source-54|module upstream|unrelated upstream/);
+  await runner.emitToolResult({ type: 'tool_result', toolCallId: 'read-module', toolName: 'read',
+    input: { path: 'module/main.py' }, content: [{ type: 'text', text: 'value = 1' }], isError: false, details: undefined });
+  const scoped = await settled();
+  assert.equal(scoped.continue, false);
+  assert.match(JSON.stringify(scoped.entries), /module upstream instructions/);
+  assert.doesNotMatch(JSON.stringify(scoped.entries), /unrelated upstream|Updated upstream root/);
+  assert.doesNotMatch(JSON.stringify((await settled()).entries), /upstream instructions/);
   fs.writeFileSync(path.join(cwd, 'example.py'), 'value = 2\n');
   fs.writeFileSync(path.join(agentDir, 'AGENTS.md'), 'Revised Pi global instructions.\n');
   const blocked = await settled();
