@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T02:28:43-05:00",
+  "generatedAt": "2026-11-09T09:11:26-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -201,10 +201,24 @@
           "type": "SKILL"
         },
         {
+          "name": "interactive-views",
+          "sha256": "sha256:083e6d5945b9e487bb7cb4d448564e6943eaeeef166c8300db9f3f352a0ad058",
+          "sourcePath": "source/skills/interactive-views",
+          "targetPath": "skills/interactive-views",
+          "type": "SKILL"
+        },
+        {
           "name": "local-repository-navigation",
           "sha256": "sha256:9ec3ae0d38de1ef157cee190d15c4b623380e7ea735ffad1e9ec2ad140b7d6a0",
           "sourcePath": "source/skills/local-repository-navigation",
           "targetPath": "skills/local-repository-navigation",
+          "type": "SKILL"
+        },
+        {
+          "name": "reviewable-artifacts",
+          "sha256": "sha256:c075f5f1ceb404fab90f2aad8b802d6ac19539409fe3abf4ab26326af097f6ae",
+          "sourcePath": "source/skills/reviewable-artifacts",
+          "targetPath": "skills/reviewable-artifacts",
           "type": "SKILL"
         },
         {
@@ -311,6 +325,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "98934da0b829f5aa70f676f2ef036d013892611f",
+  "sourceSha": "baef4d3db42501f057be766963f9be7c144199ab",
   "type": "HYDRATED_MARKETPLACE"
 }

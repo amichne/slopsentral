@@ -10,7 +10,9 @@ export default async function (amp) {
   for (const path of [
   "skills/code-knowledge-base",
   "skills/controlled-technical-writing",
+  "skills/interactive-views",
   "skills/local-repository-navigation",
+  "skills/reviewable-artifacts",
   "skills/technical-documentation"
 ]) {
     await amp.registerSkill({ path });
