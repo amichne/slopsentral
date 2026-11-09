@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { project } from '../project-marketplaces.mjs';
+import { composedSkillNames, pluginSkillNames } from './fixtures/composed-skills.mjs';
 import { DefaultResourceLoader, SettingsManager } from '@earendil-works/pi-coding-agent';
 
 const root = path.resolve(import.meta.dirname, '../..');
@@ -18,8 +19,7 @@ test('all five plugins load native skills, agent prompts, and hook adapters with
   assert.equal(result.plugins, 5);
   const pkg = path.join(out, '.pi/slopsentral');
   const manifest = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')));
-  assert.equal(manifest.pi.skills.length, 30);
-  assert.equal(new Set(manifest.pi.skills.map(p => path.basename(p))).size, 30);
+  assert.deepEqual(manifest.pi.skills.map(skill => path.basename(skill)).sort(), composedSkillNames());
   assert.equal(manifest.pi.prompts.length, 2);
   assert.equal(manifest.pi.extensions.length, 2);
   const agentDir = path.join(directory, 'agent');
@@ -29,18 +29,18 @@ test('all five plugins load native skills, agent prompts, and hook adapters with
   await loader.reload();
   assert.deepEqual(loader.getSkills().diagnostics, []);
   assert.deepEqual(loader.getExtensions().errors, []);
-  assert.equal(loader.getSkills().skills.length, 30);
+  assert.deepEqual(loader.getSkills().skills.map(skill => skill.name).sort(), composedSkillNames());
   assert.deepEqual(loader.getPrompts().prompts.map(p => p.name).sort(), ['slopsentral-openapi-contract-rater', 'slopsentral-schema-type-enforcer']);
   assert.equal(loader.getExtensions().extensions.length, 2);
-  for (const [name, skills, prompts, extensions] of [
-    ['software-engineering', 8, 0, 1], ['kotlin-engineering', 6, 0, 0],
-    ['intellij-plugin-development', 3, 0, 0], ['repository-knowledge', 4, 0, 1], ['developer-tooling', 10, 2, 0],
+  for (const [name, prompts, extensions] of [
+    ['software-engineering', 0, 1], ['kotlin-engineering', 0, 0],
+    ['intellij-plugin-development', 0, 0], ['repository-knowledge', 0, 1], ['developer-tooling', 2, 0],
   ]) {
     const selected = new DefaultResourceLoader({ cwd, agentDir, settingsManager: SettingsManager.inMemory({ packages: [path.join(pkg, name)] }) });
     await selected.reload();
     assert.deepEqual(selected.getExtensions().errors, [], name);
     assert.deepEqual(selected.getSkills().diagnostics, [], name);
-    assert.equal(selected.getSkills().skills.length, skills, name);
+    assert.deepEqual(selected.getSkills().skills.map(skill => skill.name).sort(), pluginSkillNames(name), name);
     assert.equal(selected.getPrompts().prompts.length, prompts, name);
     assert.equal(selected.getExtensions().extensions.length, extensions, name);
   }

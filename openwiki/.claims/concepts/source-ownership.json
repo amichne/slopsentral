@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:52dd05410a2b883c01c1456647452c6c201f4853dfb1aab0e7d31ca65da5e1fa",
+  "pageVersion": "sha256:1afee80e31d897552fca760553cf66cb184ed96003b0fe8e9eb8a84c4438c7f3",
   "claims": [
     {
       "id": "claim_d1bc8d787e7348afa9f084f58f304d0e",
@@ -38,15 +38,15 @@
     },
     {
       "id": "claim_c59f12d2fb42412f93630efb22110f63",
-      "statement": "Repository Knowledge composes four documentation and knowledge procedures and explicitly excludes automatic knowledge generation during ordinary code tasks.",
+      "statement": "Repository Knowledge composes documentation, navigation, prose assessment, and visual artifact skills. Ordinary code tasks give no authority for automatic knowledge generation.",
       "evidence": [
         {
-          "resource": "repo://source/plugins/repository-knowledge/plugin.json#L12-L48",
-          "version": "repo-lines-v1:sha256:b6f6d4b57d4b854a7b1022b31f583feffcb56ac435523a07f2572320f92ae029:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4YWFjOGNiMjQ4MzU0NWFiZjk2NGU4NTRjZDZkNzIyMjM2ZDU4MGY4YmMyZTM5ODczNjg5NzE0YWI3NzU1N2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlZDYzN2MyYTY4ZTIyNDQ5M2VhM2NiNzEzZWE0NjAwODYzZmEzZDJjYTIzNmQ0MTBmYzkyNjdiNmFiZDc5MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxMGQ4ZTY3ODVkNDBmNDA3YWM4YWM2NDA4YmMzODdiMGI2NDk2YWM2YWVhZWJjNDRlZDFjN2RmYzBlNjkxMjIifQ"
+          "resource": "repo://source/plugins/repository-knowledge/plugin.json#L12-L67",
+          "version": "repo-lines-v1:sha256:f1da6b7f46fab27d3c01c41a680927a068098da4dee15bfef53050d4c3c01e4e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4YWFjOGNiMjQ4MzU0NWFiZjk2NGU4NTRjZDZkNzIyMjM2ZDU4MGY4YmMyZTM5ODczNjg5NzE0YWI3NzU1N2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2NGQ4YzA3MzQyOTg5MzEwMTU3NmQ4OGQ5OTEyN2U4OWQ2ODkxZDNiMTdlODlkZjAyZWM5YWU3MDcwNWQ4YmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlZDYzN2MyYTY4ZTIyNDQ5M2VhM2NiNzEzZWE0NjAwODYzZmEzZDJjYTIzNmQ0MTBmYzkyNjdiNmFiZDc5MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5OGYxNjU1ZWFlMDYyM2E2N2Y3OWFlM2ZiNmY4ZTViMDgxZDg5NmQyOWFkZmU0ZGM3NjU0ZDY1ZTdmMDNlMDMifQ"
         },
         {
-          "resource": "repo://source/plugins/repository-knowledge/plugin.json#L72-L80",
-          "version": "repo-lines-v1:sha256:fe9d3f21774cf5b04c7f236abdc35b442994bde7607a070c5c7cab8717447d45:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk0NDA3OWUzMGE2ZjA4YjVmNGU1ZGM1MDE0MGFmMzQ4NmNkYzllMTJjODJjZjZiOTA0YWRmZDA1YWRkOGJlYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYyMDRkNTk1Y2Y0OTExNDdmYzU3MzRmOWYwNTBkOGFjYzgwMzc5YmIzNzVhMjJlMDliNjZkOTM4YmNjZmEwMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDFhNWUyNGI3MzY5ODcwOTk0OWQ0ZGU3MzJkOTZkNTIxODBjYTViNmEwMTkyNjRmZGVmMTNkMGNlNTQ5NGYxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGY3MzlhMDZjMWNiYjEyNDRlMzM2M2QzOGJjZjlmYTUwY2U4NGZlZDM5OWMyMTkzYTNjN2YwOGQ1OTkxOGIyYSJ9"
+          "resource": "repo://source/plugins/repository-knowledge/plugin.json#L90-L98",
+          "version": "repo-lines-v1:sha256:34d63faf78252e14e4e8769d489a926b9c396189ed30bf2252ce0e26ef399c81:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk0NDA3OWUzMGE2ZjA4YjVmNGU1ZGM1MDE0MGFmMzQ4NmNkYzllMTJjODJjZjZiOTA0YWRmZDA1YWRkOGJlYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYyMDRkNTk1Y2Y0OTExNDdmYzU3MzRmOWYwNTBkOGFjYzgwMzc5YmIzNzVhMjJlMDliNjZkOTM4YmNjZmEwMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDFhNWUyNGI3MzY5ODcwOTk0OWQ0ZGU3MzJkOTZkNTIxODBjYTViNmEwMTkyNjRmZGVmMTNkMGNlNTQ5NGYxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGY3MzlhMDZjMWNiYjEyNDRlMzM2M2QzOGJjZjlmYTUwY2U4NGZlZDM5OWMyMTkzYTNjN2YwOGQ1OTkxOGIyYSJ9"
         }
       ]
     },
@@ -69,22 +69,36 @@
       "statement": "Code Knowledge Base bundles the portable runtime and adoption assets, while Slopsentral's coverage configuration supplies its project policy.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L158-L179",
+          "resource": "repo://AGENTS.md#L163-L184",
           "version": "repo-lines-v1:sha256:45e4d725965efa5b2caf02cf5a0eff8b05e30d2eec73c7f279db5c38c198e398:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYWY2MmViNjZmYTIyYjAxMzQzM2E0ODA1ZmY3MTRjN2QzZWY1Y2Y0MjVhYjUxZGViNmZmY2IwYmRiYWY3YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNmU0NTM4Zjc3Yzc5NzI0MGZhMmE5ODZhYWE4MGI4MTk3N2U5MDUzMjEyODIxNTM0ZDJlMGUzM2JhNWIxNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5N2NkZTRmZmEzODRkZGNjMjQxOTM1NGVkODcyNjc4NmQ1ZmViZDY3ODQ3ZjljN2ZiMzAyYjg1M2U4MzkxNDEifQ"
         },
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:61db57f64dbb1b52fd8b0b4799887ced81cc12df8ed0ac9387f217446109ea49"
+          "version": "repo-file-v1:sha256:df7ea8a877920f42025b3333c7ba66565e3951471b35d3e812a85a632e76f96f"
         },
         {
           "resource": "repo://tools/tests/documentation-portability.test.mjs#L90-L113",
           "version": "repo-lines-v1:sha256:996bf4da6a19982c3831fca034f4ef764c878db7d917438cacb74da57f9c2fc7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0YzlkZTE2NDlmYjg0MGVlY2FiNmY4ZDcxMDIwY2ZkNjYyNzJjNmU0NzkzYWQxMmQwMzM5MjJjMTRmZDZmNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3NzlhYjk5YTc1NDQ2M2Q2MWYyYTY3YjIzYTNiN2ZiMjYyYWZjYTk1ZDNiMjY3OWU0Yjk2NTQxNGM4NDE4N2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiZTFjZTdmOGJlYWU2N2U1MDhhNGFiOWEyY2NiOGZhYjg0NDhkZTgzZmMxODJjOTM0NzVhMjA0ZDk3MGQwZDgifQ"
         }
       ]
+    },
+    {
+      "id": "claim_3b630827761d4452abc28a391061f017",
+      "statement": "Interactive Views produces standalone HTML visualizations or UI experiments. Reviewable Artifacts produces HTML documents for review and revision.",
+      "evidence": [
+        {
+          "resource": "repo://source/skills/interactive-views/SKILL.md#L7-L17",
+          "version": "repo-lines-v1:sha256:b6320e6ff8373878f4a655fd170ec860959e5e5169741cc6636a823148207d16:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiNDA5MTMzY2RhN2E1NDc0Mjk2MWNjNGMzZmZiNWQ0OWVhZjA5ZjdiOGI2MzRiMjIzNzA3ZmFkMDI0NDUzMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiNzk3NTkyNWUwNTg0MmY4ZjhhY2Q4Nzk3NjE5NWZmMmY2NzQ4YTA1N2U2NWUxYWQxMWUwYWFmYTkzZWNlOTMifQ"
+        },
+        {
+          "resource": "repo://source/skills/reviewable-artifacts/SKILL.md#L7-L17",
+          "version": "repo-lines-v1:sha256:7694400e7c4bc5266f3f986435ca067d7966b97528cb54d54c5357b6854ace43:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjNDQ1M2M5NjU0NWJhNWJmN2NhZTYzODRhNWE1OGUxZTAwYzZlYzc1MjUxOTYxNzNlNWQ3ZGFlOWI1NDdjNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhMDU1NGY2NDYyMjQzOWZkNzFjMGJjZDYwM2MwZGY3ZDQyOWFiMGI5ZjQwZDA4YzQ4MWQ2YmI4ZDZmNzQ4ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjZTc5ZGU3ZWNiZGU0YmRhNjY2M2Q1YmFhOTI1YTc1ZDUxYjljMTEwNDhlN2I2Njc1YTIyY2U4YzE1NTUyODgifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-05T05:22:10.565Z"
+    "at": "2026-11-09T13:20:54.909Z"
   }
 }

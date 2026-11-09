@@ -8,6 +8,8 @@ import test from 'node:test';
 import { promisify } from 'node:util';
 import { createAgentSession, DefaultResourceLoader, ModelRuntime, SessionManager, SettingsManager } from '@earendil-works/pi-coding-agent';
 
+import { composedSkillNames } from './fixtures/composed-skills.mjs';
+
 const execute = promisify(execFile);
 const cli = path.resolve(import.meta.dirname, '../../node_modules/@earendil-works/pi-coding-agent/dist/cli.js');
 
@@ -52,7 +54,7 @@ test('Pi installs a release archive and discovers native skills without registry
   await loader.reload();
   assert.deepEqual(loader.getExtensions().errors, []);
   assert.equal(loader.getSkills().skills.some(skill => skill.name === 'openapi-contract-authoring'), true);
-  assert.equal(loader.getSkills().skills.length, 30);
+  assert.deepEqual(loader.getSkills().skills.map(skill => skill.name).sort(), composedSkillNames());
   assert.equal(loader.getPrompts().prompts.length, 2);
   assert.equal(loader.getExtensions().extensions.length, 2);
   // The archive is installed and discoverable without uv, but an enabled

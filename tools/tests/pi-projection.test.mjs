@@ -6,6 +6,7 @@ import path from 'node:path';
 import test from 'node:test';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { project } from '../project-marketplaces.mjs';
+import { composedSkillNames } from './fixtures/composed-skills.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 
@@ -23,7 +24,7 @@ test('current projector emits every native Pi plugin deterministically', { skip:
   assert.equal(validate(inventory), true, JSON.stringify(validate.errors));
   assert.equal(inventory.type, 'PI_PLUGIN_PACKAGE');
   const manifest = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')));
-  assert.equal(manifest.pi.skills.length, 30);
+  assert.deepEqual(manifest.pi.skills.map(skill => path.basename(skill)).sort(), composedSkillNames());
   assert.equal(manifest.pi.prompts.length, 2);
   assert.equal(manifest.pi.extensions.length, 2);
   assert.equal(manifest.peerDependencies, undefined);

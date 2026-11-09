@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5f61f38a0433d51c19e1a8f8fee8a50644b1656ee565a614d18fb61dc6fa9c0c",
+  "pageVersion": "sha256:6120ea39949b3cea3fc24ebb1db829b33e4f61f18cf83aed66c705a714d01af9",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
@@ -82,7 +82,7 @@
         },
         {
           "resource": "repo://tools/tests/pi-host.test.mjs",
-          "version": "repo-file-v1:sha256:b319d3b4647d5974febbe4d8864e4f28a45a220bdc818b97a244ef8a465ab130"
+          "version": "repo-file-v1:sha256:4e8758e660f2482a9c6ee0ca182f1a9add1261b99f0c1b50456a624afc1b1907"
         },
         {
           "resource": "repo://tools/tests/pi-runtime.test.mjs",
@@ -139,10 +139,20 @@
           "version": "repo-file-v1:sha256:0f1152e0880ba6f1f685a98f7b6c59c6ed9f2c04e46fc93d20a8559312b63c14"
         }
       ]
+    },
+    {
+      "id": "claim_04f8d453430c4a4699d9aa407bbddbcf",
+      "statement": "The native Pi test expects a successful read to refresh that file's scope without a repair turn. An unrelated scope stays queued.",
+      "evidence": [
+        {
+          "resource": "repo://tools/tests/pi-host.test.mjs#L124-L148",
+          "version": "repo-lines-v1:sha256:800073ce061d882547c7cb940d72dcd47db84dda83d27e4863def9ec7797fdeb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZTE2OWE0ZmMwNGUwNzhlNjBjMDdiZmQ0ODVhM2FjODYwNzNiNjkyMmVlMDgxZjMzODZiMmFiOGZiOWFlMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1MTUzNDc1YzIwNzU0ODIzNmQ4OWI3ZTdhOTZlOTliNjgyNWQ1Zjc2MTc0NDRhMzNhNDI2MDZiNDhhOTk2ZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhNzM0MzVlOTY2ZWYyNjYwOTU2OWM5NDBhMDhmYTNjOTQyMzgxZGY4NTQ5NjQ2NmUxZGY4NmFlNTJjZjU5ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwY2RiZmJhNTc1OWU1MmEyOGYwMDAxMDU3NjYyYWFiZjAwMmQ2ZTcxNDliYTkyZWYzNTYwYzMzOTA1NDlhNWEifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-05T06:12:53.115Z"
+    "at": "2026-11-09T13:20:54.909Z"
   }
 }

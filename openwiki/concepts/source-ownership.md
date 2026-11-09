@@ -12,14 +12,18 @@ sources:
     resource: repo://source/AGENTS.md
   - id: openwiki-source-817f5a68830289f58734f532
     resource: repo://source/plugins/repository-knowledge/plugin.json
+  - id: openwiki-source-6893059146c9aa6f8d50a7fd
+    resource: repo://source/skills/interactive-views/SKILL.md
+  - id: openwiki-source-653b011fa069623af05655ef
+    resource: repo://source/skills/reviewable-artifacts/SKILL.md
   - id: openwiki-source-0de19b70b13c7683e196f562
     resource: repo://tools/project-marketplaces.mjs
   - id: openwiki-source-2402abcd09d5c9c6105c476c
     resource: repo://tools/tests/documentation-portability.test.mjs
-generated: { by: "codex", at: "2026-11-03T20:23:45.331Z" }
+generated: { by: "codex", at: "2026-11-09T13:20:54.909Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-05T05:22:10.565Z
+    at: 2026-11-09T13:20:54.909Z
 ---
 
 # Source ownership and plugin composition
@@ -51,12 +55,14 @@ A repair belongs in the primitive or projector that owns the behavior, followed 
 | Kotlin Engineering | Kotlin implementation, review, compiler proof, application libraries, and Gradle |
 | IntelliJ Plugin Development | Plugin delivery, PSI, indexing, platform tests, and live diagnostics |
 | Developer Tooling | CLIs, agent resources, schemas, OpenAPI, Pkl, and personal configuration |
-| Repository Knowledge | Source-backed explanations, navigation, technical documents, and prose assessment |
+| Repository Knowledge | Source-backed explanations, navigation, prose assessment, and HTML artifacts |
 
 Software Engineering remains the default.
 Knowledge maintenance forms part of its engineering baseline, while Repository Knowledge supplies the specialized procedures.
-Repository Knowledge composes `code-knowledge-base`, `local-repository-navigation`, `technical-documentation`, and `controlled-technical-writing`.
-Selecting the latter does not authorize automatic knowledge generation during an ordinary code task.
+Repository Knowledge composes documentation, navigation, prose assessment, and visual artifact skills.
+Use `interactive-views` for a standalone HTML visualization or UI experiment.
+Use `reviewable-artifacts` for an HTML proposal or report that needs review or revision.
+An ordinary code task gives no authority for automatic knowledge generation.
 Read [evidence and freshness](evidence.md) before a claim that a page is current.
 
 ## Reuse one executable without its workflow

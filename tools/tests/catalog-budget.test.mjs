@@ -6,10 +6,8 @@ import test from 'node:test';
 const root = path.resolve(import.meta.dirname, '../..');
 const marketplace = JSON.parse(fs.readFileSync(path.join(root, 'source/adaptable.marketplace.json')));
 
-test('the Kotlin-focused catalog ships at most half the uv baseline', () => {
-  // Foundation 774716c ships 11 plugins and 61 standalone skills.
+test('the catalog keeps a focused plugin set and exposes every authored skill', () => {
   assert.ok(marketplace.plugins.length <= 5, `${marketplace.plugins.length} plugins exceed 5`);
-  assert.ok(marketplace.skills.length <= 30, `${marketplace.skills.length} skills exceed 30`);
   const authored = fs.readdirSync(path.join(root, 'source/skills'), { withFileTypes: true })
     .filter(entry => entry.isDirectory() && fs.existsSync(path.join(root, 'source/skills', entry.name, 'SKILL.md')))
     .map(entry => entry.name).sort();

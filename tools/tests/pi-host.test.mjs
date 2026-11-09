@@ -6,6 +6,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { createAgentSession, DefaultResourceLoader, ModelRuntime, SessionManager, SettingsManager } from '@earendil-works/pi-coding-agent';
 import { prepareHookRuntime } from '../setup-pi.mts';
+import { composedSkillNames } from './fixtures/composed-skills.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 for (const managed of [false, true]) test(`native Pi delivers instructions and enforces review (${managed ? 'private runtime' : 'external runtime'})`, {
@@ -39,7 +40,7 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
     pkg = destination;
   }
   const manifest = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')));
-  assert.equal(manifest.pi.skills.length, 30);
+  assert.deepEqual(manifest.pi.skills.map(skill => path.basename(skill)).sort(), composedSkillNames());
   assert.equal(manifest.pi.extensions.length, 2);
   assert.equal(manifest.peerDependencies, undefined);
   const agentDir = path.join(directory, 'agent');
@@ -58,7 +59,7 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   const settingsManager = SettingsManager.inMemory({ packages: [pkg] });
   const resourceLoader = new DefaultResourceLoader({ cwd, agentDir, settingsManager });
   await resourceLoader.reload();
-  assert.equal(resourceLoader.getSkills().skills.length, 30);
+  assert.deepEqual(resourceLoader.getSkills().skills.map(skill => skill.name).sort(), composedSkillNames());
   assert.deepEqual(resourceLoader.getSkills().diagnostics, []);
   assert.deepEqual(resourceLoader.getExtensions().errors, []);
   assert.equal(resourceLoader.getExtensions().extensions.filter(e => e.path.startsWith(pkg)).length, 2);
@@ -120,6 +121,31 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   const context = () => ({ contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: true });
   const settled = () => runner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, context);
   assert.equal((await settled()).continue, false);
+  // A remote update changes many sources and guides, but is not a new maintenance task.
+  const upstream = path.join(directory, 'upstream');
+  execFileSync('git', ['clone', '-q', cwd, upstream]);
+  fs.writeFileSync(path.join(upstream, 'AGENTS.md'), 'Updated upstream root instructions.\n');
+  for (const name of ['module', 'unrelated']) {
+    fs.mkdirSync(path.join(upstream, name));
+    fs.writeFileSync(path.join(upstream, name, 'AGENTS.md'), `${name} upstream instructions.\n`);
+    fs.writeFileSync(path.join(upstream, name, 'main.py'), 'value = 1\n');
+  }
+  for (let index = 0; index < 55; index++) fs.writeFileSync(path.join(upstream, `source-${index}.py`), 'upstream\n');
+  execFileSync('git', ['-C', upstream, 'add', '.']);
+  execFileSync('git', ['-C', upstream, '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.com', 'commit', '-qm', 'upstream update']);
+  execFileSync('git', ['-C', cwd, 'fetch', '-q', upstream, 'HEAD:refs/remotes/upstream/main']);
+  execFileSync('git', ['-C', cwd, 'merge', '--ff-only', 'refs/remotes/upstream/main']);
+  const refreshed = await settled();
+  assert.equal(refreshed.continue, false);
+  assert.match(JSON.stringify(refreshed.entries), /Updated upstream root instructions/);
+  assert.doesNotMatch(JSON.stringify(refreshed.entries), /scope review|source-54|module upstream|unrelated upstream/);
+  await runner.emitToolResult({ type: 'tool_result', toolCallId: 'read-module', toolName: 'read',
+    input: { path: 'module/main.py' }, content: [{ type: 'text', text: 'value = 1' }], isError: false, details: undefined });
+  const scoped = await settled();
+  assert.equal(scoped.continue, false);
+  assert.match(JSON.stringify(scoped.entries), /module upstream instructions/);
+  assert.doesNotMatch(JSON.stringify(scoped.entries), /unrelated upstream|Updated upstream root/);
+  assert.doesNotMatch(JSON.stringify((await settled()).entries), /upstream instructions/);
   fs.writeFileSync(path.join(cwd, 'example.py'), 'value = 2\n');
   fs.writeFileSync(path.join(agentDir, 'AGENTS.md'), 'Revised Pi global instructions.\n');
   const blocked = await settled();
@@ -150,5 +176,5 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   assert.deepEqual(fs.readFileSync(instruction), original);
   await runner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine a repaired instruction.' }, { cwd });
   assert.equal(await runner.emitToolCall({ type: 'tool_call', toolCallId: 'read-3', toolName: 'read', input: { path: 'example.py' } }), undefined);
-  t.diagnostic('Native Pi 1.3.0: 30 skills, two prompts, two adapters, real scope rejection and review, no model request.');
+  t.diagnostic('Native Pi 1.3.0: all composed skills, two prompts, two adapters, real scope rejection and review, no model request.');
 });

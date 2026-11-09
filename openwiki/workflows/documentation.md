@@ -37,7 +37,7 @@ sources:
 generated: { by: "codex", at: "2026-11-05T06:09:49.273Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-05T06:12:53.115Z
+    at: 2026-11-09T13:20:54.909Z
 ---
 
 # Maintain source-backed documentation

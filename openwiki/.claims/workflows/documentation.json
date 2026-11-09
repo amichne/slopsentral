@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3afc4cb6d30a3726e427169b5618f7a5a95addea49bc256b080777483e75badb",
+  "pageVersion": "sha256:e8a439aced5329de8dc3a363387d844e2df4d9ada214fa7ff18db467437139a2",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -96,7 +96,7 @@
       "evidence": [
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:61db57f64dbb1b52fd8b0b4799887ced81cc12df8ed0ac9387f217446109ea49"
+          "version": "repo-file-v1:sha256:df7ea8a877920f42025b3333c7ba66565e3951471b35d3e812a85a632e76f96f"
         },
         {
           "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L230-L280",
@@ -166,7 +166,7 @@
         },
         {
           "resource": "repo://docs/site.json",
-          "version": "repo-file-v1:sha256:d87d9dcb04d6095b0d5e6ce23a24b7d5f8f77af6769002add7437106d1557570"
+          "version": "repo-file-v1:sha256:cefa25a812628f105a0da1ccce620a3141fd6ef60571dcd7f0ce3e88737f0db3"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -184,7 +184,7 @@
         },
         {
           "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:886d01c6eb4dc0bc107a55ccd16a314f93de79753a121de81acdbc3c6550f8ff"
+          "version": "repo-file-v1:sha256:2018b43d4f4a8de865c332fdcd49833fcf32d844a9db87bd3a47cadd284668ab"
         },
         {
           "resource": "repo://tools/ci.py",
@@ -217,6 +217,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-05T06:12:53.115Z"
+    "at": "2026-11-09T13:20:54.909Z"
   }
 }

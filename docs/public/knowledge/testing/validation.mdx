@@ -61,6 +61,8 @@ The [adoption procedure](/maintainers/portable-documentation) uses the same runt
 
 The [native host test](https://github.com/amichne/slopsentral/blob/main/tools/tests/pi-host.test.mjs) provisions a private interpreter and runs prompt admission, tool calls, settlement rejection, and review recovery with only Git on `PATH`.
 Recovery executes the hook's emitted status command, then the review command returned by that process.
+The test supplies a successful Pi `read` result and expects a refresh for that file's scope.
+It also expects the unrelated scope to stay queued and the refresh to leave the turn complete.
 The [scope test](https://github.com/amichne/slopsentral/blob/main/tools/python_checks/test_agents_scope_hook.py) also exercises this sequence with literal paths containing spaces and shell punctuation.
 Its external-runtime case still verifies missing uv and missing-script failures.
 The [runtime boundary tests](https://github.com/amichne/slopsentral/blob/main/tools/tests/pi-runtime.test.mjs) reject an unverified archive, a foreign executable path, a symlink receipt, and a project-controlled runtime receipt.
