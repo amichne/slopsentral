@@ -9,6 +9,8 @@ import { pathToFileURL } from 'node:url';
 import { install, qualify, rollback, shellQuote } from '../setup-pi.mts';
 import { DefaultResourceLoader, SettingsManager } from '@earendil-works/pi-coding-agent';
 
+import { composedSkillNames } from './fixtures/composed-skills.mjs';
+
 const uv = process.env.UV_BIN ?? 'uv';
 const root = path.resolve(import.meta.dirname, '../..');
 test('bootstrap --help is offline and describes native setup and recovery', () => {
@@ -325,7 +327,7 @@ test('the projected five-plugin archive installs, loads, and rolls back through 
   await loader.reload();
   assert.deepEqual(loader.getExtensions().errors, []);
   assert.deepEqual(loader.getSkills().diagnostics, []);
-  assert.equal(loader.getSkills().skills.length, 32);
+  assert.deepEqual(loader.getSkills().skills.map(skill => skill.name).sort(), composedSkillNames());
   assert.equal(loader.getPrompts().prompts.length, 2);
   assert.equal(loader.getExtensions().extensions.length, 2);
   assert.equal((await install(admitted, options)).status, 'CURRENT');

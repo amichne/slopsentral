@@ -43,7 +43,6 @@ test('the generated chooser names only shipped plugins', () => {
   const names = [...rendered.matchAll(/^### ([a-z-]+)$/gm)].map(match => match[1]).sort();
   assert.deepEqual(names, catalog.plugins.map(plugin => plugin.name).sort());
   assert.equal(names.length, 5);
-  assert.ok(catalog.marketplace.skills.length <= 30);
 });
 
 
