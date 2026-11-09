@@ -29,7 +29,7 @@ sources:
 generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-05T05:22:10.565Z
+    at: 2026-11-09T13:20:54.909Z
 ---
 
 # Slopsentral quickstart

@@ -22,7 +22,7 @@ sources:
 generated: { by: "codex", at: "2026-11-04T15:10:06.076Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-05T15:45:23.454Z
+    at: 2026-11-09T13:20:54.909Z
 ---
 
 # Consumer installation and recovery

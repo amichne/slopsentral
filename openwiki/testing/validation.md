@@ -34,10 +34,10 @@ sources:
     resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3
     resource: repo://tools/tests/pi-runtime.test.mjs
-generated: { by: "codex", at: "2026-11-05T06:12:53.115Z" }
+generated: { by: "codex", at: "2026-11-09T13:20:54.909Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-05T06:12:53.115Z
+    at: 2026-11-09T13:20:54.909Z
 ---
 
 # Match checks to the engineering claim
@@ -98,6 +98,8 @@ The [adoption procedure](../../source/skills/code-knowledge-base/references/port
 
 The [native host test](../../tools/tests/pi-host.test.mjs) provisions a private interpreter and runs prompt admission, tool calls, settlement rejection, and review recovery with only Git on `PATH`.
 Recovery executes the hook's emitted status command, then the review command returned by that process.
+The test supplies a successful Pi `read` result and expects a refresh for that file's scope.
+It also expects the unrelated scope to stay queued and the refresh to leave the turn complete.
 The [scope test](../../tools/python_checks/test_agents_scope_hook.py) also exercises this sequence with literal paths containing spaces and shell punctuation.
 Its external-runtime case still verifies missing uv and missing-script failures.
 The [runtime boundary tests](../../tools/tests/pi-runtime.test.mjs) reject an unverified archive, a foreign executable path, a symlink receipt, and a project-controlled runtime receipt.

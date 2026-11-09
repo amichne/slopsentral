@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:371a15a3589bbffdc78ffc01ec394d7f6fe3c12f4817a3cbf09372e9ac4c7459",
+  "pageVersion": "sha256:e71452cbe6dd4558b9321e36c05cb4f250f922b4fc6b400940f1250d3c712b88",
   "claims": [
     {
       "id": "claim_c2ca89c216ca435081601804a99ce408",
@@ -31,8 +31,8 @@
       "statement": "Release publication creates the source tag without replacement and verifies downloaded draft assets before making the release current and finalizing labels.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release-pi.yml#L126-L177",
-          "version": "repo-lines-v1:sha256:a4dd6ead21f1839aefc1267a3f2dc7f85bc32a0eb926df7b9fb2ed9d25e67fcd:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwOTZiMDQ4ZjgxNzU0ZjRmNmRiZjJkNTRhZjMwNTQxOGQxZDE5ZjMyMTM2OTE1NDI1YzBmZTIyZGM0ZjA0ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDlkZTNjYTBjNTQ0NTQyYjA2ZGFiMTk1ZDU2NTA2OGRmNjRlN2QzYjQ4NmY0M2VmYmE1YzZkNDUyMmIwZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmMjg1NjA1NDc4M2Q3ODNhMDRkY2FmOWI3YjYwNmE0M2NiN2Y0ZGViM2VlZDZkZjU0NDdlMTU3YTg0Y2UyZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://.github/workflows/release-pi.yml#L126-L179",
+          "version": "repo-lines-v1:sha256:89b5dba5d8822c1e9e377ee6a74b734abdbdda19636801da3c9bb9c21d054b75:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwOTZiMDQ4ZjgxNzU0ZjRmNmRiZjJkNTRhZjMwNTQxOGQxZDE5ZjMyMTM2OTE1NDI1YzBmZTIyZGM0ZjA0ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDlkZTNjYTBjNTQ0NTQyYjA2ZGFiMTk1ZDU2NTA2OGRmNjRlN2QzYjQ4NmY0M2VmYmE1YzZkNDUyMmIwZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmMjg1NjA1NDc4M2Q3ODNhMDRkY2FmOWI3YjYwNmE0M2NiN2Y0ZGViM2VlZDZkZjU0NDdlMTU3YTg0Y2UyZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -77,6 +77,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-03T17:57:45.987Z"
+    "at": "2026-11-09T13:20:54.909Z"
   }
 }

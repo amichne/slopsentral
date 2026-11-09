@@ -15,7 +15,7 @@ const expected = {
     'manage-json-schemas', 'openapi-contract-authoring', 'personal-setup-management', 'pkl-engineering',
     'lsp-management', 'ast-grep'],
   'repository-knowledge': ['code-knowledge-base', 'local-repository-navigation',
-    'controlled-technical-writing', 'technical-documentation'],
+    'controlled-technical-writing', 'technical-documentation', 'interactive-views', 'reviewable-artifacts'],
 };
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 
@@ -29,7 +29,7 @@ test('Kotlin proof routes implicitly and Gradle diagnosis needs explicit invocat
   kotlinPolicy(path.join(root, 'source'));
 });
 
-test('the five full plugins compose the 30-skill catalog', () => {
+test('the full plugins compose the expected skill catalog', () => {
   const market = read(path.join(root, 'source/adaptable.marketplace.json'));
   assert.deepEqual(market.plugins.map(plugin => plugin.name).sort(), Object.keys(expected).sort());
   assert.deepEqual(market.skills.map(skill => skill.name).sort(), [...new Set(Object.values(expected).flat())].sort());

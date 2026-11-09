@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3f1c421f13c7082c532d84669c2060a03ecc37342688e57ec7d29c28e1ebab58",
+  "pageVersion": "sha256:ca0040a7261e30b09870a21bf8ea9e3a400dc5be8b046a73ce3cec8bdcbf4d77",
   "claims": [
     {
       "id": "claim_468cefd833044a5fb8a8fba715593e3a",
@@ -46,7 +46,7 @@
       "evidence": [
         {
           "resource": "repo://source/hooks/pi/adapter.ts#L60-L88",
-          "version": "repo-lines-v1:sha256:9beab4b2f1bc31e13518d76cd88a636e3ff21202b9b5201a9078d524452b66ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYzNkOTk2MTQ0ZGU5MGNhYzczY2UzYmU5MDA1YTkwOTJjMGEzZmRmNDFkNzIxNjcwMWZkMzgwZDE4ZjkyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYjkwNTAwZDQ4ODkzOTBlMDI0YzE1MjBmNDE5YWFlNDdjNWNkMWJiZDg4MTBkOGFhOGYyMmRmMDEwMWE0NDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiOWMwOWNhMGU0NDU3OGJiNTllYjg1NzBhY2UxOWFkOTYwYzQ5NGM5MzZiNjYyYzg2ZmE1M2IxNDVlMmZkNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExODkyZDk2YzMzZTUxMzUwYjJhYmZjNzAxODYyY2ViOGI0ZjA2YjUxMTQwYjVmMTdkYjUzOTYxOTRhZmI1YzEifQ"
+          "version": "repo-lines-v1:sha256:145309ff8edc9fc14b49cf31b77f618a6efc1ddb7d0395bdc5f35a1d22360ad8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxMThiYjg3ZjdjNjU1NzBkZmZmNDM1Y2FlZmNjZTZhZDkzMmJkNDRkYmYyODY5MTA0ZTFjMjI3OTYwNTBhYzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYjkwNTAwZDQ4ODkzOTBlMDI0YzE1MjBmNDE5YWFlNDdjNWNkMWJiZDg4MTBkOGFhOGYyMmRmMDEwMWE0NDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiOWMwOWNhMGU0NDU3OGJiNTllYjg1NzBhY2UxOWFkOTYwYzQ5NGM5MzZiNjYyYzg2ZmE1M2IxNDVlMmZkNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExODkyZDk2YzMzZTUxMzUwYjJhYmZjNzAxODYyY2ViOGI0ZjA2YjUxMTQwYjVmMTdkYjUzOTYxOTRhZmI1YzEifQ"
         },
         {
           "resource": "repo://tools/setup-pi.mts#L260-L343",
@@ -73,11 +73,11 @@
       "statement": "The Slopsentral command manages Amp as guarded links to release bundles and preserves foreign directories or changed installed bytes.",
       "evidence": [
         {
-          "resource": "repo://tools/slopsentral.py#L613-L648",
+          "resource": "repo://tools/slopsentral.py#L646-L681",
           "version": "repo-lines-v1:sha256:f35c68415578ca1c3e7f998fce5d4464b5e603bed37286400e30604a4051526e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5M2FjMDI2NjI4ZGE2NmE3ZjVhOTIyNGFkM2Y4ZmEzZjc0ZDY2MDdmMjc3N2QyN2I0YWFkMGRkZDkyNTlkYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmZGVkMTc1MDAxNzI3YjBiYzkzYjIyN2QzNTZmYjhkMzMwN2RjMjVmZTM5Zjg5ZjcyMzk3YmNhOWFiYWJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiYzc2Zjg3MDI5ZDBlMmEyZGY2MmZhZWMwY2Y0Y2FmNDI2M2Y0Y2FkY2Y5YmM3ZTM1N2E3MjJjODhmOGNiYjMifQ"
         },
         {
-          "resource": "repo://tools/slopsentral.py#L676-L741",
+          "resource": "repo://tools/slopsentral.py#L709-L774",
           "version": "repo-lines-v1:sha256:43cd68380152f6f9f60af2c964c37729edc13718f7705e3632123976147df119:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNjI2MTJjYmQ0MzVkZmIxMTk3ZGZlOGYwYmM4Mzk2ZDEzMGU1OGU0MjIzNDI2MTE3NGFhYjI3MzMyM2E4ODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMzdmNzk5YzQxYTkwMjAzNDlhMTBkNjE4MDk5NTViZTg1OTc4MGI2MmVjMjMwMTEzODJiYWUyOGNmYjc3NDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxYmIwZmJiMGQyNGRhZTBkZTRlOTAyM2YzODFhZjkyNTg5M2E0YjZhMmNhMTFmYjRlN2ExOWE4NjFiMDU2YTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzNGMxYTY0N2Q2ZTU0ZWY5ZTM1ZDRhZTA4M2NjYjAxYzA2MDcxMTYxODg3ZGFkY2ZjNjkzZjMxY2Q5MmM1NGYifQ"
         }
       ]
@@ -99,6 +99,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-05T15:45:23.454Z"
+    "at": "2026-11-09T13:20:54.909Z"
   }
 }

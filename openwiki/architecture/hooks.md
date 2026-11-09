@@ -11,7 +11,7 @@ tags:
   - lifecycle
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-04T16:19:46.795Z
+    at: 2026-11-09T13:23:09.884Z
 sources:
   - id: openwiki-source-fdb0ae7333144f405ddb6914
     resource: repo://source/hooks/agents-md-scope.py
@@ -21,11 +21,15 @@ sources:
     resource: repo://source/hooks/pi/adapter.ts
   - id: openwiki-source-f0043ad3faf0db0ee3e62248
     resource: repo://source/hooks/pi/controls.ts
+  - id: openwiki-source-d13b0baee21f61f7d567fec9
+    resource: repo://tools/python_checks/test_agents_scope_hook.py
+  - id: openwiki-source-1f54aadb050709a2d88f59a6
+    resource: repo://tools/tests/pi-hooks.test.mjs
   - id: openwiki-source-36f60eb53c76242699a18af1
     resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3
     resource: repo://tools/tests/pi-runtime.test.mjs
-generated: { by: "codex", at: "2026-11-04T16:19:46.795Z" }
+generated: { by: "codex", at: "2026-11-09T13:20:54.909Z" }
 ---
 
 # Hook delivery and instruction review
@@ -52,7 +56,10 @@ Preexisting changes create no retrospective review obligation.
 Later prompt and `Stop` events compare source, instructions, renames, deletions, and new files with the prior snapshot.
 The hook also tracks committed changes and external edits between events.
 
-Changed instructions refresh context and cause descendant scopes to need review.
+The hook refreshes changed instructions that apply to the working directory, a pending review path, or a path supplied by the host.
+Other repository instructions stay queued until their scope applies.
+A clean instruction change from a proven remote refresh does not create a review obligation.
+Local instruction edits and changes from uncertain HEAD transitions keep their review obligations.
 An agent examines the actual source and records either a necessary instruction change or a concrete no-change decision.
 `Stop` requests a continuation while the current snapshot lacks that review.
 A receipt records acknowledgment of the snapshot. It does not establish that the prose is complete or correct.
@@ -69,6 +76,9 @@ It appends shared instructions to the request's system prompt.
 A failed context or instruction load blocks tool calls until a later request succeeds.
 
 `agent_before_settle` invokes the canonical `Stop` hooks after a completed turn.
+Pi collects paths from successful `read`, `edit`, and `write` calls for the current user request.
+The adapter passes those paths to the hook as scope evidence.
+The Git snapshot detects file changes, including changes from shell tools.
 An instruction rejection permits one automatic repair turn.
 A repeated rejection remains visible without an automatic loop.
 The adapter preserves messages and continuation requests from earlier extensions.

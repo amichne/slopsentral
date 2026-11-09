@@ -3,15 +3,15 @@ type: Integration
 title: Slopsentral command lifecycle
 description: Trace explicit host and plugin selection through native commands, managed Amp links, Pi transactions, and guarded self-management.
 tags: [cli, installation, consumers, recovery]
-verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-05T15:45:23.454Z
 sources:
   - id: openwiki-source-694f90ac01e419c575288a8d
     resource: repo://tools/slopsentral.py
   - id: openwiki-source-7b856c75d4b229196420362d
     resource: repo://tools/slopsentral.py.lock
 generated: { by: "codex", at: "2026-11-05T15:45:23.454Z" }
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-09T13:20:54.909Z
 ---
 
 # Slopsentral command lifecycle

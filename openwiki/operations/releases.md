@@ -3,9 +3,6 @@ type: Runtime Flow
 title: Unified versions and tested-byte publication
 description: Trace the shared product version from App-authored proposals through exact-head admission, saved candidate bytes, release downloads, and completion labels.
 tags: [releases, provenance, candidates, publication]
-verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-03T17:57:45.987Z
 sources:
   - id: openwiki-source-225cc86f67218ea21d10969d
     resource: repo://.github/workflows/publish-harnesses.yml
@@ -20,6 +17,9 @@ sources:
   - id: openwiki-source-2275f4e442b08ebc1ea468de
     resource: repo://tools/release_version.py
 generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-09T13:20:54.909Z
 ---
 
 # Unified versions and tested-byte publication
