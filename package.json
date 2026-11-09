@@ -1,6 +1,6 @@
 {
   "name": "slopsentral",
-  "version": "4.0.12",
+  "version": "4.0.13",
   "description": "Source contracts and validation tooling for the Slopsentral plugin marketplace",
   "private": true,
   "engines": {

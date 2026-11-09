@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.13](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.12...slopsentral-v4.0.13) (2026-11-09)
+
+
+### Features
+
+* add portable visual artifacts and scoped instruction refreshes ([#140](https://github.com/amichne/slopsentral/issues/140)) ([1d0ef4f](https://github.com/amichne/slopsentral/commit/1d0ef4f9e69eced24438553dbf8322df8aca63b7))
+
 ## [4.0.12](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.11...slopsentral-v4.0.12) (2026-11-05)
 
 
