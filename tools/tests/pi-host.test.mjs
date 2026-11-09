@@ -39,7 +39,7 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
     pkg = destination;
   }
   const manifest = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')));
-  assert.equal(manifest.pi.skills.length, 30);
+  assert.equal(manifest.pi.skills.length, 32);
   assert.equal(manifest.pi.extensions.length, 2);
   assert.equal(manifest.peerDependencies, undefined);
   const agentDir = path.join(directory, 'agent');
@@ -58,7 +58,7 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   const settingsManager = SettingsManager.inMemory({ packages: [pkg] });
   const resourceLoader = new DefaultResourceLoader({ cwd, agentDir, settingsManager });
   await resourceLoader.reload();
-  assert.equal(resourceLoader.getSkills().skills.length, 30);
+  assert.equal(resourceLoader.getSkills().skills.length, 32);
   assert.deepEqual(resourceLoader.getSkills().diagnostics, []);
   assert.deepEqual(resourceLoader.getExtensions().errors, []);
   assert.equal(resourceLoader.getExtensions().extensions.filter(e => e.path.startsWith(pkg)).length, 2);
@@ -175,5 +175,5 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   assert.deepEqual(fs.readFileSync(instruction), original);
   await runner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine a repaired instruction.' }, { cwd });
   assert.equal(await runner.emitToolCall({ type: 'tool_call', toolCallId: 'read-3', toolName: 'read', input: { path: 'example.py' } }), undefined);
-  t.diagnostic('Native Pi 1.3.0: 30 skills, two prompts, two adapters, real scope rejection and review, no model request.');
+  t.diagnostic('Native Pi 1.3.0: 32 skills, two prompts, two adapters, real scope rejection and review, no model request.');
 });

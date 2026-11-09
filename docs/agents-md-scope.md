@@ -22,7 +22,7 @@ Remote refreshes preserve pending reviews and new local edits.
 Unchanged preexisting edits create no new obligation.
 Clean instruction changes from a proven remote refresh update context without creating a review obligation or an automatic repair turn.
 Local instruction edits still need review, even when they occur during a remote refresh.
-Global instruction changes and uncertain HEAD changes also retain their review.
+Global instruction changes and uncertain HEAD changes also keep their review.
 
 The hook fingerprints `AGENTS.md` and `AGENTS.override.md` in the repository, its ancestors, and the host's global instruction directory.
 Fingerprinting does not put every guide into model context.

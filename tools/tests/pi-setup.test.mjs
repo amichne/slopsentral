@@ -325,7 +325,7 @@ test('the projected five-plugin archive installs, loads, and rolls back through 
   await loader.reload();
   assert.deepEqual(loader.getExtensions().errors, []);
   assert.deepEqual(loader.getSkills().diagnostics, []);
-  assert.equal(loader.getSkills().skills.length, 30);
+  assert.equal(loader.getSkills().skills.length, 32);
   assert.equal(loader.getPrompts().prompts.length, 2);
   assert.equal(loader.getExtensions().extensions.length, 2);
   assert.equal((await install(admitted, options)).status, 'CURRENT');

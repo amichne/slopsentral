@@ -52,7 +52,7 @@ test('Pi installs a release archive and discovers native skills without registry
   await loader.reload();
   assert.deepEqual(loader.getExtensions().errors, []);
   assert.equal(loader.getSkills().skills.some(skill => skill.name === 'openapi-contract-authoring'), true);
-  assert.equal(loader.getSkills().skills.length, 30);
+  assert.equal(loader.getSkills().skills.length, 32);
   assert.equal(loader.getPrompts().prompts.length, 2);
   assert.equal(loader.getExtensions().extensions.length, 2);
   // The archive is installed and discoverable without uv, but an enabled

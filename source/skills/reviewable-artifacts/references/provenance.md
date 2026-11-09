@@ -30,11 +30,3 @@ button, or comment-message format. File delivery works without hosting. The chec
 `artifacts/pages` by default and never starts a service or makes network requests. An
 explicit base URL only forms links for separately hosted files. Missing answers do not
 authorize publication or other blocked work.
-
-## Distribution Limit
-
-The supplied upstream bundle contains no license or redistribution notice. These hashes
-identify the inputs; they do not establish redistribution rights. This adaptation does
-not assign an open-source license to the upstream text, code, or template. Confirm the
-applicable upstream terms or obtain permission before publishing or redistributing these
-adapted materials. No publication is part of this local change.

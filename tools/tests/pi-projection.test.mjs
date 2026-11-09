@@ -23,7 +23,7 @@ test('current projector emits every native Pi plugin deterministically', { skip:
   assert.equal(validate(inventory), true, JSON.stringify(validate.errors));
   assert.equal(inventory.type, 'PI_PLUGIN_PACKAGE');
   const manifest = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')));
-  assert.equal(manifest.pi.skills.length, 30);
+  assert.equal(manifest.pi.skills.length, 32);
   assert.equal(manifest.pi.prompts.length, 2);
   assert.equal(manifest.pi.extensions.length, 2);
   assert.equal(manifest.peerDependencies, undefined);

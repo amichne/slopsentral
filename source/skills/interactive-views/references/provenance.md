@@ -40,12 +40,8 @@ on phones to fit the standalone page gutter and labels its prices illustrative. 
 product guidance replaces rules tied to one product's anatomy. Native diagram rendering,
 static fallbacks, unavailable checks, and separate publication authority are explicit.
 
-## Distribution Limit
+## Icon Attribution
 
-The original sprite attributes its Lucide icons to `@iconify-json/lucide` under ISC and
-identifies provider logos copied from upstream components. That comment is retained in the
-asset and assembled documents. It is not a complete license grant for the surrounding kit,
-examples, guidance, or logos. The supplied bundle contains no complete upstream license or
-redistribution notice. Confirm the applicable terms and retain required notices before
-publishing or redistributing the adapted materials. No publication is part of this local
-change, and this adaptation does not assign an open-source license to the upstream files.
+The sprite attributes its Lucide icons to `@iconify-json/lucide` under ISC and
+identifies provider logos copied from upstream components. That comment stays in the
+asset and assembled documents.

@@ -8,10 +8,9 @@ Per-skill provenance travels with standalone installations.
 
 `interactive-views` adapts Amp's `creating-views` version `0ed58f1025f027d5` into
 host-neutral HTML visualizations. Its kit, examples, detailed guidance, and local renderer
-retain the upstream approach without a proprietary inline renderer or injected resources.
+keep the upstream approach without a proprietary inline renderer or injected resources.
 [Per-skill provenance](skills/interactive-views/references/provenance.md) records input
-hashes, retained icon attribution, changes, and unresolved redistribution terms. Confirm
-those terms before publishing the adapted materials.
+hashes, icon attribution, and adaptation changes.
 
 ## Portable HTML Artifacts
 
@@ -19,8 +18,7 @@ those terms before publishing the adapted materials.
 for host-neutral local use. It retains the reader-first document and visual guidance,
 with an adapted template and checker, but removes orb and portal dependencies.
 [Per-skill provenance](skills/reviewable-artifacts/references/provenance.md) records
-input hashes, changes, and the unresolved upstream redistribution terms. Confirm those
-terms before publishing the adapted materials; this local addition is not a license grant.
+input hashes and adaptation changes.
 
 ## Model Guidance
 
@@ -36,7 +34,7 @@ account setting, or live deployment setting is changed by this catalog.
 | chrisbanes/skills | `84c2c53a26614236e644b3ea9eaf891c44704417` | Kotlin API ownership, branching, and grounded writing |
 | oakoss/agent-skills | `85e3a3919d9e0ec7f7302a5143ec4b3e66f5f6ad` | CLI pipelines, shell integration, Git, Actions, CI/CD, mise, and technical docs |
 | amichne/projeKtor | `v1.2.1`, action commit `eb3799c2bc60b4803c84fded0b6f4cd587bd0702` | Required provider projection contract |
-| max-sixty/worktrunk | `dea4029c593a89a39fb141da9d0849e4d10dae19`, reviewed 2026-10-06 | External Codex plugin; original Git workflow guidance and project automation checked with `wt v0.53.0` |
+| `max-sixty/worktrunk` | `dea4029c593a89a39fb141da9d0849e4d10dae19`, reviewed 2026-10-06 | External Codex plugin; original Git workflow guidance and project automation checked with `wt v0.53.0` |
 
 Chris Banes's distribution uses Apache-2.0; the relevant standalone skills
 include the license and modification notice. Oakoss skill frontmatter declares
