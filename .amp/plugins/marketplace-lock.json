@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T14:31:58Z",
+  "generatedAt": "2026-11-10T14:48:42-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -27,7 +27,7 @@
         },
         {
           "name": "engineering-design",
-          "sha256": "sha256:63e88eaf8775cf93aab2ee6b98e5665096de61e3be95dfd5c81d9c4ed8857b3b",
+          "sha256": "sha256:c9684e69cba5074baae3b4eda40fc032d41cb4f8ac7b15664312d0bab10401ed",
           "sourcePath": "source/instructions/engineering-design.md",
           "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
@@ -300,7 +300,7 @@
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:2121c82a60ecfa7e4a5eb4c7e4af8de8184787091148c019eff2fbb6e821ce68",
+          "sha256": "sha256:df5ac576c1a111cad5455ca8b73428add323dda38795b36e6f2478060807fe62",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
@@ -325,6 +325,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "bf606a912a8561b6a3ad1b898bb1f02b44380dd2",
+  "sourceSha": "6722fa0aed4fa31cc4f2acc627288595ba99d2ff",
   "type": "HYDRATED_MARKETPLACE"
 }
