@@ -108,7 +108,7 @@ export function register(pi: ExtensionAPI, root: string, adapter: Adapter): void
   const run = async (event: HookEvent, ctx: ExtensionContext, settings: HookSettings): Promise<Result> => {
     if (settings.type === 'failed') return settings;
     const context: string[] = [];
-    for (const hook of adapter.hooks.filter(h => h.event === event && !settings.disabled.has(adapter.plugin + '/' + h.name))) {
+    for (const hook of adapter.hooks.filter(h => h.event === event && settings.enabled.has(adapter.plugin + '/' + h.name))) {
       const result = await runHook(hook, root, ctx.cwd, ctx.sessionManager.getSessionId(), ctx.signal, [...scopePaths].sort());
       if (result.type !== 'accepted') return result;
       if (result.context) context.push(result.context);
@@ -125,7 +125,7 @@ export function register(pi: ExtensionAPI, root: string, adapter: Adapter): void
     if (event.messageType === 'user') scopePaths.clear();
     repairState = 'available';
     const settings = readHookSettings();
-    const revision = settings.type === 'ready' ? JSON.stringify([...settings.disabled].sort()) : '';
+    const revision = settings.type === 'ready' ? JSON.stringify([...settings.enabled].sort()) : '';
     admission = settings.type === 'failed' ? settings : sessionState.type === 'ready' && sessionState.revision === revision
       ? { type: 'accepted', context: sessionState.context }
       : await run('SessionStart', ctx, settings);

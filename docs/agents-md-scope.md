@@ -53,6 +53,7 @@ Later source edits create a new review obligation.
 ## Install on this computer
 
 Software Engineering composes the hook.
+In Pi, use `/hooks` to turn on `software-engineering/agents-md-scope`.
 The checkout also declares it in `.codex/hooks.json`.
 Both use shared repository-and-session state, so duplicate events do not duplicate obligations.
 

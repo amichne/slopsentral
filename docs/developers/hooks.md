@@ -24,6 +24,7 @@ A standalone hook declaration does not imply automatic installation.
 
 Codex consumes native hook configuration.
 Pi maps canonical hooks to `before_agent_start`, `tool_call`, and `agent_before_settle`.
+Slopsentral hooks start off in Pi. Use `/hooks` to select them.
 Its adapter preserves earlier extension messages and continuation requests.
 Amp supplies turn-start instructions, while its hooks remain reference-only.
 

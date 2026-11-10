@@ -21,7 +21,7 @@ Task-selected skills keep their own procedures and references.
 ## Use The Standard
 
 Before a substantial change, name the consumer, observable result, invariant, scope, and non-goals.
-Inspect the public contract, owning implementation, direct consumers, tests, and linked knowledge.
+Start with the implementation that owns the requested behavior.
 Trace one real path when behavior crosses components.
 Choose reuse, extension, a new owner, or investigation from that evidence.
 

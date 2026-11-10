@@ -70,9 +70,15 @@ test('Pi installs a release archive and discovers native skills without registry
   fs.mkdirSync(emptyBin);
   process.env.PATH = emptyBin;
   try {
-    const start = await session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine installed hook readiness.' }, { cwd: directory });
-    assert.match(start.systemPromptOptions.forceSystemPrompt, /HOOK_EXIT_127/);
-    const blocked = await session.extensionRunner.emitToolCall({ type: 'tool_call', toolCallId: 'missing-uv', toolName: 'read', input: {} });
+    const prompt = () => session.extensionRunner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine installed hook readiness.' }, { cwd: directory });
+    const read = () => session.extensionRunner.emitToolCall({ type: 'tool_call', toolCallId: 'missing-uv', toolName: 'read', input: {} });
+    assert.match((await prompt()).systemPromptOptions.forceSystemPrompt, /# Engineering Baseline/);
+    assert.equal(await read(), undefined);
+    fs.writeFileSync(path.join(agentDir, 'slopsentral-hooks.json'), JSON.stringify({
+      schemaVersion: 2, enabled: ['repository-knowledge/knowledge-overlay'],
+    }));
+    assert.match((await prompt()).systemPromptOptions.forceSystemPrompt, /HOOK_EXIT_127/);
+    const blocked = await read();
     assert.equal(blocked.block, true);
     assert.match(blocked.reason, /HOOK_EXIT_127/);
   } finally {

@@ -20,7 +20,7 @@ Use the strongest mechanisms that the project's language and tools support.
 
 - Before a substantial change, name the consumer, observable result, invariant, scope, and non-goals.
 - Treat an invariant as a rule that every legal value or operation preserves.
-- Inspect the owning implementation, public contracts, direct consumers, tests, and linked knowledge before design.
+- Start with the implementation that owns the requested behavior. Read contracts, tests, or project guidance when the task needs them.
 - Distinguish current behavior, intended behavior, assumptions, and unknowns.
 - Treat summaries and plans as leads until source evidence supports them.
 - Choose reuse, extension, a new owner, or investigation from the evidence.

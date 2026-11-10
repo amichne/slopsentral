@@ -37,18 +37,6 @@ SHA256_LENGTH = 64
 STATUS_PREFIX = 3
 PATH_LIMIT = 3
 INSTRUCTIONS = frozenset({"AGENTS.md", "AGENTS.override.md"})
-MANIFESTS = frozenset(
-    {
-        "package.json",
-        "pyproject.toml",
-        "Cargo.toml",
-        "go.mod",
-        "build.gradle",
-        "build.gradle.kts",
-        "pom.xml",
-        "plugin.json",
-    }
-)
 GENERATED = (".agents/plugins/", ".github/plugin/")
 
 
@@ -628,17 +616,6 @@ def guidance(root: Path, names: tuple[str, ...]) -> str:
     ]
     for owner, paths_in_scope in groups.items():
         block = f"Scope {json.dumps(owner)}: {len(paths_in_scope)} changed paths; examples: {json.dumps(paths_in_scope[:PATH_LIMIT])}"
-        candidates = sorted(
-            {
-                str(PurePosixPath(name).parent / "AGENTS.md")
-                for name in paths_in_scope
-                if PurePosixPath(name).name in MANIFESTS
-            }
-        )
-        if candidates:
-            block += (
-                f"\n  Potential local scopes, only if needed: {json.dumps(candidates[:PATH_LIMIT])}"
-            )
         if len(("\n".join(lines) + "\n" + block).encode()) > MAX_GUIDANCE - 150:
             lines.append(
                 "More scopes omitted from this summary; the status command retains the full inventory."
