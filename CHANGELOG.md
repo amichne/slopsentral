@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.14](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.13...slopsentral-v4.0.14) (2026-11-10)
+
+
+### Bug Fixes
+
+* make Slopsentral update hooks opt-in for Codex ([#143](https://github.com/amichne/slopsentral/issues/143)) ([e440b43](https://github.com/amichne/slopsentral/commit/e440b430be2f67b0355a76623e55cf0d1387cd69))
+
 ## [4.0.13](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.12...slopsentral-v4.0.13) (2026-11-09)
 
 
