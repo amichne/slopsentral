@@ -59,6 +59,20 @@ for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot'
         assert.deepEqual(files.get(prefix + '/' + plugin.name + '/skills/' + ref.name + '/' + name), file);
       }
     }
+    if (harness === 'codex') {
+      const plugin = name => JSON.parse(files.get(prefix + '/' + name + '/.codex-plugin/plugin.json').bytes);
+      assert.deepEqual(plugin('software-engineering').hooks, ['./hooks/software-engineering-context.hooks.json']);
+      assert.equal(plugin('repository-knowledge').hooks, undefined);
+      for (const [owner, name] of [
+        ['software-engineering', 'agents-md-scope'],
+        ['repository-knowledge', 'code-knowledge-drift'],
+        ['repository-knowledge', 'knowledge-overlay'],
+      ]) {
+        assert.ok(files.has(prefix + '/' + owner + '/hooks/' + name + '.hooks.json'), name);
+        assert.ok(files.has(prefix + '/' + owner + '/hooks/' + name + '.py'), name);
+        assert.equal(files.has(prefix + '/' + owner + '/hooks/hooks.json'), false, owner);
+      }
+    }
     if (harness === 'codex' || harness === 'amp') {
       const lock = JSON.parse(files.get(prefix + '/marketplace-lock.json').bytes);
       for (const plugin of lock.plugins) for (const ref of plugin.references)

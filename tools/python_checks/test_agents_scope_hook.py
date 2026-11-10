@@ -13,18 +13,20 @@ ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "source/hooks/agents-md-scope.py"
 
 
-def test_hook_is_composed_and_local_commands_exist() -> None:
+def test_optional_hooks_have_no_default_checkout_registration() -> None:
     plugin = json.loads((ROOT / "source/plugins/software-engineering/plugin.json").read_text())
     assert "agents-md-scope" in {hook["name"] for hook in plugin["hooks"]}
-    local = json.loads((ROOT / ".codex/hooks.json").read_text())
-    assert set(local["hooks"]) == {"UserPromptSubmit", "Stop"}
-    commands = [
-        item["command"]
-        for groups in local["hooks"].values()
-        for group in groups
-        for item in group["hooks"]
-    ]
-    assert all("agents-md-turn-refresh.sh" not in command for command in commands)
+    config = ROOT / ".codex/hooks.json"
+    if config.exists():
+        local = json.loads(config.read_text())
+        commands = [
+            item.get("command", "")
+            for groups in local["hooks"].values()
+            for group in groups
+            for item in group["hooks"]
+        ]
+        optional = ("agents-md-scope.py", "code-knowledge-drift.py", "knowledge-overlay.py")
+        assert all(script not in command for command in commands for script in optional)
 
 
 def git(root: Path, *args: str) -> None:

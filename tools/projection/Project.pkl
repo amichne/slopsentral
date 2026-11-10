@@ -137,13 +137,18 @@ function adapter(r: Schema.HookReference): Schema.HookAdapter = new {
 }
 
 function codex(p: Schema.Plugin): Targets.CodexPlugin = new {
+  local registeredHooks = hooks(p).filter((r) -> r.hook.codexActivation == "automatic")
   name = p.name
   version = p.version
   description = p.description
   author = new { name = input.owner.name }
   keywords = pluginKeywords(p)
   skills = if (!refs(p, "SKILL").isEmpty) "./skills/" else null
-  hooks = if (!hooks(p).isEmpty) hooks(p).map((r) -> "./" + referenceTarget(r)).sort() else null
+  hooks =
+    if (!registeredHooks.isEmpty)
+      registeredHooks.map((r) -> "./" + referenceTarget(r)).sort()
+    else
+      null
   mcpServers = if (p.mcp != null) "./.mcp.json" else null
   interface = new {
     displayName = title(p.name)
@@ -153,7 +158,7 @@ function codex(p: Schema.Plugin): Targets.CodexPlugin = new {
     developerName = input.owner.name
     category = pluginCategory(p.tags)
     capabilities =
-      if (!refs(p, "SKILL").isEmpty || !hooks(p).isEmpty)
+      if (!refs(p, "SKILL").isEmpty || !registeredHooks.isEmpty)
         List("Interactive", "Write")
       else
         List("Interactive")
