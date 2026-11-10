@@ -3,10 +3,6 @@
     "name": "Amichne"
   },
   "description": "Write technical documentation with source-backed glossaries and maintain OKF knowledge, OpenWiki handoffs, navigation, and overlays.",
-  "hooks": [
-    "./hooks/code-knowledge-drift.hooks.json",
-    "./hooks/knowledge-overlay.hooks.json"
-  ],
   "interface": {
     "brandColor": "#2563EB",
     "capabilities": [
