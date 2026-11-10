@@ -52,12 +52,10 @@ Later source edits create a new review obligation.
 
 ## Install on this computer
 
-Software Engineering composes the hook.
+The scope hook starts off in Codex and Pi.
 In Pi, use `/hooks` to turn on `software-engineering/agents-md-scope`.
-The checkout also declares it in `.codex/hooks.json`.
-Both use shared repository-and-session state, so duplicate events do not duplicate obligations.
 
-For an authorized global installation from this checkout, use:
+To turn on the hook for Codex across projects, run this command from the Slopsentral checkout.
 
 ```sh
 uv run --locked tools/install_agents_hook.py
@@ -69,10 +67,12 @@ It preserves other hooks and saves the prior `hooks.json`.
 It also removes the retired `PostToolUse` scope hook.
 The installed command does not depend on this checkout.
 
-Review and trust the exact definitions through Codex `/hooks`.
-If the current session does not reload hooks, start a new session.
-Installation alone proves neither trust nor event delivery.
-To reverse installation, restore the recorded `hooks.json.before-agents-md-scope-*` backup while preserving later unrelated changes.
+Open Codex `/hooks` to review and trust both entries.
+If either entry is off, turn it on.
+To turn the hook off, turn off its `UserPromptSubmit` and `Stop` entries.
+If an older install lists the hook more than once, turn off both events for each source.
+Start a new Codex session to examine the current hook list.
+To remove the installation, use the `hooks.json.before-agents-md-scope-*` backup to restore the original hook entries.
 
 ## Evidence limits
 

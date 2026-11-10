@@ -569,6 +569,9 @@ for (const hookPath of listFiles("source/hooks", (file) => file.endsWith(".hook.
   const relativePath = relativeToRepo(hookPath);
   const hook = readJson(relativePath);
   if (!hook?.name) continue;
+  if (Object.hasOwn(hook, "codexActivation") && !["automatic", "opt-in"].includes(hook.codexActivation)) {
+    fail(`${relativePath}: codexActivation must be automatic or opt-in`);
+  }
   if (!(marketplace.hooks ?? []).some(ref => ref.name === hook.name && ref.path === path.relative(sourceRoot, hookPath))) {
     fail(`${relativePath}: hook ${hook.name} must have a canonical marketplace reference`);
   }

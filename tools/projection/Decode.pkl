@@ -20,7 +20,7 @@ function primitive(raw: Dynamic): Schema.Primitive = (
 }
 
 function hook(raw: Dynamic): Schema.HookDefinition = (
-  checked(raw, List("type", "name", "source", "path", "dependsOn", "adapter"))
+  checked(raw, List("type", "name", "source", "path", "dependsOn", "adapter", "codexActivation"))
     .toTyped(Schema.HookDefinition)
 ) {
   source = checked(raw.source, List("type", "path")).toTyped(Schema.LocalSource)
