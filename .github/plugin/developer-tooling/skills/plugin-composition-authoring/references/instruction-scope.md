@@ -5,12 +5,11 @@ Folder depth and symmetry do not justify separate instruction files.
 
 ## Find the Owners
 
-Inspect workspace manifests, Gradle files, CI workflows, generators, schema roots, plugin manifests, and deployment configuration.
+Use the source that defines the rule or command for the scope under review.
 Name authored sources, generated outputs, runtime copies, and installed caches.
 Each structured artifact needs a schema, typed parser, or generator contract.
 Link generated artifacts to their source and regeneration command.
 
-For Gradle projects, inspect included builds, convention plugins, generated sources, and module-specific tasks.
 For plugin repositories, separate canonical primitives, plugin compositions, provider projections, and installed caches.
 Keep upstream or system material as provenance unless an explicit local rewrite owns it.
 
