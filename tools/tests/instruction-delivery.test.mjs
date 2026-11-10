@@ -121,9 +121,11 @@ test('software-engineering maintains scoped instructions through its configured 
   assert.deepEqual(Object.keys(config.hooks).sort(), ['Stop', 'UserPromptSubmit']);
   assert.deepEqual(hook('UserPromptSubmit'), {});
   fs.writeFileSync(path.join(repository, 'module/pyproject.toml'), '[project]\nname = "module"\n');
-  assert.match(hook('Stop').reason, /module\/AGENTS\.md/);
+  const manifestChange = hook('Stop');
+  assert.match(manifestChange.reason, /module\/pyproject\.toml/);
+  assert.doesNotMatch(manifestChange.reason, /module\/AGENTS\.md/);
   assert.equal(fs.existsSync(path.join(repository, 'module/AGENTS.md')), false);
-  assert.equal(hook('Stop').decision, 'block');
+  assert.equal(manifestChange.decision, 'block');
 
   fs.writeFileSync(path.join(repository, 'module/AGENTS.md'), '# Module\nUse the module command.\n');
   fs.writeFileSync(path.join(repository, 'AGENTS.md'), '# Repository\nUse the new root command.\n');

@@ -6,7 +6,7 @@
   "files": [
     {
       "path": "docs/examples/global/AGENTS.md",
-      "sha256": "6d545372bc9ce6a520fbaa707feb4fa30a08ed156c184d174cef9518688709bd"
+      "sha256": "dc8c89c7f9e8499df0de84c8b50e443bd18fbcae859d515e42c869c0e4af661b"
     },
     {
       "path": "docs/global-agents.md",
@@ -46,7 +46,7 @@
     },
     {
       "path": "source/instructions/engineering-design.md",
-      "sha256": "63e88eaf8775cf93aab2ee6b98e5665096de61e3be95dfd5c81d9c4ed8857b3b"
+      "sha256": "c9684e69cba5074baae3b4eda40fc032d41cb4f8ac7b15664312d0bab10401ed"
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",

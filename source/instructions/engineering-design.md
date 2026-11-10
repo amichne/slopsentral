@@ -55,10 +55,8 @@ Complete the smallest useful implementation and the repository's required
 checks. Keep useful existing contracts; remove redundant owners and paths.
 
 
-Treat source-backed knowledge as part of software engineering. Before a behavior
-change, read the existing explanation and trace its claims to code and executable
-evidence. Connect the consumer, invariant, owning implementation, rejection case,
-and explanation. Refresh affected knowledge within the authorized task scope.
+Update explanations that a behavior change makes inaccurate. Use the owning
+implementation and executable evidence to support each changed claim.
 Keep current behavior, decisions, historical results, and unknowns distinct.
 
 Use the repository's existing OKF owner for maintained system knowledge. Keep

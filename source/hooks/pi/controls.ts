@@ -18,19 +18,22 @@ export interface Adapter {
 }
 
 export type HookSettings =
-  | { readonly type: 'ready'; readonly disabled: ReadonlySet<string> }
+  | { readonly type: 'ready'; readonly enabled: ReadonlySet<string> }
   | { readonly type: 'failed'; readonly reason: 'HOOK_SETTINGS_INVALID' | 'HOOK_SETTINGS_UNREADABLE' | 'HOOK_SETTINGS_WRITE_FAILED' };
 const object = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
 const settingsPath = () => path.join(getAgentDir(), 'slopsentral-hooks.json');
 
 // The standalone ingress mirrors source/schemas/pi/hooks.schema.json without a consumer dependency.
 export function parseHookSettings(value: unknown): HookSettings {
-  if (!object(value) || Object.keys(value).length !== 2 || value.schemaVersion !== 1
-    || !Array.isArray(value.disabled) || !value.disabled.every((id: unknown): id is string =>
-      typeof id === 'string' && /^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/.test(id))
-    || new Set(value.disabled).size !== value.disabled.length)
+  if (!object(value) || Object.keys(value).length !== 2)
     return { type: 'failed', reason: 'HOOK_SETTINGS_INVALID' };
-  return { type: 'ready', disabled: new Set(value.disabled) };
+  const ids = value.schemaVersion === 1 ? value.disabled : value.schemaVersion === 2 ? value.enabled : undefined;
+  if (!Array.isArray(ids) || !ids.every((id: unknown): id is string =>
+    typeof id === 'string' && /^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/.test(id))
+    || new Set(ids).size !== ids.length)
+    return { type: 'failed', reason: 'HOOK_SETTINGS_INVALID' };
+  // Version 1 recorded explicit opt-outs. Every other choice was an implicit default.
+  return { type: 'ready', enabled: new Set(value.schemaVersion === 2 ? ids : []) };
 }
 
 export function readHookSettings(): HookSettings {
@@ -38,7 +41,7 @@ export function readHookSettings(): HookSettings {
   try { text = fs.readFileSync(settingsPath(), 'utf8'); }
   catch (error) {
     return object(error) && error.code === 'ENOENT'
-      ? { type: 'ready', disabled: new Set() }
+      ? { type: 'ready', enabled: new Set() }
       : { type: 'failed', reason: 'HOOK_SETTINGS_UNREADABLE' };
   }
   let value: unknown;
@@ -47,23 +50,23 @@ export function readHookSettings(): HookSettings {
   return parseHookSettings(value);
 }
 
-function saveChoice(id: string, enabled: boolean): HookSettings {
+function saveChoice(id: string, on: boolean): HookSettings {
   const current = readHookSettings();
   if (current.type === 'failed') return current;
-  const disabled = new Set(current.disabled);
-  if (enabled) disabled.delete(id); else disabled.add(id);
+  const enabled = new Set(current.enabled);
+  if (on) enabled.add(id); else enabled.delete(id);
   const file = settingsPath();
   const temporary = file + '.' + randomUUID() + '.tmp';
   try {
     fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(temporary, JSON.stringify({ schemaVersion: 1, disabled: [...disabled].sort() }, null, 2) + '\n', { mode: 0o600, flag: 'wx' });
+    fs.writeFileSync(temporary, JSON.stringify({ schemaVersion: 2, enabled: [...enabled].sort() }, null, 2) + '\n', { mode: 0o600, flag: 'wx' });
     fs.renameSync(temporary, file);
   } catch {
     return { type: 'failed', reason: 'HOOK_SETTINGS_WRITE_FAILED' };
   } finally {
     fs.rmSync(temporary, { force: true });
   }
-  return { type: 'ready', disabled };
+  return { type: 'ready', enabled };
 }
 
 const nativeEvents = {
@@ -107,7 +110,7 @@ export function registerHookControls(pi: ExtensionAPI, root: string, adapter: Ad
       await ctx.ui.custom<void>((tui, _theme, _keys, done) => {
         const list = new SettingsList([...catalog.values()].sort((a, b) => a.id.localeCompare(b.id)).map(choice => ({
           id: choice.id, label: choice.id, description: choice.description,
-          currentValue: settings.disabled.has(choice.id) ? 'off' : 'on', values: ['on', 'off'],
+          currentValue: settings.enabled.has(choice.id) ? 'on' : 'off', values: ['on', 'off'],
         })), 8, getSettingsListTheme(), (id, value) => {
           const choice = catalog.get(id);
           if (!choice) return;
@@ -121,7 +124,7 @@ export function registerHookControls(pi: ExtensionAPI, root: string, adapter: Ad
         const container = new class extends Container {
           handleInput(data: string): void { list.handleInput(data); }
         }();
-        container.addChild(new Text('Hooks — Enter/Space: on/off · Esc: done\nChoices apply to Slopsentral hooks across Pi sessions.', 1, 1));
+        container.addChild(new Text('Hooks — Enter/Space: on/off · Esc: done\nHooks start off. Choices apply across Pi sessions.', 1, 1));
         container.addChild(list);
         return container;
       });

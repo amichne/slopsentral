@@ -200,7 +200,8 @@ def test_new_scope_and_deleted_instruction_need_review(workspace: Path) -> None:
     assert invoke(workspace, "UserPromptSubmit") == {}
     _ = (workspace / "module/pyproject.toml").write_text('[project]\nname = "module"\n')
     output = json.dumps(invoke(workspace))
-    assert "module/AGENTS.md" in output
+    assert "module/pyproject.toml" in output
+    assert "module/AGENTS.md" not in output
     _ = (workspace / "module/AGENTS.md").write_text("# Module\nUse the module test command.\n")
     assert review(workspace)["type"] == "REVIEW_RECORDED"
     assert invoke(workspace, "Stop") == {}

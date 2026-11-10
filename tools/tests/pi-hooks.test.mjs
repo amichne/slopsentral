@@ -9,11 +9,13 @@ import { SettingsList } from '@earendil-works/pi-tui';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { parseHookSettings } from '../../source/hooks/pi/controls.ts';
 
-async function fixture(t, { instructions = [] } = {}) {
+async function fixture(t, { instructions = [], enabled = ['drift/drift', 'scope/scope'] } = {}) {
   const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi-hooks-menu-')));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
   const agentDir = path.join(directory, 'agent');
   fs.mkdirSync(agentDir);
+  const settingsFile = path.join(agentDir, 'slopsentral-hooks.json');
+  if (enabled.length) fs.writeFileSync(settingsFile, JSON.stringify({ schemaVersion: 2, enabled }));
   const previous = process.env.PI_CODING_AGENT_DIR;
   process.env.PI_CODING_AGENT_DIR = agentDir;
   t.after(() => { if (previous === undefined) delete process.env.PI_CODING_AGENT_DIR; else process.env.PI_CODING_AGENT_DIR = previous; });
@@ -51,7 +53,6 @@ async function fixture(t, { instructions = [] } = {}) {
   const settle = () => runner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' },
     () => ({ contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: true }));
   const calls = () => fs.existsSync(path.join(directory, 'calls')) ? fs.readFileSync(path.join(directory, 'calls'), 'utf8').trim().split('\n') : [];
-  const settingsFile = path.join(agentDir, 'slopsentral-hooks.json');
   const menu = async use => {
     const runner = session.extensionRunner;
     let completed = false;
@@ -74,12 +75,19 @@ async function fixture(t, { instructions = [] } = {}) {
 }
 
 test('Pi sends keyboard input to the menu component', async t => {
-  const { menu, settingsFile } = await fixture(t);
-  await menu((_list, component) => {
+  const { menu, settingsFile, settle, calls } = await fixture(t, { enabled: [] });
+  assert.deepEqual((await settle()).entries, []);
+  assert.deepEqual(calls(), []);
+  await menu((list, component) => {
+    assert.match(list.render(150).join('\n'), /drift\/drift.*off/);
     assert.equal(typeof component.handleInput, 'function');
     component.handleInput('\r');
   });
-  assert.deepEqual(JSON.parse(fs.readFileSync(settingsFile)).disabled, ['drift/drift']);
+  assert.deepEqual(JSON.parse(fs.readFileSync(settingsFile)), { schemaVersion: 2, enabled: ['drift/drift'] });
+  assert.match(JSON.stringify((await settle()).entries), /drift:Stop/);
+  await menu((_list, component) => { component.handleInput('\r'); });
+  assert.deepEqual((await settle()).entries, []);
+  assert.deepEqual(calls(), ['drift:Stop']);
 });
 
 test('native Pi exposes one hooks menu across separately loaded adapters', async t => {
@@ -107,7 +115,7 @@ test('native menu shows events and scripts, saves binary choices, and prevents d
     // The other plugin keeps its own choice, while all events of scope share one switch.
     assert.match(list.render(150).join('\n'), /drift\/drift.*on/);
   }), []);
-  assert.deepEqual(JSON.parse(fs.readFileSync(settingsFile)), { schemaVersion: 1, disabled: ['scope/scope'] });
+  assert.deepEqual(JSON.parse(fs.readFileSync(settingsFile)), { schemaVersion: 2, enabled: ['drift/drift'] });
   assert.equal(fs.statSync(settingsFile).mode & 0o777, 0o600);
   assert.doesNotMatch((await start()).systemPromptOptions.forceSystemPrompt, /scope:SessionStart/);
   await settle();
@@ -148,7 +156,8 @@ test('malformed settings stop hook effects and cannot be overwritten through the
   assert.equal(fs.readFileSync(settingsFile, 'utf8'), '{broken');
   fs.rmSync(settingsFile);
   await start();
-  assert.deepEqual(calls(), ['scope:SessionStart', 'scope:UserPromptSubmit']);
+  assert.deepEqual(calls(), []);
+  assert.equal(await runner.emitToolCall({ type: 'tool_call', toolCallId: 'recovered', toolName: 'read', input: {} }), undefined);
 });
 
 test('a disabled rejecting hook cannot block tools while an enabled hook still rejects', async t => {
@@ -171,6 +180,7 @@ test('a failed save restores the displayed choice and preserves saved settings',
   const { menu, settingsFile } = await fixture(t);
   const errors = await menu(list => {
     list.selectItem('scope/scope');
+    fs.rmSync(settingsFile);
     fs.mkdirSync(settingsFile);
     list.handleInput('\r');
     assert.match(list.render(150).join('\n'), /scope\/scope.*on/);
@@ -181,7 +191,7 @@ test('a failed save restores the displayed choice and preserves saved settings',
 
 test('a write failure restores the displayed choice without replacing the saved file', async t => {
   const { menu, settingsFile } = await fixture(t);
-  const original = '{"schemaVersion":1,"disabled":[]}\n';
+  const original = '{"schemaVersion":2,"enabled":["scope/scope"]}\n';
   fs.writeFileSync(settingsFile, original);
   const errors = await menu(list => {
     list.selectItem('scope/scope');
@@ -231,13 +241,19 @@ test('native scope evidence includes successful file tools, not shell guesses or
 test('the schema and runtime ingress reject nonbinary, duplicate, and malformed choices', () => {
   const schema = JSON.parse(fs.readFileSync(new URL('../../source/schemas/pi/hooks.schema.json', import.meta.url)));
   const validate = new Ajv2020({ strict: true }).compile(schema);
-  for (const value of [schema.examples[0], { schemaVersion: 1, disabled: [] },
-    { schemaVersion: 1, disabled: ['unloaded-plugin/unloaded-hook'] }]) {
+  for (const [value, enabled] of [
+    [schema.examples[0], ['software-engineering/agents-md-scope']],
+    [{ schemaVersion: 2, enabled: ['unloaded-plugin/unloaded-hook'] }, ['unloaded-plugin/unloaded-hook']],
+    [{ schemaVersion: 1, disabled: [] }, []],
+    [{ schemaVersion: 1, disabled: ['unloaded-plugin/unloaded-hook'] }, []],
+  ]) {
     assert.equal(validate(value), true);
-    assert.equal(parseHookSettings(value).type, 'ready');
+    assert.deepEqual(parseHookSettings(value), { type: 'ready', enabled: new Set(enabled) });
   }
   for (const value of [null, [], {}, { schemaVersion: 2, disabled: [] },
     { schemaVersion: 1, disabled: ['scope/scope', 'scope/scope'] },
+    { schemaVersion: 2, enabled: ['scope/scope', 'scope/scope'] },
+    { schemaVersion: 2, enabled: [], disabled: [] }, { schemaVersion: 2, enabled: ['../scope'] },
     { schemaVersion: 1, disabled: ['../scope'] }, { schemaVersion: 1, disabled: [true] },
     { schemaVersion: 1, disabled: [], enabled: 'sometimes' }, { schemaVersion: 1, disabled: 'scope/scope' }]) {
     assert.equal(validate(value), false, JSON.stringify(value));

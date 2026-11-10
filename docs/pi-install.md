@@ -62,11 +62,30 @@ Use native commands such as `/skill:semantic-ratchet` or `/skill:kotlin-review`.
 The two `/slopsentral-*` review prompts use the current session and model.
 They do not start separate agents.
 
-The adapter maps canonical hooks to `before_agent_start`, `tool_call`, and `agent_before_settle`.
-Shared instructions enter each request. Registered knowledge enters session context.
-Drift reports remain advisory.
-Instruction-scope rejection requests one repair turn. Repeated rejection stays visible without an automatic loop.
-The adapter preserves earlier extension messages and continuation requests.
+## Turn hooks on or off
+
+Slopsentral hooks start off in Pi, including after an upgrade from the old settings format.
+Pi still loads native project instructions and the package's shared instructions, skills, and review prompts.
+
+1. Enter `/hooks` in interactive Pi.
+2. Select a hook. Press Enter or Space to switch it between `on` and `off`.
+3. Press Esc to return.
+
+Each row lists the events and commands for that hook. Turn on only the hooks you want.
+
+| Hook | When on |
+| --- | --- |
+| `software-engineering/agents-md-scope` | Scans Git paths and fingerprints instruction files before a request and at the end of a completed turn. A pending review can add a message and start one repair turn. |
+| `repository-knowledge/code-knowledge-drift` | Examines drift in registered repository knowledge at the end of a completed turn. The report can appear after the answer. |
+| `repository-knowledge/knowledge-overlay` | Adds context from registered repository knowledge to the session. |
+
+Choices apply at the next request or turn end. An admitted turn keeps its current result.
+Choices persist across Pi sessions in `slopsentral-hooks.json` in Pi's global instruction directory.
+The old format stored opt-outs only. Use `/hooks` to turn on a hook after an upgrade.
+The menu saves the new format on the first change.
+Invalid choices stop hook effects. The menu reports the file path for repair.
+
+## Hook runtime
 
 The bootstrap provisions CPython 3.12.14 under `~/.pi/slopsentral-hook-runtime`.
 Personal and project packages share that private runtime; project files cannot select its executable.
@@ -88,19 +107,6 @@ Missing or changed runtime files produce explicit failures.
 A context-hook failure blocks tool calls until a later request succeeds.
 Processes obey time limits, output limits, and cancellation.
 
-Use `/hooks` to inspect and change Slopsentral hook choices.
-Press Enter or Space for the selected hook.
-Press Esc to return.
-The row names canonical events, Pi events, commands, and the script root.
-
-Choices apply at the next request or settlement.
-An admitted turn keeps its current admission result.
-Choices persist in `slopsentral-hooks.json` under Pi's global instruction directory.
-Disabled hooks start no script process.
-Invalid saved choices block hook effects and remain available for repair.
-Other extensions keep their choices.
-Pi owns native project trust.
-
 ## Scope, updates, and recovery
 
 Personal scope uses `~/.pi/agent` or `PI_CODING_AGENT_DIR`.
@@ -116,6 +122,7 @@ Use `--rollback` from the same project and scope to restore recorded preimages.
 Project recovery needs both `--project --rollback`.
 Rollback still admits the release, but needs neither Pi nor tar.
 It never runs project-cached recovery code.
+If you return to a release that expects the old hook settings format, move the new settings file aside before you restart Pi.
 Later edits return `CONFIG_CHANGED` and remain intact.
 
 ## Maintainers

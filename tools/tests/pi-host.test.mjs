@@ -85,12 +85,39 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   assert.deepEqual(runner.getCommandDiagnostics(), []);
   const prompt = () => runner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine the fixture.' }, { cwd });
   const read = id => runner.emitToolCall({ type: 'tool_call', toolCallId: id, toolName: 'read', input: { path: 'example.py' } });
+  const context = () => ({ contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: true });
+  const settled = () => runner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, context);
+  const settingsFile = path.join(agentDir, 'slopsentral-hooks.json');
+  const scopeState = path.join(agentDir, 'state/agents-md-scope');
+  const sourceFile = path.join(cwd, 'example.py');
+  const emptyBin = path.join(directory, 'empty-bin');
+  fs.mkdirSync(emptyBin);
+
+  // With no settings, no hook can start a process. Shared instructions still apply.
+  const availablePath = process.env.PATH;
+  process.env.PATH = emptyBin;
+  try {
+    const start = await prompt();
+    assert.match(start.systemPromptOptions.forceSystemPrompt, /# Engineering Baseline/);
+    assert.equal(await read('default-off'), undefined);
+    fs.writeFileSync(sourceFile, 'value = 2\n');
+    const quiet = await settled();
+    assert.deepEqual(quiet.entries, []);
+    assert.equal(quiet.continue, false);
+    assert.equal(fs.existsSync(scopeState), false);
+    assert.equal(fs.existsSync(settingsFile), false);
+  } finally {
+    if (availablePath === undefined) delete process.env.PATH; else process.env.PATH = availablePath;
+    fs.writeFileSync(sourceFile, 'value = 1\n');
+  }
+  fs.writeFileSync(settingsFile, JSON.stringify({
+    schemaVersion: 2, enabled: ['software-engineering/agents-md-scope'],
+  }));
+
   // Resource discovery alone does not prove that installed hooks can run.
   // Hide every host runtime; Pi itself remains loaded in this process.
   if (!managed) {
     const previousPath = process.env.PATH;
-    const emptyBin = path.join(directory, 'empty-bin');
-    fs.mkdirSync(emptyBin);
     process.env.PATH = emptyBin;
     try {
       const unavailable = await prompt();
@@ -118,9 +145,8 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   const start = await runner.emitBeforeAgentStart({ messageType: 'user', prompt: 'Examine the fixture.' }, { cwd });
   assert.ok(start.systemPromptOptions.forceSystemPrompt.includes(fs.readFileSync(path.join(pkg, 'software-engineering/instructions/engineering-design.md'), 'utf8')));
   assert.equal(await runner.emitToolCall({ type: 'tool_call', toolCallId: 'read-1', toolName: 'read', input: { path: 'example.py' } }), undefined);
-  const context = () => ({ contextEntries: [], contextMessages: [], llmMessages: [], pendingMessages: [], canContinue: true });
-  const settled = () => runner.emitBoundary({ type: 'agent_before_settle', outcome: 'completed' }, context);
   assert.equal((await settled()).continue, false);
+  assert.equal(fs.existsSync(scopeState), true);
   // A remote update changes many sources and guides, but is not a new maintenance task.
   const upstream = path.join(directory, 'upstream');
   execFileSync('git', ['clone', '-q', cwd, upstream]);
