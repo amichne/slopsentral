@@ -132,7 +132,7 @@
       "tools/tests/gradle-check-green.test.mjs": "4e217b4328bd24709f2156222a527f147fb5e906feb0aac76cd1c54b3b244b3f",
       "tools/tests/gradle-wrapper-integrity.test.mjs": "451feb70017670fb9a29428783402fe7dae9d2501f33287668dfbc69fb24f2d9",
       "tools/tests/install-skill.test.mjs": "590f34e3509bca35c68d989769bcf35067a058093f5e68667193c9c847a7be37",
-      "tools/tests/instruction-delivery.test.mjs": "1c9bc1ada59d7e2ca12e70897cc89d615fe0ebc971bb7f86ff0662f91f8f5919",
+      "tools/tests/instruction-delivery.test.mjs": "3e8d17408883158aaf589cfa151783bfe0d5b7d44c023fe809503b672e996ef1",
       "tools/tests/intellij-workflow-profile.test.mjs": "238594f05c0cc0db06a3482460e349f5ed76e9947555da0aaffc8b2e520653a0",
       "tools/tests/interactive-views.test.mjs": "2c8bdea40ff4f2198b799be0abb0edd43c4e3ab61d939288859e728bd2e45b4c",
       "tools/tests/junit-results.test.mjs": "e3e72a8258d8f5b40642f5d7971206976a9f63eb6b4bf4ceb025236af03ddb66",
