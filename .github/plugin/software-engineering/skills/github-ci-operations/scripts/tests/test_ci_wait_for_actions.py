@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from dataclasses import replace
 from datetime import datetime, timezone
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
@@ -46,6 +47,7 @@ RUN_IN_PROGRESS_JSON = json.dumps(
         "status": "in_progress",
         "conclusion": "",
         "workflowName": "Validate Source",
+        "headSha": "a" * 40,
         "jobs": [
             {"name": "test", "status": "in_progress", "conclusion": ""},
             {"name": "lint", "status": "completed", "conclusion": "success"},
@@ -57,6 +59,7 @@ RUN_SUCCESS_JSON = json.dumps(
         "status": "completed",
         "conclusion": "success",
         "workflowName": "Validate Source",
+        "headSha": "a" * 40,
         "jobs": [{"name": "test", "status": "completed", "conclusion": "success"}],
     }
 )
@@ -172,10 +175,19 @@ class CiActionsObservationTests(unittest.TestCase):
                 "view",
                 "123",
                 "--json",
-                "status,conclusion,jobs,workflowName",
+                "status,conclusion,jobs,workflowName,headSha",
             ),
         )
         self.assertNotIn("help", snapshot.details)
+
+    def test_run_observation_rejects_a_different_head(self) -> None:
+        runner = RecordingRunner([observer.CommandResult(0, RUN_IN_PROGRESS_JSON, "")])
+        result = cli.execute(
+            ["arm", "--run-id", "123", "--head-sha", "b" * 40],
+            runner=runner,
+            store=observer.StateStore(Path.cwd(), state_dir=Path(tempfile.gettempdir()) / "unused"),
+        )
+        self.assertIn("observed " + "a" * 40, result.payload["error"])
 
     def test_run_observation_classifies_terminal_success(self) -> None:
         snapshot = observer.parse_run_view(RUN_SUCCESS_JSON, "123")
@@ -260,6 +272,19 @@ class CiActionsObservationTests(unittest.TestCase):
             runner,
         )
 
+        self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
+        self.assertEqual(snapshot.details["counts"]["total"], 0)
+
+    def test_required_check_query_treats_no_registered_checks_as_pending(self) -> None:
+        runner = RecordingRunner([
+            PR_HEAD_RESULT,
+            observer.CommandResult(1, "", "no checks reported on the 'topic' branch"),
+            PR_HEAD_RESULT,
+        ])
+        snapshot = observer.fetch_snapshot(
+            observer.Target(observer.TargetKind.PR, "42", required=True),
+            Path("."), runner,
+        )
         self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
         self.assertEqual(snapshot.details["counts"]["total"], 0)
 
@@ -367,20 +392,35 @@ class CiActionsStateTests(unittest.TestCase):
         self.assertEqual(loaded, self.request)
         self.assertTrue(self.store.active_path.is_file())
 
+    def test_worktrees_share_one_observer_and_reject_a_second_waiter(self) -> None:
+        root = self.repo_root / "repo"
+        linked = self.repo_root / "linked"
+        subprocess.run(["git", "init", "-q", str(root)], check=True)
+        subprocess.run(
+            ["git", "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
+             "commit", "-qm", "initial", "--allow-empty"], cwd=root, check=True
+        )
+        subprocess.run(["git", "worktree", "add", "-qd", str(linked)], cwd=root, check=True)
+        first, second = observer.StateStore(root), observer.StateStore(linked)
+        self.assertEqual(first.state_dir, second.state_dir)
+        with first.exclusive():
+            result = cli.execute(["await"], store=second, runner=RecordingRunner([]))
+        self.assertIn("already running", result.payload["error"])
+
     def test_state_directory_uses_git_rev_parse_path(self) -> None:
         calls: list[tuple[str, ...]] = []
 
         def fake_git(args: Sequence[str], cwd: Path) -> observer.CommandResult:
             calls.append(tuple(args))
-            return observer.CommandResult(0, ".git/worktrees/topic/ci/github-actions\n", "")
+            return observer.CommandResult(0, ".git\n", "")
 
         resolved = observer.resolve_state_dir(self.repo_root, fake_git)
 
         self.assertEqual(
             resolved,
-            (self.repo_root / ".git/worktrees/topic/ci/github-actions").resolve(),
+            (self.repo_root / ".git/ci/github-actions").resolve(),
         )
-        self.assertEqual(calls, [("git", "rev-parse", "--git-path", "ci/github-actions")])
+        self.assertEqual(calls, [("git", "rev-parse", "--git-common-dir")])
 
     def test_auto_timeout_uses_p95_profile_with_bounds(self) -> None:
         recommendation = observer.recommend_timeout(
@@ -575,6 +615,31 @@ class CiActionsCliTests(unittest.TestCase):
             result.payload["current"]["stateKey"],
         )
         self.assertFalse(self.store.active_path.exists())
+
+    def test_terminal_wait_shares_intermediate_state_without_another_remote_read(self) -> None:
+        baseline = observer.parse_run_view(RUN_IN_PROGRESS_JSON, "123")
+        request = active_request(baseline, expires_at="2026-07-10T12:01:00Z")
+        self.store.arm(replace(request, predicate=observer.WaitPredicate.TERMINAL))
+        queued = RUN_IN_PROGRESS_JSON.replace('"status": "in_progress"', '"status": "queued"', 1)
+        runner = RecordingRunner([
+            observer.CommandResult(0, queued, ""),
+            observer.CommandResult(0, RUN_SUCCESS_JSON, ""),
+            observer.CommandResult(0, "https://github.com/amichne/slopsentral.git", ""),
+            observer.CommandResult(0, RUN_API_JSON, ""),
+        ])
+
+        def sleep(seconds: float) -> None:
+            reader = RecordingRunner([])
+            status = cli.execute(["status", "--json"], runner=reader, store=self.store)
+            self.assertEqual(status.payload["latest"]["status"], "queued")
+            self.assertEqual(reader.calls, [])
+            self.clock.sleep(seconds)
+
+        result = cli.execute(
+            ["await", "--json"], runner=runner, store=self.store,
+            now_epoch=self.clock.time, sleeper=sleep,
+        )
+        self.assertEqual(result.payload["outcome"], "success")
 
     def test_timeout_preserves_latest_state_and_returns_124(self) -> None:
         baseline = observer.parse_run_view(RUN_IN_PROGRESS_JSON, "123")

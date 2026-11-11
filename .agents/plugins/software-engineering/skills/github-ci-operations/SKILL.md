@@ -21,6 +21,10 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
 - When the local observer is available, wait with one target, event predicate,
   and bounded timeout. Otherwise use available structured check reads at meaningful
   transitions. An unavailable observer must not block diagnosis or PR creation.
+- Before you dispatch work to a self-hosted runner, examine capacity for the
+  full label set with the observer's `capacity` command. Report API failures separately.
+- When a linked worktree already owns the wait, use the local `status` result.
+  Report the required PR checks and native qualification jobs as separate facts.
 - Prefer `--timeout auto`; inspect its duration-informed choice and override it
   deliberately when needed.
 - Treat non-GitHub providers as external checks unless the repo has local
@@ -90,7 +94,7 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
   image validation, or workflow/task cardinality.
 - For partial retries, use the [artifact retry fixture](references/artifact-retry.md).
 - For a PR performance report, use the [attempt signals](references/attempt-signals.md).
-- Load [gradle-ci-performance.md](references/gradle-ci-performance.md) for
+- Load [Gradle CI performance](references/gradle-ci-performance.md) for
   Gradle on GitHub Actions, Develocity correlation, cache ownership, affected-task
   selection, measured latency/runner consumption, and CI/CD handoff. Use
   `gradle-performance-engineering` for build-internal diagnosis and experiments.

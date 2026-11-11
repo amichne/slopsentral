@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T15:14:53-05:00",
+  "generatedAt": "2026-11-11T16:42:07-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -41,7 +41,7 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:bef0fc2c8c98372f695cc3abe8127b419cf4b3e0bcf6378648af7dcfefd2e439",
+          "sha256": "sha256:327b48860c8f5c4c65dabac9f4687f93cf7d848c002f384df8a6f712f68574e0",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
@@ -325,6 +325,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "e412339963d2996e9455aba38c2410d4bfdbb4bd",
+  "sourceSha": "9ae7e82ee93f94fcebea854318c5e24a39c7265f",
   "type": "HYDRATED_MARKETPLACE"
 }
