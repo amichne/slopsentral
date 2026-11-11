@@ -1,0 +1,3 @@
+#!/bin/sh
+scaffold_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P) || exit 1
+exec uv run --script "$scaffold_dir/scaffold.py" "$@"

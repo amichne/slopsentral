@@ -1,7 +1,7 @@
-#!/usr/bin/env -S uv run --locked --script
+#!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.12,<3.14"
-# dependencies = ["pytest==8.4.2"]
+# dependencies = []
 # [tool.uv]
 # no-build = true
 # required-version = ">=0.12.9"
@@ -98,12 +98,8 @@ def test_read_boundary(tmp_path: Path) -> None:
 
 
 def main(arguments: list[str]) -> int:
-    if arguments == ["--self-test"]:
-        import pytest  # noqa: PLC0415 -- optional execution mode, declared in PEP 723
-
-        return int(pytest.main([str(Path(__file__).resolve()), "-q", "-o", "addopts="]))
     if arguments in (["--help"], ["-h"]):
-        print(f"usage: {Path(sys.argv[0]).name} PATH | --self-test")
+        print(f"usage: {Path(sys.argv[0]).name} PATH")
         return 0
     if len(arguments) != 1:
         print(json.dumps({"type": "INVALID_ARGUMENTS"}))
