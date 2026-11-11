@@ -32,6 +32,7 @@ from ci_actions_process import (
     require_success,
     resolve_repository_slug,
     run_command,
+    runner_capacity,
 )
 from ci_actions_run_parser import (
     classify_run,
