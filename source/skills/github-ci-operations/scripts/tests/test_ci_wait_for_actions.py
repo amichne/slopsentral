@@ -275,6 +275,19 @@ class CiActionsObservationTests(unittest.TestCase):
         self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
         self.assertEqual(snapshot.details["counts"]["total"], 0)
 
+    def test_required_check_query_treats_no_registered_checks_as_pending(self) -> None:
+        runner = RecordingRunner([
+            PR_HEAD_RESULT,
+            observer.CommandResult(1, "", "no checks reported on the 'topic' branch"),
+            PR_HEAD_RESULT,
+        ])
+        snapshot = observer.fetch_snapshot(
+            observer.Target(observer.TargetKind.PR, "42", required=True),
+            Path("."), runner,
+        )
+        self.assertEqual(snapshot.outcome, observer.Outcome.PENDING)
+        self.assertEqual(snapshot.details["counts"]["total"], 0)
+
     def test_no_checks_stays_pending(self) -> None:
         runner = RecordingRunner(
             [

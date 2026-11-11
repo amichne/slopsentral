@@ -154,7 +154,7 @@ def runner_capacity(
 
 
 def no_checks(result: CommandResult, *, required: bool) -> bool:
-    qualifier = "required " if required else ""
+    qualifier = "(?:required )?" if required else ""
     return (
         result.returncode == 1
         and not result.stdout.strip()
