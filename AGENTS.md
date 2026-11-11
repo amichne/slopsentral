@@ -39,7 +39,8 @@ Use native Codex and Copilot commands for their host configuration.
 Amp uses managed links to release archives. Pi delegates to `tools/setup-pi.mts`.
 `tools/setup_assets.py` keeps the bootstrap, Python script, lock, and setup receipt.
 `source/schemas/pi/setup.schema.json` owns the receipt contract.
-Keep historical two-file and five-file inventories valid alongside the seven-file inventory.
+Keep historical two-file, five-file, and seven-file inventories valid.
+The nine-file inventory includes the two audit modules.
 The command bundles the canonical Kotlin detector and its lock from `source/hooks/`.
 Keep layout findings advisory. Inspection failures must return a nonzero status.
 Reject partial inventories and duplicate filenames.
@@ -118,8 +119,14 @@ for all work. Software Engineering delivers this same source through its context
 hook; language and domain instructions refine it.
 
 Write repository automation in Python. Install the uv version from `mise.toml` with `mise install`.
-Give public CLI commands executable names without file extensions. Install them in a directory on `PATH`.
-Declare dependencies in PEP 723 headers and commit adjacent locks. Use `tool.uv.no-build = true`.
+Prefer the standard library for small commands.
+Give public CLI commands executable names without file extensions. Put them on `PATH`.
+Use `uv.toml` for checkout configuration and set `no-build = true`.
+Declare Python requirements in `pyproject.toml` or the script's PEP 723 header.
+Keep Python dependency lockfiles out of Git.
+Existing commands that consume tracked locks need a migration of their callers and release assets.
+The checkout launcher for `slopsentral audit` uses `uv.toml` and `.python-version`.
+The installed launcher runs the audit with `uv run --no-project`.
 Run `mise exec -- slopsentral-setup` for checkout setup.
 Run `mise exec -- slopsentral-check` for Ruff, strict Pyright, and pytest. Keep generated outputs and installed caches outside authored edits.
 

@@ -41,6 +41,7 @@ VERSION = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\Z")
 IDENTITY = re.compile(r"[a-z][a-z0-9-]*\Z")
 LAYOUT_HELPER = "kotlin-horizontalization-check"
 COMMAND_FILES = ("slopsentral.py", "slopsentral.py.lock", LAYOUT_HELPER, LAYOUT_HELPER + ".lock")
+AUDIT_FILES = ("session_audit.py", "audit_history.py")
 
 
 class PluginName(str):
@@ -373,19 +374,7 @@ def helper_source() -> Path:
 
 @dataclass(frozen=True)
 class CommandPayload:
-    script: bytes
-    script_lock: bytes
-    helper: bytes
-    helper_lock: bytes
-
-    def files(self) -> tuple[tuple[str, bytes], ...]:
-        return tuple(
-            zip(
-                COMMAND_FILES,
-                (self.script, self.script_lock, self.helper, self.helper_lock),
-                strict=True,
-            )
-        )
+    files: tuple[tuple[str, bytes], ...]
 
 
 def command_source(action: Action, version: str | None) -> Result[CommandPayload]:
@@ -393,22 +382,27 @@ def command_source(action: Action, version: str | None) -> Result[CommandPayload
         release = _Release.latest(version)
         if isinstance(release, Rejected):
             return release
-        assets = {name: release.asset(name) for name in COMMAND_FILES}
+        has_audit = any(asset.get("name") in AUDIT_FILES for asset in release.assets)
+        names = (*COMMAND_FILES, *AUDIT_FILES) if has_audit else COMMAND_FILES
+        assets = {name: release.asset(name) for name in names}
     else:
         source = Path(__file__).resolve()
         helper = helper_source()
+        audit = tuple(source.with_name(name) for name in AUDIT_FILES)
         assets = {
             "slopsentral.py": source.read_bytes(),
             "slopsentral.py.lock": Path(str(source) + ".lock").read_bytes(),
             LAYOUT_HELPER: helper.read_bytes(),
             LAYOUT_HELPER + ".lock": Path(str(helper) + ".lock").read_bytes(),
         }
-    files: dict[str, bytes] = {}
+        if any(file.exists() for file in audit):
+            assets.update((file.name, file.read_bytes()) for file in audit)
+    files: list[tuple[str, bytes]] = []
     for name, asset in assets.items():
         if isinstance(asset, Rejected):
             return asset
-        files[name] = asset
-    return CommandPayload(*(files[name] for name in COMMAND_FILES))
+        files.append((name, asset))
+    return CommandPayload(tuple(files))
 
 
 def publish_command(
@@ -418,13 +412,24 @@ def publish_command(
     uv = shutil.which(os.environ.get("UV", "uv"))
     if uv is None:
         return Rejected(Reason.HOST_UNAVAILABLE, "uv")
-    identity = hashlib.sha256(b"".join(data for _, data in payload.files())).hexdigest()
+    identity = hashlib.sha256(b"".join(data for _, data in payload.files)).hexdigest()
     bundle = directory / identity
     directory.mkdir(exist_ok=True)
     bundle.mkdir(exist_ok=True)
-    for name, data in payload.files():
+    for name, data in payload.files:
         atomic(bundle / name, data)
-    launcher = f'#!/bin/sh\nexec {shlex.quote(uv)} run --locked --script {shlex.quote(str(bundle / "slopsentral.py"))} "$@"\n'
+    uv_command = shlex.quote(uv)
+    script = shlex.quote(str(bundle / "slopsentral.py"))
+    command_dir = shlex.quote(str(executable.parent))
+    launcher = (
+        "#!/bin/sh\n"
+        'if [ "${1-}" = audit ]; then\n'
+        f'    PATH={command_dir}:"$PATH"\n'
+        "    export PATH\n"
+        f'    exec {uv_command} run --no-project --python ">=3.12,<3.14" python -B {script} "$@"\n'
+        "fi\n"
+        f'exec {uv_command} run --locked --script {script} "$@"\n'
+    )
     files = {
         path.relative_to(directory).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in directory.rglob("*")
@@ -974,8 +979,9 @@ def host_operation(
 
 
 def manage() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(prog="slopsentral", description=__doc__)
     sub = parser.add_subparsers(dest="action")
+    _ = sub.add_parser("audit", help="Run Pi audits and inspect session history.", add_help=False)
     _ = sub.add_parser(
         "kotlin-horizontalization",
         help="Inspect Kotlin package layout without edits.",
@@ -1023,7 +1029,24 @@ def manage() -> int:
     return 0
 
 
+def audit(arguments: list[str]) -> int:
+    source = Path(__file__).resolve()
+    if any(not source.with_name(name).is_file() for name in AUDIT_FILES):
+        print(
+            "slopsentral audit: audit modules are missing. Run slopsentral self update.",
+            file=sys.stderr,
+        )
+        return 1
+    # Imports must preserve the managed bundle's file inventory.
+    sys.dont_write_bytecode = True
+    from session_audit import main as audit_main  # noqa: PLC0415
+
+    return audit_main(arguments)
+
+
 def main() -> int:
+    if sys.argv[1:2] == ["audit"]:
+        return audit(sys.argv[2:])
     if sys.argv[1:2] == ["kotlin-horizontalization"]:
         return horizontalization(sys.argv[2:])
     return manage()

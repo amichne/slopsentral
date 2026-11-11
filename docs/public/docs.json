@@ -71,6 +71,7 @@
           "maintainers/projection",
           "maintainers/documentation",
           "maintainers/evaluations",
+          "maintainers/session-audit",
           "maintainers/global-instructions",
           "maintainers/apm-qualification",
           "maintainers/portable-documentation",

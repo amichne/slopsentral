@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import { validateResourceReference } from "./resource-contract.mjs";
 import { auditCatalog, loadCatalog } from "./catalog.mjs";
@@ -140,8 +141,36 @@ function relativeToRepo(absolutePath) {
   return path.relative(repoRoot, absolutePath).split(path.sep).join("/");
 }
 
-// These public interfaces need a shell: a curl-to-sh bootstrap and a sourced Zsh function.
-const shellInterfaces = new Set(["tools/install-pi.sh", "source/skills/cli-creator/assets/personal-size.zsh"]);
+// Native bootstraps and launchers can delegate to an explicit Python entry point.
+const shellInterfaces = new Set([
+  "bin/slopsentral",
+  "source/skills/cli-creator/assets/personal-size.zsh",
+  "source/skills/python-tooling/scripts/python-scaffold",
+  "tools/install-pi.sh",
+]);
+
+function isPythonLock(relative) {
+  if (path.basename(relative) === "uv.lock" || /\.py\.lock(?:\.tmpl)?$/.test(relative)) return true;
+  if (!relative.endsWith(".lock")) return false;
+  const command = path.join(repoRoot, relative.slice(0, -5));
+  return fs.existsSync(command) && fs.statSync(command).isFile()
+    && fs.readFileSync(command, "utf8").includes("# /// script\n");
+}
+
+const pythonPolicyBase = process.env.SLOPSENTRAL_PYTHON_POLICY_BASE;
+if (pythonPolicyBase && repoArgIndex < 0) {
+  const changed = /^[0-9a-f]{40}$/.test(pythonPolicyBase) && spawnSync(
+    "git", ["diff", "--no-renames", "--diff-filter=A", "--name-only", "-z", `${pythonPolicyBase}...HEAD`],
+    { cwd: repoRoot, encoding: "utf8" },
+  );
+  if (!changed || changed.status !== 0) {
+    fail("Python dependency lock policy needs the pull request base and head");
+  } else {
+    for (const relative of changed.stdout.split("\0").filter(Boolean)) {
+      if (isPythonLock(relative)) fail(`${relative}: keep Python dependency locks out of Git`);
+    }
+  }
+}
 
 // Portable consumers carry the existing project minimum without an ambient project.
 for (const root of ["bin", "source", "tools"]) {
@@ -158,7 +187,7 @@ for (const root of ["bin", "source", "tools"]) {
       fail(`${relative}: use a Python script with uv for automation`);
     }
     if (/^#![^\n]*(?:\/|\s)python(?:[23](?:\.\d+)?)?(?:\s|$)/.test(launcher)) {
-      fail(`${relative}: use the locked uv launcher for portable Python scripts`);
+      fail(`${relative}: use a uv launcher for portable Python scripts`);
     }
     if (!launcher.startsWith("#!") || !(script.includes("# /// script\n") || /\buv\s+run\b/.test(launcher))) continue;
     const metadata = script.match(/^# \/\/\/ script\n([\s\S]*?)^# \/\/\/$/m)?.[1];
@@ -168,13 +197,15 @@ for (const root of ["bin", "source", "tools"]) {
     if (!metadata || !/^# required-version = ">=0\.12\.9"$/m.test(metadata)) {
       fail(`${relativeToRepo(file)}: portable uv script must declare the existing uv >=0.12.9 minimum`);
     }
-    if (executable && !script.startsWith("#!/usr/bin/env -S uv run --locked --script\n")) {
-      fail(`${relativeToRepo(file)}: direct portable uv script must use a locked script launcher`);
+    const unlocked = launcher === "#!/usr/bin/env -S uv run --script";
+    const locked = launcher === "#!/usr/bin/env -S uv run --locked --script";
+    if (executable && !unlocked && !locked) {
+      fail(`${relative}: direct portable uv script must use uv run --script`);
     }
     const lock = file.endsWith(".tmpl") ? file.slice(0, -5) + ".lock.tmpl" : file + ".lock";
-    if (!fs.existsSync(lock)) {
-      fail(`${relativeToRepo(file)}: portable uv script must have an adjacent lock`);
-    }
+    if (locked && !fs.existsSync(lock)) fail(`${relative}: legacy locked launcher needs its lock`);
+    if (executable && unlocked && fs.existsSync(lock)) fail(`${relative}: unlocked launcher must omit the adjacent lock`);
+
   }
 }
 
@@ -305,9 +336,10 @@ function validateInstructionContext(metadata) {
     for (const group of groups) {
       if (!Array.isArray(group?.hooks)) continue;
       for (const handler of group.hooks) {
-        if (typeof handler?.command !== 'string' ||
-            !handler.command.startsWith('uv run --locked --script hooks/inject-instruction-context.py')) continue;
-        const args = handler.command.split(/\s+/u).slice(5);
+        const match = typeof handler?.command === 'string'
+          && handler.command.match(/^uv run (?:--locked )?--script hooks\/inject-instruction-context\.py(?:\s+(.*))?$/u);
+        if (!match) continue;
+        const args = match[1]?.split(/\s+/u) ?? [];
         const selected = args.filter((_, index) => index % 2 === 1);
         const declarations = (metadata.dependsOn ?? []).filter(ref => ref.type === 'INSTRUCTION');
         const names = declarations.map(ref => ref.name);
@@ -342,20 +374,21 @@ function validateHookAdapter(hookName, adapterPath) {
     fail(`${relativePath}: hook adapter ${hookName} does not define any command hooks`);
   }
   for (const command of commands) {
-    const match = command.match(/^uv run --locked --script hooks\/([A-Za-z0-9_.-]+)(?:\s|$)/);
-    if (!match) {
-      fail(`${relativePath}: hook command must call uv run --locked --script hooks/<script>: ${command}`);
+    const hookLaunch = /uv run (--locked )?--script (hooks\/[A-Za-z0-9_.-]+)(?=\s|$)/g;
+    const launches = [...command.matchAll(hookLaunch)];
+    if (launches[0]?.index !== 0) {
+      fail(`${relativePath}: hook command must call uv run --script hooks/<script>: ${command}`);
       continue;
     }
-    for (const found of command.matchAll(/\bhooks\/[A-Za-z0-9_.-]+/g)) {
-      const scriptPath = path.join(sourceRoot, found[0]);
-      if (!fs.existsSync(scriptPath) || !fs.existsSync(scriptPath + '.lock')) {
-        fail(`${relativePath}: missing uv script or adjacent lock: ${found[0]}`);
+    for (const [, locked, hookScript] of launches) {
+      const scriptPath = path.join(sourceRoot, hookScript);
+      if (!fs.existsSync(scriptPath) || (locked && !fs.existsSync(scriptPath + '.lock'))) {
+        fail(`${relativePath}: missing uv hook script or legacy lock: ${hookScript}`);
         continue;
       }
       const script = fs.readFileSync(scriptPath, 'utf8');
       if (!script.includes('# /// script\n') || !script.includes('# no-build = true'))
-        fail(`${relativePath}: uv hook must declare PEP 723 metadata and no-build: ${found[0]}`);
+        fail(`${relativePath}: uv hook must declare PEP 723 metadata and no-build: ${hookScript}`);
     }
   }
 }

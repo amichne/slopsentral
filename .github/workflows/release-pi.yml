@@ -156,6 +156,7 @@ jobs:
             "$RUNNER_TEMP/setup-candidate/slopsentral.py.lock" \
             "$RUNNER_TEMP/setup-candidate/kotlin-horizontalization-check" \
             "$RUNNER_TEMP/setup-candidate/kotlin-horizontalization-check.lock" \
+            "$RUNNER_TEMP/setup-candidate/session_audit.py" "$RUNNER_TEMP/setup-candidate/audit_history.py" \
             "$RUNNER_TEMP/setup-candidate/setup.json" "$RUNNER_TEMP/promotion.json" \
             --verify-tag --draft --title "Slopsentral $VERSION" --notes-file "$RUNNER_TEMP/release-notes.md"
       - name: Verify published downloads before making the release current
@@ -170,7 +171,7 @@ jobs:
           cmp "$RUNNER_TEMP/pi-candidate/candidate.json" "$RUNNER_TEMP/downloaded/candidate.json"
           cmp "$RUNNER_TEMP/promotion.json" "$RUNNER_TEMP/downloaded/promotion.json"
           cmp "$RUNNER_TEMP/marketplace-candidate/release-assets.json" "$RUNNER_TEMP/downloaded/release-assets.json"
-          for file in install-pi.sh setup-pi.mts install.sh slopsentral.py slopsentral.py.lock kotlin-horizontalization-check kotlin-horizontalization-check.lock setup.json; do cmp "$RUNNER_TEMP/setup-candidate/$file" "$RUNNER_TEMP/downloaded/$file"; done
+          for file in install-pi.sh setup-pi.mts install.sh slopsentral.py slopsentral.py.lock kotlin-horizontalization-check kotlin-horizontalization-check.lock session_audit.py audit_history.py setup.json; do cmp "$RUNNER_TEMP/setup-candidate/$file" "$RUNNER_TEMP/downloaded/$file"; done
           gh release edit "slopsentral-v$VERSION" --draft=false --latest
       - name: Complete the Release Please PR lifecycle after publication
         env:

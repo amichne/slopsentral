@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import os
 import shutil
@@ -34,6 +35,9 @@ from threading import Thread
 from typing import assert_never
 
 ROOT = Path(__file__).resolve().parents[1]
+# Debian trixie zsh-static 5.9-8+b24 for amd64.
+ZSH_URL = "https://snapshot.debian.org/file/3d0ecc417012b5aee852cd5dee79d5db1342eae6"
+ZSH_SHA256 = "ca5ea751bcbf805759b335743776ebd05ce8f2ab02459e9ef3ffd08c4b7c2800"
 
 
 class Task(StrEnum):
@@ -66,17 +70,27 @@ class Installed:
     directory: Path
 
 
+def download(url: str, archive: Path, expected_digest: str) -> SetupFailure | None:
+    try:
+        with urllib.request.urlopen(url, timeout=60) as response, archive.open("wb") as output:  # noqa: S310 -- callers use pinned HTTPS artifacts
+            shutil.copyfileobj(response, output)
+        with archive.open("rb") as source:
+            digest = hashlib.file_digest(source, "sha256").hexdigest()
+    except urllib.error.URLError:
+        return SetupFailure.DOWNLOAD
+    except OSError:
+        return SetupFailure.FILESYSTEM
+    return None if digest == expected_digest else SetupFailure.CHECKSUM
+
+
 def install(artifact: Artifact, target: Path) -> Installed | SetupFailure:
     url = f"https://github.com/{artifact.repository}/releases/download/{artifact.tag}/{artifact.filename}"
     try:
         target.mkdir(parents=True, exist_ok=False)
         archive = target / artifact.filename
-        with urllib.request.urlopen(url, timeout=60) as response, archive.open("wb") as output:  # noqa: S310 -- fixed HTTPS GitHub release origin
-            shutil.copyfileobj(response, output)
-        with archive.open("rb") as source:
-            digest = hashlib.file_digest(source, "sha256").hexdigest()
-        if digest != artifact.sha256:
-            return SetupFailure.CHECKSUM
+        failure = download(url, archive, artifact.sha256)
+        if failure is not None:
+            return failure
         if zipfile.is_zipfile(archive):
             with zipfile.ZipFile(archive) as zipped:
                 if any(
@@ -89,9 +103,39 @@ def install(artifact: Artifact, target: Path) -> Installed | SetupFailure:
             with tarfile.open(archive) as packed:
                 packed.extractall(target, filter="data")
         return Installed(target)
-    except urllib.error.URLError:
-        return SetupFailure.DOWNLOAD
     except (tarfile.TarError, zipfile.BadZipFile):
+        return SetupFailure.ARCHIVE
+    except OSError:
+        return SetupFailure.FILESYSTEM
+
+
+def install_zsh(target: Path) -> Installed | SetupFailure:
+    try:
+        target.mkdir(parents=True, exist_ok=False)
+        archive = target / "zsh.deb"
+        failure = download(ZSH_URL, archive, ZSH_SHA256)
+        if failure is not None:
+            return failure
+        payload = subprocess.run(
+            ["ar", "p", str(archive), "data.tar.xz"],
+            capture_output=True,
+            check=False,
+        )
+        if payload.returncode != 0:
+            return SetupFailure.ARCHIVE
+        with tarfile.open(fileobj=io.BytesIO(payload.stdout), mode="r:xz") as data:
+            member = data.getmember("./usr/bin/zsh-static")
+            binary = data.extractfile(member) if member.isfile() else None
+            if binary is None:
+                return SetupFailure.ARCHIVE
+            directory = target / "bin"
+            directory.mkdir()
+            command = directory / "zsh"
+            with binary, command.open("xb") as output:
+                shutil.copyfileobj(binary, output)
+            command.chmod(0o755)
+        return Installed(directory)
+    except (KeyError, tarfile.TarError):
         return SetupFailure.ARCHIVE
     except OSError:
         return SetupFailure.FILESYSTEM
@@ -151,6 +195,10 @@ def native(temporary: Path) -> int:
         if isinstance(result, SetupFailure):
             print(json.dumps({"stage": "setup", "type": result.value, "tool": artifact.repository}))
             return 2
+    zsh = install_zsh(temporary / "zsh")
+    if isinstance(zsh, SetupFailure):
+        print(json.dumps({"stage": "setup", "type": zsh.value, "tool": "zsh"}))
+        return 2
     kotlin_bin = temporary / "kotlin/kotlinc/bin"
     for file in kotlin_bin.iterdir():
         file.chmod(file.stat().st_mode | 0o111)
@@ -159,6 +207,7 @@ def native(temporary: Path) -> int:
             temporary / "worktrunk/worktrunk-x86_64-unknown-linux-musl",
             temporary / "vale",
             kotlin_bin,
+            zsh.directory,
         ):
             _ = output.write(str(directory) + "\n")
     pkl = temporary / "projection-pkl/pkl"
@@ -170,8 +219,7 @@ def native(temporary: Path) -> int:
         _ = output.write(
             f"TEST_VALE_ARCHIVE={temporary / 'vale/vale_3.24.0_Linux_64-bit.tar.gz'}\n"
         )
-    # Only the retained parent-session adapter needs Zsh; no shell authoring suite.
-    return commands((("sudo", "apt-get", "update"), ("sudo", "apt-get", "install", "--yes", "zsh")))
+    return 0
 
 
 class UnpublishedPackage(BaseHTTPRequestHandler):

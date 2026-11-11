@@ -1,0 +1,10 @@
+#!/bin/sh
+root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P) || exit 1
+if [ "${1-}" = audit ]; then
+    python_version=$(cat "$root/.python-version") || exit 1
+    PATH="$root/bin:$PATH"
+    export PATH
+    exec uv --config-file "${UV_CONFIG_FILE:-$root/uv.toml}" run --no-project --python "$python_version" \
+        python -B "$root/tools/slopsentral.py" "$@"
+fi
+exec uv run --locked --script "$root/tools/slopsentral.py" "$@"

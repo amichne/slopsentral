@@ -33,33 +33,40 @@ def test_forbidden_branch_is_rejected(tmp_path: Path) -> None:
     assert "Never" in errors[0]["message"]
 
 
-def test_pep723_isolation() -> None:
+def test_pep723_isolation(tmp_path: Path) -> None:
     script = ROOT / "source/skills/python-tooling/assets/standalone.py"
+    sample = tmp_path / "sample.txt"
+    _ = sample.write_text("hello\n")
     result = subprocess.run(
-        ["uv", "run", "--locked", "--script", str(script), "--self-test"],
-        cwd=ROOT,
+        ["uv", "run", "--script", str(script), str(sample)],
+        cwd=tmp_path,
         capture_output=True,
         text=True,
         check=False,
     )
-    assert result.returncode == 0, result.stdout + result.stderr
-    assert "4 passed" in result.stdout
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"type": "SUMMARY", "lines": 1, "characters": 6}
+    assert list(tmp_path.glob("*.lock")) == []
 
 
 def test_scaffold_exposes_extensionless_command_with_checkout_uv_pin(tmp_path: Path) -> None:
-    script = ROOT / "source/skills/python-tooling/scripts/scaffold.py"
+    script = ROOT / "source/skills/python-tooling/scripts/python-scaffold"
     destination = tmp_path / "project with spaces"
     _ = subprocess.run(
-        ["uv", "run", "--locked", "--script", str(script), "--out", str(destination)],
+        [str(script), "--out", str(destination)],
         check=True,
     )
 
     def uv_pin(config: Path) -> str:
         return tomllib.loads(config.read_text())["tools"]["uv"]
 
+    assert (destination / "uv.toml").is_file()
+    assert list(destination.rglob("*.lock")) == []
     assert uv_pin(destination / "mise.toml") == uv_pin(ROOT / "mise.toml")
     if os.name != "posix":
         pytest.skip("Direct shebang commands on PATH need a POSIX host.")
+    assert (destination / "bin/automation-setup").is_symlink()
+    assert "uv.lock" in (destination / ".gitignore").read_text()
     sample = tmp_path / "sample with spaces.txt"
     _ = sample.write_text("hello\n")
     result = subprocess.run(
@@ -72,15 +79,14 @@ def test_scaffold_exposes_extensionless_command_with_checkout_uv_pin(tmp_path: P
     )
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout) == {"type": "SUMMARY", "lines": 1, "characters": 6}
-    (destination / "bin/text-summary.lock").unlink()
     rejected = subprocess.run(
-        ["text-summary", str(sample)],
+        ["text-summary", str(tmp_path / "absent")],
         cwd=tmp_path,
         env={**os.environ, "PATH": os.pathsep.join([str(destination / "bin"), os.environ["PATH"]])},
         text=True,
         capture_output=True,
         check=False,
     )
-    assert rejected.returncode == 2
-    assert "lockfile" in rejected.stderr
-    assert not rejected.stdout
+    assert rejected.returncode == 1, rejected.stderr
+    assert json.loads(rejected.stdout) == {"type": "UNREADABLE"}
+    assert list(destination.rglob("*.lock")) == []

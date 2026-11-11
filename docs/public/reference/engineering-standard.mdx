@@ -41,13 +41,16 @@ branches, nullable sentinels, or weaker types. Test expectations independently
 of implementation. Add bounded stage/outcome instrumentation while investigating
 opaque effects, without secrets, source payloads, or unbounded output.
 
-Write shell tooling in Python. Install uv through mise and pin its version in
-the project’s `mise.toml`. Use `mise exec -- uv run --locked --script PATH`
-for portable scripts. Give public CLI commands executable names without file extensions.
-Put them in a directory on `PATH` so users can invoke each command by name.
-Keep its script lock beside the executable. Declare the Python range and dependencies in each PEP 723
-header. Use `dependencies = []` for standard-library scripts. Declare package
-indexes, commit adjacent script locks, and set `tool.uv.no-build = true`.
+Use Python for standalone commands and CI orchestration.
+Prefer the standard library for small commands.
+Use the host language for an adapter that depends on a native API.
+Install uv through mise and pin its version in the project's `mise.toml`.
+Give public commands executable names without file extensions. Put them on `PATH`.
+Use `uv.toml` for checkout configuration. Set `no-build = true`.
+Use PEP 723 for a script that needs to run outside a checkout.
+Declare the Python range, direct dependencies, and index in the script header.
+Use `dependencies = []` for standard-library scripts.
+Keep Python dependency lockfiles out of Git. Keep runtime dependencies small.
 Use strict Pyright. Use its LSP for symbol navigation when available. Use Ruff for format and lint checks.
 Use pytest for accepted inputs, rejected inputs, and limits. Use encapsulation and executable tests for purity, construction, and single use.
 Use Python for setup, process calls, decisions, and cleanup. Keep shell adapters only for an existing host interface
