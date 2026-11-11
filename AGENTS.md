@@ -119,7 +119,10 @@ hook; language and domain instructions refine it.
 
 Write repository automation in Python. Install the uv version from `mise.toml` with `mise install`.
 Give public CLI commands executable names without file extensions. Install them in a directory on `PATH`.
-Declare dependencies in PEP 723 headers and commit adjacent locks. Use `tool.uv.no-build = true`.
+For portable scripts, declare dependencies in PEP 723 headers and commit adjacent locks.
+Set `no-build = true` in the uv configuration.
+The checkout-only `slopsentral-audit` launcher uses `uv.toml` and `.python-version`.
+It runs with `uv run --no-project`.
 Run `mise exec -- slopsentral-setup` for checkout setup.
 Run `mise exec -- slopsentral-check` for Ruff, strict Pyright, and pytest. Keep generated outputs and installed caches outside authored edits.
 
