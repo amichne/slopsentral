@@ -126,7 +126,11 @@ def execute(
                 return CommandResult(0, {"state": "idle", **payload})
             return CommandResult(
                 0,
-                {"state": "armed", "request": observer.active_request_to_json(active)},
+                {
+                    "state": "armed",
+                    "request": observer.active_request_to_json(active),
+                    "latest": observer.snapshot_to_json(state.latest(active)),
+                },
             )
         if args.command == "profile" and args.profile_command == "show":
             return CommandResult(0, observer.build_duration_profile(state.load_history()))
@@ -201,6 +205,8 @@ def await_observation(
             fetch=lambda target: observer.fetch_snapshot(target, repo_root, runner),
             now_epoch=now_epoch,
             sleeper=sleeper,
+            on_change=store.write_progress,
+            latest_observation=store.latest(request),
         )
         if result.outcome == observer.Outcome.FAILURE:
             result = dataclasses.replace(
@@ -221,7 +227,7 @@ def await_observation(
             predicate=request.predicate,
             outcome=observer.Outcome.ERROR,
             previous=request.baseline,
-            current=request.baseline,
+            current=store.latest(request),
             polls=0,
             started_at=request.armed_at,
             finished_at=now,

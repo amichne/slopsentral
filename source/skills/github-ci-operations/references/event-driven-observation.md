@@ -58,7 +58,8 @@ uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . 
 The command blocks until the predicate or bound is reached and returns the
 previous and current state. Do not run status or remote snapshot commands in a
 manual loop. `status --json` is local-only and is for recovery or inspection,
-not listening. An idle response includes the last result when one exists.
+not listening. An armed response includes the latest observed job or check state.
+An idle response includes the last result when one exists.
 
 The observer retries at most two transient GitHub read failures. A third
 consecutive error wakes the model instead of waiting indefinitely.
@@ -101,6 +102,7 @@ profile only when the repository wants that shared policy.
 Runtime files live in `ci/github-actions` under the Git common directory:
 
 - `active.json` is the single armed request;
+- `progress.json` records intermediate state changes without new remote reads.
 - `last-observation.json` is the latest transition, terminal event, or timeout;
 - `history.jsonl` contains observed terminal run durations.
 

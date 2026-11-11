@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from dataclasses import replace
 from datetime import datetime, timezone
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
@@ -601,6 +602,31 @@ class CiActionsCliTests(unittest.TestCase):
             result.payload["current"]["stateKey"],
         )
         self.assertFalse(self.store.active_path.exists())
+
+    def test_terminal_wait_shares_intermediate_state_without_another_remote_read(self) -> None:
+        baseline = observer.parse_run_view(RUN_IN_PROGRESS_JSON, "123")
+        request = active_request(baseline, expires_at="2026-07-10T12:01:00Z")
+        self.store.arm(replace(request, predicate=observer.WaitPredicate.TERMINAL))
+        queued = RUN_IN_PROGRESS_JSON.replace('"status": "in_progress"', '"status": "queued"', 1)
+        runner = RecordingRunner([
+            observer.CommandResult(0, queued, ""),
+            observer.CommandResult(0, RUN_SUCCESS_JSON, ""),
+            observer.CommandResult(0, "https://github.com/amichne/slopsentral.git", ""),
+            observer.CommandResult(0, RUN_API_JSON, ""),
+        ])
+
+        def sleep(seconds: float) -> None:
+            reader = RecordingRunner([])
+            status = cli.execute(["status", "--json"], runner=reader, store=self.store)
+            self.assertEqual(status.payload["latest"]["status"], "queued")
+            self.assertEqual(reader.calls, [])
+            self.clock.sleep(seconds)
+
+        result = cli.execute(
+            ["await", "--json"], runner=runner, store=self.store,
+            now_epoch=self.clock.time, sleeper=sleep,
+        )
+        self.assertEqual(result.payload["outcome"], "success")
 
     def test_timeout_preserves_latest_state_and_returns_124(self) -> None:
         baseline = observer.parse_run_view(RUN_IN_PROGRESS_JSON, "123")

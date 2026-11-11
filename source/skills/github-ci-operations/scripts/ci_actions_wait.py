@@ -24,14 +24,17 @@ def await_event(
     sleeper: Callable[[float], None] = time.sleep,
     interval_seconds: int = 10,
     max_interval_seconds: int = 60,
+    on_change: Callable[[Snapshot], None] | None = None,
+    latest_observation: Snapshot | None = None,
 ) -> WaitResult:
     started_epoch = now_epoch()
     expires_epoch = parse_utc(request.expires_at).timestamp()
     current_interval = interval_seconds
     polls = 0
     consecutive_errors = 0
-    latest = request.baseline
+    latest = latest_observation or request.baseline
     while True:
+        previous_key = latest.state_key
         try:
             latest = fetch(request.target)
             consecutive_errors = 0
@@ -55,6 +58,8 @@ def await_event(
             current_interval = next_interval(current_interval, max_interval_seconds)
             continue
         polls += 1
+        if on_change is not None and latest.state_key != previous_key:
+            on_change(latest)
         if event_satisfied(request, latest):
             return completed_wait(
                 request,
