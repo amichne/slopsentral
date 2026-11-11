@@ -196,14 +196,16 @@ def test_unbound_legacy_pr_request_is_not_trusted(tmp_path: Path) -> None:
     assert not store.active_path.exists()
 
 
-def test_run_target_rejects_pr_head_option(tmp_path: Path) -> None:
+def test_run_target_binds_head(tmp_path: Path) -> None:
+    from .test_ci_wait_for_actions import RUN_IN_PROGRESS_JSON
+
     result = cli.execute(
-        ["arm", "--run-id", "123", "--head-sha", HEAD],
+        ["arm", "--run-id", "123", "--head-sha", "a" * 40],
         store=observer.StateStore(tmp_path, state_dir=tmp_path / "state"),
-        runner=RecordingRunner([]),
+        runner=RecordingRunner([observer.CommandResult(0, RUN_IN_PROGRESS_JSON, "")]),
     )
-    assert result.exit_code == 2
-    assert "only be used with --pr" in result.payload["error"]
+    assert result.exit_code == 0
+    assert result.payload["request"]["target"]["headSha"] == "a" * 40
 
 
 @pytest.mark.parametrize("changed_head", [False, True])
@@ -278,6 +280,8 @@ def test_legacy_run_state_key_still_loads(tmp_path: Path) -> None:
     snapshot = observer.parse_run_view(RUN_IN_PROGRESS_JSON, "123")
     request = active_request(snapshot, expires_at="2026-07-10T12:01:00Z")
     payload = observer.active_request_to_json(request)
+    del payload["target"]["headSha"]
+    del payload["baseline"]["target"]["headSha"]
     payload["baseline"]["stateKey"] = json.dumps(
         {
             "target": {"kind": "RUN", "value": "123", "required": False},
@@ -290,7 +294,8 @@ def test_legacy_run_state_key_still_loads(tmp_path: Path) -> None:
     )
     store.state_dir.mkdir()
     store.active_path.write_text(json.dumps(payload))
-    assert store.load_active() == request
+    loaded = store.load_active()
+    assert loaded is not None and loaded.target.head is None
 
 
 @pytest.mark.parametrize(
@@ -311,3 +316,39 @@ def test_pinned_pr_keeps_check_outcomes(bucket: str, state: str, outcome: observ
     )
     assert snapshot.outcome == outcome
     assert snapshot.target.head == observer.Commit(HEAD)
+
+
+def test_capacity_matches_all_labels_and_reports_idle_slots(tmp_path: Path) -> None:
+    def runner(status: str, busy: bool, *labels: str) -> dict[str, object]:
+        return {"status": status, "busy": busy, "labels": [{"name": name} for name in labels]}
+
+    pages = [
+        {"runners": [runner("online", False, "macOS", "kast-main")]},
+        {"runners": [
+            runner("online", True, "macOS", "kast-main"),
+            runner("offline", False, "macOS", "kast-main"),
+            runner("online", False, "macOS"),
+        ]},
+    ]
+    runner_effect = RecordingRunner([
+        observer.CommandResult(0, "git@github.com:amichne/kast.git\n", ""),
+        observer.CommandResult(0, json.dumps(pages), ""),
+    ])
+    result = cli.execute(
+        ["capacity", "--label", "macos", "--label", "kast-main", "--json"],
+        store=observer.StateStore(tmp_path, state_dir=tmp_path / "state"),
+        runner=runner_effect,
+    )
+    assert result.exit_code == 0
+    assert result.payload == {
+        "repository": "amichne/kast", "labels": ["macos", "kast-main"],
+        "state": "idle", "idle": 1, "busy": 1, "offline": 1,
+    }
+    assert runner_effect.calls[-1] == (
+        "gh", "api", "--paginate", "--slurp", "repos/amichne/kast/actions/runners?per_page=100",
+    )
+
+
+def test_unknown_completed_run_conclusion_cannot_pass() -> None:
+    with pytest.raises(observer.ObserverError, match="unknown completed run conclusion"):
+        observer.classify_run("completed", "future-state")

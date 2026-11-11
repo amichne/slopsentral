@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import dataclasses
+import fcntl
 import json
+from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, cast
 
@@ -10,6 +13,8 @@ from ci_actions_json import (
     active_request_from_json,
     active_request_to_json,
     duration_sample_from_json,
+    snapshot_from_json,
+    snapshot_to_json,
     wait_result_to_json,
 )
 from ci_actions_process import require_success, run_command
@@ -20,6 +25,7 @@ from ci_actions_types import (
     CommandRunner,
     DurationSample,
     ObserverError,
+    Snapshot,
     WaitResult,
 )
 
@@ -29,17 +35,17 @@ def resolve_state_dir(
     git_runner: CommandRunner = run_command,
 ) -> Path:
     result = git_runner(
-        ["git", "rev-parse", "--git-path", "ci/github-actions"],
+        ["git", "rev-parse", "--git-common-dir"],
         repo_root,
     )
-    require_success(result, "git rev-parse --git-path")
+    require_success(result, "git rev-parse --git-common-dir")
     raw_path = result.stdout.strip()
     if not raw_path:
-        raise ObserverError("git rev-parse --git-path returned an empty path")
+        raise ObserverError("git rev-parse --git-common-dir returned an empty path")
     state_path = Path(raw_path)
     if not state_path.is_absolute():
         state_path = repo_root / state_path
-    return state_path.resolve()
+    return state_path.resolve() / "ci/github-actions"
 
 
 class StateStore:
@@ -53,18 +59,38 @@ class StateStore:
         self.repo_root = repo_root.resolve()
         self.state_dir = (state_dir or resolve_state_dir(self.repo_root, git_runner)).resolve()
         self.active_path = self.state_dir / "active.json"
+        self.progress_path = self.state_dir / "progress.json"
         self.last_observation_path = self.state_dir / "last-observation.json"
         self.history_path = self.state_dir / "history.jsonl"
+
+    @contextmanager
+    def exclusive(self) -> Iterator[None]:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        with (self.state_dir / "observer.lock").open("a") as lock:
+            try:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError as exc:
+                raise ObserverError("an observation is already running; use status") from exc
+            yield
+
+    def last_observation(self) -> dict[str, Any] | None:
+        if not self.last_observation_path.exists():
+            return None
+        return self._load_json(self.last_observation_path)
 
     def arm(self, request: ActiveRequest) -> None:
         if self.active_path.exists():
             raise ObserverError(f"an observation is already active: {self.active_path}")
+        self.write_progress(request.baseline)
         self._write_json(self.active_path, active_request_to_json(request))
 
     def load_active(self) -> ActiveRequest | None:
         if not self.active_path.exists():
             return None
-        payload = self._load_json(self.active_path)
+        try:
+            payload = self._load_json(self.active_path)
+        except FileNotFoundError:
+            return None
         try:
             return active_request_from_json(payload)
         except (KeyError, TypeError, ValueError, ObserverError) as exc:
@@ -80,6 +106,15 @@ class StateStore:
         if renewed.target != previous.target or renewed.baseline != previous.baseline:
             raise ObserverError("renewal cannot change the observed target or baseline")
         self._write_json(self.active_path, active_request_to_json(renewed))
+
+    def write_progress(self, snapshot: Snapshot) -> None:
+        self._write_json(self.progress_path, snapshot_to_json(snapshot))
+
+    def latest(self, request: ActiveRequest) -> Snapshot:
+        if not self.progress_path.exists():
+            return request.baseline
+        progress = snapshot_from_json(self._load_json(self.progress_path))
+        return progress if progress.target == request.target else request.baseline
 
     def write_last_observation(self, result: WaitResult) -> None:
         self._write_json(self.last_observation_path, wait_result_to_json(result))
@@ -145,6 +180,8 @@ class StateStore:
     def _load_json(self, path: Path) -> dict[str, Any]:
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            raise
         except (OSError, json.JSONDecodeError) as exc:
             quarantined = self._quarantine(path)
             raise ObserverError(f"state file is corrupt: {quarantined}") from exc
