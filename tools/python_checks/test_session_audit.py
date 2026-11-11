@@ -289,3 +289,53 @@ def test_public_launcher_passes_alternate_uv_config(
     assert rejected.returncode != 0
     assert rejected.stdout == ""
     assert "0.0.0" in rejected.stderr
+
+
+@pytest.mark.parametrize(
+    ("results", "expected"),
+    [
+        ([(0, None)], "ok"),
+        ([(0, None), (2, None)], "error"),
+        ([(0, None), (None, 123)], "unknown"),
+        ([(2, None), (None, 123)], "error"),
+    ],
+)
+def test_codex_exec_nested_process_results(
+    tmp_path: Path, results: list[tuple[int | None, int | None]], expected: str
+) -> None:
+    blocks: list[dict[str, str]] = []
+    for index, (exit_code, session) in enumerate(results):
+        receipt = {
+            "chunk_id": "test",
+            "wall_time_seconds": 0.5,
+            "original_token_count": 10,
+            "output": 'child says {"exit_code":0}',
+        }
+        receipt = receipt | ({"session_id": session} if session else {"exit_code": exit_code})
+        document = receipt if index else {"status": "fulfilled", "value": receipt}
+        blocks.append({"type": "input_text", "text": json.dumps(document)})
+    blocks.append({"type": "input_text", "text": '{"exit_code": 9}'})
+    path = write_log(
+        tmp_path / "codex.jsonl",
+        {"type": "session_meta", "payload": {"id": "nested"}},
+        {
+            "type": "response_item",
+            "payload": {
+                "type": "custom_tool_call",
+                "name": "exec",
+                "call_id": "run",
+            },
+        },
+        {
+            "type": "response_item",
+            "payload": {
+                "type": "custom_tool_call_output",
+                "call_id": "run",
+                "output": blocks,
+            },
+        },
+    )
+    report = invoke("history", path)
+    assert report.returncode == 0, report.stderr
+    assert json.loads(report.stdout)["tools"]["exec"][expected] == 1
+    assert "child says" not in report.stdout

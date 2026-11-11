@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, Sequence
 
 from ci_actions_scalars import normalized, parse_json, required_text
-from ci_actions_types import FAILURE_CONCLUSIONS, ObserverError, Outcome, Snapshot, Target, TargetKind
+from ci_actions_types import FAILURE_CONCLUSIONS, Commit, ObserverError, Outcome, Snapshot, Target, TargetKind
 
 
 def parse_run_view(raw: str, run_id: str) -> Snapshot:
@@ -11,6 +11,7 @@ def parse_run_view(raw: str, run_id: str) -> Snapshot:
     if not isinstance(run, dict):
         raise ObserverError("gh run view JSON must be an object")
     status = required_text(run, "status", "gh run view")
+    head = Commit(required_text(run, "headSha", "gh run view"))
     conclusion = normalized(run.get("conclusion"))
     workflow = normalized(run.get("workflowName")) or f"run {run_id}"
     raw_jobs = run.get("jobs")
@@ -36,7 +37,7 @@ def parse_run_view(raw: str, run_id: str) -> Snapshot:
     if count_text:
         summary += f"; {count_text}"
     return Snapshot(
-        target=Target(TargetKind.RUN, run_id),
+        target=Target(TargetKind.RUN, run_id, head=head),
         outcome=outcome,
         status=status,
         conclusion=conclusion,
@@ -75,9 +76,12 @@ def parse_run_api(raw: str) -> dict[str, Any]:
 def classify_run(status: str, conclusion: str) -> Outcome:
     if normalized(status) != "completed":
         return Outcome.PENDING
-    if not conclusion or normalized(conclusion) in FAILURE_CONCLUSIONS:
+    value = normalized(conclusion)
+    if value in {"success", "skipped", "neutral"}:
+        return Outcome.SUCCESS
+    if not value or value in FAILURE_CONCLUSIONS:
         return Outcome.FAILURE
-    return Outcome.SUCCESS
+    raise ObserverError(f"unknown completed run conclusion: {value}")
 
 
 def count_job_states(jobs: Sequence[dict[str, str]]) -> dict[str, int]:
@@ -89,7 +93,9 @@ def count_job_states(jobs: Sequence[dict[str, str]]) -> dict[str, int]:
             key = "pending"
         elif conclusion in FAILURE_CONCLUSIONS:
             key = "failed"
+        elif conclusion in {"success", "skipped", "neutral"}:
+            key = "passed" if conclusion == "success" else conclusion
         else:
-            key = "passed"
+            key = "unknown"
         counts[key] = counts.get(key, 0) + 1
     return counts

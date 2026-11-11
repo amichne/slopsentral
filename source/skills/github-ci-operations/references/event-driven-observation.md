@@ -4,13 +4,26 @@ Use this reference when a run or PR check is pending. The observer keeps
 unchanged remote states inside one bounded process, so the model resumes only
 when it has new information to process.
 
+## Examine runner capacity
+
+Before you dispatch an expensive self-hosted job, examine its full label set:
+
+```sh
+uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
+  capacity --label self-hosted --label macOS --label ARM64 --label kast-main --json
+```
+
+The command counts idle, busy, and offline runners with every requested label.
+The GitHub runner endpoint needs repository administration access.
+An idle runner can accept other work before dispatch.
+
 ## Arm One Event
 
 Choose a concrete target and predicate:
 
 ```sh
 uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
-  arm --run-id <run-id> --until status-change --timeout auto --json
+  arm --run-id <run-id> --head-sha <published-head-sha> --until status-change --timeout auto --json
 
 uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . \
   arm --pr <pr-number> --head-sha <published-head-sha> --required --until terminal --timeout auto --json
@@ -28,9 +41,9 @@ Use `--head-sha` when the caller already knows the expected revision.
 The observer reads the head before and after each check snapshot.
 A different head returns an error instead of accepting another revision's checks.
 An empty check set stays pending, including an empty `--required` result.
-Run targets stay bound to their run ID.
+Run targets bind the run ID and its head SHA.
 
-Only one request can be active per Git repository. The arm result records the
+Linked worktrees share one active request per Git clone. A second waiter exits before it contacts GitHub. The arm result records the
 target, baseline, predicate, expiry, resolved timeout, timeout source, and local
 state path.
 
@@ -45,7 +58,8 @@ uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . 
 The command blocks until the predicate or bound is reached and returns the
 previous and current state. Do not run status or remote snapshot commands in a
 manual loop. `status --json` is local-only and is for recovery or inspection,
-not listening.
+not listening. An armed response includes the latest observed job or check state.
+An idle response includes the last result when one exists.
 
 The observer retries at most two transient GitHub read failures. A third
 consecutive error wakes the model instead of waiting indefinitely.
@@ -85,9 +99,10 @@ profile only when the repository wants that shared policy.
 
 ## Evidence and Recovery
 
-Runtime files live beneath `git rev-parse --git-path ci/github-actions`:
+Runtime files live in `ci/github-actions` under the Git common directory:
 
 - `active.json` is the single armed request;
+- `progress.json` records intermediate state changes without new remote reads.
 - `last-observation.json` is the latest transition, terminal event, or timeout;
 - `history.jsonl` contains observed terminal run durations.
 

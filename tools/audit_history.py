@@ -343,7 +343,34 @@ def codex_output(output: Json) -> Record:
     return {"text": "\n".join(text)} if text else {}
 
 
-def codex_response(line: int, facts: Record, item: Record) -> Iterator[Event]:
+def codex_process_outcome(output: Json) -> Outcome:
+    states: list[Outcome] = []
+    for text in texts(obj(output).get("content", output)):
+        if not text.startswith("{"):
+            continue
+        try:
+            value: Json = json.loads(text)
+        except json.JSONDecodeError:
+            continue
+        envelope = obj(value)
+        receipt = obj(envelope.get("value")) if envelope.get("status") == "fulfilled" else envelope
+        if not isinstance(receipt.get("output"), str) or not isinstance(
+            receipt.get("chunk_id"), str
+        ):
+            continue
+        if type(receipt.get("original_token_count")) is not int:
+            continue
+        wall_time = receipt.get("wall_time_seconds")
+        if type(wall_time) not in (int, float):
+            continue
+        code = receipt.get("exit_code")
+        states.append(outcome(code == 0) if type(code) is int else "unknown")
+    if "error" in states:
+        return "error"
+    return "ok" if states and all(state == "ok" for state in states) else "unknown"
+
+
+def codex_response(line: int, facts: Record, item: Record, exec_calls: set[str]) -> Iterator[Event]:
     match item.get("type"):
         case "message":
             role = item.get("role")
@@ -369,6 +396,17 @@ def codex_response(line: int, facts: Record, item: Record) -> Iterator[Event]:
         case "function_call" | "custom_tool_call" | "tool_search_call":
             name = string(item.get("name")) or "tool_search"
             namespace = string(item.get("namespace"))
+            call_id = string(item.get("call_id"))
+            if (
+                item.get("type") == "custom_tool_call"
+                and (
+                    (namespace == "functions" and name == "exec")
+                    or (namespace is None and name == "exec")
+                    or name == "functions.exec"
+                )
+                and call_id is not None
+            ):
+                exec_calls.add(call_id)
             yield Event(
                 line,
                 "tool_call",
@@ -381,13 +419,17 @@ def codex_response(line: int, facts: Record, item: Record) -> Iterator[Event]:
             )
         case "function_call_output" | "custom_tool_call_output" | "tool_search_output":
             output = item.get("output")
+            result = outcome(obj(output).get("success"))
+            call_id = string(item.get("call_id"))
+            if call_id in exec_calls and result == "unknown":
+                result = codex_process_outcome(output)
             yield Event(
                 line,
                 "tool_result",
                 {
                     **facts,
                     **select(item, callId="call_id"),
-                    "outcome": outcome(obj(output).get("success")),
+                    "outcome": result,
                 },
                 codex_output(output),
             )
@@ -398,12 +440,13 @@ def codex_response(line: int, facts: Record, item: Record) -> Iterator[Event]:
 
 def codex_events(rows: list[Row]) -> Iterator[Event]:
     native_usage = any(entry.get("type") == "token_usage_record" for _, entry in rows)
+    exec_calls: set[str] = set()
     for line, entry in rows:
         payload = obj(entry.get("payload"))
         facts = select(entry, timestamp="timestamp")
         match entry.get("type"):
             case "response_item":
-                yield from codex_response(line, facts, payload)
+                yield from codex_response(line, facts, payload, exec_calls)
             case "turn_context":
                 yield Event(
                     line,

@@ -15,6 +15,7 @@ FAILURE_CONCLUSIONS = {
     "cancelled",
     "failure",
     "startup_failure",
+    "stale",
     "timed_out",
 }
 INELIGIBLE_DURATION_CONCLUSIONS = {"action_required", "cancelled", "startup_failure"}
@@ -75,8 +76,8 @@ class Target:
     head: Commit | None = None
 
     def __post_init__(self) -> None:
-        if self.kind == TargetKind.RUN and self.head is not None:
-            raise ObserverError("head SHA binding applies to PR targets only")
+        if self.kind == TargetKind.RUN and self.required:
+            raise ObserverError("required checks apply to PR targets only")
 
 
 @dataclass(frozen=True)
