@@ -258,3 +258,34 @@ def test_public_launcher_works_outside_checkout(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr
     assert "slopsentral-audit" in result.stdout
     assert list(tmp_path.iterdir()) == []
+
+
+def test_public_launcher_passes_alternate_uv_config(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    launcher = CLI.parents[1] / "bin/slopsentral-audit"
+    config = tmp_path / "company uv.toml"
+    monkeypatch.setenv("UV_CONFIG_FILE", str(config))
+    monkeypatch.setenv("UV_SYSTEM_CERTS", "true")
+    _ = config.write_text("offline = true\nno-build = true\n")
+    result = subprocess.run(
+        [str(launcher), "--help"],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "slopsentral-audit" in result.stdout
+
+    _ = config.write_text('required-version = "==0.0.0"\n')
+    rejected = subprocess.run(
+        [str(launcher), "--help"],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert rejected.returncode != 0
+    assert rejected.stdout == ""
+    assert "0.0.0" in rejected.stderr

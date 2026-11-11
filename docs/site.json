@@ -73,6 +73,7 @@
             "maintainers/projection",
             "maintainers/documentation",
             "maintainers/evaluations",
+            "maintainers/session-audit",
             "maintainers/global-instructions",
             "maintainers/apm-qualification",
             "maintainers/portable-documentation",
@@ -310,6 +311,11 @@
       "source": "docs/skill-evals.md",
       "route": "maintainers/evaluations",
       "description": "Run skill decision and execution suites with their distinct evidence limits."
+    },
+    {
+      "source": "docs/session-audit.md",
+      "route": "maintainers/session-audit",
+      "description": "Start focused Pi sessions and examine Pi and Codex history."
     },
     {
       "source": "docs/global-agents.md",

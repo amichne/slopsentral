@@ -112,3 +112,7 @@ gen
 node_modules/
 
 .venv/
+
+# Local Python dependency resolution
+uv.lock
+*.py.lock

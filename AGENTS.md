@@ -118,9 +118,12 @@ for all work. Software Engineering delivers this same source through its context
 hook; language and domain instructions refine it.
 
 Write repository automation in Python. Install the uv version from `mise.toml` with `mise install`.
-Give public CLI commands executable names without file extensions. Install them in a directory on `PATH`.
-For portable scripts, declare dependencies in PEP 723 headers and commit adjacent locks.
-Set `no-build = true` in the uv configuration.
+Prefer the standard library for small commands.
+Give public CLI commands executable names without file extensions. Put them on `PATH`.
+Use `uv.toml` for checkout configuration and set `no-build = true`.
+Declare Python requirements in `pyproject.toml` or the script's PEP 723 header.
+Keep Python dependency lockfiles out of Git.
+Existing commands that consume tracked locks need a migration of their callers and release assets.
 The checkout-only `slopsentral-audit` launcher uses `uv.toml` and `.python-version`.
 It runs with `uv run --no-project`.
 Run `mise exec -- slopsentral-setup` for checkout setup.

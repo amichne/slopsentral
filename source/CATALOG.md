@@ -74,23 +74,23 @@ Outside this plugin: Automatic knowledge generation during ordinary code tasks o
 
 ## Profiles
 
-- [`agent-authoring-default`](profiles/agent-authoring-default.json): software-engineering + developer-tooling. 908 instruction words.
+- [`agent-authoring-default`](profiles/agent-authoring-default.json): software-engineering + developer-tooling. 922 instruction words.
 
-- [`developer-tooling-default`](profiles/developer-tooling-default.json): software-engineering + developer-tooling. 908 instruction words.
+- [`developer-tooling-default`](profiles/developer-tooling-default.json): software-engineering + developer-tooling. 922 instruction words.
 
 - [`documentation-default`](profiles/documentation-default.json): repository-knowledge. 0 instruction words.
 
-- [`intellij-plugin-default`](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 908 instruction words.
+- [`intellij-plugin-default`](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 922 instruction words.
 
-- [`kotlin-repo-default`](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 908 instruction words.
+- [`kotlin-repo-default`](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 922 instruction words.
 
-- [`local-development-default`](profiles/local-development-default.json): software-engineering. 908 instruction words.
+- [`local-development-default`](profiles/local-development-default.json): software-engineering. 922 instruction words.
 
 - [`personal-configuration-default`](profiles/personal-configuration-default.json): developer-tooling. 0 instruction words.
 
-- [`pkl-checked-repository`](profiles/pkl-checked-repository.json): software-engineering + developer-tooling. 908 instruction words.
+- [`pkl-checked-repository`](profiles/pkl-checked-repository.json): software-engineering + developer-tooling. 922 instruction words.
 
-- [`pkl-workflow-default`](profiles/pkl-workflow-default.json): software-engineering + developer-tooling. 908 instruction words.
+- [`pkl-workflow-default`](profiles/pkl-workflow-default.json): software-engineering + developer-tooling. 922 instruction words.
 
 ## Reused assets
 

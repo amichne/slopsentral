@@ -1,4 +1,4 @@
-#!/usr/bin/env -S uv run --locked --script
+#!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.12,<3.14"
 # dependencies = []
@@ -10,7 +10,7 @@
 # url = "https://pypi.org/simple"
 # default = true
 # ///
-"""Explicitly resolve a new scaffold, then verify both project and script modes."""
+"""Set up and examine the scaffold development environment."""
 
 from __future__ import annotations
 
@@ -21,14 +21,11 @@ from pathlib import Path
 def main() -> int:
     root = Path(__file__).resolve().parent
     commands = (
-        ("lock",),
-        ("lock", "--script", "standalone.py"),
-        ("sync", "--locked", "--group", "refactor"),
-        ("run", "--locked", "ruff", "format", "--check", "."),
-        ("run", "--locked", "ruff", "check", "."),
-        ("run", "--locked", "pyright"),
-        ("run", "--locked", "pytest"),
-        ("run", "--locked", "--script", "standalone.py", "--self-test"),
+        ("sync", "--group", "refactor"),
+        ("run", "--no-sync", "ruff", "format", "--check", "."),
+        ("run", "--no-sync", "ruff", "check", "."),
+        ("run", "--no-sync", "pyright"),
+        ("run", "--no-sync", "pytest"),
     )
     for arguments in commands:
         try:
@@ -39,7 +36,7 @@ def main() -> int:
         if result.returncode:
             print(f"setup: stage={arguments[0]} outcome=failed exit={result.returncode}")
             return result.returncode
-    print("setup: outcome=verified; review and commit both dependency locks")
+    print("setup: outcome=verified")
     return 0
 
 

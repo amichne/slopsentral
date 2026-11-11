@@ -120,10 +120,14 @@
       "id": "evaluations",
       "sources": [
         "source/evals/",
-        "tools/promptfoo/"
+        "tools/promptfoo/",
+        "bin/slopsentral-audit",
+        "tools/session_audit.py",
+        "tools/audit_history.py"
       ],
       "pages": [
         "docs/skill-evals.md",
+        "docs/session-audit.md",
         "openwiki/operations/evaluations.md",
         "docs/developers/contracts-and-evals.md"
       ]

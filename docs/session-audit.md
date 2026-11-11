@@ -8,6 +8,9 @@ Use the [Promptfoo suites](skill-evals.md) for scored decisions and execution ca
 Use Pi 1.5.2 and sign in with `pi auth`.
 Run these commands from the Slopsentral checkout.
 The command uses the checkout's `uv.toml` and Python version.
+Set `UV_CONFIG_FILE` to use your company's uv settings.
+Set `UV_SYSTEM_CERTS=true` to use the operating system's certificate store.
+See [uv's package index guide](https://docs.astral.sh/uv/concepts/indexes/) for private index settings.
 
 ```sh
 mise install

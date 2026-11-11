@@ -1,5 +1,5 @@
 #!/bin/sh
 audit_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P) || exit 1
 audit_python=$(cat "$audit_root/.python-version") || exit 1
-exec uv --config-file "$audit_root/uv.toml" run --no-project --python "$audit_python" \
+exec uv --config-file "${UV_CONFIG_FILE:-$audit_root/uv.toml}" run --no-project --python "$audit_python" \
     python "$audit_root/tools/session_audit.py" "$@"
