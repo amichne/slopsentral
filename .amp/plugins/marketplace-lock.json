@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T20:20:09Z",
+  "generatedAt": "2026-11-11T15:14:53-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -27,7 +27,7 @@
         },
         {
           "name": "engineering-design",
-          "sha256": "sha256:c9684e69cba5074baae3b4eda40fc032d41cb4f8ac7b15664312d0bab10401ed",
+          "sha256": "sha256:b313b798e8c65d734d073161a9f9b0135b6a0b1b26fb35e864c2c67cb1ba6dff",
           "sourcePath": "source/instructions/engineering-design.md",
           "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
@@ -69,7 +69,7 @@
         },
         {
           "name": "python-tooling",
-          "sha256": "sha256:0cbcd3f2a340e9734ae13fa248334fce7a404c2acec6a2120a8dc18727f0b6ac",
+          "sha256": "sha256:d40486185163c7653bf7f13ede0e79aaa43bedc1260753a3cb66ebd2974ac5a9",
           "sourcePath": "source/skills/python-tooling",
           "targetPath": "skills/python-tooling",
           "type": "SKILL"
@@ -307,7 +307,7 @@
         },
         {
           "name": "python-tooling",
-          "sha256": "sha256:0cbcd3f2a340e9734ae13fa248334fce7a404c2acec6a2120a8dc18727f0b6ac",
+          "sha256": "sha256:d40486185163c7653bf7f13ede0e79aaa43bedc1260753a3cb66ebd2974ac5a9",
           "sourcePath": "source/skills/python-tooling",
           "targetPath": "skills/python-tooling",
           "type": "SKILL"
@@ -325,6 +325,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "8b1ae7f5a9923e8f3793040dcaf700c434396bdc",
+  "sourceSha": "e412339963d2996e9455aba38c2410d4bfdbb4bd",
   "type": "HYDRATED_MARKETPLACE"
 }
