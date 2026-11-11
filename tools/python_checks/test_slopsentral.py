@@ -194,6 +194,14 @@ def test_old_two_file_command_reports_missing_helper_and_recovers(
     assert result.returncode == 1
     assert json.loads(result.stdout)["reason"] == "NOT_INSTALLED"
     assert "slopsentral self update" in json.loads(result.stdout)["detail"]
+    missing_audit = subprocess.run(
+        [sys.executable, str(script), "audit", "--help"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert missing_audit.returncode == 1
+    assert "slopsentral self update" in missing_audit.stderr
     executable = tmp_path / ".local/bin/slopsentral"
     executable.parent.mkdir(parents=True)
     launcher = f'#!/bin/sh\nexec {shlex.quote(sys.executable)} {shlex.quote(str(script))} "$@"\n'
@@ -783,6 +791,8 @@ def test_self_update_uses_release_bytes_and_keeps_old_command_on_rejection(
         tmp_path,
         {
             "slopsentral.py": SCRIPT.read_bytes() + b"\n# next release\n",
+            "session_audit.py": (SCRIPT.parent / "session_audit.py").read_bytes(),
+            "audit_history.py": (SCRIPT.parent / "audit_history.py").read_bytes(),
             "slopsentral.py.lock": Path(str(SCRIPT) + ".lock").read_bytes(),
             "kotlin-horizontalization-check": (
                 ROOT / "source/hooks/kotlin-horizontalization-check"
@@ -797,7 +807,7 @@ def test_self_update_uses_release_bytes_and_keeps_old_command_on_rejection(
     assert result.returncode == 0, result.stdout + result.stderr
     executable = tmp_path / ".local/bin/slopsentral"
     before = executable.read_bytes()
-    _ = (remote / "slopsentral.py").write_text("bad checksum")
+    _ = (remote / "audit_history.py").write_text("bad checksum")
     rejected = invoke(tmp_path, "self", "update")
     assert rejected.returncode == 1
     assert json.loads(rejected.stdout)["reason"] == "CHECKSUM_MISMATCH"
@@ -921,3 +931,39 @@ def test_amp_changed_install_stops_update_and_removal(
         assert json.loads(rejected.stdout)["reason"] == "OWNERSHIP_CONFLICT"
         assert link.is_symlink()
         assert (link / "index.js").read_text() == "keep this edit"
+
+
+def test_installed_audit_uses_bundled_modules_without_changing_receipt(tmp_path: Path) -> None:
+    installed = invoke(tmp_path, "self", "install")
+    assert installed.returncode == 0, installed.stdout + installed.stderr
+    executable = tmp_path / ".local/bin/slopsentral"
+    transcript = tmp_path / "audit fixture.jsonl"
+    _ = transcript.write_text('{"type":"session","id":"audit-fixture","version":3}\n')
+    environment = {
+        **os.environ,
+        "HOME": str(tmp_path),
+        "XDG_DATA_HOME": str(tmp_path / "data"),
+        "UV_OFFLINE": "1",
+    }
+    history = subprocess.run(
+        [str(executable), "audit", "history", str(transcript)],
+        cwd=tmp_path,
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert history.returncode == 0, history.stdout + history.stderr
+    assert json.loads(history.stdout)["sessionId"] == "audit-fixture"
+    bad = subprocess.run(
+        [str(executable), "audit", "history", str(tmp_path / "missing.jsonl")],
+        cwd=tmp_path,
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert bad.returncode == 1
+    assert bad.stdout == ""
+    assert "not found" in bad.stderr
+    assert invoke(tmp_path, "self", "remove").returncode == 0

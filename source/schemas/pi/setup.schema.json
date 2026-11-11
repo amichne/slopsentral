@@ -49,7 +49,7 @@
     "files": {
       "type": "array",
       "minItems": 2,
-      "maxItems": 7,
+      "maxItems": 9,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -63,7 +63,9 @@
               "slopsentral.py",
               "slopsentral.py.lock",
               "kotlin-horizontalization-check",
-              "kotlin-horizontalization-check.lock"
+              "kotlin-horizontalization-check.lock",
+              "session_audit.py",
+              "audit_history.py"
             ],
             "examples": [
               "setup-pi.mts"
@@ -272,8 +274,6 @@
           ]
         },
         {
-          "minItems": 7,
-          "maxItems": 7,
           "allOf": [
             {
               "contains": {
@@ -393,6 +393,52 @@
               },
               "minContains": 1,
               "maxContains": 1
+            }
+          ],
+          "oneOf": [
+            {
+              "minItems": 7,
+              "maxItems": 7
+            },
+            {
+              "minItems": 9,
+              "maxItems": 9,
+              "allOf": [
+                {
+                  "contains": {
+                    "type": "object",
+                    "properties": {
+                      "file": {
+                        "enum": [
+                          "session_audit.py"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "file"
+                    ]
+                  },
+                  "minContains": 1,
+                  "maxContains": 1
+                },
+                {
+                  "contains": {
+                    "type": "object",
+                    "properties": {
+                      "file": {
+                        "enum": [
+                          "audit_history.py"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "file"
+                    ]
+                  },
+                  "minContains": 1,
+                  "maxContains": 1
+                }
+              ]
             }
           ]
         }

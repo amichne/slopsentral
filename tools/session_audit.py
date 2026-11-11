@@ -275,13 +275,11 @@ def prepare_pi(root: Path, spec: Run) -> tuple[Path, list[Path], list[Record], d
         _ = shutil.copyfile(host / "models.json", agent / "models.json")
     if (host / "auth.json").is_file():
         (agent / "auth.json").symlink_to((host / "auth.json").resolve())
-    bin_dir = Path(__file__).resolve().parents[1] / "bin"
-    path = os.pathsep.join((str(bin_dir), os.environ.get("PATH", os.defpath)))
     return (
         system,
         contexts,
         records,
-        {**os.environ, "PI_CODING_AGENT_DIR": str(agent), "PATH": path},
+        {**os.environ, "PI_CODING_AGENT_DIR": str(agent)},
     )
 
 
@@ -358,7 +356,7 @@ def run_pi(spec: Run) -> tuple[Record, int]:
         report["status"] = "interrupted"
     except (HistoryError, OSError, UnicodeError, subprocess.CalledProcessError) as error:
         report["status"] = "launch_failed"
-        print(f"slopsentral-audit: {error}", file=sys.stderr)
+        print(f"slopsentral audit: {error}", file=sys.stderr)
     finally:
         (root / "agent/auth.json").unlink(missing_ok=True)
         report["elapsedMs"] = (monotonic_ns() - start) // 1_000_000
@@ -372,7 +370,7 @@ def run_pi(spec: Run) -> tuple[Record, int]:
 
 
 def command_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="slopsentral-audit", description=__doc__)
+    parser = argparse.ArgumentParser(prog="slopsentral audit", description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     sessions = commands.add_parser(
         "sessions", help="List recent local sessions without message bodies."
@@ -422,8 +420,8 @@ def command_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main() -> int:
-    args = command_parser().parse_args()
+def main(arguments: list[str] | None = None) -> int:
+    args = command_parser().parse_args(arguments)
     try:
         status = 0
         match args.command:
@@ -449,7 +447,7 @@ def main() -> int:
                 return 2
         print(json.dumps(result, ensure_ascii=True))
     except (HistoryError, OSError, UnicodeError) as error:
-        print(f"slopsentral-audit: {error}", file=sys.stderr)
+        print(f"slopsentral audit: {error}", file=sys.stderr)
         return 1
     return status
 

@@ -6,12 +6,12 @@ from pathlib import Path
 
 import pytest
 
-CLI = Path(__file__).resolve().parents[1] / "session_audit.py"
+CLI = Path(__file__).resolve().parents[1] / "slopsentral.py"
 
 
 def invoke(*args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, str(CLI), *args], capture_output=True, text=True, check=False
+        [sys.executable, str(CLI), "audit", *args], capture_output=True, text=True, check=False
     )
 
 
@@ -247,40 +247,40 @@ sessions = pathlib.Path(args[args.index("--session-dir") + 1])
 
 
 def test_public_launcher_works_outside_checkout(tmp_path: Path) -> None:
-    launcher = CLI.parents[1] / "bin/slopsentral-audit"
+    launcher = CLI.parents[1] / "bin/slopsentral"
     result = subprocess.run(
-        [str(launcher), "--help"],
+        [str(launcher), "audit", "--help"],
         cwd=tmp_path,
         text=True,
         capture_output=True,
         check=False,
     )
     assert result.returncode == 0, result.stderr
-    assert "slopsentral-audit" in result.stdout
+    assert "slopsentral audit" in result.stdout
     assert list(tmp_path.iterdir()) == []
 
 
 def test_public_launcher_passes_alternate_uv_config(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    launcher = CLI.parents[1] / "bin/slopsentral-audit"
+    launcher = CLI.parents[1] / "bin/slopsentral"
     config = tmp_path / "company uv.toml"
     monkeypatch.setenv("UV_CONFIG_FILE", str(config))
     monkeypatch.setenv("UV_SYSTEM_CERTS", "true")
     _ = config.write_text("offline = true\nno-build = true\n")
     result = subprocess.run(
-        [str(launcher), "--help"],
+        [str(launcher), "audit", "--help"],
         cwd=tmp_path,
         text=True,
         capture_output=True,
         check=False,
     )
     assert result.returncode == 0, result.stderr
-    assert "slopsentral-audit" in result.stdout
+    assert "slopsentral audit" in result.stdout
 
     _ = config.write_text('required-version = "==0.0.0"\n')
     rejected = subprocess.run(
-        [str(launcher), "--help"],
+        [str(launcher), "audit", "--help"],
         cwd=tmp_path,
         text=True,
         capture_output=True,

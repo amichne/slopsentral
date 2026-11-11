@@ -143,7 +143,7 @@ function relativeToRepo(absolutePath) {
 
 // Native bootstraps and launchers can delegate to an explicit Python entry point.
 const shellInterfaces = new Set([
-  "bin/slopsentral-audit",
+  "bin/slopsentral",
   "source/skills/cli-creator/assets/personal-size.zsh",
   "source/skills/python-tooling/scripts/python-scaffold",
   "tools/install-pi.sh",

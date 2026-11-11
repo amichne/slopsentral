@@ -121,7 +121,7 @@
       "sources": [
         "source/evals/",
         "tools/promptfoo/",
-        "bin/slopsentral-audit",
+        "bin/slopsentral",
         "tools/session_audit.py",
         "tools/audit_history.py"
       ],

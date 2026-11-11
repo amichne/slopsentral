@@ -32,6 +32,11 @@ If that directory is absent from `PATH`, add it for the shell:
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
+## Session audit
+
+Run `slopsentral audit --help` for the audit commands.
+See the [session audit guide](session-audit.md) for Pi runs and transcript views.
+
 ## Guided setup
 
 Start the selector with either command:

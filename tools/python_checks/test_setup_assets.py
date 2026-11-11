@@ -75,6 +75,7 @@ def test_setup_refuses_foreign_source_and_indirect_payload(tmp_path: Path) -> No
     [
         (("install-pi.sh", "setup-pi.mts"), True),
         (setup_assets.FILES, True),
+        (setup_assets.FILES[:-2], True),
         (setup_assets.FILES[:-1], False),
         ((*setup_assets.FILES[:-1], "kotlin-horizontalization-check"), False),
         (

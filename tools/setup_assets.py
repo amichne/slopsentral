@@ -19,16 +19,15 @@ from tools.pi_candidate import (
     require_record,
     successful_run,
 )
+from tools.slopsentral import AUDIT_FILES, COMMAND_FILES
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = (
     "install-pi.sh",
     "setup-pi.mts",
     "install.sh",
-    "slopsentral.py",
-    "slopsentral.py.lock",
-    "kotlin-horizontalization-check",
-    "kotlin-horizontalization-check.lock",
+    *COMMAND_FILES,
+    *AUDIT_FILES,
 )
 
 
