@@ -23,7 +23,10 @@ from ci_actions_scalars import parse_json
 
 
 def run_command(args: Sequence[str], cwd: Path) -> CommandResult:
-    process = subprocess.run(args, cwd=cwd, text=True, capture_output=True)
+    try:
+        process = subprocess.run(args, cwd=cwd, text=True, capture_output=True, timeout=30)
+    except subprocess.TimeoutExpired:
+        return CommandResult(124, "", f"{args[0]} timed out after 30 seconds")
     return CommandResult(process.returncode, process.stdout, process.stderr)
 
 
@@ -40,12 +43,17 @@ def fetch_snapshot(
                 "view",
                 target.value,
                 "--json",
-                "status,conclusion,jobs,workflowName",
+                "status,conclusion,jobs,workflowName,headSha",
             ],
             repo_root,
         )
         require_success(result, "gh run view")
-        return parse_run_view(result.stdout, target.value)
+        snapshot = parse_run_view(result.stdout, target.value)
+        head = snapshot.target.head
+        if head is None:
+            raise ObserverError("run view did not establish a head SHA")
+        require_head(target.head, head, "run")
+        return snapshot
     number = pr_number(target.value)
     head = fetch_pr_head(number, repo_root, runner)
     require_head(target.head, head)
@@ -75,9 +83,9 @@ def fetch_pr_head(number: str, repo_root: Path, runner: CommandRunner) -> Commit
     return Commit(head)
 
 
-def require_head(expected: Commit | None, actual: Commit) -> None:
+def require_head(expected: Commit | None, actual: Commit, kind: str = "PR") -> None:
     if expected is not None and expected != actual:
-        raise ObserverError(f"PR head changed: expected {expected.value}, observed {actual.value}")
+        raise ObserverError(f"{kind} head changed: expected {expected.value}, observed {actual.value}")
 
 
 def pr_number(value: str) -> str:
@@ -103,6 +111,46 @@ def resolve_repository_slug(repo_root: Path, runner: CommandRunner = run_command
         if match:
             return match.group("slug")
     raise ObserverError("unable to resolve GitHub repository from origin remote")
+
+
+def runner_capacity(
+    labels: Sequence[str], repo_root: Path, runner: CommandRunner
+) -> dict[str, object]:
+    repository = resolve_repository_slug(repo_root, runner)
+    command = [
+        *GH_PREFIX, "api", "--paginate", "--slurp",
+        f"repos/{repository}/actions/runners?per_page=100",
+    ]
+    result = runner(command, repo_root)
+    require_success(result, "gh api actions runners")
+    pages = parse_json(result.stdout, "gh api actions runners")
+    if not isinstance(pages, list) or not pages:
+        raise ObserverError("runner list must contain at least one response page")
+    online = idle = offline = 0
+    for page in pages:
+        if not isinstance(page, dict) or not isinstance(page.get("runners"), list):
+            raise ObserverError("runner page needs a runner list")
+        for record in page["runners"]:
+            if not isinstance(record, dict) or not isinstance(record.get("labels"), list):
+                raise ObserverError("runner needs a label list")
+            entries = record["labels"]
+            if not all(isinstance(label, dict) and isinstance(label.get("name"), str)
+                       for label in entries):
+                raise ObserverError("runner labels need names")
+            names = {label["name"].casefold() for label in entries}
+            if not all(label.casefold() in names for label in labels):
+                continue
+            status, busy = record.get("status"), record.get("busy")
+            if status not in ("online", "offline") or not isinstance(busy, bool):
+                raise ObserverError("matching runner needs an online state and busy flag")
+            online += status == "online"
+            idle += status == "online" and not busy
+            offline += status == "offline"
+    state = "idle" if idle else "busy" if online else "unavailable"
+    return {
+        "repository": repository, "labels": list(labels), "state": state,
+        "idle": idle, "busy": online - idle, "offline": offline,
+    }
 
 
 def no_checks(result: CommandResult, *, required: bool) -> bool:
@@ -141,6 +189,9 @@ def is_transient_failure(message: str) -> bool:
         "bad gateway",
         "service unavailable",
         "gateway timeout",
+        "http 502",
+        "http 503",
+        "http 504",
         "status 502",
         "status 503",
         "status 504",

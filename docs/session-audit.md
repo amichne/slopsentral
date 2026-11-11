@@ -67,7 +67,8 @@ Pi defaults to the branch that ends at the last persisted entry.
 
 The summary reports event counts, tool outcomes, and token usage.
 It covers calls recorded in the transcript.
-A tool result with no explicit outcome appears as `unknown`.
+Codex process receipts contribute their explicit exit status.
+Unfinished processes and results without outcome evidence appear as `unknown`.
 A call with no matching result appears as `missing`.
 Use `--view messages`, `--view usage`, or `--view events` for more detail.
 Use `--details` to include selected bodies. Reasoning and binary blocks stay in the native logs.

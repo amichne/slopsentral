@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import dataclasses
+import fcntl
 import json
+from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, cast
 
@@ -29,17 +32,17 @@ def resolve_state_dir(
     git_runner: CommandRunner = run_command,
 ) -> Path:
     result = git_runner(
-        ["git", "rev-parse", "--git-path", "ci/github-actions"],
+        ["git", "rev-parse", "--git-common-dir"],
         repo_root,
     )
-    require_success(result, "git rev-parse --git-path")
+    require_success(result, "git rev-parse --git-common-dir")
     raw_path = result.stdout.strip()
     if not raw_path:
-        raise ObserverError("git rev-parse --git-path returned an empty path")
+        raise ObserverError("git rev-parse --git-common-dir returned an empty path")
     state_path = Path(raw_path)
     if not state_path.is_absolute():
         state_path = repo_root / state_path
-    return state_path.resolve()
+    return state_path.resolve() / "ci/github-actions"
 
 
 class StateStore:
@@ -55,6 +58,21 @@ class StateStore:
         self.active_path = self.state_dir / "active.json"
         self.last_observation_path = self.state_dir / "last-observation.json"
         self.history_path = self.state_dir / "history.jsonl"
+
+    @contextmanager
+    def exclusive(self) -> Iterator[None]:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        with (self.state_dir / "observer.lock").open("a") as lock:
+            try:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError as exc:
+                raise ObserverError("an observation is already running; use status") from exc
+            yield
+
+    def last_observation(self) -> dict[str, Any] | None:
+        if not self.last_observation_path.exists():
+            return None
+        return self._load_json(self.last_observation_path)
 
     def arm(self, request: ActiveRequest) -> None:
         if self.active_path.exists():

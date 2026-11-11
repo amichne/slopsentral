@@ -46,6 +46,7 @@ RUN_IN_PROGRESS_JSON = json.dumps(
         "status": "in_progress",
         "conclusion": "",
         "workflowName": "Validate Source",
+        "headSha": "a" * 40,
         "jobs": [
             {"name": "test", "status": "in_progress", "conclusion": ""},
             {"name": "lint", "status": "completed", "conclusion": "success"},
@@ -57,6 +58,7 @@ RUN_SUCCESS_JSON = json.dumps(
         "status": "completed",
         "conclusion": "success",
         "workflowName": "Validate Source",
+        "headSha": "a" * 40,
         "jobs": [{"name": "test", "status": "completed", "conclusion": "success"}],
     }
 )
@@ -172,10 +174,19 @@ class CiActionsObservationTests(unittest.TestCase):
                 "view",
                 "123",
                 "--json",
-                "status,conclusion,jobs,workflowName",
+                "status,conclusion,jobs,workflowName,headSha",
             ),
         )
         self.assertNotIn("help", snapshot.details)
+
+    def test_run_observation_rejects_a_different_head(self) -> None:
+        runner = RecordingRunner([observer.CommandResult(0, RUN_IN_PROGRESS_JSON, "")])
+        result = cli.execute(
+            ["arm", "--run-id", "123", "--head-sha", "b" * 40],
+            runner=runner,
+            store=observer.StateStore(Path.cwd(), state_dir=Path(tempfile.gettempdir()) / "unused"),
+        )
+        self.assertIn("observed " + "a" * 40, result.payload["error"])
 
     def test_run_observation_classifies_terminal_success(self) -> None:
         snapshot = observer.parse_run_view(RUN_SUCCESS_JSON, "123")
@@ -367,20 +378,35 @@ class CiActionsStateTests(unittest.TestCase):
         self.assertEqual(loaded, self.request)
         self.assertTrue(self.store.active_path.is_file())
 
+    def test_worktrees_share_one_observer_and_reject_a_second_waiter(self) -> None:
+        root = self.repo_root / "repo"
+        linked = self.repo_root / "linked"
+        subprocess.run(["git", "init", "-q", str(root)], check=True)
+        subprocess.run(
+            ["git", "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
+             "commit", "-qm", "initial", "--allow-empty"], cwd=root, check=True
+        )
+        subprocess.run(["git", "worktree", "add", "-qd", str(linked)], cwd=root, check=True)
+        first, second = observer.StateStore(root), observer.StateStore(linked)
+        self.assertEqual(first.state_dir, second.state_dir)
+        with first.exclusive():
+            result = cli.execute(["await"], store=second, runner=RecordingRunner([]))
+        self.assertIn("already running", result.payload["error"])
+
     def test_state_directory_uses_git_rev_parse_path(self) -> None:
         calls: list[tuple[str, ...]] = []
 
         def fake_git(args: Sequence[str], cwd: Path) -> observer.CommandResult:
             calls.append(tuple(args))
-            return observer.CommandResult(0, ".git/worktrees/topic/ci/github-actions\n", "")
+            return observer.CommandResult(0, ".git\n", "")
 
         resolved = observer.resolve_state_dir(self.repo_root, fake_git)
 
         self.assertEqual(
             resolved,
-            (self.repo_root / ".git/worktrees/topic/ci/github-actions").resolve(),
+            (self.repo_root / ".git/ci/github-actions").resolve(),
         )
-        self.assertEqual(calls, [("git", "rev-parse", "--git-path", "ci/github-actions")])
+        self.assertEqual(calls, [("git", "rev-parse", "--git-common-dir")])
 
     def test_auto_timeout_uses_p95_profile_with_bounds(self) -> None:
         recommendation = observer.recommend_timeout(
