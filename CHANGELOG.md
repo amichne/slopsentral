@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.16](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.15...slopsentral-v4.0.16) (2026-11-12)
+
+
+### Features
+
+* add model instruction design to Developer Tooling ([b171484](https://github.com/amichne/slopsentral/commit/b171484f7ebd3e9c2d47ff376937859f824f3c97))
+
 ## [4.0.15](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.14...slopsentral-v4.0.15) (2026-11-12)
 
 
