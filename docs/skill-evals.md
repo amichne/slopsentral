@@ -12,7 +12,7 @@ Use the [session audit tool](session-audit.md) to examine Pi and Codex history.
 | Plugin execution | `source/evals/promptfoo/execution/` | `npm run eval:execution` | Ready fixtures, real turns, and independent effects evidence |
 | Routing contracts | `source/evals/routing/` | `node tools/run-routing-evals.mjs --require-all-fixtures` | Golden consistency and separately recorded historical evidence |
 
-The current decision catalog contains 33 cases across 12 skills.
+The current decision catalog contains 39 cases across 13 skills.
 Each case runs with supplied skill text and a control that omits it.
 The five execution definitions contain 45 scenarios.
 A missing fixture produces nonpassing `BLOCKED_SETUP` without a model call.
@@ -42,7 +42,7 @@ npm run promptfoo -- view
 ```
 
 The [suite owner](../tools/promptfoo/suite.mts) selects `gpt-6-sol`, low reasoning effort, and concurrency of two.
-The complete paired catalog schedules 66 calls.
+The complete paired catalog schedules 78 calls.
 Each case starts a fresh thread in an empty, read-only workspace.
 Shell tools, web search, network access, host discovery, plugins, and apps stay off.
 
@@ -69,7 +69,7 @@ An authentication error, timeout, or malformed output needs diagnosis before att
 ## Read the decision result
 
 The [case catalog](../source/evals/promptfoo/cases.mts) owns each scenario, choices, expected answer, rationale, and routed references.
-Cases include core engineering decisions, session regressions, and CI evidence scenarios.
+Cases include core engineering decisions, session regressions, CI evidence scenarios, and model instruction design.
 Keep additions in this owner instead of a parallel campaign runner.
 
 The [grader](../tools/promptfoo/grade.mts) compares the exact selected IDs with the independently authored expected set.
