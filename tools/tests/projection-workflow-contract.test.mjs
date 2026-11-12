@@ -34,6 +34,7 @@ test("publication projects a harness matrix through the same local Pkl boundary"
 test("publication maps each projection to its dedicated harness branch", () => {
   assert.match(publicationWorkflow, /harness: codex\s+branch: harness\/codex/);
   assert.match(publicationWorkflow, /harness: github-copilot\s+branch: harness\/github-copilot/);
+  assert.match(publicationWorkflow, /harness: dotagents\s+branch: harness\/dotagents/);
   assert.match(publicationWorkflow, /tools\/publish.py harness/);
   assert.doesNotMatch(publicationWorkflow, /git push origin "HEAD:\$\{GITHUB_REF_NAME\}"/);
 });

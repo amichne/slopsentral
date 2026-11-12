@@ -56,6 +56,8 @@ jobs:
             branch: harness/github-copilot
           - harness: amp
             branch: harness/amp
+          - harness: dotagents
+            branch: harness/dotagents
 
     steps:
       - name: Check out source
@@ -63,6 +65,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.sha }}
+          persist-credentials: false
 
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
         with:
@@ -95,10 +98,20 @@ jobs:
           SLOPSENTRAL_SCHEMA_SKILL_ROOT: ${{ steps.projection.outputs.projection-path }}/.amp/plugins/developer-tooling/skills/manage-json-schemas
         run: node --test tools/tests/amp-projection.test.mjs tools/tests/schema-contracts-runtime.test.mjs
 
+      - name: Examine the dotagents projection before publication
+        if: matrix.harness == 'dotagents'
+        env:
+          SLOPSENTRAL_DOTAGENTS_PROJECTION: ${{ steps.projection.outputs.projection-path }}
+        run: node --test tools/tests/dotagents-projection.test.mjs
+
       - name: Publish ${{ matrix.branch }}
         env:
           PROJECTION_PATH: ${{ steps.projection.outputs.projection-path }}
           TARGET_BRANCH: ${{ matrix.branch }}
+          GH_TOKEN: ${{ github.token }}
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: credential.helper
+          GIT_CONFIG_VALUE_0: '!gh auth git-credential'
         run: |
           set -euo pipefail
           uv run --locked tools/publish.py harness \

@@ -27,7 +27,11 @@ def test_invalid_publication_has_no_effect_plan(arguments: list[str]) -> None:
 
 @pytest.mark.parametrize(
     ("destination", "root"),
-    [(Destination.CODEX, ".agents/plugins"), (Destination.AMP, ".amp/plugins")],
+    [
+        (Destination.CODEX, ".agents/plugins"),
+        (Destination.AMP, ".amp/plugins"),
+        (Destination.DOTAGENTS, ".agents/plugins"),
+    ],
 )
 def test_valid_projection_retains_source_identity(
     tmp_path: Path, destination: Destination, root: str

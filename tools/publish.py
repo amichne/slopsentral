@@ -30,6 +30,7 @@ class Destination(StrEnum):
     CODEX = "harness/codex"
     COPILOT = "harness/github-copilot"
     AMP = "harness/amp"
+    DOTAGENTS = "harness/dotagents"
 
 
 class FailureCode(StrEnum):
@@ -64,7 +65,7 @@ class Publication:
         match self.target:
             case Destination.MAIN:
                 return (".agents/plugins", ".github/plugin")
-            case Destination.CODEX:
+            case Destination.CODEX | Destination.DOTAGENTS:
                 return (".agents/plugins",)
             case Destination.COPILOT:
                 return (".github/plugin",)
@@ -90,7 +91,12 @@ def parse(arguments: list[str]) -> Publication | Failure:
         case ["harness", projection, target_name, source_branch, sha, *optional] if (
             len(optional) <= 1
         ):
-            if target_name not in {Destination.CODEX, Destination.COPILOT, Destination.AMP}:
+            if target_name not in {
+                Destination.CODEX,
+                Destination.COPILOT,
+                Destination.AMP,
+                Destination.DOTAGENTS,
+            }:
                 return Failure(FailureCode.INPUT, "unsupported target branch")
             target = Destination(target_name)
             remote = optional[0] if optional else "origin"

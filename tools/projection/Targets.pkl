@@ -18,6 +18,17 @@ class CodexInterface {
 
 typealias Category = "Coding" | "Engineering" | "Productivity"
 
+class AgentPlugin {
+  `$schema`: "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json" =
+    "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
+  name: Schema.Identity
+  version: String
+  description: String
+  author: Schema.Person
+  license: "UNLICENSED" = "UNLICENSED"
+  keywords: List<String>
+}
+
 class CodexPlugin {
   name: Schema.Identity
   version: String
@@ -26,7 +37,7 @@ class CodexPlugin {
   license: "UNLICENSED" = "UNLICENSED"
   keywords: List<String>
   skills: "./skills/"? = null
-  hooks: List<Schema.RelativePath>? = null
+  hooks: (List<Schema.RelativePath> | "./hooks.json")? = null
   mcpServers: "./.mcp.json"? = null
   interface: CodexInterface
 }
