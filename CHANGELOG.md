@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.15](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.14...slopsentral-v4.0.15) (2026-11-12)
+
+
+### Features
+
+* distribute the full plugin catalog through dotagents ([#147](https://github.com/amichne/slopsentral/issues/147)) ([a993002](https://github.com/amichne/slopsentral/commit/a993002b479dbd554974b1b65557d37ea9a89022))
+
 ## [4.0.14](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.13...slopsentral-v4.0.14) (2026-11-10)
 
 
