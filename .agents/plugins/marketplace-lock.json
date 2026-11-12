@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T17:48:24Z",
+  "generatedAt": "2026-11-12T16:38:23-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -278,6 +278,13 @@
           "type": "SKILL"
         },
         {
+          "name": "model-instruction-design",
+          "sha256": "sha256:a9973d98fc8cb683333d43c7b1a0b76c763505637ac108072acc1a3752d8831f",
+          "sourcePath": "source/skills/model-instruction-design",
+          "targetPath": "skills/model-instruction-design",
+          "type": "SKILL"
+        },
+        {
           "name": "openapi-contract-authoring",
           "sha256": "sha256:bc9323fb3f9bdae44c8c9e7f3c24bda3b97d681ca1c46ddde8bd0a58e9afd7e3",
           "sourcePath": "source/skills/openapi-contract-authoring",
@@ -314,7 +321,7 @@
         },
         {
           "name": "skill-primitive-authoring",
-          "sha256": "sha256:3a0989c373b6d5fe79053b8670ad939d7588dc1c422aa2b73f39f49e9d447cc8",
+          "sha256": "sha256:fde1ae1876014f130c8549c29fc98e5b56a4e07ab201bcfa79bfc959bb4e4b06",
           "sourcePath": "source/skills/skill-primitive-authoring",
           "targetPath": "skills/skill-primitive-authoring",
           "type": "SKILL"
@@ -325,6 +332,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "4794916ccb3b3a1c38224963c386e29e5ea29997",
+  "sourceSha": "7219a2cac3862a58a35c41e8ad9debc291a2479e",
   "type": "HYDRATED_MARKETPLACE"
 }
