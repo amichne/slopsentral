@@ -9,6 +9,7 @@ export type Skill =
   | "controlled-technical-writing"
   | "technical-documentation"
   | "skill-primitive-authoring"
+  | "model-instruction-design"
   | "code-knowledge-base"
   | "personal-setup-management";
 
@@ -24,6 +25,87 @@ export interface DecisionCase {
 
 // The oracle stays outside the rendered prompt. Change a case ID when its meaning changes.
 export const cases: readonly DecisionCase[] = [
+  {
+    id: "prompt-preserve-standing-authority",
+    skill: "model-instruction-design",
+    scenario: "The user requests a reusable implementation prompt. Repository policy already authorizes commits, branch pushes, and PR creation. It does not authorize merges. An older draft says to ask before every push. Pick every justified edit.",
+    choices: {
+      A: "Keep the older approval demand and add a second rule that says to continue autonomously.",
+      B: "Replace the conflicting draft rule with the existing delivery scope and its source.",
+      C: "Grant merge authority because the user wants fewer interruptions.",
+      D: "Keep merge authority separate from commit, push, and PR authority.",
+    },
+    expected: ["B", "D"],
+    rationale: "A prompt carries existing authority without duplication or expansion. The older draft cannot add a conflicting approval demand.",
+  },
+  {
+    id: "prompt-evidence-is-not-a-verdict",
+    skill: "model-instruction-design",
+    references: ["references/task-briefs.md"],
+    scenario: "Write a read-only investigation brief. CI run 902 failed at revision abc123. A local run at def456 passed. A cache race is an unproved hypothesis. Pick every justified instruction.",
+    choices: {
+      A: "Tell the receiver that a cache race caused the failure and demand a cache rewrite.",
+      B: "Identify both revisions and outcomes, then label the cache race as a hypothesis.",
+      C: "Ask for source evidence and a contrasting control within the read-only scope.",
+      D: "Authorize edits and publication so the receiver can finish without more context.",
+    },
+    expected: ["B", "C"],
+    rationale: "The brief preserves distinct evidence identities and the requested investigation scope. A hypothesis does not establish a cause or implementation authority.",
+  },
+  {
+    id: "prompt-stale-tool-result",
+    skill: "model-instruction-design",
+    references: ["references/tool-contracts.md"],
+    scenario: "A tool last read PR head abc123 with successful checks. Its next network read fails. The current head is unknown. Pick every justified result description.",
+    choices: {
+      A: "Return the old success as current so the agent can merge without another read.",
+      B: "Report the failed read and unknown current state. Label the previous result with abc123 and its earlier read time.",
+      C: "Describe a supported fresh-read path without treating cached evidence as current authority.",
+      D: "Return an empty success result because no new failing check exists.",
+    },
+    expected: ["B", "C"],
+    rationale: "A failed effect does not refresh evidence. The consumer needs identity, age, and the unresolved state.",
+  },
+  {
+    id: "prompt-enforce-finite-tool-input",
+    skill: "model-instruction-design",
+    references: ["references/tool-contracts.md"],
+    scenario: "A tool accepts mode as an arbitrary string but supports exactly preview and apply. The task authorizes a prose review only. Pick every justified action.",
+    choices: {
+      A: "Claim that an emphatic prompt makes unsupported mode values impossible.",
+      B: "Describe the two supported values accurately and report the absent schema constraint.",
+      C: "Propose an enum in the owning schema with an invalid-value rejection test for separately authorized implementation.",
+      D: "Change the schema now because a prose review implicitly authorizes code changes.",
+    },
+    expected: ["B", "C"],
+    rationale: "Prose cannot enforce a finite input set. The review identifies the strongest owner without expanding its authorized scope.",
+  },
+  {
+    id: "prompt-human-prose-near-miss",
+    skill: "model-instruction-design",
+    scenario: "The user asks to shorten an accurate README paragraph for human readers. It contains no agent instructions or tool contract. Pick the next action.",
+    choices: {
+      A: "Add a model behavior contract, trigger cases, and a decision evaluation to the paragraph.",
+      B: "Use the prose procedure for the requested edit. Model instruction design does not apply to this task.",
+      C: "Convert the paragraph into a system prompt because an agent can read repository files.",
+    },
+    expected: ["B"],
+    rationale: "An artifact that a model can read is not necessarily an instruction artifact. The intended consumer and task determine the scope.",
+  },
+  {
+    id: "prompt-tied-decision-control",
+    skill: "model-instruction-design",
+    references: ["references/evaluation.md"],
+    scenario: "A new prompt is shorter. Its supplied-text decision run passes six cases, and the no-skill control passes the same six cases. Neither run uses tools. Pick every supported statement.",
+    choices: {
+      A: "The new prompt improves task completion because it contains fewer words.",
+      B: "Both variants pass these cases. The result shows no measured advantage.",
+      C: "Automatic routing, runtime effects, and reader comprehension remain unmeasured.",
+      D: "Rename the offline control result as a successful live host evaluation.",
+    },
+    expected: ["B", "C"],
+    rationale: "Text length and tied decisions do not establish improvement. Each claim stays within its measured interface.",
+  },
   {
     id: "roi-ci-empty-is-not-success",
     skill: "github-ci-operations",

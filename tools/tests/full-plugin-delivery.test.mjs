@@ -11,7 +11,7 @@ const expected = {
   'kotlin-engineering': ['kotlin-design-practices', 'kotlin-review', 'kotlin-application-stack',
     'negative-capability-proof', 'kotlin-gradle-validation', 'gradle-performance-engineering'],
   'intellij-plugin-development': ['intellij-plugin-delivery', 'intellij-platform-testing', 'intellij-psi-indexing'],
-  'developer-tooling': ['python-tooling', 'cli-creator', 'skill-primitive-authoring', 'plugin-composition-authoring',
+  'developer-tooling': ['python-tooling', 'cli-creator', 'skill-primitive-authoring', 'model-instruction-design', 'plugin-composition-authoring',
     'manage-json-schemas', 'openapi-contract-authoring', 'personal-setup-management', 'pkl-engineering',
     'lsp-management', 'ast-grep'],
   'repository-knowledge': ['code-knowledge-base', 'local-repository-navigation',

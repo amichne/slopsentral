@@ -22,6 +22,11 @@ input hashes and adaptation changes.
 
 ## Model Guidance
 
+`model-instruction-design` uses Amp's `writing-prompts` revision `5daeef585502d265` as a design input, examined on 2026-11-12.
+The local procedure uses original text and examples for authority, evidence identity, tool contracts, and paired decision assessments.
+[Per-skill provenance](skills/model-instruction-design/references/provenance.md) records the source digests and adaptation choices.
+The distribution includes no upstream files.
+
 [OpenAI model guidance, GPT-6 Astra](https://developers.openai.com/api/docs/guides/latest-model)
 is the basis for the execution adapter. The page is mutable; the review date is
 not an immutable version. Recheck it when revising the adapter. No API key, model

@@ -34,7 +34,7 @@ Use for a requested tool, contract, agent resource, language server, structural 
 
 Outside this plugin: Automatic source checks, skill-read policy, or unrequested personal configuration changes.
 
-**Skills:** [`ast-grep`](skills/ast-grep/SKILL.md), [`cli-creator`](skills/cli-creator/SKILL.md), [`lsp-management`](skills/lsp-management/SKILL.md), [`manage-json-schemas`](skills/manage-json-schemas/SKILL.md), [`openapi-contract-authoring`](skills/openapi-contract-authoring/SKILL.md), [`personal-setup-management`](skills/personal-setup-management/SKILL.md), [`pkl-engineering`](skills/pkl-engineering/SKILL.md), [`plugin-composition-authoring`](skills/plugin-composition-authoring/SKILL.md), [`python-tooling`](skills/python-tooling/SKILL.md), [`skill-primitive-authoring`](skills/skill-primitive-authoring/SKILL.md).
+**Skills:** [`ast-grep`](skills/ast-grep/SKILL.md), [`cli-creator`](skills/cli-creator/SKILL.md), [`lsp-management`](skills/lsp-management/SKILL.md), [`manage-json-schemas`](skills/manage-json-schemas/SKILL.md), [`model-instruction-design`](skills/model-instruction-design/SKILL.md), [`openapi-contract-authoring`](skills/openapi-contract-authoring/SKILL.md), [`personal-setup-management`](skills/personal-setup-management/SKILL.md), [`pkl-engineering`](skills/pkl-engineering/SKILL.md), [`plugin-composition-authoring`](skills/plugin-composition-authoring/SKILL.md), [`python-tooling`](skills/python-tooling/SKILL.md), [`skill-primitive-authoring`](skills/skill-primitive-authoring/SKILL.md).
 
 **Agents:** [`openapi-contract-rater`](agents/openapi/openapi-contract-rater.agent.md), [`schema-type-enforcer`](agents/schema-type-enforcer.agent.md).
 

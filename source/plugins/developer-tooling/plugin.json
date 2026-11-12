@@ -43,6 +43,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/model-instruction-design",
+      "name": "model-instruction-design"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/plugin-composition-authoring",
       "name": "plugin-composition-authoring"
     },
