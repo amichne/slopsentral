@@ -32,6 +32,7 @@ Author typed Python tools, schemas, Pkl contracts, and agent resources. Install 
 - `cli-creator`: `skills/cli-creator` (source: `source/skills/cli-creator`)
 - `lsp-management`: `skills/lsp-management` (source: `source/skills/lsp-management`)
 - `manage-json-schemas`: `skills/manage-json-schemas` (source: `source/skills/manage-json-schemas`)
+- `model-instruction-design`: `skills/model-instruction-design` (source: `source/skills/model-instruction-design`)
 - `openapi-contract-authoring`: `skills/openapi-contract-authoring` (source: `source/skills/openapi-contract-authoring`)
 - `personal-setup-management`: `skills/personal-setup-management` (source: `source/skills/personal-setup-management`)
 - `pkl-engineering`: `skills/pkl-engineering` (source: `source/skills/pkl-engineering`)
