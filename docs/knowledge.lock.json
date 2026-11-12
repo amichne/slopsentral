@@ -131,7 +131,7 @@
       "tools/tests/fixtures/projection-v1/github-copilot/.github/plugin/pkl-repository-checks/hooks.json": "6345320ee25468023eb16355590291e6ea11dec7a2a06fa0200a780aed86a28c",
       "tools/tests/fixtures/uv-legacy-probe.py": "e2ae2eee0f4e7c22502fe2c335b87aeeede4fbc5a5002533e463553c9267fdc4",
       "tools/tests/fixtures/uv-legacy-probe.py.lock": "b2afa562ab680a2d7e938a18cc367a326baed7e66e5a46cbbb49c887e0a9243f",
-      "tools/tests/full-plugin-delivery.test.mjs": "0f90793dc47a63cceaed922a2e05c410cd0e8fc78125544451fbbbb4419d7e23",
+      "tools/tests/full-plugin-delivery.test.mjs": "38066bd29a7e65ae759eb2627cf2551da98bf82cc319a8f78c50ffe14df35a22",
       "tools/tests/glossary-json.test.mjs": "b6e69db58f1c14c62ad0eebe0f350e2bc0c40a0111e83f0405df7a8281948d90",
       "tools/tests/gradle-check-green.test.mjs": "4e217b4328bd24709f2156222a527f147fb5e906feb0aac76cd1c54b3b244b3f",
       "tools/tests/gradle-wrapper-integrity.test.mjs": "451feb70017670fb9a29428783402fe7dae9d2501f33287668dfbc69fb24f2d9",
