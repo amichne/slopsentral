@@ -12,7 +12,7 @@ import "Targets.pkl"
 local input = Decode.input((new json.Parser {}).parse(read(read("prop:input"))))
 local selectedHarness: Schema.Harness = read("prop:harness")
 local outputRoot =
-  if (selectedHarness == "codex")
+  if (selectedHarness == "codex" || selectedHarness == "dotagents")
     ".agents/plugins"
   else if (selectedHarness == "amp")
     ".amp/plugins"
@@ -81,6 +81,8 @@ function hooks(p: Schema.Plugin): List<Schema.HookReference> =
   p.references
     .filter((r) -> r is Schema.HookReference)
     .map((r) -> r as Schema.HookReference)
+function automaticCodexHooks(p: Schema.Plugin): List<Schema.HookReference> =
+  hooks(p).filter((r) -> r.hook.codexActivation == "automatic").sortBy((r) -> referenceTarget(r))
 function agents(p: Schema.Plugin): List<Schema.AgentReference> =
   p.references
     .filter((r) -> r is Schema.AgentReference)
@@ -137,7 +139,7 @@ function adapter(r: Schema.HookReference): Schema.HookAdapter = new {
 }
 
 function codex(p: Schema.Plugin): Targets.CodexPlugin = new {
-  local registeredHooks = hooks(p).filter((r) -> r.hook.codexActivation == "automatic")
+  local registeredHooks = automaticCodexHooks(p)
   name = p.name
   version = p.version
   description = p.description
@@ -145,10 +147,12 @@ function codex(p: Schema.Plugin): Targets.CodexPlugin = new {
   keywords = pluginKeywords(p)
   skills = if (!refs(p, "SKILL").isEmpty) "./skills/" else null
   hooks =
-    if (!registeredHooks.isEmpty)
-      registeredHooks.map((r) -> "./" + referenceTarget(r)).sort()
-    else
+    if (registeredHooks.isEmpty)
       null
+    else if (selectedHarness == "dotagents")
+      "./hooks.json"
+    else
+      registeredHooks.map((r) -> "./" + referenceTarget(r))
   mcpServers = if (p.mcp != null) "./.mcp.json" else null
   interface = new {
     displayName = title(p.name)
@@ -173,6 +177,29 @@ function codex(p: Schema.Plugin): Targets.CodexPlugin = new {
         "Show the " + title(p.name) + " workflow.",
       )
   }
+}
+
+function combinedCodexHooks(p: Schema.Plugin): Schema.HookAdapter = new {
+  local adapters = automaticCodexHooks(p).map((r) -> adapter(r))
+  hooks {
+    for (event in adapters.flatMap((a) -> a.hooks.keys.toList()).distinct.sort()) {
+      [event] {
+        for (a in adapters) {
+          for (group in a.hooks.getOrNull(event) ?? new Listing<Schema.HookGroup> {}) {
+            group
+          }
+        }
+      }
+    }
+  }
+}
+
+function agentPlugin(p: Schema.Plugin): Targets.AgentPlugin = new {
+  name = p.name
+  version = p.version
+  description = p.description
+  author = input.owner
+  keywords = pluginKeywords(p)
 }
 
 function copilot(p: Schema.Plugin): Targets.CopilotPlugin = new {
@@ -334,11 +361,21 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
           jsonFile("package.json", Map("type", "module", "version", p.version))
           jsonFile("capabilities.json", new Amp.Capabilities {})
         }
-        when (selectedHarness != "amp" && selectedHarness != "pi") {
-          jsonFile(
-            if (selectedHarness == "codex") ".codex-plugin/plugin.json" else "plugin.json",
-            if (selectedHarness == "codex") codex(p) else copilot(p),
-          )
+        when (selectedHarness == "dotagents") {
+          jsonFile("plugin.json", agentPlugin(p))
+          when (!automaticCodexHooks(p).isEmpty) {
+            jsonFile("hooks.json", combinedCodexHooks(p))
+          }
+        }
+        when (
+          selectedHarness == "codex"
+            || (selectedHarness == "dotagents"
+              && (!automaticCodexHooks(p).isEmpty || !agents(p).isEmpty || p.mcp != null))
+        ) {
+          jsonFile(".codex-plugin/plugin.json", codex(p))
+        }
+        when (selectedHarness == "github-copilot") {
+          jsonFile("plugin.json", copilot(p))
         }
         for (r in hooks(p)) {
           jsonFile(referenceTarget(r), adapter(r))
@@ -395,7 +432,7 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
 
 local plans = input.plugins.toList().map((p) -> pluginPlan(p))
 local marketplace: Targets.CodexMarketplace | Targets.CopilotMarketplace | Amp.Catalog | Pi.Catalog =
-  if (selectedHarness == "codex")
+  if (selectedHarness == "codex" || selectedHarness == "dotagents")
     new Targets.CodexMarketplace {
       name = input.name
       interface = new { displayName = title(input.name) }

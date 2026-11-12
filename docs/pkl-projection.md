@@ -44,6 +44,7 @@ export PKL_BIN=/tmp/slopsentral-pkl/pkl
 node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/codex-new
 node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/copilot-new
 node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/amp-new
+node tools/project-marketplaces.mjs --source . --harness dotagents --out /tmp/dotagents-new
 ```
 
 Use fresh output paths outside the checkout with existing parent directories.
@@ -67,7 +68,7 @@ A digest proves byte agreement. It does not prove host discovery or instruction 
 
 ## Compatibility and supported scope
 
-Supported targets are `codex`, `github-copilot`, `amp`, and `pi`.
+Supported targets are `codex`, `github-copilot`, `amp`, `pi`, and `dotagents`.
 Only local marketplace assets are supported.
 Remote resolution and provider overrides stop projection until their typed implementation exists.
 A new shape needs accepted and rejected cases before distribution.
@@ -79,8 +80,24 @@ Historical projector comparisons remain in Git history rather than current quali
 
 [Publish Harnesses](../.github/workflows/publish-harnesses.yml) updates Codex and Copilot trees together on `main` and their provider branches.
 Amp publishes only to `harness/amp`.
+The dotagents catalog publishes only to `harness/dotagents`.
 [Stable releases](releases.md) keep immutable provider archives.
 Local projection grants no publication authority.
+
+## dotagents plugin bundles
+
+The dotagents projection gives each catalog entry an Agent Plugins v1 manifest and its complete skill directories.
+The projector uses the same source graph as the native packages.
+Dotagents generates its own host outputs for Claude Code, Cursor, Codex, GitHub Copilot, Grok, OpenCode, and Pi.
+For Codex, a native fallback groups automatic hooks in one `hooks.json` file.
+Opt-in hooks remain separate files.
+Other targets get portable skills and metadata.
+Use the native packages for Slopsentral-specific features such as Pi hook extensions and Copilot agents.
+
+Run the [dotagents install test](../tools/tests/dotagents-projection.test.mjs) with `PKL_BIN` set to the pinned Pkl executable.
+The test installs all catalog entries with dotagents 3.4.0 and examines its generated files.
+Host discovery and hook delivery need separate evidence.
+The [marketplace guide](agent-marketplaces.md#install-through-dotagents) gives the consumer command.
 
 ## Amp native plugins
 

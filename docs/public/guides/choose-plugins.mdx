@@ -17,6 +17,7 @@ The [source-ownership concept](/knowledge/concepts/source-ownership) explains th
 | GitHub Copilot | `amichne/slopsentral` | `.github/plugin/marketplace.json` |
 | Amp | Stable release archive or `harness/amp` | Complete `.amp/plugins/<plugin>/` directories |
 | Pi | Qualified stable release | Native aggregate package |
+| dotagents | `amichne/slopsentral`, `harness/dotagents` | Agent Plugins v1 bundles |
 | Codex with Worktrunk | `max-sixty/worktrunk` | Upstream `.agents/plugins/marketplace.json` |
 
 The [Slopsentral command](/guides/install) preserves recognized Codex and Copilot sources.
@@ -39,6 +40,30 @@ slopsentral install --host copilot --plugin software-engineering
 
 These commands change the selected host configuration. They need an authorized installation task.
 Use the [command guide](/guides/install) for prerequisites, updates, and removal.
+
+## Install through dotagents
+
+In the consuming project, set `agents` in `agents.toml` to the hosts you use.
+For a project that uses all seven plugin targets, use this configuration:
+
+```toml
+version = 1
+agents = ["claude", "cursor", "codex", "copilot", "grok", "opencode", "pi"]
+```
+
+Add the full Slopsentral catalog from its dotagents branch:
+
+```sh
+npx @sentry/dotagents@3.4.0 --project add amichne/slopsentral --ref harness/dotagents --all
+npx @sentry/dotagents@3.4.0 --project list
+```
+
+Use `install` to refresh the declared plugins.
+Run `add --all` with the same source and ref to include new catalog entries.
+For a fixed catalog revision, use its commit SHA as the ref.
+Use the host's marketplace controls when the host needs plugin registration or activation.
+The [dotagents guide](https://dotagents.sentry.dev/) describes its host outputs.
+The [projection guide](/maintainers/projection#dotagents-plugin-bundles) describes the Slopsentral capabilities in those outputs.
 
 ## Qualify an APM installation
 
