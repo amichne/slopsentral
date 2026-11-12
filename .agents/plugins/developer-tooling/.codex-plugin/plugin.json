@@ -1,0 +1,40 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.",
+  "interface": {
+    "brandColor": "#7C3AED",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Developer Tooling for this task.",
+      "Review this repo with Developer Tooling.",
+      "Show the Developer Tooling workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Developer Tooling",
+    "longDescription": "Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Author typed Python tools, schemas, Pkl contracts, and agent resource...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "ast-grep",
+    "cli",
+    "developer-tooling",
+    "language-server",
+    "lsp",
+    "skills",
+    "structural-search",
+    "tools"
+  ],
+  "license": "UNLICENSED",
+  "name": "developer-tooling",
+  "skills": "./skills/",
+  "version": "4.0.14"
+}

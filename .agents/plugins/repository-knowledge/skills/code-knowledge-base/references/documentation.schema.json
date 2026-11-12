@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Portable documentation coverage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "knowledge",
+    "sourceRoots",
+    "documentRoots",
+    "entrypoints",
+    "auxiliary",
+    "archives",
+    "areas",
+    "fingerprintIgnores"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 2
+    },
+    "knowledge": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "root"
+          ],
+          "properties": {
+            "type": {
+              "const": "OKF"
+            },
+            "root": {
+              "$ref": "#/$defs/path"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "root"
+          ],
+          "properties": {
+            "type": {
+              "const": "OPENWIKI"
+            },
+            "root": {
+              "$ref": "#/$defs/path"
+            }
+          }
+        }
+      ]
+    },
+    "sourceRoots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/path"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "documentRoots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/path"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "entrypoints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/path"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "auxiliary": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/path"
+      },
+      "uniqueItems": true
+    },
+    "archives": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/path"
+      },
+      "uniqueItems": true
+    },
+    "areas": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "sources",
+          "pages"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/path"
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          },
+          "pages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/path"
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "fingerprintIgnores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "pointers"
+        ],
+        "properties": {
+          "path": {
+            "$ref": "#/$defs/path"
+          },
+          "pointers": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^/(?:[^~]|~0|~1)*$"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\u0000]+$"
+    }
+  }
+}

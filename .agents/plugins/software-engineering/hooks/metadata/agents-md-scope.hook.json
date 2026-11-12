@@ -1,0 +1,9 @@
+{
+  "name": "agents-md-scope",
+  "path": "hooks/agents-md-scope.hooks.json",
+  "source": {
+    "path": "./",
+    "type": "LOCAL_SOURCE"
+  },
+  "type": "HOOK"
+}

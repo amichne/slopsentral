@@ -1,0 +1,330 @@
+{
+  "generatedAt": "2026-11-12T12:28:08-05:00",
+  "plugins": [
+    {
+      "name": "software-engineering",
+      "references": [
+        {
+          "name": "agents-md-scope",
+          "sha256": "sha256:a5e80f5546e662224c18b61f108f148cfddca73cb7c272142df181e54e3f02b2",
+          "sourcePath": "source/hooks/agents-md-scope.hook.json",
+          "targetPath": "hooks/agents-md-scope.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "software-engineering-context",
+          "sha256": "sha256:0875e5c5f8a04c5d0ec496e1ef597b6eb702a51e7ed05b06040b2c9b34b3430d",
+          "sourcePath": "source/hooks/software-engineering-context.hook.json",
+          "targetPath": "hooks/software-engineering-context.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "agent-execution",
+          "sha256": "sha256:6be9c1c159cc876f85c20006ed99a5881e52896ed7331ff30e7a6d0d25dc4a9f",
+          "sourcePath": "source/instructions/agent-execution.md",
+          "targetPath": "instructions/agent-execution.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "engineering-design",
+          "sha256": "sha256:b313b798e8c65d734d073161a9f9b0135b6a0b1b26fb35e864c2c67cb1ba6dff",
+          "sourcePath": "source/instructions/engineering-design.md",
+          "targetPath": "instructions/engineering-design.md",
+          "type": "INSTRUCTION"
+        },
+        {
+          "name": "git-change-flow",
+          "sha256": "sha256:67576eb8325e6797998a54e49d0644653e1c1b521b04747b62ecdea90e49c859",
+          "sourcePath": "source/skills/git-change-flow",
+          "targetPath": "skills/git-change-flow",
+          "type": "SKILL"
+        },
+        {
+          "name": "github-ci-operations",
+          "sha256": "sha256:327b48860c8f5c4c65dabac9f4687f93cf7d848c002f384df8a6f712f68574e0",
+          "sourcePath": "source/skills/github-ci-operations",
+          "targetPath": "skills/github-ci-operations",
+          "type": "SKILL"
+        },
+        {
+          "name": "issue-tracker-operations",
+          "sha256": "sha256:514dc6590ceb3361faed8b0ad805b5d44e0e676a2c0a6b02cb7f0edb58fa6f97",
+          "sourcePath": "source/skills/issue-tracker-operations",
+          "targetPath": "skills/issue-tracker-operations",
+          "type": "SKILL"
+        },
+        {
+          "name": "mise-project-tooling",
+          "sha256": "sha256:2b4bebea9d99f25eba0327f2098570f3a6c069829a45c5807cdc78b7fb45fc2d",
+          "sourcePath": "source/skills/mise-project-tooling",
+          "targetPath": "skills/mise-project-tooling",
+          "type": "SKILL"
+        },
+        {
+          "name": "pull-request-lifecycle",
+          "sha256": "sha256:93bc6410505d9f1afbf6b59d24d5f692978305421a060e562eae2c45bb69d42c",
+          "sourcePath": "source/skills/pull-request-lifecycle",
+          "targetPath": "skills/pull-request-lifecycle",
+          "type": "SKILL"
+        },
+        {
+          "name": "python-tooling",
+          "sha256": "sha256:d40486185163c7653bf7f13ede0e79aaa43bedc1260753a3cb66ebd2974ac5a9",
+          "sourcePath": "source/skills/python-tooling",
+          "targetPath": "skills/python-tooling",
+          "type": "SKILL"
+        },
+        {
+          "name": "semantic-ratchet",
+          "sha256": "sha256:d340a6e28649c30e1923909205f22a96411e6e9de6f299f1387e0333c5c33cea",
+          "sourcePath": "source/skills/semantic-ratchet",
+          "targetPath": "skills/semantic-ratchet",
+          "type": "SKILL"
+        },
+        {
+          "name": "tdd",
+          "sha256": "sha256:08139917988d6a127472f8d2b64a3b29f9d0b8c2a8080596d1c9567e1bca1796",
+          "sourcePath": "source/skills/tdd",
+          "targetPath": "skills/tdd",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/software-engineering/plugin.json",
+      "version": "4.0.14"
+    },
+    {
+      "name": "kotlin-engineering",
+      "references": [
+        {
+          "name": "gradle-performance-engineering",
+          "sha256": "sha256:2ce82665c8ba07835dbf4f57355f7a376e718518962258164c891463e511635a",
+          "sourcePath": "source/skills/gradle-performance-engineering",
+          "targetPath": "skills/gradle-performance-engineering",
+          "type": "SKILL"
+        },
+        {
+          "name": "kotlin-application-stack",
+          "sha256": "sha256:ad3466b541cf1a3b201c0374b84c6a67ae8d83d95b84a899030f430eda283f45",
+          "sourcePath": "source/skills/kotlin-application-stack",
+          "targetPath": "skills/kotlin-application-stack",
+          "type": "SKILL"
+        },
+        {
+          "name": "kotlin-design-practices",
+          "sha256": "sha256:fdd7d82275e34dc9e8e44418383a9b6d887f3094cb8bfcec09fa284f7cd27d21",
+          "sourcePath": "source/skills/kotlin-design-practices",
+          "targetPath": "skills/kotlin-design-practices",
+          "type": "SKILL"
+        },
+        {
+          "name": "kotlin-gradle-validation",
+          "sha256": "sha256:0f40335a0e4814ebc3eb5391004dc4a2c78657b27b3fc86798ccc0201f8b477b",
+          "sourcePath": "source/skills/kotlin-gradle-validation",
+          "targetPath": "skills/kotlin-gradle-validation",
+          "type": "SKILL"
+        },
+        {
+          "name": "kotlin-review",
+          "sha256": "sha256:0543a70ac140837f7099c1248643530fc27f01d3ee705c9a9656e595225ba5f8",
+          "sourcePath": "source/skills/kotlin-review",
+          "targetPath": "skills/kotlin-review",
+          "type": "SKILL"
+        },
+        {
+          "name": "negative-capability-proof",
+          "sha256": "sha256:33a8dcca9dd3f18c9d8e8de4cfc2f5bd10687b094e4fe187c37389a0ea02bf81",
+          "sourcePath": "source/skills/negative-capability-proof",
+          "targetPath": "skills/negative-capability-proof",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/kotlin-engineering/plugin.json",
+      "version": "4.0.14"
+    },
+    {
+      "name": "intellij-plugin-development",
+      "references": [
+        {
+          "name": "intellij-platform-testing",
+          "sha256": "sha256:2f717e12de0d988849a1bfac7c23a3bfdbc598e06f7cf767713f260e245435c2",
+          "sourcePath": "source/skills/intellij-platform-testing",
+          "targetPath": "skills/intellij-platform-testing",
+          "type": "SKILL"
+        },
+        {
+          "name": "intellij-plugin-delivery",
+          "sha256": "sha256:469d1f64209623a3846e9bcbc0eb76c9d1e59905e98001b6fdd1d8ca6fc38c3a",
+          "sourcePath": "source/skills/intellij-plugin-delivery",
+          "targetPath": "skills/intellij-plugin-delivery",
+          "type": "SKILL"
+        },
+        {
+          "name": "intellij-psi-indexing",
+          "sha256": "sha256:56fbc74da13cb3d73d01fc5784e0641347a47701823cf49533db9663f874d063",
+          "sourcePath": "source/skills/intellij-psi-indexing",
+          "targetPath": "skills/intellij-psi-indexing",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/intellij-plugin-development/plugin.json",
+      "version": "4.0.14"
+    },
+    {
+      "name": "repository-knowledge",
+      "references": [
+        {
+          "name": "code-knowledge-drift",
+          "sha256": "sha256:a1c0e6647dda09ae080fe3ee4e5b3646deebe64727351c0bb62ffa56ee4e2ad4",
+          "sourcePath": "source/hooks/code-knowledge-drift.hook.json",
+          "targetPath": "hooks/code-knowledge-drift.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "knowledge-overlay",
+          "sha256": "sha256:47969bc90cee3af00a4fbffdc8069dd760879ede57ecea60dc363f0230067643",
+          "sourcePath": "source/hooks/knowledge-overlay.hook.json",
+          "targetPath": "hooks/knowledge-overlay.hooks.json",
+          "type": "HOOK"
+        },
+        {
+          "name": "code-knowledge-base",
+          "sha256": "sha256:54d93b850b37082ff0394f4634daeadfddf613063f9f0a901723284e9763a4bf",
+          "sourcePath": "source/skills/code-knowledge-base",
+          "targetPath": "skills/code-knowledge-base",
+          "type": "SKILL"
+        },
+        {
+          "name": "controlled-technical-writing",
+          "sha256": "sha256:91ddecac51b8aede60a426cde058bcef9b5ac096eb019886192ee09367cf95c8",
+          "sourcePath": "source/skills/controlled-technical-writing",
+          "targetPath": "skills/controlled-technical-writing",
+          "type": "SKILL"
+        },
+        {
+          "name": "interactive-views",
+          "sha256": "sha256:083e6d5945b9e487bb7cb4d448564e6943eaeeef166c8300db9f3f352a0ad058",
+          "sourcePath": "source/skills/interactive-views",
+          "targetPath": "skills/interactive-views",
+          "type": "SKILL"
+        },
+        {
+          "name": "local-repository-navigation",
+          "sha256": "sha256:9ec3ae0d38de1ef157cee190d15c4b623380e7ea735ffad1e9ec2ad140b7d6a0",
+          "sourcePath": "source/skills/local-repository-navigation",
+          "targetPath": "skills/local-repository-navigation",
+          "type": "SKILL"
+        },
+        {
+          "name": "reviewable-artifacts",
+          "sha256": "sha256:c075f5f1ceb404fab90f2aad8b802d6ac19539409fe3abf4ab26326af097f6ae",
+          "sourcePath": "source/skills/reviewable-artifacts",
+          "targetPath": "skills/reviewable-artifacts",
+          "type": "SKILL"
+        },
+        {
+          "name": "technical-documentation",
+          "sha256": "sha256:79be0301dfc814d51b3d9c034ad51ea81a950f8784f3b4416da0b397637f6233",
+          "sourcePath": "source/skills/technical-documentation",
+          "targetPath": "skills/technical-documentation",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/repository-knowledge/plugin.json",
+      "version": "4.0.14"
+    },
+    {
+      "name": "developer-tooling",
+      "references": [
+        {
+          "name": "openapi-contract-rater",
+          "sha256": "sha256:0eeaf76c9091474bcbefb7f330735d14eaa8673adcecdfc61ac929dc31880a13",
+          "sourcePath": "source/agents/openapi/openapi-contract-rater.agent.md",
+          "targetPath": "agents/openapi-contract-rater.agent.md",
+          "type": "AGENT"
+        },
+        {
+          "name": "schema-type-enforcer",
+          "sha256": "sha256:86a69e13d5fbcfec672402e135111a081bd5c39d88a7d474f612f2e7f190178e",
+          "sourcePath": "source/agents/schema-type-enforcer.agent.md",
+          "targetPath": "agents/schema-type-enforcer.agent.md",
+          "type": "AGENT"
+        },
+        {
+          "name": "ast-grep",
+          "sha256": "sha256:b04bf39927ae127ab55fc184eee4aa03b3a526488e2ac6544b0dd69a967116f1",
+          "sourcePath": "source/skills/ast-grep",
+          "targetPath": "skills/ast-grep",
+          "type": "SKILL"
+        },
+        {
+          "name": "cli-creator",
+          "sha256": "sha256:8540cfdc5ff45bdd27cd81e2470726caabaeeaf9827370e0d59e4194947ae7ec",
+          "sourcePath": "source/skills/cli-creator",
+          "targetPath": "skills/cli-creator",
+          "type": "SKILL"
+        },
+        {
+          "name": "lsp-management",
+          "sha256": "sha256:dbb36ea60252993048ff82eab46a0008cda0d0b27cedd844946903973476d618",
+          "sourcePath": "source/skills/lsp-management",
+          "targetPath": "skills/lsp-management",
+          "type": "SKILL"
+        },
+        {
+          "name": "manage-json-schemas",
+          "sha256": "sha256:68150d0b8c14877fc182cd9f6d3413c422e79410b841d9c2b6e8c840a58b03c2",
+          "sourcePath": "source/skills/manage-json-schemas",
+          "targetPath": "skills/manage-json-schemas",
+          "type": "SKILL"
+        },
+        {
+          "name": "openapi-contract-authoring",
+          "sha256": "sha256:bc9323fb3f9bdae44c8c9e7f3c24bda3b97d681ca1c46ddde8bd0a58e9afd7e3",
+          "sourcePath": "source/skills/openapi-contract-authoring",
+          "targetPath": "skills/openapi-contract-authoring",
+          "type": "SKILL"
+        },
+        {
+          "name": "personal-setup-management",
+          "sha256": "sha256:eace048343a64970731443af4779d7afbbb4c43b6581fd20cb8efe165e037d7d",
+          "sourcePath": "source/skills/personal-setup-management",
+          "targetPath": "skills/personal-setup-management",
+          "type": "SKILL"
+        },
+        {
+          "name": "pkl-engineering",
+          "sha256": "sha256:966f6b935d6783439ba72c47ea173cffa7e30ffeb88e985d4f18bc38e8c831ff",
+          "sourcePath": "source/skills/pkl-engineering",
+          "targetPath": "skills/pkl-engineering",
+          "type": "SKILL"
+        },
+        {
+          "name": "plugin-composition-authoring",
+          "sha256": "sha256:df5ac576c1a111cad5455ca8b73428add323dda38795b36e6f2478060807fe62",
+          "sourcePath": "source/skills/plugin-composition-authoring",
+          "targetPath": "skills/plugin-composition-authoring",
+          "type": "SKILL"
+        },
+        {
+          "name": "python-tooling",
+          "sha256": "sha256:d40486185163c7653bf7f13ede0e79aaa43bedc1260753a3cb66ebd2974ac5a9",
+          "sourcePath": "source/skills/python-tooling",
+          "targetPath": "skills/python-tooling",
+          "type": "SKILL"
+        },
+        {
+          "name": "skill-primitive-authoring",
+          "sha256": "sha256:3a0989c373b6d5fe79053b8670ad939d7588dc1c422aa2b73f39f49e9d447cc8",
+          "sourcePath": "source/skills/skill-primitive-authoring",
+          "targetPath": "skills/skill-primitive-authoring",
+          "type": "SKILL"
+        }
+      ],
+      "sourceManifest": "source/plugins/developer-tooling/plugin.json",
+      "version": "4.0.14"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceSha": "9ae7e82ee93f94fcebea854318c5e24a39c7265f",
+  "type": "HYDRATED_MARKETPLACE"
+}

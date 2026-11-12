@@ -1,0 +1,64 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
+  "hooks": "./hooks.json",
+  "interface": {
+    "brandColor": "#0F766E",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "category": "Engineering",
+    "defaultPrompt": [
+      "Use Software Engineering for this task.",
+      "Review this repo with Software Engineering.",
+      "Show the Software Engineering workflow."
+    ],
+    "developerName": "Amichne",
+    "displayName": "Software Engineering",
+    "longDescription": "Design proof-preserving boundaries and implement, verify, and deliver software with uv-managed Python automation.",
+    "privacyPolicyURL": "https://github.com/amichne/slopsentral",
+    "shortDescription": "Design proof-preserving boundaries and implement, verify, and deliver...",
+    "termsOfServiceURL": "https://github.com/amichne/slopsentral",
+    "websiteURL": "https://github.com/amichne/slopsentral"
+  },
+  "keywords": [
+    "actions",
+    "automation",
+    "backend",
+    "ci",
+    "cli",
+    "core",
+    "daily-driver",
+    "dependencies",
+    "design",
+    "duration",
+    "evidence",
+    "failures",
+    "git",
+    "github",
+    "governance",
+    "hooks",
+    "instructions",
+    "issues",
+    "jira",
+    "local-development",
+    "mise",
+    "onboarding",
+    "optimization",
+    "pull-requests",
+    "release",
+    "schemas",
+    "skills",
+    "software-engineering",
+    "tdd",
+    "testing",
+    "workflow-graph"
+  ],
+  "license": "UNLICENSED",
+  "name": "software-engineering",
+  "skills": "./skills/",
+  "version": "4.0.14"
+}

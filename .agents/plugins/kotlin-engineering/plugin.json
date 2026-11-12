@@ -1,0 +1,40 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Design, verify, review, and optimize Kotlin and Gradle changes.",
+  "keywords": [
+    "api-design",
+    "best-practices",
+    "cli",
+    "clikt",
+    "evidence",
+    "graalvm",
+    "gradle",
+    "higher-order-functions",
+    "hooks",
+    "kotlin",
+    "kotlin-engineering",
+    "ktor",
+    "libraries",
+    "module-boundaries",
+    "observability",
+    "opentelemetry",
+    "package-cohesion",
+    "proof",
+    "repository-guidance",
+    "repository-topology",
+    "review",
+    "serialization",
+    "skills",
+    "task-evidence",
+    "telemetry",
+    "testing",
+    "type-safety",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "kotlin-engineering",
+  "version": "4.0.14"
+}

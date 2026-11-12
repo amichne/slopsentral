@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Write technical documentation with source-backed glossaries and maintain OKF knowledge, OpenWiki handoffs, navigation, and overlays.",
+  "keywords": [
+    "controlled-language",
+    "docs",
+    "generation",
+    "glossary",
+    "gradle",
+    "hooks",
+    "impact",
+    "knowledge-base",
+    "kotlin",
+    "okf",
+    "prose",
+    "repository",
+    "repository-knowledge",
+    "semantics",
+    "signatures",
+    "skills",
+    "source-backed",
+    "technical-writing",
+    "terminology",
+    "validation"
+  ],
+  "license": "UNLICENSED",
+  "name": "repository-knowledge",
+  "version": "4.0.14"
+}

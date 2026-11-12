@@ -1,0 +1,12 @@
+amends "pkl:Project"
+
+tests {
+  "tests/config.test.pkl"
+}
+
+package {
+  name = "pkl-agent-fixture"
+  baseUri = "package://example.com/pkl-agent-fixture"
+  version = "1.0.0"
+  packageZipUrl = "https://example.com/pkl-agent-fixture@1.0.0.zip"
+}

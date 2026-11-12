@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slopsentral.local/schemas/personal-cli/personal-size-result.schema.json",
+  "title": "Personal Size Result",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "files"],
+      "properties": {
+        "type": { "type": "string", "const": "FILE_SIZES" },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "bytes"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "bytes": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": { "type": { "type": "string", "const": "INVALID_ARGUMENTS" } }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": { "type": { "type": "string", "const": "DIRECTORY_UNREADABLE" } }
+    }
+  ],
+  "examples": [
+    { "type": "FILE_SIZES", "files": [{ "name": "build.log", "bytes": 1048576 }] },
+    { "type": "FILE_SIZES", "files": [] },
+    { "type": "INVALID_ARGUMENTS" },
+    { "type": "DIRECTORY_UNREADABLE" }
+  ]
+}

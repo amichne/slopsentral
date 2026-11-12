@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/semantic-ratchet/artifact-result.schema.json",
+  "title": "ARTIFACT_RESULT",
+  "oneOf": [
+    { "$ref": "#/$defs/Outcome" },
+    { "$ref": "#/$defs/CleanupFailed" }
+  ],
+  "$defs": {
+    "Sha256Digest": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$",
+      "examples": ["5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03"]
+    },
+    "ExitStatus": { "type": "integer", "minimum": 1, "maximum": 255, "examples": [73] },
+    "Stage": { "type": "string", "enum": ["PREPARE", "COPY", "FREEZE", "HASH", "PUBLISH"] },
+    "Signal": { "type": "string", "enum": ["HUP", "INT", "TERM"] },
+    "Outcome": {
+      "oneOf": [
+        { "$ref": "#/$defs/Published" },
+        { "$ref": "#/$defs/InputRejected" },
+        { "$ref": "#/$defs/ChecksumMismatch" },
+        { "$ref": "#/$defs/StageFailed" },
+        { "$ref": "#/$defs/ToolUnavailable" },
+        { "$ref": "#/$defs/ProtocolFailed" },
+        { "$ref": "#/$defs/PreparationInterrupted" },
+        { "$ref": "#/$defs/Interrupted" },
+        { "$ref": "#/$defs/PublicationInterrupted" },
+        { "$ref": "#/$defs/PublicationUnconfirmed" }
+      ]
+    },
+    "Published": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "PUBLISHED", "type": "string" },
+        "sha256": { "$ref": "#/$defs/Sha256Digest" }
+      },
+      "required": ["type", "sha256"],
+      "additionalProperties": false
+    },
+    "InputRejected": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "INPUT_REJECTED", "type": "string" },
+        "reason": { "type": "string", "enum": ["ARGUMENT_COUNT", "EMPTY_PATH", "DIGEST_SHAPE", "EMPTY_CONTENT"] }
+      },
+      "required": ["type", "reason"],
+      "additionalProperties": false
+    },
+    "ChecksumMismatch": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "CHECKSUM_MISMATCH", "type": "string" },
+        "expected": { "$ref": "#/$defs/Sha256Digest" },
+        "observed": { "$ref": "#/$defs/Sha256Digest" }
+      },
+      "required": ["type", "expected", "observed"],
+      "additionalProperties": false
+    },
+    "StageFailed": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "STAGE_FAILED", "type": "string" },
+        "stage": { "$ref": "#/$defs/Stage" },
+        "exit_status": { "$ref": "#/$defs/ExitStatus" }
+      },
+      "required": ["type", "stage", "exit_status"],
+      "additionalProperties": false
+    },
+    "ToolUnavailable": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "TOOL_UNAVAILABLE", "type": "string" },
+        "stage": { "$ref": "#/$defs/Stage" }
+      },
+      "required": ["type", "stage"],
+      "additionalProperties": false
+    },
+    "ProtocolFailed": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "PROTOCOL_FAILED", "type": "string" },
+        "stage": { "type": "string", "enum": ["PREPARE", "HASH"] }
+      },
+      "required": ["type", "stage"],
+      "additionalProperties": false
+    },
+    "Interrupted": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "INTERRUPTED", "type": "string" },
+        "stage": { "type": "string", "enum": ["INPUT", "COPY", "FREEZE", "HASH"] },
+        "signal": { "$ref": "#/$defs/Signal" }
+      },
+      "required": ["type", "stage", "signal"],
+      "additionalProperties": false
+    },
+    "PreparationInterrupted": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "PREPARATION_INTERRUPTED", "type": "string" },
+        "signal": { "$ref": "#/$defs/Signal" }
+      },
+      "required": ["type", "signal"],
+      "additionalProperties": false
+    },
+    "PublicationInterrupted": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "PUBLICATION_INTERRUPTED", "type": "string" },
+        "signal": { "$ref": "#/$defs/Signal" }
+      },
+      "required": ["type", "signal"],
+      "additionalProperties": false
+    },
+    "PublicationUnconfirmed": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "PUBLICATION_UNCONFIRMED", "type": "string" },
+        "exit_status": { "$ref": "#/$defs/ExitStatus" }
+      },
+      "required": ["type", "exit_status"],
+      "additionalProperties": false
+    },
+    "CleanupFailed": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "CLEANUP_FAILED", "type": "string" },
+        "outcome": { "$ref": "#/$defs/Outcome" },
+        "exit_status": { "$ref": "#/$defs/ExitStatus" }
+      },
+      "required": ["type", "outcome", "exit_status"],
+      "additionalProperties": false
+    }
+  },
+  "examples": [
+    { "type": "PUBLISHED", "sha256": "5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03" },
+    { "type": "INPUT_REJECTED", "reason": "EMPTY_CONTENT" },
+    { "type": "CHECKSUM_MISMATCH", "expected": "0000000000000000000000000000000000000000000000000000000000000000", "observed": "5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03" },
+    { "type": "STAGE_FAILED", "stage": "COPY", "exit_status": 74 },
+    { "type": "TOOL_UNAVAILABLE", "stage": "HASH" },
+    { "type": "PROTOCOL_FAILED", "stage": "HASH" },
+    { "type": "PREPARATION_INTERRUPTED", "signal": "TERM" },
+    { "type": "INTERRUPTED", "stage": "HASH", "signal": "TERM" },
+    { "type": "PUBLICATION_INTERRUPTED", "signal": "TERM" },
+    { "type": "PUBLICATION_UNCONFIRMED", "exit_status": 70 },
+    { "type": "CLEANUP_FAILED", "outcome": { "type": "PUBLISHED", "sha256": "5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03" }, "exit_status": 79 }
+  ]
+}

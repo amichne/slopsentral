@@ -1,0 +1,14 @@
+id: no-console-log
+valid:
+  - 'console.info(value)'
+  - '// console.log(value)'
+  - 'const text = "console.log(value)"'
+  - 'logger.log(value)'
+invalid:
+  - 'console.log(value)'
+  - 'console.log()'
+  - 'console.log(first, second)'
+  - |
+    console.log(
+      value
+    )

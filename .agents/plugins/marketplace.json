@@ -1,0 +1,68 @@
+{
+  "interface": {
+    "displayName": "Slopsentral"
+  },
+  "name": "slopsentral",
+  "plugins": [
+    {
+      "category": "Engineering",
+      "name": "software-engineering",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/software-engineering",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Coding",
+      "name": "kotlin-engineering",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/kotlin-engineering",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Engineering",
+      "name": "intellij-plugin-development",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/intellij-plugin-development",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Coding",
+      "name": "repository-knowledge",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/repository-knowledge",
+        "source": "local"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "developer-tooling",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./.agents/plugins/developer-tooling",
+        "source": "local"
+      }
+    }
+  ]
+}
