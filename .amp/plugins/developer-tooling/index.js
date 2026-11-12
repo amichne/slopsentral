@@ -12,6 +12,7 @@ export default async function (amp) {
   "skills/cli-creator",
   "skills/lsp-management",
   "skills/manage-json-schemas",
+  "skills/model-instruction-design",
   "skills/openapi-contract-authoring",
   "skills/personal-setup-management",
   "skills/pkl-engineering",
