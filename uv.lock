@@ -418,7 +418,7 @@ wheels = [
 
 [[package]]
 name = "slopsentral-automation"
-version = "4.0.14"
+version = "4.0.15"
 source = { virtual = "." }
 
 [package.dev-dependencies]
