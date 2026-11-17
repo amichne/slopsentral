@@ -22,11 +22,11 @@ Keep credentials outside the index URL and configuration file.
 
 Use the standard library when it meets the command's needs.
 For a portable script, declare the Python range and direct dependencies in its PEP 723 header.
-Use `uv run --script PATH` for script execution.
-The script's metadata supplies its dependencies and index settings.
-Give the public executable a name without an extension.
-Keep Python dependency lockfiles out of Git.
-If uv creates a development lockfile, ignore it.
+Use `uv lock --script PATH` to create or refresh the script lockfile.
+Commit the resulting file next to the script as `PATH.lock`.
+Use `uv run --locked --script PATH` to run the script.
+The script metadata supplies the dependencies and index settings.
+Give each public executable in a directory on `PATH` a name without an extension.
 
 ## Development
 
