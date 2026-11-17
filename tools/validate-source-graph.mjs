@@ -89,6 +89,7 @@ const pluginEvalScenarioKeys = new Set([
   "expectedPrimitive",
   "userInput",
   "successChecklist",
+  "verifierCommands",
 ]);
 const pluginEvalPrimitiveKeys = new Set(["type", "name"]);
 
@@ -910,6 +911,9 @@ function validatePluginEvalBenchmark(relativePath, routingCases) {
       fail(`${owner}: userInput must forbid remote writes`);
     }
     validateNonEmptyStringArray(`${owner}: successChecklist`, scenario.successChecklist);
+    if (scenario.verifierCommands !== undefined &&
+      (!Array.isArray(scenario.verifierCommands) || scenario.verifierCommands.length !== 1 || scenario.verifierCommands[0] !== "git diff --check"))
+      fail(`${owner}: verifierCommands must select the read-only fixture diff check`);
     validateNonEmptyStringArray(`${owner}: routingCaseIds`, scenario.routingCaseIds);
     if (!scenario.expectedPrimitive || typeof scenario.expectedPrimitive !== "object") {
       fail(`${owner}: expectedPrimitive is required`);

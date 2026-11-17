@@ -26,7 +26,7 @@ function literal(value: Any): String = (new JsonRenderer {}).renderValue(value)
 
 local scriptInvocation: String =
   """
-  Amp global plugins may lose bundled scripts' executable permissions. When a
+  Amp global plugins can lose bundled scripts' executable permissions. When a
   skill documents a direct script command, read its shebang and invoke that
   interpreter explicitly with the absolute script path and original arguments.
   Preserve interpreter flags: for `#!/usr/bin/env -S uv run --locked --script`,
@@ -48,7 +48,7 @@ function entrypoint(plugin: Schema.Plugin): String =
         .sortBy((ref) -> ref.name)
   )
     """
-    import { readFileSync } from 'node:fs';
+    import { existsSync, readFileSync } from 'node:fs';
 
     export const description = \(literal(plugin.description.take(300)));
 
@@ -56,13 +56,22 @@ function entrypoint(plugin: Schema.Plugin): String =
       // Read required context before registering anything; a missing payload fails loading.
       const instructions = \(literal(instructions.map((ref) -> "instructions/" + ref.name + "." + ref.sourcePath.split(".").last)))
         .map(path => readFileSync(new URL(path, import.meta.url), 'utf8').trim());
-      instructions.unshift(\(literal(scriptInvocation)));
+      const scriptedSkills = new Set();
       for (const path of \(literal(skills.map((ref) -> "skills/" + ref.name)))) {
         await amp.registerSkill({ path });
+        if (existsSync(new URL(path + '/scripts/', import.meta.url))) {
+          scriptedSkills.add(\(literal(plugin.name + ":")) + path.slice('skills/'.length));
+        }
       }
-      amp.on('agent.start', () => ({ message: {
-        content: instructions.join('\\n\\n'),
-        display: false,
-      } }));
+      amp.on('agent.start', () => instructions.length === 0 ? undefined : ({
+        message: { content: instructions.join('\\n\\n'), display: false },
+      }));
+      if (scriptedSkills.size === 0) return;
+      const guidance = \(literal(scriptInvocation));
+      amp.on('tool.result', ({ tool, input, status, output }) => {
+        if (tool !== 'skill' || status !== 'done' || !scriptedSkills.has(input?.name)
+          || !Array.isArray(output?.content) || output.content.some(part => part?.text === guidance)) return;
+        return { status, output: { ...output, content: [...output.content, { type: 'text', text: guidance }] } };
+      });
     }
     """ + "\n"

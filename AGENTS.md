@@ -146,9 +146,9 @@ Normal CI runs offline controls without model calls or credentials.
 Keep raw reports under ignored `.promptfoo/`. Keep offline controls separate from model evidence.
 The decision suite scores supplied skill text and references, not automatic routing or tool execution.
 
-`source/evals/promptfoo/execution/` owns the five plugin benchmark definitions
-and 45 scenarios. `npm run eval:execution` runs them through the custom streamed
-Codex SDK provider in `tools/promptfoo/execution-runtime.mts`. Select an explicit ignored
+`source/evals/promptfoo/execution/` owns five plugin benchmark definitions
+and 49 scenarios. `tools/promptfoo/execution-runtime.mts` runs the Codex SDK
+and supports read-only fixtures through Amp CLI. Select an explicit ignored
 fixture registry with `SLOPSENTRAL_EXECUTION_FIXTURES`. Bind each case to a target,
 scenario, absolute repository path, full commit SHA, context, and independent
 host verifier path and content hash. Missing fixtures are nonpassing

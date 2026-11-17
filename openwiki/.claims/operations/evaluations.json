@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:eae9877b43f6d69c38f8fcb50bacb14edad5fc28604596119aa784a9ccd391ff",
+  "pageVersion": "sha256:4ddd4fef30030d0a4a8ff813ff27d34244eb55819a640f906649de4ef806fa17",
   "claims": [
     {
       "id": "claim_d7e9d4a7075f48ebb828e74b6f5f28c5",
@@ -21,8 +21,8 @@
       "statement": "Execution cases without a pinned fixture receive nonpassing BLOCKED_SETUP without a model call.",
       "evidence": [
         {
-          "resource": "repo://tools/promptfoo/execution-runtime.mts#L202-L207",
-          "version": "repo-lines-v1:sha256:b417a37ec68c4ab1ab62d3a6d70ea4b5c2621fba3064f65eefbd7b4a5d684db2:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODBiOGRhNjI1MmRkN2FkMjAyNGExMzI3ODFiMDJkZWY4ZmM0ZDJiNjhkMGMxNjc1YmFjYmJkN2FhMjk5MTkzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGY5NWM3MzM3YTMzZDE4OWYzZDg2ZjlmNWNmMWYwMzM5ZmQ4Y2U1NzIzMjE1ZDUxZjJlOGI3NzVjNDQ3MGFlMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTA0MDExZGM2YmYyNmQ2YzFjMTBkN2E2N2U4YzJjMDBiMjdlYjY0Y2VkMjEzN2Q0MWYyMmU2ZmE4MTRlMGVlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGNlMTYxYTExMmExM2VkMDU1NTRkMDQ4NWIyMWQ0YWZmMDQzMzJmYTM3Y2I2OWNhMGQ1ZDcwNjQ4YWM0NTcwNyJ9"
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L273-L281",
+          "version": "repo-lines-v1:sha256:b078e3b3c949bac66c6ad010c4886125854f7d7021287adeb62813a5b4e0485b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTc1NTNjZmU5MzAxN2ViMzg4NWI0ZTZkOTgyN2Y0Yzg0N2I3MzUzZTZiY2Y5YjlkMmJiOWRjNzkyYjAxMmE0OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGY5NWM3MzM3YTMzZDE4OWYzZDg2ZjlmNWNmMWYwMzM5ZmQ4Y2U1NzIzMjE1ZDUxZjJlOGI3NzVjNDQ3MGFlMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjVkZGI0NGY5NmQ3N2JjY2JmNTI4YTBjOGZlZjk4YzY3YTNmN2YzM2Q0NDlmZTgzYzM5NThiMTllZjlmYmFiNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTg3MTQ3OTJlMDFlOTJhNDhiOTgwZjlmZWQ2ZTMyMTI1Y2E4NTEzNjhiMGQ3YzIwYTQxOTY3OTFkNmI0NzU3ZSJ9"
         }
       ]
     },
@@ -31,28 +31,50 @@
       "statement": "Execution grading requires a completed run and independent passing evidence for every checklist item, route, and scope; missing evidence cannot pass.",
       "evidence": [
         {
-          "resource": "repo://tools/promptfoo/execution.mts#L140-L158",
+          "resource": "repo://tools/promptfoo/execution.mts#L146-L164",
           "version": "repo-lines-v1:sha256:1e16892a0b2cd606daaafdac3ae513b6134a735462f29b467b522e8745c12116:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3YTk4MjExMDQzZTVjNDE2NzkzOTNiZTcxOGM4Nzk0MjY3MDFlNGMzYTdkNmY2YzYxZjY3ZDI3ZTZlM2I3YmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3NGVkMDg1YWNlM2JlMjUyNzM4NTY1MGRiZmE2MGY1YzNlNjYwZDg5M2E2ODQ1ZDk0OGIzYzg1ZWFiMmM5MTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
     {
       "id": "claim_2783728a3fea499f9d053e4bac43f460",
-      "statement": "Ready execution cases use isolated private worktrees, native plugin installation, retained streamed events, and the benchmark model, sandbox, and approval settings with network and web search disabled.",
+      "statement": "Ready Codex execution cases use isolated private worktrees, native plugin installation, retained streamed events, and the benchmark model, sandbox, and approval settings. The Codex runner disables sandbox network access and web search.",
       "evidence": [
         {
-          "resource": "repo://tools/promptfoo/execution-runtime.mts#L110-L129",
-          "version": "repo-lines-v1:sha256:e9770ef3e1f663ae00fab175e1e9aa3aad94a75d77ca52ea212b541705edb498:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2MTljYjI0ZDE3NWY3OTdkOTNkNjlhOWFkNGRiZjFlNGU1MWNhMTNhODFiMDk4MDgyYzY1YjEwZWY3MDJlOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmZDM0NmNmNTNhYjZhZDM3ODAzMWQ3YTAyMzUxYzM4OTExZWUxZDk1M2MxMGU0MjlmMGYyYzk5OTExMDE1YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3NDMzNzg0ZDFmZGJmYjhlOWU5YTZkOWU1ZTU2MGM1MDVmOGMxYzlkNTlmNDRiZDdhN2RhYWZhYThkYTNiMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjYmY2M2FiNzEyM2Q0NzczZmYyNmQ4ZTU3OTcxODgxMDM2ZjMxNzA0ZDllZjdkMTMzYzQ2ZTBiODdmOWE2YzAifQ"
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L161-L168",
+          "version": "repo-lines-v1:sha256:c8b2cf887ed31c56988801b2c9224bf317705278e15268adaa1dc78517f52459:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjkwOTQ5ZDE4MjhhMDkyNzIxMzIwNWIyZmM1ZWQ3YzNmYzQ1MGM5YWJiY2JhN2UwMTRiOWVhODYzOGRmOTY3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjMyZDdkM2RjZmQwNDZhYThiMGQyZjhmYWMyOTY2ODNiMzY0NDI2MjQ1NjA0ZTliNjBlMzY5NDg5ZjljZTc4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWYyNTQ1ZTBiYzc3NGEzYjAzNTI0NTgwYTFlZmFmY2IxZWQ5MmUwZDBiNjczODI3YTA3ODZlNDNiYjhmNzc3MSJ9"
         },
         {
-          "resource": "repo://tools/promptfoo/execution-runtime.mts#L72-L116",
-          "version": "repo-lines-v1:sha256:daeb9c9b4e83ea09cf91dcfeab4d5964c2ea1d89080b2368a3bf96691b758b74:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4ZTFjNzY3YjIzNTIxNDBlNzcwMDIxNGNlMWFjYzg2MzMwMGUzMTFkYzM0Njk1NGM3YmMzNGU1OTI4MWI2ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkNjk2NDVmY2ZkZTcyNjljMzIyYTIwNDdjZWY5YzcwODEwOGIyNzQ2MDk3N2JkOWM5YWU4ZGMyYjBkZTlmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyZTU3ODcyNmRmOWEyMWIxYTMzODEzODAzY2IzMWZlYzg2ZWEwOTdkYTQ1MGJkYmYzYTBkMDEwMjhjOTAxYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlN2FlMGE3Y2NkNGFlZmQ2MzQzMjMzODdhMGIzY2I4MWUxYmViMTRhMGQwNzBiZWFkNmU2MzUwZjhhMWQzNWEifQ"
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L192-L212",
+          "version": "repo-lines-v1:sha256:6df642f4f63134043cb2e0c2ab92f498ddaf805293a95f492db87f016396bdf9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlZTJiZmNkZTM1ODMzMDNjYjZkZTlhYmI4MDhlNDg1Njg0Y2FmMTJjNWY5NGI4MzU4ZjAyMDk0Mzg1ZWYyMDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2NmQ1ZTE5MzU2MzBkMDRkMzI3YzZjYWYwNzVlYzlmN2JmMzFkNjQ0ZjcyNWUyZDQxMWE1ZDY0MjljYjUyNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzNmZmNjE3MDZhMmNmMmUzNDNiZjQwNTIyMjZkMGQyMDEzYjRjMDNjNTAxNDYwODRiNjYyNjk3MmQzMzY4ZTcifQ"
+        },
+        {
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L72-L112",
+          "version": "repo-lines-v1:sha256:97af426443a3b0b56aef3e88d3bc311b094d9ffce3f9d2085526ff573275a543:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2YmIwNmIwNzcwMjJhMmI1MWViZjJlN2Q4OGJlMDlhMzc2MmU5YzdhYzdhNDBiZmQ5ZTNmNDIyOGNiOTIxNTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNzcwN2M1OGM4ZGQ5YzJhNjFkODk1YzA4ZTMyNTQ2NWViZDI2NDliOWM5NzEzNjdlNDIwZDI3NmNiZjgyOWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNzIwNTBjYTFjMGY4NTMwYmQzYjFkNDNiOGY1Y2JkZDMwNTU0OTEyNWY2YmM4NDM5MTZjMjYxMzNlYzRhMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhiMTUyOGQzZjJiMzg0MGI4MDg3OTRjZmExNWRlZWU2MzJmZjQ2OTZhOGI4NzY4NWQyNjJhOWY4N2IyYjliN2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e26e66044f1442f3bc6ece3b070f006b",
+      "statement": "A ready Amp case uses a private thread and exposes a fixture tool that runs only its listed commands in the disposable workspace with an empty subprocess environment.",
+      "evidence": [
+        {
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L136-L160",
+          "version": "repo-lines-v1:sha256:3486e2ccbd2db096fe1eca818d22136b4e4141d42f6e714261ec24c472b9b282:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YWNlMTg5ODc5YzE4NjUwM2FlZThjYmFlMTZlZWQ5ODI0YWJlNGY0NmZhMmZjYmMwOTI4MzdjNjliNWFkOWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMmEyYjU4N2ZmNWZiYjQzOWI1MmQyMTkxODBjYjVjNjU2NWY4ZTU1NzQ1YTc0NTVmN2U1ZThmMzk5MmM5ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4ZWZhZmI3NjZkODg4NDEyMmEwNDljYzQ4NDBkYmUzMzM2MWZkMDdiMDdhZjIwZjUyZjZlNmEzMThhZTg5OGMifQ"
+        },
+        {
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L181-L183",
+          "version": "repo-lines-v1:sha256:0a08553e96a0a4a47ea40011fc7692e96beb3c24afa58fa688f11a9186555924:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGFkY2JhNmE2OTAzNzZkYWM3YjNiZGFhZmVjYmVkZGYxOTIyN2JhOGRjNDUxOTBiNThmY2FkOTA0N2NhODhkOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E3NDYwMzE3YzMzODZmZmU5MDg0NDRlNTUyYjRiMjZkMGY5NTkzMTE3NDNlNzAyY2JlOTBlZmJjMWFkZmNhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2NlYWUwMWNmMTZhNzMxMWU2ZDU4OGFkNTdhNGY1ZDU0MGZkZmEzNzExN2I5YzUyMTI5ZWQ2NGYyODE0M2Y5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzJmMDlmZmFhYTQ1ZjFkNTk3ZDRhNzBhOGRlOTY1YzhiYWY3NTZmMWYyNjZiYmI2MDgzMDVkMWE5ODg5NGYyNyJ9"
+        },
+        {
+          "resource": "repo://tools/promptfoo/fixtures/amp-tool.mjs#L8-L26",
+          "version": "repo-lines-v1:sha256:8e7def2151a2c47a2e791ba1363e1d33c648003525affb8c69c9f53b3d976d45:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1MTIzOTQ5NGUxNTc2NTFlZmI2YjVkNzMyMTliZjk2YmNlN2VkYzc3NmE3MmNmOGE1NGRiMmY5M2QzNWZjYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4MjNmZDM0ZWIwYTFhYjMyMzIwOTEwMTkyM2EwYjUzNzcxNmI1MjA3ZjRmNDI0N2JmNjVjODlhZTQxNmE0MWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlYzNiZDAwZDQ4YjllODY1OWQ3MTRmZGQ2NTQxMGY2ZTNiOGQ4ODZiZmMzZGI4YmFlNGQzY2U3NTk0MTY3OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1Mjg5MWIwZmUyMjk0YTBkY2QyMDQxOTRhM2JmYTA4MDY3YTdjZDYwYzQ0ODg2NmI0MmNkOTBiOGFiNzFhNWEifQ"
         }
       ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-03T17:57:45.987Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-17T03:49:32.846Z"
   }
 }

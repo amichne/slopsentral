@@ -10,8 +10,8 @@ sources:
     resource: repo://tools/slopsentral.py.lock
 generated: { by: "codex", at: "2026-11-05T15:45:23.454Z" }
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-09T13:20:54.909Z
+  - by: openwiki/0.9.0
+    at: 2026-11-17T03:50:31.285Z
 ---
 
 # Slopsentral command lifecycle

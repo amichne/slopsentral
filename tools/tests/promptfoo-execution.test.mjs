@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
+import { copyFile, mkdtemp, readFile, realpath, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import test from "node:test";
 import { digest, gradeExecution, loadExecutionCases, loadFixtures } from "../promptfoo/execution.mts";
 import { createExecutionConfig, retainEvidence } from "../promptfoo/execution-runtime.mts";
@@ -18,8 +20,8 @@ const verified = () => ({
 });
 
 test("execution catalog retains every authored requirement and safety setting", async () => {
-  assert.equal(cases.length, 45);
-  assert.equal(new Set(cases.map((item) => item.id)).size, 45);
+  assert.equal(cases.length, 49);
+  assert.equal(new Set(cases.map((item) => item.id)).size, 49);
   for (const item of cases) {
     const source = JSON.parse(await readFile(item.path, "utf8"));
     assert.deepEqual(item.scenario, source.scenarios.find((scenario) => scenario.id === item.scenario.id));
@@ -41,13 +43,89 @@ test("missing fixtures cannot pass through the real promptfoo pipeline", async (
     cache: false, maxConcurrency: 1, showProgressBar: false,
   });
   const summary = await record.toEvaluateSummary();
-  assert.equal(summary.results.length, 45);
+  assert.equal(summary.results.length, cases.length);
   assert.equal(summary.stats.successes, 0);
-  assert.equal(summary.stats.failures, 45);
+  assert.equal(summary.stats.failures, cases.length);
   assert.equal(summary.stats.errors, 0);
   for (const row of summary.results) {
     assert.match(row.gradingResult.reason, /^BLOCKED_SETUP:/u);
     assert.equal(row.response.metadata.evidenceKind, "blocked-execution");
+  }
+});
+
+test("Amp rejects inherited or shell-expanded fixture commands", async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), "amp-execution-contract-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const path = join(directory, "fixtures.json");
+  const fixture = {
+    caseId: item.id, repository: "/disposable/repository", revision: "a".repeat(40), context: "",
+    verifier: { file: "/independent/verifier.mjs", sha256: digest("verifier") },
+  };
+  await writeFile(path, JSON.stringify([fixture]));
+  const { providers } = await createExecutionConfig(path, "amp");
+  const result = await providers[0].callApi("", { vars: { caseId: item.id } });
+  assert.match(result.output, /^BLOCKED_SETUP:/u);
+  await assert.rejects(createExecutionConfig(path, "other"), /Unsupported execution host/u);
+  for (const command of ["node ./checks.mjs *", "node ./checks.mjs heap; ls", "node ../checks.mjs heap"]) {
+    await writeFile(path, JSON.stringify([{ ...fixture, ampCommands: [command] }]));
+    await assert.rejects(createExecutionConfig(path, "amp"), /Execution fixtures/u);
+  }
+});
+
+test("the Amp fixture tool runs admitted arguments in the fixture without inherited credentials", async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), "amp-fixture-tool-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  await copyFile(new URL("../promptfoo/fixtures/amp-tool.mjs", import.meta.url), join(directory, "tool.mjs"));
+  await writeFile(join(directory, "checks.mjs"), 'console.log(JSON.stringify([process.argv[2], process.env.SLOPSENTRAL_TEST_CREDENTIAL ?? null, process.cwd()]));');
+  const command = "node ./checks.mjs heap";
+  await writeFile(join(directory, "fixture.json"), JSON.stringify({
+    node: process.execPath, workspace: directory, commands: [command],
+  }));
+  let tool;
+  const { default: initialize } = await import(pathToFileURL(join(directory, "tool.mjs")));
+  await initialize({ registerTool(definition) { tool = definition; } });
+  process.env.SLOPSENTRAL_TEST_CREDENTIAL = "test value";
+  t.after(() => { delete process.env.SLOPSENTRAL_TEST_CREDENTIAL; });
+  const [argument, inherited, cwd] = JSON.parse(await tool.execute({ command }));
+  assert.equal(argument, "heap");
+  assert.equal(inherited, null);
+  assert.equal(await realpath(cwd), await realpath(directory));
+  await assert.rejects(tool.execute({ command: "node ./checks.mjs other" }), /does not admit/u);
+});
+
+test("native report proof accepts an inconclusive comparison and rejects an unsupported speedup", async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), "fixture-report-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const reportCase = cases.find(item => item.scenario.id === "gradle-native-report-fallback");
+  assert.ok(reportCase);
+  const revision = "b".repeat(40);
+  const files = {
+    "request.json": { host: "codex", case: reportCase, fixture: { revision }, artifacts: directory },
+    "provisioning.json": [{}],
+    "final-status.json": { stdout: "" },
+    "final-diff.json": { stdout: "" },
+    "final-head.json": { stdout: revision },
+  };
+  for (const [name, value] of Object.entries(files))
+    await writeFile(join(directory, name), JSON.stringify(value));
+  const events = [
+    ["cat /project/gradle-performance-engineering/SKILL.md", "skill text"],
+    ["node ./checks.mjs timing", "native compile 20 min"],
+    ["node ./checks.mjs compiler", "380 s GC"],
+  ].map(([command, output]) => JSON.stringify({
+    type: "item.completed",
+    item: { type: "command_execution", command, exit_code: 0, aggregated_output: output },
+  }));
+  await writeFile(join(directory, "events.jsonl"), events.join("\n"));
+  const verify = fileURLToPath(new URL("../promptfoo/fixtures/verify.mjs", import.meta.url));
+  for (const [conclusion, expected] of [
+    ["The performance improvement is inconclusive.", "pass"],
+    ["This proves a performance improvement.", "fail"],
+  ]) {
+    await writeFile(join(directory, "final-response.txt"),
+      `Native compile was largest at 20 minutes. The runner and cache conditions differ. ${conclusion}`);
+    const result = JSON.parse(execFileSync(process.execPath, [verify, join(directory, "request.json")], { encoding: "utf8" }));
+    assert.deepEqual(result.checks.map(check => check.status), ["pass", expected]);
   }
 });
 

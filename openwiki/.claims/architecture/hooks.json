@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:c4744f016532eb76f1126b10ec0268148f5096a3a7103f31cfb888bd3282206c",
+  "pageVersion": "sha256:b2921d34115af784cea92e720f43e2fdb90020af21d66e57ec88ac0ddb03011f",
   "claims": [
     {
       "id": "claim_9531bb3bbe9e4648b03a7049e4d79602",
       "statement": "The instruction-scope adapter runs on UserPromptSubmit and Stop, while the initial baseline does not create a retrospective review obligation for preexisting changes.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/agents-md-scope.py#L745-L771",
+          "resource": "repo://source/hooks/agents-md-scope.py#L722-L748",
           "version": "repo-lines-v1:sha256:f2d35ce4f8ac48061ff93d562e3ba92921338c52ba8230b5d11fe5b86c9a0ced:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTYwNmY5OGYwNDNkZDYxYzEwYjE1YWEzNDk0NjJmZjFiMmIwOWJhOWI1MjEzYWMxNGMwZTE4N2QzYjA5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ZGRmNWM5NDBhNjI4OTA1M2NkZGJhZDM0ZTZjY2RkMDM4YmY5ZmI1ZTFiZjRhY2YwOGU1NzY0NDVmNGU3YzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyOTU0MWRmNDllYTYwYWU5Y2ExNWQ5YmZmMTZmMTM5ZThlMDU5NmM2YjM5M2Y4NmRlNGYxM2E4MzdmZjA0OTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4NGNjY2FiZTQ1ZGYwZmRjODdlNzM4OWEyNDhlODBlYzFlNzU4ZmQxYzUwZTUzMTFkNTFmODA1YzY0YzNkYmMifQ"
         },
         {
@@ -36,11 +36,11 @@
       "evidence": [
         {
           "resource": "repo://source/hooks/pi/adapter.ts#L108-L116",
-          "version": "repo-lines-v1:sha256:36e1e5284db97ac7c337019ed1f7399033c26a840323254423c1931464a3a245:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEwNGIxZDg4ZTQ3ODY4OGIzMTEyMmQyMDJmYzQ5NzgxOTg5NjE0YWZlNjcwZjg3NDgyODUyYWNiNzljZmQ0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTZkMDUzNGYyMjIxNWJkYTVmZDZjMTkxMjczMzI3Y2QxMDQ4OWQ0Y2RjMDE5N2UwMGFmOGQ4MWQyZmVlMTc2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDg5MDAyMzA2NTFkNGVjYzIxYzUyZjU2ZDMyNzM2YzA5M2QzODViNGY3OWU4MmU4MjY4ZDdmNDRmYjA3MTA4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTdjN2ZmZTZlMDYzMzRkMTE0MGM2YTVlYjQ5MTZlYThlZTQ5YjViNWNlNDQwMzRlODUzODM2OWMyYTRmYmY5ZCJ9"
+          "version": "repo-lines-v1:sha256:08bb040d6bbeb4d1e26832fcdfb2fbf8f05d451102fffb35988079229fbbee44:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEwNGIxZDg4ZTQ3ODY4OGIzMTEyMmQyMDJmYzQ5NzgxOTg5NjE0YWZlNjcwZjg3NDgyODUyYWNiNzljZmQ0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTZkMDUzNGYyMjIxNWJkYTVmZDZjMTkxMjczMzI3Y2QxMDQ4OWQ0Y2RjMDE5N2UwMGFmOGQ4MWQyZmVlMTc2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDg5MDAyMzA2NTFkNGVjYzIxYzUyZjU2ZDMyNzM2YzA5M2QzODViNGY3OWU4MmU4MjY4ZDdmNDRmYjA3MTA4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTdjN2ZmZTZlMDYzMzRkMTE0MGM2YTVlYjQ5MTZlYThlZTQ5YjViNWNlNDQwMzRlODUzODM2OWMyYTRmYmY5ZCJ9"
         },
         {
-          "resource": "repo://source/hooks/pi/controls.ts#L36-L63",
-          "version": "repo-lines-v1:sha256:a0d0043c5703410eef285e730b4c1bec191f5af599ea0f19393861a1718d00c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzNWYzNmY0NjI1ZGVkOTY2OTlmMzlhMWY0NjZiMGIwNzlhY2RlMzdjMzRkYTlkZjUyY2NiNzliYzk0YTkwYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2YjlhYmYwYmEyZTFiOTFjN2Q4N2EyODM2NDE3MTU1NzU2NjIyYjBlZjljYzEzNmFlYTY4NWU3NGIzYjE4MjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlNDhjNzFiN2E2MDk4YWRhMmZhOTdjZjhlZjFlNzkyMDE2Yjc3MDg5M2QzMDY2ZDcyMDY5ZGNmMDA2OTYwNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzN2Q0YzE4MjQ0OWNkMmEzZTk4YTc2YzkwYmU4NmZjZWI2ZmVlZTAyYmZjMzEzYTVjNDc1ZGE3ZmEwNGY3N2YifQ"
+          "resource": "repo://source/hooks/pi/controls.ts#L26-L50",
+          "version": "repo-lines-v1:sha256:894af923e987649323e882cca6af8cea3cdf6661be951cdb136b2a4f0d4fb966:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5M2NiYzc5OWZiMWJjMjg5NGM0M2I5YzI5YjlkMjJmZmViYWQyODNiNTgxMzFkMjY3ZDMzNzRjZGJlZGNjZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzMjFmMjdkZjlhOGRhOWE5NTgwY2UyMDI1MTZiZWY2YzU2NjEwNTA0NmZmZWUwZjljOTA4MmYwYTNlNDQwYjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkYjAxMzhmZTZiZWRhODlkYzk5OWZiYzdkNWEwNzM0Nzc4YjZkZDc2ZTk2ZWY4YTE4OTAxNTU2ZDU2M2E1ZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiZWIzZDQzYzUxMGQxYzMxOThjZmZkODU1MTgzNmJhYmFjMWM1YzFmOTdhYjBjNjUyZmQ0Mzg5NjEyMTM5YTgifQ"
         }
       ]
     },
@@ -77,11 +77,11 @@
       "statement": "Scope-hook status and review commands retain the private interpreter and instruction scope across the recovery sequence; the private-runtime marker selects only the running interpreter, while other installations retain uv.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/agents-md-scope.py#L715-L742",
+          "resource": "repo://source/hooks/agents-md-scope.py#L692-L719",
           "version": "repo-lines-v1:sha256:38a9d35000443485a87b927b157d859eeb86d35502eb01746fd3071ba6d5433c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NzkxMzdkZjljNDE5Nzk2NTQzNmQzNmJjMzE3ODgwNmVmZjU5MzFlNDM5YzRkZTAwZmU4N2E1MGY4NjE2ZWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2YWM5YTQzNmI5NmQ3YzQ0MTE2OGFhMjA0OTA2YWNmZjVhMDlmYmMzZDRhYWNlNzNkZjI1Y2NjODM1M2ZkOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1NzMyMmM4NmU1MTIzNTI0ZGI3NWZhNDlkNTAzMTIzYjQ0NGRiMWFlYmQyZGE1MWNhNjgzMTcwMjQwYmY4M2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4ZTRiYjFhOTdhOWIwOGVjYTJhNjU1NjYwZDVjZDg5MTYzZTg5NGNjMmViMTU4Mjg2ODNiZGVlODAwNDUwM2MifQ"
         },
         {
-          "resource": "repo://tools/tests/pi-host.test.mjs#L149-L168",
+          "resource": "repo://tools/tests/pi-host.test.mjs#L175-L194",
           "version": "repo-lines-v1:sha256:9756cfff38c8f6af37f0024c7c99470d18d52754252a0532384f4cfa3b6255d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMzVjMjdjYWJkOWE5MTVlYzA0ODQzMGY5NzJjMmNjN2Q1OTZhOGFkZmViOWJhYzliYmZiMTcwOGQ5YzNlZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyNDI5ZDcwYmQzMGJiYzI3ZjVjYzZkNjlmMWQwNDJiNmQ4ZWE2N2Q3ZDBhNWRkYTI5YjZjZjdlNjExOTg3NDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5ZmRkYmRiOGM1ZTI3ZDlmM2ViNzEyMDE0NDc2YTc0NmZiNTc4YTZmYTg2MDgxMThkMDY1MWVkYzU5MGQ3MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2NjNiZjhkY2Y0MzQyOWE1NTdiYTRkNjVjMmJiNzk3YTczNjEzZWUzZjdiMGUxNzdmMDEyNDA0YjU2ZWE4OTYifQ"
         }
       ]
@@ -91,11 +91,11 @@
       "statement": "The hook delivers changed instructions for the working directory, pending review paths, and host-supplied paths. Other repository instructions stay queued.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/agents-md-scope.py#L651-L691",
+          "resource": "repo://source/hooks/agents-md-scope.py#L628-L668",
           "version": "repo-lines-v1:sha256:ad62430a59e2533603136afea677d7789a35b3249e8f4c86a8a3bab87a6d87b6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzMmQ3ZWQ2NjJkODE1NGQ4Mjk3NGViYTNmOGNiY2I4NzFmOWRlZDM3ODljN2JkZWE5ZTlmMWFhNDQ4NWI4OTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwMmI3YTEzOGFhZTlhNGQyNDNmMzJkNzVjMGYzZGJmZjY2MTA1MmUyNzQ1YzIyYjRlYWIwMTE0MmRkY2U3ODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMWQ3YjQ3ODQ0NjA2YTI0OGYzOWE1Y2EwNzg4YTIzOTcyNmJhMzQ1ZTJlMWE1ZTUxYTBhYjllNWZmYjMyNDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkZGNiNWQ1YWZlNTIyZmNiMjQ1ZmI5ZTNlYTA5NTg3N2IyYjBlMjc0M2IzNjFjMTcyMzQwMjhiZGMwODg0NTcifQ"
         },
         {
-          "resource": "repo://tools/python_checks/test_agents_scope_hook.py#L585-L605",
+          "resource": "repo://tools/python_checks/test_agents_scope_hook.py#L588-L608",
           "version": "repo-lines-v1:sha256:00f9c4084e3393a4500a09b3b6d27e3665a93c85680d5351c4828d092c8b7781:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMjdiMGVkZTRlMzVlYzNjMjkwNmZiYTFhODc2N2QzMzA0Y2U2YzhiZTFmNTY4N2I1OWM4MjI4MjVkYmVjZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjNzA4NWNjMDY3OWFkNDg4ODI5N2Y1MGU1Yjc5ZTg5NTM5NDBmZjE2Y2I3NzMxMDQ0YjdmOTE1MDAzZGI4NTYifQ"
         }
       ]
@@ -105,11 +105,11 @@
       "statement": "Clean instruction changes from a proven remote refresh do not create a review obligation. Local instruction edits and changes from uncertain HEAD transitions keep their review obligations.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/agents-md-scope.py#L554-L598",
+          "resource": "repo://source/hooks/agents-md-scope.py#L542-L586",
           "version": "repo-lines-v1:sha256:03966da754ba3f15358a6c1586b202b48468da69caf0e1aece695ac20ebdbee5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4ZWY5YzlmNzhkMmY3YWVhZDdkOTAzYTg0MTFkNjc3YTMzNWMxZGI5OGUzOGZlNTIzM2M0ZjljNzRjNmVlNTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxODNkYTgwYTEwYTRjNTI0NDM4NWUzM2Y4NzVmM2UzNTQ1Njk4YWEyYWZhN2U4Y2ZkZDgyNDBiOGNkNmU2ZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjMTJmYTcxNWJjMmE4NGFmMDFhYmE3ZWFkOGExZmM4NTNmY2Q2MmU2M2E0MWI3MGM4OTYwYTVlOTY4NTg2ZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzZTVhNWQxOTk2NDZjNTI1ZGVhYzAwZTkxOGNjMzJmMWI0ZGZmNGZjYjY5ODhmOTU0ZTgwN2UyZjA4ZDEwNGUifQ"
         },
         {
-          "resource": "repo://tools/python_checks/test_agents_scope_hook.py#L607-L639",
+          "resource": "repo://tools/python_checks/test_agents_scope_hook.py#L610-L642",
           "version": "repo-lines-v1:sha256:d2e78ade6c695e0cc61df2c2eed5dfd5303a6ea09a5dbb01b0f34407c3aabdd7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMWFjYWY5NzY4OGY5YWJkMzI4ZDA0ZTYzYmUyYmM5NGY1NWY1MGRjZjIxMGUxNWYyNjViM2MyNjQ0MjU3OTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlYTdlZTg2MjMyYWE3ODhjYjU5ZDBhYjUwYTc4OGE4OWQ3NDg3ZTdhNmZiNGFiMDQ5YTRmZDUyMmM0MjhiNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhYWE2NTk0YjRhYzMyOWY2NmM2ZjI3MWQyMzM0NjkyNDE4MDhkNTcwZTVjOTRiMWIyZTYwMjY5NjI2N2I0MzYifQ"
         }
       ]
@@ -119,26 +119,18 @@
       "statement": "Pi collects paths from successful read, edit, and write calls and sends them to the hook as scope evidence. The Git snapshot detects file changes from shell tools.",
       "evidence": [
         {
-          "resource": "repo://source/hooks/agents-md-scope.py#L417-L450",
-          "version": "repo-lines-v1:sha256:47a73551e3544a2f58e916ae0b64a390faeef10a01231f57619ca2521bfb27ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3OWY5YmE0ZDA3MzNlNDFiYjQ1Nzc3NjI1ZGVmMTUzZjBlYmM0Zjk3ODA3YWM4Zjk2OGE5ZmM1ZDYzZTlkN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzMTkzNTFmYzRiNmIxM2I1M2E1MGFjMmViY2M3MzdkYmQxNzYxM2Q4YmUyOTdjOWI1MDJhZmIwMTY0MmY4OGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5NzFjMmM5ZDJlZDA1MjY3MjUzNGJlODhlMGExYzczMDQxYjU2NTdmMDA2MzQ2NzI5MzUwNWFkMjFhNTRhNTIifQ"
+          "resource": "repo://source/hooks/pi/adapter.ts#L108-L116",
+          "version": "repo-lines-v1:sha256:08bb040d6bbeb4d1e26832fcdfb2fbf8f05d451102fffb35988079229fbbee44:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEwNGIxZDg4ZTQ3ODY4OGIzMTEyMmQyMDJmYzQ5NzgxOTg5NjE0YWZlNjcwZjg3NDgyODUyYWNiNzljZmQ0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTZkMDUzNGYyMjIxNWJkYTVmZDZjMTkxMjczMzI3Y2QxMDQ4OWQ0Y2RjMDE5N2UwMGFmOGQ4MWQyZmVlMTc2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDg5MDAyMzA2NTFkNGVjYzIxYzUyZjU2ZDMyNzM2YzA5M2QzODViNGY3OWU4MmU4MjY4ZDdmNDRmYjA3MTA4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTdjN2ZmZTZlMDYzMzRkMTE0MGM2YTVlYjQ5MTZlYThlZTQ5YjViNWNlNDQwMzRlODUzODM2OWMyYTRmYmY5ZCJ9"
         },
         {
-          "resource": "repo://source/hooks/pi/adapter.ts#L151-L163",
-          "version": "repo-lines-v1:sha256:d2f19ae57d735e2e9b73b7b970cb1ff3b6d5bf78b42864017c9f8be700553a7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlOWJhZGExM2I3NDI2MzkwN2QzZjlkZDI1N2Y3NmQxMDVmZmU3YzQ2M2E5MmFmMjVlNjBjZTQwZTA0ZTA1NGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5MGZlOTRkMWQ5NTIzMjliZjY0ZDJjYmVkZDI5NGRiMTJkM2VkNmZjYWFiZGJiMmZmN2RmZmUyYWM5NTczNzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5MTY1YjRmZDRlNDJhNTY1MjE2ZmViMjcwZjVlMzA1N2U2YmYxOGFjNDAyZGUxYWRhOTI1MDI4MmE3NjM5NDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjYmJlYzZlMjRiMGUyMDIyMjYwNzM4NmIyN2ExZTBjMTRiMDBkODkwZDA0NGM3Y2I3NzIzYzJkY2U1MDVkNzYifQ"
-        },
-        {
-          "resource": "repo://source/hooks/pi/adapter.ts#L98-L112",
-          "version": "repo-lines-v1:sha256:79e7f02bc01abd84fdabcd441ba5e26e68c6804c8e5460f181e48c32b6102544:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmMjQ4NWYyM2MzMzBmMzNhYjU0ZTQzNmJlNDM0ZTJjZGExYWFhNzU3N2FjZTU0OWZjMzFjNDA1NDI5ZmMyOTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1MTk3MDU3OWJhZWQ4MTRmYmM1NjgxYTU4MjVhODFjOTQ5OTI3NzYyNjk5YTg4YjUwMTcwMjkwYjg2NmJjMjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxZTZjMGRkYWI3MmFjMDUzMTQ5NWJhYzRjNGJjMzFmMzU2YmUwNGI5MmY4MjE1Y2ZhOTk1YjIxZWZmN2UyNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2MDY3NTRlY2JmYTgzYTg0ZGRmOTUyNWNkYTZjOTE5Nzg2NzlmODE3ZTM1YmRhNzgyNDc1MzNhOWE2ZmZiM2QifQ"
-        },
-        {
-          "resource": "repo://tools/tests/pi-hooks.test.mjs#L208-L229",
-          "version": "repo-lines-v1:sha256:b5d2e932a572aaf7a2af2d61b3feb94a970837ddf61cc413e5493fd8ef2b9620:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwOGQyMjI1MDU2YzBmNjEwOGJmMzQyYjNhMTIwOTJmZDg0ZTIxM2Y2YWVmMzdiYjNhZjVhNDM2MmQ2YjY4MjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmZjRjZTAxNzUwYWY1OWIxOGUyNDczNWNlYTFlYjM2ODdkNjhmNDAzNjc2OGQxZWE5MGIyMDAzYzcyMjU4YTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzOGIzMTkzY2VhOWZiN2ZjY2IzNzY3OWRhNzA2ODg0MDIyNjM2MWQ4YzY1NzNiMTg5MTAzNzI5ZTRhYjQyY2QifQ"
+          "resource": "repo://source/hooks/pi/adapter.ts#L151-L162",
+          "version": "repo-lines-v1:sha256:a8e11c56b00c6c54763f6ebd874f908902b0fdaf82da1902d863af5da71535da:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlOWJhZGExM2I3NDI2MzkwN2QzZjlkZDI1N2Y3NmQxMDVmZmU3YzQ2M2E5MmFmMjVlNjBjZTQwZTA0ZTA1NGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwYjk1N2Q5NmYxNGUwNTk3YjhlMTYxMzg5MWY0Y2YyOTFlMmM5Mzg4Y2FlZDU2OWYyM2U2YmI3NTkzY2RhODgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5MTY1YjRmZDRlNDJhNTY1MjE2ZmViMjcwZjVlMzA1N2U2YmYxOGFjNDAyZGUxYWRhOTI1MDI4MmE3NjM5NDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlMWUxMDkzOGNmYmIyNTJjMTkzM2UxMjU2OWQwMjRmNTNkNjIyODAxYTU0YTllMmY1NzljZmQ2YzdmOGEyMzMifQ"
         }
       ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-09T13:23:09.884Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-17T03:50:31.285Z"
   }
 }

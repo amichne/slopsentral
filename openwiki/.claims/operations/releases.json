@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e71452cbe6dd4558b9321e36c05cb4f250f922b4fc6b400940f1250d3c712b88",
+  "pageVersion": "sha256:5cf8be7530669aa15027383dad36b2497a9cffd47f5ff6edada0af98d782925e",
   "claims": [
     {
       "id": "claim_c2ca89c216ca435081601804a99ce408",
@@ -31,8 +31,8 @@
       "statement": "Release publication creates the source tag without replacement and verifies downloaded draft assets before making the release current and finalizing labels.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release-pi.yml#L126-L179",
-          "version": "repo-lines-v1:sha256:89b5dba5d8822c1e9e377ee6a74b734abdbdda19636801da3c9bb9c21d054b75:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwOTZiMDQ4ZjgxNzU0ZjRmNmRiZjJkNTRhZjMwNTQxOGQxZDE5ZjMyMTM2OTE1NDI1YzBmZTIyZGM0ZjA0ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDlkZTNjYTBjNTQ0NTQyYjA2ZGFiMTk1ZDU2NTA2OGRmNjRlN2QzYjQ4NmY0M2VmYmE1YzZkNDUyMmIwZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmMjg1NjA1NDc4M2Q3ODNhMDRkY2FmOWI3YjYwNmE0M2NiN2Y0ZGViM2VlZDZkZjU0NDdlMTU3YTg0Y2UyZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://.github/workflows/release-pi.yml#L128-L180",
+          "version": "repo-lines-v1:sha256:a74bb08a520783f44643b7362fb2d316991aa34adb4a5444213f1f42c6705732:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0MDI5Y2I4ZjcxMDk0MDAyY2QzNTlkOWJkNzcxOTFhOGJhMzRiZTEzODJiOWI2MDJkYzMxNDIzNzgxYjUxZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDlkZTNjYTBjNTQ0NTQyYjA2ZGFiMTk1ZDU2NTA2OGRmNjRlN2QzYjQ4NmY0M2VmYmE1YzZkNDUyMmIwZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmZGUyNDhhNjQ0NjM5MzdjNjVmNGViNjc2MDI4MzM1MGU3NGE3M2MyNzJlODQ2YTE5YmRlNDJhYzFiZmZiMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -48,15 +48,19 @@
     },
     {
       "id": "claim_86bab4a93ecf4a8e9266bbd36b7877f1",
-      "statement": "Publish Harnesses separately maintains three provider branches and the Codex/Copilot generated trees on main, with Amp absent from main.",
+      "statement": "Publish Harnesses separately maintains four provider branches and updates the Codex and Copilot generated trees on main. Amp output remains absent from main.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/publish-harnesses.yml#L43-L58",
-          "version": "repo-lines-v1:sha256:b295a0e1ef7830354834262faedefa7c7b29af47f1eb72b3b54b7cc751018376:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MjU0YzkxNmE0NDgxMjNlMmQzZDk1ZWJhYTJlNGIxZGIwZmE3YjU0M2UxMmMzZTFiMTFjZjM2MjE2ZjIwMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmODc4ODk5MTk4NDZiYzNiODU3NzBhMzgxODE4ZGIyMmMzZWRhOTFhYjRjYjVkZTZjZDk2MmNkYWMwODNkOWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YjY3MDk0ZjMxMDMyOWFjYjE5NTMwNjAxYmE2NTU5MzEzZGY3ODViMGY4MThkNTJiMDJjNmQ2NzNmZDYwODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1MmIwNTQwMzc3MDA4NGE3MTZjYzdmZDc3NTc0ZDI1YjhiMmJmYTcxMWEwMTUzZjVlNTBiZDhiMTg3OGY5ODIifQ"
+          "resource": "repo://.github/workflows/publish-harnesses.yml",
+          "version": "repo-file-v1:sha256:d31ca0580bd23a1f6c925c82a1bf21e1333fe19b8adc112de0a2a5bbec2c4fe0"
         },
         {
-          "resource": "repo://tools/publish.py",
-          "version": "repo-file-v1:sha256:557b8821cd350cff54809f93c8890d817562420b9e6f1972224db0d0a0149e71"
+          "resource": "repo://tools/publish.py#L28-L33",
+          "version": "repo-lines-v1:sha256:8c84b7dd9fcffa31b5b91128da278e74ce0cc83715a58ba5716e5a4fbf7edb1f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQ4MjE1NWRhOTk4ZGFmNTZhMjMzZWVlMzZjMDc2Nzg5ZjA0ZTc0MzA4NTgxYjE2YWM5MjViOTkxNTliZGEyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDU0OGQ4YmM4NjgyODY4NTRhNDY5ZTE4OTdmOWFlZGI2NTE3MTY0OTY2Yzk4ZmQ1ODk4YjRhYmMzZjM3MGRhMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzY2YjRhYTFhODU0ZTEwZmU5YWI3ZDRiM2QxZWE2ZmU5YmY2NTQ3NjZhZGEyODU4YTA4Yjk1YjQxY2Y5N2NlOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDcyZGNkNWZmZDFjN2IxZTNkZTkwNjEwNzM3NDNjNGQ2YzZmOGE1MmQ0Y2M4MjA5Zjc5NmM4MzRlMTk3YzUzYSJ9"
+        },
+        {
+          "resource": "repo://tools/publish.py#L64-L74",
+          "version": "repo-lines-v1:sha256:5ca592f0ab7cb3b25c0ecbbe5cff82494e90a666401134fe92bd765cb3a926d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5NmJhM2ExMjA0NjAyZDM0MTUyYThmZWZlNzFiZTlmZDg2ZjFjMTMwNjY5ZGI4MDE4Mzk2Zjk1MjA2Y2UyNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NWQ2MWExMzU4NDhlNjkyOTkyZGZjZTg4ZTQ5NTIwNTIzMWUwYzcwYTA4YmFmYzZhYmU4YzFkMDhkMDQyMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMGY4MjViODI0NTQ2ZDI5YzljMGUwYTdiYzU5NWFmZDIzZDU0MzVhOWRmYjYxODUwYTlhMmJhNzQ3ZTYyZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhOGI5Y2MwZmJmZGU2Y2ZlMGRiNjFlMTBjOGFmYTkzNzg4NDkxZTY5ZWViZGRhMjJkNWZjOWUzODkxODNlMzYifQ"
         }
       ]
     },
@@ -76,7 +80,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-09T13:20:54.909Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-17T03:50:31.285Z"
   }
 }
