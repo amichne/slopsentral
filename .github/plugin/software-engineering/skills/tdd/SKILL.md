@@ -14,8 +14,11 @@ checks first. An inherited plan describes a hypothesis, not a missing feature.
 
 1. State the acceptance behavior and inspect whether the current code already
    satisfies it. Choose reuse, characterization, a behavior change, or a bounded
-   investigation. Name the required evidence level: an isolated rule, a real
-   component boundary, the running integration, or the installed artifact.
+   investigation. Name the invariant, the cheapest existing entry point that
+   exercises it, and the closest input that must fail. Use a value assertion
+   for a pure decision. Use a real process, protocol, or installed artifact
+   when its behavior determines the result. Before you add a harness, name
+   the proof that the existing entry points cannot supply.
    Do not create a duplicate implementation or manufacture RED when the existing
    invariant is proved. A validation-only request skips implementation.
 2. Specify the working directory, exact command, fixtures, meaningful
@@ -31,7 +34,8 @@ checks first. An inherited plan describes a hypothesis, not a missing feature.
 5. Run the same check specification. Accept GREEN only when the relevant
    assertion executed and passed. Explain skips and cached evidence. Refactor
    while green and rerun the affected check after meaningful changes.
-6. Run repository-required checks and widen across affected owners or consumers.
+6. Run the checks that the repository needs. Name the consumer or behavior
+   that each optional wider check exercises.
    Repeat or broaden only for changed inputs, failures, or a named unresolved
    concern. Do not add implementation-mirroring tests for reversible prose or
    formatting changes.
@@ -53,7 +57,7 @@ prevents completion.
   Passing tests are supporting checks, not a substitute for that interface.
 - Read [runtime-performance.md](references/runtime-performance.md) when the
   acceptance claim concerns runtime latency, throughput, or reduced semantic work.
-  Use gradle-performance-engineering for build performance and intellij-platform-testing
+  Use `gradle-performance-engineering` for build performance and `intellij-platform-testing`
   for live IDE capture; this reference qualifies comparison proof.
 
 - Read [codebase-preflight.md](references/codebase-preflight.md) when deciding
