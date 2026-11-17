@@ -4,8 +4,8 @@ title: Evidence and knowledge freshness
 description: Connect a system claim to its source owner, executable oracle, related concepts, and explicit freshness limits.
 tags: [evidence, okf, claims, freshness, engineering]
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-03T20:36:31.743Z
+  - by: openwiki/0.9.0
+    at: 2026-11-17T03:50:31.285Z
 sources:
   - id: openwiki-source-e14c3521bbc2e703193cadf9
     resource: repo://source/instructions/engineering-design.md

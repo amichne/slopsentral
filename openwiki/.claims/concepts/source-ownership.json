@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:1afee80e31d897552fca760553cf66cb184ed96003b0fe8e9eb8a84c4438c7f3",
+  "pageVersion": "sha256:a7ca9c8b4f38368253fbb7ea65e1380efa51582e5e45ccfaa61b15419bcff3e2",
   "claims": [
     {
       "id": "claim_d1bc8d787e7348afa9f084f58f304d0e",
@@ -17,12 +17,16 @@
       "statement": "The graph rejects conflicting identities, missing paths, dependency cycles, and duplicate hook selection in a profile.",
       "evidence": [
         {
-          "resource": "repo://source/AGENTS.md#L68-L76",
-          "version": "repo-lines-v1:sha256:a8a3adbb87c2ded3560bec5765658fdd9441db386cb754e6c094c70953cb584d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDE0ZTY1MGU3ZTI1ZTY1YTUxODkzMWIyMDNiMTkyMzlhMmFkMTQzZDQzNzU3ZjlkNmZlOTY5ZTBiYTQ3MmQyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTgyMzRhOWQ0MjZmZDcxZGNiNzQxZGVjNGNjYmU0YjZlZTIxMTVkYmE1YjJjNmEwYzIwY2VlYjQ1ZWQ3YTFkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDlkNmM0NDdlMzVlZDdkNzI4ODZiNDk3M2M2MDNiOThhZDJjMjA4OTljZjk5N2RkOTZmYjRhZDYwNmJlYzFmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+          "resource": "repo://tools/catalog.mjs#L47-L69",
+          "version": "repo-lines-v1:sha256:144c57c463c48fe9a86e867cd65d5764a2f0844cec63fc7a842906693443b391:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhYzdhNmU2NTkxZGMwMzY0M2I0ZTFhMTlmNDM0MDM4Y2U1ZTg1NWY3ZTUyOWIxZjBiYThlZjMzN2FmMzI4NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMmJmOWY0MmUwM2MxYjk2NGYwMDc3MzM3NDNlNjUzM2M2MTJmZDgyODk5NGM4MTQ5MmY0NTkwMDkzZDQzZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlMmE3ZTZjNDc1MjZjZTI5ZWZhY2M4MTcxYTRkNzUzZWI1ZmI5ZDcxZGNlMjQ4M2I0MmYwYWQzYjU0YjhlZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmM2FmYTA3MDcyYjlmOTAxNGQ1NWVjYzIyNjBiN2NiY2UzNTgwOWY1NDQwOTgzOThiZjJlZTZlZjc1MWFhYmIifQ"
         },
         {
-          "resource": "repo://tools/project-marketplaces.mjs#L282-L308",
-          "version": "repo-lines-v1:sha256:dc8cdac76976588a6323af2acae3d730f42cd47c8820e3ceb3f3f80e856deab5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMDViNjJkZDhmM2NkYTAyZjhjZDczNTEwNmRhMjBlNDBiY2I5ZDRjZDQ5YjcyN2VkYTdhMzE1NGZiMjhhMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNDI1YzFkNjgxNjE0OWRmYzEyYTJhNjM3ODliZTY3YzIzMzhiYzA0MzllZmRkMmY0OTkzYmIyYWMzZDVkODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhNDYxNjgxNzhiYzEwNzAxMzY4NjEwOTBlOTc1ZjBkMzU5ZDdmYzdiMTMxNzQ4NGNlNzVhYzM1ZGU1MTAyMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzNmFkM2Q4ZWY1MTA5ZWNkN2JiZWI4OTA1ZWI4MGJmNGFhZGM5MzBiYzAyOWIyNTE4OWQzZTY4ZmYwNWVmNDcifQ"
+          "resource": "repo://tools/catalog.mjs#L77-L117",
+          "version": "repo-lines-v1:sha256:98f83e850c488d76baf1cfdd3568e907cf187860f7662332caf5385848dd1fda:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2ZDdjNzU0MGMyYWVjNWNkMzY1YjQyMzJmMGM0ODE0Mzk2OGQ2N2RkYWFjMzZhYTE5OWZjODlmNzc5MWZjYTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNjY3ZGQyNzZkY2Y0ZTA3YTdhOWM4ZGQzZTFhMWZiNTBmM2YxMjViNTM4NjUyMmJjNDgxM2I3Mzk1MDdjZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1NTE1YTk3MGEzYWM3Zjg2NzkyODBlMWZiYjAyNjVhZGE0ZDIyZGM0MTFhZmUwN2ZiZGJlNThiZWJjNGNmNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmMjM3ZjkwMjAyZmM4NmI3YTQzNDIzMGNiNDYwNDYzNzRiNTg4NDkwZGZkNDc3NjJmOWY4NWQ4OGRmYTM0NjcifQ"
+        },
+        {
+          "resource": "repo://tools/validate-source-graph.mjs#L269-L291",
+          "version": "repo-lines-v1:sha256:7b60d49449a8f0976548ecf382e0dadad071f9b2f2e751c56a9080e2c31de8bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmOGM0OTU4YjFkOGI4ODk3ZDk1MDlkYzQ0N2M2MTM2YzNmZWY0NTQwM2M3MDhmZDk3MjAwZTE5YTYxNGZlOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MWM0MDBlOTU4NTYxMDg1Y2MwZTIwODBjMjA4NTAzMmVlNmYxYTMxNTJkYzliNDk5NDRmMGNmMjk1NTQ2ODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlM2IxZTM3NmU1Mzk2OTg2MGVlNzk2N2Q4M2VkZTJkYTFmNzcwN2ZjODdhOGE3ZDg5Y2JlYzEwMzEyMWEyNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5ZTA0N2M3YjY2YzI0YzE1Nzg1Y2FhNjAxNTE2Y2E5ZmU5MDZjMDI5MjgwMjgxMjlkZGE5YjhiY2Q2MmMxZTgifQ"
         }
       ]
     },
@@ -55,12 +59,12 @@
       "statement": "Provider output and installed caches remain consumers, while Pkl mappings and canonical source own projection behavior.",
       "evidence": [
         {
-          "resource": "repo://source/AGENTS.md#L48-L55",
-          "version": "repo-lines-v1:sha256:fd913d6a7774e873dab9664347b8e25365a8751086fb57ed5d61a1f247a32f88:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2M4MDYyNGM5Mjc1MGZhMDZkNDE3YThmYjMzYjAyMzRjZTFjZWM1ODZmMmMwOWYzMGEzOWFkYTM3OWMwZjJkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZThiN2QwZjZlMzNlMjBmYzliZjBkNjYyNmY5NzY0YThiMTc2NWU0OTg2YjIyZTJjZTk3MWEzMzVhZDEzNjU4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzcxOTMwODkwNDY1NGIyNjdkMTY1NjgzYjhlYTVlNzg0NDYzMTBmYTc2N2UzZmFiMWU1YWEzMTk4YmVhNmI2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWEzMmIxZDc4MGZkZDA1ZTcxZDM2MDRjNTBlYzY0MjFlOWIzZmYzZDRlYzllMDZlNGQxZmU5MWEyYTNjODc0YyJ9"
+          "resource": "repo://source/AGENTS.md",
+          "version": "repo-file-v1:sha256:ac851953b0c2e48f8391cd00338964a02bab84fe44963b279bff85c0a20f6deb"
         },
         {
-          "resource": "repo://tools/project-marketplaces.mjs#L282-L308",
-          "version": "repo-lines-v1:sha256:dc8cdac76976588a6323af2acae3d730f42cd47c8820e3ceb3f3f80e856deab5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMDViNjJkZDhmM2NkYTAyZjhjZDczNTEwNmRhMjBlNDBiY2I5ZDRjZDQ5YjcyN2VkYTdhMzE1NGZiMjhhMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNDI1YzFkNjgxNjE0OWRmYzEyYTJhNjM3ODliZTY3YzIzMzhiYzA0MzllZmRkMmY0OTkzYmIyYWMzZDVkODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhNDYxNjgxNzhiYzEwNzAxMzY4NjEwOTBlOTc1ZjBkMzU5ZDdmYzdiMTMxNzQ4NGNlNzVhYzM1ZGU1MTAyMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzNmFkM2Q4ZWY1MTA5ZWNkN2JiZWI4OTA1ZWI4MGJmNGFhZGM5MzBiYzAyOWIyNTE4OWQzZTY4ZmYwNWVmNDcifQ"
+          "resource": "repo://tools/project-marketplaces.mjs#L303-L328",
+          "version": "repo-lines-v1:sha256:fbbae220459edac5360242ecd7a4377f4e72666695bc9a6e95205f5a4efe04f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiNjg3NzQ2NzAwMWM5YmE1OGQ3YWE2MDhhNTdhNzJmYWNmZTNiOTE0M2E5NWQ0YjJmNTc4NmJmNGE5NGEzZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNDI1YzFkNjgxNjE0OWRmYzEyYTJhNjM3ODliZTY3YzIzMzhiYzA0MzllZmRkMmY0OTkzYmIyYWMzZDVkODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwYjQzMGJkMDUyNWU0OGFiYmUxNmU5ZTA0NDgwODQyYzg5YzU4M2YxY2QzOWFjMjhmOTE5YjBkY2UwNGE3NGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlMTk1ZDY4NzVkNzcwMjIyOGU0NzUzMjdjNjU1ZjM1MjExM2EzOGQwNDFmYjY2OWJlMjViYTUwOGM4ZTM2ZDEifQ"
         }
       ]
     },
@@ -69,12 +73,12 @@
       "statement": "Code Knowledge Base bundles the portable runtime and adoption assets, while Slopsentral's coverage configuration supplies its project policy.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L163-L184",
+          "resource": "repo://AGENTS.md#L170-L191",
           "version": "repo-lines-v1:sha256:45e4d725965efa5b2caf02cf5a0eff8b05e30d2eec73c7f279db5c38c198e398:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYWY2MmViNjZmYTIyYjAxMzQzM2E0ODA1ZmY3MTRjN2QzZWY1Y2Y0MjVhYjUxZGViNmZmY2IwYmRiYWY3YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNmU0NTM4Zjc3Yzc5NzI0MGZhMmE5ODZhYWE4MGI4MTk3N2U5MDUzMjEyODIxNTM0ZDJlMGUzM2JhNWIxNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5N2NkZTRmZmEzODRkZGNjMjQxOTM1NGVkODcyNjc4NmQ1ZmViZDY3ODQ3ZjljN2ZiMzAyYjg1M2U4MzkxNDEifQ"
         },
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:df7ea8a877920f42025b3333c7ba66565e3951471b35d3e812a85a632e76f96f"
+          "version": "repo-file-v1:sha256:38c820c0543545e2b12699602274a30cb5471b40b0d98775b2ca7795bfff22bf"
         },
         {
           "resource": "repo://tools/tests/documentation-portability.test.mjs#L90-L113",
@@ -98,7 +102,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-09T13:20:54.909Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-17T03:50:31.285Z"
   }
 }

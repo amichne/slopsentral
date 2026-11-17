@@ -16,14 +16,18 @@ sources:
     resource: repo://source/skills/interactive-views/SKILL.md
   - id: openwiki-source-653b011fa069623af05655ef
     resource: repo://source/skills/reviewable-artifacts/SKILL.md
+  - id: openwiki-source-f261246d6145c6810b1500c8
+    resource: repo://tools/catalog.mjs
   - id: openwiki-source-0de19b70b13c7683e196f562
     resource: repo://tools/project-marketplaces.mjs
   - id: openwiki-source-2402abcd09d5c9c6105c476c
     resource: repo://tools/tests/documentation-portability.test.mjs
+  - id: openwiki-source-189732a09916d203a41803e6
+    resource: repo://tools/validate-source-graph.mjs
 generated: { by: "codex", at: "2026-11-09T13:20:54.909Z" }
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-09T13:20:54.909Z
+  - by: openwiki/0.9.0
+    at: 2026-11-17T03:50:31.285Z
 ---
 
 # Source ownership and plugin composition

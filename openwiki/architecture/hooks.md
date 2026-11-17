@@ -10,8 +10,8 @@ tags:
   - pi
   - lifecycle
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-09T13:23:09.884Z
+  - by: openwiki/0.9.0
+    at: 2026-11-17T03:50:31.285Z
 sources:
   - id: openwiki-source-fdb0ae7333144f405ddb6914
     resource: repo://source/hooks/agents-md-scope.py
@@ -23,8 +23,6 @@ sources:
     resource: repo://source/hooks/pi/controls.ts
   - id: openwiki-source-d13b0baee21f61f7d567fec9
     resource: repo://tools/python_checks/test_agents_scope_hook.py
-  - id: openwiki-source-1f54aadb050709a2d88f59a6
-    resource: repo://tools/tests/pi-hooks.test.mjs
   - id: openwiki-source-36f60eb53c76242699a18af1
     resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3

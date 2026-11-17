@@ -16,8 +16,8 @@ sources:
     resource: repo://tools/setup.py
 generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-05T05:22:10.565Z
+  - by: openwiki/0.9.0
+    at: 2026-11-17T03:50:31.285Z
 ---
 
 # Change source with linked evidence

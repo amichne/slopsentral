@@ -21,8 +21,8 @@ sources:
     resource: repo://tools/slopsentral.py
 generated: { by: "codex", at: "2026-11-04T15:10:06.076Z" }
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-09T13:20:54.909Z
+  - by: openwiki/0.9.0
+    at: 2026-11-17T03:50:31.285Z
 ---
 
 # Consumer installation and recovery

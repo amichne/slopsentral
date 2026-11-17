@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:8326da8711dcd607629e516eb09d4398baa19a198ba27702055d0ce27fe0bdd1",
+  "pageVersion": "sha256:49f59634dc0812c144f6064c5990566c3b2bc4088e1799b645db11ae97281100",
   "claims": [
     {
       "id": "claim_0d9e521c633f4bb3a461cb047b9b3e1b",
       "statement": "The shared engineering baseline treats maintained source-backed knowledge as part of a behavior change, with source review, conceptual links, and freshness evidence kept distinct from semantic correctness.",
       "evidence": [
         {
-          "resource": "repo://source/instructions/engineering-design.md#L58-L70",
-          "version": "repo-lines-v1:sha256:edbea0e4eae828374e18c6f0f76492ab75124770cae603bad80c802c25ecd158:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMmJhMDRiOWY5ZmNjYmNmNjVmOGMwZTAwNDI3MjZlM2Q5MTc0NjIyZGViZmU3ZjBjMzQ0NzBhYTYzZjM1NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNjQ2MGM5ZDBiMGY1MmYzODlhZDk5NTI5MDM0MjQ3MTI0OTc0Yjg4OWMyYzJjZTFkYTI0OGU2NzNmNWExNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmMGE3Mzc5MmIwZGM0OGRiODY0MjQyM2ZiODc4OTM1ZTNlNGM5YTQyZDQ2NDRmNWNiNDk4NDQ1NmIzNWI5ODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://source/instructions/engineering-design.md#L61-L74",
+          "version": "repo-lines-v1:sha256:6aa151047cd41f9c5e4c540c767fe7744998cd21059ab0828ff9679c2be108f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmM2QyYjY2NDY3NzhkNTU1MzI5MGJkOWQ4MTVmYzhhNjgwODM3NGYxMjZlNmRhZDQ5YzllOGYxM2EzNWU5ODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMmFiZWVhNTMwZTM2NTQ2NzM3NWUyNjQ4MTFiNTdiMzg5NTcyNmQ2ZjMxZTcyZDk2MmFiYzBmM2Q3MThkZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlYjVmZDNiMWI4MzBmZGU2YjNkOWEwYmI5MTRiOTk3ZjI2Mzk3MTY3ZTI2MmRkMjNjNTRiNTUzNzkxOWYzYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -42,7 +42,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-03T20:36:31.743Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-17T03:50:31.285Z"
   }
 }

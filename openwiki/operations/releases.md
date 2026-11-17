@@ -16,10 +16,10 @@ sources:
     resource: repo://tools/publish.py
   - id: openwiki-source-2275f4e442b08ebc1ea468de
     resource: repo://tools/release_version.py
-generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
+generated: { by: "codex", at: "2026-11-17T03:50:31.285Z" }
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-09T13:20:54.909Z
+  - by: openwiki/0.9.0
+    at: 2026-11-17T03:50:31.285Z
 ---
 
 # Unified versions and tested-byte publication
@@ -70,7 +70,7 @@ Do not remove pending labels as a substitute for release evidence.
 
 ## Keep moving provider branches distinct
 
-[Publish Harnesses](../../.github/workflows/publish-harnesses.yml) maintains `harness/codex`, `harness/github-copilot`, and `harness/amp`.
+[Publish Harnesses](../../.github/workflows/publish-harnesses.yml) maintains `harness/codex`, `harness/github-copilot`, `harness/amp`, and `harness/dotagents`.
 It also updates the Codex and Copilot generated trees on main.
 Amp stays absent from main.
 Those moving branches remain distinct from immutable GitHub release archives.

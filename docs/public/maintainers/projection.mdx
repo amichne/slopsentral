@@ -153,6 +153,10 @@ Missing instruction files stop initialization before skill registration.
 Shared skills can appear under two bundle-qualified names with the same source.
 Package context grants no authority.
 
+Amp places interpreter guidance in each projected skill that bundles a script
+with a shebang. The agent gets that guidance when it reads the skill.
+The turn-start event supplies the canonical instructions for the plugin.
+
 `npm run verify:marketplaces` exercises Codex, Copilot, and Amp adapters and installed scripts.
 For optional native Amp discovery, select `AMP_BIN`:
 
@@ -160,6 +164,8 @@ For optional native Amp discovery, select `AMP_BIN`:
 AMP_BIN="$(command -v amp)" PKL_BIN=/path/to/pkl-0.32.0 node --test tools/tests/amp-projection.test.mjs
 ```
 
-CI runs adapter tests. Native Amp discovery needs the selected executable.
+CI runs adapter tests. The selected Amp executable also exercises native skill
+discovery and the turn-start event. The helper test removes execute permissions
+in a disposable copy and invokes the declared interpreter.
 Neither result measures model routing or instruction adherence.
 Use the [Pi guide](/guides/pi) for its separate native adapter.

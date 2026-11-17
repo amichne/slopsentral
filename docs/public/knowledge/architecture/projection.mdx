@@ -40,6 +40,10 @@ The projector does not download a runtime or replace a previous tree.
 | Amp | Complete directory plugins, native skills, and `agent.start` instructions | Hooks, agents, and MCP stay reference-only. Profiles are unsupported |
 | Pi | Aggregate and per-plugin packages, native skills and prompts, and hook adapters | Workflow profiles are unsupported. MCP needs an explicit adapter |
 
+Amp adds interpreter guidance to the projected skill when it bundles a script
+with a shebang. The agent gets the guidance when it reads that skill.
+The turn-start event carries the plugin's canonical instructions.
+
 The [Pi model](https://github.com/amichne/slopsentral/blob/main/tools/projection/Pi.pkl) projects every accepted catalog plugin.
 It needs one shared version and unique hook owners.
 The aggregate deduplicates shared skill registrations by name.

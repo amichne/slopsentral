@@ -4,8 +4,8 @@ title: Source-bound provider projection
 description: Follow frozen authored bytes through Pkl evaluation, sealed payload digests, and publication that never replaces a destination.
 tags: [projection, pkl, provenance, providers]
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-03T17:57:45.987Z
+  - by: openwiki/0.9.0
+    at: 2026-11-17T03:49:32.846Z
 sources:
   - id: openwiki-source-0de19b70b13c7683e196f562
     resource: repo://tools/project-marketplaces.mjs
@@ -13,9 +13,11 @@ sources:
     resource: repo://tools/projection/Amp.pkl
   - id: openwiki-source-20306a8272518c1714fe0273
     resource: repo://tools/projection/Pi.pkl
+  - id: openwiki-source-24c2e5fb15011b196a066fdc
+    resource: repo://tools/projection/Project.pkl
   - id: openwiki-source-394daa51fe52aaa0810ba746
     resource: repo://tools/projection/publish_directory.py
-generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
+generated: { by: "codex", at: "2026-11-17T03:42:03.917Z" }
 ---
 
 # Source-bound provider projection
@@ -54,6 +56,10 @@ The projector does not download a runtime or replace a previous tree.
 | GitHub Copilot | Marketplace and projected plugin payloads | Provider packaging differs from Codex |
 | Amp | Complete directory plugins, native skills, and `agent.start` instructions | Hooks, agents, and MCP stay reference-only. Profiles are unsupported |
 | Pi | Aggregate and per-plugin packages, native skills and prompts, and hook adapters | Workflow profiles are unsupported. MCP needs an explicit adapter |
+
+Amp adds interpreter guidance to the projected skill when it bundles a script
+with a shebang. The agent gets the guidance when it reads that skill.
+The turn-start event carries the plugin's canonical instructions.
 
 The [Pi model](../../tools/projection/Pi.pkl) projects every accepted catalog plugin.
 It needs one shared version and unique hook owners.

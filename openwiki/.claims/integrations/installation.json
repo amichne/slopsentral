@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:ca0040a7261e30b09870a21bf8ea9e3a400dc5be8b046a73ce3cec8bdcbf4d77",
+  "pageVersion": "sha256:1f7d67d6a5480b7e0fa59a2c45c218566406775de5cc23f1c0ca109916cd080e",
   "claims": [
     {
       "id": "claim_468cefd833044a5fb8a8fba715593e3a",
@@ -31,12 +31,12 @@
       "statement": "Amp registers skills and turn-start instructions but does not execute referenced hooks, agents, or MCP configuration or support workflow profiles.",
       "evidence": [
         {
-          "resource": "repo://tools/projection/Amp.pkl#L15-L34",
-          "version": "repo-lines-v1:sha256:8d8e220dfa75f7629d0bd63258d8400adb76cc5629cd570315d846b50d678a22:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZmE1NjllNWI1OWQ2NThmZDY1ZWJkMjZiZmZjYjljMzZhYzIyYmQyNTM5MDJhZjYwOGRiMDZjNGY2NDJiM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0YjJmNzJiYjIxNDFkNDk4YTA5MTJlMTk2OGY2ODNkOTkwMGQzNjVhY2U5MDExZDI5YmI5YzJlNTM2ZmQ3YWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUzZmU0NjA3ZmRiNDcyYmUyMjg4ZDU4OWRlYTM2Y2IxNTU0NjIyMTQ1NTU4NTBiMTc1MDI3ODk3NjgyYWIzM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwZjk4MDVmNWVlZDlhZDU5MDZkZWJmZjEzZmMwMmZmOWEzNzAyYmI4NmM0YzJjN2ExNDMwMjM2ZGRiYTg1OTQifQ"
+          "resource": "repo://tools/projection/Amp.pkl#L15-L23",
+          "version": "repo-lines-v1:sha256:ff71dd1495b105db1b05f8355f964728cd78c084b8df0c64ac665f320b1fb067:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODRmYTU2OWU1YjU5ZDY1OGZkNjVlYmQyNmJmZmNiOWMzNmFjMjJiZDI1MzkwMmFmNjA4ZGIwNmM0ZjY0MmIzYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTNmZTQ2MDdmZGI0NzJiZTIyODhkNTg5ZGVhMzZjYjE1NTQ2MjIxNDU1NTg1MGIxNzUwMjc4OTc2ODJhYjMzZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzQ5YTNkMDAwNTIyNmE2MjZjOWI0YTljMDExODg4MTllMDc0ZDQxNTYxYzUxMDRjNGIwMDRmNmMzZGZjODI3OSJ9"
         },
         {
-          "resource": "repo://tools/projection/Amp.pkl#L50-L66",
-          "version": "repo-lines-v1:sha256:6f961f000249ce876128fc074a47585b3e6773fc9fc90e6f75e0c49be06ce369:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTcxNTI1NzJlZTg0ZjEwOTA2Yzc0YjlmMmE5MjQzNGRkYWIwZTNjNDI4MTNiMDRlNTk3ZWZjZWM5NTFiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyM2JkZDhhNTJlZWE1MzY1MzczZGU1OTNhNTljMjM5MjkxMTk5ZTBjNzAyN2ZiYjI2NzM3MmJhZTJlYmRlZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzMDRlODc0NWRjNmZmNWE5MzUxZGEwZDY5ZTQ3NzFmZTc3Mjc0OTEwMGEyZGI2YmZiYjkzZWFmNDQ1YmUwZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4M2Q2NWU4YThmMWM2NjkyNzQxYjZlMmU5Y2ViYjY3YTYzYzJiZGNmNDFmYWFiMTUwNzFiMDI4MTMwODBhODUifQ"
+          "resource": "repo://tools/projection/Amp.pkl#L58-L67",
+          "version": "repo-lines-v1:sha256:85cc621b6d5eec0719dd37ce1ece041a0d27e11a48dff78fb8a391ae4e63cc17:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiY2YwYTU0YjM5ZGJiMDFmYTc5ZWY2NDljNjdiZjA5NzQwOTE3MThjZDQxNzQ1NGViYWQ3Njg2OTFlN2U1MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZTM0NTA0MTgyODMxNTE1ZmQ0OTdkNTQxZTEzY2I0MGJmNTE2YzU4MzRlMjI5NjdkZTQ2YTBkM2QxMWQ4MTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkN2Y2ZDlmYWNmOWMzMDc2ZGRjMGQ3ZDU5NzgxYTMyNGIyZGVkZTU2M2EyOWFhMmJjZjA3YjBjZWU0YTI4MTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4M2Q2NWU4YThmMWM2NjkyNzQxYjZlMmU5Y2ViYjY3YTYzYzJiZGNmNDFmYWFiMTUwNzFiMDI4MTMwODBhODUifQ"
         }
       ]
     },
@@ -73,11 +73,11 @@
       "statement": "The Slopsentral command manages Amp as guarded links to release bundles and preserves foreign directories or changed installed bytes.",
       "evidence": [
         {
-          "resource": "repo://tools/slopsentral.py#L646-L681",
+          "resource": "repo://tools/slopsentral.py#L651-L686",
           "version": "repo-lines-v1:sha256:f35c68415578ca1c3e7f998fce5d4464b5e603bed37286400e30604a4051526e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5M2FjMDI2NjI4ZGE2NmE3ZjVhOTIyNGFkM2Y4ZmEzZjc0ZDY2MDdmMjc3N2QyN2I0YWFkMGRkZDkyNTlkYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmZGVkMTc1MDAxNzI3YjBiYzkzYjIyN2QzNTZmYjhkMzMwN2RjMjVmZTM5Zjg5ZjcyMzk3YmNhOWFiYWJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiYzc2Zjg3MDI5ZDBlMmEyZGY2MmZhZWMwY2Y0Y2FmNDI2M2Y0Y2FkY2Y5YmM3ZTM1N2E3MjJjODhmOGNiYjMifQ"
         },
         {
-          "resource": "repo://tools/slopsentral.py#L709-L774",
+          "resource": "repo://tools/slopsentral.py#L714-L779",
           "version": "repo-lines-v1:sha256:43cd68380152f6f9f60af2c964c37729edc13718f7705e3632123976147df119:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNjI2MTJjYmQ0MzVkZmIxMTk3ZGZlOGYwYmM4Mzk2ZDEzMGU1OGU0MjIzNDI2MTE3NGFhYjI3MzMyM2E4ODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMzdmNzk5YzQxYTkwMjAzNDlhMTBkNjE4MDk5NTViZTg1OTc4MGI2MmVjMjMwMTEzODJiYWUyOGNmYjc3NDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxYmIwZmJiMGQyNGRhZTBkZTRlOTAyM2YzODFhZjkyNTg5M2E0YjZhMmNhMTFmYjRlN2ExOWE4NjFiMDU2YTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzNGMxYTY0N2Q2ZTU0ZWY5ZTM1ZDRhZTA4M2NjYjAxYzA2MDcxMTYxODg3ZGFkY2ZjNjkzZjMxY2Q5MmM1NGYifQ"
         }
       ]
@@ -98,7 +98,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-09T13:20:54.909Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-17T03:50:31.285Z"
   }
 }

@@ -19,7 +19,7 @@ Use the [session audit tool](/maintainers/session-audit) to examine Pi and Codex
 
 The current decision catalog contains 39 cases across 13 skills.
 Each case runs with supplied skill text and a control that omits it.
-The five execution definitions contain 45 scenarios.
+The five execution definitions contain 49 scenarios.
 A missing fixture produces nonpassing `BLOCKED_SETUP` without a model call.
 No tracked fixture registry establishes live execution results.
 
@@ -137,6 +137,7 @@ interface Fixture {
   revision: string;
   context: string;
   prepare?: { file: string; sha256: string };
+  ampCommands?: string[];
   verifier: { file: string; sha256: string };
 }
 ```
@@ -161,6 +162,33 @@ The clone has no `origin` remote. Agent staging cannot change the operator's ind
 `HOME` and `CODEX_HOME` are isolated. Agent scratch stays inside its worktree.
 Setup creates a fresh Codex projection and installs its native plugin.
 Pkl 0.32.0 must exist on `PATH` or at `PKL_BIN`.
+
+### Compare the same fixtures in Amp and Codex
+
+Create four disposable fixtures for test selection, CI diagnosis, and performance
+evidence. Use a new output directory outside the checkout.
+
+```sh
+python3 tools/create_skill_fixtures.py /tmp/slopsentral-skill-fixtures
+export SLOPSENTRAL_EXECUTION_FIXTURES=/tmp/slopsentral-skill-fixtures/fixtures.json
+cases='(smallest-heap-proof|ci-failed-producer-fanout|installed-harness-proof-replacement|gradle-native-report-fallback)$'
+npm run eval:execution -- --filter-pattern "$cases" --output .promptfoo/results/codex.json
+SLOPSENTRAL_EXECUTION_HOST=amp npm run eval:execution -- --filter-pattern "$cases" --output .promptfoo/results/amp.json
+```
+
+For Amp, set `AMP_API_KEY` or set `SLOPSENTRAL_AMP_AUTH_STATE` to the local Amp
+authentication directory. Use `AMP_BIN` to select a specific Amp executable.
+The runner copies the selected plugin into the fixture and starts a private Amp
+thread with temporary settings. The Amp fixture tool runs only the literal commands in the registry.
+Review each command's script before a run.
+An Amp case without an explicit command list returns `BLOCKED_SETUP`.
+The fixture scripts run with host access.
+
+The two reports record the selected host and use the same fixture revisions and
+independent verifier. The fixture reports serve as controlled inputs.
+They do not measure Kast build or query latency.
+
+### Codex runner settings
 
 The current definitions select `gpt-6-astra`, `workspace-write`, and approval policy `never`.
 The runtime preserves the definition's settings and disables web search, sandbox network, replay retries, and response caching.

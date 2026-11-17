@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:6120ea39949b3cea3fc24ebb1db829b33e4f61f18cf83aed66c705a714d01af9",
+  "pageVersion": "sha256:abb2a03474c70211540f5ae5a182fa41ed102c42deed6530e078978284c072ce",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
       "statement": "The TDD procedure fixes the executable oracle through initial failure and success, rejects zero selected assertions as proof, and widens only for required policy, changed consumers, or a named risk.",
       "evidence": [
         {
-          "resource": "repo://source/skills/tdd/SKILL.md#L13-L60",
-          "version": "repo-lines-v1:sha256:79bb013604bf372734833c2ce4d1d2b36cff8554ff8502420ba3c2bd51ff2eec:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmN2Y2Yjk5ODI4ZmFmZGNhMTdlMWM5YjIzYmI3ZmUxYzc1N2YzMDJiNmE4NDBkNDFiOGZhMTY2NzA4OWQzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYmJmYTk5NjFkYTFkMzIyMTVlY2UyOTAzNDU2MGI3NWRmM2I2YzczMjRjZDM4MGQyM2I0MmFkMDY0NjllNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNjk5OTkzOGU4Njc2ZjIzMDc3ZjAyZWJkYTJjMDE4OTc3ZWI4ZmMzYjc1ODM2YzZlOTVhNTA5NGYyMTVkODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkYzdlNTEzMGExMzkxODA3M2IwYzdjYTQyNWE1NmUxZWI1OWY4MGYxZDU3ODE1ZGE4ZTE0MjAwZTc2MTU0YjEifQ"
+          "resource": "repo://source/skills/tdd/SKILL.md#L13-L64",
+          "version": "repo-lines-v1:sha256:260d4bbbf9f35210ddb54ae8b870277746287e71dc5aa37b28be555697d98917:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmN2Y2Yjk5ODI4ZmFmZGNhMTdlMWM5YjIzYmI3ZmUxYzc1N2YzMDJiNmE4NDBkNDFiOGZhMTY2NzA4OWQzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYmJmYTk5NjFkYTFkMzIyMTVlY2UyOTAzNDU2MGI3NWRmM2I2YzczMjRjZDM4MGQyM2I0MmFkMDY0NjllNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNjk5OTkzOGU4Njc2ZjIzMDc3ZjAyZWJkYTJjMDE4OTc3ZWI4ZmMzYjc1ODM2YzZlOTVhNTA5NGYyMTVkODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkYzdlNTEzMGExMzkxODA3M2IwYzdjYTQyNWE1NmUxZWI1OWY4MGYxZDU3ODE1ZGE4ZTE0MjAwZTc2MTU0YjEifQ"
         }
       ]
     },
@@ -77,12 +77,12 @@
       "statement": "The native Pi test exercises private-runtime admission, settlement rejection, and recovery by executing emitted status and review commands with only Git on PATH; scope tests cover literal paths, and runtime boundary tests reject unverified archives, foreign paths, symlink receipts, and project-controlled executable authority without model requests.",
       "evidence": [
         {
-          "resource": "repo://tools/python_checks/test_agents_scope_hook.py#L101-L150",
+          "resource": "repo://tools/python_checks/test_agents_scope_hook.py#L103-L152",
           "version": "repo-lines-v1:sha256:a736f4b5fc33ddb3cf6fe58c412a360eeae0c509006523a015b6dd4063e4e72c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNTllNGUyY2VlZjRlYmJmNjY0ZGI3YjA5MWRlM2MwYmI4ZWU0MTY1OTJjMWNiYWYwOTYzOTkzYjhiYmVlY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlMzdjNTRlMDlhMDVjYjNkOGIxZDAxZWNiZGEyYjdkZTFjNDlhMjUwZTQ4ZWUxZDgzMTY4OTZlMDJkNDA1ZTcifQ"
         },
         {
           "resource": "repo://tools/tests/pi-host.test.mjs",
-          "version": "repo-file-v1:sha256:4e8758e660f2482a9c6ee0ca182f1a9add1261b99f0c1b50456a624afc1b1907"
+          "version": "repo-file-v1:sha256:9bcbab303b5ae18fb2c9a54a50841040c62161889946143faf21598117fffe3e"
         },
         {
           "resource": "repo://tools/tests/pi-runtime.test.mjs",
@@ -96,7 +96,7 @@
       "evidence": [
         {
           "resource": "repo://tools/ci.py",
-          "version": "repo-file-v1:sha256:f7296ec719e7331887812f0b7135d02e9b7a722ff5dbec0d8eadca2daf9439d4"
+          "version": "repo-file-v1:sha256:fe317a9b2218c8f150fe3d7fd16834bdb180a1c36af1e69ceb7c5943ba32f4b8"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -145,14 +145,14 @@
       "statement": "The native Pi test expects a successful read to refresh that file's scope without a repair turn. An unrelated scope stays queued.",
       "evidence": [
         {
-          "resource": "repo://tools/tests/pi-host.test.mjs#L124-L148",
+          "resource": "repo://tools/tests/pi-host.test.mjs#L150-L174",
           "version": "repo-lines-v1:sha256:800073ce061d882547c7cb940d72dcd47db84dda83d27e4863def9ec7797fdeb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZTE2OWE0ZmMwNGUwNzhlNjBjMDdiZmQ0ODVhM2FjODYwNzNiNjkyMmVlMDgxZjMzODZiMmFiOGZiOWFlMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1MTUzNDc1YzIwNzU0ODIzNmQ4OWI3ZTdhOTZlOTliNjgyNWQ1Zjc2MTc0NDRhMzNhNDI2MDZiNDhhOTk2ZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhNzM0MzVlOTY2ZWYyNjYwOTU2OWM5NDBhMDhmYTNjOTQyMzgxZGY4NTQ5NjQ2NmUxZGY4NmFlNTJjZjU5ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwY2RiZmJhNTc1OWU1MmEyOGYwMDAxMDU3NjYyYWFiZjAwMmQ2ZTcxNDliYTkyZWYzNTYwYzMzOTA1NDlhNWEifQ"
         }
       ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-09T13:20:54.909Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-17T03:50:31.285Z"
   }
 }

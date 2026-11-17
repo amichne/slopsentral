@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e8a439aced5329de8dc3a363387d844e2df4d9ada214fa7ff18db467437139a2",
+  "pageVersion": "sha256:fe445d04f8185a8f9763b07100e892b5c631cf271e8263f70e49a33f6d32b02f",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -96,7 +96,7 @@
       "evidence": [
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:df7ea8a877920f42025b3333c7ba66565e3951471b35d3e812a85a632e76f96f"
+          "version": "repo-file-v1:sha256:38c820c0543545e2b12699602274a30cb5471b40b0d98775b2ca7795bfff22bf"
         },
         {
           "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L230-L280",
@@ -117,8 +117,8 @@
       "statement": "The shared engineering baseline connects behavior changes to maintained source-backed knowledge and distinguishes byte agreement from semantic correctness and reader comprehension.",
       "evidence": [
         {
-          "resource": "repo://source/instructions/engineering-design.md#L58-L70",
-          "version": "repo-lines-v1:sha256:edbea0e4eae828374e18c6f0f76492ab75124770cae603bad80c802c25ecd158:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMmJhMDRiOWY5ZmNjYmNmNjVmOGMwZTAwNDI3MjZlM2Q5MTc0NjIyZGViZmU3ZjBjMzQ0NzBhYTYzZjM1NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNjQ2MGM5ZDBiMGY1MmYzODlhZDk5NTI5MDM0MjQ3MTI0OTc0Yjg4OWMyYzJjZTFkYTI0OGU2NzNmNWExNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmMGE3Mzc5MmIwZGM0OGRiODY0MjQyM2ZiODc4OTM1ZTNlNGM5YTQyZDQ2NDRmNWNiNDk4NDQ1NmIzNWI5ODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://source/instructions/engineering-design.md#L61-L74",
+          "version": "repo-lines-v1:sha256:6aa151047cd41f9c5e4c540c767fe7744998cd21059ab0828ff9679c2be108f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmM2QyYjY2NDY3NzhkNTU1MzI5MGJkOWQ4MTVmYzhhNjgwODM3NGYxMjZlNmRhZDQ5YzllOGYxM2EzNWU5ODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMmFiZWVhNTMwZTM2NTQ2NzM3NWUyNjQ4MTFiNTdiMzg5NTcyNmQ2ZjMxZTcyZDk2MmFiYzBmM2Q3MThkZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlYjVmZDNiMWI4MzBmZGU2YjNkOWEwYmI5MTRiOTk3ZjI2Mzk3MTY3ZTI2MmRkMjNjNTRiNTUzNzkxOWYzYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -166,7 +166,7 @@
         },
         {
           "resource": "repo://docs/site.json",
-          "version": "repo-file-v1:sha256:cefa25a812628f105a0da1ccce620a3141fd6ef60571dcd7f0ce3e88737f0db3"
+          "version": "repo-file-v1:sha256:ab42eda492b8cb206edfdc10d76fb0e537dca492e7f004b39e42ce8992b470a9"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -184,11 +184,11 @@
         },
         {
           "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:2018b43d4f4a8de865c332fdcd49833fcf32d844a9db87bd3a47cadd284668ab"
+          "version": "repo-file-v1:sha256:e9f06244b2366bb89dbdcb4a0f7a2154e1fe2aab7c2caf7ed7ec4aaedfbef7f4"
         },
         {
           "resource": "repo://tools/ci.py",
-          "version": "repo-file-v1:sha256:f7296ec719e7331887812f0b7135d02e9b7a722ff5dbec0d8eadca2daf9439d4"
+          "version": "repo-file-v1:sha256:fe317a9b2218c8f150fe3d7fd16834bdb180a1c36af1e69ceb7c5943ba32f4b8"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -216,7 +216,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-09T13:20:54.909Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-17T03:50:31.285Z"
   }
 }
