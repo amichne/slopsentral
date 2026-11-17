@@ -5,7 +5,7 @@ description: Follow frozen authored bytes through Pkl evaluation, sealed payload
 tags: [projection, pkl, provenance, providers]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-17T03:49:32.846Z
+    at: 2026-11-17T04:04:07.116Z
 sources:
   - id: openwiki-source-0de19b70b13c7683e196f562
     resource: repo://tools/project-marketplaces.mjs
@@ -13,11 +13,11 @@ sources:
     resource: repo://tools/projection/Amp.pkl
   - id: openwiki-source-20306a8272518c1714fe0273
     resource: repo://tools/projection/Pi.pkl
-  - id: openwiki-source-24c2e5fb15011b196a066fdc
-    resource: repo://tools/projection/Project.pkl
   - id: openwiki-source-394daa51fe52aaa0810ba746
     resource: repo://tools/projection/publish_directory.py
-generated: { by: "codex", at: "2026-11-17T03:42:03.917Z" }
+  - id: openwiki-source-29b8d13ca4d0c5f112b0bb17
+    resource: repo://tools/tests/pkl-projection.test.mjs
+generated: { by: "codex", at: "2026-11-17T04:04:07.116Z" }
 ---
 
 # Source-bound provider projection
@@ -57,8 +57,8 @@ The projector does not download a runtime or replace a previous tree.
 | Amp | Complete directory plugins, native skills, and `agent.start` instructions | Hooks, agents, and MCP stay reference-only. Profiles are unsupported |
 | Pi | Aggregate and per-plugin packages, native skills and prompts, and hook adapters | Workflow profiles are unsupported. MCP needs an explicit adapter |
 
-Amp adds interpreter guidance to the projected skill when it bundles a script
-with a shebang. The agent gets the guidance when it reads that skill.
+Amp adds interpreter guidance to a successful skill load when the skill bundles
+scripts. The package keeps the canonical skill bytes.
 The turn-start event carries the plugin's canonical instructions.
 
 The [Pi model](../../tools/projection/Pi.pkl) projects every accepted catalog plugin.

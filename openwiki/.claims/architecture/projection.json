@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:415f22ed0fa1a2cf8a297d3a37a903ac13d6e20087e9823f1d5968637007ee68",
+  "pageVersion": "sha256:985c2047287e96906f54d7fff9ae2d9285106f493cf325a8a76352b91d3d164a",
   "claims": [
     {
       "id": "claim_29bc0266d6ec4bc4913a121262b7a782",
       "statement": "Projection freezes regular source bytes and modes, rejects source symlinks, and rechecks source and current routing evidence before publication.",
       "evidence": [
         {
-          "resource": "repo://tools/project-marketplaces.mjs#L179-L202",
+          "resource": "repo://tools/project-marketplaces.mjs#L175-L198",
           "version": "repo-lines-v1:sha256:a1545b2825c52c9575ca85b1661373d37d664d91508b5ee9e0fdfda55cd6eb33:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OTBlYmJmNjNmYzVlMzM0YjEyY2Q5ZmJmYTk0NDdhYTRlODdlZGE2Mjg0MDFhZDc2MjUzZmIyY2YyZjlhZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMDM5YjZiMjY3YzExODRmNTg0MDdiYjFiMjM3ZDlkNzc5YzA0N2NiNWQ1ZjI3MjA1NDQ1MjYwZGJkZjNlNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiMzc0NWYwZmU2MDc2OWY4ZjYxNmEzMTI0YmQ1Nzk0YzgwOThiOGM2NWExNDdhNzc3MmIyMTJlMTkyOGM4ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZWJhNDk2YmRjNGYyODkyMWQ5OTUzNDdmYWM5NWE4YzFhYTk2NWQzZmEyOTk3ODJmZmZmN2QyZmFhNDY5ZTIifQ"
         },
         {
-          "resource": "repo://tools/project-marketplaces.mjs#L336-L345",
+          "resource": "repo://tools/project-marketplaces.mjs#L323-L332",
           "version": "repo-lines-v1:sha256:97c99f88f80b66d2862aff46ad58eb619c54c1a54eb4628234df37b2995c80c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyNmRjZWQ0ZjQxZDYwODk2NzNiZTc4OTY2Yjc2MWE3MDdkM2Y5MGVlNjBkNTExM2YzMmVhNmM2Yzc3M2VkOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjMjVjMDQxYWJmZmQzNmQ4MzkyYjA1YzRiYzU2MWNkODk2YmU1YmU0NTY2MzY0M2JkZjk3MzM2NTMxOTExY2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2ZWJiODVkZmRkYTZkZTE4NTFmOGM0NzAwNGE0NTUzMDkwNDNkMWYyYTRiNTA2NDgyODg3ZjZkZjQyODE2OWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2MjE0ZjUwMTlkZGI5NmM5YWQxNDE1NTkxYzMxM2U3ZGFjYzM0ZDBjYTBkZjcwMjhmOWNjNGFhNmVjZWUwMGQifQ"
         },
         {
@@ -25,7 +25,7 @@
       "statement": "The projector requires exactly Pkl 0.32.0 and evaluates isolated model copies with explicit module and resource allowlists.",
       "evidence": [
         {
-          "resource": "repo://tools/project-marketplaces.mjs#L179-L202",
+          "resource": "repo://tools/project-marketplaces.mjs#L175-L198",
           "version": "repo-lines-v1:sha256:a1545b2825c52c9575ca85b1661373d37d664d91508b5ee9e0fdfda55cd6eb33:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OTBlYmJmNjNmYzVlMzM0YjEyY2Q5ZmJmYTk0NDdhYTRlODdlZGE2Mjg0MDFhZDc2MjUzZmIyY2YyZjlhZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMDM5YjZiMjY3YzExODRmNTg0MDdiYjFiMjM3ZDlkNzc5YzA0N2NiNWQ1ZjI3MjA1NDQ1MjYwZGJkZjNlNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiMzc0NWYwZmU2MDc2OWY4ZjYxNmEzMTI0YmQ1Nzk0YzgwOThiOGM2NWExNDdhNzc3MmIyMTJlMTkyOGM4ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZWJhNDk2YmRjNGYyODkyMWQ5OTUzNDdmYWM5NWE4YzFhYTk2NWQzZmEyOTk3ODJmZmZmN2QyZmFhNDY5ZTIifQ"
         }
       ]
@@ -35,7 +35,7 @@
       "statement": "Two-phase projection seals derived payload hashes and rejects changed payloads, mismatched reference digests, or an existing or in-repository output destination.",
       "evidence": [
         {
-          "resource": "repo://tools/project-marketplaces.mjs#L303-L328",
+          "resource": "repo://tools/project-marketplaces.mjs#L290-L315",
           "version": "repo-lines-v1:sha256:fbbae220459edac5360242ecd7a4377f4e72666695bc9a6e95205f5a4efe04f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiNjg3NzQ2NzAwMWM5YmE1OGQ3YWE2MDhhNTdhNzJmYWNmZTNiOTE0M2E5NWQ0YjJmNTc4NmJmNGE5NGEzZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNDI1YzFkNjgxNjE0OWRmYzEyYTJhNjM3ODliZTY3YzIzMzhiYzA0MzllZmRkMmY0OTkzYmIyYWMzZDVkODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwYjQzMGJkMDUyNWU0OGFiYmUxNmU5ZTA0NDgwODQyYzg5YzU4M2YxY2QzOWFjMjhmOTE5YjBkY2UwNGE3NGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlMTk1ZDY4NzVkNzcwMjIyOGU0NzUzMjdjNjU1ZjM1MjExM2EzOGQwNDFmYjY2OWJlMjViYTUwOGM4ZTM2ZDEifQ"
         }
       ]
@@ -59,8 +59,8 @@
           "version": "repo-lines-v1:sha256:ff71dd1495b105db1b05f8355f964728cd78c084b8df0c64ac665f320b1fb067:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODRmYTU2OWU1YjU5ZDY1OGZkNjVlYmQyNmJmZmNiOWMzNmFjMjJiZDI1MzkwMmFmNjA4ZGIwNmM0ZjY0MmIzYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTNmZTQ2MDdmZGI0NzJiZTIyODhkNTg5ZGVhMzZjYjE1NTQ2MjIxNDU1NTg1MGIxNzUwMjc4OTc2ODJhYjMzZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzQ5YTNkMDAwNTIyNmE2MjZjOWI0YTljMDExODg4MTllMDc0ZDQxNTYxYzUxMDRjNGIwMDRmNmMzZGZjODI3OSJ9"
         },
         {
-          "resource": "repo://tools/projection/Amp.pkl#L58-L67",
-          "version": "repo-lines-v1:sha256:85cc621b6d5eec0719dd37ce1ece041a0d27e11a48dff78fb8a391ae4e63cc17:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiY2YwYTU0YjM5ZGJiMDFmYTc5ZWY2NDljNjdiZjA5NzQwOTE3MThjZDQxNzQ1NGViYWQ3Njg2OTFlN2U1MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZTM0NTA0MTgyODMxNTE1ZmQ0OTdkNTQxZTEzY2I0MGJmNTE2YzU4MzRlMjI5NjdkZTQ2YTBkM2QxMWQ4MTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkN2Y2ZDlmYWNmOWMzMDc2ZGRjMGQ3ZDU5NzgxYTMyNGIyZGVkZTU2M2EyOWFhMmJjZjA3YjBjZWU0YTI4MTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4M2Q2NWU4YThmMWM2NjkyNzQxYjZlMmU5Y2ViYjY3YTYzYzJiZGNmNDFmYWFiMTUwNzFiMDI4MTMwODBhODUifQ"
+          "resource": "repo://tools/projection/Amp.pkl#L55-L68",
+          "version": "repo-lines-v1:sha256:238361aaa80f4c7f3fd0d55dbdc1d3949d50ded2187dd88edeab71921ee4cb70:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiY2YwYTU0YjM5ZGJiMDFmYTc5ZWY2NDljNjdiZjA5NzQwOTE3MThjZDQxNzQ1NGViYWQ3Njg2OTFlN2U1MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZTM0NTA0MTgyODMxNTE1ZmQ0OTdkNTQxZTEzY2I0MGJmNTE2YzU4MzRlMjI5NjdkZTQ2YTBkM2QxMWQ4MTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkN2Y2ZDlmYWNmOWMzMDc2ZGRjMGQ3ZDU5NzgxYTMyNGIyZGVkZTU2M2EyOWFhMmJjZjA3YjBjZWU0YTI4MTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkOTBhNTJkYmIyMTRkNDI0NzkwNzg3YzliMDQ0MTBkNjA1NzNjN2I5N2YxNWI2MDUzNTY5YjBjZGRhYWExYmQifQ"
         }
       ]
     },
@@ -83,36 +83,28 @@
       "statement": "Pi projection writes a native inventory that binds every projected payload path to a SHA-256 digest.",
       "evidence": [
         {
-          "resource": "repo://tools/project-marketplaces.mjs#L329-L335",
+          "resource": "repo://tools/project-marketplaces.mjs#L316-L322",
           "version": "repo-lines-v1:sha256:bd602bba2a00e35d475a4aa4a3ae124869be2ae32773580be70e516e60db3477:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjVkYzFiMjk0YTdkOWFmOTdmNWVmOWNkNDdmY2M5ZTZmMWM3MTcwYWYyYjIxMWM1MzZiMDg1NDAxNGNmYTM5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDcyNzRhZjQzYjgxMzM3OGQzNDU0MmYyZGM1OTRkYjYzYWJiZDllODRkN2E5NzNkM2ZlMWViYWJmMjkzZWQ1ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWNhNjg0NmRiNGE3ZThmNzdmMTQ0MDk3OWEzMzkxMzUyNDAwMmRhOThjOGRmNjhiODEwZWQ3ZTc3Y2VjMjU2NiJ9"
         }
       ]
     },
     {
       "id": "claim_dd372b58e7da4b53a0148cffb437fd1e",
-      "statement": "Amp adds interpreter guidance to projected skills that bundle a script with a shebang. The turn-start handler delivers canonical plugin instructions.",
+      "statement": "Amp appends interpreter guidance to a successful skill load for packaged skills with scripts. Packaged skill bytes stay canonical, and turn-start context carries the plugin's canonical instructions.",
       "evidence": [
         {
-          "resource": "repo://tools/project-marketplaces.mjs#L148-L151",
-          "version": "repo-lines-v1:sha256:df191866a7d5e32ad60062c525a65cadfca7088a56d9c9bdccf293930a5b80b6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODk0MzkzZDc3MGYzZThmZmFlYTYxYTBkY2U3NDdkZTI2NWY4ZDg5MTFkNjJlZGQ3ZDY4NjdjMmMyYzNiNzA2MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGFjZjIxOTQzMjFmZjhjZmE4YmMyMTlkN2VjNjQ2MmY3NzkwMDhjYWQ3ODU5MmFhMzg4Nzg5YWJmODJmMmM2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2MxMGYzZGVmZWUxOTBkYWU5MGFmMDU5ZmQwZTE2MzRmOThhMzJmZGFmNjNiNTdkYjU1ZmVjZTRiY2UxZDRlOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWU2MjBiZTk2OTQ4OWZkOWRmNGZmZGIxOWUxMzgyNzNlZDI2ZGI1Zjc3MzdhMDBiZGMxZWM5MzM0ZjU2MDRhOCJ9"
+          "resource": "repo://tools/projection/Amp.pkl#L55-L75",
+          "version": "repo-lines-v1:sha256:53c5f9b3fd530b12e30372c5a8eb6ea5c5a5da7fd34d39e12416d33b1b4f1eea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiY2YwYTU0YjM5ZGJiMDFmYTc5ZWY2NDljNjdiZjA5NzQwOTE3MThjZDQxNzQ1NGViYWQ3Njg2OTFlN2U1MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FmMTEwMWM5N2I3YzJmNTI1NDA3ODJlNjM0Y2M0NDQwZjBlOTcwMzQxZTUyZjk3NTIzMTFkNzhiN2Q3ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkN2Y2ZDlmYWNmOWMzMDc2ZGRjMGQ3ZDU5NzgxYTMyNGIyZGVkZTU2M2EyOWFhMmJjZjA3YjBjZWU0YTI4MTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4M2Q2NWU4YThmMWM2NjkyNzQxYjZlMmU5Y2ViYjY3YTYzYzJiZGNmNDFmYWFiMTUwNzFiMDI4MTMwODBhODUifQ"
         },
         {
-          "resource": "repo://tools/projection/Amp.pkl#L37-L38",
-          "version": "repo-lines-v1:sha256:d69adb38115d25be2474bfa178efb5d97e038d81ddd0eeefd61d5443e8bd3ec1:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDE0ZjQ5MmNhOTQxODc4YmI3NGI0OGNlN2JlODMzZmE0ZDBkOWVjZDQwZjcyYmM3N2VmOTUxZmJiODNmNDRlMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjgzOTQ5M2FkZDUzZjFhNzAxZjYzYzYwNzYwNGRlYjIzYWViNjA3Zjc0YTQ5YmQ5MDcwMzg1YmUzYTQ3ZmI0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTJkZmZkZjIwMjc3MzhlNjI0NmJmOTlmYjdjN2QwY2U0NWY2MjdjY2ZiMDNlZGMwOTRkNjE5OTM3YzI3NzA5YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTE4OWE1MDlhYjMwMzAwZTBkN2Y5YmI3ZWEwMjljNDMwZjc0ZWE0NjEyMDliOGNlYzRjZDk0NGRkZjhkY2JkNCJ9"
-        },
-        {
-          "resource": "repo://tools/projection/Amp.pkl#L58-L67",
-          "version": "repo-lines-v1:sha256:85cc621b6d5eec0719dd37ce1ece041a0d27e11a48dff78fb8a391ae4e63cc17:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiY2YwYTU0YjM5ZGJiMDFmYTc5ZWY2NDljNjdiZjA5NzQwOTE3MThjZDQxNzQ1NGViYWQ3Njg2OTFlN2U1MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZTM0NTA0MTgyODMxNTE1ZmQ0OTdkNTQxZTEzY2I0MGJmNTE2YzU4MzRlMjI5NjdkZTQ2YTBkM2QxMWQ4MTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkN2Y2ZDlmYWNmOWMzMDc2ZGRjMGQ3ZDU5NzgxYTMyNGIyZGVkZTU2M2EyOWFhMmJjZjA3YjBjZWU0YTI4MTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4M2Q2NWU4YThmMWM2NjkyNzQxYjZlMmU5Y2ViYjY3YTYzYzJiZGNmNDFmYWFiMTUwNzFiMDI4MTMwODBhODUifQ"
-        },
-        {
-          "resource": "repo://tools/projection/Project.pkl#L365-L373",
-          "version": "repo-lines-v1:sha256:45f73c0103ce77678c33cee1d4a6d5789879b6da602e3afaa54013d3972caad3:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWU2MDg2OWY3YTUyNTQzY2Q2MWYxOTYxZTMwNWRmN2ExZjMxOGMzODU3NzliYWQ0MWE0NjczM2Q1NWQ2MGQ3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjUzNDQ3NmYwNTZlMTc2NjdhZWNhNTBjMDg0N2EyNGYwYjJjZDMxYjE4N2ZlNzYyMGYxZTgyYzNmOThjNTMyNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjg5MDFkNGIxMDgyMjhiMTYzODRjYjRiZTcyYTBmMGUwNmE5OWQwYmRiNTkzOWQ1NDEyZGNmOTBkZTMwMDFhOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDY0NjdkYzA4ZjMyNDNmNjE0NzhmZjdiZTc1MjkwMzUwMWNiMDZlNmQwM2U5YmJmNjc5N2RkMGJhYTVlZDFlNyJ9"
+          "resource": "repo://tools/tests/pkl-projection.test.mjs#L50-L61",
+          "version": "repo-lines-v1:sha256:fbce7e8b83a59b8f1f0c5205fb5bdd214b765fcf32ed3950be668b44aa51c672:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyMGI5MjMzY2U3MjNkYmEwNzFlOTM5OTliYjk0YzJlZGU3MTQ5YmI1ZWU2MDg2ZWIzMzY1NDcwYTE2YjU5ZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyZTg4MmVkZTUzMmIzNzgzOWVkZTFlZTI3YWI0NmFhZTk4NmU1ZjcxODQ5ZDVjNTJhY2JkMmQwYzkyNmIwOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1MmM4OGIwMjdkZjNlNDUwY2UzMDc0NzU2YjE2N2Q2NDhkNjU2MTU1ZjY3OWYyYzhiMWNmMmI3OGI5NGZjMDEifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-17T03:49:32.846Z"
+    "at": "2026-11-17T04:04:07.116Z"
   }
 }

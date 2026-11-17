@@ -59,8 +59,7 @@ function hook(raw: Dynamic): Schema.HookDefinition = (
 
 function reference(raw: Dynamic): Schema.Asset =
   if (raw.type == "SKILL")
-    checked(raw, List("type", "name", "sourcePath", "sha256", "ampScriptSkill"))
-      .toTyped(Schema.SkillReference)
+    checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.SkillReference)
   else if (raw.type == "RESOURCE")
     checked(raw, List("type", "name", "sourcePath", "sha256")).toTyped(Schema.ResourceReference)
   else if (raw.type == "INSTRUCTION")

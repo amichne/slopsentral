@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:fb96be0ac36afadea11e7d51272aa9ad03884efd70a61a419fd8c6445a42ddd5",
+  "pageVersion": "sha256:ef398d08fdaf771c810d8dd9819efc92b03e672b8f025fb43d7113dd39ca0455",
   "claims": [
     {
       "id": "claim_bc6d8aad02404020823dda2dc37e4a40",
@@ -55,14 +55,14 @@
       "statement": "Validate Source runs offline skill controls and retains verified provider archives rather than running the live skill suite as a normal CI gate.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/validate-source.yml#L43-L88",
-          "version": "repo-lines-v1:sha256:7b3a2f36148157857dfae91f006aa8d2b47b355f78683c5d87b5ccad46194a9d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NTFjYmY3OWZiMjNiYmZkMmVlZTBhZDk4ODA4NjNkMDk3MGQzMmE5YTc1MDQwNDgzYzNhODEwMjBhODJjMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMzJhYzIwODBhMTM0NWM2NDY4ZDBlMGUwOWE0OTMyMDE1MTc2NzQzZjkyYTUyNTM1NWNmZGZkNTg5N2NmZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiN2M5ZTBiZmFhODc3ZmE0ZjMzMWMxNWQ4OWYxYmUzZWQ2ZWFhMDkzYzVlYjlmMTE1NmIzNGY2Yjk3YTdhY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMDgzNWQ1MDUwYzMwOWQ1MGZiN2RlYmU0ZWM1MTE0Yzc1NWYxMTcwOTIzNGI5ODFiMTc3ZTZhNzA4NzAyYzUifQ"
+          "resource": "repo://.github/workflows/validate-source.yml#L43-L86",
+          "version": "repo-lines-v1:sha256:42cd9c52a328c25799b7bc822c01e3726ea97a7ae4f54dad1b5e93f0272097a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NTFjYmY3OWZiMjNiYmZkMmVlZTBhZDk4ODA4NjNkMDk3MGQzMmE5YTc1MDQwNDgzYzNhODEwMjBhODJjMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMzJhYzIwODBhMTM0NWM2NDY4ZDBlMGUwOWE0OTMyMDE1MTc2NzQzZjkyYTUyNTM1NWNmZGZkNTg5N2NmZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiN2M5ZTBiZmFhODc3ZmE0ZjMzMWMxNWQ4OWYxYmUzZWQ2ZWFhMDkzYzVlYjlmMTE1NmIzNGY2Yjk3YTdhY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMDgzNWQ1MDUwYzMwOWQ1MGZiN2RlYmU0ZWM1MTE0Yzc1NWYxMTcwOTIzNGI5ODFiMTc3ZTZhNzA4NzAyYzUifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-17T03:50:31.285Z"
+    "at": "2026-11-17T04:04:07.116Z"
   }
 }

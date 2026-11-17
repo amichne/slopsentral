@@ -34,7 +34,6 @@ class AgentHeader {
 
 class SkillReference extends Reference {
   type: "SKILL" = "SKILL"
-  ampScriptSkill: String? = null
 }
 class InstructionReference extends Reference {
   type: "INSTRUCTION" = "INSTRUCTION"
@@ -134,7 +133,6 @@ class Input {
 class Copy {
   source: RelativePath
   target: RelativePath
-  exclude: "SKILL.md"? = null
 }
 
 class TextFile {

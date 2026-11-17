@@ -148,8 +148,8 @@ Missing instruction files stop initialization before skill registration.
 Shared skills can appear under two bundle-qualified names with the same source.
 Package context grants no authority.
 
-Amp places interpreter guidance in each projected skill that bundles a script
-with a shebang. The agent gets that guidance when it reads the skill.
+Amp adds interpreter guidance to a successful skill load when the skill bundles
+scripts. The packaged skill keeps its canonical bytes.
 The turn-start event supplies the canonical instructions for the plugin.
 
 `npm run verify:marketplaces` exercises Codex, Copilot, and Amp adapters and installed scripts.
