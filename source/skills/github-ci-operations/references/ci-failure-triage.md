@@ -1,5 +1,20 @@
 # CI Failure Triage
 
+## Find the failed producer
+
+Trace the failed gate to the job that supplied its result or artifact.
+Use the job steps and logs from the same run attempt.
+Record which downstream checks depend on that producer.
+Keep independent failures in the same run visible.
+
+Use the failed operation to choose the reproduction.
+If dependency setup fails before a test assertion, reproduce the setup.
+If tests pass and upload fails, examine the provider response and artifact inputs.
+If a retained artifact is missing, examine its producer identity and retention.
+For a release API failure, replay the observed status and response shape through
+the existing adapter test. Use an accepted response as a control.
+Remove credentials and private data from retained response fixtures.
+
 Use this reference when a PR check or workflow run is failing.
 
 ## Useful Commands
