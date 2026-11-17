@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { copyFile, mkdtemp, readFile, realpath, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import test from "node:test";
 import { digest, gradeExecution, loadExecutionCases, loadFixtures } from "../promptfoo/execution.mts";
 import { createExecutionConfig, retainEvidence } from "../promptfoo/execution-runtime.mts";
@@ -90,6 +91,42 @@ test("the Amp fixture tool runs admitted arguments in the fixture without inheri
   assert.equal(inherited, null);
   assert.equal(await realpath(cwd), await realpath(directory));
   await assert.rejects(tool.execute({ command: "node ./checks.mjs other" }), /does not admit/u);
+});
+
+test("native report proof accepts an inconclusive comparison and rejects an unsupported speedup", async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), "fixture-report-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const reportCase = cases.find(item => item.scenario.id === "gradle-native-report-fallback");
+  assert.ok(reportCase);
+  const revision = "b".repeat(40);
+  const files = {
+    "request.json": { host: "codex", case: reportCase, fixture: { revision }, artifacts: directory },
+    "provisioning.json": [{}],
+    "final-status.json": { stdout: "" },
+    "final-diff.json": { stdout: "" },
+    "final-head.json": { stdout: revision },
+  };
+  for (const [name, value] of Object.entries(files))
+    await writeFile(join(directory, name), JSON.stringify(value));
+  const events = [
+    ["cat /project/gradle-performance-engineering/SKILL.md", "skill text"],
+    ["node ./checks.mjs timing", "native compile 20 min"],
+    ["node ./checks.mjs compiler", "380 s GC"],
+  ].map(([command, output]) => JSON.stringify({
+    type: "item.completed",
+    item: { type: "command_execution", command, exit_code: 0, aggregated_output: output },
+  }));
+  await writeFile(join(directory, "events.jsonl"), events.join("\n"));
+  const verify = fileURLToPath(new URL("../promptfoo/fixtures/verify.mjs", import.meta.url));
+  for (const [conclusion, expected] of [
+    ["The performance improvement is inconclusive.", "pass"],
+    ["This proves a performance improvement.", "fail"],
+  ]) {
+    await writeFile(join(directory, "final-response.txt"),
+      `Native compile was largest at 20 minutes. The runner and cache conditions differ. ${conclusion}`);
+    const result = JSON.parse(execFileSync(process.execPath, [verify, join(directory, "request.json")], { encoding: "utf8" }));
+    assert.deepEqual(result.checks.map(check => check.status), ["pass", expected]);
+  }
 });
 
 test("evidence references require retained bytes and cannot escape the archive", async (t) => {

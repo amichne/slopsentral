@@ -62,7 +62,7 @@ const findings = {
     /native compile 20 min/u.test(output('timing')) && /380 s GC/u.test(output('compiler')),
     /native/iu.test(response) && /20 min|1200|1,200/u.test(response) &&
       /cache/iu.test(response) && /runner/iu.test(response) &&
-      /cannot|can.t|no comparable|no measured|insufficient|unsupported|unmatched/iu.test(response),
+      /inconclusive|cannot|can.t|no comparable|no measured|insufficient|unsupported|unmatched/iu.test(response),
   ],
 };
 const assess = (pass, evidence) => ({ status: pass ? 'pass' : 'fail', evidence });
