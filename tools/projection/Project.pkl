@@ -77,6 +77,11 @@ function referenceTarget(ref: Schema.Asset): String =
     "hooks/" + basename((ref as Schema.HookReference).hook.path)
 function refs(p: Schema.Plugin, kind: Schema.Kind): List<Schema.Asset> =
   p.references.filter((r) -> r.type == kind)
+function ampScriptSkill(r: Schema.Asset): String? =
+  if (selectedHarness == "amp" && r is Schema.SkillReference)
+    (r as Schema.SkillReference).ampScriptSkill
+  else
+    null
 function hooks(p: Schema.Plugin): List<Schema.HookReference> =
   p.references
     .filter((r) -> r is Schema.HookReference)
@@ -328,6 +333,7 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
       .map((r) -> new Schema.Copy {
         source = r.sourcePath
         target = referenceTarget(r)
+        exclude = if (ampScriptSkill(r) != null) "SKILL.md" else null
       })
       + (
         if (selectedHarness != "github-copilot" && p.mcp != null)
@@ -358,6 +364,11 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
         }
         when (selectedHarness == "amp") {
           textFile("index.js", Amp.entrypoint(p))
+          for (r in refs(p, "SKILL")) {
+            when (ampScriptSkill(r) != null) {
+              textFile(referenceTarget(r) + "/SKILL.md", Amp.skillText(ampScriptSkill(r)!!))
+            }
+          }
           jsonFile("package.json", Map("type", "module", "version", p.version))
           jsonFile("capabilities.json", new Amp.Capabilities {})
         }

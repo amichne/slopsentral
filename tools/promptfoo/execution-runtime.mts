@@ -12,11 +12,14 @@ import type { ExecutionCase, Fixture } from "./execution.mts";
 const execute = promisify(execFile);
 const cli = join(repository, "node_modules/@openai/codex/bin/codex.js");
 const timeoutMs = 10 * 60 * 1000;
+type ExecutionHost = "codex" | "amp";
 
 // No shell interpolation. Nonzero child outcomes remain evidence, never success.
 async function command(file: string, args: string[], cwd: string, env: NodeJS.ProcessEnv, signal: AbortSignal) {
   try {
-    const result = await execute(file, args, { cwd, env, signal, timeout: timeoutMs, maxBuffer: 16 * 1024 * 1024 });
+    const execution = execute(file, args, { cwd, env, signal, timeout: timeoutMs, maxBuffer: 16 * 1024 * 1024 });
+    execution.child.stdin?.end();
+    const result = await execution;
     return { file, args, code: 0, stdout: result.stdout, stderr: result.stderr };
   } catch (error) {
     if (!(error instanceof Error) || !("code" in error) || !("stdout" in error) || !("stderr" in error)) throw error;
@@ -44,7 +47,7 @@ export async function retainEvidence(directory: string, references: string[]): P
   return hashes;
 }
 
-async function runExecution(item: ExecutionCase, fixture: Fixture, signal: AbortSignal): Promise<{ output: string; grade: GradingResult; artifacts: string; tokenUsage?: TokenUsage; sessionId?: string }> {
+async function runExecution(host: ExecutionHost, item: ExecutionCase, fixture: Fixture, signal: AbortSignal): Promise<{ output: string; grade: GradingResult; artifacts: string; tokenUsage?: TokenUsage; sessionId?: string }> {
   const parent = join(repository, ".promptfoo/execution");
   await mkdir(parent, { recursive: true });
   const artifacts = await mkdtemp(join(parent, "run-"));
@@ -65,9 +68,11 @@ async function runExecution(item: ExecutionCase, fixture: Fixture, signal: Abort
     }
     await mkdir(codexHome, { recursive: true });
     await mkdir(env.TMPDIR ?? temporary, { recursive: true });
-    const auth = join(process.env.CODEX_HOME ?? join(homedir(), ".codex"), "auth.json");
-    try { await symlink(await realpath(auth), join(codexHome, "auth.json")); }
-    catch (error) { if (!(error instanceof Error) || !("code" in error) || error.code !== "ENOENT") throw error; }
+    if (host === "codex") {
+      const auth = join(process.env.CODEX_HOME ?? join(homedir(), ".codex"), "auth.json");
+      try { await symlink(await realpath(auth), join(codexHome, "auth.json")); }
+      catch (error) { if (!(error instanceof Error) || !("code" in error) || error.code !== "ENOENT") throw error; }
+    }
 
     // Private Git metadata: agent staging cannot touch the operator's index or refs.
     const clone = join(temporary, "repository");
@@ -91,19 +96,67 @@ async function runExecution(item: ExecutionCase, fixture: Fixture, signal: Abort
     // Runtime scratch is writable without appearing as unrelated task work.
     env.TMPDIR = join(workspace, ".promptfoo-tmp");
     await mkdir(env.TMPDIR);
-    await appendFile(join(clone, ".git/info/exclude"), "\n/.promptfoo-tmp/\n");
+    await appendFile(join(clone, ".git/info/exclude"), host === "amp" ? "\n/.promptfoo-tmp/\n/.amp/\n" : "\n/.promptfoo-tmp/\n");
     await save("initial-status.json", await required("git", ["status", "--porcelain=v1", "--untracked-files=all"], workspace, env, signal));
 
     stage = "provisioning";
     const marketplace = join(temporary, "marketplace");
-    await save("projection.json", await required(process.execPath, [join(repository, "tools/project-marketplaces.mjs"), "--source", repository, "--harness", "codex", "--out", marketplace], home, env, signal));
+    await save("projection.json", await required(process.execPath, [join(repository, "tools/project-marketplaces.mjs"), "--source", repository, "--harness", host, "--out", marketplace], home, env, signal));
     await cp(marketplace, join(artifacts, "marketplace"), { recursive: true });
     const provision = [];
-    for (const args of [
-      ["plugin", "marketplace", "add", marketplace, "--json"],
-      ["plugin", "add", `${item.benchmark.targetName}@slopsentral`, "--json"],
-      ["plugin", "list", "--json"],
-    ]) provision.push(await required(process.execPath, [cli, ...args], home, env, signal));
+    const amp = process.env.AMP_BIN ?? "amp";
+    const ampSettings = join(temporary, "amp.json");
+    const ampFlags = ["--settings-file", ampSettings, "--no-ide", "--no-notifications"];
+    if (host === "codex") {
+      for (const args of [
+        ["plugin", "marketplace", "add", marketplace, "--json"],
+        ["plugin", "add", `${item.benchmark.targetName}@slopsentral`, "--json"],
+        ["plugin", "list", "--json"],
+      ]) provision.push(await required(process.execPath, [cli, ...args], home, env, signal));
+    } else {
+      if (!fixture.ampCommands) throw new Error("Amp requires explicit fixture commands");
+      if (item.scenario.expectedPrimitive.type !== "SKILL") throw new Error("Amp fixture must select a skill");
+      await mkdir(join(workspace, ".amp"));
+      const plugins = join(workspace, ".amp/plugins");
+      await mkdir(plugins);
+      await cp(join(marketplace, ".amp/plugins", item.benchmark.targetName), join(plugins, item.benchmark.targetName), { recursive: true });
+      env.XDG_DATA_HOME = join(home, ".local/share");
+      env.XDG_CACHE_HOME = join(home, ".cache");
+      const ampData = join(env.XDG_DATA_HOME, "amp");
+      await mkdir(ampData, { recursive: true, mode: 0o700 });
+      const authState = process.env.SLOPSENTRAL_AMP_AUTH_STATE;
+      if (authState) {
+        for (const name of ["secrets.json", "accounts.json", "session.json", "device-id.json"]) {
+          try {
+            const bytes = await readFile(join(authState, name));
+            await writeFile(join(ampData, name), bytes, { mode: 0o600 });
+          } catch (error) {
+            if (!(error instanceof Error) || !("code" in error) || error.code !== "ENOENT") throw error;
+          }
+        }
+      } else if (process.env.AMP_API_KEY) env.AMP_API_KEY = process.env.AMP_API_KEY;
+      else throw new Error("Amp requires AMP_API_KEY or SLOPSENTRAL_AMP_AUTH_STATE");
+      const skill = `${item.benchmark.targetName}:${item.scenario.expectedPrimitive.name}`;
+      const settings = {
+        "amp.updates.mode": "disabled",
+        "amp.skills.disableClaudeCodeSkills": true,
+        "amp.skills.disableGlobalAgentsSkills": true,
+        "amp.tools.enable": ["*fixture_command", "skill"],
+      };
+      const fixtureTool = join(plugins, "execution-fixture");
+      await mkdir(fixtureTool);
+      const toolSource = await readFile(join(repository, "tools/promptfoo/fixtures/amp-tool.mjs"));
+      await writeFile(join(fixtureTool, "index.js"), toolSource);
+      await writeFile(join(fixtureTool, "package.json"), JSON.stringify({ type: "module" }));
+      const toolConfig = { node: process.execPath, workspace, commands: fixture.ampCommands };
+      await writeFile(join(fixtureTool, "fixture.json"), JSON.stringify(toolConfig));
+      await writeFile(join(artifacts, "amp-fixture-tool.mjs"), toolSource);
+      await save("amp-fixture-tool.json", toolConfig);
+      await writeFile(ampSettings, JSON.stringify(settings));
+      await save("amp-settings.json", settings);
+      provision.push(await required(amp, ["--version"], workspace, env, signal));
+      provision.push(await required(amp, [...ampFlags, "skill", "info", skill, "--json"], workspace, env, signal));
+    }
     await save("provisioning.json", provision);
 
     const task = [item.scenario.userInput, "<fixture-context>", fixture.context, "</fixture-context>"].join("\n\n");
@@ -112,34 +165,53 @@ async function runExecution(item: ExecutionCase, fixture: Fixture, signal: Abort
       sandboxMode: item.benchmark.runner.sandbox, approvalPolicy: item.benchmark.runner.approvalPolicy,
       networkAccessEnabled: false, webSearchMode: "disabled", skipGitRepoCheck: false,
     } as const;
-    const harnessSources = await retainEvidence(join(repository, "tools/promptfoo"), ["execution.mts", "execution-runtime.mts"]);
-    await save("request.json", { schemaVersion: 1, case: item, fixture, workspace, artifacts, task, taskSha256: digest(task), threadOptions, sdkVersion: "0.156.1", verifierSha256: fixture.verifier.sha256, harnessSources });
+    const harnessSources = await retainEvidence(join(repository, "tools/promptfoo"), [
+      "execution.mts", "execution-runtime.mts", ...(host === "amp" ? ["fixtures/amp-tool.mjs"] : []),
+    ]);
+    await save("request.json", { schemaVersion: 1, host, case: item, fixture, workspace, artifacts, task, taskSha256: digest(task), ...(host === "codex" ? { threadOptions, sdkVersion: "0.156.1" } : { model: `openai/${item.benchmark.runner.model}` }), verifierSha256: fixture.verifier.sha256, harnessSources });
     stage = "execution";
-    const thread = new Codex({ env, config: {
-      features: { plugins: true, apps: false, skip_host_skill_discovery: true },
-      sandbox_workspace_write: { exclude_tmpdir_env_var: true, exclude_slash_tmp: true },
-    } }).startThread(threadOptions);
     const tracePath = join(artifacts, "events.jsonl");
     await writeFile(tracePath, "");
     let completed = false;
     let failed = false;
     let output = "";
     let tokenUsage: TokenUsage | undefined;
+    let sessionId: string | undefined;
     try {
-      const { events } = await thread.runStreamed(task, { signal });
-      for await (const event of events) {
-        // Preserve the original sequence, including unfamiliar and partial events.
-        await appendFile(tracePath, JSON.stringify(event) + "\n");
-        if (event.type === "turn.completed") {
-          completed = true;
-          tokenUsage = {
-            prompt: event.usage.input_tokens, completion: event.usage.output_tokens,
-            total: event.usage.input_tokens + event.usage.output_tokens,
-            cached: event.usage.cached_input_tokens, numRequests: 1,
-          };
+      if (host === "amp") {
+        const result = await command(amp, [...ampFlags, "--visibility", "private", "--model",
+          `openai/${item.benchmark.runner.model}`, "--plugin-ready-timeout", "15", "--stream-json", "--execute", task], workspace, env, signal);
+        await writeFile(tracePath, result.stdout);
+        if (result.stderr) await writeFile(join(artifacts, "amp-stderr.txt"), result.stderr);
+        for (const event of result.stdout.trim().split("\n").filter(Boolean).map(line => JSON.parse(line))) {
+          if (event.type === "result") {
+            completed = event.subtype === "success" && event.is_error === false;
+            if (typeof event.result === "string") output = event.result;
+            if (typeof event.session_id === "string") sessionId = event.session_id;
+          }
         }
-        if (event.type === "turn.failed" || event.type === "error") failed = true;
-        if (event.type === "item.completed" && event.item.type === "agent_message") output = event.item.text;
+        failed = result.code !== 0;
+      } else {
+        const thread = new Codex({ env, config: {
+          features: { plugins: true, apps: false, skip_host_skill_discovery: true },
+          sandbox_workspace_write: { exclude_tmpdir_env_var: true, exclude_slash_tmp: true },
+        } }).startThread(threadOptions);
+        const { events } = await thread.runStreamed(task, { signal });
+        for await (const event of events) {
+          // Preserve the original sequence, including unfamiliar and partial events.
+          await appendFile(tracePath, JSON.stringify(event) + "\n");
+          if (event.type === "turn.completed") {
+            completed = true;
+            tokenUsage = {
+              prompt: event.usage.input_tokens, completion: event.usage.output_tokens,
+              total: event.usage.input_tokens + event.usage.output_tokens,
+              cached: event.usage.cached_input_tokens, numRequests: 1,
+            };
+          }
+          if (event.type === "turn.failed" || event.type === "error") failed = true;
+          if (event.type === "item.completed" && event.item.type === "agent_message") output = event.item.text;
+        }
+        sessionId = thread.id ?? undefined;
       }
     } catch (error) {
       await save("stream-error.json", { stage, message: error instanceof Error ? error.message.slice(0, 2000) : "Unknown stream error" });
@@ -152,10 +224,10 @@ async function runExecution(item: ExecutionCase, fixture: Fixture, signal: Abort
     await save("final-head.json", await required("git", ["rev-parse", "HEAD"], workspace, env, AbortSignal.timeout(30_000)));
     const traceSha256 = digest(await readFile(tracePath));
     const requestPath = join(artifacts, "verification-request.json");
-    await save("verification-request.json", { schemaVersion: 1, case: item, fixture, workspace, artifacts, traceSha256, completed });
+    await save("verification-request.json", { schemaVersion: 1, host, case: item, fixture, workspace, artifacts, traceSha256, completed });
     stage = "verification";
     const commands = [];
-    for (const specification of item.benchmark.verifiers.commands) {
+    for (const specification of item.scenario.verifierCommands ?? item.benchmark.verifiers.commands) {
       commands.push(await command("/bin/sh", ["-c", specification], workspace, env, AbortSignal.timeout(60_000)));
     }
     await save("benchmark-verifiers.json", commands);
@@ -171,8 +243,8 @@ async function runExecution(item: ExecutionCase, fixture: Fixture, signal: Abort
     const grade = commands.some((result) => result.code !== 0)
       ? { pass: false, score: 0, reason: "UNASSESSED: required benchmark command failed; inspect benchmark-verifiers.json before attributing cause" }
       : gradeExecution(item, traceSha256, completed, verification);
-    await save("receipt.json", { schemaVersion: 1, caseId: item.id, traceSha256, completed, sessionId: thread.id, verification, evidence, grade });
-    return { output, grade, artifacts, ...(tokenUsage ? { tokenUsage } : {}), ...(thread.id ? { sessionId: thread.id } : {}) };
+    await save("receipt.json", { schemaVersion: 1, host, caseId: item.id, traceSha256, completed, sessionId, verification, evidence, grade });
+    return { output, grade, artifacts, ...(tokenUsage ? { tokenUsage } : {}), ...(sessionId ? { sessionId } : {}) };
   } catch (error) {
     const reason = `${stage === "execution" || stage === "verification" ? "EXECUTION_ERROR" : "BLOCKED_SETUP"}: ${stage}: ${error instanceof Error ? error.message.slice(0, 3000) : "unknown adapter failure"}`;
     const grade = { pass: false, score: 0, reason };
@@ -185,13 +257,14 @@ async function runExecution(item: ExecutionCase, fixture: Fixture, signal: Abort
 
 // promptfoo's loader supports ApiProvider instances; UnifiedConfig's generated
 // schema type omits that runtime-supported array member.
-export async function createExecutionConfig(fixturePath: string | undefined): Promise<Omit<UnifiedConfig, "providers"> & { providers: ApiProvider[] }> {
+export async function createExecutionConfig(fixturePath: string | undefined, host: string = "codex"): Promise<Omit<UnifiedConfig, "providers"> & { providers: ApiProvider[] }> {
+  if (host !== "codex" && host !== "amp") throw new Error(`Unsupported execution host: ${host}`);
   const cases = await loadExecutionCases();
   const fixtures = await loadFixtures(fixturePath, cases);
   // This map belongs to the host closure. Model-authored receipts cannot populate it.
   const grades = new Map<string, GradingResult>();
   const provider: ApiProvider = {
-    id: () => "slopsentral:codex-execution-0.156.1",
+    id: () => host === "codex" ? "slopsentral:codex-execution-0.156.1" : "slopsentral:amp-execution",
     label: "Pinned benchmark execution / native marketplace / independent verifier",
     handlesOwnRetries: true,
     async callApi(_prompt, context, options) {
@@ -199,19 +272,20 @@ export async function createExecutionConfig(fixturePath: string | undefined): Pr
       if (!item) return { error: "Unknown execution case" };
       const executionRunId = randomUUID();
       const fixture = fixtures.find((fixture) => fixture.caseId === item.id);
-      if (!fixture) {
-        const grade = { pass: false, score: 0, reason: "BLOCKED_SETUP: supply a pinned fixture and independent verifier; no model call made" };
+      if (!fixture || (host === "amp" && !fixture.ampCommands)) {
+        const requirement = fixture ? "supply Amp fixture commands" : "supply a pinned fixture and independent verifier";
+        const grade = { pass: false, score: 0, reason: `BLOCKED_SETUP: ${requirement}; no model call made` };
         grades.set(executionRunId, grade);
         return { output: grade.reason, metadata: { evidenceKind: "blocked-execution", caseId: item.id, executionRunId } };
       }
       const signal = AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(options?.abortSignal ? [options.abortSignal] : [])]);
-      const result = await runExecution(item, fixture, signal);
+      const result = await runExecution(host, item, fixture, signal);
       grades.set(executionRunId, result.grade);
       return {
         output: result.output,
         ...(result.tokenUsage ? { tokenUsage: result.tokenUsage } : {}),
         ...(result.sessionId ? { sessionId: result.sessionId } : {}),
-        metadata: { evidenceKind: "plugin-execution", caseId: item.id, executionRunId, artifacts: relative(repository, result.artifacts), grade: result.grade },
+        metadata: { evidenceKind: "plugin-execution", host, caseId: item.id, executionRunId, artifacts: relative(repository, result.artifacts), grade: result.grade },
       };
     },
   };

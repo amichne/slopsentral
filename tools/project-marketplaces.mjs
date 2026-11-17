@@ -144,6 +144,10 @@ function freezeInput(repository, harness) {
           result.text = files.get(sourcePath).bytes.toString('utf8');
           if (!/^---\n[^]*\n---\n/.test(result.text)) reject('source', 'SOURCE_REJECTED', 'Agent profiles require complete YAML frontmatter');
         }
+        if (harness === 'amp' && ref.type === 'SKILL' && [...files.keys()].some(key =>
+          key.startsWith(sourcePath + '/scripts/') && files.get(key).bytes.subarray(0, 2).toString() === '#!')) {
+          result.ampScriptSkill = files.get(sourcePath + '/SKILL.md').bytes.toString('utf8');
+        }
         return result;
       }).sort((a, b) => (a.type + '/' + a.sourcePath).localeCompare(b.type + '/' + b.sourcePath, 'en'));
       return { name: manifest.name, version: manifest.version, description: manifest.description,
@@ -218,12 +222,17 @@ function operations(plan, files, harness, tree, input) {
     if (previous && (previous.mode !== mode || !previous.bytes.equals(bytes))) reject('plan', 'INVALID_PLAN', 'Two resources claim the same target');
     output.set(key, { bytes, mode });
   }
-  function copy(source, target) {
+  function copy(source, target, exclude) {
     if (!relative(source) || !source.startsWith('source/')) reject('plan', 'UNSAFE_PATH', 'Copy escaped the canonical source');
     if (files.has(source)) { const f = files.get(source); add(target, f.bytes, f.mode); return; }
     const children = [...files.keys()].filter(key => key.startsWith(source + '/'));
     if (!children.length) reject('plan', 'INVALID_PLAN', 'A planned copy has no frozen payload');
-    for (const key of children) { const f = files.get(key); add(target + '/' + key.slice(source.length + 1), f.bytes, f.mode); }
+    for (const key of children) {
+      const relativePath = key.slice(source.length + 1);
+      if (relativePath === exclude) continue;
+      const file = files.get(key);
+      add(target + '/' + relativePath, file.bytes, file.mode);
+    }
   }
   for (const plugin of plan.plugins) {
     if (!exactKeys(plugin, ['name', 'root', 'copies', 'files', 'references']) || !/^[a-z][a-z0-9-]*$/.test(plugin.name)
@@ -250,8 +259,12 @@ function operations(plan, files, harness, tree, input) {
       copy('source/hooks/pi/controls.ts', plugin.root + '/hooks/controls.ts');
     }
     for (const operation of plugin.copies) {
-      if (!exactKeys(operation, ['source', 'target']) || !relative(operation.target)) reject('plan', 'INVALID_PLAN', 'A copy operation is invalid');
-      copy(operation.source, plugin.root + '/' + operation.target);
+      if (!exactKeys(operation, ['source', 'target', 'exclude'], ['source', 'target']) || !relative(operation.target))
+        reject('plan', 'INVALID_PLAN', 'A copy operation is invalid');
+      if (operation.exclude != null && (harness !== 'amp' || operation.exclude !== 'SKILL.md' ||
+        !expected.references.some(ref => ref.ampScriptSkill !== undefined && ref.sourcePath === operation.source && operation.target === 'skills/' + ref.name)))
+        reject('plan', 'INVALID_PLAN', 'A copy cannot omit an authored file without an Amp skill replacement');
+      copy(operation.source, plugin.root + '/' + operation.target, operation.exclude);
     }
     for (const file of plugin.files) add(plugin.root + '/' + file.path, outputBytes(file), 0o644);
     // Discover executable resources from authored commands; transformations remain in Pkl.

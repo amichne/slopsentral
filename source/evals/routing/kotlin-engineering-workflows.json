@@ -584,6 +584,40 @@
         "Found, missing, expected operational failure, and cancellation remain observably distinct."
       ],
       "notes": "Stricter requested policy encoded as an acceptance case; fixture consistency is not live Codex adherence or an installed compiler plugin."
+    },
+    {
+      "id": "gradle-native-reports-keep-comparable-samples",
+      "type": "COVERAGE_GAP",
+      "source": {
+        "type": "CURRENT_SOURCE",
+        "capturedAt": "2026-11-16",
+        "evidenceRefs": [
+          "source/skills/gradle-performance-engineering/SKILL.md"
+        ]
+      },
+      "prompt": "Attribute a slow Gradle CI run when the build scan is unavailable.",
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "gradle-performance-engineering"
+      },
+      "observedRoute": {
+        "type": "ROUTING_ROUTE_OBSERVATION",
+        "summary": "The case covers a missing scan.",
+        "risk": "A single run can be mistaken for a matched comparison.",
+        "loadedPrimitives": []
+      },
+      "allowedActions": [
+        "Use Actions timing and native build reports."
+      ],
+      "forbiddenActions": [
+        "Infer a speedup from unmatched runs."
+      ],
+      "recoveryExpectation": "State unavailable metrics and preserve the comparison inputs.",
+      "productiveOutcome": "Attribute observed cost and qualify the comparison.",
+      "verificationEvidence": [
+        "The report cites the exact invocation and the native measurement."
+      ],
+      "notes": "This case defines expected routing. A live trace supplies observed behavior."
     }
   ]
 }

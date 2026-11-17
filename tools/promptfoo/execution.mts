@@ -26,6 +26,7 @@ export interface Scenario {
   expectedPrimitive: { type: string; name: string };
   userInput: string;
   successChecklist: string[];
+  verifierCommands?: ["git diff --check"];
 }
 
 export interface ExecutionCase {
@@ -42,6 +43,7 @@ export interface Fixture {
   revision: string;
   context: string;
   prepare?: { file: string; sha256: string };
+  ampCommands?: string[];
   verifier: { file: string; sha256: string };
 }
 
@@ -66,6 +68,10 @@ const validateFixtures = ajv.compile<Fixture[]>({
       revision: { type: "string", pattern: "^[a-f0-9]{40}$" },
       context: { type: "string" },
       prepare: { $ref: "#/$defs/script" },
+      ampCommands: {
+        type: "array", minItems: 1, uniqueItems: true,
+        items: { type: "string", pattern: "^node \\./[a-zA-Z0-9_-]+\\.mjs [a-zA-Z0-9_-]+$" },
+      },
       verifier: { $ref: "#/$defs/script" },
     },
   },

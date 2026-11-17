@@ -296,6 +296,25 @@
         "The trace reads the expression-flow reference and distinguishes nullable success from absence.",
         "Use explicit value branches and select scope functions by receiver and result."
       ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "gradle-native-report-fallback",
+      "verifierCommands": ["git diff --check"],
+      "title": "Gradle native report fallback",
+      "purpose": "Observe the commands and evidence that support the scoped decision.",
+      "routingCaseIds": [
+        "gradle-native-reports-keep-comparable-samples"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "gradle-performance-engineering"
+      },
+      "userInput": "Use the named skill from the installed plugin. Use the supplied fixture commands. Keep the checkout read-only. Do not change remote state. Build scans are unavailable. Identify the largest observed CI cost from the retained step and compiler reports. Decide what this evidence supports about performance.",
+      "successChecklist": [
+        "The run examines both Actions timing and a native compiler report.",
+        "The report attributes the native compile and states that an unmatched candidate cannot prove an improvement."
+      ]
     }
   ]
 }

@@ -45,7 +45,8 @@
     "kotlin-expression-flow-keeps-explicit-results",
     "personal-setup-verifies-current-dotfiles-authority",
     "personal-setup-retains-verified-legacy-layout",
-    "personal-setup-resolves-ayi-archive-registry"
+    "personal-setup-resolves-ayi-archive-registry",
+    "gradle-native-reports-keep-comparable-samples"
   ],
   "observations": [
     {
@@ -1752,6 +1753,24 @@
         "Read private credentials or install a source-only repair."
       ],
       "notes": "Synthetic golden contract fixture. This checks replay consistency only; no live model routing or guidance quality was observed."
+    },
+    {
+      "type": "ROUTING_OBSERVATION",
+      "caseId": "gradle-native-reports-keep-comparable-samples",
+      "routedPrimitive": {
+        "type": "SKILL",
+        "name": "gradle-performance-engineering"
+      },
+      "satisfiedAllowedActions": [
+        "Use Actions timing and native build reports."
+      ],
+      "satisfiedVerificationEvidence": [
+        "The report cites the exact invocation and the native measurement."
+      ],
+      "avoidedForbiddenActions": [
+        "Infer a speedup from unmatched runs."
+      ],
+      "notes": "Expected synthetic replay for a native report fallback."
     }
   ]
 }

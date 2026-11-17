@@ -327,6 +327,63 @@
         "Only README prose changes; no build or executable edits occur.",
         "Use the prose owner if available; record an unavailable companion rather than installing one."
       ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "smallest-heap-proof",
+      "verifierCommands": ["git diff --check"],
+      "title": "Smallest heap proof",
+      "purpose": "Observe the commands and evidence that support the scoped decision.",
+      "routingCaseIds": [
+        "shell-check-tdd-uses-stable-red-green-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Use the named skill from the installed plugin. Use the supplied fixture commands. Keep the checkout read-only. Do not change remote state. Choose a focused proof for heap option precedence. Run the smallest faithful command and report the accepted and rejected cases.",
+      "successChecklist": [
+        "The value assertion runs and covers explicit precedence and ambiguous options.",
+        "The run leaves the process harness idle."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "ci-failed-producer-fanout",
+      "verifierCommands": ["git diff --check"],
+      "title": "Ci failed producer fanout",
+      "purpose": "Observe the commands and evidence that support the scoped decision.",
+      "routingCaseIds": [
+        "ci-failure-triage-uses-remote-check-evidence"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "github-ci-operations"
+      },
+      "userInput": "Use the named skill from the installed plugin. Use the supplied fixture commands. Keep the checkout read-only. Do not change remote state. An archived Actions run has three red jobs. Find the first failed operation and report the affected gates, revision, and attempt. Use the retained job records.",
+      "successChecklist": [
+        "The run examines the job graph and the first failed step log.",
+        "The report names the producer, both dependent gates, head, and attempt."
+      ]
+    },
+    {
+      "type": "PLUGIN_EVAL_SCENARIO",
+      "id": "installed-harness-proof-replacement",
+      "verifierCommands": ["git diff --check"],
+      "title": "Installed harness proof replacement",
+      "purpose": "Observe the commands and evidence that support the scoped decision.",
+      "routingCaseIds": [
+        "shell-check-tdd-uses-stable-red-green-proof"
+      ],
+      "expectedPrimitive": {
+        "type": "SKILL",
+        "name": "tdd"
+      },
+      "userInput": "Use the named skill from the installed plugin. Use the supplied fixture commands. Keep the checkout read-only. Do not change remote state. Can an installed launcher acceptance command replace a separate component harness for this lifecycle claim? Inspect the probe inventory and exercise the installed product.",
+      "successChecklist": [
+        "The run compares the probe inventory and exercises installed acceptance for both outcomes.",
+        "The run leaves the duplicate harness idle and states the required process behavior."
+      ]
     }
   ]
 }

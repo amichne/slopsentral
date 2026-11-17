@@ -9,6 +9,7 @@ import { project } from '../project-marketplaces.mjs';
 import { loadCatalog, pluginClosure } from '../catalog.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
+const interpreterHint = 'Amp global plugins may lose bundled scripts';
 
 test('Amp registers complete skill packages and supplies canonical instructions without activating foreign hooks', {
   skip: !process.env.PKL_BIN && !process.env.SLOPSENTRAL_AMP_ROOT,
@@ -47,9 +48,9 @@ test('Amp registers complete skill packages and supplies canonical instructions 
     const result = await handlers.get('agent.start')();
     for (const instruction of instructions)
       assert.ok(result.message.content.includes(fs.readFileSync(path.join(root, 'source', instruction.path), 'utf8').trim()));
-    assert.match(result.message.content, /uv run --locked --script/);
-    assert.match(result.message.content, /python3/);
-    assert.equal(result.message.display, false);
+    assert.ok(!result?.message.content.includes(interpreterHint));
+    if (instructions.length) assert.equal(result.message.display, false);
+    else assert.equal(result, undefined);
     const support = JSON.parse(fs.readFileSync(path.join(pluginRoot, 'capabilities.json')));
     assert.equal(support.skills, 'REGISTERED');
     assert.equal(support.instructions, 'AGENT_START_CONTEXT');
@@ -66,6 +67,7 @@ test('Amp registers complete skill packages and supplies canonical instructions 
       { cwd: directory, encoding: 'utf8', timeout: 60_000 });
       assert.equal(native.status, 0, native.stdout + native.stderr);
       assert.doesNotMatch(native.stdout + native.stderr, /Failed to load|Plugin error|Error executing/i);
+      assert.ok(!(native.stdout + native.stderr).includes(interpreterHint));
       for (const skill of skills) {
         const qualified = plugin.name + ':' + skill.name;
         const loaded = discovered.find(item => item.name === qualified);
@@ -81,6 +83,9 @@ test('Amp registers complete skill packages and supplies canonical instructions 
     ['software-engineering/skills/issue-tracker-operations/scripts/issue_backend', 'python3', []],
   ]) {
     const script = path.join(output, relative);
+    const skill = fs.readFileSync(path.resolve(path.dirname(script), '../SKILL.md'), 'utf8');
+    assert.equal(skill.split(interpreterHint).length, 2);
+    assert.ok(skill.includes(args.length ? 'uv run --locked --script' : 'python3'));
     fs.chmodSync(script, 0o644);
     const direct = spawnSync(script, ['--help'], { cwd: directory, encoding: 'utf8' });
     assert.equal(direct.error?.code, 'EACCES');

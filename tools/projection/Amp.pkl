@@ -34,6 +34,9 @@ local scriptInvocation: String =
   use `python3 <script-path> ...`. Do not chmod or edit installed plugin caches.
   """
 
+function skillText(source: String): String =
+  source.trimEnd() + "\n\n## Bundled scripts in Amp\n\n" + scriptInvocation + "\n"
+
 function entrypoint(plugin: Schema.Plugin): String =
   let (
     skills =
@@ -56,13 +59,11 @@ function entrypoint(plugin: Schema.Plugin): String =
       // Read required context before registering anything; a missing payload fails loading.
       const instructions = \(literal(instructions.map((ref) -> "instructions/" + ref.name + "." + ref.sourcePath.split(".").last)))
         .map(path => readFileSync(new URL(path, import.meta.url), 'utf8').trim());
-      instructions.unshift(\(literal(scriptInvocation)));
       for (const path of \(literal(skills.map((ref) -> "skills/" + ref.name)))) {
         await amp.registerSkill({ path });
       }
-      amp.on('agent.start', () => ({ message: {
-        content: instructions.join('\\n\\n'),
-        display: false,
-      } }));
+      amp.on('agent.start', () => instructions.length === 0 ? undefined : ({
+        message: { content: instructions.join('\\n\\n'), display: false },
+      }));
     }
     """ + "\n"

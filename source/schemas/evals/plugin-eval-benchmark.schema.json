@@ -401,6 +401,9 @@
         },
         "successChecklist": {
           "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "verifierCommands": {
+          "const": ["git diff --check"]
         }
       }
     },
