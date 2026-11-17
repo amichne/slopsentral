@@ -123,8 +123,8 @@ Prefer the standard library for small commands.
 Give public CLI commands executable names without file extensions. Put them on `PATH`.
 Use `uv.toml` for checkout configuration and set `no-build = true`.
 Declare Python requirements in `pyproject.toml` or the script's PEP 723 header.
-Keep Python dependency lockfiles out of Git.
-Existing commands that consume tracked locks need a migration of their callers and release assets.
+Commit each portable uv script with its adjacent lockfile.
+Run portable uv scripts with `uv run --locked --script`.
 The checkout launcher for `slopsentral audit` uses `uv.toml` and `.python-version`.
 The installed launcher runs the audit with `uv run --no-project`.
 Run `mise exec -- slopsentral-setup` for checkout setup.

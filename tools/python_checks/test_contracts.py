@@ -38,7 +38,7 @@ def test_pep723_isolation(tmp_path: Path) -> None:
     sample = tmp_path / "sample.txt"
     _ = sample.write_text("hello\n")
     result = subprocess.run(
-        ["uv", "run", "--script", str(script), str(sample)],
+        ["uv", "run", "--locked", "--script", str(script), str(sample)],
         cwd=tmp_path,
         capture_output=True,
         text=True,
@@ -61,12 +61,17 @@ def test_scaffold_exposes_extensionless_command_with_checkout_uv_pin(tmp_path: P
         return tomllib.loads(config.read_text())["tools"]["uv"]
 
     assert (destination / "uv.toml").is_file()
-    assert list(destination.rglob("*.lock")) == []
+    for filename in ("standalone.py.lock", "setup.py.lock"):
+        assert (destination / filename).is_file()
     assert uv_pin(destination / "mise.toml") == uv_pin(ROOT / "mise.toml")
     if os.name != "posix":
         pytest.skip("Direct shebang commands on PATH need a POSIX host.")
-    assert (destination / "bin/automation-setup").is_symlink()
-    assert "uv.lock" in (destination / ".gitignore").read_text()
+    for command, script in (("text-summary", "standalone.py"), ("automation-setup", "setup.py")):
+        assert (destination / "bin" / command).resolve() == destination / script
+        assert (destination / "bin" / f"{command}.lock").resolve() == destination / f"{script}.lock"
+    ignored = (destination / ".gitignore").read_text().splitlines()
+    assert "uv.lock" not in ignored
+    assert "*.py.lock" not in ignored
     sample = tmp_path / "sample with spaces.txt"
     _ = sample.write_text("hello\n")
     result = subprocess.run(
@@ -89,4 +94,3 @@ def test_scaffold_exposes_extensionless_command_with_checkout_uv_pin(tmp_path: P
     )
     assert rejected.returncode == 1, rejected.stderr
     assert json.loads(rejected.stdout) == {"type": "UNREADABLE"}
-    assert list(destination.rglob("*.lock")) == []

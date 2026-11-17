@@ -6,7 +6,7 @@ import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 
 const repo = path.resolve(import.meta.dirname, '../..');
-test('legacy locked portable launchers reject missing and stale locks before application output', t => {
+test('locked portable launchers reject missing and stale locks before application output', t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'portable-direct-locks-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const environment = Object.fromEntries(Object.entries(process.env)
@@ -63,46 +63,52 @@ test('legacy locked portable launchers reject missing and stale locks before app
   t.diagnostic(`${count} executable portable launchers rejected both missing and stale locks`);
 });
 
-test('portable script metadata carries the uv minimum and its launcher policy', () => {
-  for (const root of ['source', 'tools']) {
+test('portable script metadata carries the uv minimum and an adjacent lock', () => {
+  for (const root of ['bin', 'source', 'tools']) {
     for (const relative of fs.readdirSync(path.join(repo, root), { recursive: true })) {
       const file = path.join(repo, root, relative);
       if (!fs.statSync(file).isFile() || relative.split(path.sep).includes('__pycache__')) continue;
       const text = fs.readFileSync(file, 'utf8');
       if (!text.startsWith('#!') || !text.includes('# /// script\n')) continue;
-      const executable = (fs.statSync(file).mode & 0o111) !== 0;
-      const locked = text.startsWith('#!/usr/bin/env -S uv run --locked --script\n');
-      if (executable)
-        assert.match(text, /^#!\/usr\/bin\/env -S uv run (?:--locked )?--script\n/, `${root}/${relative}`);
+      assert.ok(text.startsWith('#!/usr/bin/env -S uv run --locked --script\n'), `${root}/${relative}: locked launcher`);
       const metadata = text.match(/^# \/\/\/ script\n([\s\S]*?)^# \/\/\/$/m)?.[1];
       assert.ok(metadata, `${root}/${relative}: script metadata must exist`);
       assert.match(metadata, /^# required-version = ">=0\.12\.9"$/m, `${root}/${relative}`);
       const lock = file.endsWith('.tmpl') ? file.slice(0, -5) + '.lock.tmpl' : file + '.lock';
-      if (locked || executable) assert.equal(fs.existsSync(lock), locked, `${root}/${relative}: lock policy`);
+      assert.equal(fs.statSync(lock, { throwIfNoEntry: false })?.isFile(), true, `${root}/${relative}: adjacent lock`);
     }
   }
 });
 
-for (const mutation of ['missing minimum', 'minimum outside metadata', 'unlocked direct launcher']) {
-test(`the source gate rejects a portable consumer with ${mutation}`, t => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'uv-policy-source-'));
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  for (const entry of ['source', 'tools', 'docs', '.github']) fs.cpSync(path.join(repo, entry), path.join(root, entry),
-    { recursive: true, filter: file => !file.split(path.sep).some(part => ['__pycache__', 'node_modules'].includes(part)) });
-  const relative = mutation === 'unlocked direct launcher'
-    ? 'source/skills/pkl-engineering/scripts/pkl_agent'
-    : 'source/skills/code-knowledge-base/scripts/visualize.py';
-  const file = path.join(root, relative);
-  const text = fs.readFileSync(file, 'utf8');
-  const changed = mutation === 'unlocked direct launcher' ? text.replace('uv run --locked --script', 'uv run --script')
-    : text.replace('# required-version = ">=0.12.9"\n', '')
-      + (mutation === 'minimum outside metadata' ? '\n# required-version = ">=0.12.9"\n' : '');
-  fs.writeFileSync(file, changed);
-  const result = spawnSync(process.execPath, [path.join(repo, 'tools/validate-source-graph.mjs'), '--repo', root],
-    { encoding: 'utf8' });
-  assert.equal(result.status, 1, result.stdout + result.stderr);
-  assert.ok((result.stdout + result.stderr).includes(relative));
-});
+for (const [mutation, relative, expected] of [
+  ['missing minimum', 'source/skills/code-knowledge-base/scripts/visualize.py', 'must declare the existing uv >=0.12.9 minimum'],
+  ['minimum outside metadata', 'source/skills/code-knowledge-base/scripts/visualize.py', 'must declare the existing uv >=0.12.9 minimum'],
+  ['unlocked direct launcher', 'source/skills/pkl-engineering/scripts/pkl_agent', 'must use uv run --locked --script'],
+  ['missing adjacent lock', 'source/skills/pkl-engineering/scripts/pkl_agent', 'needs its adjacent lockfile'],
+  ['unlocked hook invoker', 'source/hooks/codex/software-engineering-context.hooks.json', 'uv hook command must use --locked'],
+]) {
+  test(`the source gate rejects a portable consumer with ${mutation}`, t => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'uv-policy-source-'));
+    t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+    for (const entry of ['source', 'tools', 'docs', '.github']) fs.cpSync(path.join(repo, entry), path.join(root, entry),
+      { recursive: true, filter: file => !file.split(path.sep).some(part => ['__pycache__', 'node_modules'].includes(part)) });
+    const file = path.join(root, relative);
+    if (mutation === 'missing adjacent lock') {
+      fs.rmSync(file + '.lock');
+    } else {
+      const text = fs.readFileSync(file, 'utf8');
+      const changed = mutation.startsWith('unlocked')
+        ? text.replace('uv run --locked --script', 'uv run --script')
+        : text.replace('# required-version = ">=0.12.9"\n', '')
+          + (mutation === 'minimum outside metadata' ? '\n# required-version = ">=0.12.9"\n' : '');
+      fs.writeFileSync(file, changed);
+    }
+    const result = spawnSync(process.execPath, [path.join(repo, 'tools/validate-source-graph.mjs'), '--repo', root],
+      { encoding: 'utf8' });
+    const output = result.stdout + result.stderr;
+    assert.equal(result.status, 1, output);
+    assert.ok(output.split('\n').some(line => line.includes(relative) && line.includes(expected)), output);
+  });
 }
 
 test('the source gate rejects shell tools, suffixed public commands, and undeclared Python launchers', t => {
@@ -137,7 +143,7 @@ test('the source gate rejects shell tools, suffixed public commands, and undecla
   }
 });
 
-test('pull request policy rejects new Python locks and keeps legacy paths eligible', t => {
+test('the source gate accepts new uv locks for projects, scripts, and extensionless commands', t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'uv-policy-pr-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   function git(...args) {
@@ -146,31 +152,26 @@ test('pull request policy rejects new Python locks and keeps legacy paths eligib
     assert.equal(result.status, 0, result.stdout + result.stderr);
     return result.stdout.trim();
   }
-  for (const entry of ['source', 'tools', 'docs', '.github']) {
+  for (const entry of ['source', 'tools', 'docs', '.github', 'bin']) {
     fs.cpSync(path.join(repo, entry), path.join(root, entry), {
-      recursive: true,
+      recursive: true, verbatimSymlinks: true,
       filter: file => !file.split(path.sep).some(part => ['__pycache__', 'node_modules'].includes(part)),
     });
   }
   git('init', '-q');
-  fs.writeFileSync(path.join(root, 'legacy.py.lock'), 'legacy');
-  git('add', 'legacy.py.lock');
-  git('commit', '-qm', 'base');
+  git('commit', '--allow-empty', '-qm', 'base');
   const base = git('rev-parse', 'HEAD');
-  fs.writeFileSync(path.join(root, 'legacy.py.lock'), 'updated legacy');
-  fs.writeFileSync(path.join(root, 'uv.lock'), 'new project lock');
-  fs.writeFileSync(path.join(root, 'tool.py.lock'), 'new script lock');
-  fs.writeFileSync(path.join(root, 'tool'), '# /// script\n');
-  fs.writeFileSync(path.join(root, 'tool.lock'), 'new command lock');
-  fs.writeFileSync(path.join(root, 'assets.lock'), 'provenance');
-  git('add', '-f', 'legacy.py.lock', 'uv.lock', 'tool.py.lock', 'tool', 'tool.lock', 'assets.lock');
+  fs.copyFileSync(path.join(repo, 'uv.lock'), path.join(root, 'uv.lock'));
+  for (const relative of ['tools/new-tool.py', 'bin/new-tool']) {
+    const script = path.join(root, relative);
+    fs.copyFileSync(path.join(repo, 'tools/check.py'), script);
+    fs.chmodSync(script, 0o755);
+    fs.copyFileSync(path.join(repo, 'tools/check.py.lock'), script + '.lock');
+  }
+  git('add', 'uv.lock', 'tools/new-tool.py', 'tools/new-tool.py.lock', 'bin/new-tool', 'bin/new-tool.lock');
   git('commit', '-qm', 'head');
   const result = spawnSync(process.execPath, [path.join(repo, 'tools/validate-source-graph.mjs')], {
     cwd: root, env: { ...process.env, SLOPSENTRAL_PYTHON_POLICY_BASE: base }, encoding: 'utf8',
   });
-  const policyErrors = (result.stdout + result.stderr).split('\n')
-    .filter(line => line.includes('keep Python dependency locks out of Git'));
-  assert.equal(result.status, 1);
-  assert.deepEqual(policyErrors, ['tool.lock', 'tool.py.lock', 'uv.lock']
-    .map(name => `ERROR ${name}: keep Python dependency locks out of Git`));
+  assert.equal(result.status, 0, result.stdout + result.stderr);
 });

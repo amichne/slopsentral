@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import { validateResourceReference } from "./resource-contract.mjs";
 import { auditCatalog, loadCatalog } from "./catalog.mjs";
@@ -149,29 +148,6 @@ const shellInterfaces = new Set([
   "tools/install-pi.sh",
 ]);
 
-function isPythonLock(relative) {
-  if (path.basename(relative) === "uv.lock" || /\.py\.lock(?:\.tmpl)?$/.test(relative)) return true;
-  if (!relative.endsWith(".lock")) return false;
-  const command = path.join(repoRoot, relative.slice(0, -5));
-  return fs.existsSync(command) && fs.statSync(command).isFile()
-    && fs.readFileSync(command, "utf8").includes("# /// script\n");
-}
-
-const pythonPolicyBase = process.env.SLOPSENTRAL_PYTHON_POLICY_BASE;
-if (pythonPolicyBase && repoArgIndex < 0) {
-  const changed = /^[0-9a-f]{40}$/.test(pythonPolicyBase) && spawnSync(
-    "git", ["diff", "--no-renames", "--diff-filter=A", "--name-only", "-z", `${pythonPolicyBase}...HEAD`],
-    { cwd: repoRoot, encoding: "utf8" },
-  );
-  if (!changed || changed.status !== 0) {
-    fail("Python dependency lock policy needs the pull request base and head");
-  } else {
-    for (const relative of changed.stdout.split("\0").filter(Boolean)) {
-      if (isPythonLock(relative)) fail(`${relative}: keep Python dependency locks out of Git`);
-    }
-  }
-}
-
 // Portable consumers carry the existing project minimum without an ambient project.
 for (const root of ["bin", "source", "tools"]) {
   for (const file of listFiles(root, file => !file.split(path.sep).includes("__pycache__"))) {
@@ -197,15 +173,13 @@ for (const root of ["bin", "source", "tools"]) {
     if (!metadata || !/^# required-version = ">=0\.12\.9"$/m.test(metadata)) {
       fail(`${relativeToRepo(file)}: portable uv script must declare the existing uv >=0.12.9 minimum`);
     }
-    const unlocked = launcher === "#!/usr/bin/env -S uv run --script";
-    const locked = launcher === "#!/usr/bin/env -S uv run --locked --script";
-    if (executable && !unlocked && !locked) {
-      fail(`${relative}: direct portable uv script must use uv run --script`);
+    if (launcher !== "#!/usr/bin/env -S uv run --locked --script") {
+      fail(`${relative}: direct portable uv script must use uv run --locked --script`);
     }
     const lock = file.endsWith(".tmpl") ? file.slice(0, -5) + ".lock.tmpl" : file + ".lock";
-    if (locked && !fs.existsSync(lock)) fail(`${relative}: legacy locked launcher needs its lock`);
-    if (executable && unlocked && fs.existsSync(lock)) fail(`${relative}: unlocked launcher must omit the adjacent lock`);
-
+    if (!fs.statSync(lock, { throwIfNoEntry: false })?.isFile()) {
+      fail(`${relative}: portable uv script needs its adjacent lockfile`);
+    }
   }
 }
 
@@ -377,13 +351,16 @@ function validateHookAdapter(hookName, adapterPath) {
     const hookLaunch = /uv run (--locked )?--script (hooks\/[A-Za-z0-9_.-]+)(?=\s|$)/g;
     const launches = [...command.matchAll(hookLaunch)];
     if (launches[0]?.index !== 0) {
-      fail(`${relativePath}: hook command must call uv run --script hooks/<script>: ${command}`);
+      fail(`${relativePath}: hook command must call uv run --locked --script hooks/<script>: ${command}`);
       continue;
     }
     for (const [, locked, hookScript] of launches) {
       const scriptPath = path.join(sourceRoot, hookScript);
-      if (!fs.existsSync(scriptPath) || (locked && !fs.existsSync(scriptPath + '.lock'))) {
-        fail(`${relativePath}: missing uv hook script or legacy lock: ${hookScript}`);
+      if (!locked) {
+        fail(`${relativePath}: uv hook command must use --locked: ${hookScript}`);
+      }
+      if (!fs.existsSync(scriptPath) || !fs.statSync(scriptPath + '.lock', { throwIfNoEntry: false })?.isFile()) {
+        fail(`${relativePath}: missing uv hook script or adjacent lockfile: ${hookScript}`);
         continue;
       }
       const script = fs.readFileSync(scriptPath, 'utf8');

@@ -9,7 +9,8 @@ Write automation in Python. Prefer the standard library for small commands.
 Install uv through mise. Pin uv in the project's `mise.toml`.
 Give public commands executable names without file extensions. Put them on `PATH`.
 Keep the `.py` suffix for Python modules.
-Keep Python dependency lockfiles out of Git.
+Commit each portable uv script with its adjacent lockfile.
+Run portable uv scripts with `uv run --locked --script`.
 
 ## Workflow
 
