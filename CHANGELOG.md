@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.17](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.16...slopsentral-v4.0.17) (2026-11-17)
+
+
+### Bug Fixes
+
+* require adjacent uv script locks ([7327a57](https://github.com/amichne/slopsentral/commit/7327a57dced59f13297c748b2db7cf7a659ab6f6))
+
 ## [4.0.16](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.15...slopsentral-v4.0.16) (2026-11-12)
 
 
