@@ -1,4 +1,4 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env -S uv run --locked --script
 # /// script
 # requires-python = ">=3.12,<3.14"
 # dependencies = []
@@ -26,19 +26,25 @@ def scaffold(destination: Path) -> None:
     for name in (
         "mise.toml",
         "standalone.py",
+        "standalone.py.lock",
         "pyproject.toml",
         "setup.py",
+        "setup.py.lock",
         "uv.toml",
     ):
         _ = shutil.copy2(assets / name, destination / name)
     if os.name == "posix":
         command_dir = destination / "bin"
         command_dir.mkdir()
-        (command_dir / "text-summary").symlink_to("../standalone.py")
-        (command_dir / "automation-setup").symlink_to("../setup.py")
+        for command, script in (
+            ("text-summary", "standalone.py"),
+            ("automation-setup", "setup.py"),
+        ):
+            (command_dir / command).symlink_to(f"../{script}")
+            (command_dir / f"{command}.lock").symlink_to(f"../{script}.lock")
     _ = (destination / ".python-version").write_text("3.12\n", encoding="utf-8")
     _ = (destination / ".gitignore").write_text(
-        ".venv/\n__pycache__/\n.pytest_cache/\n.ruff_cache/\nuv.lock\n*.py.lock\n", encoding="utf-8"
+        ".venv/\n__pycache__/\n.pytest_cache/\n.ruff_cache/\n", encoding="utf-8"
     )
 
 
