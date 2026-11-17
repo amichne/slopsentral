@@ -59,9 +59,11 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
    snapshots as evidence.
 
 3. Classify the failure.
-   Separate product/test failures from CI-environment failures, dependency
-   install failures, cache issues, permissions/secrets problems, flaky tests,
-   generated-output drift, and release/tag mistakes.
+   Trace the failed gate through its dependencies to the first failed operation
+   on each causal path. Record the job, step, head SHA, run attempt, and dependent
+   checks. Use the smallest reproduction at the failed interface. When a provider
+   response caused the failure, reproduce that response before you change the
+   adapter or retry the workflow.
 
 4. Fix narrowly.
    Edit the owning source, test, generator, script, or workflow file. Preserve

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T03:56:02Z",
+  "generatedAt": "2026-11-16T23:54:47-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -41,7 +41,7 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:327b48860c8f5c4c65dabac9f4687f93cf7d848c002f384df8a6f712f68574e0",
+          "sha256": "sha256:32f8429ae736706cce597d9636d0e99f909089c7d45ca9cbe1e53f0b724bc0e9",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
@@ -83,7 +83,7 @@
         },
         {
           "name": "tdd",
-          "sha256": "sha256:08139917988d6a127472f8d2b64a3b29f9d0b8c2a8080596d1c9567e1bca1796",
+          "sha256": "sha256:23cd035cca5bd814ab7bfc17e11efabcb49ceda70fb0f403041408f20d97da52",
           "sourcePath": "source/skills/tdd",
           "targetPath": "skills/tdd",
           "type": "SKILL"
@@ -97,7 +97,7 @@
       "references": [
         {
           "name": "gradle-performance-engineering",
-          "sha256": "sha256:2ce82665c8ba07835dbf4f57355f7a376e718518962258164c891463e511635a",
+          "sha256": "sha256:2ebbfbb19c9af7af799773fdba391a96688e084c116981f7e534101414fddc2c",
           "sourcePath": "source/skills/gradle-performance-engineering",
           "targetPath": "skills/gradle-performance-engineering",
           "type": "SKILL"
@@ -332,6 +332,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "98be89dbc17531d15967b82e72452e16394e010f",
+  "sourceSha": "3fdc5c324ae39df247cac9c44bb535ddbaac9edd",
   "type": "HYDRATED_MARKETPLACE"
 }
