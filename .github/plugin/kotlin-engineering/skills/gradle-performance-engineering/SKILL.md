@@ -39,11 +39,15 @@ For a cacheable task or a suspected false hit, use the [cacheability experiment]
    exclusions, and acceptance thresholds. Read
    [measurement.md](references/measurement.md) for metric definitions and sampling.
 
-2. Collect existing scans through the API.
+2. Collect scan or native report evidence.
    Read [develocity-api.md](references/develocity-api.md) for discovery, paging,
    build identity, model completeness, and evidence handling. Match scan IDs to
    source revisions and, in CI, run attempts, jobs, matrix cells, and invocations.
    Separate failed/canceled builds from successful timing samples; report both.
+   If a scan or metric is unavailable, record the reason. Use Actions job and
+   step timestamps for CI latency. Use Gradle profiles, Kotlin build reports,
+   JUnit XML, or native-image reports for work inside the job.
+   Bind each report to its invocation and mark metrics the report cannot supply.
 
 3. Locate the dominant cost.
    Separate initialization/configuration, dependency resolution, task execution,
@@ -68,7 +72,7 @@ For a cacheable task or a suspected false hit, use the [cacheability experiment]
    changing configuration behavior.
 
 6. Decide and report.
-   Report baseline/candidate scan links, cohort counts, measured values and
+   Report baseline/candidate evidence links, cohort counts, measured values and
    units, absolute and relative deltas, uncertainty, exclusions, correctness
    evidence, and the next decision. Use exactly one conclusion: improvement
    demonstrated, regression demonstrated, inconclusive, or evidence unavailable.
@@ -77,7 +81,8 @@ For a cacheable task or a suspected false hit, use the [cacheability experiment]
 
 ## Completion Criteria
 
-- Every performance claim has comparable scan evidence and explicit denominators.
+- Every performance claim has comparable scan or native report evidence and
+  explicit denominators.
 - Required correctness checks pass; missing evidence cannot produce acceptance.
 - CI end-to-end latency and runner consumption accompany a CI speedup claim.
 - Baseline, experiment, outcome, and remaining uncertainty are reproducible.
