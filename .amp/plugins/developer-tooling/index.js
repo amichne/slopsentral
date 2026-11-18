@@ -17,6 +17,7 @@ export default async function (amp) {
   "skills/personal-setup-management",
   "skills/pkl-engineering",
   "skills/plugin-composition-authoring",
+  "skills/promptfoo-eval-construction",
   "skills/python-tooling",
   "skills/skill-primitive-authoring"
 ]) {

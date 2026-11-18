@@ -11,6 +11,7 @@ export default async function (amp) {
     .map(path => readFileSync(new URL(path, import.meta.url), 'utf8').trim());
   const scriptedSkills = new Set();
   for (const path of [
+  "skills/directory-design",
   "skills/git-change-flow",
   "skills/github-ci-operations",
   "skills/issue-tracker-operations",

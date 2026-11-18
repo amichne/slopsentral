@@ -95,7 +95,8 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
 - For isolated coroutine or Flow tests, read [coroutine tests](references/coroutine-tests.md).
 - For guards, early returns, or evaluation order, read
   [branch preservation](references/branch-preservation.md).
-- For package ownership, read [layout](references/layout-package-code-style.md).
+- Use `directory-design` to choose the order of directories and name their contents.
+  For Kotlin package ownership, read [layout](references/layout-package-code-style.md).
   For structural warning signs, read [antipatterns](references/kotlin-antipatterns.md)
   and [the horizontalization heuristic](references/horizontalization-heuristic.md).
   Treat these signals as review aids, never proof of a defect.
