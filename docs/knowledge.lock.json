@@ -142,7 +142,7 @@
       "tools/tests/gradle-wrapper-integrity.test.mjs": "451feb70017670fb9a29428783402fe7dae9d2501f33287668dfbc69fb24f2d9",
       "tools/tests/install-skill.test.mjs": "590f34e3509bca35c68d989769bcf35067a058093f5e68667193c9c847a7be37",
       "tools/tests/instruction-delivery.test.mjs": "3e8d17408883158aaf589cfa151783bfe0d5b7d44c023fe809503b672e996ef1",
-      "tools/tests/intellij-workflow-profile.test.mjs": "238594f05c0cc0db06a3482460e349f5ed76e9947555da0aaffc8b2e520653a0",
+      "tools/tests/intellij-workflow-profile.test.mjs": "c4d30aea788a83edfd3c2b3d537a79e9b8af6763307cc16ce33ef7282232ad72",
       "tools/tests/interactive-views.test.mjs": "2c8bdea40ff4f2198b799be0abb0edd43c4e3ab61d939288859e728bd2e45b4c",
       "tools/tests/junit-results.test.mjs": "e3e72a8258d8f5b40642f5d7971206976a9f63eb6b4bf4ceb025236af03ddb66",
       "tools/tests/knowledge-overlay-contract.test.mjs": "043e63342dc7c45786e64b2ecafc438e1181e03ca245c51e48a88dbd16d6d9e8",
