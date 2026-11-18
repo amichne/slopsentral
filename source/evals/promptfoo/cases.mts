@@ -411,6 +411,19 @@ export const cases: readonly DecisionCase[] = [
     rationale: "Each name carries a distinction in the represented domain. The modifier on the declaring type cannot express either distinction.",
   },
   {
+    id: "directory-design-mixed-filenames",
+    skill: "directory-design",
+    scenario: "A feature directory contains CardRefundForm.tsx, card-refund-receipt.md, card_refund_schema.json, and card-limit.md. Its archive/ child contains card-refund-v1.md. Which candidate groups does a review of the direct siblings produce?",
+    choices: {
+      A: "Card Refund, with four peers when the archived document counts.",
+      B: "Card, with four peers.",
+      C: "Card Refund, with three peers.",
+      D: "No candidate reaches three peers because the filenames use different capitalization and separators.",
+    },
+    expected: ["B", "C"],
+    rationale: "The four direct files share Card after word normalization. Three also share Refund. The archive file belongs to a different directory.",
+  },
+  {
     id: "directory-design-operation-first",
     skill: "directory-design",
     scenario: `${reportInventory} Eight planned changes each affect one operation across both formats. Two each affect one format across both operations. Which first split lets readers open the fewest child directories across those ten tasks? Each writer must have one home.`,

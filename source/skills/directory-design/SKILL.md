@@ -6,13 +6,15 @@ description: "Use to organize or review a directory tree, choose which axis to g
 # Directory Design
 
 A file can have a subject, audience, format, and owner at the same time.
-A path presents those distinctions in one order. At each level, ask what the reader knows before they open a file.
+Each axis answers a different question about that file. A path presents the answers in one order.
+At each level, ask what the reader knows before they open a file.
 
 ## Choose the next directory
 
 1. List the reader's tasks. Include a new item that has no filename yet.
 2. Find candidate groups among direct siblings. Repeated words, shared callers, and files that change together can suggest a group.
-   For a repeatable scan, split filenames at word separators or case changes. Shortlist three or more peers with the same first word or first two words.
+   For a repeatable scan, split filenames at word separators or case changes. Compare the words without regard to case.
+   Shortlist three or more peers with the same first word or first two words.
    Record the cutoff and inspect the members. Related files can have different names.
 3. Sketch two orders for the same files. Give sibling directories names that answer the same question.
 4. For each task, count the child directories the reader must inspect under each order. Mark tasks with no predictable destination.
