@@ -6,11 +6,11 @@
   "files": [
     {
       "path": "docs/examples/global/AGENTS.md",
-      "sha256": "dc8c89c7f9e8499df0de84c8b50e443bd18fbcae859d515e42c869c0e4af661b"
+      "sha256": "3dcb0d0adc4c48f36fdcddf78d57e0870159ce70f92a7f9ab5bddb59949821ce"
     },
     {
       "path": "docs/global-agents.md",
-      "sha256": "bb8a27c914ad2b2310adb5546733f86f6b3e7019c3830d0de8f0588a8daec6ad"
+      "sha256": "2ceedbb839ca93b2fd23d036493a09458ece0a03067d6c250be49d2c2a5875f7"
     },
     {
       "path": "source/concepts/type-safety/core.md",
@@ -46,7 +46,7 @@
     },
     {
       "path": "source/instructions/engineering-design.md",
-      "sha256": "8c244312e332a0be9ead6cb845104836711fd393cb501ad2fe3839cc8f677b44"
+      "sha256": "253d352970441695e022a4be1dcaf0e1f88e9e453eb11c1f5dad56df65480869"
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",
@@ -393,8 +393,12 @@
       "sha256": "5296adfe5366b3c86664586de38d3f4c6bc583ac4b44fdca46a0b396e18dea4f"
     },
     {
+      "path": "source/skills/directory-design/SKILL.md",
+      "sha256": "9669010f86dcf5f0e7365b39c831c56a002f8f944b8721c68df68d629adbb394"
+    },
+    {
       "path": "source/skills/kotlin-design-practices/SKILL.md",
-      "sha256": "8525908564a2658529e7d49a1115f70f65537bbe6f2dc7efc8005934c23e973b"
+      "sha256": "1579ff4db013b0f42f289b903bd5de1033b27c6b9dcd630c7a69041f3e1f0ef0"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/Apache-2.0.txt",
@@ -470,7 +474,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/horizontalization-heuristic.md",
-      "sha256": "57499b4905aa38e9c2ea9df551a83f04c11fa628ae91066be21b1ceb4ab3c6d9"
+      "sha256": "809d1eebf05856b0ff7051f1f9f5e9badecab9148834e21a51e9ca4182181814"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/idioms.md",
@@ -482,7 +486,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/layout-package-code-style.md",
-      "sha256": "8a42a56db618f92d86aec4a66637fb53cb3651bcc3aa12be4defa0d1dc1826d4"
+      "sha256": "8289cbdf6c65c99f0e1b27f1eb1d611b6312f8f17c9c5c7f5d4c8f9009624ed3"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/parse-dont-validate-examples.md",

@@ -12,7 +12,6 @@ Use the [session audit tool](session-audit.md) to examine Pi and Codex history.
 | Plugin execution | `source/evals/promptfoo/execution/` | `npm run eval:execution` | Ready fixtures, real turns, and independent effects evidence |
 | Routing contracts | `source/evals/routing/` | `node tools/run-routing-evals.mjs --require-all-fixtures` | Golden consistency and separately recorded historical evidence |
 
-The current decision catalog contains 39 cases across 13 skills.
 Each case runs with supplied skill text and a control that omits it.
 The five execution definitions contain 49 scenarios.
 A missing fixture produces nonpassing `BLOCKED_SETUP` without a model call.
@@ -42,7 +41,7 @@ npm run promptfoo -- view
 ```
 
 The [suite owner](../tools/promptfoo/suite.mts) selects `gpt-6-sol`, low reasoning effort, and concurrency of two.
-The complete paired catalog schedules 78 calls.
+Budget two model calls per selected case for one run.
 Each case starts a fresh thread in an empty, read-only workspace.
 Shell tools, web search, network access, host discovery, plugins, and apps stay off.
 
@@ -92,7 +91,8 @@ Decision adaptations do not replay those tasks or transform historical ties into
 
 ## Add a decision regression
 
-Edit `source/evals/promptfoo/cases.mts`.
+Use [Promptfoo Eval Construction](../source/skills/promptfoo-eval-construction/SKILL.md) to turn review examples into cases in the same pull request.
+Match each example to a case in `source/evals/promptfoo/cases.mts`, or add the missing decision.
 Use a stable ID for a concrete failure pattern.
 When the case changes meaning, change its ID.
 Keep the expected answer and rationale outside the rendered prompt.
@@ -109,7 +109,7 @@ npm run eval:skills -- --filter-pattern 'your-case-id'
 ```
 
 The offline command type-checks the configuration and sends synthetic answers through the real promptfoo pipeline.
-It accepts each expected answer and rejects a wrong answer.
+For every case, the grader must accept the expected choices and reject an omitted choice and an extra choice.
 The [unit tests](../tools/tests/promptfoo-core.test.mjs) also toggle choices to expose a permissive grader.
 Normal CI uses these controls without credentials or model calls.
 A passing offline result establishes the harness contract only.

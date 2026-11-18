@@ -15,9 +15,10 @@ A skill must remain useful without plugin text or automatic context hooks.
 
 [Skill Primitive Authoring](../../source/skills/skill-primitive-authoring/SKILL.md) owns the authoring procedure.
 [Model Instruction Design](../../source/skills/model-instruction-design/SKILL.md) defines behavior contracts for prompts, agent guidance, task briefs, and tool descriptions.
-Developer Tooling distributes both skills.
 Model Instruction Design keeps existing authority, distinguishes evidence from hypotheses, and ties claims to the interface that the assessment exercises.
 Its [provenance](../../source/skills/model-instruction-design/references/provenance.md) records the Amp source and local design choices.
+[Promptfoo Eval Construction](../../source/skills/promptfoo-eval-construction/SKILL.md) turns review examples into scored cases.
+Developer Tooling distributes these three skills.
 The [skill instructions](../../source/skills/AGENTS.md) define local conventions.
 
 ## Agents

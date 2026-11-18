@@ -43,6 +43,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/promptfoo-eval-construction",
+      "name": "promptfoo-eval-construction"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/model-instruction-design",
       "name": "model-instruction-design"
     },

@@ -18,7 +18,7 @@ Start here for typed design, invariant decomposition, Python automation, testing
 
 Outside this plugin: Language and platform syntax beyond the shared baseline; add the relevant specialty.
 
-**Skills:** [`git-change-flow`](skills/git-change-flow/SKILL.md), [`github-ci-operations`](skills/github-ci-operations/SKILL.md), [`issue-tracker-operations`](skills/issue-tracker-operations/SKILL.md), [`mise-project-tooling`](skills/mise-project-tooling/SKILL.md), [`pull-request-lifecycle`](skills/pull-request-lifecycle/SKILL.md), [`python-tooling`](skills/python-tooling/SKILL.md), [`semantic-ratchet`](skills/semantic-ratchet/SKILL.md), [`tdd`](skills/tdd/SKILL.md).
+**Skills:** [`directory-design`](skills/directory-design/SKILL.md), [`git-change-flow`](skills/git-change-flow/SKILL.md), [`github-ci-operations`](skills/github-ci-operations/SKILL.md), [`issue-tracker-operations`](skills/issue-tracker-operations/SKILL.md), [`mise-project-tooling`](skills/mise-project-tooling/SKILL.md), [`pull-request-lifecycle`](skills/pull-request-lifecycle/SKILL.md), [`python-tooling`](skills/python-tooling/SKILL.md), [`semantic-ratchet`](skills/semantic-ratchet/SKILL.md), [`tdd`](skills/tdd/SKILL.md).
 
 **Hooks:** [`agents-md-scope`](hooks/agents-md-scope.hook.json), [`software-engineering-context`](hooks/software-engineering-context.hook.json).
 
@@ -34,7 +34,7 @@ Use for a requested tool, contract, agent resource, language server, structural 
 
 Outside this plugin: Automatic source checks, skill-read policy, or unrequested personal configuration changes.
 
-**Skills:** [`ast-grep`](skills/ast-grep/SKILL.md), [`cli-creator`](skills/cli-creator/SKILL.md), [`lsp-management`](skills/lsp-management/SKILL.md), [`manage-json-schemas`](skills/manage-json-schemas/SKILL.md), [`model-instruction-design`](skills/model-instruction-design/SKILL.md), [`openapi-contract-authoring`](skills/openapi-contract-authoring/SKILL.md), [`personal-setup-management`](skills/personal-setup-management/SKILL.md), [`pkl-engineering`](skills/pkl-engineering/SKILL.md), [`plugin-composition-authoring`](skills/plugin-composition-authoring/SKILL.md), [`python-tooling`](skills/python-tooling/SKILL.md), [`skill-primitive-authoring`](skills/skill-primitive-authoring/SKILL.md).
+**Skills:** [`ast-grep`](skills/ast-grep/SKILL.md), [`cli-creator`](skills/cli-creator/SKILL.md), [`lsp-management`](skills/lsp-management/SKILL.md), [`manage-json-schemas`](skills/manage-json-schemas/SKILL.md), [`model-instruction-design`](skills/model-instruction-design/SKILL.md), [`openapi-contract-authoring`](skills/openapi-contract-authoring/SKILL.md), [`personal-setup-management`](skills/personal-setup-management/SKILL.md), [`pkl-engineering`](skills/pkl-engineering/SKILL.md), [`plugin-composition-authoring`](skills/plugin-composition-authoring/SKILL.md), [`promptfoo-eval-construction`](skills/promptfoo-eval-construction/SKILL.md), [`python-tooling`](skills/python-tooling/SKILL.md), [`skill-primitive-authoring`](skills/skill-primitive-authoring/SKILL.md).
 
 **Agents:** [`openapi-contract-rater`](agents/openapi/openapi-contract-rater.agent.md), [`schema-type-enforcer`](agents/schema-type-enforcer.agent.md).
 
@@ -56,7 +56,7 @@ Choose for Kotlin invariants, API design, libraries, observability, review, Grad
 
 Outside this plugin: Everyday Git and hosted delivery, shell integration, and IntelliJ-specific plugin mechanics.
 
-**Skills:** [`gradle-performance-engineering`](skills/gradle-performance-engineering/SKILL.md), [`kotlin-application-stack`](skills/kotlin-application-stack/SKILL.md), [`kotlin-design-practices`](skills/kotlin-design-practices/SKILL.md), [`kotlin-gradle-validation`](skills/kotlin-gradle-validation/SKILL.md), [`kotlin-review`](skills/kotlin-review/SKILL.md), [`negative-capability-proof`](skills/negative-capability-proof/SKILL.md).
+**Skills:** [`directory-design`](skills/directory-design/SKILL.md), [`gradle-performance-engineering`](skills/gradle-performance-engineering/SKILL.md), [`kotlin-application-stack`](skills/kotlin-application-stack/SKILL.md), [`kotlin-design-practices`](skills/kotlin-design-practices/SKILL.md), [`kotlin-gradle-validation`](skills/kotlin-gradle-validation/SKILL.md), [`kotlin-review`](skills/kotlin-review/SKILL.md), [`negative-capability-proof`](skills/negative-capability-proof/SKILL.md).
 
 ### repository-knowledge
 
@@ -74,23 +74,23 @@ Outside this plugin: Automatic knowledge generation during ordinary code tasks o
 
 ## Profiles
 
-- [`agent-authoring-default`](profiles/agent-authoring-default.json): software-engineering + developer-tooling. 933 instruction words.
+- [`agent-authoring-default`](profiles/agent-authoring-default.json): software-engineering + developer-tooling. 955 instruction words.
 
-- [`developer-tooling-default`](profiles/developer-tooling-default.json): software-engineering + developer-tooling. 933 instruction words.
+- [`developer-tooling-default`](profiles/developer-tooling-default.json): software-engineering + developer-tooling. 955 instruction words.
 
 - [`documentation-default`](profiles/documentation-default.json): repository-knowledge. 0 instruction words.
 
-- [`intellij-plugin-default`](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 933 instruction words.
+- [`intellij-plugin-default`](profiles/intellij-plugin-default.json): software-engineering + kotlin-engineering + intellij-plugin-development. 955 instruction words.
 
-- [`kotlin-repo-default`](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 933 instruction words.
+- [`kotlin-repo-default`](profiles/kotlin-repo-default.json): software-engineering + kotlin-engineering. 955 instruction words.
 
-- [`local-development-default`](profiles/local-development-default.json): software-engineering. 933 instruction words.
+- [`local-development-default`](profiles/local-development-default.json): software-engineering. 955 instruction words.
 
 - [`personal-configuration-default`](profiles/personal-configuration-default.json): developer-tooling. 0 instruction words.
 
-- [`pkl-checked-repository`](profiles/pkl-checked-repository.json): software-engineering + developer-tooling. 933 instruction words.
+- [`pkl-checked-repository`](profiles/pkl-checked-repository.json): software-engineering + developer-tooling. 955 instruction words.
 
-- [`pkl-workflow-default`](profiles/pkl-workflow-default.json): software-engineering + developer-tooling. 933 instruction words.
+- [`pkl-workflow-default`](profiles/pkl-workflow-default.json): software-engineering + developer-tooling. 955 instruction words.
 
 ## Reused assets
 
@@ -99,6 +99,7 @@ Profiles may share skills, agents, and instructions. Select each hook through on
 
 | Asset | Composed by |
 | --- | --- |
+| [`SKILL/directory-design`](skills/directory-design/SKILL.md) | kotlin-engineering, software-engineering |
 | [`SKILL/python-tooling`](skills/python-tooling/SKILL.md) | developer-tooling, software-engineering |
 
 ## Standalone skills

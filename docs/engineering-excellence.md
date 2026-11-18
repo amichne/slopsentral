@@ -25,6 +25,9 @@ Start with the implementation that owns the requested behavior.
 Trace one real path when behavior crosses components.
 Choose reuse, extension, a new owner, or investigation from that evidence.
 
+Use [Directory Design](../source/skills/directory-design/SKILL.md) when several distinctions describe the same files.
+Compare the branches a reader must visit for the same tasks under each proposed order.
+
 Use [Semantic Ratchet](../source/skills/semantic-ratchet/SKILL.md) when later consumers need facts that an earlier operation establishes.
 Parse input once into constrained values or closed failures.
 Make consumer contracts accept those values. Keep unchecked construction under the invariant owner.

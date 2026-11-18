@@ -6,12 +6,13 @@ import test from 'node:test';
 const root = path.resolve(import.meta.dirname, '../..');
 // Expected public composition, independent of the source manifests and projector.
 const expected = {
-  'software-engineering': ['semantic-ratchet', 'python-tooling', 'tdd', 'git-change-flow',
+  'software-engineering': ['semantic-ratchet', 'directory-design', 'python-tooling', 'tdd', 'git-change-flow',
     'mise-project-tooling', 'github-ci-operations', 'issue-tracker-operations', 'pull-request-lifecycle'],
-  'kotlin-engineering': ['kotlin-design-practices', 'kotlin-review', 'kotlin-application-stack',
+  'kotlin-engineering': ['kotlin-design-practices', 'directory-design', 'kotlin-review', 'kotlin-application-stack',
     'negative-capability-proof', 'kotlin-gradle-validation', 'gradle-performance-engineering'],
   'intellij-plugin-development': ['intellij-plugin-delivery', 'intellij-platform-testing', 'intellij-psi-indexing'],
-  'developer-tooling': ['python-tooling', 'cli-creator', 'skill-primitive-authoring', 'model-instruction-design', 'plugin-composition-authoring',
+  'developer-tooling': ['python-tooling', 'cli-creator', 'skill-primitive-authoring', 'promptfoo-eval-construction',
+    'model-instruction-design', 'plugin-composition-authoring',
     'manage-json-schemas', 'openapi-contract-authoring', 'personal-setup-management', 'pkl-engineering',
     'lsp-management', 'ast-grep'],
   'repository-knowledge': ['code-knowledge-base', 'local-repository-navigation',

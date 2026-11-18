@@ -4,11 +4,13 @@ export type Skill =
   | "git-change-flow"
   | "github-ci-operations"
   | "pull-request-lifecycle"
+  | "directory-design"
   | "kotlin-design-practices"
   | "python-tooling"
   | "controlled-technical-writing"
   | "technical-documentation"
   | "skill-primitive-authoring"
+  | "promptfoo-eval-construction"
   | "model-instruction-design"
   | "code-knowledge-base"
   | "personal-setup-management";
@@ -22,6 +24,15 @@ export interface DecisionCase {
   readonly expected: readonly string[];
   readonly rationale: string;
 }
+
+// Hold the files and candidate trees fixed when the readers' tasks change.
+const reportInventory = "reports/ has four Python modules. folio.py writes invoice CSV, statement.py writes invoice JSON, reversal.py writes refund CSV, and credit.py writes refund JSON.";
+const reportTrees = {
+  A: "Create invoices/ and refunds/. Place each writer under its business operation.",
+  B: "Create folders for both formats under each operation and copy each writer into a second tree for format-wide changes.",
+  C: "Create csv/ and json/. Place each writer under its output format.",
+  D: "Wait for at least three filenames to share a leading word before proposing a directory.",
+};
 
 // The oracle stays outside the rendered prompt. Change a case ID when its meaning changes.
 export const cases: readonly DecisionCase[] = [
@@ -306,6 +317,192 @@ export const cases: readonly DecisionCase[] = [
     },
     expected: ["B"],
     rationale: "The collector needs a lifetime owner. Cancellation must survive the effect adapter.",
+  },
+  {
+    id: "kotlin-layout-prefix-candidates",
+    skill: "kotlin-design-practices",
+    references: ["references/horizontalization-heuristic.md"],
+    scenario: "shell/ contains PublicJqEngine.kt, InternalPublicJqProcess.kt, PublicJqWorker.kt, PublicCliHelp.kt, and PublicCliFlags.kt. Its child commands/ contains PublicCliList.kt. Which prefix groups does the layout heuristic report for shell/ itself?",
+    choices: {
+      A: "Public Cli, with three files.",
+      B: "Public, with five files.",
+      C: "Public, with four files.",
+      D: "Public Jq, with three files.",
+    },
+    expected: ["B", "D"],
+    rationale: "Only direct peers count. Removing the role token Internal produces three Public Jq peers. Public Cli has only two peers in this directory.",
+  },
+  {
+    id: "kotlin-layout-kast-task-placement",
+    skill: "directory-design",
+    scenario: "A Kast shell audit lists 29 Public peers. Nine PublicJq peers start and supervise jq workers. PublicCliHelp renders help without those workers. Choose a tree for the next two changes: a worker timeout policy with no filename yet, and a help-text correction.",
+    choices: {
+      A: "Use shell/jq/ for the timeout policy. A contributor can skip that directory for the help correction.",
+      B: "Use shell/public/ for both changes. The largest prefix group identifies their common destination.",
+      C: "Use shell/jq/ for existing PublicJq files. Decide where the timeout policy belongs once its filename supplies a prefix.",
+      D: "Use shell/policies/ and shell/renderers/ so the contributor must first decide which implementation role each change needs.",
+    },
+    expected: ["A"],
+    rationale: "Worker supervision supplies a destination before a filename exists. Help gives a separate task that can skip that destination.",
+  },
+  {
+    id: "kotlin-layout-ledger-placement",
+    skill: "directory-design",
+    scenario: "ledger/ contains LedgerEntry.kt, LedgerEntryAmount.kt, LedgerEntryCurrency.kt, LedgerPostingRule.kt, and LedgerPostingWindow.kt. One task changes the currency of an entry. Another changes the deadline for posting. Where can a contributor place each change before choosing a filename?",
+    choices: {
+      A: "Add ledger/ledger/ and send both tasks there because every file shares Ledger.",
+      B: "Put the deadline under ledger/entry/ because a posting always contains entries.",
+      C: "Keep every task at the root until the posting group reaches three peers.",
+      D: "Use ledger/entry/ for the currency change. Skip entry/ for the posting deadline.",
+    },
+    expected: ["D"],
+    rationale: "The entry group narrows the choice between the two tasks. The common Ledger prefix cannot separate them.",
+  },
+  {
+    id: "kotlin-layout-coherent-peers",
+    skill: "directory-design",
+    scenario: "ledger/entry/ contains LedgerEntry.kt, LedgerEntryAmount.kt, and LedgerEntryCurrency.kt. Together they define one value. Contributors already choose entry/ for changes to that value and skip it for posting rules. The audit flags all three peers. What action does this evidence support?",
+    choices: {
+      A: "Add ledger/entry/ledger/ because the group covers every direct file.",
+      B: "Split amount and currency into separate child directories on the strength of the prefix report.",
+      C: "Keep the files together. Describe which choice entry/ already gives the reader.",
+    },
+    expected: ["C"],
+    rationale: "The existing directory identifies the value. Another level gives neither task a more specific choice, even at full prefix coverage.",
+  },
+  {
+    id: "kotlin-layout-inspection-result",
+    skill: "kotlin-design-practices",
+    references: ["references/horizontalization-heuristic.md"],
+    scenario: "A completed layout scan exits 0 and lists two prefix groups. On another checkout the scan cannot read the source directory, exits nonzero, and prints no groups. Choose the review record for these two runs.",
+    choices: {
+      A: "Record a structural defect in the first checkout and zero findings in the second.",
+      B: "Record both checkouts as inspected because both processes returned.",
+      C: "Exclude the first scan from review because its exit status was zero.",
+      D: "Send the first two groups for review. Record an inspection failure for the second checkout.",
+    },
+    expected: ["D"],
+    rationale: "A completed scan supplies candidates. A failed directory read establishes no inventory.",
+  },
+  {
+    id: "kotlin-layout-access-only-name",
+    skill: "directory-design",
+    scenario: "The internal class PublicJqWorker supervises jq processes. Public was a label for access. Callers import both shell workers and jq workers. The class and its file can move together. Which destination and declaration suit these callers?",
+    choices: {
+      A: "shell/jq/Worker.kt with internal class Worker",
+      B: "shell/jq/JqWorker.kt with internal class JqWorker",
+      C: "shell/internal/JqWorker.kt with internal class JqWorker",
+      D: "shell/jq/InternalJqWorker.kt with internal class InternalJqWorker",
+    },
+    expected: ["B"],
+    rationale: "The modifier carries access. The domain qualifier Jq distinguishes the imported worker, and shell/jq names its job.",
+  },
+  {
+    id: "kotlin-layout-domain-visibility",
+    skill: "directory-design",
+    scenario: "A bulk rename targets the internal type PublicKey, which represents one half of an asymmetric key pair, and the enum entry KotlinVisibility.Public. The latter describes a declaration in inspected source. Which names does the reviewer keep?",
+    choices: {
+      A: "Keep PublicKey because callers distinguish the two kinds of key.",
+      B: "Rename PublicKey to Key because the type itself has internal access.",
+      C: "Rename KotlinVisibility.Public to KotlinVisibility.Default because the enum declaration already has a visibility modifier.",
+      D: "Keep KotlinVisibility.Public because the entry represents a value in the inspected language.",
+    },
+    expected: ["A", "D"],
+    rationale: "Each name carries a distinction in the represented domain. The modifier on the declaring type cannot express either distinction.",
+  },
+  {
+    id: "directory-design-mixed-filenames",
+    skill: "directory-design",
+    scenario: "A feature directory contains CardRefundForm.tsx, card-refund-receipt.md, card_refund_schema.json, and card-limit.md. Its archive/ child contains card-refund-v1.md. Which candidate groups does a review of the direct siblings produce?",
+    choices: {
+      A: "Card Refund, with four peers when the archived document counts.",
+      B: "Card, with four peers.",
+      C: "Card Refund, with three peers.",
+      D: "No candidate reaches three peers because the filenames use different capitalization and separators.",
+    },
+    expected: ["B", "C"],
+    rationale: "The four direct files share Card after word normalization. Three also share Refund. The archive file belongs to a different directory.",
+  },
+  {
+    id: "directory-design-operation-first",
+    skill: "directory-design",
+    scenario: `${reportInventory} Eight planned changes each affect one operation across both formats. Two each affect one format across both operations. Which first split lets readers open the fewest child directories across those ten tasks? Each writer must have one home.`,
+    choices: reportTrees,
+    expected: ["A"],
+    rationale: "By operation, the eight operation changes enter one child each and the two format changes enter two each: twelve visits. By format, they need eighteen.",
+  },
+  {
+    id: "directory-design-format-first",
+    skill: "directory-design",
+    scenario: `${reportInventory} Two planned changes each affect one operation across both formats. Eight each affect one format across both operations. Which first split lets readers open the fewest child directories across those ten tasks? Each writer must have one home.`,
+    choices: reportTrees,
+    expected: ["C"],
+    rationale: "Grouping the same files by format now needs twelve child visits. Grouping by operation needs eighteen. Filenames and available axes stayed fixed.",
+  },
+  {
+    id: "directory-design-next-axis",
+    skill: "directory-design",
+    scenario: "Readers enter docs/ by product. Under sync/, operators use recovery procedures and app developers use integration guides. Each audience can skip the other's guides. Under archive/, both audiences use the same restore procedure. Where does a split by audience help?",
+    choices: {
+      A: "Place operators/ and developers/ under both products to keep their structures symmetric.",
+      B: "Move audiences to the root so their names appear only once across all products.",
+      C: "Keep sync/ flat because archive/ has only one procedure.",
+      D: "Give sync/ a child for each audience. Keep the shared restore procedure directly under archive/.",
+    },
+    expected: ["D"],
+    rationale: "Product identifies the first choice. Audience helps a reader skip a set of guides under sync/. A second choice under archive/ leads to the same procedure.",
+  },
+  {
+    id: "directory-design-go-access-contract",
+    skill: "directory-design",
+    scenario: "In a Go module, payments/internal/format/ limits imports to the payments tree. The package declares internalRow for an unexported row and InternalTransfer for a transfer between company accounts. The author wants to remove access labels while keeping import restrictions, exported names, and domain meaning. Which edits fit?",
+    choices: {
+      A: "Move format/ directly under payments/. Its name still describes its work.",
+      B: "Keep payments/internal/format/ because Go uses that path to enforce the import restriction.",
+      C: "Rename internalRow to row. Both spellings keep the same access and the name still identifies a row.",
+      D: "Rename InternalTransfer to Transfer because the exported type needs no access label.",
+    },
+    expected: ["B", "C"],
+    rationale: "The path enforces access, the lowercase initial keeps row unexported, and InternalTransfer names a business distinction in an exported contract.",
+  },
+  {
+    id: "promptfoo-review-backfill",
+    skill: "promptfoo-eval-construction",
+    scenario: "A PR changes a retry guide. Reviewers used a temporary outage, a revoked credential, and a duplicate write to judge it. The decision catalog covers the outage. A unit test covers the backoff timer. What belongs in this PR?",
+    choices: {
+      A: "Add a new copy of the outage case so each review example has a new ID.",
+      B: "Use the timer test as evidence that a model knows when another write is unsafe.",
+      C: "Map the outage to its existing case. Add cases for the credential and duplicate-write decisions with independent expected actions.",
+      D: "Defer the two missing cases until a production incident establishes that the model makes those errors.",
+    },
+    expected: ["C"],
+    rationale: "The three examples supplied acceptance evidence. The existing case covers one decision, and the timer test measures a different behavior.",
+  },
+  {
+    id: "promptfoo-grader-near-miss",
+    skill: "promptfoo-eval-construction",
+    scenario: "A preview-only task has two stored answers: one selects preview, the other selects preview plus publish. The Promptfoo assertion accepts both because each contains preview. How does the author establish a usable grader?",
+    choices: {
+      A: "Fix the assertion against the authorized selection from the task contract. Replay both answers and demand opposite results.",
+      B: "Change the prompt to emphasize preview while keeping the same assertion.",
+      C: "Use the more frequent answer from the next live run as the expected result.",
+      D: "Keep the stored answers and grading rationale out of the model prompt.",
+    },
+    expected: ["A", "D"],
+    rationale: "The extra effect violates the task. The accepted response and its one-choice mutation expose the permissive assertion without leaking the answer.",
+  },
+  {
+    id: "promptfoo-supplied-text-scope",
+    skill: "promptfoo-eval-construction",
+    scenario: "The release question is whether a host discovers a skill on a matching task and skips it for a near miss. A fresh Promptfoo run supplied the skill directly. Both loaded and no-skill prompts chose the expected actions. Which claims or next steps fit?",
+    choices: {
+      A: "Use the supplied-text pass to record that host discovery selected the skill.",
+      B: "Record the observed decisions and the tied result on these prompts.",
+      C: "Run both tasks through normal host discovery and inspect independent route evidence for each.",
+      D: "Attribute improved routing to the skill because the loaded prompt passed.",
+    },
+    expected: ["B", "C"],
+    rationale: "Supplying text bypasses discovery. A matching decision score cannot identify a routing effect or a benefit over the control.",
   },
   {
     id: "python-portable-script",

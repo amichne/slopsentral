@@ -137,6 +137,9 @@ For prose changes, run `mise exec -- slopsentral-prose changed`. Keep its report
 `source/evals/promptfoo/cases.mts` owns active decision cases and expected answers,
 including the session-grounded regressions. Extend this owner instead of adding
 a parallel decision catalog or campaign runner.
+For each example used to judge a model decision or its scope, identify the case that covers it.
+Backfill missing cases in the same pull request, including the nearest example where the expected action changes.
+`promptfoo-eval-construction` describes how to choose the suite and exercise its assertions.
 `promptfooconfig.ts` selects the live decision suite. `tools/promptfoo` owns the adapters.
 Read skill text from `source/skills`, not generated trees or installed caches.
 Supply case-specific routed references explicitly and record their source hashes.

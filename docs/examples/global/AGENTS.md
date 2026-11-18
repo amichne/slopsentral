@@ -62,6 +62,7 @@ Use the strongest mechanisms that the project's language and tools support.
 - Give each invariant, transition, default, and protocol rule one authoritative owner.
 - Derive other representations from that owner.
 - Put behavior with the smallest type or module that owns its meaning.
+- Choose directory names that let a reader enter or skip a branch from the task alone.
 - Do not infer ownership from syntax or convenience.
 - Keep small public interfaces that preserve facts consumers need.
 - Hide implementation choices and keep necessary effects explicit.

@@ -13,7 +13,7 @@ function plugin(name) {
   return readJson(`source/plugins/${name}/plugin.json`);
 }
 
-test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () => {
+test("IntelliJ profile shares Directory Design and selects each hook once", () => {
   const intellij = plugin("intellij-plugin-development");
   assert.deepEqual(intellij.skills.map(({ name }) => name), [
     "intellij-plugin-delivery",
@@ -45,10 +45,11 @@ test("IntelliJ workflow composes shared Kotlin and delivery plugins once", () =>
 
   assert.deepEqual(
     [...skillOwners].filter(([, owners]) => owners.length > 1),
-    [],
+    [["directory-design", ["software-engineering", "kotlin-engineering"]]],
   );
   assert.deepEqual([...hookOwners.keys()].sort(), [
     "agents-md-scope",
     "software-engineering-context",
   ]);
+  assert.ok([...hookOwners.values()].every(owners => owners.length === 1));
 });
