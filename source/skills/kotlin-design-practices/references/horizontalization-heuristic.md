@@ -34,9 +34,10 @@ first; implementation detail belongs under named subpackages.
 
 ## Choose a directory from the task
 
-The hook splits peer filenames into PascalCase tokens. It skips `Default`, `Base`,
-`Abstract`, `Internal`, `Impl`, `Test`, and `Spec`. It reports groups of three or
-more files that share the first token or the first two tokens that remain.
+The hook splits each peer filename into PascalCase tokens. It removes `Default`,
+`Base`, `Abstract`, `Internal`, `Impl`, `Test`, and `Spec` from each token list.
+For example, `InternalInvoiceLine.kt` counts toward both `Invoice` and `Invoice Line`.
+The hook reports three or more peers with the same first token or first two tokens left.
 
 If a group covers at least half the directory, examine it first.
 **Which task tells a reader to enter this directory, and which task lets them skip it?**
