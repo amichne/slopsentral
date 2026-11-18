@@ -470,7 +470,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/horizontalization-heuristic.md",
-      "sha256": "57499b4905aa38e9c2ea9df551a83f04c11fa628ae91066be21b1ceb4ab3c6d9"
+      "sha256": "ae1490ce65a6634e9664daedc8a746cdc548675db2404437df09f49715ea1122"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/idioms.md",
@@ -482,7 +482,7 @@
     },
     {
       "path": "source/skills/kotlin-design-practices/references/layout-package-code-style.md",
-      "sha256": "8a42a56db618f92d86aec4a66637fb53cb3651bcc3aa12be4defa0d1dc1826d4"
+      "sha256": "d7fe05e66f5ee82f85e413467c8aff1406838e9f9bfda2cdf0e237e7d6325ee3"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/parse-dont-validate-examples.md",

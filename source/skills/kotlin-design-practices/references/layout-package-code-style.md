@@ -15,9 +15,8 @@ expression-style decisions.
   Shared code should earn its place by serving multiple stable owners.
 - Prefer vertical feature/domain grouping over cross-cutting slices such as
   `validators`, `mappers`, or `extensions`.
-- Use `horizontalization-heuristic.md` for advisory layout review: 6 or more
-  direct Kotlin files or 3 peer filenames sharing a domain prefix invite
-  inspection. Counts and names alone do not prove a defect or block completion.
+- Consult the [directory heuristic](horizontalization-heuristic.md) for six or more direct Kotlin files
+  or three peers with a shared prefix. Use it to decide which child a reader can enter or skip.
 
 ## File Layout
 
@@ -37,7 +36,11 @@ expression-style decisions.
 ## Naming
 
 - Name packages and types from the reader's point of view at the call site.
-- Avoid repeating package context in type names.
+- Omit visibility modifiers from directory, file, and declaration names when they
+  only describe access. In `shell/jq/`, `JqWorker` still identifies the worker
+  at a call site. `PublicJqWorker` adds no detail about its job.
+- Keep visibility words that describe the domain. `PublicKey` names a kind of
+  key. `KotlinVisibility.Public` names a value the program inspects.
 - Prefer domain nouns and verbs over implementation roles like `Manager`,
   `Processor`, `Handler`, or `Util`.
 - Use suffixes only when they disambiguate real alternatives: `Parser`,

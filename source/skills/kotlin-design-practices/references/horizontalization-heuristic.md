@@ -18,7 +18,7 @@ not prove a semantic defect or justify blocking completion.
 
 ## Directory Limits
 
-Treat package depth as a visible API design choice.
+Use direct file counts to choose directories for review.
 
 | Condition | Result |
 | --- | --- |
@@ -32,46 +32,23 @@ The root rule is stricter because root files become the visible vocabulary of a
 module. A root should expose only the few concepts a reader must understand
 first; implementation detail belongs under named subpackages.
 
-## Prefix Cluster Rule
+## Choose a directory from the task
 
-For each package directory:
+The hook splits peer filenames into PascalCase tokens. It skips `Default`, `Base`,
+`Abstract`, `Internal`, `Impl`, `Test`, and `Spec`. It reports groups of three or
+more files that share the first token or the first two tokens that remain.
 
-1. Split direct Kotlin file stems into PascalCase tokens.
-2. Ignore generic tokens that only describe implementation roles:
-   `Default`, `Base`, `Abstract`, `Internal`, `Impl`, `Test`, `Spec`.
-3. Group files by their first meaningful token and first two meaningful tokens.
-4. If a group has 3 or more files, mark it as an extraction candidate.
-5. If the group represents at least half the directory, prioritize semantic
-   inspection. Keep a coherent package intact when its ownership is justified.
+If a group covers at least half the directory, examine it first.
+**Which task tells a reader to enter this directory, and which task lets them skip it?**
 
-Example:
+For example, `PublicJqEngine.kt`, `PublicJqProcess.kt`, and `PublicJqWorker.kt`
+share the prefix `PublicJq`. The broader prefix `Public` also includes `PublicCliHelp.kt`. A `public/` directory sends a reader to
+the same place for jq worker startup and shell help. Under `shell/`, a reader
+can choose `jq/` for worker startup and skip it for shell help.
 
-```text
-standalone/
-  StandaloneAnalysisSession.kt
-  StandaloneDeclarationScanner.kt
-  StandaloneReferenceScanner.kt
-  StandaloneIndexEnvironment.kt
-  StandaloneLifecycle.kt
-```
-
-This should usually become:
-
-```text
-standalone/
-  AnalysisSession.kt
-  lifecycle/
-    Lifecycle.kt
-  scanning/
-    DeclarationScanner.kt
-    ReferenceScanner.kt
-  index/
-    Environment.kt
-```
-
-The desired result is not deeper nesting for its own sake. The desired result is
-fewer redundant prefixes, smaller package vocabularies, and types whose names
-make sense at the call site.
+Try the proposed tree with a new task before you pick a filename. Can a
+contributor place a new jq timeout policy from the names in `shell/` alone?
+If another level adds no choice, keep the files together.
 
 ## File Ownership Rule
 
