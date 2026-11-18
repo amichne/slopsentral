@@ -18,7 +18,7 @@ not prove a semantic defect or justify blocking completion.
 
 ## Directory Limits
 
-Treat package depth as a visible API design choice.
+Use direct file counts to choose directories for review.
 
 | Condition | Result |
 | --- | --- |
@@ -32,46 +32,17 @@ The root rule is stricter because root files become the visible vocabulary of a
 module. A root should expose only the few concepts a reader must understand
 first; implementation detail belongs under named subpackages.
 
-## Prefix Cluster Rule
+## Read the Kotlin prefix report
 
-For each package directory:
+The hook splits each peer filename into PascalCase tokens. It removes `Default`,
+`Base`, `Abstract`, `Internal`, `Impl`, `Test`, and `Spec` from each token list.
+For example, `InternalInvoiceLine.kt` counts toward both `Invoice` and `Invoice Line`.
+The hook reports three or more peers with the same first token or first two tokens left.
 
-1. Split direct Kotlin file stems into PascalCase tokens.
-2. Ignore generic tokens that only describe implementation roles:
-   `Default`, `Base`, `Abstract`, `Internal`, `Impl`, `Test`, `Spec`.
-3. Group files by their first meaningful token and first two meaningful tokens.
-4. If a group has 3 or more files, mark it as an extraction candidate.
-5. If the group represents at least half the directory, prioritize semantic
-   inspection. Keep a coherent package intact when its ownership is justified.
-
-Example:
-
-```text
-standalone/
-  StandaloneAnalysisSession.kt
-  StandaloneDeclarationScanner.kt
-  StandaloneReferenceScanner.kt
-  StandaloneIndexEnvironment.kt
-  StandaloneLifecycle.kt
-```
-
-This should usually become:
-
-```text
-standalone/
-  AnalysisSession.kt
-  lifecycle/
-    Lifecycle.kt
-  scanning/
-    DeclarationScanner.kt
-    ReferenceScanner.kt
-  index/
-    Environment.kt
-```
-
-The desired result is not deeper nesting for its own sake. The desired result is
-fewer redundant prefixes, smaller package vocabularies, and types whose names
-make sense at the call site.
+If a group covers at least half the directory, examine it first.
+Use `directory-design` to compare the groups with the tasks readers bring to the package.
+In Kast, `PublicJqWorker.kt` and `PublicCliHelp.kt` both count toward `Public`.
+A new jq timeout policy belongs with worker startup under `shell/jq/`. Shell help can skip that directory.
 
 ## File Ownership Rule
 

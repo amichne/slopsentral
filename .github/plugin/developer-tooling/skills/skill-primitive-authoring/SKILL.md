@@ -8,6 +8,7 @@ description: "Create, consolidate, or assess reusable skills and agent profiles.
 Give each reusable workflow one owner, one trigger, and an explicit result.
 Use this skill for skills, agent profiles, and routing evidence.
 Use model-instruction-design for behavior contracts in the instructions themselves.
+Use `promptfoo-eval-construction` to capture review examples as cases in the same pull request.
 Use `plugin-composition-authoring` for installable compositions, hooks, and repository instruction scope.
 
 ## Contract
