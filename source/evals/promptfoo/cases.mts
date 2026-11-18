@@ -4,6 +4,7 @@ export type Skill =
   | "git-change-flow"
   | "github-ci-operations"
   | "pull-request-lifecycle"
+  | "directory-design"
   | "kotlin-design-practices"
   | "python-tooling"
   | "controlled-technical-writing"
@@ -23,6 +24,15 @@ export interface DecisionCase {
   readonly expected: readonly string[];
   readonly rationale: string;
 }
+
+// Hold the files and candidate trees fixed when the readers' tasks change.
+const reportInventory = "reports/ has four Python modules. folio.py writes invoice CSV, statement.py writes invoice JSON, reversal.py writes refund CSV, and credit.py writes refund JSON.";
+const reportTrees = {
+  A: "Create invoices/ and refunds/. Place each writer under its business operation.",
+  B: "Create folders for both formats under each operation and copy each writer into a second tree for format-wide changes.",
+  C: "Create csv/ and json/. Place each writer under its output format.",
+  D: "Wait for at least three filenames to share a leading word before proposing a directory.",
+};
 
 // The oracle stays outside the rendered prompt. Change a case ID when its meaning changes.
 export const cases: readonly DecisionCase[] = [
@@ -324,8 +334,7 @@ export const cases: readonly DecisionCase[] = [
   },
   {
     id: "kotlin-layout-kast-task-placement",
-    skill: "kotlin-design-practices",
-    references: ["references/horizontalization-heuristic.md"],
+    skill: "directory-design",
     scenario: "A Kast shell audit lists 29 Public peers. Nine PublicJq peers start and supervise jq workers. PublicCliHelp renders help without those workers. Choose a tree for the next two changes: a worker timeout policy with no filename yet, and a help-text correction.",
     choices: {
       A: "Use shell/jq/ for the timeout policy. A contributor can skip that directory for the help correction.",
@@ -338,8 +347,7 @@ export const cases: readonly DecisionCase[] = [
   },
   {
     id: "kotlin-layout-ledger-placement",
-    skill: "kotlin-design-practices",
-    references: ["references/horizontalization-heuristic.md"],
+    skill: "directory-design",
     scenario: "ledger/ contains LedgerEntry.kt, LedgerEntryAmount.kt, LedgerEntryCurrency.kt, LedgerPostingRule.kt, and LedgerPostingWindow.kt. One task changes the currency of an entry. Another changes the deadline for posting. Where can a contributor place each change before choosing a filename?",
     choices: {
       A: "Add ledger/ledger/ and send both tasks there because every file shares Ledger.",
@@ -352,8 +360,7 @@ export const cases: readonly DecisionCase[] = [
   },
   {
     id: "kotlin-layout-coherent-peers",
-    skill: "kotlin-design-practices",
-    references: ["references/horizontalization-heuristic.md"],
+    skill: "directory-design",
     scenario: "ledger/entry/ contains LedgerEntry.kt, LedgerEntryAmount.kt, and LedgerEntryCurrency.kt. Together they define one value. Contributors already choose entry/ for changes to that value and skip it for posting rules. The audit flags all three peers. What action does this evidence support?",
     choices: {
       A: "Add ledger/entry/ledger/ because the group covers every direct file.",
@@ -379,8 +386,7 @@ export const cases: readonly DecisionCase[] = [
   },
   {
     id: "kotlin-layout-access-only-name",
-    skill: "kotlin-design-practices",
-    references: ["references/layout-package-code-style.md"],
+    skill: "directory-design",
     scenario: "The internal class PublicJqWorker supervises jq processes. Public was a label for access. Callers import both shell workers and jq workers. The class and its file can move together. Which destination and declaration suit these callers?",
     choices: {
       A: "shell/jq/Worker.kt with internal class Worker",
@@ -393,8 +399,7 @@ export const cases: readonly DecisionCase[] = [
   },
   {
     id: "kotlin-layout-domain-visibility",
-    skill: "kotlin-design-practices",
-    references: ["references/layout-package-code-style.md"],
+    skill: "directory-design",
     scenario: "A bulk rename targets the internal type PublicKey, which represents one half of an asymmetric key pair, and the enum entry KotlinVisibility.Public. The latter describes a declaration in inspected source. Which names does the reviewer keep?",
     choices: {
       A: "Keep PublicKey because callers distinguish the two kinds of key.",
@@ -404,6 +409,48 @@ export const cases: readonly DecisionCase[] = [
     },
     expected: ["A", "D"],
     rationale: "Each name carries a distinction in the represented domain. The modifier on the declaring type cannot express either distinction.",
+  },
+  {
+    id: "directory-design-operation-first",
+    skill: "directory-design",
+    scenario: `${reportInventory} Eight planned changes each affect one operation across both formats. Two each affect one format across both operations. Which first split lets readers open the fewest child directories across those ten tasks? Each writer must have one home.`,
+    choices: reportTrees,
+    expected: ["A"],
+    rationale: "By operation, the eight operation changes enter one child each and the two format changes enter two each: twelve visits. By format, they need eighteen.",
+  },
+  {
+    id: "directory-design-format-first",
+    skill: "directory-design",
+    scenario: `${reportInventory} Two planned changes each affect one operation across both formats. Eight each affect one format across both operations. Which first split lets readers open the fewest child directories across those ten tasks? Each writer must have one home.`,
+    choices: reportTrees,
+    expected: ["C"],
+    rationale: "Grouping the same files by format now needs twelve child visits. Grouping by operation needs eighteen. Filenames and available axes stayed fixed.",
+  },
+  {
+    id: "directory-design-next-axis",
+    skill: "directory-design",
+    scenario: "Readers enter docs/ by product. Under sync/, operators use recovery procedures and app developers use integration guides. Each audience can skip the other's guides. Under archive/, both audiences use the same restore procedure. Where does a split by audience help?",
+    choices: {
+      A: "Place operators/ and developers/ under both products to keep their structures symmetric.",
+      B: "Move audiences to the root so their names appear only once across all products.",
+      C: "Keep sync/ flat because archive/ has only one procedure.",
+      D: "Give sync/ a child for each audience. Keep the shared restore procedure directly under archive/.",
+    },
+    expected: ["D"],
+    rationale: "Product identifies the first choice. Audience helps a reader skip a set of guides under sync/. A second choice under archive/ leads to the same procedure.",
+  },
+  {
+    id: "directory-design-go-access-contract",
+    skill: "directory-design",
+    scenario: "In a Go module, payments/internal/format/ limits imports to the payments tree. The package declares internalRow for an unexported row and InternalTransfer for a transfer between company accounts. The author wants to remove access labels while keeping import restrictions, exported names, and domain meaning. Which edits fit?",
+    choices: {
+      A: "Move format/ directly under payments/. Its name still describes its work.",
+      B: "Keep payments/internal/format/ because Go uses that path to enforce the import restriction.",
+      C: "Rename internalRow to row. Both spellings keep the same access and the name still identifies a row.",
+      D: "Rename InternalTransfer to Transfer because the exported type needs no access label.",
+    },
+    expected: ["B", "C"],
+    rationale: "The path enforces access, the lowercase initial keeps row unexported, and InternalTransfer names a business distinction in an exported contract.",
   },
   {
     id: "promptfoo-review-backfill",

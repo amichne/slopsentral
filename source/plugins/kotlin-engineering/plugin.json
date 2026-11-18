@@ -25,6 +25,15 @@
         "type": "LOCAL_SOURCE",
         "path": "./"
       },
+      "path": "skills/directory-design",
+      "name": "directory-design"
+    },
+    {
+      "type": "SKILL",
+      "source": {
+        "type": "LOCAL_SOURCE",
+        "path": "./"
+      },
       "path": "skills/kotlin-review",
       "name": "kotlin-review"
     },

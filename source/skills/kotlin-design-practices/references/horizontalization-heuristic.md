@@ -32,7 +32,7 @@ The root rule is stricter because root files become the visible vocabulary of a
 module. A root should expose only the few concepts a reader must understand
 first; implementation detail belongs under named subpackages.
 
-## Choose a directory from the task
+## Read the Kotlin prefix report
 
 The hook splits each peer filename into PascalCase tokens. It removes `Default`,
 `Base`, `Abstract`, `Internal`, `Impl`, `Test`, and `Spec` from each token list.
@@ -40,16 +40,9 @@ For example, `InternalInvoiceLine.kt` counts toward both `Invoice` and `Invoice 
 The hook reports three or more peers with the same first token or first two tokens left.
 
 If a group covers at least half the directory, examine it first.
-**Which task tells a reader to enter this directory, and which task lets them skip it?**
-
-For example, `PublicJqEngine.kt`, `PublicJqProcess.kt`, and `PublicJqWorker.kt`
-share the prefix `PublicJq`. The broader prefix `Public` also includes `PublicCliHelp.kt`. A `public/` directory sends a reader to
-the same place for jq worker startup and shell help. Under `shell/`, a reader
-can choose `jq/` for worker startup and skip it for shell help.
-
-Try the proposed tree with a new task before you pick a filename. Can a
-contributor place a new jq timeout policy from the names in `shell/` alone?
-If another level adds no choice, keep the files together.
+Use `directory-design` to compare the groups with the tasks readers bring to the package.
+In Kast, `PublicJqWorker.kt` and `PublicCliHelp.kt` both count toward `Public`.
+A new jq timeout policy belongs with worker startup under `shell/jq/`. Shell help can skip that directory.
 
 ## File Ownership Rule
 
