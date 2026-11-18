@@ -28,6 +28,7 @@ Design proof-preserving boundaries and implement, verify, and deliver software w
 
 ## Skill Primitives
 
+- `directory-design`: `skills/directory-design` (source: `source/skills/directory-design`)
 - `git-change-flow`: `skills/git-change-flow` (source: `source/skills/git-change-flow`)
 - `github-ci-operations`: `skills/github-ci-operations` (source: `source/skills/github-ci-operations`)
 - `issue-tracker-operations`: `skills/issue-tracker-operations` (source: `source/skills/issue-tracker-operations`)
