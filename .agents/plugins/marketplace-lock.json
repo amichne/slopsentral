@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T23:54:47-05:00",
+  "generatedAt": "2026-11-18T15:32:09-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -27,10 +27,17 @@
         },
         {
           "name": "engineering-design",
-          "sha256": "sha256:8c244312e332a0be9ead6cb845104836711fd393cb501ad2fe3839cc8f677b44",
+          "sha256": "sha256:253d352970441695e022a4be1dcaf0e1f88e9e453eb11c1f5dad56df65480869",
           "sourcePath": "source/instructions/engineering-design.md",
           "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
+        },
+        {
+          "name": "directory-design",
+          "sha256": "sha256:7115045f8e5af4a3b14c5215d10ab8cd2755eebe152d4106016466338492bf4c",
+          "sourcePath": "source/skills/directory-design",
+          "targetPath": "skills/directory-design",
+          "type": "SKILL"
         },
         {
           "name": "git-change-flow",
@@ -96,6 +103,13 @@
       "name": "kotlin-engineering",
       "references": [
         {
+          "name": "directory-design",
+          "sha256": "sha256:7115045f8e5af4a3b14c5215d10ab8cd2755eebe152d4106016466338492bf4c",
+          "sourcePath": "source/skills/directory-design",
+          "targetPath": "skills/directory-design",
+          "type": "SKILL"
+        },
+        {
           "name": "gradle-performance-engineering",
           "sha256": "sha256:2ebbfbb19c9af7af799773fdba391a96688e084c116981f7e534101414fddc2c",
           "sourcePath": "source/skills/gradle-performance-engineering",
@@ -111,7 +125,7 @@
         },
         {
           "name": "kotlin-design-practices",
-          "sha256": "sha256:fdd7d82275e34dc9e8e44418383a9b6d887f3094cb8bfcec09fa284f7cd27d21",
+          "sha256": "sha256:cecd0ea2084e51d200185535a23e6e541d3e9d30dcc41f23225f3a4225425e23",
           "sourcePath": "source/skills/kotlin-design-practices",
           "targetPath": "skills/kotlin-design-practices",
           "type": "SKILL"
@@ -313,6 +327,13 @@
           "type": "SKILL"
         },
         {
+          "name": "promptfoo-eval-construction",
+          "sha256": "sha256:5bbfd3998bdc3bc59947831ffa6ed02a02fc71eb6eed1b88517fee5ba7e3da71",
+          "sourcePath": "source/skills/promptfoo-eval-construction",
+          "targetPath": "skills/promptfoo-eval-construction",
+          "type": "SKILL"
+        },
+        {
           "name": "python-tooling",
           "sha256": "sha256:4dff96e14f6aa8a5cc93eba1ba99c62323aa0a8708ed888563b487601f7dfc62",
           "sourcePath": "source/skills/python-tooling",
@@ -321,7 +342,7 @@
         },
         {
           "name": "skill-primitive-authoring",
-          "sha256": "sha256:fde1ae1876014f130c8549c29fc98e5b56a4e07ab201bcfa79bfc959bb4e4b06",
+          "sha256": "sha256:6f076d4aa3f849ebfeea07edb3fa4a26594957daa9ef7cf5f541e663f30969e3",
           "sourcePath": "source/skills/skill-primitive-authoring",
           "targetPath": "skills/skill-primitive-authoring",
           "type": "SKILL"
@@ -332,6 +353,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "3fdc5c324ae39df247cac9c44bb535ddbaac9edd",
+  "sourceSha": "1859a9f407c4d7521b8bc64e8751bbb9ab060639",
   "type": "HYDRATED_MARKETPLACE"
 }

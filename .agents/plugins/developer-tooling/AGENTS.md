@@ -37,5 +37,6 @@ Author typed Python tools, schemas, Pkl contracts, and agent resources. Install 
 - `personal-setup-management`: `skills/personal-setup-management` (source: `source/skills/personal-setup-management`)
 - `pkl-engineering`: `skills/pkl-engineering` (source: `source/skills/pkl-engineering`)
 - `plugin-composition-authoring`: `skills/plugin-composition-authoring` (source: `source/skills/plugin-composition-authoring`)
+- `promptfoo-eval-construction`: `skills/promptfoo-eval-construction` (source: `source/skills/promptfoo-eval-construction`)
 - `python-tooling`: `skills/python-tooling` (source: `source/skills/python-tooling`)
 - `skill-primitive-authoring`: `skills/skill-primitive-authoring` (source: `source/skills/skill-primitive-authoring`)

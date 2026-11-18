@@ -5,19 +5,14 @@ expression-style decisions.
 
 ## Package Layout
 
-- A package is a semantic boundary, not a folder for a technical concern. Name it
-  for the domain unit it owns.
-- Avoid broad packages such as `common`, `utils`, `helpers`, `support`, or
-  `internal` unless the repository already gives them a precise meaning.
-- Let the package remove prefixes from type names. `workspace.Parser` is usually
-  clearer than `workspace.WorkspaceParser`.
+- Use `directory-design` to choose which distinction belongs first in a package path.
+- Examine imported names at their Kotlin call sites before dropping a package qualifier from a type name.
+- If callers change one feature at a time, keep its validators and mappers in that feature's package.
+- Give shared code a name that identifies what its callers share. A broad name such as `common` needs an established meaning.
 - Move code closer to the behavior it serves before creating shared packages.
   Shared code should earn its place by serving multiple stable owners.
-- Prefer vertical feature/domain grouping over cross-cutting slices such as
-  `validators`, `mappers`, or `extensions`.
-- Use `horizontalization-heuristic.md` for advisory layout review: 6 or more
-  direct Kotlin files or 3 peer filenames sharing a domain prefix invite
-  inspection. Counts and names alone do not prove a defect or block completion.
+- Consult the [directory heuristic](horizontalization-heuristic.md) for six or more direct Kotlin files
+  or three peers with a shared prefix.
 
 ## File Layout
 
@@ -36,8 +31,8 @@ expression-style decisions.
 
 ## Naming
 
-- Name packages and types from the reader's point of view at the call site.
-- Avoid repeating package context in type names.
+- In `shell/jq/`, the declaration `internal class JqWorker` expresses access and distinguishes the worker at import sites.
+- `KotlinVisibility.Public` identifies a value in inspected Kotlin source.
 - Prefer domain nouns and verbs over implementation roles like `Manager`,
   `Processor`, `Handler`, or `Util`.
 - Use suffixes only when they disambiguate real alternatives: `Parser`,
