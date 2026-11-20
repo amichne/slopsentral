@@ -27,12 +27,17 @@ Do not infer runtime delivery from a valid manifest.
    Discover its actual plugin API; a Codex manifest, Pi extension, and Amp
    directory plugin are different delivery contracts.
 2. Inspect canonical primitives, callers, runtime adapters, schemas, and current projection commands.
-3. Reuse independent primitives and declare dependencies through local references.
+3. Reuse a canonical primitive when it supplies the needed behavior. Extend its
+   owner for a missing branch; create a primitive only for a responsibility
+   that has no suitable owner. Declare dependencies through local references.
+   A composition review can report the supported choice without editing or installing it.
 4. For hooks, define the event, input, output, timeout, and failure policy before code.
 5. For instructions, place shared rules at their owning ancestor and local differences in scoped files.
-6. Change the owning source and update its catalog references.
-7. Run the owning repository's graph and composition checks.
-8. Generate each supported host target into a fresh output directory. Record
+6. For an authorized implementation, change the owning source and update its
+   catalog references. Keep copied payloads and installed caches out of this path.
+7. After source changes, run the owning repository's graph and composition checks.
+8. For a composition or projection change, generate each supported host target
+   into a fresh output directory. Record
    unsupported capabilities explicitly rather than copying foreign hook config
    and claiming activation.
 9. For hook changes, run the configured command with success and failure inputs outside the plugin root.
@@ -55,14 +60,20 @@ git diff --check
 
 ## References
 
-- Read [plugin shape](references/referential-plugin-shape.md) for primitive references and resource dependencies.
-- Read [marketplace catalog](references/marketplace-catalog.md) for catalog entries and projection proof.
-- Read [hooks](references/hooks.md) for event protocols, runtime adapters, dependency declarations, and executable proof.
-- Read [instruction scope](references/instruction-scope.md) for source ownership and scoped `AGENTS.md` files.
+- Before changing primitive references or resource dependencies, read
+  [plugin shape](references/referential-plugin-shape.md).
+- When changing catalog entries or qualifying provider output, read
+  [marketplace catalog](references/marketplace-catalog.md).
+- Before changing a hook or runtime adapter, read [hooks](references/hooks.md)
+  for event protocols, dependency declarations, and executable proof.
+- Before changing instruction ownership or scoped `AGENTS.md` files, read
+  [instruction scope](references/instruction-scope.md).
 
 ## Completion
 
-Every reference resolves to one canonical owner.
-The catalog, schemas, selected profile, and provider projections agree.
-Hook output obeys the host protocol under representative execution.
-Report static acceptance separately from installed host evidence.
+For an implemented change, every reference resolves to one canonical owner and
+the catalog, schemas, selected profile, and provider projections agree.
+Changed hooks obey the host protocol under representative execution.
+For a review, report the inspected contracts and proposed checks.
+Report static acceptance separately from installed host evidence; neither a
+review nor a successful projection authorizes installation.

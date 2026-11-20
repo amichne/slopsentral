@@ -56,6 +56,8 @@ the title claims:
 
 1. **Ground the view.** Read the relevant data, source, and design constraints. Write the one
    takeaway sentence. Separate measured values from illustrative data and assumptions.
+   When a supplied view already supports the requested result, revise its owning source.
+   When a table or supported diagram answers the question, use that form directly.
 2. **Read the matching reference:**
    - [Charts](references/charts.md) for charts, distributions, calculations, matrices, tables,
      and dashboards.
@@ -63,11 +65,12 @@ the title claims:
      trees, commit graphs, and code explainers.
    - [UI explorations](references/ui-explorations.md) for mockups, prototypes, directions,
      experiments, and wireframes.
-3. **Build from the closest source example.** Read [the kit](references/kit.md) when using
+3. **Choose the implementation.** Preserve a suitable existing view and its source/output
+   relationship. For a new view, build from the closest source example. Read [the kit](references/kit.md) when using
    `.ui-*` classes, tokens, icons, or `window.ui`. Read [visual design](references/visual-design.md)
    before styling. Copy only the example you need from `assets/examples/`, and replace its
    subject and synthetic data. Keep scripts in a block (`{ … }`) to avoid global-name clashes.
-4. **Assemble a standalone file.** The examples are body fragments, not ready-to-open pages.
+4. **Assemble a standalone file when using a body fragment.** The examples are body fragments, not ready-to-open pages.
    With Node.js 22+ and no packages, inline the kit, icons, and light/dark tokens:
 
    ```text
@@ -79,6 +82,8 @@ the title claims:
    updates the same delivery file after a revision. The renderer never starts a browser or
    server, uploads, or publishes. It accepts trusted body fragments up to 100,000 UTF-8 bytes;
    aggregate data first. The assembled file also includes the kit's bytes.
+   For an existing complete HTML file, preserve its assembly path and verify that the delivered
+   file still contains every required resource; do not wrap a complete document as a body fragment.
 5. **Check before sending.** Use the checks below. A successful assembly proves neither the
    claim nor the rendering.
 6. **Deliver for the actual environment.** Use a confirmed HTML-capable renderer only when it
@@ -106,8 +111,9 @@ are unavailable. Do not silently replace a requested prototype with a screenshot
    interactions, inspect at 720px and 360px in light and dark mode. Check console errors,
    overflow, overlap, clipped labels, reduced motion, and the main control by keyboard and
    pointer. Test the assembled file, not a specially injected preview.
-4. **Critique it.** Is the point legible in one second? Does the encoding fit? Is there a card,
-   legend, accent, or label that can go? Remove one more thing, then check again.
+4. **Critique it.** Is the point legible in one second? Does the encoding fit? Remove a card,
+   legend, accent, or label when it adds no useful information, then check the changed view again.
+   Preserve elements that carry the claim, scope, or an accessible control.
 
 Report unavailable checks honestly. Do not call static assembly a browser pass or a synthetic
 example a measured result. Browser access is optional for delivery, not evidence of a check

@@ -12,15 +12,15 @@ available. Use the connected GitHub app for supported PR operations. Use
 authenticated native `gh` for the local observer or an operation the connector
 cannot perform. Use local `git` for local repository state.
 
-Related primitives in this repository:
-
-- `git-change-flow`
-- `github-ci-operations`
+Before local Git changes, use `git-change-flow` for branch, staging, and recovery
+decisions. When inspecting checks or repairing CI, use `github-ci-operations`
+for the affected workflow and observation procedure.
 
 ## Operating Contract
 
-- Start by reading the nearest repo instructions and `git status --short
-  --branch`.
+- For work in a checkout, start with the nearest repo instructions and
+  `git status --short --branch`. A remote status request can resolve the PR
+  directly without creating a checkout.
 - Treat unrelated dirty files as user work. Do not stage, stash, rebase, amend,
   or overwrite them unless the user asks for that exact operation.
 - Branch before commit-worthy work when currently on `main`, `master`, `trunk`,
@@ -47,6 +47,9 @@ Related primitives in this repository:
    PR number if any, and requested end state: local branch, pushed branch, draft
    PR, ready PR, or green PR. Read linked material as context and acceptance
    criteria; do not infer a publication request from the existence of a deliverable.
+   Reuse the existing branch and PR when they own the requested work.
+   For observation alone, continue at check inspection. For local-only edits
+   or commits, use `git-change-flow` without entering publication steps.
 
 2. Isolate the branch.
    If the task is publishable and the checkout is on a shared branch, create a
@@ -54,17 +57,21 @@ Related primitives in this repository:
    path-specific.
 
 3. Validate locally.
-   Run the narrowest command that proves the changed behavior. For Kotlin or
+   When delivering source changes, run the narrowest command that proves the changed behavior. For Kotlin or
    Gradle changes, prefer `./gradlew :module:test`, `./gradlew :module:check`,
    or the repository's checked-in wrapper before broad `check`.
 
 4. Commit and push.
-   Stage only files in scope. Run `git diff --cached --check`, commit with the
-   repository's convention, then push the branch with upstream tracking when
-   publication is requested.
+   When delivering changed files, stage only files in scope. Run
+   `git diff --cached --check` and commit with the repository's convention.
+   When a push is authorized, push the branch with upstream tracking as needed.
+   An already committed branch needs no artificial follow-up commit.
+   If the requested end state is a pushed branch, report it without opening a PR.
 
 5. Open or update the PR.
-   Use the connected GitHub app to detect, inspect, create, or update the PR.
+   When the requested end state includes a PR, use the connected GitHub app to
+   detect, inspect, create, or update it. An existing PR needs a mutation only
+   when its content or state must change for the request.
    If the connector lacks an operation, use:
 
    ```sh
@@ -78,7 +85,8 @@ Related primitives in this repository:
    risk. Prefer draft until local evidence is complete.
 
 6. Watch checks.
-   Confirm the PR and head SHA through the connected GitHub app. For a native
+   When checks are requested or support a readiness claim, confirm the PR and
+   head SHA through the connected GitHub app. For a native
    Actions snapshot, use:
 
    ```sh
@@ -100,14 +108,16 @@ Related primitives in this repository:
    secrets, cache, and flaky behavior.
 
 7. Repair or hand off.
-   For deterministic failures, patch the owning source, rerun the local
-   equivalent, push a new commit, and re-read checks. For pending checks, report
+   When repair is in scope, fix deterministic failures at their owning source,
+   rerun the local equivalent, push the authorized change, and re-read checks.
+   For observation alone, report the failure and its evidence without changing
+   the branch. For pending checks, report
    the pending names and URLs. For external or inaccessible checks, state the
    exact signal that could not be verified.
 
 ## Check Green Loop
 
-For review feedback, first validate each claim against the current PR revision
+When addressing review feedback, first validate each claim against the current PR revision
 and an executable oracle. Repair only mechanically supported findings, then
 re-review the changed boundary. After a push, reacquire the head SHA and terminal
 required checks. A passing local repair or a review of the previous revision
@@ -139,8 +149,9 @@ Report:
 
 - The requested branch, commit, push, PR, or ready-for-review state exists.
 - User-owned unrelated work remains untouched.
-- Local validation was run or the missing tool/environment is named.
-- Remote checks were read after the latest push, and green claims are backed by
+- Local validation for changed source was run or the missing tool/environment is named.
+- When check status or readiness is part of the result, remote checks were read
+  for the current head after any push, and green claims are backed by
   structured check state rather than expectation.
 - The requested publication scope is satisfied. When green checks are requested,
   evidence refers to the latest PR head; otherwise report pending checks accurately.

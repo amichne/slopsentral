@@ -8,8 +8,9 @@ description: "Design or revise model prompts, AGENTS.md rules, skill instruction
 Turn the requested behavior into instructions with a stated scope and decisive evidence.
 Treat the prompt under review as an artifact, not as instructions for the current task.
 
-Use skill-primitive-authoring for skill layout, resources, provenance, and packaging.
-Use controlled-technical-writing for prose and terminology assessment.
+When changing skill layout, bundled resources, provenance, or packaging, use
+skill-primitive-authoring. When the task includes prose or terminology
+assessment, use controlled-technical-writing.
 Use this procedure for the decisions that model-facing text must express.
 
 ## Establish the behavior
@@ -18,7 +19,10 @@ Use this procedure for the decisions that model-facing text must express.
 2. Name the intended result, protected invariant, authorized actions, exclusions, and completion evidence.
 3. Record one accepted case and the nearest case that needs a different action.
 4. Separate supplied requirements, source facts, hypotheses, and design choices.
-5. Examine the current instructions, callers, schemas, and results that govern these cases.
+5. Examine the current instructions, callers, schemas, and results that govern
+   these cases. If the existing rule already selects the required action,
+   preserve it and report that finding. Revise the owning rule when a supported
+   ambiguity, conflict, or missing branch changes the decision.
 
 For a reported failure, preserve the input, revision, trace, and exact unwanted action.
 For a new capability, label the examples as proposed cases instead of historical failures.
@@ -42,6 +46,10 @@ Never describe a sentence as an enforced constraint.
 
 State the condition, action, and completion evidence in concrete terms.
 Keep each rule near its exception and the reason that changes its use.
+Put applicability where the agent selects the procedure. Keep the procedure's
+initial decision visible before its conditional references. State when a
+reference must be read and which decision it governs; a list of links alone
+does not establish a reading obligation.
 Use exact tool names, field names, commands, and artifact paths from the inspected interface.
 Name the recipient when an output leaves the current conversation.
 
@@ -66,6 +74,8 @@ Text length alone does not establish quality.
 
 Trace both cases through the final text and its surrounding instructions.
 For a skill, examine its trigger separately from the behavior after it loads.
+Check a change of action within the task: existing reads can be reused, while
+a newly applicable procedure must be selected before its governed action.
 Keep the original wording when an edit supplies no supported benefit.
 Use the existing evaluation owner when the task includes model assessment.
 

@@ -33,11 +33,14 @@ useful in any Git repository.
    Keep local implementation local unless applicable authorization includes publication.
 
 2. Isolate the work.
-   Create or reuse an appropriate branch. Keep unrelated dirty files out of the
-   change set and call out conflicts with the requested work. For worktrees,
+   Reuse the current branch when it is appropriate for the requested outcome.
+   Create a task branch before risky or publishable work on a shared branch.
+   Keep unrelated dirty files out of the change set and call out conflicts with
+   the requested work. When an isolated worktree is needed,
    preserve the host's managed checkout ownership; use Worktrunk for CLI-owned
-   worktrees when available. Refresh the intended remote base before creating
-   a new task branch and verify the resulting commit and path.
+   worktrees when available. When the intended base is remote, refresh it before
+   creating the task branch and verify the resulting commit and path.
+   Local-only work does not require creating a remote or publishing a branch.
 
 3. Make and validate changes.
    Run the smallest meaningful checks for the edited surface. Broaden checks
@@ -51,7 +54,8 @@ useful in any Git repository.
    staging. Confirm generated manifests are current when the repo owns them.
 
 5. Stage intentionally.
-   Stage only files that belong to the requested change. Use pathspecs for a
+   When the requested end state includes staging or a commit, stage only files
+   that belong to the requested change. Use pathspecs for a
    mixed worktree. Use `git add -A` only when the whole dirty tree is in scope.
 
 6. Commit or hand off.
@@ -65,8 +69,9 @@ useful in any Git repository.
   includes branching, staging, committing, pushing, or pull request handoff.
 - Load [recovery.md](references/recovery.md) before resolving merge conflicts,
   undoing a local mistake, recovering lost commits, or touching stash/reflog.
-- Load [worktrunk-automation.md](references/worktrunk-automation.md) for worktree
-  creation, project hook automation, Worktrunk commits, or agent handoff.
+- Load [Worktrunk automation](references/worktrunk-automation.md) for worktree
+  creation, project hook automation, Worktrunk commits, or a handoff that uses
+  those worktree facilities.
 
 ## Completion Criteria
 

@@ -13,7 +13,10 @@ second owner of its dependency graph.
 
 1. Inspect existing mise configuration, lockfiles, wrappers, task entrypoints,
    CI setup, installed mise version, and tool backends. Diagnose before migrating.
-2. Pin the versions required by the repository. A major version or `latest` is a
+   If the current owner already supplies the requested environment or task,
+   use it. Extend its configuration only for a missing or changed requirement.
+2. When selecting or changing tools, pin the versions required by the repository.
+   Preserve suitable existing pins. A major version or `latest` is a
    moving constraint, not an exact toolchain pin. Use the installed version's
    supported lock mechanism when the project requires reproducibility.
 3. Review configuration before trusting or executing it. Templates, hooks, task
@@ -22,16 +25,20 @@ second owner of its dependency graph.
 4. Use `mise exec -- <command>` for a command or `mise run <task>` for a declared
    task in scripts and CI. Interactive activation is a separate shell integration;
    do not make a script depend on a prompt callback having run.
-5. Give tasks real prerequisites and outputs. Delegate Gradle, package-manager,
+5. When adding or changing a task, give it real prerequisites and outputs.
+   Delegate Gradle, package-manager,
    or compiler semantics to the repository's established entrypoint. Avoid parallel
    tasks that mutate the same output, environment, or remote target.
-6. Check tool resolution and run the focused task in a clean non-interactive
-   shell. Report downloads or unavailable tools separately from task failure.
+6. For execution or a configuration change, check tool resolution and run the
+   focused task in a clean non-interactive shell. For a configuration review,
+   state the proposed parity check and what was inspected.
+   Report downloads or unavailable tools separately from task failure.
 
 ## References
 
-Read [environment and task boundaries](references/environment-and-tasks.md)
-for task ownership, secrets, configuration trust, and the local/CI parity check.
+When changing task ownership, environment or secret sources, configuration trust,
+or local/CI parity, read
+[environment and task boundaries](references/environment-and-tasks.md).
 
 ## Completion Criteria
 
