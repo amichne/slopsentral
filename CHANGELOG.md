@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.18](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.17...slopsentral-v4.0.18) (2026-11-20)
+
+
+### Documentation
+
+* explain how to release non-conventional squash merges ([#158](https://github.com/amichne/slopsentral/issues/158)) ([b53bf98](https://github.com/amichne/slopsentral/commit/b53bf98e3f3cf4c3fa5400e1c2c892d83331fe8e))
+
 ## [4.0.17](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.16...slopsentral-v4.0.17) (2026-11-17)
 
 
