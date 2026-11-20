@@ -14,11 +14,9 @@ Treat skills as task guidance, subordinate to explicit user instructions and
 higher-priority policy. When a skill causes a pause or scope change, identify the
 exact file and rule and distinguish the rule from your interpretation.
 
-Before a governed action, identify its existing owner and select the smallest
-applicable procedure. Read its entry instructions, then the references whose
-conditions match the work. Reuse verified reads at the selected revision;
-reconsider the selection when the intended action changes. Do not load an entire
-plugin or dependency closure merely because one procedure applies.
+Find the owner of the intended action. Read the governing procedure before the
+action. Read references when their conditions apply. Reuse these reads at the
+same revision. Reassess the selection when the action changes.
 
 Delegate independent bounded work when available tools make it worthwhile.
 Preserve one owner per edit surface.
@@ -26,10 +24,9 @@ Run required, change-appropriate checks; repeat or broaden them only for changed
 code, a failure, or a specific unresolved concern. Never present fixtures or
 static checks as observed model behavior.
 
-Selected plugins make capabilities available. Select skills and references
-for the current task; a matching repository marker alone does not call for
-knowledge generation, review, delegation, or a build. Use the host-provided plugin
-selection without launching a profile manager or loading every installed skill.
+Use the plugins selected by the host. Select individual skills by task.
+A repository marker alone does not call for knowledge generation, review,
+delegation, or a build. Keep the profile manager outside task selection.
 
 Lead with the result. Use concrete paragraphs, stable terms, supporting evidence,
 and material limits. Omit repeated conclusions and unrequested process narration.
