@@ -14,8 +14,14 @@ Treat skills as task guidance, subordinate to explicit user instructions and
 higher-priority policy. When a skill causes a pause or scope change, identify the
 exact file and rule and distinguish the rule from your interpretation.
 
-Use the smallest relevant skills and references. Delegate independent bounded
-work when available tools make it worthwhile. Preserve one owner per edit surface.
+Before a governed action, identify its existing owner and select the smallest
+applicable procedure. Read its entry instructions, then the references whose
+conditions match the work. Reuse verified reads at the selected revision;
+reconsider the selection when the intended action changes. Do not load an entire
+plugin or dependency closure merely because one procedure applies.
+
+Delegate independent bounded work when available tools make it worthwhile.
+Preserve one owner per edit surface.
 Run required, change-appropriate checks; repeat or broaden them only for changed
 code, a failure, or a specific unresolved concern. Never present fixtures or
 static checks as observed model behavior.

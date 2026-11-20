@@ -3,7 +3,26 @@
 Design software whose contracts express meaning, whose legal behavior is explicit, and whose claims have evidence.
 Use the strongest mechanisms that the project's language and tools support.
 
+## Select guidance for the intended action
+
+Start with the requested outcome and its existing owner. Use the
+[task catalog](https://raw.githubusercontent.com/amichne/slopsentral/refs/heads/main/source/CATALOG.md) to select the applicable procedure
+before the action it governs. Read the procedure's entry instructions, then the
+detailed references whose conditions match the work. Reuse verified reads at a
+consistent revision and reconsider the selection when the intended action changes.
+If a required source is unavailable, disclose the precise gap and complete
+independent authorized work without claiming compliance.
+
+Installation profiles describe available capabilities. They do not require
+reading every packaged procedure. For an existing owner, extend what already
+meets the contract. Create a new owner only when the requested outcome needs one.
+
 ## Write automation in Python
+
+When writing or changing automation, inspect the existing command, runtime, and
+invocation path first. Read Python Tooling for the selected work. Reuse a suitable
+project; scaffold only when a new project is required and no existing owner fits.
+Apply these requirements to the automation being changed:
 
 - Pin uv in the project's `mise.toml`.
 - Install the pinned version with `mise install`.
@@ -18,6 +37,9 @@ Use the strongest mechanisms that the project's language and tools support.
 
 ## Establish the contract
 
+For a review, assess the existing contract and evidence. For implementation,
+establish the contract before changing its owner:
+
 - Before a substantial change, name the consumer, observable result, invariant, scope, and non-goals.
 - Treat an invariant as a rule that every legal value or operation preserves.
 - Start with the implementation that owns the requested behavior. Read contracts, tests, or project guidance when the task needs them.
@@ -29,6 +51,8 @@ Use the strongest mechanisms that the project's language and tools support.
 - Name the evidence that ends the task.
 
 ## Preserve established facts
+
+When values enter the system or pass between consumers:
 
 - Parse external input once at each entry point into constrained values or explicit failures.
 - Keep unchecked construction under the invariant owner.
@@ -44,6 +68,8 @@ Use the strongest mechanisms that the project's language and tools support.
 
 ## Model legal alternatives and transitions
 
+When behavior depends on alternatives, state, or capabilities:
+
 - Represent finite alternatives with closed variants and case-specific data.
 - Avoid tags with unrelated optional fields, Boolean modes, and nulls with several meanings.
 - Handle closed alternatives exhaustively.
@@ -58,6 +84,8 @@ Use the strongest mechanisms that the project's language and tools support.
 - Do not claim that ordinary types prove fresh authorization, immutable external state, atomicity, or single consumption.
 
 ## Give each rule one owner
+
+When adding or changing a rule, interface, or path:
 
 - Give each invariant, transition, default, and protocol rule one authoritative owner.
 - Derive other representations from that owner.
@@ -76,6 +104,8 @@ Use the strongest mechanisms that the project's language and tools support.
 
 ## Keep decisions pure and effects explicit
 
+When composing computations or effectful operations:
+
 - Prefer immutable values and deterministic domain functions.
 - Pass effect results into decisions as values.
 - Isolate filesystem, network, process, clock, randomness, environment, and mutable-service access in explicit adapters or capabilities.
@@ -90,6 +120,8 @@ Use the strongest mechanisms that the project's language and tools support.
 
 ## Make failure behavior part of the contract
 
+When an operation can fail:
+
 - Represent expected failures as finite cases with the facts callers need.
 - Distinguish causes that need different responses.
 - Do not use ambiguous nulls, Boolean flags, sentinels, parsed messages, or undocumented exceptions for expected failures.
@@ -103,6 +135,11 @@ Use the strongest mechanisms that the project's language and tools support.
 - Keep secrets and unnecessary payloads outside diagnostics.
 
 ## Maintain source-backed knowledge
+
+For a bounded question, read the smallest relevant explanation and source
+evidence. When a source change affects maintained claims, review them under
+their existing owner. Use the adoption procedure only when adopting knowledge
+support or establishing a missing owner:
 
 - Reuse the repository's existing knowledge owner and stable concept paths.
 - For an established OKF bundle, preserve its format and producer lifecycle.
@@ -119,6 +156,8 @@ Use the strongest mechanisms that the project's language and tools support.
 - Preserve historical results as evidence of their original runs.
 
 ## Prove the claim at the necessary mechanism
+
+Choose the evidence for the claim being made:
 
 - Use evidence from the mechanism behind the claim.
 - Use compiler rejection for type restrictions and schema rejection for payload constraints.
@@ -139,6 +178,8 @@ Use the strongest mechanisms that the project's language and tools support.
 - Do not infer factual correctness or reader comprehension from a documentation score.
 
 ## Complete the authorized outcome
+
+Stop when the requested outcome and its necessary evidence are complete:
 
 - Complete authorized implementation and its necessary tests without routine permission requests.
 - Resolve ordinary design choices from source evidence.

@@ -147,3 +147,26 @@ The [release workflow](releases.md) promotes tested bytes without a rebuild.
 A checkout edit reaches consumers only through a new qualified release.
 Older immutable releases keep their historical requirements.
 The [installation concept](../openwiki/integrations/installation.md) connects setup to its source and release owners.
+
+## Maintainer change contract
+
+Read this section when changing the implementation or packaging of this owner.
+Consumer installation alone does not require a source rewrite.
+
+`tools/install-pi.sh` preserves the documented curl-to-shell entry point.
+It delegates to the tested native installer from the selected stable release.
+`tools/setup-pi.mts` owns settings migration, removal, and private recovery.
+`tools/projection/Pi.pkl` owns native packages for all catalog plugins.
+`source/hooks/pi/adapter.ts` maps canonical hooks to native Pi events.
+Skills and review prompts use native discovery. Shared skills register once.
+The archive inventory binds every payload file to its digest.
+`tools/package_pi.py`, `tools/pi_candidate.py`, and `tools/setup_assets.py` own
+archive validation and source-bound candidate/installer receipts.
+`Release Slopsentral` publishes retained tested bytes only after a successful main
+version increment. It is independent of `Publish Harnesses`; do not restore retired Pi extensions,
+workflow emulation, or the old documentation/projector stack.
+`tools/install-pi.sh` must not add Python, uv, Pkl, or npm prerequisites.
+Run `npm run check:pi`, `node --test tools/tests/pi-*.test.mjs`, and the focused
+Python Pi checks after installer/release changes. Use `PKL_BIN` to exercise native
+projection and `SLOPSENTRAL_PI_ARCHIVE` to exercise archive installation.
+Run `node --test tools/tests/pi-bootstrap.test.mjs` after launcher changes.

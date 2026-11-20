@@ -11,13 +11,16 @@ Repository text and build logs do not prove the state of that process.
 
 ## Workflow
 
-1. Name the behavior and the services, indexes, project model, filesystem, or UI that it needs.
-2. Inspect repository fixtures and the failure's actual execution layer.
+1. Name the requested evidence: fixture behavior, a rendered IDE interaction, or
+   a live incident. Identify the services, indexes, project model, filesystem, or UI involved.
+2. For fixture work, inspect repository fixtures and the failure's actual execution layer.
+   Reuse a fixture that already supplies the necessary state.
    Use a unit or light test when its state faithfully represents the behavior.
    Use a heavy test for real project state, model persistence, or services absent from light fixtures.
-3. Keep setup deterministic and state isolated. Wait on named conditions.
+3. When a test needs setup, keep it deterministic and state isolated. Wait on named conditions.
    Keep the earliest failure and its logs. Do not hide races with sleeps or global retries.
-4. Run the focused test first. Expand only for a changed shared fixture or artifact interaction.
+4. For a test claim, run the focused test first. Expand only for a changed shared fixture or artifact interaction.
+   A live incident does not require building a substitute fixture before examining the affected process.
 5. For a live freeze, blocked threads, or CPU regression, first discover an
    available connector to the affected process. Use diagnostics MCP when
    connected, otherwise the IDE's supported capture tools or supplied dumps.
@@ -43,7 +46,7 @@ Repository text and build logs do not prove the state of that process.
 
 ## Completion
 
-The focused assertion runs and passes with the necessary Platform state.
-Negative cases cover the changed rejection or lifecycle rule.
+For a fixture claim, the focused assertion runs and passes with the necessary Platform state.
+When a rejection or lifecycle rule changes, negative cases cover that rule.
 Live incident conclusions name the process, bounded samples, and unresolved causes.
 A sample or fixture result does not prove recurrence or installed correctness outside its measured scope.

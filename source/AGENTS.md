@@ -4,6 +4,17 @@
 
 This file applies to authored marketplace source under `source/`.
 
+## Select the owner
+
+For an existing procedure, inspect its canonical skill and current consumers.
+Refine that owner when it already covers the requested action. For composition
+work, change references at the plugin owner without copying or rewriting payloads.
+Create a primitive only when the existing graph has no suitable owner.
+
+Use the [task catalog](CATALOG.md) to find procedures. Trigger descriptions belong
+to their skills; catalog and provider views derive from those descriptions. Keep
+the condition that selects a reference visible before its detailed content.
+
 ## Primitive Contract
 
 - Treat every source-owned skill, agent, hook, instruction, concept, profile,
@@ -71,6 +82,6 @@ Profiles may select shared skills, agents, and instructions. A profile must
 select each hook through one plugin; shared hook packaging does not prove that
 a host will execute it once. Check the full dependency closure for that rule.
 Keep marketplace identities unique and reject conflicting paths or cycles.
-Do not copy payloads into plugin directories. Regenerate `source/CATALOG.md` with
-`node tools/catalog.mjs --write` after composition changes. See
+Do not copy payloads into plugin directories. After a skill trigger or composition changes, regenerate both catalogs with
+`node tools/catalog.mjs --write`. See
 `source/ARCHITECTURE.md` for the primitive responsibilities and evidence limits.

@@ -16,18 +16,24 @@ skill does not install a discovery service.
 1. Identify whether the behavior belongs to PSI, VFS, a standard index, a
    custom file-based index, stubs, a gist, a cache, or an element pattern.
 2. Inspect resolved Platform APIs and the repository's descriptor and tests.
-3. Keep PSI/index reads inside short read actions and smart-mode constraints.
+   Reuse the existing Platform or repository owner when it answers the query.
+   Introduce a custom index or cache only for a need that owner cannot meet.
+3. For PSI/index access, keep reads inside short read actions and smart-mode constraints.
    Re-check validity after asynchronous boundaries; persist stable identities
    or smart pointers rather than long-lived raw PSI.
-4. Narrow mixed-language resolved elements before language-specific access.
-5. Make custom index input deterministic from `FileContent`, keep key/value
+4. Before language-specific access, narrow mixed-language resolved elements.
+5. When changing a custom index, make its input deterministic from `FileContent`, keep key/value
    serialization stable, and bump the index version for incompatible data.
-6. Prove semantics with focused fixtures, then measure the named slow action.
+6. Prove changed semantics with focused fixtures. For a performance claim,
+   measure the named slow action after its correctness is established.
 
-Read [psi-indexing-vfs.md](references/psi-indexing-vfs.md) for design and
+Before changing a PSI, VFS, index, or cache contract, read
+[psi-indexing-vfs.md](references/psi-indexing-vfs.md) for its design and
 performance constraints.
 
 ## Completion
+
+Apply these checks to the mechanisms the change reaches:
 
 - Element patterns are narrow, composable, and tested against true and false
   PSI shapes.

@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import Ajv2020 from 'ajv/dist/2020.js';
-import { auditCatalog, auditProfileComposition, catalogReport, loadCatalog, pluginClosure, renderCatalog } from '../catalog.mjs';
+import { auditCatalog, auditProfileComposition, catalogReport, loadCatalog, pluginClosure, renderCatalog, renderInstallationCatalog } from '../catalog.mjs';
 const root = path.resolve(import.meta.dirname, '../..');
 const catalog = loadCatalog(root);
 
@@ -13,6 +13,7 @@ test('current catalog has no identity or closure failures', () => {
 
 test('generated catalog matches its manifest-derived view', () => {
   assert.equal(fs.readFileSync(path.join(root, 'source/CATALOG.md'), 'utf8'), renderCatalog(catalog));
+  assert.equal(fs.readFileSync(path.join(root, 'source/INSTALLATION.md'), 'utf8'), renderInstallationCatalog(catalog));
 });
 
 test('a profile includes exactly its selected plugins and rejects unknown profiles', () => {

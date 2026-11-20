@@ -12,7 +12,7 @@ Each supports a different reader question. Keep their claims and evidence consis
 Start with Software Engineering for invariant design, tests, Python automation, Git, PRs, and CI.
 Add the language or platform specialty for the implementation in scope.
 Use Repository Knowledge for substantial knowledge or documentation work.
-The [catalog](../source/CATALOG.md) owns current names and composition.
+The [installation catalog](../source/INSTALLATION.md) lists current names and composition.
 
 The [context hook](../source/hooks/software-engineering-context.hook.json) delivers the shared policies.
 The host owns discovery and trust. A projected hook does not prove native consumption.

@@ -1,7 +1,7 @@
 # Choose a marketplace
 
 Use the host marketplace for plugin selection. Keep authored source, published provider output, and installed caches separate.
-The [catalog](../source/CATALOG.md) lists the current plugins and their canonical assets.
+The [installation catalog](../source/INSTALLATION.md) lists the current plugins and their canonical assets.
 The [source-ownership concept](../openwiki/concepts/source-ownership.md) explains that relationship.
 
 ## Sources and entry points

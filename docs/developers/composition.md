@@ -14,7 +14,7 @@ The hook depends on the shared instruction files.
 The resolver carries those dependencies into the package.
 The plugin folder does not own copies of their payloads.
 
-The [catalog](../../source/CATALOG.md) lists current selections.
+The [installation catalog](../../source/INSTALLATION.md) lists current selections.
 Regenerate it after composition changes:
 
 ```sh

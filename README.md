@@ -19,7 +19,7 @@ For documentation alone, select `repository-knowledge`.
 | `developer-tooling` | CLIs, schemas, OpenAPI, Pkl, language servers, structural search, and agent resources |
 | `repository-knowledge` | Source-backed explanations, repository navigation, technical documents, glossaries, and prose assessment |
 
-The [catalog](source/CATALOG.md) lists each plugin's exact skills and shared assets.
+The [installation catalog](source/INSTALLATION.md) lists each plugin's exact skills and shared assets.
 
 ## Use the capabilities
 

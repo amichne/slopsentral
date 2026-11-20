@@ -25,6 +25,11 @@ Ordinary review or a Gradle failure alone does not meet that trigger.
 
 ## Find The Misuse
 
+Inspect the existing API, construction paths, callers, and owning checks first.
+If they already exclude the proposed misuse, report the characterization and
+do not invent a new type change. If reachability is unresolved, identify the
+missing source or executable evidence before choosing a refactor.
+
 Within the requested scope, look for Boolean modes, mutually exclusive nullable
 fields, unrestricted constructors, runtime capability checks, illegal lifecycle
 transitions, or operations exposed to implementations that cannot support them.
@@ -59,7 +64,8 @@ comparison and let the model manufacture evidence.
 
 ## Refactor
 
-Use the smallest type move that removes the misuse:
+When the baseline establishes a reachable misuse, reuse or extend its existing
+invariant owner. Choose the smallest type move that removes that misuse:
 
 - replace primitive tags or mutually exclusive fields with a sealed variant;
 - split mixed-capability APIs so only capable values expose the operation;

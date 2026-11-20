@@ -6,11 +6,11 @@
   "files": [
     {
       "path": "docs/examples/global/AGENTS.md",
-      "sha256": "3dcb0d0adc4c48f36fdcddf78d57e0870159ce70f92a7f9ab5bddb59949821ce"
+      "sha256": "05d16f8a58c3ab832f3fd3967c5216f3786b3da487dfdcd791610bd508274205"
     },
     {
       "path": "docs/global-agents.md",
-      "sha256": "2ceedbb839ca93b2fd23d036493a09458ece0a03067d6c250be49d2c2a5875f7"
+      "sha256": "024a7afd8941b7a4c39daa881203d69de8dbd824d4539d1f9bc69b6ba5b50b7f"
     },
     {
       "path": "source/concepts/type-safety/core.md",
@@ -42,15 +42,15 @@
     },
     {
       "path": "source/instructions/agent-execution.md",
-      "sha256": "6be9c1c159cc876f85c20006ed99a5881e52896ed7331ff30e7a6d0d25dc4a9f"
+      "sha256": "51e64d7b628dc4d81ebc9f795d2f39ce0ddedee1fe257a164c38b56e7f7cd091"
     },
     {
       "path": "source/instructions/engineering-design.md",
-      "sha256": "253d352970441695e022a4be1dcaf0e1f88e9e453eb11c1f5dad56df65480869"
+      "sha256": "e796d17e380125024b94e9820646d257f02da43d216c2290c67723cc74836230"
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",
-      "sha256": "3589daa5696fd153e221b7dd191a63aeed01dea184160e82179b0cbd72a30e9d"
+      "sha256": "36d9434e9e5dfa21708bf27c83c8c8656a173d8aa6714f8daca1a77c6bd524ec"
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/glossary-entry.json",
@@ -394,11 +394,11 @@
     },
     {
       "path": "source/skills/directory-design/SKILL.md",
-      "sha256": "9669010f86dcf5f0e7365b39c831c56a002f8f944b8721c68df68d629adbb394"
+      "sha256": "93b656519cc2a54b25810afd900b3ccd6f2c8a4272e7f91db1d396b1a4b04af2"
     },
     {
       "path": "source/skills/kotlin-design-practices/SKILL.md",
-      "sha256": "1579ff4db013b0f42f289b903bd5de1033b27c6b9dcd630c7a69041f3e1f0ef0"
+      "sha256": "d882a2c5810d71845f79d9ed9b4b13e489d447af9e857b879609ec149c9a1c9a"
     },
     {
       "path": "source/skills/kotlin-design-practices/references/Apache-2.0.txt",
@@ -510,7 +510,7 @@
     },
     {
       "path": "source/skills/negative-capability-proof/SKILL.md",
-      "sha256": "305eb91e427beac4857fd5e26ea0784b192b587427d8b87ae25dba3d3d3352a6"
+      "sha256": "7f3dea883bf2d97187a478264262576ea8d5d1b6263ba078220414033213ded3"
     },
     {
       "path": "source/skills/negative-capability-proof/agents/openai.yaml",
@@ -518,7 +518,7 @@
     },
     {
       "path": "source/skills/semantic-ratchet/SKILL.md",
-      "sha256": "d22d2e47c3add5ef8e31bd261e10fc7d08fb5eb53477bf17b5e0d9354e6f0dc2"
+      "sha256": "f59aed60d921e1697e4239b5189f33b908d26eb2a9c6a3e631f76aefaec975f1"
     },
     {
       "path": "source/skills/semantic-ratchet/agents/openai.yaml",
@@ -602,7 +602,7 @@
     },
     {
       "path": "source/skills/tdd/SKILL.md",
-      "sha256": "ac41b11e7046bf11f9d60b6147f502be9af160dc8043ff2d1b83e3e33749d4d0"
+      "sha256": "37ef27fe2c99f6e3939389b0713865b74e4976b5a34371b36be9f9713a42754e"
     },
     {
       "path": "source/skills/tdd/define-goal-LICENSE.txt",
@@ -674,7 +674,7 @@
     },
     {
       "path": "source/skills/technical-documentation/SKILL.md",
-      "sha256": "9ae162fcc221e717af7acf1a497eac38850753a974d2010e1bd5b613a379592c"
+      "sha256": "2f73d09af46dead53e43f9bf49c089b5dd14d4c8f874a855254ac3d20fe2b3bb"
     },
     {
       "path": "source/skills/technical-documentation/references/document-contracts.md",

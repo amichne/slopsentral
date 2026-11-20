@@ -169,3 +169,27 @@ discovery and the turn-start event. The helper test removes execute permissions
 in a disposable copy and invokes the declared interpreter.
 Neither result measures model routing or instruction adherence.
 Use the [Pi guide](/guides/pi) for its separate native adapter.
+
+## Repository ownership
+
+When changing provider output or its publication path, preserve these source boundaries:
+
+- `source/adaptable.marketplace.json` is the provider-neutral marketplace source
+  for `slopsentral`.
+- `source/plugins/*/plugin.json` composes primitives by reference. Do not copy
+  primitive payloads into plugin folders.
+- `source/skills`, `source/agents`, `source/hooks`, `source/concepts`,
+  `source/profiles`, `source/evals`, `source/schemas`, and `tools` are
+  canonical authored roots.
+- Generated provider output is published on `main` under `.agents/plugins`
+  (Codex) and `.github/plugin` (GitHub Copilot), and on the corresponding
+  `harness/codex` and `harness/github-copilot` branches.
+- Regenerate these trees from validated authored source with the local Pkl projector; never
+  hand-edit them. Publication updates both trees on `main` in one commit and
+  preserves all authored files.
+- Installed caches under `~/.codex/plugins/cache` are consumers, never source.
+- Amp directory plugins project into `.amp/plugins`. `tools/projection/Amp.pkl`
+  owns skill registration and turn-start instructions. Hooks, agents, and MCP
+  configuration remain reference-only; workflow profiles are unsupported.
+  `Publish Harnesses` publishes Amp only to `harness/amp`, not `main`, so the
+  authored checkout does not automatically activate every bundle.

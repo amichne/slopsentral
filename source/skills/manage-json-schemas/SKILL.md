@@ -23,9 +23,14 @@ it or the user asks to adopt it.
 1. Locate the schema owner, consumers, repository policy, dialect, and validator.
 2. Name the invariant and compatibility boundary. Preserve wire tags, filenames,
    and supported keywords unless the requested change requires a migration.
+   For an existing schema, extend its canonical owner. Create another schema only
+   for a contract that has no suitable owner; reuse shared definitions through that owner's conventions.
+   For a review, retain the schema and report supported findings rather than applying a migration.
 3. Run the existing validator with a valid payload and the nearest invalid one.
    Install dependencies only when readiness is missing, using the repository's package manager and lockfile.
-4. Keep schema assets in the owning module's durable schema path, usually `schemas/`, `schema/`, `contracts/`, or `api/schemas/`.
+4. For authorized authoring or extraction, keep schema assets in the owning
+   module's durable schema path, usually `schemas/`, `schema/`, `contracts/`, or `api/schemas/`.
+   Treat an extracted shape as a candidate to check against the domain contract.
 
 ## Core Rules
 
@@ -51,7 +56,7 @@ layout are deliberate choices, not inferred user requirements.
 
 ## CLI Workflow
 
-Use the bundled helper from this skill directory. Resolve the skill directory
+When the Slopsentral profile is selected, use the bundled helper from this skill directory. Resolve the skill directory
 first, then run from the target repository. Keep `scripts/package.json` with the
 helper: it preserves CommonJS execution inside Pi and Amp packages.
 `help`, `init`, `extract`, `profile`, and policy checks need only Node.js.
