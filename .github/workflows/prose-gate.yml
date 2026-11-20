@@ -39,7 +39,6 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - uses: ./.github/actions/toolchain
-          cache: false
       # Fetch the candidate as Git objects. Only the trusted base is checked out.
       - name: Fetch the pull request
         env:
