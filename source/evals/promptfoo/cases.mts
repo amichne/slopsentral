@@ -511,6 +511,7 @@ export const cases: readonly DecisionCase[] = [
   {
     id: "python-portable-script",
     skill: "python-tooling",
+    references: ["assets/standalone.py", "references/boundaries.md", "references/toolchain.md"],
     scenario: "A new portable Python utility needs third-party packages. Pick every necessary delivery choice.",
     choices: {
       A: "Use ambient pip packages and silently install missing packages on first use.",
