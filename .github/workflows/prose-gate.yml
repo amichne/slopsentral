@@ -38,9 +38,7 @@ jobs:
           ref: ${{ github.event.pull_request.base.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
-        with:
-          version: 2026.9.1
+      - uses: ./.github/actions/toolchain
           cache: false
       # Fetch the candidate as Git objects. Only the trusted base is checked out.
       - name: Fetch the pull request
@@ -53,7 +51,7 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: >-
-          mise exec -- slopsentral-prose changed --base "$BASE_SHA" --head "$HEAD_SHA"
+          slopsentral-prose changed --base "$BASE_SHA" --head "$HEAD_SHA"
           --github > "$RUNNER_TEMP/prose.json"
       - name: Save the assessment
         if: always()

@@ -1,0 +1,18 @@
+name: Provision pinned tools
+description: >-
+  Fetch the checksum-pinned tools in tools/toolchain.json and expose them to later
+  steps. Replaces a version manager: uv, Pkl, and Vale resolve from one manifest.
+inputs:
+  profile:
+    description: Toolchain profile, core or ci.
+    default: core
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        PROFILE: ${{ inputs.profile }}
+      run: |
+        node tools/toolchain.mjs fetch --profile "$PROFILE"
+        node tools/toolchain.mjs env --profile "$PROFILE" >> "$GITHUB_ENV"
+        node tools/toolchain.mjs paths --profile "$PROFILE" >> "$GITHUB_PATH"

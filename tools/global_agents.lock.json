@@ -6,11 +6,11 @@
   "files": [
     {
       "path": "docs/examples/global/AGENTS.md",
-      "sha256": "1bc4362cc4a915408f7e4ad8168b7cd705c4bf90cbd17497aff3ded56e38a592"
+      "sha256": "b8dc68391d8afb8ee2008879a4825a8c783e81d02e83c7b3cc056da55d8ec74b"
     },
     {
       "path": "docs/global-agents.md",
-      "sha256": "2b953a4b32968f485cfd4af6eaa5455654e82f7d4275af6e56753630b0e7eb59"
+      "sha256": "92e6f77ab52adba9e9e7669aeca09f7f3dc9a57a6d3a036865df1e8f107759e6"
     },
     {
       "path": "source/concepts/type-safety/core.md",
@@ -46,7 +46,7 @@
     },
     {
       "path": "source/instructions/engineering-design.md",
-      "sha256": "b4414ba3a19051fd1c926f27cd1fd1f7190871f8904a24152a03463072112ca9"
+      "sha256": "c619b244e73845c1b7be8ff1f4a4516eb496135d0aaea910774fa335b9668e6e"
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",
@@ -518,11 +518,7 @@
     },
     {
       "path": "source/skills/python-tooling/SKILL.md",
-      "sha256": "fa5a2cd5c6325230f0d67b458502485adecb4c2f853a20e44ea4234e4dfe7c54"
-    },
-    {
-      "path": "source/skills/python-tooling/assets/mise.toml",
-      "sha256": "addc28488050ae094f82fe43276160567827843743d91c57130e4c2a5ff70251"
+      "sha256": "717eade600290d31b0444b826353d95319b5d55eec7d6041215b75a2d88ca2da"
     },
     {
       "path": "source/skills/python-tooling/assets/pyproject.toml",
@@ -546,7 +542,7 @@
     },
     {
       "path": "source/skills/python-tooling/assets/uv.toml",
-      "sha256": "211e6eef9b9bf35cfc18ab8e852784c098c20a924097ba133971dc27ec36b989"
+      "sha256": "8f54d60e6848e25572c4913c04c3497cb74c2341d7b75691c3e2f745a37bb0fc"
     },
     {
       "path": "source/skills/python-tooling/references/boundaries.md",
@@ -554,7 +550,7 @@
     },
     {
       "path": "source/skills/python-tooling/references/toolchain.md",
-      "sha256": "318c91aaeb19005ae1514a644bd01965cb1266de62405e1f7a4b6b02b0171dcf"
+      "sha256": "71b6e8f791bf553a75e70c76deabfc6bb18881972aecf03e4d2c62666462fb02"
     },
     {
       "path": "source/skills/python-tooling/scripts/python-scaffold",
@@ -562,7 +558,7 @@
     },
     {
       "path": "source/skills/python-tooling/scripts/scaffold.py",
-      "sha256": "343f973b9d0b953c74c66e21d16aab8d9f21c1db225c2456a5e0b977f863dc79"
+      "sha256": "b3cd9e09950b71b9c266d9fad2f2db2543e411aec65d47b4afca4ae48135da43"
     },
     {
       "path": "source/skills/python-tooling/scripts/scaffold.py.lock",

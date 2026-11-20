@@ -5,7 +5,7 @@ description: Install self-contained engineering principles with a digest-named l
 tags: [instructions, portable, installation, snapshots]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-20T16:26:00.832Z
+    at: 2026-11-20T18:23:08.613Z
 sources:
   - id: openwiki-source-36ad8fcb548ba122b2048846
     resource: repo://docs/global-agents.md

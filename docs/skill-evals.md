@@ -157,7 +157,7 @@ Each ready case uses a private Git clone and disposable worktree at the pinned r
 The clone has no `origin` remote. Agent staging cannot change the operator's index or refs.
 `HOME` and `CODEX_HOME` are isolated. Agent scratch stays inside its worktree.
 Setup creates a fresh Codex projection and installs its native plugin.
-Pkl 0.32.0 must exist on `PATH` or at `PKL_BIN`.
+Run it through `node tools/toolchain.mjs run --`, which supplies the pinned Pkl 0.32.0.
 
 ### Compare the same fixtures in Amp and Codex
 

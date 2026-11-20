@@ -10,16 +10,22 @@ sources:
     resource: repo://AGENTS.md
   - id: openwiki-source-5b532353fce7bdd07bec31d1
     resource: repo://guidance/verification.md
+  - id: openwiki-source-5b54a58d1b51cd490b0e7162
+    resource: repo://package.json
   - id: openwiki-source-66c6b4ed1002f7045a480f19
     resource: repo://tools/check.py
   - id: openwiki-source-f0a86d14d800938edb2bf80a
     resource: repo://tools/promptfoo/suite.mts
   - id: openwiki-source-6706911967b481bbbe3dfbe8
     resource: repo://tools/setup.py
-generated: { by: "codex", at: "2026-11-20T16:26:00.832Z" }
+  - id: openwiki-source-1c86dc4352b4d3810fb862e2
+    resource: repo://tools/toolchain.json
+  - id: openwiki-source-fd7a7b438f5903a2a9ba6c2f
+    resource: repo://uv.toml
+generated: { by: "codex", at: "2026-11-20T18:23:08.613Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-20T16:26:00.832Z
+    at: 2026-11-20T18:23:08.613Z
 ---
 
 # Change source with linked evidence
@@ -45,17 +51,19 @@ For reuse or a behavior-preserving refactor, start from passing characterization
 
 ## Prepare the checkout
 
-Install the declared mise tool and use the checkout commands:
+Install Node.js and npm, then prepare the checkout:
 
 ```sh
-mise install
-mise exec -- slopsentral-setup
+npm run setup
 ```
 
+The npm scripts run through `node tools/toolchain.mjs run --`, which fetches the uv, Pkl,
+and Vale versions pinned with SHA-256 digests in [the toolchain manifest](../../tools/toolchain.json)
+and puts them first on `PATH` for that command only.
+`uv.toml` requires the exact uv version, so another uv fails with a named error.
 Setup synchronizes locked Python dependencies and runs `npm ci --ignore-scripts`.
 It installs the pinned documentation tools from `docs/tooling` with lifecycle scripts disabled.
-It does not silently install uv.
-Projection accepts exactly Pkl 0.32.0 through the separate runtime setup procedure.
+Projection accepts exactly Pkl 0.32.0, which the runner supplies through `PKL_BIN`.
 Keep local output and installed consumer caches outside authored edits.
 
 ## Change the authoritative owner

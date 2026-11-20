@@ -747,7 +747,7 @@ export const cases: readonly DecisionCase[] = [
     skill: "python-tooling",
     scenario: "The user asks for a new standalone Python project providing a CSV validation command in an empty tools/csv-check directory. Examined repository instructions and neighboring tools reveal no automation owner for this command. Creating the project and preparing its declared development environment are authorized. Pick every justified action.",
     choices: {
-      A: "Use the bundled Python scaffold for the requested destination, then review its mise configuration before installing the declared toolchain.",
+      A: "Use the bundled Python scaffold for the requested destination, then review its pinned uv configuration before preparing the declared environment.",
       B: "Refuse to create a project because reuse is always required, even when no suitable owner exists.",
       C: "Prepare the generated environment and exercise the implemented public command and its focused checks.",
       D: "Install packages into ambient Python and omit the generated execution contract to keep the project small.",

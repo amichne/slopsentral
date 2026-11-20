@@ -7,7 +7,6 @@ import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import test from 'node:test';
 import { pathToFileURL } from 'node:url';
 import { project } from '../project-marketplaces.mjs';
-import { install } from '../install-projection-pkl.mjs';
 import { loadCatalog, pluginClosure } from '../catalog.mjs';
 import { currentSourceLocalPaths } from '../routing-source-evidence.mjs';
 import { validPaths, invalidPaths, wrappedPaths, nonlocalReferences, effectControlReferences } from './fixtures/current-source-paths.mjs';
@@ -343,16 +342,6 @@ process.stdout.write(r.stdout ?? ''); process.stderr.write(r.stderr ?? ''); proc
   assert.throws(() => project({ source: repo, harness: 'codex', out: path.join(dir, 'output'), pkl: executable }),
     e => { assert.equal(e.outcome?.code, 'INPUT_CHANGED', JSON.stringify(e.outcome)); return true; });
   assert.equal(fs.existsSync(path.join(dir, 'output')), false);
-});
-
-test('runtime setup rejects corrupt downloads and unsupported platforms without writing', async t => {
-  const dir = temporary(t);
-  const out = path.join(dir, 'pkl');
-  const corrupt = await install({ out, platform: 'linux-x64', download: async () => new Response('tampered') });
-  assert.deepEqual(corrupt, { type: 'PKL_INSTALL_REJECTED', reason: 'DIGEST_MISMATCH' });
-  assert.equal(fs.existsSync(out), false);
-  const unsupported = await install({ out, platform: 'unknown', download: () => assert.fail('must not download') });
-  assert.deepEqual(unsupported, { type: 'PKL_INSTALL_REJECTED', reason: 'UNSUPPORTED_PLATFORM' });
 });
 
 test('CLI emits a finite rejected outcome for invalid invocation', () => {

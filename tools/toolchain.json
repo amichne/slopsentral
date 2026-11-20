@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "tools": {
+    "uv": {
+      "version": "0.12.9",
+      "profiles": [
+        "core",
+        "ci"
+      ],
+      "assets": {
+        "darwin-arm64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.9/uv-aarch64-apple-darwin.tar.gz",
+          "sha256": "301f72afaf54060f92da7016cb0115bd077f43a9c8e39c1d8170a0bac80fd398",
+          "format": "tar.gz",
+          "executable": "uv-aarch64-apple-darwin/uv"
+        },
+        "darwin-x64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.9/uv-x86_64-apple-darwin.tar.gz",
+          "sha256": "e1ca175824f1056589ce9908f7631879ebc3c36535b5e63dc06510beb370b4c1",
+          "format": "tar.gz",
+          "executable": "uv-x86_64-apple-darwin/uv"
+        },
+        "linux-x64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.9/uv-x86_64-unknown-linux-gnu.tar.gz",
+          "sha256": "ec7a99cd05e0cd7f80243f135ce1361c76835cb0ee60055d14d20eba8eba1460",
+          "format": "tar.gz",
+          "executable": "uv-x86_64-unknown-linux-gnu/uv"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.9/uv-aarch64-unknown-linux-gnu.tar.gz",
+          "sha256": "c36fe17937ff6bd16dc42fc13854b5465999fcab2efe0af559381e945e3c6001",
+          "format": "tar.gz",
+          "executable": "uv-aarch64-unknown-linux-gnu/uv"
+        }
+      }
+    },
+    "pkl": {
+      "version": "0.32.0",
+      "profiles": [
+        "core",
+        "ci"
+      ],
+      "environment": "PKL_BIN",
+      "assets": {
+        "darwin-arm64": {
+          "url": "https://github.com/apple/pkl/releases/download/0.32.0/pkl-macos-aarch64",
+          "sha256": "fb891856705f3dcb8589c74999e01ded3eeb6b77ad5c6a95c02579a848c13928",
+          "format": "binary",
+          "executable": "pkl"
+        },
+        "darwin-x64": {
+          "url": "https://github.com/apple/pkl/releases/download/0.32.0/pkl-macos-amd64",
+          "sha256": "190ad63fec4f81f40e75dba8d6309033dd30e51b3e042db3b846f67c7ab46e3d",
+          "format": "binary",
+          "executable": "pkl"
+        },
+        "linux-x64": {
+          "url": "https://github.com/apple/pkl/releases/download/0.32.0/pkl-linux-amd64",
+          "sha256": "15e7e7375c28b8542b3d13fe35bccaeb7b9542114008998708385489885f41e7",
+          "format": "binary",
+          "executable": "pkl"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/apple/pkl/releases/download/0.32.0/pkl-linux-aarch64",
+          "sha256": "b1ba7ef5dec9287f8f843ce563911eba822fed5789a5baab8cc712615a9dbaf0",
+          "format": "binary",
+          "executable": "pkl"
+        }
+      }
+    },
+    "vale": {
+      "version": "3.24.0",
+      "profiles": [
+        "core",
+        "ci"
+      ],
+      "environment": "VALE_BIN",
+      "archiveEnvironment": "TEST_VALE_ARCHIVE",
+      "assets": {
+        "darwin-arm64": {
+          "url": "https://github.com/vale-cli/vale/releases/download/v3.24.0/vale_3.24.0_macOS_arm64.tar.gz",
+          "sha256": "87b513f26499f6657c15cf7175ba5b058a7c1ff2bb2d4e07265db2dd43451e44",
+          "format": "tar.gz",
+          "executable": "vale"
+        },
+        "darwin-x64": {
+          "url": "https://github.com/vale-cli/vale/releases/download/v3.24.0/vale_3.24.0_macOS_64-bit.tar.gz",
+          "sha256": "eeb39e86f1daac27cc2a77fef3af1824d50559bdc22329fb25fb921c80c79472",
+          "format": "tar.gz",
+          "executable": "vale"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/vale-cli/vale/releases/download/v3.24.0/vale_3.24.0_Linux_arm64.tar.gz",
+          "sha256": "104cbd349279e50c4cb40adb70adf345d93cc4a3a0191f9e68bdccb97086b582",
+          "format": "tar.gz",
+          "executable": "vale"
+        },
+        "linux-x64": {
+          "url": "https://github.com/vale-cli/vale/releases/download/v3.24.0/vale_3.24.0_Linux_64-bit.tar.gz",
+          "sha256": "867534ddb678abca7f214bc4706ead0922bd5252ffe8035fc227013f66c8b214",
+          "format": "tar.gz",
+          "executable": "vale"
+        }
+      }
+    },
+    "kotlin": {
+      "version": "2.4.10",
+      "profiles": [
+        "ci"
+      ],
+      "assets": {
+        "any": {
+          "url": "https://github.com/JetBrains/kotlin/releases/download/v2.4.10/kotlin-compiler-2.4.10.zip",
+          "sha256": "473dd66c7a3ef4b182065b3da670466c1bf2773a9dbb0ed8b33a39fe9d4f876d",
+          "format": "zip",
+          "executable": "kotlinc/bin/kotlinc"
+        }
+      }
+    },
+    "worktrunk": {
+      "version": "0.53.0",
+      "profiles": [
+        "ci"
+      ],
+      "assets": {
+        "linux-x64": {
+          "url": "https://github.com/max-sixty/worktrunk/releases/download/v0.53.0/worktrunk-x86_64-unknown-linux-musl.tar.xz",
+          "sha256": "2d0e810910270955fbf9a7c2d5c61c754eb4fea0c255a960d0acccff65646822",
+          "format": "tar.xz",
+          "executable": "worktrunk-x86_64-unknown-linux-musl/wt"
+        }
+      }
+    }
+  }
+}

@@ -7,23 +7,24 @@
     "node": ">=22.22.0"
   },
   "scripts": {
-    "test": "node --test tools/tests/*.test.mjs",
+    "test": "node tools/toolchain.mjs run -- node --test tools/tests/*.test.mjs",
     "promptfoo": "node --env-file=tools/promptfoo/local.env node_modules/promptfoo/dist/src/entrypoint.js",
     "eval:skills": "npm run promptfoo -- eval --config promptfooconfig.ts --no-cache --no-share --output .promptfoo/results/latest.json",
     "eval:execution": "npm run promptfoo -- eval --config tools/promptfoo/execution-config.mts --no-cache --no-share --output .promptfoo/results/execution.json",
     "eval:skills:smoke": "npm run promptfoo -- eval --config tools/promptfoo/smoke.ts --no-cache --no-write --no-share --no-progress-bar --no-table",
-    "check:evals": "tsc --project tools/promptfoo/tsconfig.json && node --test tools/tests/promptfoo-*.test.mjs && npm run eval:skills:smoke",
+    "check:evals": "node tools/toolchain.mjs run -- sh -c \"tsc --project tools/promptfoo/tsconfig.json && node --test tools/tests/promptfoo-*.test.mjs && npm run eval:skills:smoke\"",
     "check:source": "node tools/validate-source-graph.mjs && node tools/catalog.mjs --check && git diff --check && git diff --cached --check && git diff --check origin/main...HEAD",
-    "verify:marketplaces": "uv run --locked tools/verify_marketplaces.py",
+    "verify:marketplaces": "node tools/toolchain.mjs run -- uv run --locked tools/verify_marketplaces.py",
     "verify": "npm run check:python && npm run check:source && npm run check:docs && npm run docs:check && npm run check:evals && npm test && npm run verify:marketplaces",
     "validate:profile-contracts": "node tools/validate-profile-contracts.mjs",
-    "check:python": "uv run --locked tools/check.py",
-    "check:release": "uv run --locked python -m tools.release_version check",
+    "check:python": "node tools/toolchain.mjs run -- uv run --locked tools/check.py",
+    "check:release": "node tools/toolchain.mjs run -- uv run --locked python -m tools.release_version check",
     "check:pi": "tsc --project tools/pi-tsconfig.json",
-    "check:docs": "mise exec -- slopsentral-docs check && mise exec -- slopsentral-site check",
-    "docs:sync": "mise exec -- slopsentral-site sync",
-    "docs:check": "mise exec -- uv run --locked tools/ci.py docs",
-    "docs:dev": "mise exec -- uv run --locked tools/ci.py preview"
+    "check:docs": "node tools/toolchain.mjs run -- sh -c \"slopsentral-docs check && slopsentral-site check\"",
+    "docs:sync": "node tools/toolchain.mjs run -- slopsentral-site sync",
+    "docs:check": "node tools/toolchain.mjs run -- uv run --locked tools/ci.py docs",
+    "docs:dev": "node tools/toolchain.mjs run -- uv run --locked tools/ci.py preview",
+    "setup": "node tools/toolchain.mjs run -- slopsentral-setup"
   },
   "dependencies": {
     "ajv": "^8.20.0",
@@ -36,5 +37,16 @@
     "promptfoo": "0.125.1",
     "release-please": "17.3.0",
     "typescript": "7.0.2"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22.22.0",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "onFail": "warn"
+    }
   }
 }

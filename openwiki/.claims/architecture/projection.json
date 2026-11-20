@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:985c2047287e96906f54d7fff9ae2d9285106f493cf325a8a76352b91d3d164a",
+  "pageVersion": "sha256:1e2013b38856bffaa77f44469402c350b1733960faa8a9e6c19db6f5b793ba98",
   "claims": [
     {
       "id": "claim_29bc0266d6ec4bc4913a121262b7a782",
@@ -8,7 +8,7 @@
       "evidence": [
         {
           "resource": "repo://tools/project-marketplaces.mjs#L175-L198",
-          "version": "repo-lines-v1:sha256:a1545b2825c52c9575ca85b1661373d37d664d91508b5ee9e0fdfda55cd6eb33:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OTBlYmJmNjNmYzVlMzM0YjEyY2Q5ZmJmYTk0NDdhYTRlODdlZGE2Mjg0MDFhZDc2MjUzZmIyY2YyZjlhZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMDM5YjZiMjY3YzExODRmNTg0MDdiYjFiMjM3ZDlkNzc5YzA0N2NiNWQ1ZjI3MjA1NDQ1MjYwZGJkZjNlNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiMzc0NWYwZmU2MDc2OWY4ZjYxNmEzMTI0YmQ1Nzk0YzgwOThiOGM2NWExNDdhNzc3MmIyMTJlMTkyOGM4ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZWJhNDk2YmRjNGYyODkyMWQ5OTUzNDdmYWM5NWE4YzFhYTk2NWQzZmEyOTk3ODJmZmZmN2QyZmFhNDY5ZTIifQ"
+          "version": "repo-lines-v1:sha256:f46f8748b44e6c4184667ea2698aa91c1f1bae44f3aa8aa9aa84b1410c05ac77:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OTBlYmJmNjNmYzVlMzM0YjEyY2Q5ZmJmYTk0NDdhYTRlODdlZGE2Mjg0MDFhZDc2MjUzZmIyY2YyZjlhZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMDM5YjZiMjY3YzExODRmNTg0MDdiYjFiMjM3ZDlkNzc5YzA0N2NiNWQ1ZjI3MjA1NDQ1MjYwZGJkZjNlNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiMzc0NWYwZmU2MDc2OWY4ZjYxNmEzMTI0YmQ1Nzk0YzgwOThiOGM2NWExNDdhNzc3MmIyMTJlMTkyOGM4ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZWJhNDk2YmRjNGYyODkyMWQ5OTUzNDdmYWM5NWE4YzFhYTk2NWQzZmEyOTk3ODJmZmZmN2QyZmFhNDY5ZTIifQ"
         },
         {
           "resource": "repo://tools/project-marketplaces.mjs#L323-L332",
@@ -26,7 +26,7 @@
       "evidence": [
         {
           "resource": "repo://tools/project-marketplaces.mjs#L175-L198",
-          "version": "repo-lines-v1:sha256:a1545b2825c52c9575ca85b1661373d37d664d91508b5ee9e0fdfda55cd6eb33:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OTBlYmJmNjNmYzVlMzM0YjEyY2Q5ZmJmYTk0NDdhYTRlODdlZGE2Mjg0MDFhZDc2MjUzZmIyY2YyZjlhZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMDM5YjZiMjY3YzExODRmNTg0MDdiYjFiMjM3ZDlkNzc5YzA0N2NiNWQ1ZjI3MjA1NDQ1MjYwZGJkZjNlNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiMzc0NWYwZmU2MDc2OWY4ZjYxNmEzMTI0YmQ1Nzk0YzgwOThiOGM2NWExNDdhNzc3MmIyMTJlMTkyOGM4ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZWJhNDk2YmRjNGYyODkyMWQ5OTUzNDdmYWM5NWE4YzFhYTk2NWQzZmEyOTk3ODJmZmZmN2QyZmFhNDY5ZTIifQ"
+          "version": "repo-lines-v1:sha256:f46f8748b44e6c4184667ea2698aa91c1f1bae44f3aa8aa9aa84b1410c05ac77:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OTBlYmJmNjNmYzVlMzM0YjEyY2Q5ZmJmYTk0NDdhYTRlODdlZGE2Mjg0MDFhZDc2MjUzZmIyY2YyZjlhZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMDM5YjZiMjY3YzExODRmNTg0MDdiYjFiMjM3ZDlkNzc5YzA0N2NiNWQ1ZjI3MjA1NDQ1MjYwZGJkZjNlNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiMzc0NWYwZmU2MDc2OWY4ZjYxNmEzMTI0YmQ1Nzk0YzgwOThiOGM2NWExNDdhNzc3MmIyMTJlMTkyOGM4ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZWJhNDk2YmRjNGYyODkyMWQ5OTUzNDdmYWM5NWE4YzFhYTk2NWQzZmEyOTk3ODJmZmZmN2QyZmFhNDY5ZTIifQ"
         }
       ]
     },
@@ -97,14 +97,32 @@
           "version": "repo-lines-v1:sha256:53c5f9b3fd530b12e30372c5a8eb6ea5c5a5da7fd34d39e12416d33b1b4f1eea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiY2YwYTU0YjM5ZGJiMDFmYTc5ZWY2NDljNjdiZjA5NzQwOTE3MThjZDQxNzQ1NGViYWQ3Njg2OTFlN2U1MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FmMTEwMWM5N2I3YzJmNTI1NDA3ODJlNjM0Y2M0NDQwZjBlOTcwMzQxZTUyZjk3NTIzMTFkNzhiN2Q3ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkN2Y2ZDlmYWNmOWMzMDc2ZGRjMGQ3ZDU5NzgxYTMyNGIyZGVkZTU2M2EyOWFhMmJjZjA3YjBjZWU0YTI4MTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4M2Q2NWU4YThmMWM2NjkyNzQxYjZlMmU5Y2ViYjY3YTYzYzJiZGNmNDFmYWFiMTUwNzFiMDI4MTMwODBhODUifQ"
         },
         {
-          "resource": "repo://tools/tests/pkl-projection.test.mjs#L50-L61",
+          "resource": "repo://tools/tests/pkl-projection.test.mjs#L49-L60",
           "version": "repo-lines-v1:sha256:fbce7e8b83a59b8f1f0c5205fb5bdd214b765fcf32ed3950be668b44aa51c672:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyMGI5MjMzY2U3MjNkYmEwNzFlOTM5OTliYjk0YzJlZGU3MTQ5YmI1ZWU2MDg2ZWIzMzY1NDcwYTE2YjU5ZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyZTg4MmVkZTUzMmIzNzgzOWVkZTFlZTI3YWI0NmFhZTk4NmU1ZjcxODQ5ZDVjNTJhY2JkMmQwYzkyNmIwOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1MmM4OGIwMjdkZjNlNDUwY2UzMDc0NzU2YjE2N2Q2NDhkNjU2MTU1ZjY3OWYyYzhiMWNmMmI3OGI5NGZjMDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_675b7c4563cd4728adca2e984b4a2aaf",
+      "statement": "The toolchain manifest pins Pkl per platform by SHA-256; the resolver fetches it as an explicit setup step and supplies it through PKL_BIN, while the projector never downloads a runtime.",
+      "evidence": [
+        {
+          "resource": "repo://tools/project-marketplaces.mjs#L175-L180",
+          "version": "repo-lines-v1:sha256:1dfed9fb379ee407af9fcf2094c29d86cbb089c56810760ed5c3753f35e94617:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY5MGViYmY2M2ZjNWUzMzRiMTJjZDlmYmZhOTQ0N2FhNGU4N2VkYTYyODQwMWFkNzYyNTNmYjJjZjJmOWFkMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2FkYWEyYWY2OWZlN2FhYWI0ODBkNmU0NWRkZDQ5ZWM3NzEwOTQyYTgyNmM0M2EzOTVkNmYxMjk3N2E5ZDU5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGIzNzQ1ZjBmZTYwNzY5ZjhmNjE2YTMxMjRiZDU3OTRjODA5OGI4YzY1YTE0N2E3NzcyYjIxMmUxOTI4YzhlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTE2OTVlODIyZDM3ZGNlZDRiYjhhMDVjZDExOTU1ZGM4OTFjYTY0YzIzNGQzMGI1NWNlNmVmYTAyNGU2YjZmNyJ9"
+        },
+        {
+          "resource": "repo://tools/toolchain.json",
+          "version": "repo-file-v1:sha256:2a124cf259b8ba3dda4875b9249d619665cb7214f3a5eb4f5c685707444175c9"
+        },
+        {
+          "resource": "repo://tools/toolchain.mjs",
+          "version": "repo-file-v1:sha256:cd74f6e6149ec0c8c202ab7a6a50c9eaef7e592cb191acb4ffd6960ff98b0211"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-17T04:04:07.116Z"
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

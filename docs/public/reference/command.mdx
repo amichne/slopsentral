@@ -20,7 +20,7 @@ bash -o pipefail -c 'curl -fsSL https://github.com/amichne/slopsentral/releases/
 For installation from a prepared source checkout, use:
 
 ```sh
-mise exec -- uv run --locked --script tools/slopsentral.py self install
+node tools/toolchain.mjs run -- uv run --locked --script tools/slopsentral.py self install
 ```
 
 The bootstrap installs uv 0.12.9 only when `uv` is absent from `PATH`.

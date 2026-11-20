@@ -156,7 +156,10 @@
         "tools/",
         ".github/workflows/",
         ".config/",
-        "mise.toml",
+        "uv.toml",
+        "tools/toolchain.json",
+        "tools/toolchain.mjs",
+        ".github/actions/toolchain/action.yml",
         "AGENTS.md"
       ],
       "pages": [

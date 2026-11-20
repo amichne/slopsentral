@@ -3,7 +3,6 @@
 /.github/workflows/ @amichne
 /.github/actions/ @amichne
 /bin/ @amichne
-/mise.toml @amichne
 /docs/glossary.json @amichne
 /source/skills/controlled-technical-writing/ @amichne
 /tools/prose.py* @amichne

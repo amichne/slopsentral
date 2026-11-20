@@ -58,12 +58,13 @@ def test_scaffold_exposes_extensionless_command_with_checkout_uv_pin(tmp_path: P
     )
 
     def uv_pin(config: Path) -> str:
-        return tomllib.loads(config.read_text())["tools"]["uv"]
+        return tomllib.loads(config.read_text())["required-version"]
 
     assert (destination / "uv.toml").is_file()
     for filename in ("standalone.py.lock", "setup.py.lock"):
         assert (destination / filename).is_file()
-    assert uv_pin(destination / "mise.toml") == uv_pin(ROOT / "mise.toml")
+    assert uv_pin(destination / "uv.toml") == uv_pin(ROOT / "uv.toml")
+    assert not (destination / "mise.toml").exists()
     if os.name != "posix":
         pytest.skip("Direct shebang commands on PATH need a POSIX host.")
     for command, script in (("text-summary", "standalone.py"), ("automation-setup", "setup.py")):
@@ -75,9 +76,8 @@ def test_scaffold_exposes_extensionless_command_with_checkout_uv_pin(tmp_path: P
     sample = tmp_path / "sample with spaces.txt"
     _ = sample.write_text("hello\n")
     result = subprocess.run(
-        ["mise", "exec", "--", "text-summary", str(sample)],
+        [str(destination / "bin/text-summary"), str(sample)],
         cwd=destination,
-        env={**os.environ, "MISE_TRUSTED_CONFIG_PATHS": str(destination)},
         text=True,
         capture_output=True,
         check=False,

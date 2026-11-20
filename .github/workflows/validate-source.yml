@@ -30,11 +30,9 @@ jobs:
         with:
           node-version: '24.21.0'
           cache: npm
-      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
-        with:
-          version: 2026.9.1
+      - uses: ./.github/actions/toolchain
       - name: Set up locked Python and schema tools
-        run: mise exec -- slopsentral-setup
+        run: slopsentral-setup
       - name: Check the unified release version
         id: version
         run: uv run --locked python -m tools.release_version check --github-output "$GITHUB_OUTPUT"
@@ -46,7 +44,7 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: >-
-          mise exec -- slopsentral-prose changed --base "$BASE_SHA" --head "$HEAD_SHA"
+          slopsentral-prose changed --base "$BASE_SHA" --head "$HEAD_SHA"
           --github > "$RUNNER_TEMP/prose-preview.json"
       - name: Save the proposed policy report
         if: always() && github.event_name == 'pull_request'
@@ -98,19 +96,13 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
-      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
-        with:
-          version: 2026.9.1
+      - uses: ./.github/actions/toolchain
       - uses: actions/setup-node@v4
         with:
           node-version: '24.21.0'
           cache: npm
       - name: Install locked Node tools
         run: npm ci --ignore-scripts
-      - name: Install pinned Pkl
-        run: |
-          node tools/install-projection-pkl.mjs --out "$RUNNER_TEMP/pkl/pkl"
-          echo "PKL_BIN=$RUNNER_TEMP/pkl/pkl" >> "$GITHUB_ENV"
       - name: Read the shared release version
         id: version
         run: uv run --locked python -m tools.release_version check --github-output "$GITHUB_OUTPUT"

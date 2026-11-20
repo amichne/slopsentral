@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5cf8be7530669aa15027383dad36b2497a9cffd47f5ff6edada0af98d782925e",
+  "pageVersion": "sha256:5377629dd66e472fe83b896c3b21f38a89ad29c4acc72d9b1f1be049824b9987",
   "claims": [
     {
       "id": "claim_c2ca89c216ca435081601804a99ce408",
@@ -21,8 +21,8 @@
       "statement": "Release Slopsentral selects successful main validation with a shared-version increment, admits retained artifact attempts, and verifies source and bytes before publishing rather than rebuilding.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release-pi.yml#L24-L125",
-          "version": "repo-lines-v1:sha256:1e87cdb9a8571804fe97912dff0960034389897eddf0c3a9df32edf7b9982aec:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3YzZkMDg3MWFmMDAxMDI5ZjI0ODgyNDY4MTExMDZiYjQ4ODljNDg1ZGQ5OGVmYmEwNTdkMTAzMTgzNjI2ZWVlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0NjQ1MDQ3NWNjYTlhNTRlMzRjMDI2OWMwZmU0NGQ3MzgzMTYyM2NhZTQxYzQ2ZjlmZWRjZWM4Njc2OWM5ZTRmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjY2M4NDE1NDkxNzY5NGNlNmEzMWFkYzQ2ZDI3MGUzZDMzZDkyYWZhNmQ4YmUyOGY1MjdkODE5MjhjM2RiNmE4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJkMjM2OGFiYzA4NGM2OTU2YzQyYzE0Yjk4YTUyNmE0YTgyN2RkYTZkZDAzOGE1ZmY4ZmU0MjU5OTc3YWI5MTliIn0"
+          "resource": "repo://.github/workflows/release-pi.yml#L24-L121",
+          "version": "repo-lines-v1:sha256:b82d0e2ebff0d0f2003e99c2dca0e8907d8c9409edce39da3d51adb3a24d4c2b:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjNmQwODcxYWYwMDEwMjlmMjQ4ODI0NjgxMTEwNmJiNDg4OWM0ODVkZDk4ZWZiYTA1N2QxMDMxODM2MjZlZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NDUwNDc1Y2NhOWE1NGUzNGMwMjY5YzBmZTQ0ZDczODMxNjIzY2FlNDFjNDZmOWZlZGNlYzg2NzY5YzllNGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjYzg0MTU0OTE3Njk0Y2U2YTMxYWRjNDZkMjcwZTNkMzNkOTJhZmE2ZDhiZTI4ZjUyN2Q4MTkyOGMzZGI2YTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyMzY4YWJjMDg0YzY5NTZjNDJjMTRiOThhNTI2YTRhODI3ZGRhNmRkMDM4YTVmZjhmZTQyNTk5NzdhYjkxOWIifQ"
         }
       ]
     },
@@ -31,7 +31,7 @@
       "statement": "Release publication creates the source tag without replacement and verifies downloaded draft assets before making the release current and finalizing labels.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release-pi.yml#L128-L180",
+          "resource": "repo://.github/workflows/release-pi.yml#L124-L176",
           "version": "repo-lines-v1:sha256:a74bb08a520783f44643b7362fb2d316991aa34adb4a5444213f1f42c6705732:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0MDI5Y2I4ZjcxMDk0MDAyY2QzNTlkOWJkNzcxOTFhOGJhMzRiZTEzODJiOWI2MDJkYzMxNDIzNzgxYjUxZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDlkZTNjYTBjNTQ0NTQyYjA2ZGFiMTk1ZDU2NTA2OGRmNjRlN2QzYjQ4NmY0M2VmYmE1YzZkNDUyMmIwZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmZGUyNDhhNjQ0NjM5MzdjNjVmNGViNjc2MDI4MzM1MGU3NGE3M2MyNzJlODQ2YTE5YmRlNDJhYzFiZmZiMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
@@ -52,7 +52,7 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/publish-harnesses.yml",
-          "version": "repo-file-v1:sha256:d31ca0580bd23a1f6c925c82a1bf21e1333fe19b8adc112de0a2a5bbec2c4fe0"
+          "version": "repo-file-v1:sha256:a1467e023d64896f7bb6f0fbad62e2daff6e26547647194c36043a94b4ae6bce"
         },
         {
           "resource": "repo://tools/publish.py#L28-L33",
@@ -69,8 +69,8 @@
       "statement": "Only an App-authored patch-version PR with the admitted file set and both successful validation jobs for its exact head reaches the automatic version-PR merge path.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release-please.yml#L44-L87",
-          "version": "repo-lines-v1:sha256:7162939868418dcdbdd61efbee0e00bcddfffef5e5e0a65ff0ca39d3647702f3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhYTJiNTBjN2Y5N2I2MTA2YzUzZDNhYzNjNjI5ZjFhY2YyYWQ4ZTZlYzU4YmI4NjZlMGExNzU1ZGJlNzUwZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNGVlM2M3ZWZkYTA0OGVhMmM1MGM3MmRhMTgwOTRkNmM5MTZiYjAxOGM5NDc4NjMyYzVlYjFiN2YyZjRlZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0M2VkOWQxNWYxOTQwZDBhYTg0MGIwNGIwZWExZmE1OTE1YTA5NDI0NjI3MWVmNDk3YWRmMTFhNGNjMzc3OGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://.github/workflows/release-please.yml#L44-L85",
+          "version": "repo-lines-v1:sha256:531742c082f10cf796792dd42bb3098122b6c6a263d29a8ade695aaa73f40de6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhYTJiNTBjN2Y5N2I2MTA2YzUzZDNhYzNjNjI5ZjFhY2YyYWQ4ZTZlYzU4YmI4NjZlMGExNzU1ZGJlNzUwZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNGVlM2M3ZWZkYTA0OGVhMmM1MGM3MmRhMTgwOTRkNmM5MTZiYjAxOGM5NDc4NjMyYzVlYjFiN2YyZjRlZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0M2VkOWQxNWYxOTQwZDBhYTg0MGIwNGIwZWExZmE1OTE1YTA5NDI0NjI3MWVmNDk3YWRmMTFhNGNjMzc3OGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
           "resource": "repo://tools/release_version.py#L198-L290",
@@ -81,6 +81,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-17T03:50:31.285Z"
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

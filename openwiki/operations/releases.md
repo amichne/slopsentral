@@ -19,7 +19,7 @@ sources:
 generated: { by: "codex", at: "2026-11-17T03:50:31.285Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-17T03:50:31.285Z
+    at: 2026-11-20T18:23:08.613Z
 ---
 
 # Unified versions and tested-byte publication
