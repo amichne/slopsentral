@@ -1,6 +1,6 @@
 ---
 name: "ast-grep"
-description: "Install and configure ast-grep, search code with AST patterns, author YAML rules, and apply structural rewrites. Use for syntax-aware matches, reusable lint rules, and codemods across supported grammars."
+description: "Use for syntax-aware code search, reusable AST lint rules, structural rewrites, or requested ast-grep setup across supported grammars. Use literal search for text and compiler or LSP tools for resolved symbol identity."
 ---
 
 # ast-grep
@@ -11,17 +11,23 @@ Use `rg` for literal text and unknown file discovery.
 
 ## Procedure
 
-1. Identify the requested language, source paths, exclusions, and search or rewrite outcome.
-2. Examine the installed `ast-grep` executable, version, help output, and existing `sgconfig.yml`.
-3. For installation or missing grammar support, read [installation and languages](references/installation-and-languages.md).
-4. For patterns, YAML rules, or rewrites, read [structural rules](references/structural-rules.md).
-5. Select an explicit grammar and the smallest source scope that covers the task.
-6. Compare the pattern with a known match and its nearest non-match before a broad scan.
-7. Use read-only output to examine actual matches and file paths.
-8. For a rewrite, examine replacement output before a source write.
-9. Apply the requested rewrite only to the examined scope.
-10. Examine the diff and run the language's compiler, formatter, or focused tests that cover the changed behavior.
-11. Report exact commands, matches, changed files, excluded paths, and semantic limits.
+1. Identify the requested language, source paths, exclusions, and outcome.
+   Select literal search, structural matching, or semantic tooling from the claim the result must support.
+2. When structural matching is needed, examine the installed `ast-grep` executable,
+   version, help output, existing `sgconfig.yml`, and rules that may already cover the task.
+   Reuse a suitable rule. For requested setup or missing grammar support, read
+   [installation and languages](references/installation-and-languages.md) before changing the installation.
+3. Before authoring a pattern, YAML rule, or rewrite, read
+   [structural rules](references/structural-rules.md). Select an explicit grammar
+   and the smallest source scope that covers the task.
+4. Compare the pattern with a known match and its nearest non-match before a broad scan.
+   Use read-only output to examine actual matches and file paths.
+   For a search request, report those results without applying a rewrite.
+5. For a requested rewrite, examine replacement output before a source write.
+   Apply it only to the examined scope. Examine the diff and run the language's
+   compiler, formatter, or focused tests that cover the changed behavior.
+   For a reusable lint rule, exercise its positive and negative cases with `ast-grep test`.
+6. Report exact commands, matches, changed files, excluded paths, and semantic limits.
 
 ## Rules
 

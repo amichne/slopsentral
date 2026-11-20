@@ -1,6 +1,9 @@
 # Python toolchain
 
-Pin uv in `mise.toml`. Use `mise install` to install the selected version.
+Pin uv exactly with `required-version = "==VERSION"` in `uv.toml`. uv refuses to run
+under any other version, so a mismatch fails with a named error instead of a
+behavior difference. Install that version with uv's official installer or the
+repository's existing toolchain owner.
 Declare Python in `.python-version` and `requires-python`.
 Put shared uv settings in `uv.toml`. Set `no-build = true` to forbid source builds of dependencies.
 Declare package indexes explicitly. Use `first-index` resolution.

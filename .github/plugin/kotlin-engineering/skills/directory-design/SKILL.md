@@ -1,6 +1,6 @@
 ---
 name: directory-design
-description: "Use to organize or review a directory tree, choose which axis to group by first, or decide what belongs in a path or name."
+description: "Use when introducing, reorganizing, or reviewing directory boundaries, grouping axes, paths, or names. Compare routes for the reader's actual tasks; an ordinary content edit does not require a new hierarchy."
 ---
 
 # Directory Design
@@ -11,7 +11,9 @@ At each level, ask what the reader knows before they open a file.
 
 ## Choose the next directory
 
-1. List the reader's tasks. Include a new item that has no filename yet.
+1. Inspect the current owners, entry points, and callers. List the reader's
+   tasks, including a new item that has no filename yet. When the existing
+   owner gives those tasks a predictable destination, keep it.
 2. Find candidate groups among direct siblings. Repeated words, shared callers, and files that change together can suggest a group.
    For a repeatable scan, split filenames at word separators or case changes. Compare the words without regard to case.
    Shortlist three or more peers with the same first word or first two words.
@@ -27,6 +29,8 @@ If a product owner revises both billing guides together, `billing/` gives that t
 If operators need one handbook across products, `operators/` gives them one destination.
 The files stay the same. The task determines which distinction belongs first.
 An index can serve the other route without a second copy of each guide.
+For a layout review, return the supported choice and its entry/skip cases.
+Move files only when the requested work includes the reorganization.
 
 ## Decide what belongs in the name
 

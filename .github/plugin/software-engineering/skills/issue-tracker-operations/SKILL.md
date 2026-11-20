@@ -27,6 +27,8 @@ facade instead of branching on provider commands in the model.
 1. Inspect capabilities.
 
    Run `scripts/issue_backend capabilities --json`.
+   For a capabilities-only request, report that result and stop. An issue
+   identifier and issue read are needed only when the request concerns an issue.
 
 2. Read the issue.
 
@@ -35,6 +37,8 @@ facade instead of branching on provider commands in the model.
 3. Read direct blockers when dependency order matters.
 
    Run `scripts/issue_backend dependency-map IDENTIFIER --json`.
+   Keep an ordinary issue read at `view`; do not traverse relationships merely
+   because the backend exposes them.
 
 4. Check the result type.
 
@@ -48,7 +52,8 @@ facade instead of branching on provider commands in the model.
 
 ## Reference Routing
 
-- Load [issue-backend-contract.md](references/issue-backend-contract.md) for
+- Before changing the facade or interpreting dependency coverage and recovery,
+  load [issue-backend-contract.md](references/issue-backend-contract.md) for
   normative requirements, dependency gates, failure rules, and evidence links.
 - Load [issue-backend-result.schema.json](references/issue-backend-result.schema.json)
   when changing the canonical JSON result.

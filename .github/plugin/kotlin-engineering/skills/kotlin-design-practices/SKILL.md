@@ -16,9 +16,12 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
    [boundary enforcement](references/boundary-enforcement.md) when changing
    construction, raw extraction, nullability, or module edges.
 2. Choose reuse, extension, or a new representation from source evidence.
+   When an existing value already carries the fact a consumer needs, preserve it.
+   Introduce a stronger representation when it prevents a named misuse that the
+   existing contract permits.
    Resolve uncertain symbol identity or caller coverage with available semantic tools.
    Do not claim complete caller coverage from an ambiguous text search.
-3. Parse external input once. Keep unchecked construction private to the
+3. At an external-input boundary, parse once. Keep unchecked construction private to the
    invariant owner. Pass stronger values inward without repeated guards or primitive reconstruction.
 4. Choose the smallest semantic owner for each function. Keep callbacks pure.
    Preserve every finite failure through higher-order composition.
@@ -81,9 +84,9 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
   module edges, read [the build-logic contract](references/build-logic-contract.md).
   These correctness rules apply without selecting the explicit-only Gradle
   diagnostic skill. Use focused repository-native checks directly.
-- For domain construction, read [domain types](references/types-domain-modeling.md),
-  [parse examples](references/parse-dont-validate-examples.md), and
-  [type-safety patterns](references/type-safety-patterns.md).
+- Before changing domain construction, read [domain types](references/types-domain-modeling.md).
+  For external-input parsing, read [parse examples](references/parse-dont-validate-examples.md).
+  When selecting the enforcement mechanism, read [type-safety patterns](references/type-safety-patterns.md).
 - For finite failures and their tests, read [errors and tests](references/types-errors-and-testing.md).
 - For function placement or outcome combinators, read
   [function ownership](references/function-ownership-and-composition.md).
@@ -102,10 +105,9 @@ Kotlin values, sealed outcomes, and explicit capabilities. Keep decisions pure.
   Treat these signals as review aids, never proof of a defect.
 - For a DSL or generic constraint, read [DSL types](references/types-dsls-and-generics.md)
   and [DSL choices](references/api-dsl-choices.md).
-- For parameters, factories, or configuration, read
-  [parameters](references/api-parameter-selection.md),
-  [extensions and factories](references/api-extensions-and-factories.md), and
-  [builders](references/api-builders-and-configuration.md).
+- For parameter contracts, read [parameters](references/api-parameter-selection.md).
+  For extension or factory placement, read [extensions and factories](references/api-extensions-and-factories.md).
+  For staged construction or configuration, read [builders](references/api-builders-and-configuration.md).
 - For API compatibility or a focused design review, read
   [surface stability](references/api-surface-stability.md) and
   [review guides](references/api-review-guides.md).

@@ -24,7 +24,6 @@ def scaffold(destination: Path) -> None:
     assets = Path(__file__).resolve().parents[1] / "assets"
     destination.mkdir(parents=True, exist_ok=False)
     for name in (
-        "mise.toml",
         "standalone.py",
         "standalone.py.lock",
         "pyproject.toml",
@@ -61,8 +60,8 @@ def main() -> int:
         print("scaffold: filesystem setup failed; inspect the destination before retrying")
         return 2
     print(
-        f"Created {destination}. Review mise.toml and the setup script. "
-        "Run mise install, then mise exec -- automation-setup there."
+        f"Created {destination}. Review uv.toml and the setup script, "
+        "then run bin/automation-setup there with the pinned uv."
     )
     return 0
 

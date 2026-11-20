@@ -11,12 +11,15 @@ Keep pinned Platform, Gradle, Kotlin, and JDK versions unless the task changes t
 ## Workflow
 
 1. Read repository instructions and inspect Git status. Preserve unrelated work.
-2. Inspect the wrapper, build scripts, catalog, `plugin.xml`, module graph, tests, and release workflows.
+2. Locate the descriptor, service, run configuration, External System, or artifact
+   that owns the change. Inspect its wrapper, build scripts, catalog, `plugin.xml`,
+   module edges, and tests as needed to establish the pinned contract.
+   When delivery is affected, inspect the release workflows too.
    Use resolved SDK contracts for extension IDs and lifecycle decisions.
-3. Identify the descriptor, service, run configuration, External System, or artifact that owns the change.
+3. Reuse the owning implementation when it meets the contract; extend it for the requested behavior.
    Use `intellij-psi-indexing` for PSI and indexes.
    Use `intellij-platform-testing` for fixtures, UI automation, and live IDE diagnosis.
-4. Keep extension instances stateless. Put state and lifetime in services.
+4. When changing an extension or service, keep extension instances stateless. Put state and lifetime in services.
    Preserve disposal, cancellation, coroutine lifetime, and dynamic-unload contracts.
 5. For run configurations, separate type/factory identity, persisted state, editor behavior, execution environment, and the process lifecycle.
    Preserve settings rejection and editor reset/apply behavior.
@@ -28,7 +31,8 @@ Keep pinned Platform, Gradle, Kotlin, and JDK versions unless the task changes t
 7. Run focused tests for the changed contract.
    Cover serialization, invalid settings, import/reimport/removal, task execution, cancellation, failure mapping, and disposal when the change reaches them.
 8. Expand to packaging, Plugin Verifier, sandbox execution, or CI only when the changed surface needs that evidence.
-9. Use repository-owned installation and authorized publication paths.
+9. When installation or publication is requested, use repository-owned paths
+   within the established authority.
    Examine the running IDE's artifact identity before an installed-behavior claim.
    A ZIP build, sandbox result, and publication result establish different facts.
 
