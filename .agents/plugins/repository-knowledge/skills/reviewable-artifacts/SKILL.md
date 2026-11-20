@@ -35,11 +35,13 @@ Screenshots, recordings, data files, and application UIs are not document pages 
 
 1. **Investigate.** Read the code, docs, and data the page depends on. A page written from memory
    sends the reader to review guesses.
-2. **Create the page.** Use the project's existing document directory, or `artifacts/pages/`
-   when there is none. Name the topic in kebab-case, such as `redis-sessions.html`. Copy
-   [the template](assets/page-template.html) there with the available file tools. Keep that
-   file name for the document's lifetime. Replace every `⟦…⟧` placeholder and delete unused
-   sections. Keep the template's styles and script; a picture may bring its own.
+2. **Select the document owner.** For a revision, update the existing page and preserve
+   its file name, block ids, tags, and delivery identity. For a new page, use the project's
+   existing document directory, or `artifacts/pages/` when there is none. Name the topic
+   in kebab-case, such as `redis-sessions.html`. Copy [the template](assets/page-template.html)
+   there with the available file tools. Keep that file name for the document's lifetime.
+   Replace every `⟦…⟧` placeholder and delete unused sections. Keep the template's styles
+   and script; a picture may bring its own.
 3. **Write for the reader.** Read [page guidance](references/page-guidance.md) before drafting.
    It covers the summary, document shapes, decisions, evidence, and skimmable blocks. Read
    [pictures](references/pictures.md) when adding a visualization, animation, or code view.

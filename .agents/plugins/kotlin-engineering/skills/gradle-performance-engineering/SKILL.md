@@ -5,8 +5,9 @@ description: "Measure and improve Gradle build performance using Develocity Buil
 
 # Gradle Performance Engineering
 
-Own the measured Gradle optimization loop. Discover the available Develocity
-instance, authenticated client, and project permissions before requesting scans.
+Own the measured Gradle optimization loop. Inspect available reports and their
+invocation identities first. When scan evidence is needed, discover the available
+Develocity instance, authenticated client, and project permissions before requesting scans.
 Use structured scan evidence before console text or UI inspection when access
 is available. Missing access is an explicit evidence-unavailable outcome; do
 not invent credentials or assume authentication. API access does not guarantee
@@ -33,10 +34,11 @@ For a cacheable task or a suspected false hit, use the [cacheability experiment]
 
 ## Workflow
 
-1. Define the experiment.
+1. Define the requested diagnosis or experiment.
    Identify the slow developer or CI scenario and exact wrapper invocation.
-   Record baseline/candidate revisions, environment, cache state, repetitions,
-   exclusions, and acceptance thresholds. Read
+   For an experiment, record baseline/candidate revisions, environment, cache state,
+   repetitions, exclusions, and acceptance thresholds. For a diagnosis, identify
+   the available report cohort and the question it can answer. Read
    [measurement.md](references/measurement.md) for metric definitions and sampling.
 
 2. Collect scan or native report evidence.
@@ -55,16 +57,18 @@ For a cacheable task or a suspected false hit, use the [cacheability experiment]
    critical path, not summed parallel task durations. Use Kotlin build reports
    when task-level scan data cannot explain compiler behavior.
 
-4. Change the owning boundary.
-   Read [optimization-playbook.md](references/optimization-playbook.md) for
-   evidence-triggered interventions. Write the predicted metric change and
+4. Select the next action from the observed cost.
+   For diagnosis-only work, report the supported cause or remaining uncertainty.
+   When the task includes an optimization experiment, read
+   [optimization-playbook.md](references/optimization-playbook.md) before changing
+   the owning boundary. Write the predicted metric change and
    disconfirming signal. For Actions setup, topology, cache transport, or CI/CD,
    use `github-ci-operations` from `software-engineering`; its Gradle reference
    defines the CI handoff. Read `kotlin-gradle-validation` only after explicit user selection.
    Use necessary focused Gradle commands directly otherwise. If companions are unavailable, state that limit
    and use the official sources linked in this skill.
 
-5. Run matched baseline and candidate experiments.
+5. When evaluating an intervention, run matched baseline and candidate experiments.
    Keep runner class, task set, toolchain, resource limits, and cache scenario
    fixed except for the named intervention. Verify required build outputs and
    tests, then compare medians, tails, dispersion, failures, and CI cost.
@@ -72,7 +76,8 @@ For a cacheable task or a suspected false hit, use the [cacheability experiment]
    changing configuration behavior.
 
 6. Decide and report.
-   Report baseline/candidate evidence links, cohort counts, measured values and
+   For a diagnosis, report evidence links, observed costs, and unresolved causes.
+   For an experiment, report baseline/candidate evidence links, cohort counts, measured values and
    units, absolute and relative deltas, uncertainty, exclusions, correctness
    evidence, and the next decision. Use exactly one conclusion: improvement
    demonstrated, regression demonstrated, inconclusive, or evidence unavailable.

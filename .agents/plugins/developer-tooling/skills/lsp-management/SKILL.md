@@ -1,6 +1,6 @@
 ---
 name: "lsp-management"
-description: "Install, configure, activate, or repair Language Server Protocol support for a requested language and editor or agent host. Use for server selection, workspace attachment, missing diagnostics, and semantic-tool setup."
+description: "Use for requested LSP installation, configuration, activation, or repair, including missing attachment or diagnostics. Use an already useful semantic tool directly for ordinary source work."
 ---
 
 # LSP Management
@@ -22,18 +22,24 @@ For ordinary source edits with a useful semantic tool, use that tool directly.
 1. Identify the requested language, project root, host version, operating system, and installation scope.
 2. Examine existing server registrations, executable paths, package locks, toolchain versions, and host logs.
 3. Identify the first missing stage: installation, configuration, activation, project import, or semantic request.
-4. Read [server selection](references/server-selection.md) for installation sources and language-specific prerequisites.
-5. Read the selected server and host documentation for their current compatibility and configuration contracts.
-6. Reuse a compatible installation before another package or server registration.
-7. If installation forms part of the request, install through the existing project toolchain or documented editor integration.
-8. Record the selected package, version, source, executable, runtime, and destination.
-9. Read [host activation](references/host-activation.md) before a registration or activation change.
-10. Configure the exact executable, argument array, transport, environment, file types, project roots, and documented initialization options.
-11. Start the client through its supported activation mechanism.
-12. Open a source file within the requested project root.
-13. Examine attachment and a real semantic response through that client.
-14. Compare a controlled diagnostic with a corrected case in a disposable project or an authorized source file.
-15. Report the completed stages, exact commands, changed configuration, semantic evidence, and unresolved limits.
+   Preserve working stages. A failed semantic request alone does not justify reinstallation.
+4. When selecting or replacing a server, read [server selection](references/server-selection.md)
+   for installation sources and language-specific prerequisites. Check current
+   server and host documentation before selecting a server or changing configuration.
+5. Reuse a compatible installation before another package or server registration.
+   When installation is requested and no compatible installation exists, use the
+   existing project toolchain or documented editor integration.
+   Record the selected package, version, source, executable, runtime, and destination.
+6. Before a registration or activation change, read [host activation](references/host-activation.md).
+   Change only the affected executable, argument array, transport, environment,
+   file types, project roots, or documented initialization options.
+7. When activation is missing or affected, start the client through its supported mechanism.
+   Open a source file within the requested project root. Examine attachment and
+   a real semantic response through that client.
+8. To establish semantic readiness, compare a controlled diagnostic with a corrected
+   case in a disposable project or an authorized source file. Existing attachment
+   does not replace this evidence.
+9. Report the completed stages, exact commands, changed configuration, semantic evidence, and unresolved limits.
 
 ## Installation Rules
 

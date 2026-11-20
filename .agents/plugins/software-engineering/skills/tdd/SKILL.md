@@ -25,13 +25,18 @@ checks first. An inherited plan describes a hypothesis, not a missing feature.
    environment, assertion source, expected failure, and passing criterion.
    Check tooling readiness separately. Zero selected tests and infrastructure
    failures do not prove the product behavior.
-3. For a behavior change, add or tighten the focused check and run it before
+3. Select the proof path from the current behavior.
+   When the requirement already holds, run its existing check and report reuse.
+   For a behavior-preserving refactor, establish passing characterization.
+   For a behavior change, add or tighten the focused check and run it before
    implementation. Accept RED only when the intended missing invariant causes
-   the failure. Reuse and refactors start from passing characterization.
-4. Implement the smallest real path that satisfies the claim. Keep effects
-   explicit and preserve refined domain values and finite expected failures.
+   the failure. If the cause is unresolved, investigate before implementing.
+4. When an implementation change is required and authorized, build the smallest
+   real path that satisfies the claim. Keep effects explicit and preserve
+   refined domain values and finite expected failures. Validation-only work
+   continues with the existing implementation.
    Do not refactor while red or add behavior outside the acceptance boundary.
-5. Run the same check specification. Accept GREEN only when the relevant
+5. After an implementation change, run the same check specification. Accept GREEN only when the relevant
    assertion executed and passed. Explain skips and cached evidence. Refactor
    while green and rerun the affected check after meaningful changes.
 6. Run the checks that the repository needs. Name the consumer or behavior

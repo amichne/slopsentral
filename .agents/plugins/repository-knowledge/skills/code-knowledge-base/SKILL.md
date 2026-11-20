@@ -1,6 +1,6 @@
 ---
 name: code-knowledge-base
-description: "Create or refresh source-backed OKF concepts, migrate notes, assess source drift, adopt portable coverage and freshness gates, or generate signature indexes. Use for knowledge bundles and backend handoffs."
+description: "Use for requested source-backed OKF queries, concept creation or refresh, note migration, source-drift assessment, portable coverage gates, signature indexes, or backend handoffs. An ordinary code task does not require knowledge generation."
 ---
 
 # Code Knowledge Base
@@ -15,24 +15,29 @@ Treat indexes as navigation aids whose claims still need source evidence.
    Reuse the existing store. An ordinary code task does not authorize knowledge generation.
 2. Select the smallest operation: read, create, refresh, migrate, assess impact, or generate signatures.
    For a query, start at `index.md` and read only concepts that answer the question.
+   Resolve material uncertainty against source, then answer with the evidence and its limits.
+   A query or impact assessment does not by itself require page creation or a refreshed digest.
 3. Gather source paths, symbols, schemas, and module facts before prose.
    Use compiler tools, LSP, Gradle metadata, or current signatures when they exist.
    For requested broad coverage or deeper explanations, map functional areas to
    existing pages and gaps before expanding. Trace representative entrypoints
    through owners, state, dependencies, failures, and recovery; package and page
    counts are not evidence that those mechanisms are explained.
-4. Define stable concept paths and links before new pages.
+4. For requested creation, refresh, or migration, reuse existing concept paths.
+   Define stable paths and links before adding a concept that has no suitable owner.
    Keep source facts, accepted decisions, proposals, and unresolved gaps distinct.
-5. Change the selected pages and their indexes together.
+5. When pages change, change the selected pages and their indexes together.
    Update inbound links after a rename. Keep historical `log.md` links unchanged.
-6. Use the repository's coverage and freshness gates when present. Map changed
+6. For a change or drift assessment, use the repository's coverage and freshness gates when present. Map changed
    sources to explanations, executable evidence, and conceptual neighbors. Review
    source drift before refreshing a digest. A digest establishes agreement with
    reviewed input, not semantic correctness. Preserve the selected backend's
    lifecycle and avoid a second store.
-   Run the format and source-evidence procedures from [knowledge-page-contract.md](references/knowledge-page-contract.md).
+   Before reporting source-drift results, run the source-evidence procedures from
+   [knowledge-page-contract.md](references/knowledge-page-contract.md).
+   For changed pages, run its format and source-evidence procedures too.
    Record each command and result. An impact list does not prove page correctness.
-7. Assess changed prose with controlled-technical-writing.
+7. When prose changes, assess it with controlled-technical-writing.
    Report missing tools, unresolved citations, and unproved host behavior.
 
 ## Select the Necessary Reference
@@ -48,8 +53,9 @@ Treat indexes as navigation aids whose claims still need source evidence.
 
 ## Completion
 
-Each concept has a stable path, a non-empty `type`, and explicit source evidence.
-Changed sources map to affected concepts or a reported coverage gap.
+For a query, the answer names the concepts and source evidence used, with unresolved gaps.
+Each created or changed concept has a stable path, a non-empty `type`, and explicit source evidence.
+For a change or drift assessment, changed sources map to affected concepts or a reported coverage gap.
 For a coverage request, each requested functional area maps to an explanation
 with source evidence or a named gap. Keep a bounded query bounded; do not start
 a documentation expansion merely because the repository has a knowledge store.
