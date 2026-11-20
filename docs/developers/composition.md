@@ -14,7 +14,7 @@ The hook depends on the shared instruction files.
 The resolver carries those dependencies into the package.
 The plugin folder does not own copies of their payloads.
 
-The [catalog](../../source/CATALOG.md) lists current selections.
+The [installation catalog](../../source/INSTALLATION.md) lists current selections.
 Regenerate it after composition changes:
 
 ```sh
@@ -49,7 +49,7 @@ node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsent
 git diff --check
 ```
 
-Set `PKL_BIN` to Pkl 0.32.0 and use fresh destinations.
+Run them through `node tools/toolchain.mjs run --`, which supplies the pinned Pkl, and use fresh destinations.
 The [projection runbook](../pkl-projection.md) includes runtime setup and Pi packaging.
 These gates establish composition and package content.
 Native discovery and model behavior need separate host evidence.

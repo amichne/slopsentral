@@ -83,7 +83,7 @@ Profile contracts keep their own versions.
 Run the focused resource proof with pinned Pkl:
 
 ```sh
-PKL_BIN=/absolute/path/to/pkl-0.32.0 node --test tools/tests/workflow-resources.test.mjs
+node tools/toolchain.mjs run -- node --test tools/tests/workflow-resources.test.mjs
 node tools/validate-source-graph.mjs
 ```
 

@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a7ca9c8b4f38368253fbb7ea65e1380efa51582e5e45ccfaa61b15419bcff3e2",
+  "pageVersion": "sha256:aa5f91f3583d5858a04192721fccc3ba362e3fe3724f3b97905065adac59d05c",
   "claims": [
     {
       "id": "claim_d1bc8d787e7348afa9f084f58f304d0e",
       "statement": "Plugins compose canonical primitives by reference without taking ownership of their payloads.",
       "evidence": [
         {
-          "resource": "repo://source/AGENTS.md#L7-L27",
-          "version": "repo-lines-v1:sha256:fad07cd0b9a35de19f7543f2367582373db39ee07f0d3703d143eaadfde11396:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMGY0YWVkOTA1ZGY1OWZhOWU3MWE3ODc3MTFmYjUxYTZmMzExNzNlNDNhMjlmMGU4NjdiZGYyYjVkM2VhM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZTQ0YjU3ZDc0OTJmMTJhODhlMjEwZGMyOTMyMWQ2MzBiNzg2Njc5OWI2ZWIzNTBiZWU0MjAwZjVjNmVkNWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzExZDRjYzIyOTBkOGQ2NTAzOGVmNjUzMzJhNTRkMjQ2OGE4NGIzZDY3ZjI4YTUzYmRiM2FiZjNmYjUyMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlYjVlYTgyZDQ3YjhhYTMzMDRlNTM3OTg0ZjEyZDA1MTNkY2FlNWI3OTg4ZDUyMjk2NTUzMmI5NDY0YzU0YTYifQ"
+          "resource": "repo://guidance/source-graph.md#L64-L78",
+          "version": "repo-lines-v1:sha256:47dbe3ac8525317603d849196bd3a5bf7d402593453ed87470af183fd12cd39b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4NWFkMWZlMGZkYmU5ZDY5NmIyNzc3M2JmOTRkNjEzM2QyM2EyMjA3YTg4Yzc0MzRjNzcyZTkzMTJmNTI0ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1OTc5MDE2NzVmZmY0MmUzMDkxY2YzYjI2M2FhNjg5ZWYwZDk2YmQyYTJhYmE2MTA5ZDZiYTdjNTZlNjg3MzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4NTRmYmU0NDNlNDQ3MzQ5OTJjZDJjOGRlMDZlN2YwMTQ0ZDdhNjgxN2RlN2ZhYWUxN2ExNmYyNjcwNzVhMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
         }
       ]
     },
@@ -25,7 +25,7 @@
           "version": "repo-lines-v1:sha256:98f83e850c488d76baf1cfdd3568e907cf187860f7662332caf5385848dd1fda:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2ZDdjNzU0MGMyYWVjNWNkMzY1YjQyMzJmMGM0ODE0Mzk2OGQ2N2RkYWFjMzZhYTE5OWZjODlmNzc5MWZjYTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNjY3ZGQyNzZkY2Y0ZTA3YTdhOWM4ZGQzZTFhMWZiNTBmM2YxMjViNTM4NjUyMmJjNDgxM2I3Mzk1MDdjZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1NTE1YTk3MGEzYWM3Zjg2NzkyODBlMWZiYjAyNjVhZGE0ZDIyZGM0MTFhZmUwN2ZiZGJlNThiZWJjNGNmNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmMjM3ZjkwMjAyZmM4NmI3YTQzNDIzMGNiNDYwNDYzNzRiNTg4NDkwZGZkNDc3NjJmOWY4NWQ4OGRmYTM0NjcifQ"
         },
         {
-          "resource": "repo://tools/validate-source-graph.mjs#L269-L291",
+          "resource": "repo://tools/validate-source-graph.mjs#L243-L265",
           "version": "repo-lines-v1:sha256:7b60d49449a8f0976548ecf382e0dadad071f9b2f2e751c56a9080e2c31de8bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmOGM0OTU4YjFkOGI4ODk3ZDk1MDlkYzQ0N2M2MTM2YzNmZWY0NTQwM2M3MDhmZDk3MjAwZTE5YTYxNGZlOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MWM0MDBlOTU4NTYxMDg1Y2MwZTIwODBjMjA4NTAzMmVlNmYxYTMxNTJkYzliNDk5NDRmMGNmMjk1NTQ2ODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlM2IxZTM3NmU1Mzk2OTg2MGVlNzk2N2Q4M2VkZTJkYTFmNzcwN2ZjODdhOGE3ZDg5Y2JlYzEwMzEyMWEyNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5ZTA0N2M3YjY2YzI0YzE1Nzg1Y2FhNjAxNTE2Y2E5ZmU5MDZjMDI5MjgwMjgxMjlkZGE5YjhiY2Q2MmMxZTgifQ"
         }
       ]
@@ -35,8 +35,8 @@
       "statement": "A RESOURCE names one regular executable or data file, excludes skill entry points and aliases, and may depend only on resources.",
       "evidence": [
         {
-          "resource": "repo://source/AGENTS.md#L60-L66",
-          "version": "repo-lines-v1:sha256:01bf5d9362b7ff2bf2f0dd95341b9da137e919e04672363a3d1c21879a8600bd:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQzY2JlMjg0ZDcxNDA3ODMxYzIxOGI2NjM2MDI3YTEzMzc4YzcwYjBhNTVjYTVlYzQ5NTdkMTg4OGFhNjkyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzUzNmE2MjE3NTFiOGY3ZTA0Y2VlY2ZlNmM3MzYwNDE2YzkxODc1MGI1MzBkY2Y2ZWQzYjE3ZDhlYzg4ZjE1NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjgwYjljNzBkNmVmZTE2OTdlOGM2YTE5MDkxNGU4NWU5NDg2OTYzODA0MDk1M2Y3M2JmZGMwZjRiMGVlN2Q5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGRmMjk2ZGVlZjVjMzc0ODIxMmQ4NDgxY2NjYTgyY2NmNTM5ZmFkNjg4YjlkMThiNGJlMmU2N2VlMjFhNTVlYSJ9"
+          "resource": "repo://guidance/source-graph.md#L80-L86",
+          "version": "repo-lines-v1:sha256:020d9779049059298f7a41315c05105210785f7e57214d2b6304381356e76ea2:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTdkMTA4OGJkZDE5ZThkNGJmZGE0NTk2MWIwYTM4MWQzNWQzNjBkZTg3N2FmYjNmYjQ2YWExNzRhOTBjMDU2YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RjOGRkMTgzYWNjMmZkY2ZkYzU0NzAyNTczMWI2MGRlZjQ4NWQ0NTMzODYyYzRhNWM3OTZiNGU3MTc2NzcxNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzU3MTI5MjlmZjgzMTc0Y2E0NGEyNTk1ZmNiYzliM2Q4MjU5NjY0YzYxYThmYzM1MjUzMjJiZjNiODRkZmY4MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOThjZjZlOTMyNWUwMTM0NGNiMzMxNWM0YWFmNTBlYzQ4OTkwNWVlYjU1NTRhMjI3MzZkYWVhYzc2OTlhZmE1ZCJ9"
         }
       ]
     },
@@ -59,12 +59,12 @@
       "statement": "Provider output and installed caches remain consumers, while Pkl mappings and canonical source own projection behavior.",
       "evidence": [
         {
-          "resource": "repo://source/AGENTS.md",
-          "version": "repo-file-v1:sha256:ac851953b0c2e48f8391cd00338964a02bab84fe44963b279bff85c0a20f6deb"
+          "resource": "repo://guidance/source-graph.md#L88-L92",
+          "version": "repo-lines-v1:sha256:155b4ae1ebc9ed93953339009556351ad7597b9e4366dd96505a891c1c913fea:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTY1MjI4MWNlZjkxNzVmMzg2Njg5MjcxOGJjMjZhOTkzNDRkZmRjZmU0MDkwMzE4NzBmMmIyZmRlNDY3ZGIyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc2ZTA2MGFkZWY0Y2VhODY4YmY5ZWJjNzY3OTg4ZTMzMjg4MDU1MjY5NTI2M2E2MzljNDBkZjE1MmU0NjQwMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjMxOTY5ZWQxYjFlMjViZTVmOWVmZDhlZGVkN2RmMGIwODM4MjYwMTIzMDhlM2FiNzY3NDU2OTI2YTViM2M5OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjc4MzliZDI0MGUwMzFiOThmNjMzNTIwN2UwYTliMjk4OWQ5NjE3OTcwNjVjYWM3M2ExNTkzOGU2OTg2OTkxMiJ9"
         },
         {
           "resource": "repo://tools/project-marketplaces.mjs#L303-L328",
-          "version": "repo-lines-v1:sha256:fbbae220459edac5360242ecd7a4377f4e72666695bc9a6e95205f5a4efe04f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiNjg3NzQ2NzAwMWM5YmE1OGQ3YWE2MDhhNTdhNzJmYWNmZTNiOTE0M2E5NWQ0YjJmNTc4NmJmNGE5NGEzZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNDI1YzFkNjgxNjE0OWRmYzEyYTJhNjM3ODliZTY3YzIzMzhiYzA0MzllZmRkMmY0OTkzYmIyYWMzZDVkODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwYjQzMGJkMDUyNWU0OGFiYmUxNmU5ZTA0NDgwODQyYzg5YzU4M2YxY2QzOWFjMjhmOTE5YjBkY2UwNGE3NGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlMTk1ZDY4NzVkNzcwMjIyOGU0NzUzMjdjNjU1ZjM1MjExM2EzOGQwNDFmYjY2OWJlMjViYTUwOGM4ZTM2ZDEifQ"
+          "version": "repo-lines-v1:sha256:53f3f953d4b3cf89db2f783e912a22b69ca4ed6d35e3596433fb4d3cb0dbe1eb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZDE4YmJhZWZkMTg0OTFjZjhjYzE2ZGQ1ZjIwNmM5MTdmMmE1YmVlM2JjNDliMTgwYmJiYTAyN2Q4NmE5NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzMmY2ZTRmOGY3MjUzOGQ0ZTczZTAzODUwODcyMmVjYWFlNzIwZmE2N2Y0OTk5NTY5N2Y3MDY2MjFhNGM0NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzYWM1MzliYzEwN2MwY2IzNDM1Y2Y2NTEzZDkzMzU3OGViMjJiMTc0ZmM0NzZkZmVkZDMzODc3NmQ3M2NjMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMjlkZDQ1MzFiOGE5ZmIxMDJkYjY4YTAyMzYyZDdiMTIwYzRmMGRjZDY0YzI2NDRhMDY1NjIzODZlOGNiY2UifQ"
         }
       ]
     },
@@ -73,12 +73,8 @@
       "statement": "Code Knowledge Base bundles the portable runtime and adoption assets, while Slopsentral's coverage configuration supplies its project policy.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L170-L191",
-          "version": "repo-lines-v1:sha256:45e4d725965efa5b2caf02cf5a0eff8b05e30d2eec73c7f279db5c38c198e398:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYWY2MmViNjZmYTIyYjAxMzQzM2E0ODA1ZmY3MTRjN2QzZWY1Y2Y0MjVhYjUxZGViNmZmY2IwYmRiYWY3YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNmU0NTM4Zjc3Yzc5NzI0MGZhMmE5ODZhYWE4MGI4MTk3N2U5MDUzMjEyODIxNTM0ZDJlMGUzM2JhNWIxNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5N2NkZTRmZmEzODRkZGNjMjQxOTM1NGVkODcyNjc4NmQ1ZmViZDY3ODQ3ZjljN2ZiMzAyYjg1M2U4MzkxNDEifQ"
-        },
-        {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:38c820c0543545e2b12699602274a30cb5471b40b0d98775b2ca7795bfff22bf"
+          "version": "repo-file-v1:sha256:10164309ecb3ea28a03259a149ac60b744c894ab83b7b86422c9b79a884e41d4"
         },
         {
           "resource": "repo://tools/tests/documentation-portability.test.mjs#L90-L113",
@@ -103,6 +99,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-17T03:50:31.285Z"
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

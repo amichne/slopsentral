@@ -47,6 +47,7 @@
           "guides/controlled-writing",
           "reference/architecture",
           "reference/catalog",
+          "reference/installation",
           "reference/migration",
           "reference/profiles",
           "reference/releases",
@@ -97,23 +98,23 @@
   "redirects": [
     {
       "source": "/plugins/software-engineering",
-      "destination": "/reference/catalog#software-engineering"
+      "destination": "/reference/installation#software-engineering"
     },
     {
       "source": "/plugins/kotlin-engineering",
-      "destination": "/reference/catalog#kotlin-engineering"
+      "destination": "/reference/installation#kotlin-engineering"
     },
     {
       "source": "/plugins/intellij-plugin-development",
-      "destination": "/reference/catalog#intellij-plugin-development"
+      "destination": "/reference/installation#intellij-plugin-development"
     },
     {
       "source": "/plugins/developer-tooling",
-      "destination": "/reference/catalog#developer-tooling"
+      "destination": "/reference/installation#developer-tooling"
     },
     {
       "source": "/plugins/repository-knowledge",
-      "destination": "/reference/catalog#repository-knowledge"
+      "destination": "/reference/installation#repository-knowledge"
     },
     {
       "source": "/guides/troubleshooting",

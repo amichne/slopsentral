@@ -8,6 +8,8 @@ tags:
   - evidence
   - contracts
 sources:
+  - id: openwiki-source-571d43ef55d90706aae90d85
+    resource: repo://.github/actions/toolchain/action.yml
   - id: openwiki-source-dcf38279ea35c3c91917811a
     resource: repo://.github/workflows/documentation-site.yml
   - id: openwiki-source-fce7a6054d61269783034ac4
@@ -34,10 +36,12 @@ sources:
     resource: repo://tools/tests/pi-host.test.mjs
   - id: openwiki-source-59bfb60d11af1188e2f7c0c3
     resource: repo://tools/tests/pi-runtime.test.mjs
-generated: { by: "codex", at: "2026-11-09T13:20:54.909Z" }
+  - id: openwiki-source-1c86dc4352b4d3810fb862e2
+    resource: repo://tools/toolchain.json
+generated: { by: "codex", at: "2026-11-20T18:23:08.613Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-17T03:50:31.285Z
+    at: 2026-11-20T18:23:08.613Z
 ---
 
 # Match checks to the engineering claim
@@ -50,12 +54,12 @@ Run a wider gate only for repository policy, changed consumers, or a named unres
 
 | Surface | Gate | What the result establishes |
 | --- | --- | --- |
-| Python automation | `mise exec -- slopsentral-check` | Ruff, strict Pyright within its include list, and selected pytest assertions |
+| Python automation | `npm run check:python` | Ruff, strict Pyright within its include list, and selected pytest assertions |
 | Source composition | `node tools/validate-source-graph.mjs` | Declared schemas, canonical identities, paths, and graph invariants |
 | Catalog | `node tools/catalog.mjs --check` | Agreement between source composition and the generated catalog |
 | Provider shape | Fresh `project-marketplaces.mjs` output | Native Pkl evaluation, accepted operations, sealed payloads, and no-replace output |
-| Knowledge | `mise exec -- slopsentral-docs check` | Named coverage, local links, native completion prerequisites, and reviewed byte agreement |
-| Changed prose | `mise exec -- slopsentral-prose changed` | Pinned local prose rules and glossary assessment |
+| Knowledge | `npm run check:docs` | Named coverage, local links, native completion prerequisites, and reviewed byte agreement |
+| Changed prose | `node tools/toolchain.mjs run -- slopsentral-prose changed` | Pinned local prose rules and glossary assessment |
 | Offline evaluation controls | `npm run check:evals` | Types, deterministic controls, and adapter contracts without fresh model evidence |
 | Unified version | `npm run check:release` | Synchronized authored product versions and release configuration |
 

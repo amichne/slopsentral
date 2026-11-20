@@ -1,205 +1,45 @@
 # Repository Instructions
 
-Type safety and verifiability are the default. Treat JSON manifests as
-contracts, validate them after edits, and do not patch generated provider output
-by hand when the authored source can be fixed instead.
+Slopsentral is the authored source for a plugin marketplace: skills, agents, hooks,
+instructions, concepts, profiles, evals, and schemas under `source/`, plus the
+tooling under `tools/` that validates and projects them for each host.
 
-## Marketplace Ownership
+## Always
 
-- `source/adaptable.marketplace.json` is the provider-neutral marketplace source
-  for `slopsentral`.
-- `source/plugins/*/plugin.json` composes primitives by reference. Do not copy
-  primitive payloads into plugin folders.
-- `source/skills`, `source/agents`, `source/hooks`, `source/concepts`,
-  `source/profiles`, `source/evals`, `source/schemas`, and `tools` are
-  canonical authored roots.
-- Generated provider output is published on `main` under `.agents/plugins`
-  (Codex) and `.github/plugin` (GitHub Copilot), and on the corresponding
-  `harness/codex` and `harness/github-copilot` branches.
-- Regenerate these trees from validated authored source with the local Pkl projector; never
-  hand-edit them. Publication updates both trees on `main` in one commit and
-  preserves all authored files.
-- Installed caches under `~/.codex/plugins/cache` are consumers, never source.
-- Amp directory plugins project into `.amp/plugins`. `tools/projection/Amp.pkl`
-  owns skill registration and turn-start instructions. Hooks, agents, and MCP
-  configuration remain reference-only; workflow profiles are unsupported.
-  `Publish Harnesses` publishes Amp only to `harness/amp`, not `main`, so the
-  authored checkout does not automatically activate every bundle.
+- Edit authored source. `.agents/plugins`, `.github/plugin`, `docs/public`,
+  `openwiki`, and installed caches are generated; change their owner and
+  regenerate them.
+- Extend the existing owner when it meets the contract. Add an owner only for a
+  responsibility no current owner can serve.
+- Preserve the user's authorization and unrelated work. Source inspection does
+  not establish installation, publication, native loading, or model behavior.
 
-## Slopsentral Command
+## Route by the change
 
-`install.sh` owns the minimal shell bootstrap for the `slopsentral` command.
-It downloads pinned uv only when `uv` is absent from `PATH`.
-`tools/slopsentral.py` owns the locked Python command and its installation, update, and removal operations.
-Explicit host operations use `--host`.
-Codex, Copilot, and Amp accept `--plugin` selections or `--all` for installation and updates.
-`slopsentral setup` selects a bulk action and harnesses interactively.
-Bulk commands without `--host` open the harness selector. Removal keeps explicit selections.
-Use native Codex and Copilot commands for their host configuration.
-Amp uses managed links to release archives. Pi delegates to `tools/setup-pi.mts`.
-`tools/setup_assets.py` keeps the bootstrap, Python script, lock, and setup receipt.
-`source/schemas/pi/setup.schema.json` owns the receipt contract.
-Keep historical two-file, five-file, and seven-file inventories valid.
-The nine-file inventory includes the two audit modules.
-The command bundles the canonical Kotlin detector and its lock from `source/hooks/`.
-Keep layout findings advisory. Inspection failures must return a nonzero status.
-Reject partial inventories and duplicate filenames.
-Keep upload and download lists in `.github/workflows/release-pi.yml` synchronized with that inventory.
-Preserve edited managed files, foreign paths, and disabled plugin choices.
-Keep installed copies and cached archives outside authored source.
-Run `uv run --locked pytest tools/python_checks/test_slopsentral.py tools/python_checks/test_setup_assets.py` after command changes.
-The [command guide](docs/cli-install.md) describes installation from source and published assets.
+Read only the rows that match the work, before acting. Reconsider when the work
+moves to another row.
 
-## Pi Installation Entry Point
+| When the change affects | Read |
+| --- | --- |
+| Skills, agents, hooks, plugins, profiles, resources, or the catalogs | [Source graph](guidance/source-graph.md) |
+| Provider projection, Pkl runtime, or generated provider output | [Projection](docs/pkl-projection.md) |
+| Native command installation, updates, removal, or setup receipts | [Command installation](docs/cli-install.md#maintainer-change-contract) |
+| Pi bootstrap, packages, native hooks, or recovery | [Pi installation](docs/pi-install.md#maintainer-change-contract) |
+| Versions, release admission, or promotion of retained artifacts | [Releases](docs/releases.md) |
+| Decision cases, graders, routing fixtures, or execution scenarios | [Evaluations](docs/skill-evals.md) |
+| Explanations, coverage, glossary, or knowledge freshness | [Documentation](docs/documentation.md) |
+| Website projection or an authorized deployment | [Site](docs/mintlify.md) |
+| Shared session instructions or the portable global file | [Global instructions](docs/global-agents.md) |
+| Native instruction scope or maintenance hooks | [Scoped instructions](docs/agents-md-scope.md) |
+| Portable concepts under `source/concepts` | [Concept instructions](source/concepts/AGENTS.md) |
 
-`tools/install-pi.sh` preserves the documented curl-to-shell entry point.
-It delegates to the tested native installer from the selected stable release.
-`tools/setup-pi.mts` owns settings migration, removal, and private recovery.
-`tools/projection/Pi.pkl` owns native packages for all catalog plugins.
-`source/hooks/pi/adapter.ts` maps canonical hooks to native Pi events.
-Skills and review prompts use native discovery. Shared skills register once.
-The archive inventory binds every payload file to its digest.
-`tools/package_pi.py`, `tools/pi_candidate.py`, and `tools/setup_assets.py` own
-archive validation and source-bound candidate/installer receipts.
-`Release Slopsentral` publishes retained tested bytes only after a successful main
-version increment. It is independent of `Publish Harnesses`; do not restore retired Pi extensions,
-workflow emulation, or the old documentation/projector stack.
-`tools/install-pi.sh` must not add Python, uv, Pkl, or npm prerequisites.
-Run `npm run check:pi`, `node --test tools/tests/pi-*.test.mjs`, and the focused
-Python Pi checks after installer/release changes. Use `PKL_BIN` to exercise native
-projection and `SLOPSENTRAL_PI_ARCHIVE` to exercise archive installation.
-Run `node --test tools/tests/pi-bootstrap.test.mjs` after launcher changes.
+To apply one of this repository's procedures to the work itself, such as TDD or
+Python tooling, select it in the [task catalog](source/CATALOG.md).
 
-## Unified Releases
+## Before handoff
 
-`package.json` owns the shared Slopsentral product version. Release Please manages
-one root component with patch-only increments; `release-please-config.json` owns
-its complete set of authored version targets. Keep plugin manifests, marketplace
-plugin references, Python metadata, and both root lockfiles synchronized. Do not
-include generated provider trees, dependency pins, or schema revisions as version
-update targets. Run `npm run check:release` and the actual updater test at
-`tools/tests/release-please.test.mjs` after release changes.
-
-The pinned GitHub action and `release-please` test dependency must use the same
-library version. Release Please proposes version/changelog PRs with a repository-scoped GitHub App token.
-The workflow merges only App-authored version PRs after both validation jobs pass for their exact head.
-`tools/release_version.py` owns release selection, version-PR admission, and completion labels.
-Keep unpublished version increments pending across failed main runs and subsequent repairs.
-The publisher owns tags and releases. Ordinary code PRs keep their normal merge process.
-See `docs/releases.md` for required credentials, source-bound receipts, and the
-post-publication label lifecycle. Never infer credentials or publish from silence.
-
-## First-Party Material
-
-Do not make upstream/system skills canonical here. Preserve upstream provenance,
-or create a local rewrite with a non-colliding name and explicit intent.
-
-## Required Checks
-
-Run the smallest check that proves the edited surface. For marketplace or plugin
-composition edits, run:
-
-```bash
-node tools/validate-source-graph.mjs
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
-node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp
-git diff --check
-```
-
-The projector requires Pkl 0.32.0 (`PKL_BIN` may select an explicit executable).
-Use fresh output directories. Projection never downloads a runtime or replaces
-an existing tree. `node tools/install-projection-pkl.mjs --out <path>` is the
-explicit checksum-verified runtime setup boundary.
-
-## Shared Engineering Baseline
-
-Read and apply [the canonical engineering baseline](source/instructions/engineering-design.md)
-for all work. Software Engineering delivers this same source through its context
-hook; language and domain instructions refine it.
-
-Write repository automation in Python. Install the uv version from `mise.toml` with `mise install`.
-Prefer the standard library for small commands.
-Give public CLI commands executable names without file extensions. Put them on `PATH`.
-Use `uv.toml` for checkout configuration and set `no-build = true`.
-Declare Python requirements in `pyproject.toml` or the script's PEP 723 header.
-Commit each portable uv script with its adjacent lockfile.
-Run portable uv scripts with `uv run --locked --script`.
-The checkout launcher for `slopsentral audit` uses `uv.toml` and `.python-version`.
-The installed launcher runs the audit with `uv run --no-project`.
-Run `mise exec -- slopsentral-setup` for checkout setup.
-Run `mise exec -- slopsentral-check` for Ruff, strict Pyright, and pytest. Keep generated outputs and installed caches outside authored edits.
-
-For prose changes, run `mise exec -- slopsentral-prose changed`. Keep its report and review warnings at the reported lines.
-
-## Core Skill Evals
-
-`source/evals/promptfoo/cases.mts` owns active decision cases and expected answers,
-including the session-grounded regressions. Extend this owner instead of adding
-a parallel decision catalog or campaign runner.
-For each example used to judge a model decision or its scope, identify the case that covers it.
-Backfill missing cases in the same pull request, including the nearest example where the expected action changes.
-`promptfoo-eval-construction` describes how to choose the suite and exercise its assertions.
-`promptfooconfig.ts` selects the live decision suite. `tools/promptfoo` owns the adapters.
-Read skill text from `source/skills`, not generated trees or installed caches.
-Supply case-specific routed references explicitly and record their source hashes.
-After eval changes, run `npm run check:evals` for type checks and offline controls.
-Run `npm run eval:skills` for fresh model responses through the pinned Codex SDK.
-Normal CI runs offline controls without model calls or credentials.
-Keep raw reports under ignored `.promptfoo/`. Keep offline controls separate from model evidence.
-The decision suite scores supplied skill text and references, not automatic routing or tool execution.
-
-`source/evals/promptfoo/execution/` owns five plugin benchmark definitions
-and 49 scenarios. `tools/promptfoo/execution-runtime.mts` runs the Codex SDK
-and supports read-only fixtures through Amp CLI. Select an explicit ignored
-fixture registry with `SLOPSENTRAL_EXECUTION_FIXTURES`. Bind each case to a target,
-scenario, absolute repository path, full commit SHA, context, and independent
-host verifier path and content hash. Missing fixtures are nonpassing
-`BLOCKED_SETUP` with no model call; never replace them with synthetic live scores.
-Use disposable private worktrees, isolated `HOME`/`CODEX_HOME`, validated fresh
-projections, and native plugin installs. Preserve benchmark model, sandbox, and
-approval settings; disable web search, sandbox network, retries, and caching.
-Require independent evidence for every exact checklist item plus route and scope;
-missing or unassessed evidence never passes. Do not let the model grade itself.
-Retain JSONL events, including failed partial turns, fixture and installation
-identities, initial/final status and diffs, and verifier outputs under ignored
-`.promptfoo/execution/`; the report is `.promptfoo/results/execution.json`.
-Keep routing fixtures and archived assessments separate from both live suites.
-Integration and offline checks do not establish live passes or measured improvement.
-
-## Documentation as engineering
-
-Read [the documentation practice](docs/documentation.md) for source-linked explanations, coverage, and freshness.
-Use OpenWiki as the single OKF owner. Keep operational commands in `docs/`.
-`source/skills/code-knowledge-base/scripts/documentation.py` owns the portable gate and its adjacent lock.
-`bin/slopsentral-docs` points to that distributed runtime. Keep project policy in `docs/coverage.json`.
-The skill bundles its schema, adoption procedure, and independent-project template.
-Run `PKL_BIN=/path/to/pkl-0.32.0 node --test tools/tests/documentation-portability.test.mjs` after runtime or package changes.
-For source changes, examine affected explanations and refresh them within the task scope.
-Complete the native page queue before a documentation admission claim.
-Run `mise exec -- slopsentral-docs check` for coverage, links, native completion, and reviewed fingerprints.
-After source review and native finalization, run `mise exec -- slopsentral-docs record` to refresh the reviewed inputs.
-Review the lock diff with the page changes. A matching digest does not prove semantic accuracy.
-Historical audits keep their original evidence and do not establish current results.
-
-`docs/site.json` maps canonical documents to the Mintlify site in `docs/public`.
-`tools/public_docs.py` owns that projection. Do not edit its generated pages by hand.
-Run `npm run docs:sync` after a mapped source change.
-Run `npm run docs:check` before a site PR.
-Keep the site check in `npm run check:docs` even if the site workflow changes.
-For a deployment claim, examine Mintlify status, `slopsentral-site live`, and the actual pages in a browser.
-Read [the site guide](docs/mintlify.md) for source ownership and recovery.
-
-## Portable Global Instructions
-
-`tools/install_global_agents.py` owns the portable installation and its local
-reference snapshot. `tools/global_agents.lock.json` pins the source assets.
-The [source map](docs/global-agents.md) describes the installation contract.
-
-After changing a bundled source, review its effect on the portable guidance.
-Refresh its digests with `uv run --locked tools/install_global_agents.py manifest --write`.
-Run `uv run --locked tools/install_global_agents.py manifest` to examine freshness.
-Keep installed `.slopsentral` snapshots outside authored edits.
+Run the checks for the changed surface listed in [verification](guidance/verification.md).
+Report each as passed, failed, skipped, or not run.
 
 <!-- OPENWIKI:START -->
 
@@ -214,6 +54,6 @@ This repository has a generated `openwiki/` evidence index. It is optional just-
 - Treat source code and tests as authoritative. A brief's unknowns and review items are verification gaps, not automatic requirements.
 - Prefer the narrowest quiet validation that proves the changed behavior. Preserve complete failure output.
 
-The scheduled OpenWiki GitHub Actions workflow refreshes the repository wiki. Do not hand-edit generated OpenWiki pages unless explicitly asked; prefer updating source code/docs and letting OpenWiki regenerate.
+Use the repository's documented maintenance process to refresh generated pages after source changes. Check its configuration and completed runs before relying on automatic updates. Do not hand-edit generated OpenWiki pages unless explicitly asked; prefer updating source code/docs and letting OpenWiki regenerate.
 
 <!-- OPENWIKI:END -->

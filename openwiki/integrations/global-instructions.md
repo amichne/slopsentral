@@ -4,21 +4,25 @@ title: Portable instructions and pinned references
 description: Install self-contained engineering principles with a digest-named local source snapshot, then examine agreement without implicit replacement.
 tags: [instructions, portable, installation, snapshots]
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-03T18:14:45.754Z
+  - by: openwiki/0.9.0
+    at: 2026-11-20T18:23:08.613Z
 sources:
   - id: openwiki-source-36ad8fcb548ba122b2048846
     resource: repo://docs/global-agents.md
+  - id: openwiki-source-f261246d6145c6810b1500c8
+    resource: repo://tools/catalog.mjs
   - id: openwiki-source-a21310cda5a734a20e146119
     resource: repo://tools/install_global_agents.py
-generated: { by: "codex", at: "2026-11-03T17:57:45.987Z" }
+generated: { by: "codex", at: "2026-11-20T16:26:00.832Z" }
 ---
 
 # Portable instructions and pinned references
 
 The [portable AGENTS.md](../../docs/examples/global/AGENTS.md) expresses engineering principles without a plugin dependency.
-Its rules connect invariant design, explicit effects, faithful evidence, knowledge maintenance, and authorized delivery.
-The [source map](../../docs/global-agents.md) links those principles to their authored origins.
+It is a generated view of the two shared session instructions, [agent execution](../../source/instructions/agent-execution.md) and the [engineering baseline](../../source/instructions/engineering-design.md).
+The [catalog generator](../../tools/catalog.mjs) writes it with `--write` and rejects a stale copy with `--check`.
+The Software Engineering plugin's session context hook injects the same text, so one installation needs only one of the two deliveries.
+The [source map](../../docs/global-agents.md) links each section to the owners of its detailed rules.
 
 ## Capture one selected source snapshot
 

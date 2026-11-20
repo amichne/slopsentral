@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:1562c56d153edf6089c77c57a8dc9d00fd5f8755ba9699355c38b093d9b7efa2",
+  "pageVersion": "sha256:85e642f7ca812805f1f7c85fb895645efc3acc88d7659316cd22968e2ed0cb65",
   "claims": [
     {
       "id": "claim_00b3d0c940c943d0bb4ebf94bfc1c873",
       "statement": "Plugins compose canonical primitives by reference, generated packages and installed caches remain consumers, and skill installation does not grant publication authority.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L7-L27",
-          "version": "repo-lines-v1:sha256:c6795e7b1b8f2020ff4bea44f9b21eecdb2350bce60fb07a0cdb14f4c2db8641:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjODE2ZWUzMTg4NjcxMTEwOWRkYTU4YTVlZjk4NDAwNDZmYTI1NDFjZDBjYzJiZWFhNzFjMDJmNWM2YTI1ODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMTYxYjhhMTE0M2I3Zjc3NDJiNTc4NzJkNWM3NTRiODQxYjFjYzNjNjIwN2U2OTQ3OWMyN2MwZmI5ZWY2OWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTc3NTJiMTM4YjY3NDFjZGQ5NzZjMDVkN2ZhMzAyOTJjODNlN2QxNTdkODIxMGQ4OGYyYjg5MjBlMTFjYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzODcxOWU2NGY2OGE1MDEwMmJlZTdmNGM1YmYyMzNkMzFkNjE5ODM4ZWM5ODllZTM3ZmRhMDI3YjIzZDc2M2UifQ"
+          "resource": "repo://AGENTS.md#L6-L16",
+          "version": "repo-lines-v1:sha256:34dc937ba1c0f18730cd29206e6588b06ac1003072d2cc7de9e8f3a8c92c9df3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxMmJlOTVlYWZlNjM4ZjE5MzE3YzczYTlhMDBjY2M4MDY1YmU4OWZiM2FiZjgzNGNlNzNlYzIyNjI3MmRhMTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlNjU3NTIxMDY0MWY0MDQ2ZjdlYTYxNTNkMDE1OGQwOWMzMzhjY2U0MDdjYjBkMjM5NTZlMDcwMTYwMmRkMWQifQ"
         },
         {
-          "resource": "repo://source/AGENTS.md#L7-L27",
-          "version": "repo-lines-v1:sha256:fad07cd0b9a35de19f7543f2367582373db39ee07f0d3703d143eaadfde11396:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMGY0YWVkOTA1ZGY1OWZhOWU3MWE3ODc3MTFmYjUxYTZmMzExNzNlNDNhMjlmMGU4NjdiZGYyYjVkM2VhM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZTQ0YjU3ZDc0OTJmMTJhODhlMjEwZGMyOTMyMWQ2MzBiNzg2Njc5OWI2ZWIzNTBiZWU0MjAwZjVjNmVkNWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzExZDRjYzIyOTBkOGQ2NTAzOGVmNjUzMzJhNTRkMjQ2OGE4NGIzZDY3ZjI4YTUzYmRiM2FiZjNmYjUyMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlYjVlYTgyZDQ3YjhhYTMzMDRlNTM3OTg0ZjEyZDA1MTNkY2FlNWI3OTg4ZDUyMjk2NTUzMmI5NDY0YzU0YTYifQ"
+          "resource": "repo://guidance/source-graph.md#L64-L92",
+          "version": "repo-lines-v1:sha256:201d746ebe6e37d813b2136c18f01bb7fda81fdcb2c1f69e03a68412ca055e0c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4NWFkMWZlMGZkYmU5ZDY5NmIyNzc3M2JmOTRkNjEzM2QyM2EyMjA3YTg4Yzc0MzRjNzcyZTkzMTJmNTI0ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3NmUwNjBhZGVmNGNlYTg2OGJmOWViYzc2Nzk4OGUzMzI4ODA1NTI2OTUyNjNhNjM5YzQwZGYxNTJlNDY0MDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4NTRmYmU0NDNlNDQ3MzQ5OTJjZDJjOGRlMDZlN2YwMTQ0ZDdhNjgxN2RlN2ZhYWUxN2ExNmYyNjcwNzVhMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3ODM5YmQyNDBlMDMxYjk4ZjYzMzUyMDdlMGE5YjI5ODlkOTYxNzk3MDY1Y2FjNzNhMTU5MzhlNjk4Njk5MTIifQ"
         },
         {
           "resource": "repo://source/instructions/agent-execution.md#L1-L13",
@@ -49,7 +49,7 @@
       "statement": "The repository's documentation automation proposes only generated wiki changes for review and does not auto-merge or publish executable source changes.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/openwiki-update.yml#L109-L128",
+          "resource": "repo://.github/workflows/openwiki-update.yml#L107-L126",
           "version": "repo-lines-v1:sha256:69eabea017127c886115a1ace2c1de3aa69e9a724f01af3eb1932da8f281e793:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NTQ2M2Y5MDRhNzMxZjEzNzRlNzM4MmQ2YjEzYzYxZGZkZTVhMGUxMjhjMjNjZTcxMGVlNTQyZmU4MGQ1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYTFiYmMyOTA1ZTgzNGRmODQ2MmVhZDczOTM5M2E0MjllZTE1MzUxYzFlMTc4MDI3NDI2YmE3NjNiZWVjMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3YzU4YmUwMWE0OTc0NmRhOWY0MWNkOTQzZTZiMjAyZjg2Nzc1MWMyM2EzYzkyOTlhOGNiZDkyYzVkNzg3NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
@@ -71,10 +71,28 @@
           "version": "repo-lines-v1:sha256:1dedef8d6c340884743d469571120b528f88c4af9292d05bdc1f6baee5a4b0a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YTY3Nzc3ZDY3Nzc4YzM0MGUyMjUxZWQ5YWMwY2UzMWU1NWNmYTA2ZjRjNmUyOWYxNDI5YzRkOTVlMTFhYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3OTI0NWFkZWEzNTZlZjIzZjJjMTkwYjRmYTVjYjM5NjFhMWZjNGUwOWM0MDBkZTg5Mzg5M2IxZjliNDAwYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMWQ2ZTc3MmFkMjVhNGM1MDdiZjUyMzZhZjhkM2Q2YTE1NWVjZDRlYjA3NmIyZDE5MTIzYzFkODBhNTMxYzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmYWY0YTEyZjUwODBlZjc2ZjUyMDY5YzMyZWEwODdjYjc2OTExOTU0NGQ1MDA1YTA3ODViODYzMWRlYWE3MDQifQ"
         }
       ]
+    },
+    {
+      "id": "claim_ca42cf1e6cb84735a106ee5ef3125bd4",
+      "statement": "A maintainer checkout needs only Node.js and npm; the toolchain resolver supplies uv, Pkl, and Vale pinned by version and SHA-256.",
+      "evidence": [
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:5637cf6288a0a6b0bf7e4224e3cd0f706f09bf75f28df63314db0c32250aeaa9"
+        },
+        {
+          "resource": "repo://tools/toolchain.json",
+          "version": "repo-file-v1:sha256:2a124cf259b8ba3dda4875b9249d619665cb7214f3a5eb4f5c685707444175c9"
+        },
+        {
+          "resource": "repo://tools/toolchain.mjs",
+          "version": "repo-file-v1:sha256:cd74f6e6149ec0c8c202ab7a6a50c9eaef7e592cb191acb4ffd6960ff98b0211"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-09T13:20:54.909Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

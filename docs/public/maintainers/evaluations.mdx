@@ -16,6 +16,7 @@ Use the [session audit tool](/maintainers/session-audit) to examine Pi and Codex
 | Offline controls | `tools/promptfoo/smoke.ts` and unit tests | `npm run check:evals` | Synthetic answers exercise the grader and pipeline |
 | Plugin execution | `source/evals/promptfoo/execution/` | `npm run eval:execution` | Ready fixtures, real turns, and independent effects evidence |
 | Routing contracts | `source/evals/routing/` | `node tools/run-routing-evals.mjs --require-all-fixtures` | Golden consistency and separately recorded historical evidence |
+| Guidance routing | `source/evals/routing-bench/` | `tools/routing_bench.py` | Native routing from root guidance to the owner and its checks, without task execution |
 
 Each case runs with supplied skill text and a control that omits it.
 The five execution definitions contain 49 scenarios.
@@ -161,7 +162,7 @@ Each ready case uses a private Git clone and disposable worktree at the pinned r
 The clone has no `origin` remote. Agent staging cannot change the operator's index or refs.
 `HOME` and `CODEX_HOME` are isolated. Agent scratch stays inside its worktree.
 Setup creates a fresh Codex projection and installs its native plugin.
-Pkl 0.32.0 must exist on `PATH` or at `PKL_BIN`.
+Run it through `node tools/toolchain.mjs run --`, which supplies the pinned Pkl 0.32.0.
 
 ### Compare the same fixtures in Amp and Codex
 
@@ -243,3 +244,35 @@ Read it with those artifacts before a result claim.
 A measured comparison needs matching fixture revisions and settings, fresh turns, and independent effects evidence.
 Successful installation, static controls, golden answers, and historical outcomes cannot substitute for that evidence.
 Use the [documentation practice](/maintainers/documentation) when source changes make this guide or its linked explanation stale.
+
+## Measure guidance routing
+
+The routing benchmark asks whether an agent that starts at a repository's root
+guidance reaches the file that governs a maintenance task and names its required
+checks. Each trial exports one revision with `git archive` and runs `codex exec`
+in a read-only sandbox, with an isolated Codex home that holds only the login. A
+trial passes when the governing file was read or named and every required check
+appears in the answer. Compare revisions of the same task set:
+
+```sh
+uv run --locked --script tools/routing_bench.py source/evals/routing-bench/slopsentral.json \
+  base=.@origin/main candidate=.@HEAD --output /tmp/routing-bench --reps 2
+```
+
+Each variant is `NAME=REPOSITORY@REVISION`; a tree object also works, so an
+uncommitted change can be measured. Recorded trials under `--output` are reused.
+A trial costs one model session. Results describe routing decisions under a
+fixed prompt with regex grading, not task execution or general model behavior.
+
+On 2026-11-20, with codex-cli 0.169.1 at low effort and two repetitions per
+task, the guidance consolidation measured:
+
+| Task set | Revision | Passed | Median input tokens | Median files read |
+| --- | --- | --- | --- | --- |
+| Slopsentral | `main` | 12/16 | 109,910 | 5 |
+| Slopsentral | progressive guidance before consolidation | 16/16 | 183,289 | 11 |
+| Slopsentral | consolidated | 16/16 | 83,668 | 4 |
+| dotfiles | progressive guidance before consolidation | 8/8 | 150,700 | 5.5 |
+| dotfiles | consolidated with a root `AGENTS.md` | 8/8 | 94,945 | 2 |
+
+These historical results describe those runs only.

@@ -19,21 +19,27 @@ for missing personal information that changes the text.
 
 Preserve the requested shape, including a one-sentence review comment. Leave an
 already accurate, clear passage unchanged. Quoted text and attributed prose keep
-their original voice. Read [grounding](references/grounding.md) for evidence and
-no-change checks, and [provenance](references/provenance.md) for source lineage.
+their original voice. When establishing a claim's support or deciding whether
+an edit is justified, read [grounding](references/grounding.md).
+For source lineage or an upstream reconciliation, read [provenance](references/provenance.md).
 
 ## Local Tool Policy
 
 Use only the standalone Vale CLI and the bundled local rules.
 Do not connect to Vale CMS or Vale MCP servers.
 Do not register a server, create an account, or send project prose to a hosted service.
-Read [local Vale](references/vale-local.md) for the installer, configuration, and offline archive input.
-Read [glossary authoring](references/glossary-authoring.md) before you choose a domain term.
-Use the [JSON Schema](references/glossary.schema.json) and [entry example](assets/glossary-entry.json) for a new glossary.
+When the selected check needs Vale setup or configuration, read
+[local Vale](references/vale-local.md) for the installer and offline archive input.
+Reuse an established glossary term when its meaning matches the source.
+Before defining or registering a domain term, read
+[glossary authoring](references/glossary-authoring.md).
+For a new glossary, use the [JSON Schema](references/glossary.schema.json) and
+[entry example](assets/glossary-entry.json).
 
 ## Workflow
 
 1. Load the repository's nearby writing rules and source material.
+   Identify whether the task is a short edit, durable documentation, or a requested measurement.
 2. Find the repository's existing glossary before drafting durable documentation.
    Reuse its owner and load [glossary-contract.md](references/glossary-contract.md).
    For an authorized documentation generation, rewrite, or knowledge migration
@@ -43,7 +49,8 @@ Use the [JSON Schema](references/glossary.schema.json) and [entry example](asset
 3. Resolve known synonyms against the glossary. Migrate clear matches to the
    canonical term. Preserve and flag an ambiguous term rather than inventing a
    definition or blocking unrelated edits.
-4. Draft or revise only the requested text.
+4. Draft or revise only the requested text. Preserve an accurate passage when
+   the proposed edit supplies no supported improvement.
 5. Check facts, terminology, and the requested shape. For short replies and
    small edits, this review is enough unless repository policy requires
    more. Use the repository's existing prose checks for durable documents.

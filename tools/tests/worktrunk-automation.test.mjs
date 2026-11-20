@@ -25,14 +25,11 @@ function fixture(t) {
 printf '%s\\n' "$PWD:$*" >> "$WT_TEST_LOG"
 case "$*" in
   ci) exit "\${WT_TEST_SETUP_EXIT:-0}" ;;
+  'run setup') exit "\${WT_TEST_SETUP_EXIT:-0}" ;;
   'run check:source') exit "\${WT_TEST_CHECK_EXIT:-0}" ;;
   'run verify') exit "\${WT_TEST_VERIFY_EXIT:-0}" ;;
   *) exit 99 ;;
 esac
-`, { mode: 0o755 });
-  fs.writeFileSync(path.join(bin, 'mise'), `#!/bin/sh
-printf '%s\\n' "$PWD:$*" >> "$WT_TEST_LOG"
-exit "\${WT_TEST_SETUP_EXIT:-0}"
 `, { mode: 0o755 });
   const env = Object.fromEntries(Object.entries(process.env)
     .filter(([key]) => !key.startsWith('WORKTRUNK_') && !key.startsWith('GIT_') && key !== 'BASH_ENV' && key !== 'ENV'));
@@ -65,14 +62,14 @@ test('creation runs blocking setup in the new worktree before handoff', { skip: 
   const f = fixture(t);
   const success = f.run(wt, ['switch', '--create', 'task', '--base=main', '--yes', '--no-cd', '--format=json']);
   assert.equal(success.status, 0, success.stderr);
-  assert.equal(fs.readFileSync(f.log, 'utf8').trim(), `${path.join(f.root, 'task')}:exec -- slopsentral-setup`);
+  assert.equal(fs.readFileSync(f.log, 'utf8').trim(), `${path.join(f.root, 'task')}:run setup`);
   const handoff = path.join(f.root, 'handoff');
   const failed = f.run(wt, ['switch', '--create', 'failed-task', '--base=main', '--yes', '--no-cd',
     '--execute', 'touch', '--', handoff], { WT_TEST_SETUP_EXIT: '17' });
   assert.equal(failed.error, undefined);
   assert.equal(failed.signal, null);
   assert.notEqual(failed.status, 0, failed.stderr);
-  assert.match(fs.readFileSync(f.log, 'utf8'), /failed-task:exec -- slopsentral-setup/);
+  assert.match(fs.readFileSync(f.log, 'utf8'), /failed-task:run setup/);
   assert.equal(fs.existsSync(handoff), false, 'failed setup must prevent agent handoff');
 });
 

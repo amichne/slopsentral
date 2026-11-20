@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:6ba8b95c0b6796e0598e265b9bb550d70aeda980d85e87eda8fa00a89c5e7c0f",
+  "pageVersion": "sha256:d1bd28d5786b23a58d91df83ef8b40db562f5d5246f48866e979bd3eb94dddbd",
   "claims": [
     {
       "id": "claim_b6805375cb0e4bbba50ddabc62a3490a",
@@ -36,7 +36,7 @@
       "evidence": [
         {
           "resource": "repo://docs/global-agents.md",
-          "version": "repo-file-v1:sha256:bb8a27c914ad2b2310adb5546733f86f6b3e7019c3830d0de8f0588a8daec6ad"
+          "version": "repo-file-v1:sha256:92e6f77ab52adba9e9e7669aeca09f7f3dc9a57a6d3a036865df1e8f107759e6"
         },
         {
           "resource": "repo://tools/install_global_agents.py#L326-L370",
@@ -57,10 +57,28 @@
           "version": "repo-lines-v1:sha256:d515c2af8dec819d75cf3582345253059e472d146fe796ed0fd56a3a048103b4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxOTA0OThlMjUxZWZiMmQ3YzMzZGQxOThiOWFiZDgxOTdhZGI3MWFjYjZiMmVkNWUxOWQxMzM5YjA5Mjc0NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5ODhjMjNhYjViMzVkZTdkNDc3ZGYyNmJiYzIyNDJmN2E0MGI3M2ExOGE3ZTA2ZjJmNGZhZjk2MDM1NjA1OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxZWZhNjczNGFlZGVlNGI5MWNkNzdkMGRkY2Y3ZGMxZTdhY2NmMzAyZmQ2NzAzY2M3NDJkN2RiNjZkY2QzZWIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_216b9fa0889040cb80ccb2361e9c0224",
+      "statement": "The portable global AGENTS.md is generated from source/instructions/agent-execution.md and source/instructions/engineering-design.md by tools/catalog.mjs, whose --check mode rejects a stale copy.",
+      "evidence": [
+        {
+          "resource": "repo://docs/global-agents.md#L1-L7",
+          "version": "repo-lines-v1:sha256:ddfccd80a72643c5416820acbe3f7ac7b635e564c59921bb2d1b35304482abb7:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODU3YWQ4ZDFhOGU2MDY4YzQzOGM3YmQ4YWJlMTMxMDg0YjFkMTVkYWZjZmE4ZWY3ZDdkMTgzMTE2Yzk2ODcwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDA5ZGZlMDg2OTIwNzA2NDM1OWMzNTE4Y2QxOTcwYzE0ODVjYWQyN2ZjYTIwODE0NmZmNTQyYTRkNjI2ZjNiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGUwMTlmNjBiY2I0NjRkYmNjNDQ4NzZlNWU2ZTNkMjc5NmQ3NjNjMTYwNGU4ODQ5ODhhMWZlNWE0NTRjZDBiNCJ9"
+        },
+        {
+          "resource": "repo://tools/catalog.mjs#L278-L295",
+          "version": "repo-lines-v1:sha256:93a7844c5c2999afd7163dc9a0f75e1ed28dbd78be31d8a71211e9ab7207c18b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3MjY1MGNhN2ZmYjM5YjFlZjAyNWMwYzlkYWQ5ZGVkYjQ1YjFkZTNlNmQ0MDc5Y2FkMzU1MjI0NDdhOTRlYTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYmU4Njg4MDU4ZTgwNTQzZjczNjNiYTVkNmFmZmZlNGMxN2ZhOTM4YzFjM2NkNTkzZTU5NzQ3YTVhMjMyOTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiZTY4NWQyMzQ0NjA2ZWExNzFiOGNmMmM3NDZlNWM2OWJmM2JmOGU0NjE0ZjVlMGU5N2QyOWRlN2RhNTFmMGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2YTEwMTEzZjg1YWI4MzI0NTY3YzgyMTk1OTdmZjQ5MTk4Y2I2MTgyYTNkMmNlZDA3Y2E3NzdhMDllMWNhOWEifQ"
+        },
+        {
+          "resource": "repo://tools/catalog.mjs#L358-L370",
+          "version": "repo-lines-v1:sha256:baf18b4622a2db37db1ae6cd5630c61e9fa3628486abcdb8403e378eeb125082:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1YmE0OGI4Y2ZiMTlkODAzZjk1M2NjYzlhM2FiNTMxMGJkZTQ4Yzg1MTcwNTRjZmFjYjk4OTRkOWU1Njk1ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2ZGZlZDkxZGJhM2FmN2E5MjUxOWFkOGFjZWUzMWY5YjYzYWUxODFiZDc3MjY5YTE5NjkxZThmYWEyNzViY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmNTYwMjI5ZDIyYzc1N2RlMzg5MjVlZWZjYTM5NDJmMWI1N2RhMWM4OTM1Y2FkNmFhZDc3YTU4OWUyYjY3ZTQifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.6.1",
-    "at": "2026-11-03T18:14:45.754Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

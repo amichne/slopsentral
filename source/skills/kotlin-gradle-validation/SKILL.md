@@ -45,7 +45,10 @@ Gradle commands remain available without this skill.
    Choose one concrete target: compile, a specific test, module tests, coverage
    threshold, flaky-test cause, or incremental-build behavior.
 
-3. Run the narrowest command directly.
+3. Select execution or report inspection from the claim.
+   For a current build or test result, run the narrowest command directly.
+   For diagnosis of a supplied run, inspect its identified native reports first;
+   those reports do not establish the current checkout's build status.
 
    ```bash
    ./gradlew :module:test --tests 'com.example.FocusedTest'
@@ -66,12 +69,13 @@ Gradle commands remain available without this skill.
    Parser stdout is enough for an uninterrupted turn; do not persist another
    JSON file unless a caller requires one.
 
-5. Fix the narrow boundary.
+5. When the task includes a fix, change the narrow boundary.
    Map evidence to source, test, configuration, or infrastructure. Do not hide a
    focused failure behind a broad refactor or aggregate build.
+   For diagnosis-only work, report that boundary and the missing evidence without a source edit.
 
 6. Verify proportionately.
-   Rerun the focused command. Widen to the owning module, direct consumers, or a
+   After a fix, rerun the focused command. Widen to the owning module, direct consumers, or a
    required aggregate task only when the changed contract reaches that ring. Do
    not repeat an unchanged successful check merely to fill a sequence.
    For incremental claims, an identical rerun is a different experiment: verify

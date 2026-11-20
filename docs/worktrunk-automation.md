@@ -11,7 +11,7 @@ The [project configuration](../.config/wt.toml) declares these operations:
 
 | Worktrunk operation | Command | Result |
 | --- | --- | --- |
-| Pre-start | `mise exec -- slopsentral-setup` | Prepare locked checkout dependencies before handoff |
+| Pre-start | `npm run setup` | Prepare locked checkout dependencies before handoff |
 | Pre-commit | `npm run check:source` | Examine source graph, catalog freshness, and diff whitespace |
 | Pre-merge | `npm run verify` | Run repository gates before local integration |
 | `wt verify` | `npm run verify` | Run the same gates without a commit or merge |

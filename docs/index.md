@@ -20,6 +20,6 @@ Use these runbooks when the task needs their detail:
 
 [Command reference](cli-reference.md), [Pi setup and recovery](pi-install.md), [provider projection](pkl-projection.md),
 [profile lifecycle](profile-lifecycle.md), [release procedure](releases.md), and [site maintenance](mintlify.md).
-The [catalog](../source/CATALOG.md) lists exact assets.
+The [installation catalog](../source/INSTALLATION.md) lists exact assets.
 The [OpenWiki quickstart](../openwiki/quickstart.md) links maintained system explanations.
 Historical audits remain in this directory with their original evidence limits.

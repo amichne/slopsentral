@@ -5,27 +5,23 @@ Change canonical source, run the gates for that surface, and regenerate affected
 
 ## Prepare a checkout
 
-Install mise, Node.js, and npm.
-Review `mise.toml` before `mise trust`.
-Then prepare locked dependencies:
+Install Node.js and npm. Everything else comes from [the toolchain manifest](../../tools/toolchain.json),
+which pins uv, Pkl, and Vale to exact versions and SHA-256 digests.
+Prepare the checkout:
 
 ```sh
-mise install
-mise exec -- slopsentral-setup
+npm run setup
 ```
 
-The projector needs Pkl 0.32.0.
-If it is absent, install the pinned runtime explicitly:
-
-```sh
-node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
-```
-
-Set `PKL_BIN` to that executable.
+`node tools/toolchain.mjs run -- COMMAND` downloads and verifies the pinned tools into
+`~/.cache/slopsentral/toolchain`, then runs the command with those tools and `bin/` first
+on `PATH`. It sets `PKL_BIN` and `VALE_BIN` unless you set them yourself, and changes
+nothing outside the child process. `uv.toml` requires the exact uv version, so a
+different uv fails with a named error. The npm scripts already use the runner.
 For the command from source, run:
 
 ```sh
-mise exec -- uv run --locked --script tools/slopsentral.py self install
+node tools/toolchain.mjs run -- uv run --locked --script tools/slopsentral.py self install
 ```
 
 The [Worktrunk runbook](../worktrunk-automation.md) describes hooks for CLI-owned worktrees.
@@ -35,13 +31,13 @@ Host-managed worktrees keep their host lifecycle.
 
 | Changed surface | Gate |
 | --- | --- |
-| Python automation | `mise exec -- slopsentral-check` |
+| Python automation | `npm run check:python` |
 | Marketplace or plugin composition | Graph and fresh provider projections in [plugins and profiles](composition.md#admission-and-projection) |
 | Pi installer or release | `npm run check:pi`, Pi Node tests, and focused Python Pi tests |
 | Unified releases | `npm run check:release` and `node --test tools/tests/release-please.test.mjs` |
 | Evaluations | `npm run check:evals` |
-| Prose | `mise exec -- slopsentral-prose changed` |
-| Documentation | `mise exec -- slopsentral-docs check` and `npm run docs:check` |
+| Prose | `node tools/toolchain.mjs run -- slopsentral-prose changed` |
+| Documentation | `npm run check:docs` and `npm run docs:check` |
 
 [Repository instructions](../../AGENTS.md) define the exact surface-specific commands.
 `npm run verify` combines repository gates for integration.

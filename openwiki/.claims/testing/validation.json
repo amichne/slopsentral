@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:abb2a03474c70211540f5ae5a182fa41ed102c42deed6530e078978284c072ce",
+  "pageVersion": "sha256:ed45cae10ad0677e733f0360d571717d984ae1afcfd2c3c4487b0214bb3c95eb",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
       "statement": "The TDD procedure fixes the executable oracle through initial failure and success, rejects zero selected assertions as proof, and widens only for required policy, changed consumers, or a named risk.",
       "evidence": [
         {
-          "resource": "repo://source/skills/tdd/SKILL.md#L13-L64",
-          "version": "repo-lines-v1:sha256:260d4bbbf9f35210ddb54ae8b870277746287e71dc5aa37b28be555697d98917:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmN2Y2Yjk5ODI4ZmFmZGNhMTdlMWM5YjIzYmI3ZmUxYzc1N2YzMDJiNmE4NDBkNDFiOGZhMTY2NzA4OWQzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYmJmYTk5NjFkYTFkMzIyMTVlY2UyOTAzNDU2MGI3NWRmM2I2YzczMjRjZDM4MGQyM2I0MmFkMDY0NjllNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNjk5OTkzOGU4Njc2ZjIzMDc3ZjAyZWJkYTJjMDE4OTc3ZWI4ZmMzYjc1ODM2YzZlOTVhNTA5NGYyMTVkODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkYzdlNTEzMGExMzkxODA3M2IwYzdjYTQyNWE1NmUxZWI1OWY4MGYxZDU3ODE1ZGE4ZTE0MjAwZTc2MTU0YjEifQ"
+          "resource": "repo://source/skills/tdd/SKILL.md#L13-L56",
+          "version": "repo-lines-v1:sha256:660eda5522521572f0a5828195f28b44705c8523c7b73b73362ed0cb8f6cef90:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmN2Y2Yjk5ODI4ZmFmZGNhMTdlMWM5YjIzYmI3ZmUxYzc1N2YzMDJiNmE4NDBkNDFiOGZhMTY2NzA4OWQzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3ZmFjYmM2MDQ3ZmU0NTExMTIyNzk1ODQ3MzgxZTU2ZmYwYzAxYjYwNDAwNmZhN2ZjMTg1YjA1N2U4YTczN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNjk5OTkzOGU4Njc2ZjIzMDc3ZjAyZWJkYTJjMDE4OTc3ZWI4ZmMzYjc1ODM2YzZlOTVhNTA5NGYyMTVkODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2Y2VmYjllNjJhMDY1NWM0ZjE5OGIyYTU3NWIxN2M5ZjExN2NiZGJkNmNmMzMyYTQ4MWJiYmI4ZjU0NGE0ODEifQ"
         }
       ]
     },
@@ -96,7 +96,7 @@
       "evidence": [
         {
           "resource": "repo://tools/ci.py",
-          "version": "repo-file-v1:sha256:fe317a9b2218c8f150fe3d7fd16834bdb180a1c36af1e69ceb7c5943ba32f4b8"
+          "version": "repo-file-v1:sha256:31e4cb736201f7e3c7a985c430d793c59759187806366c746ebb7725f744e0d4"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -114,7 +114,7 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/documentation-site.yml",
-          "version": "repo-file-v1:sha256:bfcbc742204e88b957f13adc029ba76d8772879bf92343e6dba0b584fc4381d2"
+          "version": "repo-file-v1:sha256:b00d71e632888ae5e758a1908432619f68df1c4a604ace2b9e04e416d09919e7"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -149,10 +149,28 @@
           "version": "repo-lines-v1:sha256:800073ce061d882547c7cb940d72dcd47db84dda83d27e4863def9ec7797fdeb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZTE2OWE0ZmMwNGUwNzhlNjBjMDdiZmQ0ODVhM2FjODYwNzNiNjkyMmVlMDgxZjMzODZiMmFiOGZiOWFlMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1MTUzNDc1YzIwNzU0ODIzNmQ4OWI3ZTdhOTZlOTliNjgyNWQ1Zjc2MTc0NDRhMzNhNDI2MDZiNDhhOTk2ZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhNzM0MzVlOTY2ZWYyNjYwOTU2OWM5NDBhMDhmYTNjOTQyMzgxZGY4NTQ5NjQ2NmUxZGY4NmFlNTJjZjU5ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwY2RiZmJhNTc1OWU1MmEyOGYwMDAxMDU3NjYyYWFiZjAwMmQ2ZTcxNDliYTkyZWYzNTYwYzMzOTA1NDlhNWEifQ"
         }
       ]
+    },
+    {
+      "id": "claim_4ec25cda1b7448fcadcd25d7b1cc1aab",
+      "statement": "CI provisions Pkl, Vale, Kotlin, and Worktrunk from the toolchain manifest's ci profile and exports their environment and PATH lines; ci.py itself provisions only the checked zsh package.",
+      "evidence": [
+        {
+          "resource": "repo://.github/actions/toolchain/action.yml",
+          "version": "repo-file-v1:sha256:4264596fd4787726737c87c37ec4443c761189cbdf9a06ebbb4138effff5da7d"
+        },
+        {
+          "resource": "repo://tools/ci.py#L107-L140",
+          "version": "repo-lines-v1:sha256:19f9daf94bc7f351c46e843bc88c92c4cf98099b47f20cd18935024585f9e247:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwOTVhNTU1ZmE0ZTU2ZTFhYjZhZTFjM2YyOTc5OTFhNTExN2JkYjE0MGQ1NjYyNTI0MWZmN2FlMmYyMmEzNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmMjAxYjYxNWUzNmRlZmZiNDBiNzMwMmU1NjU5YTI0YWY2OWQyMmI4M2FlYTI4MjA0ZWNkNjZlMTA3ZjAwZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjYzhhZDNhYzIzYzFmYjA5NmJlMDQxZTExN2VkYmJjMWRjZGFhM2ZiMzk4NDY2MTkzNWFjOWU5Y2NiZGJmYjIifQ"
+        },
+        {
+          "resource": "repo://tools/toolchain.json",
+          "version": "repo-file-v1:sha256:2a124cf259b8ba3dda4875b9249d619665cb7214f3a5eb4f5c685707444175c9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-17T03:50:31.285Z"
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

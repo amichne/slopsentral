@@ -1,6 +1,6 @@
 ---
 name: "github-ci-operations"
-description: "Use when GitHub Actions, PR checks, workflow YAML, dispatches, caches, artifacts, secrets, permissions, release pipelines, CI performance measurement, or CI logs need authoring or repair."
+description: "Design, inspect, diagnose, or change GitHub Actions workflows, PR checks, dispatches, caches, artifacts, secrets, permissions, release pipelines, and CI performance. Select diagnosis, design, observation, or repair from the request; a design task need not have a failing run."
 ---
 
 # GitHub CI Operations
@@ -45,33 +45,42 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
 ## Workflow
 
 1. Resolve the target.
-   Identify the repository, branch, PR, workflow file, and run URL.
-   Identify whether the request concerns diagnosis, repair, workflow design, release work, or publication.
+   Identify the repository and affected workflow or pipeline owner. Resolve the
+   branch, PR, and run URL when those objects exist and matter to the request.
+   Select diagnosis, repair, workflow design, check observation, release work,
+   or publication. Keep proposed changes separate from authorized execution.
 
 2. Inspect live state.
    Use the connected GitHub app for supported repository and PR metadata.
    When native `gh` is needed, run `gh auth status`.
    Examine the local target with `git remote get-url origin`. Use `gh repo view --json nameWithOwner,url`
    only when the app and local remote do not resolve the target. Inspect Actions
-   state with `gh` JSON and workflow YAML under `.github/workflows/`. Capture
-   the failing job name, command, error snippet, run URL, head SHA, and owning
-   local file. Treat structured app results, `gh` JSON, and typed observer
-   snapshots as evidence.
+   state with `gh` JSON when needed and inspect workflow YAML under
+   `.github/workflows/`. For a failure, capture the job name, command, error
+   snippet, run URL, head SHA, and owning local file. For design, inspect the
+   existing stage graph and contracts without inventing a failing run.
+   Treat structured app results, `gh` JSON, and typed observer snapshots as evidence.
 
-3. Classify the failure.
-   Trace the failed gate through its dependencies to the first failed operation
+3. Establish the claim.
+   For diagnosis, trace the failed gate through its dependencies to the first failed operation
    on each causal path. Record the job, step, head SHA, run attempt, and dependent
    checks. Use the smallest reproduction at the failed interface. When a provider
    response caused the failure, reproduce that response before you change the
    adapter or retry the workflow.
+   For design or optimization, name the stage inputs, outputs, required proof,
+   and the contract that the proposed change must preserve. For observation
+   alone, report the requested check state without entering a repair workflow.
 
-4. Fix narrowly.
-   Edit the owning source, test, generator, script, or workflow file. Preserve
+4. Change the owner when implementation is in scope.
+   Extend the existing source, test, generator, script, or workflow file. Preserve
    existing matrix, permissions, concurrency, cache, and artifact conventions
    unless they are the cause.
+   A diagnosis or design request can finish with supported findings and proposed
+   changes; do not turn it into a dispatch, edit, or deployment.
 
 5. Validate.
-   Run the local equivalent and `actionlint` for workflow changes when present.
+   For an implemented change, run the local equivalent and `actionlint` for
+   workflow changes when present.
    For dependency, matrix, cache, or startup-latency changes, run the deterministic
    workflow graph model and preserve the baseline proof-output set.
    Re-read PR metadata through the connected GitHub app when supported. For
@@ -79,8 +88,9 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
    reads at meaningful transitions. Do not make an unavailable helper a blocker.
 
 6. Hand off.
-   Summarize the failed signal, root cause, files changed, checks run, and any
-   remote check still pending.
+   Report the requested result: diagnosis, design, observed state, or implemented
+   change. Include the failed signal and root cause when established, files
+   changed when any, checks run, and remote verification still pending.
 
 ## Reference Routing
 
@@ -103,18 +113,18 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
 - Load [release-flow.md](references/release-flow.md) for GitHub releases, tags,
   generated notes, artifacts, or release automation.
 
-Read [workflow trust boundaries](references/workflow-trust-boundaries.md) for
-permissions, untrusted input, artifact identity, and cancellation behavior.
+When designing or changing permissions, untrusted input handling, artifact
+identity, or cancellation, read [workflow trust boundaries](references/workflow-trust-boundaries.md).
 Use the artifact promotion procedure when the stage graph or promotion contract is the main decision.
 
 ## Completion Criteria
 
-- The failing GitHub signal is identified with a run or check URL when
-  available.
-- The fix targets the owning source rather than masking the symptom.
-- Local validation passed, or the missing environment/tool is stated.
-- Remote checks were re-read through structured evidence, or the exact pending
-  verification is documented.
+- Diagnosis identifies the failing GitHub signal with a run or check URL when
+  available. Design identifies the intended stage contract and proposed evidence.
+- An implemented fix targets the owning source rather than masking the symptom.
+- Required local validation passed, or the missing environment/tool is stated.
+- Claims about remote checks use structured observations, or identify the exact
+  pending verification. Proposed checks are not reported as executed results.
 
 Read [provenance](references/provenance.md) when updating this skill.
 
@@ -127,6 +137,9 @@ Separate untrusted PR processes from publication credentials.
 Name health signals, stop conditions, schema compatibility, and recovery limits before a rollout.
 A design or local test grants no deployment authority.
 
-Read [pipeline review](references/pipeline-review.md) for stage design and rejection cases.
-Read [installed qualification](references/installed-qualification.md) for fresh discovery, semantic invocation, and recovery proof.
+When designing stages or promotion, read [pipeline review](references/pipeline-review.md)
+for the contract and rejection cases.
+When the claim concerns an installed artifact, read
+[installed qualification](references/installed-qualification.md) for fresh discovery,
+semantic invocation, and recovery proof.
 Read [delivery provenance](references/delivery-provenance.md) when revising these procedures.

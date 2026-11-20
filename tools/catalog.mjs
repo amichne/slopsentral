@@ -196,10 +196,106 @@ export function catalogReport(catalog, profileName) {
   };
 }
 
+/** Catalog descriptions use the source's single-line YAML scalar fields. */
+function skillTrigger(catalog, ref) {
+  const source = `${ref.path}/SKILL.md`;
+  const text = catalog.contents.get(key(ref));
+  const frontmatter = typeof text === 'string' && text.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/u);
+  if (!frontmatter) throw new Error(`${source}: missing or unclosed skill frontmatter`);
+  const lines = frontmatter[1].split(/\r?\n/u);
+  const values = new Map();
+  for (let index = 0; index < lines.length; index += 1) {
+    const field = lines[index].match(/^(name|description):[ \t]*(.*)$/u);
+    if (!field) continue;
+    const [, name, raw] = field;
+    if (values.has(name)) throw new Error(`${source}: duplicate ${name}`);
+    for (let next = index + 1; next < lines.length && !/^[A-Za-z0-9_-]+:/u.test(lines[next]); next += 1) {
+      if (lines[next].trim() && !/^\s*#/u.test(lines[next])) {
+        throw new Error(`${source}: ${name} must be a single-line scalar`);
+      }
+    }
+    const scalar = raw.trim();
+    let value;
+    if (scalar.startsWith('"')) {
+      const quoted = scalar.match(/^("(?:[^"\\]|\\.)*")(?:[ \t]+#.*)?$/u);
+      if (!quoted) throw new Error(`${source}: invalid quoted ${name}`);
+      try { value = JSON.parse(quoted[1]); }
+      catch { throw new Error(`${source}: unsupported quoted ${name}`); }
+    } else if (scalar.startsWith("'")) {
+      const quoted = scalar.match(/^('(?:[^']|'')*')(?:[ \t]+#.*)?$/u);
+      if (!quoted) throw new Error(`${source}: invalid quoted ${name}`);
+      value = quoted[1].slice(1, -1).replaceAll("''", "'");
+    } else {
+      if (/^[>|\[{]/u.test(scalar)) throw new Error(`${source}: ${name} must be a single-line scalar`);
+      value = scalar.replace(/(?:^|[ \t]+)#.*$/u, '').trim();
+    }
+    if (typeof value !== 'string' || !value.trim() || /[\r\n]/u.test(value)) {
+      throw new Error(`${source}: ${name} must be nonempty single-line text`);
+    }
+    values.set(name, value);
+  }
+  if (values.get('name') !== ref.name) throw new Error(`${source}: frontmatter name must match ${ref.name}`);
+  if (!values.has('description')) throw new Error(`${source}: missing description`);
+  return values.get('description');
+}
+
+function tableCell(value) {
+  return value.replaceAll('\\', '\\\\').replaceAll('|', '\\|');
+}
+
+/** Task selection reads canonical triggers; install closure is a separate view. */
 export function renderCatalog(catalog) {
   const report = catalogReport(catalog);
+  const routes = [...catalog.marketplace.skills].sort((a, b) => a.name.localeCompare(b.name, 'en'))
+    .map(ref => ({ ref, trigger: skillTrigger(catalog, ref) }));
   const lines = ['# Catalog', '',
+    'Generated from canonical skill descriptions and identities by `node tools/catalog.mjs --write`.', '',
+    'Choose the procedures that govern the actions you intend to take, and read each one before the decision or operation it governs. A task can need more than one.',
+    'Each trigger comes from the owning skill. Follow a procedure\'s references only when their stated conditions apply.', '',
+    '## Select by action', '',
+    '| When the task involves | Read |', '| --- | --- |'];
+  for (const { ref, trigger } of routes) {
+    lines.push(`| ${tableCell(trigger)} | [\`${ref.name}\`](${ref.path}/SKILL.md) |`);
+  }
+  lines.push('', '## Plugin installation', '',
+    'When choosing or changing installed capabilities, use the [installation catalog](INSTALLATION.md). It owns plugin composition, profiles, and shared-asset inventory.',
+    'These links preserve the earlier entry points for installation details.', '');
+  for (const [role, heading] of [['default', 'Start here'], ['specialty', 'Specialties'], ['advanced', 'Advanced repository policy']]) {
+    lines.push(`## ${heading}`, '', `[Installation choices](INSTALLATION.md#${heading.toLowerCase().replaceAll(' ', '-')}).`, '');
+    for (const plugin of report.plugins.filter(p => catalog.plugins.find(source => source.name === p.name).metadata.role === role)) {
+      lines.push(`### ${plugin.name}`, '', `[Composition and scope](INSTALLATION.md#${plugin.name}).`, '');
+    }
+  }
+  for (const heading of ['Profiles', 'Reused assets', 'Standalone skills']) {
+    lines.push(`## ${heading}`, '', `[${heading}](INSTALLATION.md#${heading.toLowerCase().replaceAll(' ', '-')}).`, '');
+  }
+  lines.push('## Evidence', '',
+    'This view establishes discoverable source descriptions and links. It does not prove that a host loaded a skill or that a model selected or followed it.',
+    'See [installation measurements](INSTALLATION.md#evidence) for source counts and [skill evaluations](../docs/skill-evals.md) for the evidence appropriate to the claim.', '');
+  return lines.join('\n');
+}
+
+export const GLOBAL_INSTRUCTION_SOURCES = ['source/instructions/agent-execution.md', 'source/instructions/engineering-design.md'];
+const CATALOG_URL = 'https://raw.githubusercontent.com/amichne/slopsentral/refs/heads/main/source/CATALOG.md';
+
+/** The portable global file is a view of the shared session instructions, never a second owner. */
+export function renderGlobalInstructions(sources) {
+  const body = text => text.replace(/^# [^\n]*\n+/, '').trimEnd();
+  const [execution, design] = sources;
+  return ['# Engineering principles', '',
+    'Generated from `source/instructions` by `node tools/catalog.mjs --write`. The Software Engineering plugin delivers the same text as session context; install one of the two.', '',
+    '## Select guidance', '',
+    `Use the [task catalog](${CATALOG_URL}) to select the procedure for the intended action. Installed profiles describe available capabilities; they do not require reading every packaged procedure.`, '',
+    '## Execute the authorized outcome', '',
+    body(execution), '',
+    body(design), ''].join('\n');
+}
+
+export function renderInstallationCatalog(catalog) {
+  const report = catalogReport(catalog);
+  const lines = ['# Plugin installation catalog', '',
     'Generated from canonical manifests by `node tools/catalog.mjs --write`.',
+    'Use the [task catalog](CATALOG.md) when selecting guidance for an action. Use this view when choosing or changing installed capabilities.', '',
     'For code work, start with Software Engineering and add only the specialties your task needs.',
     'Keep that selection for the repository. Describe the outcome; the agent selects relevant skills within the installed plugins.',
     'Installing a plugin makes its capabilities available; it does not require every skill to run or authorize publication.', '',
@@ -259,11 +355,20 @@ function main() {
   const catalog = loadCatalog(root);
   const findings = auditCatalog(catalog);
   if (findings.length) throw new Error(findings.join('\n'));
-  const output = path.join(root, 'source/CATALOG.md');
-  if (args.includes('--write')) fs.writeFileSync(output, renderCatalog(catalog));
-  else if (args.includes('--check')) {
-    if (!fs.existsSync(output) || fs.readFileSync(output, 'utf8') !== renderCatalog(catalog)) throw new Error('source/CATALOG.md is stale; run node tools/catalog.mjs --write');
-    console.log('OK generated catalog');
+  if (args.includes('--write') || args.includes('--check')) {
+    const outputs = [
+      ['source/CATALOG.md', renderCatalog(catalog)],
+      ['source/INSTALLATION.md', renderInstallationCatalog(catalog)],
+      ['docs/examples/global/AGENTS.md', renderGlobalInstructions(GLOBAL_INSTRUCTION_SOURCES.map(relative => fs.readFileSync(path.join(root, relative), 'utf8')))],
+    ];
+    for (const [relative, rendered] of outputs) {
+      const output = path.join(root, relative);
+      if (args.includes('--write')) fs.writeFileSync(output, rendered);
+      else if (!fs.existsSync(output) || fs.readFileSync(output, 'utf8') !== rendered) {
+        throw new Error(`${relative} is stale; run node tools/catalog.mjs --write`);
+      }
+    }
+    if (!args.includes('--write')) console.log('OK generated task catalog, installation catalog, and global instructions');
   } else if (args.includes('--json') || args.includes('--profile')) console.log(JSON.stringify(catalogReport(catalog, value('--profile')), null, 2));
   else process.stdout.write(renderCatalog(catalog));
 }

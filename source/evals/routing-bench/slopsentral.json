@@ -1,0 +1,93 @@
+[
+  {
+    "id": "hook-add",
+    "task": "Add a new hook primitive that runs Pkl format checks and project it for GitHub Copilot.",
+    "governing_any": [
+      "source/hooks/AGENTS\\.md",
+      "guidance/source-graph\\.md"
+    ],
+    "checks_all": [
+      "validate-source-graph",
+      "project-marketplaces"
+    ]
+  },
+  {
+    "id": "skill-trigger",
+    "task": "Revise the trigger description in the frontmatter of the tdd skill.",
+    "governing_any": [
+      "source/skills/AGENTS\\.md",
+      "source/AGENTS\\.md",
+      "guidance/source-graph\\.md"
+    ],
+    "checks_all": [
+      "catalog\\.mjs",
+      "validate-source-graph"
+    ]
+  },
+  {
+    "id": "plugin-compose",
+    "task": "Add the existing ast-grep skill to the kotlin-engineering plugin.",
+    "governing_any": [
+      "source/plugins/AGENTS\\.md",
+      "source/AGENTS\\.md",
+      "guidance/source-graph\\.md"
+    ],
+    "checks_all": [
+      "validate-source-graph",
+      "project-marketplaces"
+    ]
+  },
+  {
+    "id": "cli-receipts",
+    "task": "Change how the slopsentral command records its setup receipt inventory.",
+    "governing_any": [
+      "docs/cli-install\\.md"
+    ],
+    "checks_all": [
+      "test_slopsentral\\.py|test_setup_assets\\.py"
+    ]
+  },
+  {
+    "id": "pi-installer",
+    "task": "Change tools/install-pi.sh so it reports which stable release it selected.",
+    "governing_any": [
+      "docs/pi-install\\.md"
+    ],
+    "checks_all": [
+      "check:pi",
+      "pi-.*test|pi-bootstrap"
+    ]
+  },
+  {
+    "id": "release-policy",
+    "task": "Change the release version admission policy so prerelease labels are rejected.",
+    "governing_any": [
+      "docs/releases\\.md"
+    ],
+    "checks_all": [
+      "check:release"
+    ]
+  },
+  {
+    "id": "eval-case",
+    "task": "Add a decision regression case for the semantic-ratchet skill.",
+    "governing_any": [
+      "docs/skill-evals\\.md"
+    ],
+    "checks_all": [
+      "check:evals"
+    ]
+  },
+  {
+    "id": "python-tool",
+    "task": "Fix an argument-parsing bug in tools/prose.py.",
+    "governing_any": [
+      "AGENTS\\.md",
+      "guidance/verification\\.md",
+      "python-tooling"
+    ],
+    "checks_all": [
+      "slopsentral-check|check:python"
+    ]
+  }
+]

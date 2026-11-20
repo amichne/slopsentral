@@ -13,7 +13,11 @@ export type Skill =
   | "promptfoo-eval-construction"
   | "model-instruction-design"
   | "code-knowledge-base"
-  | "personal-setup-management";
+  | "personal-setup-management"
+  | "issue-tracker-operations"
+  | "lsp-management"
+  | "kotlin-gradle-validation"
+  | "reviewable-artifacts";
 
 export interface DecisionCase {
   readonly id: string;
@@ -507,6 +511,7 @@ export const cases: readonly DecisionCase[] = [
   {
     id: "python-portable-script",
     skill: "python-tooling",
+    references: ["assets/standalone.py", "references/boundaries.md", "references/toolchain.md"],
     scenario: "A new portable Python utility needs third-party packages. Pick every necessary delivery choice.",
     choices: {
       A: "Use ambient pip packages and silently install missing packages on first use.",
@@ -723,5 +728,226 @@ export const cases: readonly DecisionCase[] = [
     },
     expected: ["B"],
     rationale: "Source proof, installed target identity, fresh-shell loading, and current-shell state are distinct facts; the explanation does not authorize effects.",
+  },
+  {
+    id: "python-existing-project-owner",
+    skill: "python-tooling",
+    scenario: "The user asks to add --allow-empty to a repository's CSV validation command. bin/check-csv calls src/csv_check.py; the repository has pinned uv configuration, parser tests, and command checks. The option changes one parser outcome and needs no new dependency. Pick every justified action.",
+    choices: {
+      A: "Scaffold a second Python project for the option so it receives the standard setup files.",
+      B: "Extend the existing parser and public command while preserving their execution and dependency owners.",
+      C: "Add a second portable command and leave callers to choose which implementation owns empty-file behavior.",
+      D: "Exercise the changed valid and nearest-invalid cases through the existing checks and actual public command.",
+    },
+    expected: ["B", "D"],
+    rationale: "The existing command and project own the requested behavior. A changed option needs evidence at that boundary, not another project or competing command.",
+  },
+  {
+    id: "python-new-project-requested",
+    skill: "python-tooling",
+    scenario: "The user asks for a new standalone Python project providing a CSV validation command in an empty tools/csv-check directory. Examined repository instructions and neighboring tools reveal no automation owner for this command. Creating the project and preparing its declared development environment are authorized. Pick every justified action.",
+    choices: {
+      A: "Use the bundled Python scaffold for the requested destination, then review its pinned uv configuration before preparing the declared environment.",
+      B: "Refuse to create a project because reuse is always required, even when no suitable owner exists.",
+      C: "Prepare the generated environment and exercise the implemented public command and its focused checks.",
+      D: "Install packages into ambient Python and omit the generated execution contract to keep the project small.",
+    },
+    expected: ["A", "C"],
+    rationale: "The request needs a new project and no existing owner meets it. That condition enables scaffolding and declared setup; the resulting command still needs its own verification.",
+  },
+  {
+    id: "personal-source-patch-without-host",
+    skill: "personal-setup-management",
+    scenario: "The user requests a ZIP and patch for a supplied dotfiles source snapshot and forbids installation. The snapshot's repository identity, base revision, tree, and public inventory are verified, and its local source checks are available. The user's installed HOME and active shell are not accessible. Pick the next action.",
+    choices: {
+      A: "Block source changes until the user's installed launcher and live shell can be inspected.",
+      B: "Copy the supplied files into the current HOME to manufacture an installed owner for verification.",
+      C: "Change the verified source owner, run the applicable source checks, and package the scoped patch with its exact base and explicit native-loading gap.",
+      D: "Report the user's native instructions installed because the ZIP contains files at their expected path names.",
+    },
+    expected: ["C"],
+    rationale: "A source-only package is complete at the verified source boundary. Unavailable installed state limits installation claims but does not require guessing or mutating a live destination.",
+  },
+  {
+    id: "personal-installed-owner",
+    skill: "personal-setup-management",
+    scenario: "The user asks to fix Ctrl-T in their installed shell configuration and verify it in a fresh shell, preserving private settings. A retained dotfiles checkout contains a proposed fix. The active shell entrypoint resolves through a launcher into a different local repository. Neither repository's Git identity or public inventory has been examined. Pick every justified action.",
+    choices: {
+      A: "Inspect the active launcher target, instructions, installer, public inventory, Git directory, worktree, origin, revision, and scoped status before dependent writes.",
+      B: "Apply the fix to the retained checkout and report installation because its repository name matches.",
+      C: "Copy the retained checkout over HOME to make its source and installed files agree.",
+      D: "After verifying the actual owner, change its scoped public source and use its installation and fresh-consumer checks within the requested authority.",
+    },
+    expected: ["A", "D"],
+    rationale: "Installed work depends on the current consumer's verified owner. The request authorizes that repair and fresh-shell verification, but neither a familiar checkout nor a recursive copy proves ownership.",
+  },
+  {
+    id: "pr-status-only",
+    skill: "pull-request-lifecycle",
+    scenario: "The user asks whether PR #81 is currently blocked and requests status only. The connected GitHub app can read its head revision, required checks, and review state. No local checkout exists. Pick the next action.",
+    choices: {
+      A: "Create a checkout, make a no-op commit, and push it so the status belongs to a new run.",
+      B: "Repair any failed check before answering because the PR workflow includes a repair step.",
+      C: "Report yesterday's successful check summary as current without reading the present head.",
+      D: "Read the PR and structured current check and review state, then report its head, blockers, and unresolved signals without a source change.",
+    },
+    expected: ["D"],
+    rationale: "An observation request can resolve the remote PR directly. It needs current evidence and no checkout, branch mutation, or repair.",
+  },
+  {
+    id: "pr-push-only",
+    skill: "pull-request-lifecycle",
+    scenario: "The user says to push the already committed fix/csv branch and not open a PR. The destination repository and branch are verified; the worktree is clean and local checks cover the unchanged commit. No upstream is configured. Pick the next action.",
+    choices: {
+      A: "Push the existing branch with upstream tracking and report the published revision without creating a PR.",
+      B: "Add another commit so the push step has a fresh local change to deliver.",
+      C: "Push and create a draft PR because the lifecycle normally continues to PR creation.",
+      D: "Ask for push permission again because creating an upstream was not separately requested.",
+    },
+    expected: ["A"],
+    rationale: "The authorized end state is a pushed branch. Its existing commit needs neither an artificial successor nor a PR, and upstream tracking is part of that push.",
+  },
+  {
+    id: "pr-create-requested",
+    skill: "pull-request-lifecycle",
+    scenario: "The user asks to open a draft PR from fix/csv to release/2.x. The branch is already pushed, its focused local checks pass, and a current query finds no open PR for it. The connected GitHub app supports creation. No merge or release is requested. Pick every justified action.",
+    choices: {
+      A: "Ask for PR publication permission again before using the creation operation.",
+      B: "Create the draft from the actual head to release/2.x with the problem, changed behavior, and validation evidence.",
+      C: "Target main by default and merge after creation because the local checks passed.",
+      D: "Report the created PR and its revision, distinguishing local checks from any remote check results actually observed.",
+    },
+    expected: ["B", "D"],
+    rationale: "The explicit request supplies PR creation authority and the intended base. It does not supply merge authority or transfer local evidence into an unobserved remote result.",
+  },
+  {
+    id: "ci-design-without-failure",
+    skill: "github-ci-operations",
+    scenario: "The user requests a design for separating the existing build, test, and package stages while preserving their proof and artifact identity. Current workflow YAML and successful run metadata are available. The user wants a proposal, with no edits or dispatches. Pick every justified action.",
+    choices: {
+      A: "Inspect the existing stage graph and contracts, then propose inputs, outputs, dependencies, and the evidence needed to validate the change.",
+      B: "Require a failing run URL before doing the design because CI work must begin with failure triage.",
+      C: "Keep proposed validation distinct from executed results and finish with the supported design.",
+      D: "Edit the workflow and dispatch it to obtain a failure for the proposal.",
+    },
+    expected: ["A", "C"],
+    rationale: "A design task can start from the current stage contract without a failed run. Its proposal does not authorize implementation or dispatch, and proposed proof is not executed evidence.",
+  },
+  {
+    id: "ci-repair-owning-command",
+    skill: "github-ci-operations",
+    scenario: "The user asks for a local fix to an Actions failure, with no push or remote rerun. The identified run and head show the checks job failing because its Gradle task name no longer exists. The current build files define the intended replacement task, and actionlint is installed. Pick every justified action.",
+    choices: {
+      A: "Rerun the unchanged remote job until it passes because no application test failed.",
+      B: "Confirm the failed command against the owning build contract and change that workflow command, preserving unrelated permissions and matrix settings.",
+      C: "Run the local replacement task and actionlint, then report their results separately from remote verification that did not run.",
+      D: "Remove the failed check from the workflow so the aggregate status becomes green.",
+    },
+    expected: ["B", "C"],
+    rationale: "The observed deterministic failure identifies an owning command to repair. Local validation can prove that scoped fix without authorizing a remote rerun or masking the failed requirement.",
+  },
+  {
+    id: "issue-capabilities-only",
+    skill: "issue-tracker-operations",
+    scenario: "The user asks which operations the configured issue adapter supports. The backend is already resolved to Jira. No particular issue or dependency question is part of the request. Pick the next action.",
+    choices: {
+      A: "Ask for an issue identifier before inspecting adapter capabilities.",
+      B: "Choose a recent issue and traverse its blockers to discover the supported operations.",
+      C: "Run scripts/issue_backend capabilities --json and report its normalized supported and unsupported operations for the resolved backend.",
+      D: "Create a temporary issue through a provider-specific command to prove write support.",
+    },
+    expected: ["C"],
+    rationale: "Capability inspection has no issue identity dependency. The facade's declared operations answer this request without unrelated reads, traversal, or writes.",
+  },
+  {
+    id: "issue-known-read-no-traversal",
+    skill: "issue-tracker-operations",
+    scenario: "The user asks for the current title, description, and status of ENG-418. The backend is resolved to Jira, and its current capability result supports view and direct blocker maps. The user has not asked for dependency ordering. Pick the next action.",
+    choices: {
+      A: "Run scripts/issue_backend view ENG-418 --json and report the normalized issue result within its declared coverage.",
+      B: "Return only the capability result because backend discovery completes every issue request.",
+      C: "Traverse blocker maps recursively before reading the issue and report the result as a complete dependency tree.",
+      D: "Add a comment to ENG-418 recording that the assistant inspected it.",
+    },
+    expected: ["A"],
+    rationale: "A known issue request needs its view result. Available relationship operations do not make traversal or a provider write part of the requested read.",
+  },
+  {
+    id: "lsp-use-existing-semantics",
+    skill: "lsp-management",
+    scenario: "The user asks where a Kotlin interface is implemented. The existing host already exposes a working semantic implementation query in the requested project; recent independent checks established correct attachment and diagnostic behavior. No LSP setup change is requested. Pick the next action.",
+    choices: {
+      A: "Install another server registration before using the query so the toolchain follows the setup procedure.",
+      B: "Run the entire LSP installation and activation workflow again before every source-navigation request.",
+      C: "Replace the available semantic query with filename guesses and claim complete implementation coverage.",
+      D: "Use the existing semantic query for the requested symbol and inspect its returned source evidence without changing LSP setup.",
+    },
+    expected: ["D"],
+    rationale: "The requested source operation already has a useful semantic interface. Its lifecycle does not need to be rebuilt merely to use that interface.",
+  },
+  {
+    id: "lsp-repair-observed-root",
+    skill: "lsp-management",
+    scenario: "The user asks to restore diagnostics for service/ and authorizes local host-configuration repair. The pinned server executable runs and the client initializes, but logs show the registration attaching sandbox/ while the source belongs to service/. Package changes and repository edits are out of scope. Pick every justified action.",
+    choices: {
+      A: "Reinstall the server and replace all registrations because diagnostics are absent.",
+      B: "Check the host activation and current server contracts, then correct the affected project-root registration while preserving the working installation and unrelated fields.",
+      C: "Confirm attachment and a semantic response in service/, then compare a diagnostic and corrected case through that client in a disposable fixture and report the evidence.",
+      D: "Declare semantic readiness as soon as the replacement client process starts.",
+    },
+    expected: ["B", "C"],
+    rationale: "The evidence locates the failure at project attachment, after working installation and initialization. Repair and proof follow that stage; process startup alone does not prove diagnostic behavior.",
+  },
+  {
+    id: "gradle-diagnose-supplied-run",
+    skill: "kotlin-gradle-validation",
+    scenario: "The user explicitly selects kotlin-gradle-validation to explain supplied :orders:test reports from revision abc123, with no new commands or edits. The identified JUnit report shows DuplicateOrderTest expected Duplicate but received Accepted. The current checkout is def456 and has no supplied run. Pick every supported response.",
+    choices: {
+      A: "Explain the failed duplicate-rejection assertion and bind that evidence to the supplied run at abc123.",
+      B: "Run the current checkout and fix duplicate handling before explaining the report.",
+      C: "Report the current checkout as failing because the older report contains a failed assertion.",
+      D: "Leave the current checkout's result unresolved and distinguish the observed assertion failure from an unproved source cause.",
+    },
+    expected: ["A", "D"],
+    rationale: "The supplied native report supports the named assertion at its own revision. It neither proves current checkout status nor authorizes a new run or fix.",
+  },
+  {
+    id: "gradle-prove-current-result",
+    skill: "kotlin-gradle-validation",
+    scenario: "The user explicitly selects kotlin-gradle-validation to verify that :orders:test passes on current revision def456. Running the repository wrapper is authorized; source changes are not. The only existing reports are from abc123, and their parser exits zero. Pick the next action.",
+    choices: {
+      A: "Call def456 green because parsing the older reports exited zero.",
+      B: "Edit the test implementation before running it so verification includes a source change.",
+      C: "Run ./gradlew :orders:test for def456 and use its command result and relevant native reports to support the requested current-test claim.",
+      D: "Use a new durable JSON runner and copied logs as substitutes for executing the owning task.",
+    },
+    expected: ["C"],
+    rationale: "A current passing-test claim requires the relevant command at the current revision. Parsing old reports proves neither that command's execution nor its outcome.",
+  },
+  {
+    id: "artifact-revise-existing-page",
+    skill: "reviewable-artifacts",
+    scenario: "The user requests a correction to finding F2 in docs/reviews/queue-drain.html, an existing local review document whose block links have already been shared. The source for the corrected finding is supplied. The request is to return the revised file, with no hosting change. Pick every justified action.",
+    choices: {
+      A: "Copy a blank template to queue-drain-v2.html and assign new tags to all findings.",
+      B: "Revise the owning page and affected blocks while preserving its filename, existing block IDs, and tags; record the correction and version.",
+      C: "Publish a replacement site because a local file cannot be revised after delivery.",
+      D: "Check the revised page, inspect its rendering when available, and return the revised file with accurate check and delivery limits.",
+    },
+    expected: ["B", "D"],
+    rationale: "The existing page and stable references own this revision. Verification follows the changed document, while a new file identity or hosting workflow would expand the request.",
+  },
+  {
+    id: "artifact-create-requested-page",
+    skill: "reviewable-artifacts",
+    scenario: "The user asks for a new standalone HTML proposal on queue draining for reviewers outside this thread and wants the file returned locally. No page covers the topic. The repository already stores review documents in docs/reviews/, and the source evidence is supplied. Pick every justified action.",
+    choices: {
+      A: "Create docs/reviews/queue-drain.html from the page template with grounded content, stable review-block IDs, and visible tags.",
+      B: "Return chat prose only because preserving an existing artifact is always required.",
+      C: "Replace placeholders, run the available document checks, inspect rendering when available, and deliver the local file without claiming it is remotely shared.",
+      D: "Create a new hosting account and publish the page because the reviewers are outside the thread.",
+    },
+    expected: ["A", "C"],
+    rationale: "An explicitly requested new document with no existing page calls for creation in the established directory. Local delivery does not require or authorize a hosting setup.",
   },
 ];

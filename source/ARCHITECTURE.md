@@ -23,13 +23,14 @@ Software Engineering supplies the default engineering procedures.
 Kotlin Engineering adds Kotlin and Gradle. IntelliJ Plugin Development adds the platform specialty.
 Developer Tooling supplies CLI, schema, resource, and configuration procedures.
 Repository Knowledge supplies knowledge, navigation, document, and prose procedures.
-The [catalog](CATALOG.md) defines their exact composition.
+The [installation catalog](INSTALLATION.md) lists their exact composition.
 
 ## From an authored primitive to a provider
 
 An author changes the primitive under its canonical root.
 The [graph validator](../tools/validate-source-graph.mjs) resolves references and rejects conflicting identities, missing paths, cycles, and duplicate hook selection.
-The [catalog generator](../tools/catalog.mjs) derives the reader catalog from the same declarations.
+The [catalog generator](../tools/catalog.mjs) reads plugin manifests for the installation catalog.
+It reads canonical skill descriptions for the [task catalog](CATALOG.md).
 
 The [projector](../tools/project-marketplaces.mjs) captures source bytes and file modes before Pkl evaluation.
 Pkl 0.32.0 evaluates the isolated provider models with explicit access limits.

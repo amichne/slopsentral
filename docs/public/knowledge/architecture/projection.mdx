@@ -52,19 +52,17 @@ The retired single-skill Pi package does not describe current projection.
 
 ## Generate a provider tree
 
-From a prepared checkout, install the pinned runtime explicitly:
-
-```sh
-node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl-new/pkl
-```
-
-Set `PKL_BIN` to that executable.
+[The toolchain manifest](https://github.com/amichne/slopsentral/blob/main/tools/toolchain.json) pins Pkl 0.32.0 for each platform by digest.
+`node tools/toolchain.mjs fetch` downloads and verifies it as an explicit setup step, and
+`node tools/toolchain.mjs run --` supplies it to a command through `PKL_BIN`.
+The projector itself never downloads a runtime.
 Use a fresh output path for each provider:
 
 ```sh
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex-new
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
-node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp-new
+R="node tools/toolchain.mjs run --"
+$R node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex-new
+$R node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
+$R node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp-new
 ```
 
 The [projection guide](/maintainers/projection) explains installation and provider-specific recovery.

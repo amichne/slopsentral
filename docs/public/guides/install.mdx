@@ -77,3 +77,32 @@ Use [checkout setup](/developers/contribute#prepare-a-checkout) to install from 
 
 The command uses native Codex and Copilot operations, managed Amp links, and the native Pi installer.
 Installation does not prove that a host discovers or uses the installed instructions.
+
+## Maintainer change contract
+
+Read this section when changing the implementation or packaging of this owner.
+Consumer installation alone does not require a source rewrite.
+
+`install.sh` owns the minimal shell bootstrap for the `slopsentral` command.
+It downloads pinned uv only when `uv` is absent from `PATH`.
+`tools/slopsentral.py` owns the locked Python command and its installation, update, and removal operations.
+The checkout launcher for `slopsentral audit` uses `uv.toml` and `.python-version`.
+The installed launcher runs the audit with `uv run --no-project`.
+Explicit host operations use `--host`.
+Codex, Copilot, and Amp accept `--plugin` selections or `--all` for installation and updates.
+`slopsentral setup` selects a bulk action and harnesses interactively.
+Bulk commands without `--host` open the harness selector. Removal keeps explicit selections.
+Use native Codex and Copilot commands for their host configuration.
+Amp uses managed links to release archives. Pi delegates to `tools/setup-pi.mts`.
+`tools/setup_assets.py` keeps the bootstrap, Python script, lock, and setup receipt.
+`source/schemas/pi/setup.schema.json` owns the receipt contract.
+Keep historical two-file, five-file, and seven-file inventories valid.
+The nine-file inventory includes the two audit modules.
+The command bundles the canonical Kotlin detector and its lock from `source/hooks/`.
+Keep layout findings advisory. Inspection failures must return a nonzero status.
+Reject partial inventories and duplicate filenames.
+Keep upload and download lists in `.github/workflows/release-pi.yml` synchronized with that inventory.
+Preserve edited managed files, foreign paths, and disabled plugin choices.
+Keep installed copies and cached archives outside authored source.
+Run `uv run --locked pytest tools/python_checks/test_slopsentral.py tools/python_checks/test_setup_assets.py` after command changes.
+The [command guide](/guides/install) describes installation from source and published assets.

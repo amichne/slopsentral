@@ -105,11 +105,8 @@ def test_native_provisions_zsh_from_checked_package(
         assert url.startswith("https://snapshot.debian.org/file/")
         return io.BytesIO(archive)
 
-    def install(_artifact: ci.Artifact, target: Path) -> ci.Installed:
-        target.mkdir()
-        if target.name == "kotlin":
-            (target / "kotlinc/bin").mkdir(parents=True)
-        return ci.Installed(target)
+    def toolchain(action: str) -> list[str]:
+        return {"env": ["PKL_BIN=/cache/pkl"], "paths": ["/cache/bin"]}[action]
 
     calls: list[tuple[str, ...]] = []
 
@@ -118,7 +115,7 @@ def test_native_provisions_zsh_from_checked_package(
         return 0
 
     monkeypatch.setattr(ci.urllib.request, "urlopen", fetch)
-    monkeypatch.setattr(ci, "install", install)
+    monkeypatch.setattr(ci, "toolchain", toolchain)
     monkeypatch.setattr(ci, "commands", commands)
     github_path = tmp_path / "path"
     monkeypatch.setenv("GITHUB_PATH", str(github_path))
@@ -132,5 +129,8 @@ def test_native_provisions_zsh_from_checked_package(
         assert command.read_bytes() == binary
         assert os.access(command, os.X_OK)
         assert str(command.parent) in github_path.read_text().splitlines()
+        assert "/cache/bin" in github_path.read_text().splitlines()
+        assert (tmp_path / "env").read_text() == "PKL_BIN=/cache/pkl\n"
+        assert ("node", "tools/toolchain.mjs", "fetch", "--profile", "ci") in calls
     else:
         assert not github_path.exists()

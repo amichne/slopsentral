@@ -31,14 +31,14 @@ A plugin installation grants no authority to publish, deploy, or change personal
 
 ## Prepare a maintainer checkout
 
-Install the tools declared by `mise.toml`.
-From the repository root, use the public checkout commands:
+Install Node.js and npm. [The toolchain manifest](https://github.com/amichne/slopsentral/blob/main/tools/toolchain.json) pins uv, Pkl,
+and Vale by version and SHA-256, and `node tools/toolchain.mjs run --` runs a command with
+those tools first on `PATH`. From the repository root:
 
 ```sh
-mise install
-mise exec -- slopsentral-setup
-mise exec -- slopsentral-check
-mise exec -- slopsentral-docs check
+npm run setup
+npm run check:python
+npm run check:docs
 ```
 
 Setup synchronizes locked Python and Node dependencies.

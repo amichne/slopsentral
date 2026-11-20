@@ -22,6 +22,18 @@ Use the existing store in another repository.
 Create a new store only for an authorized documentation task with no existing owner.
 An ordinary code task needs focused retrieval and impact review, without an automatic full rewrite.
 
+## Select the requested work
+
+For a bounded question, read the smallest relevant explanation and verify the
+needed source claims. Finish with that evidence without opening a rewrite run.
+
+For a source change, inspect the affected explanation. Update it when behavior
+or its explanation changes; otherwise record the source review through the
+existing procedure without rewriting accurate prose.
+
+For an authorized knowledge rewrite or adoption, use the existing store and its
+native lifecycle. A new store needs a requested capability with no suitable owner.
+
 ## Use the distributed practice
 
 Code Knowledge Base ships the runtime, dependency lock, configuration schema, adoption procedure, and complete example project.
@@ -33,6 +45,12 @@ Slopsentral uses that same authored runtime through `bin/slopsentral-docs`.
 Project policy lives in [coverage.json](coverage.json), without a checkout-only implementation.
 The [package tests](../tools/tests/documentation-portability.test.mjs) exercise the shipped runtime in independent projects through all four provider projections.
 They prove byte identity and portable command behavior, without host registration or model calls.
+
+When changing the portable runtime or its package, run the existing independent-project check:
+
+```sh
+node tools/toolchain.mjs run -- node --test tools/tests/documentation-portability.test.mjs
+```
 
 ## Connect a change to its explanation
 
@@ -80,7 +98,7 @@ It compares reviewed source and document fingerprints with `knowledge.lock.json`
 New, changed, renamed, and deleted selected inputs invalidate that record.
 
 ```sh
-mise exec -- slopsentral-docs check
+node tools/toolchain.mjs run -- slopsentral-docs check
 ```
 
 `CURRENT` means that the selected fingerprints match the record.
@@ -105,8 +123,8 @@ After source review, complete OpenWiki's native lifecycle and examine the source
 Then record the reviewed inputs:
 
 ```sh
-mise exec -- slopsentral-docs record
-mise exec -- slopsentral-docs check
+node tools/toolchain.mjs run -- slopsentral-docs record
+node tools/toolchain.mjs run -- slopsentral-docs check
 ```
 
 `record` refuses broken structure and unfinished native state.
@@ -134,7 +152,7 @@ See [the native procedure](../openwiki/workflows/documentation.md) and [backend 
 ## Examine prose and report evidence
 
 ```sh
-mise exec -- slopsentral-prose changed
+node tools/toolchain.mjs run -- slopsentral-prose changed
 uv run --locked --script source/skills/controlled-technical-writing/scripts/check_glossary.py docs/glossary.json --check-render docs/GLOSSARY.md
 npm run check:docs
 ```
