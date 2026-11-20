@@ -175,7 +175,7 @@ function assertUnchanged(repository, files, evidence) {
 function evaluate(pkl, input, harness, models) {
   let version;
   try { version = execFileSync(pkl, ['--version'], { encoding: 'utf8', timeout: 10000 }); }
-  catch { reject('evaluate', 'PKL_UNAVAILABLE', 'Pkl 0.32.0 is required; set PKL_BIN or install the pinned CLI'); }
+  catch { reject('evaluate', 'PKL_UNAVAILABLE', 'Pkl 0.32.0 is required; run through node tools/toolchain.mjs run -- or set PKL_BIN'); }
   if (!/^Pkl 0\.32\.0\b/.test(version)) reject('evaluate', 'PKL_UNAVAILABLE', 'The projector requires exactly Pkl 0.32.0');
   const workspace = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'slopsentral-pkl-')));
   const inputPath = path.join(workspace, 'input.json');

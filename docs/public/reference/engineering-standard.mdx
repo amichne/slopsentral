@@ -71,8 +71,9 @@ requires one and no existing owner fits.
   shell only for an existing host interface that needs it, and use the host
   language for an adapter on a native API. Existing language toolchains remain
   authoritative for their code.
-- Pin uv in the project's `mise.toml` and install it through mise. Use `uv.toml`
-  with `no-build = true` for checkout configuration.
+- Pin uv exactly with `required-version` in the project's `uv.toml`, with
+  `no-build = true`, and install that version with uv's official installer or the
+  repository's toolchain owner.
 - Give a script that runs outside a checkout a PEP 723 header with its Python
   range, direct dependencies (`dependencies = []` for the standard library), and
   index. Commit its adjacent lock and run it with `uv run --locked --script`.

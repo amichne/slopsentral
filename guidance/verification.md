@@ -1,7 +1,10 @@
 # Verification
 
 Run the checks for each surface the change touches. `npm run verify` runs the
-full local gate. Missing tools or unassessed effects do not pass a gate.
+full local gate. [The toolchain manifest](../tools/toolchain.json) pins every
+external tool; run commands outside npm scripts through
+`node tools/toolchain.mjs run --`. Missing tools or unassessed effects do not
+pass a gate.
 
 ## Source graph
 
@@ -17,19 +20,19 @@ node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsent
 git diff --check
 ```
 
-Use fresh output directories and Pkl 0.32.0. `PKL_BIN` may select that runtime;
-projection neither downloads it nor replaces an existing tree. The
-[projection guide](../docs/pkl-projection.md) owns runtime setup.
+Run them through `node tools/toolchain.mjs run --`, which supplies the pinned Pkl
+through `PKL_BIN`; projection itself never downloads a runtime or replaces an
+existing tree. Use fresh output directories.
 
 ## Python
 
-Install the uv pin from `mise.toml` with `mise install` when needed, then run
-`mise exec -- slopsentral-check` for Ruff, strict Pyright, and pytest. The
-`python-tooling` skill owns PEP 723, adjacent locks, and portable execution.
+Run `npm run check:python` for Ruff, strict Pyright, and pytest under the exact
+uv pin. The `python-tooling` skill owns PEP 723, adjacent locks, and portable
+execution.
 
 ## Prose and explanations
 
-Run `mise exec -- slopsentral-prose changed`, keep its report, and review the
+Run `node tools/toolchain.mjs run -- slopsentral-prose changed`, keep its report, and review the
 located findings. For source changes, examine affected explanations through the
 [documentation procedure](../docs/documentation.md). For changed bundled assets,
 refresh and verify the portable snapshot through its producer.

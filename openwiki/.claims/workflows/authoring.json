@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:76ffe38fd9bf73038400e08ff226c96bf3e7fe5872f2a430b975c36100bef884",
+  "pageVersion": "sha256:a3b3e84854111e20c777ea60bee3cb545d3751fc97f488632a94c55a843fe063",
   "claims": [
     {
       "id": "claim_bc6d8aad02404020823dda2dc37e4a40",
@@ -17,12 +17,12 @@
       "statement": "Composition edits require source graph validation and fresh Codex, Copilot and Amp projections through Pkl 0.32.0, with generated consumers left untouched.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L8-L11",
-          "version": "repo-lines-v1:sha256:289a97f6762b236d447fc86f15caf68b88443d7bb7cd347d8fff75270ebae32a:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTg0ZjU5Yjc5YzcyZjg0MzliMTUzMzZhMGEwMWZlN2U4NGNjNWJlYWE5NzkxYTU5NDkzNzliYjM4NTllMGUwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmIwYTg1OWVmZDliMGU1MGVhZGNiMTA5ZjRlYWM3YWRiY2E1NjY4MDk5MmEyOTAyMjE4YzRjOWYyZDhjNGRiOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzc5NWEzZTg1OTRhNmUzMzM3NGJiOTFlYzA0OGQ3ZWRjZjc3ZDA2Y2FjZDVlMDYyMDY3YjY3NmI0MGViMjJkZSJ9"
+          "resource": "repo://AGENTS.md#L9-L11",
+          "version": "repo-lines-v1:sha256:e8f832b333f37d0cbb5ac393b6bf9dbddb6301112ed10b0c61053d0dcd6bee9f:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDg2NWI0NzcxZWUzYTE1MmNiODJkODQ5OGY2MWE5MTRkYWRhNzhkMjJmMjQxMzBjM2MwNGI0NWYxZmRhZTRhZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTg0ZjU5Yjc5YzcyZjg0MzliMTUzMzZhMGEwMWZlN2U4NGNjNWJlYWE5NzkxYTU5NDkzNzliYjM4NTllMGUwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQxMGZiM2EzM2VjNzIwZDc1MTQyMDhmYjViMTYzNTllMDAwM2E0YmIyMGJlZDc4YzgyMzg1YWE4MTZlYTNmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzc5NWEzZTg1OTRhNmUzMzM3NGJiOTFlYzA0OGQ3ZWRjZjc3ZDA2Y2FjZDVlMDYyMDY3YjY3NmI0MGViMjJkZSJ9"
         },
         {
-          "resource": "repo://guidance/verification.md#L6-L22",
-          "version": "repo-lines-v1:sha256:09c9fefaace4911f564280d091d2f361bbbfb8389125f6d7e3a349da69475e09:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNTIzZWE2N2NmYTJiZjhjZDk1MjhiOWJiMWVmYzMwNjY2ZDM2NmM1NmFmYzA4ZDYxODlmMzFiOTkzNDQ5M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNjMwNDk3MmNiYzM2MzRmMzMxZDJhZjA1Nzk0YjZkMWJjOTM0NjUxNmY3Mzk4NDA5MTM2N2FhMjM4NTc1NTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwZDBjOTNlMDI1MDMxMmI4NzdjZjA0MmZjOWE5NTU1MDMxMTQ1NjUzZDc0OTkwMDBlYjQ2OGQ0MDFlZWM5ZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmYzU4NGU0NzhkMmQ1NWFlNjY1YzY0ZmJlYjEwZGMyODU0MzlkMjcxNjVkMjA3MjVjN2RhMTA0MDhhODAxODEifQ"
+          "resource": "repo://guidance/verification.md#L9-L25",
+          "version": "repo-lines-v1:sha256:181a054cbb859a0a634488da558aedaf7e9c24af580b90098b1d3e6d08a27522:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNTIzZWE2N2NmYTJiZjhjZDk1MjhiOWJiMWVmYzMwNjY2ZDM2NmM1NmFmYzA4ZDYxODlmMzFiOTkzNDQ5M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2NTM0MGZlYTBlOTgyMmI1YjNhNzJkY2I0OWRiMGU2ZDE1ODgyZmNhYWFlNGIxNWE3NjhlYmUzYmViNzBmMGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5MzdmNmY5YzQwNGY4ZjlkYzg4ZWZmNTE5NDBkYTJmMThlZGJjYmJkZjcyYzNkZDQ1NjhlYzIwYzJkNDdlNzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmYzU4NGU0NzhkMmQ1NWFlNjY1YzY0ZmJlYjEwZGMyODU0MzlkMjcxNjVkMjA3MjVjN2RhMTA0MDhhODAxODEifQ"
         }
       ]
     },
@@ -55,14 +55,32 @@
       "statement": "Validate Source runs offline skill controls and retains verified provider archives rather than running the live skill suite as a normal CI gate.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/validate-source.yml#L43-L86",
-          "version": "repo-lines-v1:sha256:42cd9c52a328c25799b7bc822c01e3726ea97a7ae4f54dad1b5e93f0272097a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NTFjYmY3OWZiMjNiYmZkMmVlZTBhZDk4ODA4NjNkMDk3MGQzMmE5YTc1MDQwNDgzYzNhODEwMjBhODJjMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMzJhYzIwODBhMTM0NWM2NDY4ZDBlMGUwOWE0OTMyMDE1MTc2NzQzZjkyYTUyNTM1NWNmZGZkNTg5N2NmZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiN2M5ZTBiZmFhODc3ZmE0ZjMzMWMxNWQ4OWYxYmUzZWQ2ZWFhMDkzYzVlYjlmMTE1NmIzNGY2Yjk3YTdhY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMDgzNWQ1MDUwYzMwOWQ1MGZiN2RlYmU0ZWM1MTE0Yzc1NWYxMTcwOTIzNGI5ODFiMTc3ZTZhNzA4NzAyYzUifQ"
+          "resource": "repo://.github/workflows/validate-source.yml#L41-L84",
+          "version": "repo-lines-v1:sha256:7763a55279e6137489324b5a337f5ce48d11ac795dc620d7b150510adc96c881:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NTFjYmY3OWZiMjNiYmZkMmVlZTBhZDk4ODA4NjNkMDk3MGQzMmE5YTc1MDQwNDgzYzNhODEwMjBhODJjMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMzJhYzIwODBhMTM0NWM2NDY4ZDBlMGUwOWE0OTMyMDE1MTc2NzQzZjkyYTUyNTM1NWNmZGZkNTg5N2NmZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiN2M5ZTBiZmFhODc3ZmE0ZjMzMWMxNWQ4OWYxYmUzZWQ2ZWFhMDkzYzVlYjlmMTE1NmIzNGY2Yjk3YTdhY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMDgzNWQ1MDUwYzMwOWQ1MGZiN2RlYmU0ZWM1MTE0Yzc1NWYxMTcwOTIzNGI5ODFiMTc3ZTZhNzA4NzAyYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2776389758a1410898791d7299ff30a0",
+      "statement": "Checkout setup runs through npm scripts that resolve uv, Pkl, and Vale from the SHA-256-pinned toolchain manifest, and uv.toml requires the exact uv version.",
+      "evidence": [
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:5637cf6288a0a6b0bf7e4224e3cd0f706f09bf75f28df63314db0c32250aeaa9"
+        },
+        {
+          "resource": "repo://tools/toolchain.json",
+          "version": "repo-file-v1:sha256:2a124cf259b8ba3dda4875b9249d619665cb7214f3a5eb4f5c685707444175c9"
+        },
+        {
+          "resource": "repo://uv.toml",
+          "version": "repo-file-v1:sha256:8f54d60e6848e25572c4913c04c3497cb74c2341d7b75691c3e2f745a37bb0fc"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-20T16:26:00.832Z"
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

@@ -20,9 +20,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '25.0.2'
-      - uses: astral-sh/setup-uv@v7
-        with:
-          version: '0.12.9'
+      - uses: ./.github/actions/toolchain
       - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c
         with:
           gradle-version: '9.8.2'

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d0ce7c5a1759c3ba9f94245b37c8d09409bea71555e8840e446329bff8438445",
+  "pageVersion": "sha256:aa5f91f3583d5858a04192721fccc3ba362e3fe3724f3b97905065adac59d05c",
   "claims": [
     {
       "id": "claim_d1bc8d787e7348afa9f084f58f304d0e",
@@ -74,7 +74,7 @@
       "evidence": [
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:cc586cb30faaae504cd7ef743d3aab51c5ac312a722fafb2552c538e04a86957"
+          "version": "repo-file-v1:sha256:10164309ecb3ea28a03259a149ac60b744c894ab83b7b86422c9b79a884e41d4"
         },
         {
           "resource": "repo://tools/tests/documentation-portability.test.mjs#L90-L113",
@@ -99,6 +99,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-20T16:26:00.832Z"
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

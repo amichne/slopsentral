@@ -39,17 +39,17 @@ Unsupported systems or filesystems reject publication. No replacement fallback e
 
 Use a Git checkout with a resolvable HEAD.
 The repository needs Node.js 22.22.0 or later, Python 3, and exactly Pkl 0.32.0.
-The [runtime inventory](https://github.com/amichne/slopsentral/blob/main/tools/projection/pkl-runtime.json) pins supported platform archives and digests.
-Its explicit installer rejects an existing destination.
+[The toolchain manifest](https://github.com/amichne/slopsentral/blob/main/tools/toolchain.json) pins each platform's Pkl asset and digest.
+`node tools/toolchain.mjs fetch` downloads and verifies it as an explicit setup step;
+the projector never downloads a runtime. The runner supplies `PKL_BIN`:
 
 ```sh
 npm ci --ignore-scripts
-node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl/pkl
-export PKL_BIN=/tmp/slopsentral-pkl/pkl
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/codex-new
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/copilot-new
-node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/amp-new
-node tools/project-marketplaces.mjs --source . --harness dotagents --out /tmp/dotagents-new
+R="node tools/toolchain.mjs run --"
+$R node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/codex-new
+$R node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/copilot-new
+$R node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/amp-new
+$R node tools/project-marketplaces.mjs --source . --harness dotagents --out /tmp/dotagents-new
 ```
 
 Use fresh output paths outside the checkout with existing parent directories.

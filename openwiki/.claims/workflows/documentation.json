@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:ac6e6673d9ed44ef55a8de860f7504c727564ba39d66b880aa9a0a08dd70bb09",
+  "pageVersion": "sha256:e22c465a66cc74349e16de894b9e25fcd17290e15c2266124969220fa268a07c",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -51,11 +51,11 @@
       "statement": "Documentation generation pins OpenWiki 0.6.1 and gpt-5.6-terra, requires separate generation and PR credentials, and gates the documentation-only PR step on native generation and glossary checks.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/openwiki-update.yml#L109-L128",
+          "resource": "repo://.github/workflows/openwiki-update.yml#L107-L126",
           "version": "repo-lines-v1:sha256:69eabea017127c886115a1ace2c1de3aa69e9a724f01af3eb1932da8f281e793:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NTQ2M2Y5MDRhNzMxZjEzNzRlNzM4MmQ2YjEzYzYxZGZkZTVhMGUxMjhjMjNjZTcxMGVlNTQyZmU4MGQ1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYTFiYmMyOTA1ZTgzNGRmODQ2MmVhZDczOTM5M2E0MjllZTE1MzUxYzFlMTc4MDI3NDI2YmE3NjNiZWVjMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3YzU4YmUwMWE0OTc0NmRhOWY0MWNkOTQzZTZiMjAyZjg2Nzc1MWMyM2EzYzkyOTlhOGNiZDkyYzVkNzg3NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
-          "resource": "repo://.github/workflows/openwiki-update.yml#L48-L83",
+          "resource": "repo://.github/workflows/openwiki-update.yml#L46-L81",
           "version": "repo-lines-v1:sha256:609dfacc707f00d94e5e9e77f004d5d3f9f0326fc3c19125686d5c3645f4d584:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NGY3NzhlYjhiMTgzNmVjM2Q5ZjU1MWMzNjg1ZjNkNmE0OGRkM2I5N2Y2ZWFhYzhjMjMwOTIwNDM2OGI0YmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNmJmZmE4MWYwYWFmMDQzNTlhZWZjZGIwODkxMzhiNGE0ZWU1YWU3N2YyZjZlYzQ4MGE2ODc5OThmNGZhMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNzlkYWI3ZGQ3NjRlMDkwMjk0N2I4ZDhiNThhMTY4N2ZlNzI3ZTdmZWM1MGFkZDVkMDNiMTJlMTI5YWEzNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzOTI3NzEzZjdjMzFmZTBiY2RlMGUzNmNiODQ2MjUwMzQxMTQxZmQ1NDNlMTVlOWQ2NDZhNzlmYjcyZWE1MjAifQ"
         }
       ]
@@ -65,7 +65,7 @@
       "statement": "The generated PR path allowlist excludes transient run state and authored instructions, and the workflow has no auto-merge or executable source publication step.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/openwiki-update.yml#L109-L128",
+          "resource": "repo://.github/workflows/openwiki-update.yml#L107-L126",
           "version": "repo-lines-v1:sha256:69eabea017127c886115a1ace2c1de3aa69e9a724f01af3eb1932da8f281e793:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NTQ2M2Y5MDRhNzMxZjEzNzRlNzM4MmQ2YjEzYzYxZGZkZTVhMGUxMjhjMjNjZTcxMGVlNTQyZmU4MGQ1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYTFiYmMyOTA1ZTgzNGRmODQ2MmVhZDczOTM5M2E0MjllZTE1MzUxYzFlMTc4MDI3NDI2YmE3NjNiZWVjMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3YzU4YmUwMWE0OTc0NmRhOWY0MWNkOTQzZTZiMjAyZjg2Nzc1MWMyM2EzYzkyOTlhOGNiZDkyYzVkNzg3NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
@@ -75,7 +75,7 @@
       "statement": "The documentation workflow rejects generation without complete native checkpoint status or with an active run file before it can propose a PR.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/openwiki-update.yml#L68-L78",
+          "resource": "repo://.github/workflows/openwiki-update.yml#L66-L76",
           "version": "repo-lines-v1:sha256:ded03fec5e3e6d0817deba0072e5220ec7fce9422900d943a4417377af738d2e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMzk5ZjkwNjg2MWE0NDc2Nzk0NjY2ZjQ3NGNkOWE3MDFjODg1NDNhYTc0YTUzYmQxNWE1YzIxNjUxZTAzNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OWQ2YjRhMDUzNzVkNWM2NzQ2MTgwNzVlOTkzZDJmZWFhNGU1MTAwZWQ1YTkyMjMyODlmMWJjOGIzNzQwYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwMTU3Njk4NWE4OWVjNTdkOTlmZDVkODcyZTYwODdmM2QzYjc3M2Q2NDdhNjJjMGVjZDczNDIxOGU3ZjdjMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkZWJhMzE2MjAxNzZmZWQ0NTJlYzg4NmFiOGU2MWRkMzFkOWFhYzQ0MTM4MDYyOWNkOGE4ZWQ3ZjUxMzhhNmQifQ"
         }
       ]
@@ -85,7 +85,7 @@
       "statement": "The documentation PR step requires generated changes beyond .last-update.json and .page-manifest.json; both checkpoint files remain eligible when substantive changes select a PR.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/openwiki-update.yml#L84-L119",
+          "resource": "repo://.github/workflows/openwiki-update.yml#L82-L117",
           "version": "repo-lines-v1:sha256:e1d607ab2cf093e0adc0384412a7b697cfe93cc4dc0fc81e30f54984eb05acf1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNWU0ZWEyYjg5YjM3MTc5ZWFjMTUyYWRiYjA2ODQ5OWUzNjMzMmJhY2M3MTViYzE3Y2RhZGZiYWIyYWQ3NTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxOTk3Mzk1MjYwYWE4MjZhNTgxMTVlOWFiOTJiMzU4MjM5ZjI5ZDYxNGJjMjY5MDZkZjI3MmU4ZGNkZTVlOGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMzIxNWQ2Yzk5MjhlY2NkNTJlMjNmZjI4NWFlYzNlNmVkMmUxZjE4NTgyMTk0M2E1YzU3NGMxMjhkMjAyYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1MTU3NWE5YTY4NzJiOTM5Y2RlYjc4Nzk3ZThhOGQ3MDM1NGQwMTRkMTJjMDVjYTc2M2Q5NWUyNzhkMTM4OTIifQ"
         }
       ]
@@ -96,7 +96,7 @@
       "evidence": [
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:cc586cb30faaae504cd7ef743d3aab51c5ac312a722fafb2552c538e04a86957"
+          "version": "repo-file-v1:sha256:10164309ecb3ea28a03259a149ac60b744c894ab83b7b86422c9b79a884e41d4"
         },
         {
           "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L230-L280",
@@ -117,7 +117,7 @@
       "statement": "The shared engineering baseline connects behavior changes to maintained source-backed knowledge and distinguishes byte agreement from semantic correctness and reader comprehension.",
       "evidence": [
         {
-          "resource": "repo://source/instructions/engineering-design.md#L85-L104",
+          "resource": "repo://source/instructions/engineering-design.md#L86-L105",
           "version": "repo-lines-v1:sha256:0768d6ef7dc145fe36a8ba309184d9ecfed7bcca8390b97a8e7be675a3b8421e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYTYzNjg4MWU5YjdmZDI2OTc1YzFkMmQyNDQ3YmUyMDllYjNjOGRlNzQ5NDMzNWViM2NkYWJmNWVlM2M0MTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNzZkNjFkOTRhZWNjODA0NmJhZDNlNDNlNTIzMjlmMjAxMmQ5OTBkOWMwMDYwYjBjMDg5MzAwNjBmYjM5MmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5NWNhOGQ1ZjU0MTNlZGU5MmMxOWQ2NDIzZmY2ZTJjOTVmNzRjNzAxM2UxZTM4MDRhZWEwZTIyNTU4MjZmNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
@@ -162,7 +162,7 @@
       "evidence": [
         {
           "resource": "repo://docs/mintlify.md",
-          "version": "repo-file-v1:sha256:4261a1b5e0a788795aa762318d5430d28134d402c22dab4b0e26e5252a2da3fc"
+          "version": "repo-file-v1:sha256:bb7dddc073bbf3f7406863310f69a052d648b071b2e684601b13e42e8ec1d8cc"
         },
         {
           "resource": "repo://docs/site.json",
@@ -180,15 +180,15 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/documentation-site.yml",
-          "version": "repo-file-v1:sha256:bfcbc742204e88b957f13adc029ba76d8772879bf92343e6dba0b584fc4381d2"
+          "version": "repo-file-v1:sha256:b00d71e632888ae5e758a1908432619f68df1c4a604ace2b9e04e416d09919e7"
         },
         {
           "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:c2ca774cfdb19b1e76d90dfe04a7ea0257a10fe93eea76a5acc2620ba5f35310"
+          "version": "repo-file-v1:sha256:5637cf6288a0a6b0bf7e4224e3cd0f706f09bf75f28df63314db0c32250aeaa9"
         },
         {
           "resource": "repo://tools/ci.py",
-          "version": "repo-file-v1:sha256:fe317a9b2218c8f150fe3d7fd16834bdb180a1c36af1e69ceb7c5943ba32f4b8"
+          "version": "repo-file-v1:sha256:31e4cb736201f7e3c7a985c430d793c59759187806366c746ebb7725f744e0d4"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -202,11 +202,11 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/documentation-site.yml",
-          "version": "repo-file-v1:sha256:bfcbc742204e88b957f13adc029ba76d8772879bf92343e6dba0b584fc4381d2"
+          "version": "repo-file-v1:sha256:b00d71e632888ae5e758a1908432619f68df1c4a604ace2b9e04e416d09919e7"
         },
         {
           "resource": "repo://docs/mintlify.md",
-          "version": "repo-file-v1:sha256:4261a1b5e0a788795aa762318d5430d28134d402c22dab4b0e26e5252a2da3fc"
+          "version": "repo-file-v1:sha256:bb7dddc073bbf3f7406863310f69a052d648b071b2e684601b13e42e8ec1d8cc"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -217,6 +217,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-20T16:26:00.832Z"
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

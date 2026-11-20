@@ -18,7 +18,7 @@ test("source validation projects both harnesses through pinned local Pkl", () =>
   const verifier = read("tools/verify_marketplaces.py");
   assert.match(verifier, /"codex", "github-copilot"/);
   assert.match(verifier, /tools\/project-marketplaces.mjs/);
-  assert.match(read("tools/ci.py"), /tools\/install-projection-pkl.mjs/);
+  assert.match(read("tools/ci.py"), /"tools\/toolchain\.mjs", "fetch", "--profile", "ci"/);
   assert.ok(validateWorkflow.indexOf('Install checksum-verified native tools') < validateWorkflow.indexOf('Validate source, Python'));
 
 });
@@ -26,7 +26,7 @@ test("source validation projects both harnesses through pinned local Pkl", () =>
 test("publication projects a harness matrix through the same local Pkl boundary", () => {
   assert.match(publicationWorkflow, /node tools\/project-marketplaces.mjs --source \./);
   assert.match(publicationWorkflow, /--harness '\$\{\{ matrix\.harness \}\}'/);
-  assert.match(publicationWorkflow, /node tools\/install-projection-pkl.mjs/);
+  assert.match(publicationWorkflow, /uses: \.\/\.github\/actions\/toolchain/);
   assert.match(publicationWorkflow, /npm ci --ignore-scripts/);
   assert.doesNotMatch(publicationWorkflow, /amichne\/projeKtor|intelligence project/);
 });
@@ -61,4 +61,15 @@ test("retired broker and garden surfaces are absent", () => {
   ]) {
     assert.equal(fs.existsSync(path.join(repoRoot, relativePath)), false, relativePath);
   }
+});
+
+test("every workflow provisions tools from the manifest, never a version manager", () => {
+  for (const name of fs.readdirSync(path.join(repoRoot, ".github/workflows"))) {
+    const workflow = read(`.github/workflows/${name}`);
+    assert.doesNotMatch(workflow, /jdx\/mise-action|mise exec|install-projection-pkl/, name);
+    if (/\buv run\b|PKL_BIN|slopsentral-/.test(workflow)) {
+      assert.match(workflow, /uses: \.\/\.github\/actions\/toolchain/, name);
+    }
+  }
+  assert.match(read(".github/actions/toolchain/action.yml"), /node tools\/toolchain\.mjs fetch/);
 });

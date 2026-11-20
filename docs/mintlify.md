@@ -25,7 +25,7 @@ Use the [portable procedure](../source/skills/code-knowledge-base/references/por
 Install the pinned site tools through checkout setup:
 
 ```sh
-mise exec -- slopsentral-setup
+npm run setup
 ```
 
 1. Change the mapped canonical document.
@@ -35,7 +35,7 @@ mise exec -- slopsentral-setup
 5. Refresh the generated public pages.
 
 ```sh
-mise exec -- slopsentral-site sync
+node tools/toolchain.mjs run -- slopsentral-site sync
 ```
 
 The npm alias uses the same operation:
@@ -77,7 +77,7 @@ Package publication and a passing source build do not establish website publicat
 Examine the live site with:
 
 ```sh
-mise exec -- slopsentral-site live
+node tools/toolchain.mjs run -- slopsentral-site live
 ```
 
 The command compares every projected page's normalized rendered Markdown content with the expected canonical blocks.

@@ -25,7 +25,6 @@ import tarfile
 import tempfile
 import urllib.error
 import urllib.request
-import zipfile
 from dataclasses import dataclass
 from enum import StrEnum
 from http import HTTPStatus
@@ -58,14 +57,6 @@ class SetupFailure(StrEnum):
 
 
 @dataclass(frozen=True, slots=True)
-class Artifact:
-    repository: str
-    tag: str
-    filename: str
-    sha256: str
-
-
-@dataclass(frozen=True, slots=True)
 class Installed:
     directory: Path
 
@@ -81,32 +72,6 @@ def download(url: str, archive: Path, expected_digest: str) -> SetupFailure | No
     except OSError:
         return SetupFailure.FILESYSTEM
     return None if digest == expected_digest else SetupFailure.CHECKSUM
-
-
-def install(artifact: Artifact, target: Path) -> Installed | SetupFailure:
-    url = f"https://github.com/{artifact.repository}/releases/download/{artifact.tag}/{artifact.filename}"
-    try:
-        target.mkdir(parents=True, exist_ok=False)
-        archive = target / artifact.filename
-        failure = download(url, archive, artifact.sha256)
-        if failure is not None:
-            return failure
-        if zipfile.is_zipfile(archive):
-            with zipfile.ZipFile(archive) as zipped:
-                if any(
-                    not (target / name).resolve().is_relative_to(target.resolve())
-                    for name in zipped.namelist()
-                ):
-                    return SetupFailure.ARCHIVE
-                zipped.extractall(target)  # noqa: S202 -- pinned digest and all members checked above
-        else:
-            with tarfile.open(archive) as packed:
-                packed.extractall(target, filter="data")
-        return Installed(target)
-    except (tarfile.TarError, zipfile.BadZipFile):
-        return SetupFailure.ARCHIVE
-    except OSError:
-        return SetupFailure.FILESYSTEM
 
 
 def install_zsh(target: Path) -> Installed | SetupFailure:
@@ -169,56 +134,36 @@ def commands(
     return 0
 
 
-def native(temporary: Path) -> int:
-    artifacts = (
-        Artifact(
-            "max-sixty/worktrunk",
-            "v0.53.0",
-            "worktrunk-x86_64-unknown-linux-musl.tar.xz",
-            "2d0e810910270955fbf9a7c2d5c61c754eb4fea0c255a960d0acccff65646822",
-        ),
-        Artifact(
-            "vale-cli/vale",
-            "v3.24.0",
-            "vale_3.24.0_Linux_64-bit.tar.gz",
-            "867534ddb678abca7f214bc4706ead0922bd5252ffe8035fc227013f66c8b214",
-        ),
-        Artifact(
-            "JetBrains/kotlin",
-            "v2.4.10",
-            "kotlin-compiler-2.4.10.zip",
-            "473dd66c7a3ef4b182065b3da670466c1bf2773a9dbb0ed8b33a39fe9d4f876d",
-        ),
+def toolchain(action: str) -> list[str] | None:
+    """Read GitHub Actions lines from the repository toolchain resolver."""
+    result = subprocess.run(
+        ["node", "tools/toolchain.mjs", action, "--profile", "ci"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
     )
-    for artifact in artifacts:
-        result = install(artifact, temporary / artifact.repository.split("/")[-1])
-        if isinstance(result, SetupFailure):
-            print(json.dumps({"stage": "setup", "type": result.value, "tool": artifact.repository}))
-            return 2
+    return result.stdout.splitlines() if result.returncode == 0 else None
+
+
+def native(temporary: Path) -> int:
     zsh = install_zsh(temporary / "zsh")
     if isinstance(zsh, SetupFailure):
         print(json.dumps({"stage": "setup", "type": zsh.value, "tool": "zsh"}))
         return 2
-    kotlin_bin = temporary / "kotlin/kotlinc/bin"
-    for file in kotlin_bin.iterdir():
-        file.chmod(file.stat().st_mode | 0o111)
-    with Path(os.environ["GITHUB_PATH"]).open("a") as output:
-        for directory in (
-            temporary / "worktrunk/worktrunk-x86_64-unknown-linux-musl",
-            temporary / "vale",
-            kotlin_bin,
-            zsh.directory,
-        ):
-            _ = output.write(str(directory) + "\n")
-    pkl = temporary / "projection-pkl/pkl"
-    status = commands((("node", "tools/install-projection-pkl.mjs", "--out", str(pkl)),))
+    status = commands((("node", "tools/toolchain.mjs", "fetch", "--profile", "ci"),))
     if status:
         return status
+    environment, directories = toolchain("env"), toolchain("paths")
+    if environment is None or directories is None:
+        print(json.dumps({"stage": "setup", "type": "toolchain-unavailable", "tool": "toolchain"}))
+        return 2
+    with Path(os.environ["GITHUB_PATH"]).open("a") as output:
+        for directory in (*directories, str(zsh.directory)):
+            _ = output.write(directory + "\n")
     with Path(os.environ["GITHUB_ENV"]).open("a") as output:
-        _ = output.write(f"PKL_BIN={pkl}\n")
-        _ = output.write(
-            f"TEST_VALE_ARCHIVE={temporary / 'vale/vale_3.24.0_Linux_64-bit.tar.gz'}\n"
-        )
+        for line in environment:
+            _ = output.write(line + "\n")
     return 0
 
 

@@ -34,10 +34,10 @@ sources:
     resource: repo://tools/public_docs.py
   - id: openwiki-source-00110e15b75d856174b63939
     resource: repo://tools/python_checks/test_documentation.py
-generated: { by: "codex", at: "2026-11-05T06:09:49.273Z" }
+generated: { by: "codex", at: "2026-11-20T18:23:08.613Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-20T16:26:00.832Z
+    at: 2026-11-20T18:23:08.613Z
 ---
 
 # Maintain source-backed documentation
@@ -107,7 +107,7 @@ Never repair those files by hand or substitute standalone OKF validation.
 After native finalization, use the repository gate:
 
 ```sh
-mise exec -- slopsentral-docs check
+node tools/toolchain.mjs run -- slopsentral-docs check
 ```
 
 A changed source or page invalidates the recorded byte agreement.
@@ -120,7 +120,7 @@ The gate establishes coverage and byte agreement. It does not grade the meaning 
 Assess changed technical prose with the pinned Vale procedure:
 
 ```sh
-mise exec -- slopsentral-prose changed
+node tools/toolchain.mjs run -- slopsentral-prose changed
 ```
 
 Keep the report and examine findings at their reported lines.
@@ -157,7 +157,7 @@ Code examples keep their literal content.
 After source review and native finalization, refresh the public projection:
 
 ```sh
-mise exec -- slopsentral-site sync
+node tools/toolchain.mjs run -- slopsentral-site sync
 npm run docs:check
 ```
 

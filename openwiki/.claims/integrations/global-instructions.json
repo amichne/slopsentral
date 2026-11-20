@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:48b9dee909fe1e36109abbe868182f4a468b69ffd2f787bbfaa207ab47498435",
+  "pageVersion": "sha256:d1bd28d5786b23a58d91df83ef8b40db562f5d5246f48866e979bd3eb94dddbd",
   "claims": [
     {
       "id": "claim_b6805375cb0e4bbba50ddabc62a3490a",
@@ -36,7 +36,7 @@
       "evidence": [
         {
           "resource": "repo://docs/global-agents.md",
-          "version": "repo-file-v1:sha256:2b953a4b32968f485cfd4af6eaa5455654e82f7d4275af6e56753630b0e7eb59"
+          "version": "repo-file-v1:sha256:92e6f77ab52adba9e9e7669aeca09f7f3dc9a57a6d3a036865df1e8f107759e6"
         },
         {
           "resource": "repo://tools/install_global_agents.py#L326-L370",
@@ -68,7 +68,7 @@
         },
         {
           "resource": "repo://tools/catalog.mjs#L278-L295",
-          "version": "repo-lines-v1:sha256:61dcfb3afc7fedbcb75d796222d04353b89aa8ae96c5bfd46c0ab201564a0b73:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3MjY1MGNhN2ZmYjM5YjFlZjAyNWMwYzlkYWQ5ZGVkYjQ1YjFkZTNlNmQ0MDc5Y2FkMzU1MjI0NDdhOTRlYTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYmU4Njg4MDU4ZTgwNTQzZjczNjNiYTVkNmFmZmZlNGMxN2ZhOTM4YzFjM2NkNTkzZTU5NzQ3YTVhMjMyOTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiZTY4NWQyMzQ0NjA2ZWExNzFiOGNmMmM3NDZlNWM2OWJmM2JmOGU0NjE0ZjVlMGU5N2QyOWRlN2RhNTFmMGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2YTEwMTEzZjg1YWI4MzI0NTY3YzgyMTk1OTdmZjQ5MTk4Y2I2MTgyYTNkMmNlZDA3Y2E3NzdhMDllMWNhOWEifQ"
+          "version": "repo-lines-v1:sha256:93a7844c5c2999afd7163dc9a0f75e1ed28dbd78be31d8a71211e9ab7207c18b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3MjY1MGNhN2ZmYjM5YjFlZjAyNWMwYzlkYWQ5ZGVkYjQ1YjFkZTNlNmQ0MDc5Y2FkMzU1MjI0NDdhOTRlYTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYmU4Njg4MDU4ZTgwNTQzZjczNjNiYTVkNmFmZmZlNGMxN2ZhOTM4YzFjM2NkNTkzZTU5NzQ3YTVhMjMyOTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiZTY4NWQyMzQ0NjA2ZWExNzFiOGNmMmM3NDZlNWM2OWJmM2JmOGU0NjE0ZjVlMGU5N2QyOWRlN2RhNTFmMGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2YTEwMTEzZjg1YWI4MzI0NTY3YzgyMTk1OTdmZjQ5MTk4Y2I2MTgyYTNkMmNlZDA3Y2E3NzdhMDllMWNhOWEifQ"
         },
         {
           "resource": "repo://tools/catalog.mjs#L358-L370",
@@ -79,6 +79,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-20T16:26:00.832Z"
+    "at": "2026-11-20T18:23:08.613Z"
   }
 }

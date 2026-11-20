@@ -5,7 +5,7 @@ description: Follow frozen authored bytes through Pkl evaluation, sealed payload
 tags: [projection, pkl, provenance, providers]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-17T04:04:07.116Z
+    at: 2026-11-20T18:23:08.613Z
 sources:
   - id: openwiki-source-0de19b70b13c7683e196f562
     resource: repo://tools/project-marketplaces.mjs
@@ -17,7 +17,11 @@ sources:
     resource: repo://tools/projection/publish_directory.py
   - id: openwiki-source-29b8d13ca4d0c5f112b0bb17
     resource: repo://tools/tests/pkl-projection.test.mjs
-generated: { by: "codex", at: "2026-11-17T04:04:07.116Z" }
+  - id: openwiki-source-1c86dc4352b4d3810fb862e2
+    resource: repo://tools/toolchain.json
+  - id: openwiki-source-3d889b7c5ac4531f061827ed
+    resource: repo://tools/toolchain.mjs
+generated: { by: "codex", at: "2026-11-20T18:23:08.613Z" }
 ---
 
 # Source-bound provider projection
@@ -69,19 +73,17 @@ The retired single-skill Pi package does not describe current projection.
 
 ## Generate a provider tree
 
-From a prepared checkout, install the pinned runtime explicitly:
-
-```sh
-node tools/install-projection-pkl.mjs --out /tmp/slopsentral-pkl-new/pkl
-```
-
-Set `PKL_BIN` to that executable.
+[The toolchain manifest](../../tools/toolchain.json) pins Pkl 0.32.0 for each platform by digest.
+`node tools/toolchain.mjs fetch` downloads and verifies it as an explicit setup step, and
+`node tools/toolchain.mjs run --` supplies it to a command through `PKL_BIN`.
+The projector itself never downloads a runtime.
 Use a fresh output path for each provider:
 
 ```sh
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex-new
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
-node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp-new
+R="node tools/toolchain.mjs run --"
+$R node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex-new
+$R node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
+$R node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp-new
 ```
 
 The [projection guide](../../docs/pkl-projection.md) explains installation and provider-specific recovery.
