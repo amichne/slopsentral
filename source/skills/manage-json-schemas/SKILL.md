@@ -25,7 +25,7 @@ it or the user asks to adopt it.
    and supported keywords unless the requested change requires a migration.
    For an existing schema, extend its canonical owner. Create another schema only
    for a contract that has no suitable owner; reuse shared definitions through that owner's conventions.
-   For a review, retain the schema and report supported findings rather than applying a migration.
+   For a review, keep the schema and report the findings.
 3. Run the existing validator with a valid payload and the nearest invalid one.
    Install dependencies only when readiness is missing, using the repository's package manager and lockfile.
 4. For authorized authoring or extraction, keep schema assets in the owning

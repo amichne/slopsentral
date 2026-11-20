@@ -186,5 +186,5 @@ When changing provider output or its publication path, preserve these source bou
 - Amp directory plugins project into `.amp/plugins`. `tools/projection/Amp.pkl`
   owns skill registration and turn-start instructions. Hooks, agents, and MCP
   configuration remain reference-only; workflow profiles are unsupported.
-  `Publish Harnesses` publishes Amp only to `harness/amp`, not `main`, so the
-  authored checkout does not automatically activate every bundle.
+  `Publish Harnesses` publishes Amp only to `harness/amp`, not `main`, so an
+  authored checkout does not start every bundle.

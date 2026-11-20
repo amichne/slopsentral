@@ -510,7 +510,7 @@
     },
     {
       "path": "source/skills/negative-capability-proof/SKILL.md",
-      "sha256": "7f3dea883bf2d97187a478264262576ea8d5d1b6263ba078220414033213ded3"
+      "sha256": "7b39ec889b535c80bbc2da7adff2dfc9201bfbd0cb9e0f9d129b37974f62c0df"
     },
     {
       "path": "source/skills/negative-capability-proof/agents/openai.yaml",
@@ -518,7 +518,7 @@
     },
     {
       "path": "source/skills/semantic-ratchet/SKILL.md",
-      "sha256": "f59aed60d921e1697e4239b5189f33b908d26eb2a9c6a3e631f76aefaec975f1"
+      "sha256": "985d080c59360b118dc5aa7e9e9d93ece2e5c90a4f8888c48bbf193cb458e72a"
     },
     {
       "path": "source/skills/semantic-ratchet/agents/openai.yaml",

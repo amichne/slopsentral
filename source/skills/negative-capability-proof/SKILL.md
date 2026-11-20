@@ -1,6 +1,6 @@
 ---
 name: "negative-capability-proof"
-description: "Use for a scoped Kotlin API change that must demonstrate a currently reachable illegal operation or state and then make that misuse unrepresentable."
+description: "Use for a scoped Kotlin API change that must show a currently reachable illegal operation or state and then make that misuse unrepresentable."
 ---
 
 # Negative Capability Proof

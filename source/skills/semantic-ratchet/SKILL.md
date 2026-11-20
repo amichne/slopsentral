@@ -1,6 +1,6 @@
 ---
 name: semantic-ratchet
-description: "Design, review, or change contracts when validation, authorization, normalization, or state checks produce facts that consumers must retain. Inspect the fact and consumer before choosing a stronger representation; a primitive type alone is not proof of a defect."
+description: "Design, review, or change contracts when validation, authorization, normalization, or state checks produce facts that consumers must keep. Inspect the fact and consumer before choosing a stronger representation; a primitive type alone is not proof of a defect."
 ---
 
 # Semantic Ratchet

@@ -69,7 +69,7 @@ useful in any Git repository.
   includes branching, staging, committing, pushing, or pull request handoff.
 - Load [recovery.md](references/recovery.md) before resolving merge conflicts,
   undoing a local mistake, recovering lost commits, or touching stash/reflog.
-- Load [worktrunk-automation.md](references/worktrunk-automation.md) for worktree
+- Load [Worktrunk automation](references/worktrunk-automation.md) for worktree
   creation, project hook automation, Worktrunk commits, or a handoff that uses
   those worktree facilities.
 

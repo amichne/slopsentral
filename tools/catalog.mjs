@@ -264,7 +264,7 @@ export function renderCatalog(catalog) {
   }
   lines.push('', '## Plugin installation', '',
     'When choosing or changing installed capabilities, use the [installation catalog](INSTALLATION.md). It owns plugin composition, profiles, and shared-asset inventory.',
-    'The following links preserve earlier catalog entry points. They select installation information, not additional task reads.', '');
+    'These links preserve the earlier entry points for installation details.', '');
   for (const [role, heading] of [['default', 'Start here'], ['specialty', 'Specialties'], ['advanced', 'Advanced repository policy']]) {
     lines.push(`## ${heading}`, '', `[Installation choices](INSTALLATION.md#${heading.toLowerCase().replaceAll(' ', '-')}).`, '');
     for (const plugin of report.plugins.filter(p => catalog.plugins.find(source => source.name === p.name).metadata.role === role)) {
