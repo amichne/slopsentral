@@ -227,7 +227,7 @@ function skillTrigger(catalog, ref) {
       value = quoted[1].slice(1, -1).replaceAll("''", "'");
     } else {
       if (/^[>|\[{]/u.test(scalar)) throw new Error(`${source}: ${name} must be a single-line scalar`);
-      value = scalar.replace(/[ \t]+#.*$/u, '').trim();
+      value = scalar.replace(/(?:^|[ \t]+)#.*$/u, '').trim();
     }
     if (typeof value !== 'string' || !value.trim() || /[\r\n]/u.test(value)) {
       throw new Error(`${source}: ${name} must be nonempty single-line text`);

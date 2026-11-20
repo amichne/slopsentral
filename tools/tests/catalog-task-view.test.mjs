@@ -42,6 +42,7 @@ test('task selection follows a changed source trigger without maintaining a seco
 
 test('task selection rejects a missing trigger rather than publishing an empty route', () => {
   assert.throws(() => renderCatalog(fixture('---\nname: example\n---\n\n# Example\n')), /description/);
+  assert.throws(() => renderCatalog(fixture('---\nname: example\ndescription: # pending\n---\n')), /description/);
 });
 
 test('task selection rejects a mismatched skill identity', () => {
