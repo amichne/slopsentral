@@ -27,6 +27,10 @@ where to read next. These maps are routing aids, not source-of-truth docs.
 ## Workflow
 
 1. Choose the local artifact.
+   Locate the existing instruction and navigation owners before choosing a path.
+   When a summary has the generated navigation marker, refresh that owner.
+   When an authored `AGENTS.md` occupies the path, preserve it; do not convert it
+   into generated navigation. Create a new summary only at an unoccupied, requested scope.
    Name the summary file and where it lives. Use
    [summary-contract.md](references/summary-contract.md) for the default
    `AGENTS.md` contract.
@@ -35,16 +39,16 @@ where to read next. These maps are routing aids, not source-of-truth docs.
    Exclude VCS metadata, dependency caches, build outputs, virtual
    environments, generated local summaries, and staleness marker files.
 
-3. Generate a summary.
+3. Generate or refresh the selected summary.
    List the directory, read at most a few representative files, infer purpose,
    record key files and subdirectories, and write a compact map.
 
-4. Detect staleness cheaply.
+4. When deciding whether an existing summary needs a refresh, detect staleness cheaply.
    Use sorted immediate child names and regular-file sizes, excluding mtimes
    and directory sizes. Source-change markers still require review when the hash matches.
    Prefer a stable hash over re-reading every file.
 
-5. Refresh only what changed.
+5. Refresh only what changed or was explicitly requested.
    When a marker such as `OUTDATED.local.md` exists, process each listed path,
    refresh the matching local summaries, and clear the marker only after the
    refresh succeeds. See [staleness-workflow.md](references/staleness-workflow.md).

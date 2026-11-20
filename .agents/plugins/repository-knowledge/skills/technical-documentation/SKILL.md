@@ -5,31 +5,34 @@ description: "Create or revise repository documents, proposals, specifications, 
 
 # Technical Documentation
 
-Write the smallest document that supports one reader action or decision.
-This skill owns document structure, source coverage, and documentation sites.
+Write the smallest document supporting one reader action or decision.
+Own document structure, source coverage, and documentation sites.
 Use controlled-technical-writing for prose assessment and code-knowledge-base for source-backed OKF bundles.
 
 ## Workflow
 
-1. Identify the reader, action or decision, artifact, source material, and destination.
-   Resolve routine choices from repository conventions. Ask only when missing information changes the document's purpose or authority.
+1. Identify the reader, action or decision, artifact, sources, and destination.
+   Resolve routine choices from repository conventions. Ask only when missing information changes purpose or authority.
 2. Inspect code, schemas, commands, configuration, tests, and existing documents before prose.
-   Label each claim as current behavior, an accepted decision, a proposal, or an unresolved gap.
-   For generation or a rewrite, use controlled-technical-writing to reuse the
-   repository glossary or bootstrap a missing one before drafting.
-3. Choose a focused structure with [document-contracts.md](references/document-contracts.md).
+   Reuse existing document, navigation, glossary, and generation owners.
+   Label claims as current behavior, accepted decisions, proposals, or unresolved gaps.
+   Generation and rewrites use controlled-technical-writing to reuse or bootstrap
+   the repository glossary before drafting.
+3. Preserve structure that supports the reader action. For new or restructured documents, use
+   [document-contracts.md](references/document-contracts.md).
    For specifications, state the decision and evidence first.
-   If OpenWiki is the selected backend, use code-knowledge-base's backend handoff
+   For OpenWiki, use code-knowledge-base's backend handoff
    and the external openwiki integration. Its native page queue and Claims
-   validation own OKF publication; do not write a parallel knowledge store.
-4. If the artifact belongs to a site, identify its configuration, navigation owner, dialect, and generated pages.
+   validation own OKF publication; do not create a parallel store.
+4. For a site, identify its configuration, navigation owner, dialect, and generated pages.
    Change pages, navigation, assets, and links as one scoped unit.
    Preserve the current framework unless the user requests a migration.
-5. Generate API and command references from their authoritative registry when one exists.
+5. For API or command references, generate from their authoritative registry when one exists.
    Change the generator for generated pages. Derive diagrams from real components, states, calls, or schemas.
 6. Connect mechanisms to consumers, invariants, source, and executable evidence.
-   For maintained knowledge, use code-knowledge-base's portable adoption procedure.
-   Use existing coverage and freshness gates. Reject incomplete evidence.
+   For maintained knowledge, reuse its backend and coverage/freshness gates.
+   To adopt missing gates within the task's scope, use code-knowledge-base's
+   portable adoption procedure. Reject incomplete evidence.
    Examine commands, examples, links, and claims against source.
    Run the documentation build after site or generated-page changes.
 7. Apply controlled-technical-writing's source and terminology checks.
