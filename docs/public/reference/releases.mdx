@@ -29,6 +29,11 @@ A successful release workflow can report that no new release is needed.
 Ordinary commits cannot republish an existing version.
 A failed main run keeps an unpublished increment pending for repair.
 
+Release Please counts only conventional commits that change files in the root component.
+A squash title such as `Add a skill` is not a conventional commit, so it proposes no version.
+To release those changes, merge a commit that changes a file and has a `Release-As: X.Y.Z` footer.
+An empty commit cannot start a release because path filtering removes it.
+
 Release Please version PRs have a separate admission rule.
 The PR must come from the configured App and advance one patch.
 Its exact head must pass both validation jobs.

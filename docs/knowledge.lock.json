@@ -1086,7 +1086,7 @@
       "docs/pi-install.md": "efc59af44c5744d762530051c70bfef8423dc043e73a87bed64924f4eed99849",
       "docs/pkl-projection.md": "c3352d93d4015d1ef61b53eee24f18e2ea4bd759f0dc09ff0f777021b1127787",
       "docs/profile-lifecycle.md": "a217005c4e2c6c7519f6012be7e8e16a040ec0468490c56174fb6dac194b3975",
-      "docs/releases.md": "0d17c745175d4c07ffba37c8ff0514bb716b55769a91873b6d4dc7e0b65e329a",
+      "docs/releases.md": "68dc6e9e031feff6767e392a89e1e13fe3b157c25a7242f2fd5d9c1ac03de621",
       "docs/session-audit.md": "52948b59eeef877a156d9828d9c93e16d75b1ea62947d25374521fd081c258ec",
       "docs/skill-evals.md": "070c73941f95390c3d4eb7ce62c39eb4dc17bfbf9bff276f9f9fe03115be1fc5",
       "docs/workflow-resources.md": "5e1ce74c42177195a833c1ee115832f4cef88fb89a979a35af7fefdd6a48e1e1",
@@ -1208,7 +1208,7 @@
       "docs/public/reference/installation.mdx": "71eece3c2010694f5a372d02d461ec1c5a52197fb03dc786ec86f1b172d164dc",
       "docs/public/reference/migration.mdx": "0822afefee8759c18f0db1785b5e8cf8ed2e457ed7d6b8ba78240eb360f7b05f",
       "docs/public/reference/profiles.mdx": "557158d706c867a07c91cb546264aad857ff4705bf7a1030fa4423962c7cb19c",
-      "docs/public/reference/releases.mdx": "f8ce662bbf29f3f15a64e4449aa76b027bde2ae0470dc72a32dc4034fcc2360c",
+      "docs/public/reference/releases.mdx": "3cd3eb499af37cf8b8659d3df93673030a194338a6a8d8f058b276f5031768c5",
       "docs/site.json": "ef34bd253d36217403996168387e27ab98a70c7a6947c05bf5a92ad88c3fad54",
       "docs/tooling/package-lock.json": "57fd3008b313d75ed6192f9e452a642d3c857f19a0d1ba407eb22d1ba7d855ad",
       "docs/tooling/package.json": "13b3df6ae418c406f0f2ec247c29f56dbe672d4b76ba5fe9862c7ccd09dbc663",
@@ -1219,7 +1219,7 @@
     "releases": {
       ".github/workflows/release-pi.yml": "deca911a3c63f466b3e8b6bc33b395bd2aa145a1cc5556185012281b50d1b1a4",
       ".github/workflows/release-please.yml": "465646ffd37fdeeee2418b3836dcc030ff2d2c59f423d2538d0dc67973f9351e",
-      "docs/releases.md": "0d17c745175d4c07ffba37c8ff0514bb716b55769a91873b6d4dc7e0b65e329a",
+      "docs/releases.md": "68dc6e9e031feff6767e392a89e1e13fe3b157c25a7242f2fd5d9c1ac03de621",
       "openwiki/operations/releases.md": "5377629dd66e472fe83b896c3b21f38a89ad29c4acc72d9b1f1be049824b9987",
       "release-please-config.json": "da54e32668e3eda206c310777fa7bbd388cd364b8b24ac508cf316c0c746ab80",
       "tools/release_version.py": "73619e0acdaf435d4fc16dda148f77e0901966cfd6e50755fe5be7482aaa7a12"
