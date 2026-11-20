@@ -27,7 +27,7 @@
         "source/agents/",
         "source/schemas/",
         "source/templates/",
-        "source/AGENTS.md",
+        "guidance/source-graph.md",
         "source/ARCHITECTURE.md",
         "source/CATALOG.md",
         "source/INSTALLATION.md",
@@ -124,7 +124,9 @@
         "tools/promptfoo/",
         "bin/slopsentral",
         "tools/session_audit.py",
-        "tools/audit_history.py"
+        "tools/audit_history.py",
+        "tools/routing_bench.py",
+        "tools/routing_bench.py.lock"
       ],
       "pages": [
         "docs/skill-evals.md",

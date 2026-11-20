@@ -1,0 +1,48 @@
+[
+  {
+    "id": "zsh-function",
+    "task": "Add a new autoloaded zsh function that lists git worktrees.",
+    "governing_any": [
+      "\\.dotfiles/repository\\.md",
+      "docs/repository-instructions\\.md"
+    ],
+    "checks_all": [
+      "scripts/check\\.sh"
+    ]
+  },
+  {
+    "id": "installer-plan",
+    "task": "Change scripts/install.py so its plan output includes the source revision.",
+    "governing_any": [
+      "\\.dotfiles/repository\\.md",
+      "docs/repository-instructions\\.md"
+    ],
+    "checks_all": [
+      "scripts/check\\.sh"
+    ]
+  },
+  {
+    "id": "mise-pin",
+    "task": "Pin a newer ripgrep version in the mise tool configuration.",
+    "governing_any": [
+      "\\.dotfiles/repository\\.md",
+      "docs/repository-instructions\\.md",
+      "docs/configuration\\.md"
+    ],
+    "checks_all": [
+      "scripts/check\\.sh"
+    ]
+  },
+  {
+    "id": "writing-prefs",
+    "task": "Revise the personal writing preferences that agents read.",
+    "governing_any": [
+      "\\.dotfiles/repository\\.md",
+      "docs/repository-instructions\\.md",
+      "docs/engineering-baseline\\.md"
+    ],
+    "checks_all": [
+      "scripts/check\\.sh"
+    ]
+  }
+]
