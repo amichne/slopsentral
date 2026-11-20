@@ -13,20 +13,22 @@ for the domain model and API shape.
 
 1. Inspect the module graph, version catalog, libraries, and existing adapter conventions.
    Name the pure contract, pure core, adapter, and integration owners.
+   Reuse a compatible adapter and binding before adding another integration path.
 2. Define the domain capability, constrained inputs, and finite outcomes.
    Keep framework, transport, engine, serializer, and SDK types outside domain APIs.
-3. Compare the standard library, current dependencies, and established libraries.
+3. When the existing adapter cannot meet the requested contract, or the task asks
+   for a dependency choice, compare the standard library, current dependencies, and established libraries.
    Record evidence for the selected maintenance, license, platform, runtime, and native-image constraints.
    Add custom infrastructure only when existing contracts cannot meet the need.
-4. Implement one adapter path through the real public entry point.
+4. For an authorized implementation, extend or introduce one adapter path through the real public entry point.
    Keep wire parsing, serialization, telemetry, and framework construction with that adapter or its integration owner.
    Do not publish framework-typed constructors across domain modules.
-5. Run pure behavior tests, the adapter contract suite, and the architecture gate.
+5. For an adapter change, run pure behavior tests, the adapter contract suite, and the architecture gate.
    If no architecture gate exists, add a focused gate.
    Make sure that the gate rejects implementation dependencies and public implementation types in pure modules.
 6. For replaceable bindings, run the same contract suite against each supported implementation.
    For a native CLI, also run the produced executable.
-7. For telemetry, define operator questions and the minimum useful signals.
+7. When adding or changing telemetry, define operator questions and the minimum useful signals.
    Map every typed outcome through an exhaustive adapter.
    Examine exported telemetry for success, finite failures, retries, and unexpected faults.
 
@@ -73,6 +75,6 @@ for the domain model and API shape.
 Pure modules neither depend on nor expose implementation libraries.
 The architecture gate rejects a deliberate implementation leak.
 Focused tests cover public behavior, finite failures, and supported replacement contracts.
-CLI evidence covers command help and completion. Native claims include a produced-binary smoke test.
+For CLI changes, evidence covers command help and completion. Native claims include a produced-binary smoke test.
 Telemetry claims include exported data with bounded attributes and no sensitive fields.
 Do not claim runtime behavior from compilation alone.

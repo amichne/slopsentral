@@ -12,11 +12,17 @@ A review request authorizes inspection and evidence collection, not implementati
 ## Workflow
 
 1. Find the owning source, callers, existing specification, schemas, generator, and repository policy.
+   Reuse the canonical specification or typed generator for an existing API.
+   Create a new contract owner only when the requested API has none.
 2. Name the OpenAPI version, schema dialect, supported keywords, and acceptance command.
-3. Define domain concepts, finite variants, constraints, legal transitions, and expected failures.
+3. For review, trace domain concepts, finite variants, constraints, legal transitions,
+   and expected failures in the current contract. For authoring, define the changed contract before schema syntax.
 4. Reuse named components for shared identifiers, envelopes, errors, and variant families.
-5. Model each operation's parameters, body, response, headers, status codes, security, and examples.
-6. Choose the strongest supported schema construct for each invariant.
+   Before changing a shared component, inspect its affected operations and generated consumers.
+5. When an operation changes, cover its parameters, body, response, headers,
+   status codes, security, and examples. A component-only change does not require remodeling unrelated operations.
+6. For each changed invariant, choose the strongest supported schema construct.
+   In review, identify any invariant the existing construct admits incorrectly.
 7. Exercise valid examples and the nearest illegal payload with the repository's validator or generated consumer.
 8. For review, report evidence-backed findings before scores or uncertain conclusions.
 9. For authorized edits, change the canonical owner and regenerate its consumers.
@@ -45,7 +51,8 @@ The three bundled YAML fixtures use a non-null contract profile.
 Their helper proves YAML parsing and that fixture policy only.
 It does not prove full OpenAPI acceptance or generated-client behavior.
 
-From this skill's installed directory, run the scripts with uv and their bundled locks:
+When checking or changing these bundled fixtures, run the scripts from this
+skill's installed directory with uv and their bundled locks:
 
 ```sh
 uv run --locked --script scripts/validate-yaml-examples.py
@@ -53,6 +60,8 @@ uv run --locked --script scripts/tests/test_validate_yaml_examples.py -q
 ```
 
 The scripts declare PyYAML and pytest dependencies without a consumer project configuration.
+For a target API, use its owning validator and generated consumers instead of
+treating the bundled fixture checks as acceptance of that API.
 
 ## Completion
 

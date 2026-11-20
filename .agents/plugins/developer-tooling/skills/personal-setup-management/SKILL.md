@@ -1,28 +1,34 @@
 ---
 name: personal-setup-management
-description: "Manage personal shell configuration, dotfiles, command installation, and completion registration. Discover the installed owner first: amichne/dotfiles owns native HOME files; amichne/ayi owns reusable AI commands. Verify launchers, metadata, and installers before changing source or activation."
+description: "Review or change personal shell configuration, dotfiles, command installation, and completion registration. Verify the source for a source-only patch; discover the actual installed owner before changing HOME or activation. Private settings remain outside the public inventory."
 ---
 
 # Personal Setup Management
 
-Use this for explicit personal setup work. Discover ownership from the actual
-installation and current source. Private settings, history, credentials and
+Use this for explicit personal setup work. Establish whether the task concerns
+source, installation, or the running consumer before selecting a workflow.
+Private settings, history, credentials and
 machine overrides belong outside the public inventory.
 
 ## Workflow
 
-1. Establish authority. Resolve the affected command or shell entrypoint and
+1. Establish the requested surface. For source-only design, review, or a patch,
+   verify the source repository or supplied snapshot, revision, public inventory,
+   and scoped changes. Record unavailable installed state without choosing a
+   live destination. A source result can be complete without installation.
+   When the task depends on an installed command or HOME file, resolve the
+   actual command or shell entrypoint and
    inspect its launcher, link target, implementation, repository instructions,
    public inventory and installer. Do not assume a launcher name or source root.
    Verify Git directory, worktree, `core.bare`, origin, revision, branch and scoped
    status with explicit Git arguments. For an archive registry, inspect the
    installer's source marker and local Git identity instead of inventing an
-   origin. Stop dependent writes if identity is ambiguous or conflicts.
+   origin. Stop dependent writes if the required identity is ambiguous or conflicts.
 2. Read [layout and ownership](references/shell-config-layout.md) when locating
    source or changing installation. The recorded layout is a discovery aid;
    confirm it on the current machine. A retained checkout is not evidence of
    the installed source. Inspect only paths needed for the requested change.
-3. Reuse the verified owner. Current `amichne/dotfiles` owns native HOME paths,
+3. Reuse the verified owner for the selected surface. Current `amichne/dotfiles` owns native HOME paths,
    `df`, `.dotfiles.git` and `scripts/install.py`; current `amichne/ayi` owns its
    command registry and installer. A HOME file can be the tracked runtime file,
    while an Ayi command can be a consumer link. Historical `shell-config`,
@@ -50,8 +56,9 @@ machine overrides belong outside the public inventory.
 
 ## Completion
 
-Report the verified source and installed identities, Git directory and worktree,
-changed public paths, focused check and activation state. Separate checkout,
+Report the verified source identity, Git directory and worktree when present,
+changed public paths, and focused check. For installed work, also report the
+verified installed identity and activation state. Separate checkout,
 installed files or links, fresh shell and current session evidence.
 Unavailable or conflicting authority
 is a named gap; it never becomes permission to guess a destination.

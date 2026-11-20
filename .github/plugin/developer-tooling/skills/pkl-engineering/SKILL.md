@@ -31,10 +31,12 @@ Use version-matched references for release-specific behavior.
 
 1. Identify the configuration entry modules, their templates, consumers, and
    external inputs. Do not assume every `.pkl` file is directly evaluable.
-2. Encode required values and legal ranges in typed classes, type aliases, and
+   Reuse an existing template, constraint, or package owner when it already expresses the contract.
+2. When the requested behavior needs a new or changed invariant, encode required
+   values and legal ranges in typed classes, type aliases, and
    constraints. Use `amends` when a consumer must retain a template's module
    type and reject unknown members.
-3. Keep dynamic input at a boundary. Convert `Dynamic` data to typed values
+3. When input is dynamic, keep it at a boundary. Convert `Dynamic` data to typed values
    before downstream use, and allow environment or remote inputs explicitly.
 4. Run the narrowest façade operation that proves the change, then widen to
    formatting, entry-module validation, project tests, and package verification
@@ -104,8 +106,9 @@ Pkl boundaries rather than hidden façade behavior.
 
 ## Setup, source evidence, and patterns
 
-For CLI or editor setup, read [installation and LSP](references/installation-and-lsp.md).
-Run `uv run --locked --script scripts/pkl_tooling --workspace PATH capabilities` from this skill directory.
+For requested CLI or editor setup, read [installation and LSP](references/installation-and-lsp.md),
+then run `uv run --locked --script scripts/pkl_tooling --workspace PATH capabilities` from this skill directory.
+Reuse a compatible existing installation before changing setup.
 For renderers and generators, read [tooling capabilities](references/tooling-capabilities.md).
 For schemas and external inputs, read [specification and resources](references/specification-and-resources.md).
 For source research, read [the official source map](references/official-source-map.md).
