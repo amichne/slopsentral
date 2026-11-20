@@ -8,16 +8,18 @@ sources:
     resource: repo://.github/workflows/validate-source.yml
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
+  - id: openwiki-source-5b532353fce7bdd07bec31d1
+    resource: repo://guidance/verification.md
   - id: openwiki-source-66c6b4ed1002f7045a480f19
     resource: repo://tools/check.py
   - id: openwiki-source-f0a86d14d800938edb2bf80a
     resource: repo://tools/promptfoo/suite.mts
   - id: openwiki-source-6706911967b481bbbe3dfbe8
     resource: repo://tools/setup.py
-generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
+generated: { by: "codex", at: "2026-11-20T16:26:00.832Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-17T04:04:07.116Z
+    at: 2026-11-20T16:26:00.832Z
 ---
 
 # Change source with linked evidence
@@ -72,7 +74,7 @@ The public contract excludes named illegal calls where the language can express 
 
 Run the focused oracle under the same setup as its initial failure or characterization.
 Then run the [required gates](../testing/validation.md) for the edited surface.
-Composition edits need the source graph and fresh Codex, Copilot, and Amp projections.
+Composition edits need the source graph and fresh Codex, Copilot, and Amp projections listed in the [verification guide](../../guidance/verification.md).
 Python changes need Ruff, strict Pyright, and pytest within the declared scope.
 The Python gate stops on the first failed or unavailable stage and keeps a distinct unavailable exit.
 

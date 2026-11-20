@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:abb2a03474c70211540f5ae5a182fa41ed102c42deed6530e078978284c072ce",
+  "pageVersion": "sha256:abdf95e34cb4e5f1754f5f3ffaaf3e360d4b4b5acbba890bb2c68832069053d1",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
       "statement": "The TDD procedure fixes the executable oracle through initial failure and success, rejects zero selected assertions as proof, and widens only for required policy, changed consumers, or a named risk.",
       "evidence": [
         {
-          "resource": "repo://source/skills/tdd/SKILL.md#L13-L64",
-          "version": "repo-lines-v1:sha256:260d4bbbf9f35210ddb54ae8b870277746287e71dc5aa37b28be555697d98917:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmN2Y2Yjk5ODI4ZmFmZGNhMTdlMWM5YjIzYmI3ZmUxYzc1N2YzMDJiNmE4NDBkNDFiOGZhMTY2NzA4OWQzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYmJmYTk5NjFkYTFkMzIyMTVlY2UyOTAzNDU2MGI3NWRmM2I2YzczMjRjZDM4MGQyM2I0MmFkMDY0NjllNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNjk5OTkzOGU4Njc2ZjIzMDc3ZjAyZWJkYTJjMDE4OTc3ZWI4ZmMzYjc1ODM2YzZlOTVhNTA5NGYyMTVkODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkYzdlNTEzMGExMzkxODA3M2IwYzdjYTQyNWE1NmUxZWI1OWY4MGYxZDU3ODE1ZGE4ZTE0MjAwZTc2MTU0YjEifQ"
+          "resource": "repo://source/skills/tdd/SKILL.md#L13-L56",
+          "version": "repo-lines-v1:sha256:660eda5522521572f0a5828195f28b44705c8523c7b73b73362ed0cb8f6cef90:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmN2Y2Yjk5ODI4ZmFmZGNhMTdlMWM5YjIzYmI3ZmUxYzc1N2YzMDJiNmE4NDBkNDFiOGZhMTY2NzA4OWQzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3ZmFjYmM2MDQ3ZmU0NTExMTIyNzk1ODQ3MzgxZTU2ZmYwYzAxYjYwNDAwNmZhN2ZjMTg1YjA1N2U4YTczN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNjk5OTkzOGU4Njc2ZjIzMDc3ZjAyZWJkYTJjMDE4OTc3ZWI4ZmMzYjc1ODM2YzZlOTVhNTA5NGYyMTVkODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2Y2VmYjllNjJhMDY1NWM0ZjE5OGIyYTU3NWIxN2M5ZjExN2NiZGJkNmNmMzMyYTQ4MWJiYmI4ZjU0NGE0ODEifQ"
         }
       ]
     },
@@ -153,6 +153,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-17T03:50:31.285Z"
+    "at": "2026-11-20T16:27:56.887Z"
   }
 }

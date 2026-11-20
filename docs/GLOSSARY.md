@@ -45,7 +45,7 @@ Domain usage:
 Local evidence:
 
 - `source/ARCHITECTURE.md`: Hook responsibilities.
-- `source/hooks/AGENTS.md`: hook source instructions.
+- `guidance/source-graph.md`: Hooks.
 
 Rejected forms:
 
@@ -133,7 +133,7 @@ Domain usage:
 
 Local evidence:
 
-- `source/skills/AGENTS.md`: Source format.
+- `guidance/source-graph.md`: Skills.
 - `source/skills/controlled-technical-writing/SKILL.md`: Skill entry point.
 
 Rejected forms:

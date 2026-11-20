@@ -70,8 +70,8 @@
           "locator": "Hook responsibilities"
         },
         {
-          "path": "source/hooks/AGENTS.md",
-          "locator": "hook source instructions"
+          "path": "guidance/source-graph.md",
+          "locator": "Hooks"
         }
       ],
       "justification": "The cited domain source uses this established name for this concept.",
@@ -192,8 +192,8 @@
       ],
       "localSources": [
         {
-          "path": "source/skills/AGENTS.md",
-          "locator": "Source format"
+          "path": "guidance/source-graph.md",
+          "locator": "Skills"
         },
         {
           "path": "source/skills/controlled-technical-writing/SKILL.md",

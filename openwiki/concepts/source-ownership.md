@@ -4,12 +4,10 @@ title: Source ownership and plugin composition
 description: Canonical primitives compose into plugins and profiles while generated provider packages remain consumers.
 tags: [ownership, composition, marketplace, resources]
 sources:
-  - id: openwiki-source-8037e2358a2c4f9b2c722a11
-    resource: repo://AGENTS.md
   - id: openwiki-source-2bf8a58918c9cbf16d14dae1
     resource: repo://docs/coverage.json
-  - id: openwiki-source-38f77ed28e29446493d61df3
-    resource: repo://source/AGENTS.md
+  - id: openwiki-source-7b9274b65c9eaeeaedaee564
+    resource: repo://guidance/source-graph.md
   - id: openwiki-source-817f5a68830289f58734f532
     resource: repo://source/plugins/repository-knowledge/plugin.json
   - id: openwiki-source-6893059146c9aa6f8d50a7fd
@@ -27,7 +25,7 @@ sources:
 generated: { by: "codex", at: "2026-11-09T13:20:54.909Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-17T03:50:31.285Z
+    at: 2026-11-20T16:26:00.832Z
 ---
 
 # Source ownership and plugin composition

@@ -19,7 +19,7 @@ Model Instruction Design keeps existing authority, distinguishes evidence from h
 Its [provenance](../../source/skills/model-instruction-design/references/provenance.md) records the Amp source and local design choices.
 [Promptfoo Eval Construction](../../source/skills/promptfoo-eval-construction/SKILL.md) turns review examples into scored cases.
 Developer Tooling distributes these three skills.
-The [skill instructions](../../source/skills/AGENTS.md) define local conventions.
+The [source graph guidance](../../guidance/source-graph.md#skills) defines local conventions.
 
 ## Agents
 

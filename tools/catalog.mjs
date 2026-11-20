@@ -250,14 +250,9 @@ export function renderCatalog(catalog) {
     .map(ref => ({ ref, trigger: skillTrigger(catalog, ref) }));
   const lines = ['# Catalog', '',
     'Generated from canonical skill descriptions and identities by `node tools/catalog.mjs --write`.', '',
-    'Read [global instructions](../docs/examples/global/AGENTS.md) first; they take precedence over other development guidance.',
-    'Choose the procedures that govern the actions you intend to take. Read each selected procedure before the decision or operation it governs.',
-    'Apply repository and scoped instructions for the affected owners. A task can need more than one procedure.', '',
-    'Reuse verified reads at the selected revision. Reconsider the selection when the task enters implementation, installation, evaluation, publication, or another kind of work.',
-    'Follow reference links when their stated conditions apply. If a required source is unavailable, name the gap and complete independent authorized work.',
-    'Guidance selection preserves existing authorization. Installed dependencies do not create a requirement to read every packaged resource.', '',
+    'Choose the procedures that govern the actions you intend to take, and read each one before the decision or operation it governs. A task can need more than one.',
+    'Each trigger comes from the owning skill. Follow a procedure\'s references only when their stated conditions apply.', '',
     '## Select by action', '',
-    'Each trigger below comes from the owning skill. Open the linked procedure when its condition applies; its body and bundled references provide the next level of detail.', '',
     '| When the task involves | Read |', '| --- | --- |'];
   for (const { ref, trigger } of routes) {
     lines.push(`| ${tableCell(trigger)} | [\`${ref.name}\`](${ref.path}/SKILL.md) |`);
@@ -278,6 +273,22 @@ export function renderCatalog(catalog) {
     'This view establishes discoverable source descriptions and links. It does not prove that a host loaded a skill or that a model selected or followed it.',
     'See [installation measurements](INSTALLATION.md#evidence) for source counts and [skill evaluations](../docs/skill-evals.md) for the evidence appropriate to the claim.', '');
   return lines.join('\n');
+}
+
+export const GLOBAL_INSTRUCTION_SOURCES = ['source/instructions/agent-execution.md', 'source/instructions/engineering-design.md'];
+const CATALOG_URL = 'https://raw.githubusercontent.com/amichne/slopsentral/refs/heads/main/source/CATALOG.md';
+
+/** The portable global file is a view of the shared session instructions, never a second owner. */
+export function renderGlobalInstructions(sources) {
+  const body = text => text.replace(/^# [^\n]*\n+/, '').trimEnd();
+  const [execution, design] = sources;
+  return ['# Engineering principles', '',
+    'Generated from `source/instructions` by `node tools/catalog.mjs --write`. The Software Engineering plugin delivers the same text as session context; install one of the two.', '',
+    '## Select guidance', '',
+    `Use the [task catalog](${CATALOG_URL}) to select the procedure for the intended action. Installed profiles describe available capabilities; they do not require reading every packaged procedure.`, '',
+    '## Execute the authorized outcome', '',
+    body(execution), '',
+    body(design), ''].join('\n');
 }
 
 export function renderInstallationCatalog(catalog) {
@@ -348,6 +359,7 @@ function main() {
     const outputs = [
       ['source/CATALOG.md', renderCatalog(catalog)],
       ['source/INSTALLATION.md', renderInstallationCatalog(catalog)],
+      ['docs/examples/global/AGENTS.md', renderGlobalInstructions(GLOBAL_INSTRUCTION_SOURCES.map(relative => fs.readFileSync(path.join(root, relative), 'utf8')))],
     ];
     for (const [relative, rendered] of outputs) {
       const output = path.join(root, relative);
@@ -356,7 +368,7 @@ function main() {
         throw new Error(`${relative} is stale; run node tools/catalog.mjs --write`);
       }
     }
-    if (!args.includes('--write')) console.log('OK generated task and installation catalogs');
+    if (!args.includes('--write')) console.log('OK generated task catalog, installation catalog, and global instructions');
   } else if (args.includes('--json') || args.includes('--profile')) console.log(JSON.stringify(catalogReport(catalog, value('--profile')), null, 2));
   else process.stdout.write(renderCatalog(catalog));
 }

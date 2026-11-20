@@ -15,14 +15,17 @@ higher-priority policy. When a skill causes a pause or scope change, identify th
 exact file and rule and distinguish the rule from your interpretation.
 
 Find the owner of the intended action. Read the governing procedure before the
-action. Read references when their conditions apply. Reuse these reads at the
-same revision. Reassess the selection when the action changes.
+action and its references when their conditions apply. Reuse these reads at the
+same revision. Reassess the selection when the action changes. If a required
+source is unavailable, name the gap and complete independent authorized work
+without claiming compliance.
 
 Delegate independent bounded work when available tools make it worthwhile.
 Preserve one owner per edit surface.
 Run required, change-appropriate checks; repeat or broaden them only for changed
-code, a failure, or a specific unresolved concern. Never present fixtures or
-static checks as observed model behavior.
+code, a failure, or a specific unresolved concern. Report each as passed, failed,
+skipped, or not run. Never present fixtures or static checks as observed model
+behavior.
 
 Use the plugins selected by the host. Select individual skills by task.
 A repository marker alone does not call for knowledge generation, review,

@@ -27,9 +27,8 @@ test('task selection exposes the canonical trigger once without loading procedur
   assert.equal(rendered.match(/\]\(skills\/example\/SKILL\.md\)/g)?.length, 1);
   assert.match(rendered, /Use when changing the existing example owner; preserve its boundary\./);
   assert.doesNotMatch(rendered, /Private procedure detail/);
-  assert.match(rendered, /global instructions.*first; they take precedence/);
   assert.match(rendered, /before the decision or operation/);
-  assert.match(rendered, /Reconsider the selection/);
+  assert.doesNotMatch(rendered, /global instructions/);
 });
 
 test('task selection follows a changed source trigger without maintaining a second trigger list', () => {
@@ -97,6 +96,10 @@ function sourceFixture(t) {
   fs.writeFileSync(path.join(directory, 'source/adaptable.marketplace.json'), JSON.stringify(catalog.marketplace));
   fs.writeFileSync(path.join(directory, 'source/plugins/software-engineering/plugin.json'), JSON.stringify(catalog.plugins[0]));
   fs.writeFileSync(path.join(directory, 'source/skills/example/SKILL.md'), catalog.contents.get('SKILL/example'));
+  fs.mkdirSync(path.join(directory, 'source/instructions'), { recursive: true });
+  fs.mkdirSync(path.join(directory, 'docs/examples/global'), { recursive: true });
+  fs.writeFileSync(path.join(directory, 'source/instructions/agent-execution.md'), '# Agent Execution\n\nFinish the authorized outcome.\n');
+  fs.writeFileSync(path.join(directory, 'source/instructions/engineering-design.md'), '# Engineering Baseline\n\n## Select the existing contract\n\nReuse the owner.\n');
   const run = flag => spawnSync(process.execPath, [path.resolve(import.meta.dirname, '../catalog.mjs'), '--repo', directory, flag], { encoding: 'utf8' });
   return { directory, run };
 }
@@ -106,13 +109,17 @@ test('write and check cover both generated views while JSON keeps the installati
   const written = run('--write');
   assert.equal(written.status, 0, written.stderr);
   assert.equal(run('--check').status, 0);
-  for (const name of ['CATALOG.md', 'INSTALLATION.md']) {
-    fs.writeFileSync(path.join(directory, 'source', name), 'stale view\n');
+  for (const relative of ['source/CATALOG.md', 'source/INSTALLATION.md', 'docs/examples/global/AGENTS.md']) {
+    fs.writeFileSync(path.join(directory, relative), 'stale view\n');
     const stale = run('--check');
     assert.equal(stale.status, 1);
-    assert.ok(stale.stderr.includes(`source/${name} is stale`));
+    assert.ok(stale.stderr.includes(`${relative} is stale`));
     assert.equal(run('--write').status, 0);
   }
+  const global = fs.readFileSync(path.join(directory, 'docs/examples/global/AGENTS.md'), 'utf8');
+  assert.match(global, /^# Engineering principles\n/);
+  assert.match(global, /Finish the authorized outcome\.\n\n## Select the existing contract\n\nReuse the owner\.\n$/);
+  assert.doesNotMatch(global, /# Agent Execution|# Engineering Baseline/);
   const report = JSON.parse(run('--json').stdout);
   assert.equal(report.type, 'CATALOG_REPORT');
   assert.equal(report.schemaVersion, 3);

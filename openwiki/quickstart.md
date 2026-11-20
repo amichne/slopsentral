@@ -12,8 +12,8 @@ sources:
     resource: repo://.github/workflows/openwiki-update.yml
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
-  - id: openwiki-source-38f77ed28e29446493d61df3
-    resource: repo://source/AGENTS.md
+  - id: openwiki-source-7b9274b65c9eaeeaedaee564
+    resource: repo://guidance/source-graph.md
   - id: openwiki-source-59e94a76c36256a0ceee4f2d
     resource: repo://source/hooks/pi/adapter.ts
   - id: openwiki-source-1b7d2f4ea3c52b3ee1894e61
@@ -28,8 +28,8 @@ sources:
     resource: repo://tools/setup.py
 generated: { by: "codex", at: "2026-11-05T05:22:10.565Z" }
 verified:
-  - by: openwiki/0.6.1
-    at: 2026-11-09T13:20:54.909Z
+  - by: openwiki/0.9.0
+    at: 2026-11-20T16:26:00.832Z
 ---
 
 # Slopsentral quickstart

@@ -2,17 +2,10 @@
 
 Generated from canonical skill descriptions and identities by `node tools/catalog.mjs --write`.
 
-Read [global instructions](../docs/examples/global/AGENTS.md) first; they take precedence over other development guidance.
-Choose the procedures that govern the actions you intend to take. Read each selected procedure before the decision or operation it governs.
-Apply repository and scoped instructions for the affected owners. A task can need more than one procedure.
-
-Reuse verified reads at the selected revision. Reconsider the selection when the task enters implementation, installation, evaluation, publication, or another kind of work.
-Follow reference links when their stated conditions apply. If a required source is unavailable, name the gap and complete independent authorized work.
-Guidance selection preserves existing authorization. Installed dependencies do not create a requirement to read every packaged resource.
+Choose the procedures that govern the actions you intend to take, and read each one before the decision or operation it governs. A task can need more than one.
+Each trigger comes from the owning skill. Follow a procedure's references only when their stated conditions apply.
 
 ## Select by action
-
-Each trigger below comes from the owning skill. Open the linked procedure when its condition applies; its body and bundled references provide the next level of detail.
 
 | When the task involves | Read |
 | --- | --- |

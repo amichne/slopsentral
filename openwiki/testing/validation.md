@@ -37,7 +37,7 @@ sources:
 generated: { by: "codex", at: "2026-11-09T13:20:54.909Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-17T03:50:31.285Z
+    at: 2026-11-20T16:27:56.887Z
 ---
 
 # Match checks to the engineering claim
