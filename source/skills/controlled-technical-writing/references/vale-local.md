@@ -76,8 +76,9 @@ Markdown, MDX, and text files use the common writing rules.
 Use ordinary contractions and keep modal verbs when they express uncertainty.
 Vale flags stacked contractions such as `wouldn't've`, hedged instructions such as
 `you might want to`, and wordy phrases such as `in order to`.
-It also flags sentences longer than 25 words.
-Flesch-Kincaid grades greater than 8 produce an advisory.
+Vale flags a sentence over 40 words. Above 25 words, it also flags a sentence
+with two or more uses of `if`, `unless`, `when`, `while`, or `until`.
+The assessment reports the Flesch-Kincaid grade as a document metric.
 Numbered and bulleted lists in tutorials and how-to guides also use a 20-word sentence advisory.
 
 Commit messages use Conventional Commits and the upstream Commit view.

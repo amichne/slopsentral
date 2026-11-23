@@ -159,6 +159,8 @@ npm run check:docs
 
 The prose command uses the pinned Vale 3.24.0 procedure and repository glossary.
 Keep its JSON report and review findings at their reported locations.
+GitHub annotates new warnings and all blocking findings. Repeated spelling
+warnings share one annotation per word in each file. The report lists every location.
 `ASSESSED` describes a completed assessment, without a promise of clean prose.
 A readability score cannot establish comprehension.
 

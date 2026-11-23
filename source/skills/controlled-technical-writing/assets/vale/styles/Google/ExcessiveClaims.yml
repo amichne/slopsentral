@@ -1,5 +1,5 @@
 extends: existence
-message: "Avoid the unverifiable claim '%s'."
+message: "Name the comparison or the exact promise behind '%s'."
 link: https://developers.google.com/style/excessive-claims
 level: suggestion
 ignorecase: true
@@ -8,7 +8,6 @@ ignorecase: true
 # product claims: they accounted for 125 of 142 hits on a 950-file corpus.
 # 'best practices' is a fixed term, not a superlative.
 tokens:
-  - 'best(?! practices?\b|[- ]effort\b)'
-  - simplest
-  - fastest
-  - "(?<!(?:cannot|not|n['’]t) (?:currently )?)(?<!no )guarantees?"
+  - 'the (?:best(?![- ]effort\b| practices?\b)|simplest|fastest)'
+  - 'best[- ]in[- ]class'
+  - 'we guarantee|(?:it|this) guarantees'

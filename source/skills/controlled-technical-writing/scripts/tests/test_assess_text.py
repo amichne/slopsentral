@@ -88,12 +88,23 @@ class AssessTextTest(unittest.TestCase):
         code, result, _ = self.run_assessment("Send the job.v2.\n")
         self.assertEqual(code, 1, result)
 
-    def test_shared_advisories_fire_without_switching_policy(self):
-        sentence = "The cat " + "sat on the mat and " * 6 + "slept.\n"
-        code, result, _ = self.run_assessment(sentence)
-        self.assertEqual(code, 1, result)
-        rules = {f["rule"] for f in result["documents"][0]["findings"]}
-        self.assertEqual(rules, {"Slopsentral.LongSentence", "Slopsentral.Grade"})
+    def test_complexity_feedback_points_to_a_sentence(self):
+        # Use countable single-syllable tokens to isolate each threshold.
+        for count, markers, expected in (
+            (25, "if when", False), (26, "if when", True), (26, "if", False),
+            (40, "", False), (41, "", True),
+        ):
+            with self.subTest(count=count, markers=markers):
+                words = markers.split() + (["the", "cat", "sat"] * 14)
+                _, result, _ = self.run_assessment("Start here.\n\n" + " ".join(words[:count]) + ".\n")
+                findings = result["documents"][0]["findings"]
+                self.assertEqual([f["line"] for f in findings if f["rule"] == "Slopsentral.LongSentence"],
+                                 [3] if expected else [])
+        code, result, _ = self.run_assessment("Authentication uses encryption.\n")
+        self.assertGreater(result["documents"][0]["metrics"]["fleschKincaidGrade"], 8)
+        self.assertEqual(code, 0, result)
+
+    def test_unqualified_claim_is_flagged(self):
         code, result, _ = self.run_assessment("This is the best tool.\n")
         self.assertIn("Slopsentral.Claims", {f["rule"] for f in result["documents"][0]["findings"]})
 
@@ -161,6 +172,9 @@ class AssessTextTest(unittest.TestCase):
             ("It isn't ready.", "It ain't ready.", "Slopsentral.Contractions"),
             ("We can't guarantee a match.", "We guarantee a match.", "Slopsentral.Claims"),
             ("It makes a best-effort guess.", "It makes the best guess.", "Slopsentral.Claims"),
+            ("It runs best with one worker.", "This is the fastest tool.", "Slopsentral.Claims"),
+            ("Terminate the process.", "Utilize the process.", "Slopsentral.Diction"),
+            ("Approval is mandatory.", "It guarantees success.", "Slopsentral.Claims"),
             ("The viewport has two renderers.", "The vieewport has two renderers.", "Vale.Spelling"),
         )
         for accepted, flagged, rule in pairs:
