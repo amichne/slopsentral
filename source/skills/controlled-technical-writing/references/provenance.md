@@ -76,7 +76,7 @@ The package does not claim affiliation with that framework.
 
 Slopsentral owns the installer, configuration, vocabulary, and rules under `styles/Slopsentral/`.
 We calibrated word choice against [Pierre’s Diffs documentation](https://diffs.com/docs).
-The edit-state guide uses “retain” for data kept in memory. The beta notice uses “may” for a possible change.
+The edit-state guide uses `retain` for data kept in memory. The beta notice uses `may` for a possible change.
 The local rules accept both uses. Paired assessment tests cover wordy substitutes, hedged commands, and unsupported claims.
 The shared sentence-length and grade adapters also exist in Slopsentral's assessment source at `bb930bd`.
 This setup reuses the existing local assessment engine and does not import a hosted service.
