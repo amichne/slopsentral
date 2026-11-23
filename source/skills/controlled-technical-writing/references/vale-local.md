@@ -73,7 +73,10 @@ Examine warnings and suggestions even when the command returns zero.
 ## Defaults
 
 Markdown, MDX, and text files use the common writing rules.
-The rules advise plain diction, uncontracted forms, direct modal verbs, and sentences with at most 25 words.
+Use ordinary contractions and keep modal verbs when they express uncertainty.
+Vale flags stacked contractions such as `wouldn't've`, hedged instructions such as
+`you might want to`, and wordy phrases such as `in order to`.
+It also flags sentences longer than 25 words.
 Flesch-Kincaid grades greater than 8 produce an advisory.
 Numbered and bulleted lists in tutorials and how-to guides also use a 20-word sentence advisory.
 

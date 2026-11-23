@@ -31,7 +31,7 @@
     "styles/Explanation/Instruction.yml": "2057598df4d55e20fbbeafb20bb4ce8866bc25873d0120b9a0b7a6485896daea",
     "styles/Explanation/Reference.yml": "956b630f17ad9f62c83a59cc62161d36faa8c695ef9748ccfcce08f1cd387699",
     "styles/Explanation/Why.yml": "9fb1b62c390bccf48fc39c0dfe7ef090f020f4403bb89b8686b2d11982b450fc",
-    "styles/Google/ExcessiveClaims.yml": "9587449c33f9f00f1508e935094c4c817050e886ff18b70422db42278c3f7388",
+    "styles/Google/ExcessiveClaims.yml": "2624fa77e518e8e37aad431ffb26a56e0843c888a79c7229cf22b6ae8752c9bf",
     "styles/HowTo/Explanation.yml": "774588d4ebcadd27c96f724555abcb68baadd2ad8a5ea129b32e3d7f356bb713",
     "styles/HowTo/Imperative.yml": "da511be38866e8ea3b264864c7e3246e2a72cec7dcca38063b22020db46b4216",
     "styles/HowTo/Opening.yml": "b05f7476b31add82ce4a4bd70a83249ea4f1715f2b792271129b5f0b0467ec8e",
@@ -48,12 +48,12 @@
     "styles/Slopsentral/CommitLength.yml": "9cd6e09003847c7b1726caaa20a85a3f9b63fec1b0742eea562adbd46c79ebbf",
     "styles/Slopsentral/CommitPeriod.yml": "6a0aad808eee05753171cafb37870afc44255d41b2ffc473b575347b2efe61e3",
     "styles/Slopsentral/CommitWrap.yml": "e193e8c8a32f24fd1a7afb0bb49e26bafe7dd8053c06fb2b2584e9a3259f0241",
-    "styles/Slopsentral/Contractions.yml": "b85e04d8607eacc001639fbdf7dfa74e2518ac28de8a646415f9a4339cb14a76",
-    "styles/Slopsentral/Diction.yml": "4510a075da23a9dabe61d37aa4b4c0ece5fccc6214937e994330f66ed42a6035",
+    "styles/Slopsentral/Contractions.yml": "fc1f05b1348a51730ea55d1670043df677ba3f6250cd30b4ba229eb18984d6d7",
+    "styles/Slopsentral/Diction.yml": "1a16a7295f28601f140dc56a6cec016d5abf152959ae09a3b5a10ecd006d9f07",
     "styles/Slopsentral/GlossaryMarker.yml": "a39a2e950a628dade7e1f340ed0d630c1d1386fe75f26a91a92c8ea2c8f4e3eb",
     "styles/Slopsentral/Grade.yml": "2c050700d919486ed3ad515c775864b30f6634a451d644f3ec4814be702d5a81",
     "styles/Slopsentral/LongSentence.yml": "9e6bfd8a005699310ae559d8b3068239ddf05bf792f2c295c719b7a7e6c4c1ec",
-    "styles/Slopsentral/Modals.yml": "efdaa0a56fcfa30755dbe06575900328cd783c30fc293bd8cc2382e0726de827",
+    "styles/Slopsentral/Modals.yml": "08229e1f1811ef77fd5f0f43828b424b4d6697e80956e0fea01cb2963650bcc6",
     "styles/Slopsentral/ProcedureLength.yml": "55e4cc3bc25d5447bb0b9f9ff3b502ad7b9a4775821ef4655c7ad27b5fb3edaa",
     "styles/Std/Readability/SentenceLength.yml": "1b8073531ff09bd4bf26c8844d71e0e6aef467d3803738d3533b478ace40f9fb",
     "styles/Tutorial/Expectations.yml": "19b64e4b3c02aa8c5ad268f0dc671a863ab95a2e984b00870831a8fe961a36ee",
@@ -63,7 +63,7 @@
     "styles/Tutorial/Steps.yml": "0b736034b1af362ae623970e84310ac412a679027a24dc0120cd5fe1fd79932c",
     "styles/Tutorial/We.yml": "03a9131aceb60e8a090e58a7e89dd173f327d40773ba3fd40952c0f3e2725f17",
     "styles/config/views/Commit.yml": "a9e58f2ba8f8979487233727cd5c496ace9977adbc78bfebcd880896f0989e52",
-    "styles/config/vocabularies/Slopsentral/accept.txt": "9192f15830b8bc541e91eebe721724daadf408a31ddecb1a01619a8603a894ef"
+    "styles/config/vocabularies/Slopsentral/accept.txt": "c450ae8995a4ae6eeb9294438fdd1556a957000c015566459d2d778d41d9e2dd"
   },
   "upstream": [
     {

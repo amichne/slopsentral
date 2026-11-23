@@ -8,7 +8,7 @@ ignorecase: true
 # product claims: they accounted for 125 of 142 hits on a 950-file corpus.
 # 'best practices' is a fixed term, not a superlative.
 tokens:
-  - 'best(?! practices?)'
+  - 'best(?! practices?\b|[- ]effort\b)'
   - simplest
   - fastest
-  - guarantees?
+  - "(?<!(?:cannot|not|n['’]t) (?:currently )?)(?<!no )guarantees?"

@@ -19,3 +19,10 @@ Kast
 [Ww]orktrees?
 [Ss]tdout
 [Ss]tderr
+APIs
+npm
+[Bb]undlers?
+[Rr]enderers?
+[Tt]okenizers?
+[Tt]okenization
+[Vv]iewports?

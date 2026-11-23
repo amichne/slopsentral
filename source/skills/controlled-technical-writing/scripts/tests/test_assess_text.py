@@ -130,13 +130,47 @@ class AssessTextTest(unittest.TestCase):
     def test_editor_rules_reach_the_assessment(self):
         (self.root / "docs/how-to").mkdir(parents=True)
         code, result, _ = self.run_assessment(
-            "# Save the file\n\nYou should save it. You can't read the file.\n",
+            "# Save the file\n\nYou should save it. You wouldn't've seen it.\n",
             "docs/how-to/save.md")
         self.assertEqual(code, 1, result)
         rules = {f["rule"] for f in result["documents"][0]["findings"]}
         self.assertTrue({"Slopsentral.Modals", "Slopsentral.Contractions", "HowTo.Steps"} <= rules, rules)
         _, control, _ = self.run_assessment("The tool's file contains `should`.\n")
         self.assertEqual(control["documents"][0]["findings"], [])
+
+    def test_diffs_documentation_passages(self):
+        # Verbatim excerpts from https://diffs.com/llms-full.txt (2026-11-23).
+        for text in (
+            "Retain edit state in memory",
+            "Highlights is in beta, and its API may still change.",
+            "Don't forget to disable it in production.",
+        ):
+            with self.subTest(text=text):
+                code, report, _ = self.run_assessment(text)
+                self.assertEqual(code, 0, report)
+                self.assertEqual(report["documents"][0]["findings"], [])
+
+    def test_word_choice_distinguishes_near_matches(self):
+        pairs = (
+            ("Retain the keys.", "Retain possession of the keys.", "Slopsentral.Diction"),
+            ("Add an additional key.", "Add a key at this point in time.", "Slopsentral.Diction"),
+            ("The file might change.", "The file might possibly change.", "Slopsentral.Modals"),
+            ("You might lose edits.", "You might want to save edits.", "Slopsentral.Modals"),
+            ("We’d ship it.", "We’d’ve shipped it.", "Slopsentral.Contractions"),
+            ("They'll finish it.", "They'll've finished it.", "Slopsentral.Contractions"),
+            ("It isn't ready.", "It ain't ready.", "Slopsentral.Contractions"),
+            ("We can't guarantee a match.", "We guarantee a match.", "Slopsentral.Claims"),
+            ("It makes a best-effort guess.", "It makes the best guess.", "Slopsentral.Claims"),
+            ("The viewport has two renderers.", "The vieewport has two renderers.", "Vale.Spelling"),
+        )
+        for accepted, flagged, rule in pairs:
+            with self.subTest(rule=rule, text=accepted):
+                code, report, _ = self.run_assessment(accepted)
+                self.assertEqual(code, 0, report)
+                self.assertEqual(report["documents"][0]["findings"], [])
+                code, report, _ = self.run_assessment(flagged)
+                self.assertEqual(code, 1, report)
+                self.assertIn(rule, {f["rule"] for f in report["documents"][0]["findings"]})
 
     def test_external_absolute_path_and_uppercase_suffix_keep_profile(self):
         (self.root / "docs/how-to").mkdir(parents=True)
