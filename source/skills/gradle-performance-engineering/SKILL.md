@@ -32,7 +32,6 @@ builds; discover the actual targets instead of assuming
 
 When unchanged work repeats, compare the producer and consumer keys before changing cache policy or splitting jobs.
 For unstable keys, repeated transforms, or suspected false hits, use the [cache diagnosis and controls](references/cacheability.md).
-Before normalizing an input, compare what Gradle fingerprints with what the task actually reads.
 
 ## Workflow
 
