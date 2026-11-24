@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.20](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.19...slopsentral-v4.0.20) (2026-11-24)
+
+
+### Bug Fixes
+
+* trace Gradle cache misses across builds and CI ([#163](https://github.com/amichne/slopsentral/issues/163)) ([d29a451](https://github.com/amichne/slopsentral/commit/d29a451ece4fcc2b68928ba4bce7f1641e57dc0c))
+
 ## [4.0.19](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.18...slopsentral-v4.0.19) (2026-11-24)
 
 
