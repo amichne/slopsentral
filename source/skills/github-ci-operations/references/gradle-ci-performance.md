@@ -31,6 +31,11 @@ reduction predicts an improvement; matched observed runs must confirm it.
   Gradle task-output hit. Job filesystems are independent unless state is
   explicitly transferred; a setup job does not populate downstream workspaces.
 - Verify the pinned action's documented defaults and read/write restrictions.
+  Inventory cache bytes by ref and compare them with the repository quota.
+  If PR-local writes evict shared entries, test a default-branch writer with read-only PR consumers.
+  Match the seed's runner, job cache identity, paths, and workload to the reader.
+  Check the seed save, the fresh PR restore, and Gradle's outcome for the expensive task.
+  Account for repeated work on later pushes to the same PR. [GitHub cache scope and eviction](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching)
   Permit cache writes only from trusted producers. `CI=true` is not a trust
   boundary. Fork PRs and arbitrary branch builds must not gain privileged remote
   cache writes or Develocity credentials merely to improve measurements.
@@ -64,6 +69,12 @@ jobs only when saved critical-path time outweighs repeated setup, compilation,
 cache transfers, and artifacts. Choose test sharding using measured durations
 while preserving test inventory. Use bounded timeouts and cancel superseded
 validation intentionally; deployment cancellation needs its own recovery policy.
+
+If product checks move to a merge queue, measure PR feedback and time to qualified merge separately.
+Require the landing check on the exact candidate for merge. Give review-only checks a distinct identity.
+When jobs split acceptance cases, compare their union and state transitions with the original suite.
+Join complete case evidence for the same artifact and baseline across producing attempts.
+Reject missing, duplicate, or mismatched parts. Include runner queues and repeated setup in the comparison.
 
 ## CI/CD Beyond the Build
 
