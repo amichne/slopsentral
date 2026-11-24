@@ -30,7 +30,8 @@ builds; discover the actual targets instead of assuming
 - Leave bounded stage/outcome instrumentation at a diagnosed opaque boundary;
   exclude credentials, source contents, and arbitrary environment dumps.
 
-For a cacheable task or a suspected false hit, use the [cacheability experiment](references/cacheability.md).
+When unchanged work repeats, compare the producer and consumer keys before changing cache policy or splitting jobs.
+For unstable keys, repeated transforms, or suspected false hits, use the [cache diagnosis and controls](references/cacheability.md).
 
 ## Workflow
 
@@ -62,7 +63,8 @@ For a cacheable task or a suspected false hit, use the [cacheability experiment]
    When the task includes an optimization experiment, read
    [optimization-playbook.md](references/optimization-playbook.md) before changing
    the owning boundary. Write the predicted metric change and
-   disconfirming signal. For Actions setup, topology, cache transport, or CI/CD,
+   disconfirming signal. If keys match, trace the entry from a successful writer to a fresh reader.
+   For Actions setup, topology, cache transport, or CI/CD,
    use `github-ci-operations` from `software-engineering`; its Gradle reference
    defines the CI handoff. Read `kotlin-gradle-validation` only after explicit user selection.
    Use necessary focused Gradle commands directly otherwise. If companions are unavailable, state that limit
