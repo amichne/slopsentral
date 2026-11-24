@@ -11,7 +11,7 @@ Preserve the project's language and existing command contracts.
 ## Implementation Baseline
 
 Use Kotlin and the existing toolchain for Kotlin applications.
-For Python automation, use `python-tooling`, pin uv with mise, and use strict
+For Python automation, use `python-tooling` and use strict
 Pyright, Ruff, and pytest. Use PEP 723 headers and adjacent locks for portable
 scripts. Commit dependency locks and set `tool.uv.no-build = true`.
 Parse external inputs once into constrained values.

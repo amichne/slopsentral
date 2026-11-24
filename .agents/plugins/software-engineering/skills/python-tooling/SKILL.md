@@ -6,9 +6,9 @@ description: "Create, change, or verify Python automation, portable uv scripts, 
 # Python Tooling
 
 Write automation in Python. Prefer the standard library for small commands.
-Pin uv exactly with `required-version = "==VERSION"` in the project's `uv.toml`;
-uv then refuses to run under any other version. Install that version with uv's
-official installer or the repository's existing toolchain owner.
+For distributed tools, keep dependency locks and use the available uv. Declare
+`required-version = ">=VERSION"` only when a required feature establishes a minimum.
+Keep exact development or CI pins in maintainer tooling.
 Give public commands executable names without file extensions. Put them on `PATH`.
 Keep the `.py` suffix for Python modules.
 Commit each portable uv script with its adjacent lockfile.
