@@ -1,8 +1,7 @@
 extends: existence
-message: "Write '%s' without a contraction."
+message: "Spell out '%s' so the reader can identify the verb."
 level: warning
 ignorecase: true
 tokens:
-  - "[A-Za-z]+n['’]t"
-  - "(?:I|you|we|they|he|she|it|that|there|what|who)['’](?:m|re|ve|ll|d|s)"
-  - "let['’]s"
+  - "[a-z]+(?:n['’]t|['’](?:d|ll))['’]ve"
+  - "ain['’]t"
