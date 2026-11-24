@@ -1,0 +1,100 @@
+// Copy to build.gradle in disposable seed and reader projects with the same settings.gradle.
+// Each row has its own cache key. Only the reader project receives -Pedited.
+import java.security.MessageDigest
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
+@CacheableTask
+abstract class Probe extends DefaultTask {
+    @Internal abstract ConfigurableFileCollection getArchives()
+    @Input abstract Property<String> getReader()
+    @OutputFile abstract RegularFileProperty getResult()
+
+    @TaskAction void readArchive() {
+        File first = archives.iterator().next()
+        byte[] resultBytes = new ZipFile(first).withCloseable { zip ->
+            switch (reader.get()) {
+                case 'archive': return MessageDigest.getInstance('SHA-256').digest(first.bytes)
+                case 'manifest': return zip.getInputStream(zip.getEntry('META-INF/MANIFEST.MF')).bytes
+                case 'raw': return zip.getInputStream(zip.getEntry('app.properties')).bytes
+                case 'origin': return first.name.bytes
+                case 'service': return zip.getInputStream(zip.getEntry('service.txt')).bytes
+                case 'protocol':
+                    def props = new Properties()
+                    props.load(zip.getInputStream(zip.getEntry('app.properties')))
+                    return props.getProperty('protocol').bytes
+                default: throw new GradleException("Unknown reader: " + reader.get())
+            }
+        }
+        result.get().asFile.bytes = resultBytes
+    }
+}
+
+def rows = [
+    digest:   ['archive',  ClasspathNormalizer,        ['time', 'service', 'entries', 'propsOrder', 'rename']],
+    manifest: ['manifest', ClasspathNormalizer,        ['attrValue', 'attrCase', 'service', 'attrOrder', 'rename']],
+    raw:      ['raw',      ClasspathNormalizer,        ['comment', 'protocol', 'propsOrder', 'entries', 'service']],
+    protocol: ['protocol', ClasspathNormalizer,        ['time', 'service', 'otherProp', 'comment', 'protocol']],
+    origin:   ['origin',   ClasspathNormalizer,        ['move', 'rename', 'otherProp', 'swap', 'entries']],
+    files:    ['service',  PathSensitivity.RELATIVE,  ['entries', 'swap', 'service', 'rename', 'move']],
+    abi:      ['service',  CompileClasspathNormalizer, ['comment', 'service', 'swap', 'attrValue', 'move']],
+    stamp:    ['archive',  PathSensitivity.NAME_ONLY, ['move', 'time', 'rename', 'entries', 'swap']],
+]
+
+def edited = providers.gradleProperty('edited').isPresent()
+def allProbes = tasks.register('probes')
+rows.each { label, row ->
+    row[2].eachWithIndex { variant, index ->
+        def id = label + ('A'..'E')[index]
+        def edit = edited ? variant : 'base'
+        def dir = layout.buildDirectory.dir("inputs/" + id).get().asFile
+        def first = new File(dir, edit == 'move' ? 'moved/one.jar' : edit == 'rename' ? 'new.jar' : 'one.jar')
+        def second = new File(dir, 'two.jar')
+        def prepare = tasks.register('prepare' + id) {
+            doLast {
+                [first, second].eachWithIndex { file, position ->
+                    file.parentFile.mkdirs()
+                    def change = position == 0 ? edit : 'base'
+                    def properties = change == 'propsOrder' ? 'x=1\nprotocol=3\n' : 'protocol=3\nx=1\n'
+                    if (change == 'otherProp') properties = properties.replace('x=1', 'x=2')
+                    if (change == 'protocol') properties = properties.replace('protocol=3', 'protocol=4')
+                    if (change == 'comment') properties = '# header\n' + properties
+                    def attributes = ['Build-Owner: team', 'Build-Region: east']
+                    if (change == 'attrCase') attributes[0] = 'build-owner: team'
+                    if (change == 'attrValue') attributes[0] = 'Build-Owner: other'
+                    if (change == 'attrOrder') attributes = attributes.reverse()
+                    def entries = [
+                        'META-INF/MANIFEST.MF': 'Manifest-Version: 1.0\r\n' + attributes.join('\r\n') + '\r\n\r\n',
+                        'app.properties': properties,
+                        'service.txt': (position == 1 ? 'second' : change == 'service' ? 'changed' : 'first')
+                    ]
+                    file.withOutputStream { stream ->
+                        new ZipOutputStream(stream).withCloseable { zip ->
+                            def names = entries.keySet().toList()
+                            if (change == 'entries') names = names.reverse()
+                            names.each { name ->
+                                def entry = new ZipEntry(name)
+                                entry.time = change == 'time' ? 1620000000000L : 1600000000000L
+                                zip.putNextEntry(entry)
+                                zip.write(entries[name].getBytes('UTF-8'))
+                                zip.closeEntry()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        def probe = tasks.register(id, Probe) {
+            dependsOn prepare
+            reader.set(row[0])
+            inputs.property('row', id)
+            archives.from(edit == 'swap' ? [second, first] : [first, second])
+            def property = inputs.files(archives).withPropertyName('artifacts')
+            if (row[1] instanceof PathSensitivity) property.withPathSensitivity(row[1])
+            else property.withNormalizer(row[1])
+            result.set(layout.buildDirectory.file("results/" + id))
+        }
+        allProbes.configure { dependsOn probe }
+    }
+}

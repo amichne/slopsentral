@@ -29,6 +29,28 @@ Include its entire output inventory, file modes where meaningful, and a real dow
 For a host-dependent task, record the JDK, target, linker, native flags, and metadata that affect its output.
 A local relocation result covers only the hosts in the experiment.
 
+## Choose a fingerprint for the consumer
+
+For one edit at a time, answer two questions independently. Does Gradle change the key?
+Does the task change its output in a fresh execution? A stable key with changed output permits a stale restore.
+A changed key with identical output identifies work the declaration could avoid.
+
+| Input declaration | What Gradle compares |
+| --- | --- |
+| Ordinary input files with path sensitivity | File contents, including raw archive bytes, plus the selected path information. Collection order does not enter the fingerprint. For individually supplied files, `RELATIVE` keeps the basename, as does `NAME_ONLY`. For a directory tree, `RELATIVE` keeps paths within that tree. |
+| Runtime classpath | Ordered root fingerprints. Root names and locations, archive timestamps, and archive entry order do not contribute. Resource paths and contents generally do. Gradle compares parseable properties by key and value and manifest attributes without regard to name case or order. |
+| Compile classpath | The Java compile ABI. Resource edits can leave the key unchanged. Exchanging roots with identical ABI fingerprints can also leave it unchanged. |
+
+Inspect the task action as well as its annotation. A checksum, signature, or raw resource copier can observe bytes the runtime classpath discards.
+A reader that selects the first matching resource observes order. An ordinary file collection can hide that dependency.
+Moving an archive and renaming it are separate experiments when the output contains its basename.
+
+Choose the narrowest declaration that preserves the consumer's result.
+For an order-sensitive reader of raw files, declare the raw content and an ordered identity that binds each position to its content.
+For a reader of one parsed value, consider declaring that value through a tracked provider.
+Keep producer dependencies and exercise changes to consumed and ignored data in separate workspaces.
+Check these rules against the [wrapper's input normalization semantics](https://docs.gradle.org/current/userguide/incremental_build.html).
+
 ## Diagnose cache health
 
 Record dependency transport, configuration-cache reuse, task-output reuse, and artifact downloads separately.
