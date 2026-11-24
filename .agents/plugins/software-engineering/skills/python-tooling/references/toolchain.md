@@ -1,9 +1,11 @@
 # Python toolchain
 
-Pin uv exactly with `required-version = "==VERSION"` in `uv.toml`. uv refuses to run
-under any other version, so a mismatch fails with a named error instead of a
-behavior difference. Install that version with uv's official installer or the
-repository's existing toolchain owner.
+Run the distributed command with the user's available uv and its committed dependency locks.
+Omit `required-version` unless a feature needs a minimum uv version. When it does,
+name the feature, exercise it at the minimum, and declare `required-version = ">=VERSION"`
+where the command reads its configuration. For example, check that a locked script
+rejects a missing lock before it starts. An exact tool version for reproducible
+CI belongs in the maintainer's toolchain configuration.
 Declare Python in `.python-version` and `requires-python`.
 Put shared uv settings in `uv.toml`. Set `no-build = true` to forbid source builds of dependencies.
 Declare package indexes explicitly. Use `first-index` resolution.
