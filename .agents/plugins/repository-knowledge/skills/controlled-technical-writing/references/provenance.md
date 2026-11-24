@@ -12,18 +12,18 @@ the user's voice and terminology rather than the upstream author's style profile
 ## Vale Text Assessment
 
 Reviewed 2026-10-08. The engine is
-[vale-cli/vale v3.24.0](https://github.com/vale-cli/vale/releases/tag/v3.24.0).
+[Vale 3.24.0](https://github.com/vale-cli/vale/releases/tag/v3.24.0).
 The bundled files keep upstream copyright, MIT licenses, and Std's NOTICE:
 
-- [vale-cli/readability, 20b367bc5febf7ec9b83e176b8e611d230855838](https://github.com/vale-cli/readability/tree/20b367bc5febf7ec9b83e176b8e611d230855838):
+- [`vale-cli/readability`, 20b367bc5febf7ec9b83e176b8e611d230855838](https://github.com/vale-cli/readability/tree/20b367bc5febf7ec9b83e176b8e611d230855838):
   `Readability/FleschKincaid.yml`; license in `assets/vale/licenses/readability/`.
-- [vale-cli/Std, 5ce764fb447663c3eca000978c4fbab2aeb2b41c](https://github.com/vale-cli/Std/tree/5ce764fb447663c3eca000978c4fbab2aeb2b41c):
+- [`vale-cli/Std`, 5ce764fb447663c3eca000978c4fbab2aeb2b41c](https://github.com/vale-cli/Std/tree/5ce764fb447663c3eca000978c4fbab2aeb2b41c):
   `Std/Readability/SentenceLength.yml`; license and NOTICE in `assets/vale/licenses/Std/`.
-- [vale-cli/Google, 9e2483e2f09e7f623bacbbc154adb9627bed563b](https://github.com/vale-cli/Google/tree/9e2483e2f09e7f623bacbbc154adb9627bed563b):
+- [`vale-cli/Google`, 9e2483e2f09e7f623bacbbc154adb9627bed563b](https://github.com/vale-cli/Google/tree/9e2483e2f09e7f623bacbbc154adb9627bed563b):
   `Google/ExcessiveClaims.yml`; license in `assets/vale/licenses/Google/`.
 
-Local Slopsentral rules inherit those three rules, normalize their severity to
-warning, and clarify the grade estimate's message. The diction substitutions
+The procedure-length rule inherits the Std word counter. The assessment reports
+the Flesch-Kincaid estimate with the other document metrics. The diction substitutions
 and glossary-marker rule are locally authored. Only selected Google guidance
 is imported: its full word list includes domain/product substitutions that
 could change meaning. Glossary-specific literal rules are generated per run
@@ -32,9 +32,9 @@ from the existing registration checker, not fetched from another style package.
 
 The workflow uses the official [CLI](https://docs.vale.sh/topics/cli),
 [metric](https://docs.vale.sh/checks/metric), and
-[scope](https://docs.vale.sh/topics/scopes) contracts. It does not import or
-rebrand upstream agent skills. The shared thresholds keep the upstream
-advisory defaults; they are not a new empirical calibration.
+[scope](https://docs.vale.sh/topics/scopes) contracts.
+The local sentence rule uses length and repeated
+condition words to locate passages for review.
 
 ## Complexity Research Boundary
 
@@ -75,8 +75,9 @@ Diataxis names Daniele Procida's framework and its CC BY-SA 4.0 provenance in it
 The package does not claim affiliation with that framework.
 
 Slopsentral owns the installer, configuration, vocabulary, and rules under `styles/Slopsentral/`.
-The local rules use the supplied writing guidance for diction, modal verbs, contractions, sentence limits, and commit limits.
-The shared sentence-length and grade adapters also exist in Slopsentral's assessment source at `bb930bd`.
+We calibrated word choice against [Pierre’s Diffs documentation](https://diffs.com/docs).
+The edit-state guide uses `retain` for data kept in memory. The beta notice uses `may` for a possible change.
+The local rules accept both uses. Paired assessment tests cover wordy substitutes, hedged commands, and unsupported claims.
 This setup reuses the existing local assessment engine and does not import a hosted service.
 
 ## Glossary protocol
