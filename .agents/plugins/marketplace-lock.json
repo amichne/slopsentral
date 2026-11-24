@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T03:24:17Z",
+  "generatedAt": "2026-11-24T12:43:39-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -48,7 +48,7 @@
         },
         {
           "name": "github-ci-operations",
-          "sha256": "sha256:d12551cb557ede6487d7fbe2e6f150ff3eb082055b1c4b873009a7396f318be1",
+          "sha256": "sha256:81263543ef644030af7380e95aa3f35cb0662cb92bf6363e09d070ea335449e6",
           "sourcePath": "source/skills/github-ci-operations",
           "targetPath": "skills/github-ci-operations",
           "type": "SKILL"
@@ -111,7 +111,7 @@
         },
         {
           "name": "gradle-performance-engineering",
-          "sha256": "sha256:08560e9f8b0862b9502ee2bff4ffc622222d591416a6e5d776301ee498ccb640",
+          "sha256": "sha256:58fd4b584be9c9a23bb0133eda7407ddd09af178f7be319099d59dd8cf66b3aa",
           "sourcePath": "source/skills/gradle-performance-engineering",
           "targetPath": "skills/gradle-performance-engineering",
           "type": "SKILL"
@@ -353,6 +353,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "1070e48cadeba2ad256bb12d37485faa5291f9db",
+  "sourceSha": "c316849c77a0a5e9fdda578d29a750245c872be7",
   "type": "HYDRATED_MARKETPLACE"
 }

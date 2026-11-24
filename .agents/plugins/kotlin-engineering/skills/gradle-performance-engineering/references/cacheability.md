@@ -39,5 +39,30 @@ Restore normal use after the fresh-build comparison passes.
 
 Record restore and save time as well as avoided task time.
 An unchanged workspace can return `UP-TO-DATE` without a restore.
-If scan evidence is missing, report cache health as unavailable.
+If scans are unavailable, use invocation-specific native cache diagnostics for the fields they expose.
 Keep cold and warm samples separate. [Gradle cache diagnosis](https://docs.gradle.org/current/userguide/build_cache_debugging.html)
+
+## Trace one repeated task
+
+Choose the first unexpected miss upstream of the expensive work. Compare the same task across two identified invocations.
+Use a scan comparison or the wrapper's build-cache debug logging in a controlled run.
+Keep the first differing property or implementation fingerprint. Avoid publishing raw debug logs.
+
+- **Different keys.** Compare ordered classpaths, generated resources, implementation classpaths, and toolchains.
+  If directory traversal supplies unordered JARs, define a stable relative-path order for that collection.
+  Preserve intentional dependency precedence. Check shadowed classes and resources with the real consumer.
+  For generated JARs, keep the producer dependency and lazy enumeration.
+  Exercise an empty checkout through extraction and compilation, then repeat with configuration-cache reuse.
+- **Revision metadata.** Identify every consumer affected by runtime classpath normalization.
+  Ignore a specific property only when changes to its value preserve every affected result.
+  Keep provenance in the shipped artifact. Vary only the revision, then vary a property that changes behavior.
+  The first change must preserve the key. The second must invalidate it and match a fresh result.
+- **Repeated transforms.** Hold the input archive and transform parameters fixed. Change one unrelated build convention.
+  If the implementation fingerprint changes, isolate the transform and its dependencies from unrelated convention code.
+  Repeat the edit and compare output paths and digests. Change an actual transform input to exercise invalidation.
+- **Equal keys.** Find the producer's store outcome and the consumer's restore scope.
+  In a clean workspace, look for `FROM-CACHE` on that task and exercise its downstream consumer.
+  Matching keys alone establish key stability. If the writer or restore outcome is missing, record it as unknown.
+
+Consult the wrapper version's rules for [classpath normalization](https://docs.gradle.org/current/userguide/incremental_build.html)
+and [artifact transforms](https://docs.gradle.org/current/userguide/artifact_transforms.html).
