@@ -1,5 +1,4 @@
 no-build = true
-required-version = "==0.12.9"
 index-strategy = "first-index"
 
 [[index]]
