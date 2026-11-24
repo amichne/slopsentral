@@ -73,8 +73,12 @@ Examine warnings and suggestions even when the command returns zero.
 ## Defaults
 
 Markdown, MDX, and text files use the common writing rules.
-The rules advise plain diction, uncontracted forms, direct modal verbs, and sentences with at most 25 words.
-Flesch-Kincaid grades greater than 8 produce an advisory.
+Use ordinary contractions and keep modal verbs when they express uncertainty.
+Vale flags stacked contractions such as `wouldn't've`, hedged instructions such as
+`you might want to`, and wordy phrases such as `in order to`.
+Vale flags a sentence over 40 words. Above 25 words, it also flags a sentence
+with two or more uses of `if`, `unless`, `when`, `while`, or `until`.
+The assessment reports the Flesch-Kincaid grade as a document metric.
 Numbered and bulleted lists in tutorials and how-to guides also use a 20-word sentence advisory.
 
 Commit messages use Conventional Commits and the upstream Commit view.
