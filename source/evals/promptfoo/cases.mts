@@ -17,6 +17,7 @@ export type Skill =
   | "issue-tracker-operations"
   | "lsp-management"
   | "kotlin-gradle-validation"
+  | "gradle-performance-engineering"
   | "reviewable-artifacts";
 
 export interface DecisionCase {
@@ -897,6 +898,101 @@ export const cases: readonly DecisionCase[] = [
     },
     expected: ["B", "C"],
     rationale: "The evidence locates the failure at project attachment, after working installation and initialization. Repair and proof follow that stage; process startup alone does not prove diagnostic behavior.",
+  },
+  {
+    id: "cache-study-ordered-sdk",
+    skill: "gradle-performance-engineering",
+    references: ["references/cacheability.md"],
+    scenario: "Two fresh runners compile the same tree. The first different input fingerprint is the SDK classpath. The same JARs arrive in different directory traversal orders. The SDK comes from an extraction task. A declared override JAR intentionally comes first. Which experiment targets the miss?",
+    choices: {
+      A: "Sort the complete classpath, including the override, before Gradle configures the extraction task.",
+      B: "Keep override precedence and order the discovered SDK JARs by relative path. Keep the producer dependency and exercise cold extraction, compilation, and configuration-cache reuse.",
+      C: "Enable writes from both runners so that tasks with different keys can restore each other's outputs.",
+    },
+    expected: ["B"],
+    rationale: "The first difference is enumeration order. A stable SDK listing must preserve declared precedence and work before the extracted directory exists.",
+  },
+  {
+    id: "cache-study-incidental-revision",
+    skill: "gradle-performance-engineering",
+    references: ["references/cacheability.md"],
+    scenario: "A generated properties file contains buildRevision and protocolVersion. Every consumer affected by normalization ignores the revision value. Protocol tests select behavior by protocolVersion. The release must identify its revision. Choose the narrowest experiment.",
+    choices: {
+      A: "Exclude the complete properties file from the runtime classpath fingerprint.",
+      B: "Replace the revision value with a constant in the shipped JAR.",
+      C: "Normalize only buildRevision for the affected classpaths. Keep its packaged value, vary it independently, and check that changing protocolVersion still invalidates the result.",
+    },
+    expected: ["C"],
+    rationale: "Only the revision value is incidental to these consumers. The protocol field and packaged provenance retain their distinct contracts.",
+  },
+  {
+    id: "cache-study-consumed-revision",
+    skill: "gradle-performance-engineering",
+    references: ["references/cacheability.md"],
+    scenario: "A generated properties file contains buildRevision and protocolVersion. One test in the normalization scope writes buildRevision into its declared output. The release must identify its revision. Choose the justified action.",
+    choices: {
+      A: "Keep buildRevision as an input for this test. Change the revision and compare the output against a fresh execution.",
+      B: "Normalize only buildRevision across this scope because the shipped JAR still carries it.",
+      C: "Normalize the whole file because both fields originate from the same generator.",
+    },
+    expected: ["A"],
+    rationale: "This consumer's output depends on the revision. Ignoring that input can restore stale output even if the artifact retains provenance.",
+  },
+  {
+    id: "cache-study-transform-implementation",
+    skill: "gradle-performance-engineering",
+    references: ["references/cacheability.md"],
+    scenario: "An archive transform runs again after an unrelated convention edit. Archive and parameters match, but the implementation fingerprint changes. The extracted files have the same names. How do you evaluate a fix?",
+    choices: {
+      A: "Count each existing extraction directory as evidence of a distinct required output.",
+      B: "Keep the transform fingerprint constant when its implementation changes.",
+      C: "Declare a time saving from the decrease in duplicate directories.",
+      D: "Isolate the implementation classpath, repeat the unrelated edit, compare relative paths and bytes, and separately change a real transform input.",
+    },
+    expected: ["D"],
+    rationale: "The unrelated change probes implementation coupling. A real input change probes invalidation. Matching names do not establish byte equivalence or elapsed time.",
+  },
+  {
+    id: "cache-study-matching-keys",
+    skill: "gradle-performance-engineering",
+    references: ["references/cacheability.md"],
+    scenario: "A scan service is unavailable. Native logs from two PRs give :fixtures:test the same cache key. Both tasks executed. No writer record is supplied. What can the review conclude and what evidence comes next?",
+    choices: {
+      A: "Report key stability across these invocations and execution on both consumers.",
+      B: "Count the second run as a task-output hit because the keys match.",
+      C: "Find a compatible producer save and look for FROM-CACHE and correct outputs in a fresh reader.",
+      D: "Mark the task keys unavailable until both scans can be retrieved.",
+    },
+    expected: ["A", "C"],
+    rationale: "Native task records establish matching keys and execution. Neither a stored entry nor successful restoration follows from key equality.",
+  },
+  {
+    id: "cache-study-ref-eviction",
+    skill: "github-ci-operations",
+    references: ["references/gradle-ci-performance.md"],
+    scenario: "Fresh PRs repeatedly download the SDK. Two trusted PR merge refs account for almost the entire cache quota. The shared default-branch entry was evicted. Gradle keys match across the jobs. Pick the experiment and its success evidence.",
+    choices: {
+      A: "Let each trusted PR warm other PRs by writing a larger entry under its own merge ref.",
+      B: "Seed the matching job on the default branch and make PR consumers read-only. Measure the cost of losing writes on repeat pushes.",
+      C: "Report a Gradle task hit as soon as the Actions restore succeeds.",
+      D: "Trace the seed save and the next fresh PR restore. Record that task's outcome and end-to-end time separately.",
+    },
+    expected: ["B", "D"],
+    rationale: "Shared cache visibility and eviction explain the cold transport. A compatible seed can serve fresh PRs. Gradle outcomes and timing need their own evidence.",
+  },
+  {
+    id: "cache-study-queue-shards",
+    skill: "github-ci-operations",
+    references: ["references/gradle-ci-performance.md"],
+    scenario: "A PR now finishes after source checks. The merge queue runs the product suite on the proposed merge. Two acceptance jobs upload passing parts with the full case inventory and the same baseline, but one part tested a different product digest. The PR completed eight minutes sooner. Pick every supported decision.",
+    choices: {
+      A: "Measure review feedback separately from qualified merge latency and runner consumption, including queue delay.",
+      B: "Join the parts because they passed on the same baseline and cover the planned cases.",
+      C: "Reject the mixed product evidence. Require a complete join for the landing candidate before its qualification check passes.",
+      D: "Record eight minutes as the end-to-end speedup for the original qualification workload.",
+    },
+    expected: ["A", "C"],
+    rationale: "The review checks cover a smaller workload. Landing qualification needs all parts bound to the tested product. Neither shorter review feedback nor complete case names prove that contract.",
   },
   {
     id: "gradle-diagnose-supplied-run",
