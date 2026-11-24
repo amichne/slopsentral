@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T20:12:30-05:00",
+  "generatedAt": "2026-11-23T22:04:42-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -27,7 +27,7 @@
         },
         {
           "name": "engineering-design",
-          "sha256": "sha256:c619b244e73845c1b7be8ff1f4a4516eb496135d0aaea910774fa335b9668e6e",
+          "sha256": "sha256:d55b48408b3940be57e802ce8fcb02fcb644811cad7254f2192e88d43dc6e09f",
           "sourcePath": "source/instructions/engineering-design.md",
           "targetPath": "instructions/engineering-design.md",
           "type": "INSTRUCTION"
@@ -76,7 +76,7 @@
         },
         {
           "name": "python-tooling",
-          "sha256": "sha256:ca9233d781390190ee003743c3a1ef8810b0bd054e2ae155b1277bd19863e11f",
+          "sha256": "sha256:aeb5e4e3ce32bc5b382ae45068e7d8e077c0cad73eaabb1e11ec4ad83ad7f085",
           "sourcePath": "source/skills/python-tooling",
           "targetPath": "skills/python-tooling",
           "type": "SKILL"
@@ -202,7 +202,7 @@
         },
         {
           "name": "code-knowledge-base",
-          "sha256": "sha256:47248d46ed9dcb0b7e7f202541a597940a309b56eda43af4af40e2b4d9f448ca",
+          "sha256": "sha256:e155629dada1633cd798eac66c1d5916373c413168c1d4193a2f2d182fbce1f0",
           "sourcePath": "source/skills/code-knowledge-base",
           "targetPath": "skills/code-knowledge-base",
           "type": "SKILL"
@@ -272,7 +272,7 @@
         },
         {
           "name": "cli-creator",
-          "sha256": "sha256:e46bfd833f0004e1a6e0f08582220d7d44729758654bead54fd8a295251b52d9",
+          "sha256": "sha256:afc4d918b174a4dce3749dcfa8701db5a6ff1214a92f949b04a7ce643347365b",
           "sourcePath": "source/skills/cli-creator",
           "targetPath": "skills/cli-creator",
           "type": "SKILL"
@@ -321,7 +321,7 @@
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:70deebcbe6b40a51d529308d86e85f81f93238dce848ba631d55b359f470aac1",
+          "sha256": "sha256:81a41bb576c6779177adad9a452e7ef6836e2f52d32006045c35a67f38795e61",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
@@ -335,14 +335,14 @@
         },
         {
           "name": "python-tooling",
-          "sha256": "sha256:ca9233d781390190ee003743c3a1ef8810b0bd054e2ae155b1277bd19863e11f",
+          "sha256": "sha256:aeb5e4e3ce32bc5b382ae45068e7d8e077c0cad73eaabb1e11ec4ad83ad7f085",
           "sourcePath": "source/skills/python-tooling",
           "targetPath": "skills/python-tooling",
           "type": "SKILL"
         },
         {
           "name": "skill-primitive-authoring",
-          "sha256": "sha256:937e01e432783710459ad556bdaf981bd9a7ee0101362092936108b2fe7fb763",
+          "sha256": "sha256:9649e7a469f9983c05e8ea69c04f378bc45eae16b9e9c4e4b3ca4dc368d983ed",
           "sourcePath": "source/skills/skill-primitive-authoring",
           "targetPath": "skills/skill-primitive-authoring",
           "type": "SKILL"
@@ -353,6 +353,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "15f9ecff289dfd6d94f7b06cb7041e27ebbec4d2",
+  "sourceSha": "457f761159a96103209299a8faf28c3cf7223fd7",
   "type": "HYDRATED_MARKETPLACE"
 }

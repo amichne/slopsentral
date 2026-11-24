@@ -61,7 +61,7 @@ def main() -> int:
         return 2
     print(
         f"Created {destination}. Review uv.toml and the setup script, "
-        "then run bin/automation-setup there with the pinned uv."
+        "then run bin/automation-setup there with the available uv."
     )
     return 0
 

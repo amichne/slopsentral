@@ -25,8 +25,8 @@ consumer, with applicable provenance and distribution authority.
 Keep `SKILL.md` as a focused router.
 Place concrete variants and examples in references.
 When deterministic work has a real consumer, reuse an existing script or add
-the missing operation. Use `python-tooling` for automation, pin uv with mise,
-and use PEP 723 headers and adjacent locks for portable scripts. Use strict
+the missing operation. Use `python-tooling` for automation and use PEP 723
+headers and adjacent locks for portable scripts. Use strict
 Pyright, Ruff, and pytest. Keep decisions pure and effect adapters explicit.
 
 ## Workflow
