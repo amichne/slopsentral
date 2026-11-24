@@ -49,7 +49,7 @@ def test_pep723_isolation(tmp_path: Path) -> None:
     assert list(tmp_path.glob("*.lock")) == []
 
 
-def test_scaffold_exposes_extensionless_command_with_checkout_uv_pin(tmp_path: Path) -> None:
+def test_scaffold_exposes_locked_commands_without_a_checkout_uv_pin(tmp_path: Path) -> None:
     script = ROOT / "source/skills/python-tooling/scripts/python-scaffold"
     destination = tmp_path / "project with spaces"
     _ = subprocess.run(
@@ -57,13 +57,11 @@ def test_scaffold_exposes_extensionless_command_with_checkout_uv_pin(tmp_path: P
         check=True,
     )
 
-    def uv_pin(config: Path) -> str:
-        return tomllib.loads(config.read_text())["required-version"]
-
-    assert (destination / "uv.toml").is_file()
+    config = tomllib.loads((destination / "uv.toml").read_text())
+    assert config["no-build"] is True
+    assert "required-version" not in config
     for filename in ("standalone.py.lock", "setup.py.lock"):
         assert (destination / filename).is_file()
-    assert uv_pin(destination / "uv.toml") == uv_pin(ROOT / "uv.toml")
     assert not (destination / "mise.toml").exists()
     if os.name != "posix":
         pytest.skip("Direct shebang commands on PATH need a POSIX host.")
