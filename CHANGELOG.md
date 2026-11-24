@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.19](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.18...slopsentral-v4.0.19) (2026-11-24)
+
+
+### Bug Fixes
+
+* keep maintainer uv pins out of distributed tooling guidance ([#161](https://github.com/amichne/slopsentral/issues/161)) ([a1f0f1f](https://github.com/amichne/slopsentral/commit/a1f0f1fe311d14dd511ac2bf1526abf8e70946c5))
+
 ## [4.0.18](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.17...slopsentral-v4.0.18) (2026-11-20)
 
 
