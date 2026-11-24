@@ -92,8 +92,8 @@ Do not invent definitions to get a successful check.
 - Put conditions before the action they control.
 - Keep one topic in each paragraph.
 - Remove filler, marketing claims, and unsupported adjectives.
-- Review sentences above 25 words and estimated grades above 8. These shared
-  advisories are revision signals, not proof that the reader understands the text.
+- Give each condition a clear action. If a sentence carries several conditions,
+  put the main point first or break the cases into a list.
 - Preserve necessary precision and natural technical vocabulary.
 
 ## Final Check

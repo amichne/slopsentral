@@ -292,35 +292,42 @@ def assess_change(
             "code": current.code,
             "reason": current.detail,
         }
-    prior: Counter[tuple[str, str]] = Counter()
+    prior: Counter[tuple[str, str, str]] = Counter()
     if (
         change.previous
         and Path(change.previous).suffix.lower() in FORMATS
-        and any(f.rule == "Slopsentral.Diction" for f in current.findings)
+        and current.findings
+        and (annotate or any(f.rule == "Slopsentral.Diction" for f in current.findings))
     ):
         before = target.read(work, binary, change.previous, target.base)
         if isinstance(before, Document):
-            prior.update(
-                (f.message, f.passage) for f in before.findings if f.rule == "Slopsentral.Diction"
-            )
+            prior.update((f.rule, f.message, f.passage) for f in before.findings)
     blocking: list[dict[str, object]] = []
+    spelling_lines: dict[str, list[int]] = {}
     for finding in current.findings:
-        block = finding.severity == "error"
-        if finding.rule == "Slopsentral.Diction":
-            key = (finding.message, finding.passage)
-            block = prior[key] <= 0
-            prior[key] -= 1
+        key = (finding.rule, finding.message, finding.passage)
+        introduced = prior[key] <= 0
+        prior[key] -= 1
+        block = finding.severity == "error" or (
+            finding.rule == "Slopsentral.Diction" and introduced
+        )
         if block:
             blocking.append(
                 {"rule": finding.rule, "line": finding.line, "message": finding.message}
             )
-        if annotate:
-            annotation(
-                change.path,
-                "error" if block else "warning",
-                f"{finding.rule}: {finding.message}",
-                finding.line,
-            )
+        if annotate and (block or introduced):
+            if finding.rule == "Vale.Spelling" and not block:
+                spelling_lines.setdefault(finding.message, []).append(finding.line)
+            else:
+                annotation(
+                    change.path,
+                    "error" if block else "warning",
+                    f"{finding.rule}: {finding.message}",
+                    finding.line,
+                )
+    for message, lines in spelling_lines.items():
+        count = f" ({len(lines)} new occurrences)" if len(lines) > 1 else ""
+        annotation(change.path, "warning", f"Vale.Spelling: {message}{count}", lines[0])
     return int(bool(blocking)), {
         "path": change.path,
         "type": "ASSESSED",

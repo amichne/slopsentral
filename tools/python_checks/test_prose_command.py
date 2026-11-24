@@ -125,14 +125,15 @@ def test_rename_from_file_to_directory_preserves_warning(tmp_path: Path) -> None
     _ = git("config", "user.name", "Prose Test")
     _ = git("config", "user.email", "prose@example.invalid")
     path = tmp_path / "guide.md"
-    prose = "Utilize the tool.\n"
+    prose = "Utilize the tool.\n\nYou should save it.\n"
     _ = path.write_text(prose)
     _ = git("add", ".")
     _ = git("commit", "-qm", "before")
     base = git("rev-parse", "HEAD")
     path.unlink()
     path.mkdir()
-    _ = (path / "page.md").write_text(prose)
+    _ = (path / "page.md").write_text(prose + "\nYou should save it.\n")
+    _ = (tmp_path / "words.md").write_text("Open the vieewport.\n\nClose the vieewport.\n")
     _ = git("add", ".")
     _ = git("commit", "-qm", "after")
     run = subprocess.run(
@@ -143,6 +144,7 @@ def test_rename_from_file_to_directory_preserves_warning(tmp_path: Path) -> None
             "--script",
             str(COMMAND),
             "changed",
+            "--github",
             "--base",
             base,
             "--head",
@@ -155,3 +157,13 @@ def test_rename_from_file_to_directory_preserves_warning(tmp_path: Path) -> None
     )
     assert run.returncode == 0, run.stdout + run.stderr
     assert json.loads(run.stdout)["type"] == "PASSED"
+    warnings = [line for line in run.stderr.splitlines() if line.startswith("::warning ")]
+    assert len(warnings) == 2, warnings
+    assert any("line=5::Slopsentral.Modals" in warning for warning in warnings)
+    assert any("line=1::Vale.Spelling" in w and "(2 new occurrences)" in w for w in warnings)
+    findings = {
+        item["path"]: [f["rule"] for f in item["assessment"]["documents"][0]["findings"]]
+        for item in json.loads(run.stdout)["files"]
+    }
+    assert findings["guide.md/page.md"].count("Slopsentral.Modals") == 2
+    assert findings["words.md"] == ["Vale.Spelling", "Vale.Spelling"]

@@ -14,9 +14,10 @@ The fixed policy reports:
 - `fleschKincaidGrade`: `0.39 * words / sentences + 11.8 * estimatedSyllables / words - 15.59`.
   Counts come from the pinned Vale parser; the wrapper independently checks
   the arithmetic against the reported value, within its two-decimal precision.
-- `wordsPerSentence` and a finding for a sentence exceeding 25 words, using
-  Vale Std's occurrence rule. That rule's word regex is distinct from Vale's
-  document metric tokenizer; do not imply that these counters are identical.
+- `wordsPerSentence` and located sentence warnings. The rule flags more than
+  40 words, or more than 25 with two occurrences of a condition word
+  (`if`, `unless`, `when`, `while`, or `until`). It counts words in the prose
+  Vale exposes to that rule. Document metrics use Vale's own tokenizer.
 - Diction findings from the fixed local substitution list and Google excessive
   claims rule. Suggestions require a meaning-preserving review, not blind edits.
 - Terminology findings from the JSON contract's scoped replacement and review targets.
@@ -24,11 +25,9 @@ The fixed policy reports:
   Existing Markdown contracts keep their alias, casing, and marker rules.
   The glossary owner supplies both formats without implicit migration.
 
-Grade 8 and 25 words are shared advisory defaults inherited from Vale resources,
-not calibrated audience cutoffs or scientifically validated comprehension
-thresholds. Lower scores are not always better: do not remove required facts,
-split terms, or rename identifiers to improve a number. No composite quality
-score, grade-level audience inference, or alternate compression metric is used.
+The grade stays in the metrics even for a short passage with technical terms.
+Sentence warnings give the editor a place to review. Keep required facts and
+qualifications when splitting a sentence.
 
 ## Run
 
