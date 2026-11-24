@@ -160,7 +160,7 @@ def glossary_rules(entries):
             "swap: " + json.dumps(swaps, ensure_ascii=True) + "\n")
 
 
-CATEGORIES = {"Slopsentral.Grade": "READABILITY", "Slopsentral.LongSentence": "STRUCTURE",
+CATEGORIES = {"Slopsentral.LongSentence": "STRUCTURE",
               "Slopsentral.Diction": "DICTION", "Slopsentral.Claims": "DICTION",
               "Slopsentral.Terminology": "TERMINOLOGY",
               "Slopsentral.TerminologyReview": "TERMINOLOGY",
