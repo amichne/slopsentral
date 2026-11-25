@@ -30,11 +30,11 @@
       "completedRunId": "55995f2e-25e7-492f-9e07-91761ab96b7d"
     },
     "/openwiki/integrations/cli.md": {
-      "pageVersion": "sha256:a914ee16ef026319268d185d9f41c078867b9d61f54b870b979408863f7056a1",
+      "pageVersion": "sha256:a0bebf74ad5608d1291bb1500e7f4dbb7e440b4a9fed2f819192e0c7cc8a1959",
       "completedBy": "codex",
-      "completedRunId": "29455a6d-54d9-41f8-94f4-ee0d0a3798f2",
-      "gitHead": "901b95dc386c3321af61bb47d281e02ebceca985",
-      "sourceFingerprint": "sha256:49fd68c6895245044d90e96df2309e1b542aa7001052751e5e00930e8c146933"
+      "completedRunId": "6a74bbd7-f118-4105-96a2-e517150dc16f",
+      "gitHead": "f9910db89a3668f013690bce8bbe3e68ebf1dc73",
+      "sourceFingerprint": "sha256:3bedcf01053d8601b3c1c028cf2287473d763748643e11bbc62cb1b093f48434"
     },
     "/openwiki/integrations/global-instructions.md": {
       "gitHead": "6351fe052cf7e4381e9a88fedfd7569a3312e30a",

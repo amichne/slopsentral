@@ -4,12 +4,14 @@ title: Slopsentral command lifecycle
 description: Trace explicit host and plugin selection through native commands, managed Amp links, Pi transactions, and guarded self-management.
 tags: [cli, installation, consumers, recovery]
 sources:
+  - id: openwiki-source-03ffc32a0ca502ab67c54b25
+    resource: repo://install.sh
   - id: openwiki-source-694f90ac01e419c575288a8d
     resource: repo://tools/slopsentral.py
-generated: { by: "codex", at: "2026-11-25T20:44:33.352Z" }
+generated: { by: "codex", at: "2026-11-25T20:51:59.568Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-25T20:44:33.352Z
+    at: 2026-11-25T20:51:59.568Z
 ---
 
 # Slopsentral command lifecycle
@@ -41,7 +43,9 @@ slopsentral remove --host pi
 ```
 
 `install --all` reads the published catalog after the release archive passes digest examination.
-Release downloads retry transient curl failures. Diagnostics identify the request URL and distinguish TLS failures from HTTP errors.
+The shared command and its shell bootstrap prefer GitHub CLI for Slopsentral release downloads.
+They use curl when GitHub CLI is absent or needs a login. Other GitHub CLI failures stop the download.
+The curl fallback retries transient failures and distinguishes TLS failures from HTTP errors.
 If catalog parsing fails, the command identifies the archive and release version.
 `update --all` selects installed Slopsentral plugins from native inventories or managed Amp links.
 An empty update starts no host changes. Pi keeps its existing aggregate setup path.
