@@ -88,6 +88,13 @@ Pi delegates its aggregate operation to the existing qualified installer.
 The command stops at the first harness failure and names completed harnesses on stderr.
 Earlier successful operations remain in effect.
 
+### If a download or catalog fails
+
+The command prints the download URL on terminal stderr. It retries transient curl failures within a 65-second limit per download.
+For a TLS certificate error, check your proxy settings. If your network uses a private CA, set `CURL_CA_BUNDLE` to its trusted certificate bundle.
+For a GitHub API rate limit, set `GH_TOKEN` or `GITHUB_TOKEN` in the shell.
+A rejected plugin catalog names the release and archive. Include that detail when you report the error.
+
 ## Select a host and plugins
 
 Bootstrap installs the command only.

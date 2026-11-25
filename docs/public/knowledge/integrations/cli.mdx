@@ -32,6 +32,8 @@ slopsentral remove --host pi
 ```
 
 `install --all` reads the published catalog after the release archive passes digest examination.
+Release downloads retry transient curl failures. Diagnostics identify the request URL and distinguish TLS failures from HTTP errors.
+If catalog parsing fails, the command identifies the archive and release version.
 `update --all` selects installed Slopsentral plugins from native inventories or managed Amp links.
 An empty update starts no host changes. Pi keeps its existing aggregate setup path.
 Bare `install` and `update` open the harness selector.

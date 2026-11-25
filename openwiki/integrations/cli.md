@@ -6,10 +6,10 @@ tags: [cli, installation, consumers, recovery]
 sources:
   - id: openwiki-source-694f90ac01e419c575288a8d
     resource: repo://tools/slopsentral.py
-generated: { by: "codex", at: "2026-11-25T20:39:35.615Z" }
+generated: { by: "codex", at: "2026-11-25T20:44:33.352Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-25T20:39:35.615Z
+    at: 2026-11-25T20:44:33.352Z
 ---
 
 # Slopsentral command lifecycle
@@ -41,6 +41,8 @@ slopsentral remove --host pi
 ```
 
 `install --all` reads the published catalog after the release archive passes digest examination.
+Release downloads retry transient curl failures. Diagnostics identify the request URL and distinguish TLS failures from HTTP errors.
+If catalog parsing fails, the command identifies the archive and release version.
 `update --all` selects installed Slopsentral plugins from native inventories or managed Amp links.
 An empty update starts no host changes. Pi keeps its existing aggregate setup path.
 Bare `install` and `update` open the harness selector.
