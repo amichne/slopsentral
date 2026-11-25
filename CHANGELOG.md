@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.21](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.20...slopsentral-v4.0.21) (2026-11-25)
+
+
+### Bug Fixes
+
+* use Gum for setup and prefer GitHub CLI release downloads ([#168](https://github.com/amichne/slopsentral/issues/168)) ([51388aa](https://github.com/amichne/slopsentral/commit/51388aae2aa9fe4429944246cdaa712993039a9a))
+
 ## [4.0.20](https://github.com/amichne/slopsentral/compare/slopsentral-v4.0.19...slopsentral-v4.0.20) (2026-11-24)
 
 
