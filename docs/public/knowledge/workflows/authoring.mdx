@@ -32,7 +32,7 @@ Install Node.js and npm, then prepare the checkout:
 npm run setup
 ```
 
-The npm scripts run through `node tools/toolchain.mjs run --`, which fetches the uv, Pkl,
+The npm scripts run through `node tools/toolchain.mjs run --`, which fetches the Gum, uv, Pkl,
 and Vale versions pinned with SHA-256 digests in [the toolchain manifest](https://github.com/amichne/slopsentral/blob/main/tools/toolchain.json)
 and puts them first on `PATH` for that command only.
 `uv.toml` requires the exact uv version, so another uv fails with a named error.

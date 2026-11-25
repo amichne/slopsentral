@@ -12,10 +12,10 @@ The [bootstrap](https://github.com/amichne/slopsentral/blob/main/install.sh) ins
 ## Select the operation and harnesses
 
 `slopsentral` and `slopsentral setup` open guided setup in a terminal.
-The fzf selector offers **Install all plugins** and **Update all installed plugins**.
-Users can filter the list and select several harnesses with Tab or Ctrl-A.
-An action summary precedes host effects. Escape or Ctrl-C cancels with status 130.
-The locked uv environment supplies fzf. Personal `FZF_*` options do not change the selector.
+Gum offers **Install all plugins** and **Update all installed plugins**.
+Use the arrow keys to move and `x` to select harnesses.
+Enter opens the confirmation. Choose Yes to start. Escape or Ctrl-C cancels with status 130.
+Guided commands find Gum on `PATH` and ignore personal `GUM_*` options.
 `NO_COLOR` disables color. Terminal input and stderr remain necessary when stdout is redirected.
 
 Explicit operations use `--host`.
@@ -34,8 +34,9 @@ slopsentral remove --host pi
 `install --all` reads the published catalog after the release archive passes digest examination.
 `update --all` selects installed Slopsentral plugins from native inventories or managed Amp links.
 An empty update starts no host changes. Pi keeps its existing aggregate setup path.
-Bulk operations without `--host` open the harness selector.
-Removal keeps explicit selections and rejects `--all`.
+Bare `install` and `update` open the harness selector.
+Bare `remove` asks for one host and the installed plugins to remove. Pi uses its aggregate package.
+Removal rejects `--all`.
 
 These operations use personal or system scope.
 Project registrations remain outside the general command's scope.
@@ -48,7 +49,8 @@ Codex and Copilot operations use their native marketplace and plugin commands.
 A recognized marketplace keeps its configured source.
 An unknown source named `slopsentral` stops the operation.
 Repeated installation preserves a selected plugin's enabled state.
-Codex rejects an update for a disabled selected plugin because its reinstall operation can enable it.
+Codex bulk update skips disabled plugins and reports them in `skippedDisabled`.
+An explicit update of a disabled Codex plugin stops before its reinstall can enable it.
 
 The command stops after the first failed native operation.
 Earlier successful operations remain in effect.
@@ -70,6 +72,7 @@ The command does not recreate Pi's lifecycle in another state machine.
 ## Manage the command separately
 
 The launcher records absolute paths to uv and an immutable Python script copy.
+Bare `self` uses Gum to choose and confirm an operation on the command.
 Self-update examines release assets before it creates another command copy.
 Self-removal examines recorded digests before it deletes managed command files.
 Edited bytes stop replacement or removal.
