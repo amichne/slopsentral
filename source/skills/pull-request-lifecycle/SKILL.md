@@ -116,6 +116,9 @@ for the affected workflow and observation procedure.
 Use the `github/gh-stack` extension for a chain of dependent PRs. Check
 `gh stack --help` for the installed commands. A single PR uses built-in `gh pr`.
 
+When branches already exist on the remote, a parent changes, or the whole stack
+should land together, follow [remote stacks](references/remote-stacks.md).
+
 - For a new stack, run `gh stack init --base <trunk> <bottom> <top>`.
   List branches from base to tip. Inspect an existing stack with
   `gh stack view --json` and add a new top branch with `gh stack add <branch>`.
