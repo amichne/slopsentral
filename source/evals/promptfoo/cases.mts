@@ -898,12 +898,12 @@ export const cases: readonly DecisionCase[] = [
   {
     id: "pr-status-only",
     skill: "pull-request-lifecycle",
-    scenario: "The user asks whether PR #81 is currently blocked and requests status only. The connected GitHub app can read its head revision, required checks, and review state. No local checkout exists. Pick the next action.",
+    scenario: "The user asks whether PR #81 in octo/tools is currently blocked and requests status only. The GitHub CLI is authenticated. No local checkout exists. Pick the next action.",
     choices: {
       A: "Create a checkout, make a no-op commit, and push it so the status belongs to a new run.",
       B: "Repair any failed check before answering because the PR workflow includes a repair step.",
       C: "Report yesterday's successful check summary as current without reading the present head.",
-      D: "Read the PR and structured current check and review state, then report its head, blockers, and unresolved signals without a source change.",
+      D: "Use gh pr view and gh pr checks with --repo octo/tools to read the current head, review state, and required checks. Report blockers and unresolved signals.",
     },
     expected: ["D"],
     rationale: "An observation request can resolve the remote PR directly. It needs current evidence and no checkout, branch mutation, or repair.",
@@ -924,15 +924,41 @@ export const cases: readonly DecisionCase[] = [
   {
     id: "pr-create-requested",
     skill: "pull-request-lifecycle",
-    scenario: "The user asks to open a draft PR from fix/csv to release/2.x. The branch is already pushed, its focused local checks pass, and a current query finds no open PR for it. The connected GitHub app supports creation. No merge or release is requested. Pick every justified action.",
+    scenario: "The user asks to open a draft PR from fix/csv to release/2.x. The branch is already pushed, its focused local checks pass, and a current query finds no open PR for it. The GitHub CLI is authenticated. No merge or release is requested. Pick every justified action.",
     choices: {
       A: "Ask for PR publication permission again before using the creation operation.",
-      B: "Create the draft from the actual head to release/2.x with the problem, changed behavior, and validation evidence.",
+      B: "Use gh pr create --draft --head fix/csv --base release/2.x with the problem, changed behavior, and validation evidence.",
       C: "Target main by default and merge after creation because the local checks passed.",
       D: "Report the created PR and its revision, distinguishing local checks from any remote check results actually observed.",
     },
     expected: ["B", "D"],
     rationale: "The explicit request supplies PR creation authority and the intended base. It does not supply merge authority or transfer local evidence into an unobserved remote result.",
+  },
+  {
+    id: "pr-stack-publish-drafts",
+    skill: "pull-request-lifecycle",
+    scenario: "The user asks to publish a prepared two-branch stack as draft PRs. The gh-stack extension is installed, the worktree is clean, and both branches pass their focused checks. Pick the next action.",
+    choices: {
+      A: "Open both PRs against the trunk so each can be reviewed independently.",
+      B: "Inspect the stack order, submit it with gh stack submit, then verify each PR's head and immediate base.",
+      C: "Push the two branches and report that draft PRs now exist.",
+      D: "Submit the stack with --open to publish both PRs for review.",
+    },
+    expected: ["B"],
+    rationale: "Stack submission publishes the branches and creates draft PRs. Each dependent PR targets the branch below it.",
+  },
+  {
+    id: "pr-stack-push-one-branch",
+    skill: "pull-request-lifecycle",
+    scenario: "The user asks to push only the committed top branch of a prepared two-branch stack. Both branches exist on origin, both have unpublished commits, and only the top branch may be updated. Pick the next action.",
+    choices: {
+      A: "Run gh stack push to publish both branches without opening PRs.",
+      B: "Run gh stack submit to set up draft PRs and publish the commits.",
+      C: "Push the named top branch to its verified remote branch with git push and report that branch's revision.",
+      D: "Push the bottom branch first so the remote has a review base.",
+    },
+    expected: ["C"],
+    rationale: "The request authorizes one remote ref update. Both stack push and stack submit operate on the whole stack.",
   },
   {
     id: "ci-design-without-failure",

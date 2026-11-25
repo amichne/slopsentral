@@ -147,7 +147,7 @@
       },
       "userInput": "Use Software Engineering to triage a failing GitHub Actions check. Identify the current failing job and run URL, prepare the owning source or workflow repair locally, and run the closest local proof. Do not push, rerun, dispatch, comment on, or otherwise modify remote state.",
       "successChecklist": [
-        "The run cites current PR metadata from the GitHub app when available, uses native gh only for a connector gap and Actions evidence, and pins the evidence to the head SHA.",
+        "The run cites PR metadata from gh pr view and Actions evidence for the same head SHA.",
         "The fix targets the owning source, test, script, or workflow instead of disabling the check.",
         "The final evidence includes local validation and the current remote check state without changing it."
       ]
@@ -164,9 +164,9 @@
         "type": "SKILL",
         "name": "github-ci-operations"
       },
-      "userInput": "Use Software Engineering to tell me whether PR 42 is green. Use the connected GitHub app first for supported PR metadata, native gh only for a connector gap, and the native gh-backed observer for CI state. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you. Do not push, rerun, dispatch, comment on, or otherwise modify remote state.",
+      "userInput": "Use Software Engineering to tell me whether PR 42 is green. If checks are pending, arm one required-check status-change event with an automatic duration-informed timeout, yield instead of polling, and process only the event that resumes you. Do not push, rerun, dispatch, comment on, or otherwise modify remote state.",
       "successChecklist": [
-        "Supported PR metadata comes from the connected GitHub app when available; native gh fills only a connector gap, and the observer classifies the current head.",
+        "The run reads the head SHA with gh pr view and the observer classifies required checks for that head.",
         "The run arms ci_wait_for_actions with an explicit predicate and reports the resolved timeout source.",
         "The model invokes one bounded await instead of unchanged status checks; a still-pending event is processed once and re-armed.",
         "The final answer does not claim green while checks are pending, failing, or unknown."
