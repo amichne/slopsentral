@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T00:07:43-05:00",
+  "generatedAt": "2026-11-25T09:04:55-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -272,7 +272,7 @@
         },
         {
           "name": "cli-creator",
-          "sha256": "sha256:afc4d918b174a4dce3749dcfa8701db5a6ff1214a92f949b04a7ce643347365b",
+          "sha256": "sha256:a04f0b9cd71460c72ced75de9d4f68bab418501b45709057e47240c3d8193f23",
           "sourcePath": "source/skills/cli-creator",
           "targetPath": "skills/cli-creator",
           "type": "SKILL"
@@ -353,6 +353,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "f05363eee9c7ba65bea198a7144ed375aa1c3c7a",
+  "sourceSha": "8c8086d700c62bf8cb2df31f13a520e27636bb39",
   "type": "HYDRATED_MARKETPLACE"
 }
