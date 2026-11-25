@@ -9,11 +9,8 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
 
 ## Operating Contract
 
-- Use the connected GitHub app for supported repository, PR, issue, review, and
-  PR creation operations.
-- Use authenticated native `gh` for operations the connected app cannot perform
-  and for the local observer. Prefer an available structured connector read over
-  installing or authenticating another client.
+- Use the authenticated GitHub CLI (`gh`) for repository, PR, issue, review,
+  and Actions operations. Use `pull-request-lifecycle` for PR delivery.
 - Use local `git` for local repository state.
 - Verify the target repository and authentication context before remote work.
 - Use live PR checks, workflow runs, logs, annotations, and job summaries as
@@ -51,15 +48,14 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
    or publication. Keep proposed changes separate from authorized execution.
 
 2. Inspect live state.
-   Use the connected GitHub app for supported repository and PR metadata.
-   When native `gh` is needed, run `gh auth status`.
-   Examine the local target with `git remote get-url origin`. Use `gh repo view --json nameWithOwner,url`
-   only when the app and local remote do not resolve the target. Inspect Actions
-   state with `gh` JSON when needed and inspect workflow YAML under
+   Check the account with `gh auth status`. In a checkout, confirm the target
+   with `git remote get-url origin`. For a remote PR, use
+   `gh pr view <number> --repo OWNER/REPO --json url,headRefOid,baseRefName`.
+   Inspect Actions state with `gh` JSON and inspect workflow YAML under
    `.github/workflows/`. For a failure, capture the job name, command, error
    snippet, run URL, head SHA, and owning local file. For design, inspect the
    existing stage graph and contracts without inventing a failing run.
-   Treat structured app results, `gh` JSON, and typed observer snapshots as evidence.
+   Use `gh` JSON and typed observer snapshots as evidence.
 
 3. Establish the claim.
    For diagnosis, trace the failed gate through its dependencies to the first failed operation
@@ -83,9 +79,8 @@ Use this skill for GitHub-hosted workflow and CI work. Inspect the repository wo
    workflow changes when present.
    For dependency, matrix, cache, or startup-latency changes, run the deterministic
    workflow graph model and preserve the baseline proof-output set.
-   Re-read PR metadata through the connected GitHub app when supported. For
-   pending CI state, use the local observer when available, or structured connector
-   reads at meaningful transitions. Do not make an unavailable helper a blocker.
+   Re-read the PR head with `gh pr view`. For pending checks, use the local
+   observer when available, or read `gh pr checks` JSON at meaningful transitions.
 
 6. Hand off.
    Report the requested result: diagnosis, design, observed state, or implemented
