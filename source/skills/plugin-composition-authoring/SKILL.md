@@ -52,11 +52,7 @@ The helper below checks this source layout; it is not a generic host installer.
 ```sh
 node tools/validate-source-graph.mjs
 uv run --locked --script <skill-dir>/scripts/check_plugin_composition --repo <repo> --plugin <name>
-python3 tools/project_marketplaces.py --source . --harness codex --out <fresh-codex-directory>
-python3 tools/project_marketplaces.py --source . --harness github-copilot --out <fresh-copilot-directory>
-python3 tools/project_marketplaces.py --source . --harness amp --out <fresh-amp-directory>
-python3 tools/project_marketplaces.py --source . --harness claude --out <fresh-claude-directory>
-python3 tools/project_marketplaces.py --source . --harness pi --out <fresh-pi-directory>
+python3 tools/project_marketplaces.py --source . --harness <host> --out <fresh-directory>
 git diff --check
 ```
 
