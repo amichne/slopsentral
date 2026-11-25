@@ -11,7 +11,7 @@ sources:
 generated: { by: "codex", at: "2026-11-25T20:51:59.568Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-25T20:51:59.568Z
+    at: 2026-11-25T20:58:20.007Z
 ---
 
 # Slopsentral command lifecycle
