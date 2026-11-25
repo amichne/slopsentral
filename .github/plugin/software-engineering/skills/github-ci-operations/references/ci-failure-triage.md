@@ -19,13 +19,13 @@ Use this reference when a PR check or workflow run is failing.
 
 ## Useful Commands
 
-Use the connected GitHub app first for supported repository and PR metadata.
 Run these commands from the repository root before and during Actions
 inspection.
 
 ```sh
 git remote get-url origin
 gh auth status
+gh pr view <pr-number> --json url,headRefOid,baseRefName
 gh pr checks <pr-number> --json bucket,link,name,state,workflow
 gh run view <run-id> --json conclusion,headSha,jobs,status,url,workflowName
 gh run view <run-id> --log-failed
@@ -36,7 +36,7 @@ uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . 
 uv run --locked --script "<path-to-skill>/scripts/ci_wait_for_actions" --repo . await --json
 ```
 
-Treat structured app results, `gh` JSON, and typed observer results as the live
+Treat `gh` JSON and typed observer results as the live
 evidence contract. If a required field is absent, fail closed and update the
 typed parser instead of scraping human display text.
 
@@ -58,7 +58,7 @@ Never implement listening as repeated model-driven status calls. When a
 4. Reproduce locally with the closest command.
 5. Fix the owning source.
 6. Re-run the local check.
-7. Re-read PR metadata through the app and CI state through the typed observer
+7. Re-read the head with `gh pr view` and CI state through the typed observer
    before claiming the branch is green.
 
 When step 7 requires waiting, do not emit status updates between unchanged
