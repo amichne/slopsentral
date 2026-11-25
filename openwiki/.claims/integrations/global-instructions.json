@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d1bd28d5786b23a58d91df83ef8b40db562f5d5246f48866e979bd3eb94dddbd",
+  "pageVersion": "sha256:aef4006847a55dadabfa9ae46ce5c7eeee25121297abe1ac90d422f8752d5d66",
   "claims": [
     {
       "id": "claim_b6805375cb0e4bbba50ddabc62a3490a",
@@ -36,7 +36,7 @@
       "evidence": [
         {
           "resource": "repo://docs/global-agents.md",
-          "version": "repo-file-v1:sha256:92e6f77ab52adba9e9e7669aeca09f7f3dc9a57a6d3a036865df1e8f107759e6"
+          "version": "repo-file-v1:sha256:4c40d17035467135c4bc21b3ca66d44401b60e2d62903fbf1e1297c8e1c78d97"
         },
         {
           "resource": "repo://tools/install_global_agents.py#L326-L370",
@@ -79,6 +79,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-20T18:23:08.613Z"
+    "at": "2026-11-25T20:41:04.632Z"
   }
 }

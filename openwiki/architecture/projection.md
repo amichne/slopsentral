@@ -5,7 +5,7 @@ description: Follow frozen authored bytes through Pkl evaluation, sealed payload
 tags: [projection, pkl, provenance, providers]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-20T18:23:08.613Z
+    at: 2026-11-25T20:41:04.632Z
 sources:
   - id: openwiki-source-0de19b70b13c7683e196f562
     resource: repo://tools/project-marketplaces.mjs
