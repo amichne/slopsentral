@@ -22,10 +22,12 @@ import os
 import re
 import shlex
 import shutil
+import socket
 import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 import zlib
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -38,6 +40,8 @@ API = f"https://api.github.com/repos/{REPOSITORY}"
 DOWNLOAD = f"https://github.com/{REPOSITORY}/releases/download"
 MAX_BYTES = 64 * 1024 * 1024
 CURL_HTTP_RETURNED_ERROR = 22
+GH_AUTH_REQUIRED = 4
+DOWNLOAD_TIMEOUT = 65
 VERSION = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\Z")
 IDENTITY = re.compile(r"[a-z][a-z0-9-]*\Z")
 LAYOUT_HELPER = "kotlin-horizontalization-check"
@@ -150,9 +154,67 @@ def process(arguments: list[str]) -> Result[bytes]:
     return result.stdout
 
 
-def fetch(url: str) -> Result[bytes]:
+def gh_download(arguments: list[str]) -> tuple[int, bytes]:
+    reader, writer = socket.socketpair()
+    with (
+        reader,
+        writer,
+        subprocess.Popen(
+            ["gh", *arguments],
+            stdin=subprocess.DEVNULL,
+            stdout=writer.fileno(),
+            env={
+                **os.environ,
+                "GH_FORCE_TTY": "",
+                "GH_PROMPT_DISABLED": "1",
+                "GH_NO_UPDATE_NOTIFIER": "1",
+            },
+        ) as child,
+    ):
+        writer.close()
+        deadline = time.monotonic() + DOWNLOAD_TIMEOUT
+        data = bytearray()
+        try:
+            while len(data) <= MAX_BYTES:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise subprocess.TimeoutExpired(arguments, DOWNLOAD_TIMEOUT)
+                reader.settimeout(remaining)
+                chunk = reader.recv(min(65536, MAX_BYTES + 1 - len(data)))
+                if not chunk:
+                    break
+                data.extend(chunk)
+            if len(data) > MAX_BYTES:
+                child.kill()
+            return child.wait(timeout=max(0, deadline - time.monotonic())), bytes(data)
+        finally:
+            if child.poll() is None:
+                child.kill()
+
+
+def fetch(url: str, gh_arguments: list[str]) -> Result[bytes]:
     if sys.stderr.isatty():
         print(f"Downloading {url}", file=sys.stderr, flush=True)
+    try:
+        status, data = gh_download(gh_arguments)
+    except FileNotFoundError:
+        pass
+    except (TimeoutError, subprocess.TimeoutExpired):
+        return Rejected(Reason.DOWNLOAD_FAILED, f"gh exceeded {DOWNLOAD_TIMEOUT} seconds: {url}")
+    except OSError as error:
+        return Rejected(Reason.DOWNLOAD_FAILED, f"Cannot run gh for {url}: {error.strerror}.")
+    else:
+        if len(data) > MAX_BYTES:
+            return Rejected(Reason.DOWNLOAD_FAILED, f"Oversized gh download: {url}")
+        if status == 0:
+            return data
+        if status != GH_AUTH_REQUIRED:
+            return Rejected(Reason.DOWNLOAD_FAILED, f"gh exited {status} for {url}. See stderr.")
+        print("GitHub CLI needs a login. Using curl for this public download.", file=sys.stderr)
+    return curl_download(url)
+
+
+def curl_download(url: str) -> Result[bytes]:
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     authenticated = url.startswith(API + "/") and token is not None
     if authenticated and token is not None and not re.fullmatch(r"[A-Za-z0-9_.-]+", token):
@@ -195,12 +257,14 @@ def fetch(url: str) -> Result[bytes]:
                 input=f"Authorization: Bearer {token}\n".encode() if authenticated else b"",
                 capture_output=True,
                 check=False,
-                timeout=65,
+                timeout=DOWNLOAD_TIMEOUT,
             )
         except OSError as error:
             return Rejected(Reason.DOWNLOAD_FAILED, f"Cannot run curl for {url}: {error.strerror}.")
         except subprocess.TimeoutExpired:
-            return Rejected(Reason.DOWNLOAD_FAILED, f"Download exceeded 65 seconds: {url}")
+            return Rejected(
+                Reason.DOWNLOAD_FAILED, f"Download exceeded {DOWNLOAD_TIMEOUT} seconds: {url}"
+            )
         if result.returncode:
             return download_failure(url, result.returncode, result.stdout)
         if not output.is_file() or output.stat().st_size > MAX_BYTES:
@@ -227,7 +291,7 @@ class _Release:
     @staticmethod
     def latest(version: str | None = None) -> Result[_Release]:
         route = f"/releases/tags/slopsentral-v{version}" if version else "/releases/latest"
-        data = fetch(API + route)
+        data = fetch(API + route, ["api", "--hostname", "github.com", f"repos/{REPOSITORY}{route}"])
         if isinstance(data, Rejected):
             return data
         value = parse(data)
@@ -254,7 +318,20 @@ class _Release:
         url = f"{DOWNLOAD}/slopsentral-v{self.version}/{name}"
         if len(matches) != 1 or matches[0].get("browser_download_url") != url:
             return Rejected(Reason.INVALID_RELEASE, f"Missing unique release asset: {name}")
-        data = fetch(url)
+        data = fetch(
+            url,
+            [
+                "release",
+                "download",
+                f"slopsentral-v{self.version}",
+                "--repo",
+                f"github.com/{REPOSITORY}",
+                "--pattern",
+                name,
+                "--output",
+                "-",
+            ],
+        )
         if isinstance(data, Rejected):
             return data
         if (

@@ -85,9 +85,12 @@ Earlier successful operations remain in effect.
 
 ### If a download or catalog fails
 
-The command prints the download URL on terminal stderr. It retries transient curl failures within a 65-second limit per download.
-For a TLS certificate error, check your proxy settings. If your network uses a private CA, set `CURL_CA_BUNDLE` to its trusted certificate bundle.
-For a GitHub API rate limit, set `GH_TOKEN` or `GITHUB_TOKEN` in the shell.
+The bootstrap downloads the command assets with `gh release download`.
+The shared command uses `gh api` for release metadata and `gh release download` for assets.
+Both use curl when `gh` is absent or reports that login is required. Other `gh` failures report the error and stop.
+In a terminal, the shared command prints the request URL. Each download tool has a 65-second limit per request.
+The curl fallback retries transient failures. For a curl certificate error, check your proxy settings and the trusted CA bundle in `CURL_CA_BUNDLE`.
+For GitHub API rate limits, sign in with `gh auth login` or set `GH_TOKEN` or `GITHUB_TOKEN`.
 A rejected plugin catalog names the release and archive. Include that detail when you report the error.
 
 ## Select a host and plugins

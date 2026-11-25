@@ -8,6 +8,8 @@ Consumers need no Slopsentral checkout, npm, or Pkl.
 Use macOS or Linux for the shell bootstrap.
 The command needs uv and Python 3.12 or 3.13.
 The bootstrap installs pinned uv when it is absent. uv can download Python.
+The bootstrap and shared command prefer a signed-in GitHub CLI for Slopsentral releases.
+If `gh` is absent or requests login, they use curl. The uv bootstrap uses curl.
 If an existing uv is too old, update it before installation.
 For guided setup, install Charm Gum on `PATH`. On macOS, run `brew install gum`.
 On Linux, use [Gum's installation guide](https://github.com/charmbracelet/gum#installation).

@@ -444,6 +444,20 @@ def release_fixture(home: Path, assets: dict[str, bytes]) -> Path:
     _ = (remote / "latest").write_text(json.dumps(metadata))
     binaries = home / "bin"
     binaries.mkdir(exist_ok=True)
+    gh = binaries / "gh"
+    _ = gh.write_text(
+        f"#!{sys.executable}\nimport os,sys\nfrom pathlib import Path\n"
+        "assert os.environ['GH_PROMPT_DISABLED'] == '1' and sys.stdin.read() == ''\n"
+        "args = sys.argv[1:]\n"
+        "if args[:3] == ['api', '--hostname', 'github.com']:\n"
+        " assert args[3] in ('repos/amichne/slopsentral/releases/latest', 'repos/amichne/slopsentral/releases/tags/slopsentral-v4.0.7')\n"
+        " name = 'latest'\n"
+        "else:\n"
+        " assert args[:6] == ['release','download','slopsentral-v4.0.7','--repo','github.com/amichne/slopsentral','--pattern'] and args[7:] == ['--output','-']\n"
+        " name = args[6]\n"
+        f"sys.stdout.buffer.write((Path({str(remote)!r}) / name).read_bytes())\n"
+    )
+    gh.chmod(0o755)
     curl = binaries / "curl"
     _ = curl.write_text(
         f"#!{sys.executable}\nimport sys\nfrom pathlib import Path\n"
@@ -539,6 +553,43 @@ def test_bulk_catalog_rejection_precedes_native_mutation(
     assert all("list" in json.loads(line) for line in log.read_text().splitlines())
 
 
+@pytest.mark.parametrize("gh_status", [1, 4])
+def test_shared_download_falls_back_only_for_login(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, gh_status: int
+) -> None:
+    _ = host_fixture(tmp_path, "codex")
+    _ = release_fixture(tmp_path, {"slopsentral-codex.tar.gz": catalog_archive()})
+    binaries = tmp_path / "bin"
+    _ = (binaries / "gh").write_text(f"#!/bin/sh\nexit {gh_status}\n")
+    monkeypatch.setenv("PATH", str(binaries) + os.pathsep + os.environ["PATH"])
+    result = invoke(tmp_path, "install", "--host", "codex", "--all")
+    if gh_status == 4:
+        assert result.returncode == 0, result.stdout + result.stderr
+        assert "kotlin-engineering" in json.loads(result.stdout)["plugins"]
+    else:
+        assert result.returncode == 1
+        assert "gh exited 1" in json.loads(result.stdout)["detail"]
+
+
+@pytest.mark.parametrize(("size", "detail"), [(0, "exceeded"), (129, "Oversized")])
+def test_gh_download_limits(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, size: int, detail: str
+) -> None:
+    gh = tmp_path / "gh"
+    _ = gh.write_text(
+        f"#!{sys.executable}\nimport sys,time\n"
+        f"sys.stdout.buffer.write(b'x' * {size})\nsys.stdout.flush()\ntime.sleep(10)\n"
+    )
+    gh.chmod(0o755)
+    monkeypatch.setenv("PATH", str(tmp_path))
+    monkeypatch.setattr(cli, "MAX_BYTES", 128)
+    monkeypatch.setattr(cli, "DOWNLOAD_TIMEOUT", 1)
+    result = cli.fetch(cli.API + "/releases/latest", ["api", "fixture"])
+    assert isinstance(result, cli.Rejected)
+    assert result.reason is cli.Reason.DOWNLOAD_FAILED
+    assert detail in result.detail
+
+
 @pytest.mark.parametrize(
     ("exit_code", "status", "detail"), [(60, "000", "CURL_CA_BUNDLE"), (22, "429", "HTTP 429")]
 )
@@ -547,6 +598,9 @@ def test_bulk_download_reports_tls_or_api_failure(
 ) -> None:
     log = host_fixture(tmp_path, "codex")
     curl = tmp_path / "bin/curl"
+    gh = tmp_path / "bin/gh"
+    _ = gh.write_text("#!/bin/sh\nexit 4\n")
+    gh.chmod(0o755)
     _ = curl.write_text(
         f"#!{sys.executable}\nimport sys\n"
         "assert 'Authorization:' not in ' '.join(sys.argv)\n"
@@ -919,9 +973,12 @@ def test_pi_removal_delegates_to_the_release_installer(
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-@pytest.mark.parametrize("existing_uv", [True, False])
+@pytest.mark.parametrize(
+    ("existing_uv", "gh_status"), [(True, None), (False, None), (True, 0), (True, 4), (True, 1)]
+)
 def test_shell_bootstrap_reuses_or_installs_uv(
     tmp_path: Path,
+    gh_status: int | None,
     *,
     existing_uv: bool,
 ) -> None:
@@ -936,6 +993,8 @@ def test_shell_bootstrap_reuses_or_installs_uv(
     _ = fake_uv.write_text(
         f"#!{sys.executable}\nimport json,os,sys\n"
         f"with open({str(log)!r}, 'a') as log: log.write(json.dumps(sys.argv[1:]) + '\\n')\n"
+        "if sys.argv[1:3] == ['run', '--no-project']:\n"
+        " os.execv(sys.executable, [sys.executable, *sys.argv[sys.argv.index('python')+1:]])\n"
         "assert sys.argv[1:4] == ['run', '--locked', '--script']\n"
         "os.execv(sys.executable, [sys.executable, *sys.argv[4:]])\n"
     )
@@ -958,6 +1017,20 @@ def test_shell_bootstrap_reuses_or_installs_uv(
         "shutil.copyfile(source, sys.argv[sys.argv.index('-o') + 1])\n"
     )
     curl.chmod(0o755)
+    if gh_status is not None:
+        gh = binaries / "gh"
+        _ = gh.write_text(
+            f"#!{sys.executable}\nimport os,sys,shutil\nfrom pathlib import Path\n"
+            "assert os.environ['GH_PROMPT_DISABLED'] == '1' and sys.stdin.read() == ''\n"
+            "assert sys.argv[1:6] == ['release','download','--repo','github.com/amichne/slopsentral','--dir']\n"
+            f"if {gh_status}: sys.exit({gh_status})\n"
+            "for name in sys.argv[8::2]:\n"
+            f" source = Path({str(ROOT)!r}) / ('source/hooks' if name.startswith('kotlin-horizontalization-check') else 'tools') / name\n"
+            " shutil.copyfile(source, Path(sys.argv[6]) / name)\n"
+        )
+        gh.chmod(0o755)
+        if gh_status != 4:
+            _ = curl.write_text("#!/bin/sh\nexit 99\n")
     environment = {
         **os.environ,
         "HOME": str(tmp_path),
@@ -972,16 +1045,24 @@ def test_shell_bootstrap_reuses_or_installs_uv(
         text=True,
         check=False,
     )
+    if gh_status == 1:
+        assert result.returncode == 1
+        assert not (tmp_path / ".local/bin/slopsentral").exists()
+        return
     assert result.returncode == 0, result.stdout + result.stderr
     assert (tmp_path / ".local/bin/slopsentral").is_file()
     assert (tmp_path / ".local/bin/uv").exists() is not existing_uv
-    assert json.loads(log.read_text().splitlines()[0])[-2:] == ["self", "install"]
+    assert json.loads(log.read_text().splitlines()[-1])[-2:] == ["self", "install"]
     assert not (tmp_path / ".zshrc").exists()
 
 
 def test_shell_download_failure_stops_before_python(tmp_path: Path) -> None:
     binaries = tmp_path / "bin"
     binaries.mkdir()
+    for utility in ("uname", "mktemp", "rm"):
+        location = shutil.which(utility)
+        assert location is not None
+        (binaries / utility).symlink_to(location)
     curl = binaries / "curl"
     _ = curl.write_text("#!/bin/sh\nexit 22\n")
     curl.chmod(0o755)
@@ -991,7 +1072,7 @@ def test_shell_download_failure_stops_before_python(tmp_path: Path) -> None:
         env={
             **os.environ,
             "HOME": str(tmp_path),
-            "PATH": str(binaries) + os.pathsep + os.environ["PATH"],
+            "PATH": str(binaries),
         },
         capture_output=True,
         text=True,
