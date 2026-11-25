@@ -1,16 +1,13 @@
 ---
 name: "pull-request-lifecycle"
-description: "Use when asked to push a branch, open or update a pull request, or follow PR checks to completion; also when an applicable repository policy requires PR delivery. Local edits and commits use git-change-flow; standalone CI repair uses github-ci-operations."
+description: "Use when asked to push a branch, open or update a pull request, manage stacked PRs, or follow PR checks to completion. Also applies when repository policy requires PR delivery. Use git-change-flow for local edits and github-ci-operations for CI repair."
 ---
 
 # Pull Request Lifecycle
 
-Use this skill to carry code work across the version-control boundary without
-losing evidence. It composes local Git hygiene, GitHub PR operations, and CI
-triage; it must remain useful even when a host-specific GitHub connector is not
-available. Use the connected GitHub app for supported PR operations. Use
-authenticated native `gh` for the local observer or an operation the connector
-cannot perform. Use local `git` for local repository state.
+Use the GitHub CLI (`gh`) for GitHub operations and local `git` for the
+worktree, index, and commits. Check the account with `gh auth status`.
+Outside a checkout, pass `--repo OWNER/REPO` to `gh pr` commands.
 
 Before local Git changes, use `git-change-flow` for branch, staging, and recovery
 decisions. When inspecting checks or repairing CI, use `github-ci-operations`
@@ -34,7 +31,7 @@ for the affected workflow and observation procedure.
   validation evidence, and no known deterministic failures.
 - Babysit checks by reading live check state, logs, and annotations. For
   pending GitHub Actions runs, use the observer exposed by
-  `github-ci-operations` when available, or structured connector reads at
+  `github-ci-operations` when available, or structured `gh pr checks` reads at
   meaningful transitions. Fix the owning source instead of rerunning
   deterministic failures.
 - Never claim a PR is green until the typed required-check observation reports
@@ -52,7 +49,8 @@ for the affected workflow and observation procedure.
    or commits, use `git-change-flow` without entering publication steps.
 
 2. Isolate the branch.
-   If the task is publishable and the checkout is on a shared branch, create a
+   For dependent branches, follow **Stacked pull requests** below. For a single
+   PR, if the task is publishable and the checkout is on a shared branch, create a
    focused topic branch. If unrelated dirty files exist, keep staging and diffs
    path-specific.
 
@@ -69,25 +67,24 @@ for the affected workflow and observation procedure.
    If the requested end state is a pushed branch, report it without opening a PR.
 
 5. Open or update the PR.
-   When the requested end state includes a PR, use the connected GitHub app to
-   detect, inspect, create, or update it. An existing PR needs a mutation only
-   when its content or state must change for the request.
-   If the connector lacks an operation, use:
+   Use `gh pr list` to find an open PR for the intended head and base.
+   Inspect its revision and review state with `gh pr view`.
 
    ```sh
-   gh pr list --head <branch> --state open --limit 2 \
+   gh pr list --head <branch> --base <base> --state open --limit 2 \
      --json number,url,headRefName,baseRefName,state,isDraft
    gh pr view <pr-number> \
      --json number,url,headRefOid,baseRefName,state,isDraft,reviewDecision
    ```
 
-   Open the PR with purpose, changed surface, validation evidence, and residual
-   risk. Prefer draft until local evidence is complete.
+   If no matching PR exists and creation is in scope, use
+   `gh pr create --base <base> --head <branch> --title <title> --body-file <file>`.
+   Include the purpose, changes, validation, and residual risk. Add `--draft`
+   for a draft. Use `gh pr edit` when an existing PR needs a metadata change.
 
 6. Watch checks.
    When checks are requested or support a readiness claim, confirm the PR and
-   head SHA through the connected GitHub app. For a native
-   Actions snapshot, use:
+   head SHA with `gh pr view`. Read the required checks with:
 
    ```sh
    gh pr checks <pr-number> --required \
@@ -101,9 +98,8 @@ for the affected workflow and observation procedure.
    Zero checks stay pending. A changed head returns an error.
    After a timeout, use `resume --timeout auto --json` before `await --json`.
    Renewal keeps the original target and head SHA.
-   For
-   failing Actions runs, use available connector logs or `gh run view <run-id>
-   --log-failed`. An unavailable local observer does not block the PR handoff. Separate
+   For failing Actions runs, read the logs with `gh run view <run-id> --log-failed`.
+   An unavailable local observer does not block the PR handoff. Separate
    product or test failures, generated drift, dependency setup, permissions,
    secrets, cache, and flaky behavior.
 
@@ -114,6 +110,25 @@ for the affected workflow and observation procedure.
    the branch. For pending checks, report
    the pending names and URLs. For external or inaccessible checks, state the
    exact signal that could not be verified.
+
+## Stacked pull requests
+
+Use the `github/gh-stack` extension for a chain of dependent PRs. Check
+`gh stack --help` for the installed commands. A single PR uses built-in `gh pr`.
+
+When branches already exist on the remote, a parent changes, or the whole stack
+should land together, follow [remote stacks](references/remote-stacks.md).
+
+- For a new stack, run `gh stack init --base <trunk> <bottom> <top>`.
+  List branches from base to tip. Inspect an existing stack with
+  `gh stack view --json` and add a new top branch with `gh stack add <branch>`.
+- Validate each branch against its immediate base. For local preparation,
+  stop after the requested branches and commits exist.
+- When publishing the entire stack is authorized, use `gh stack submit`.
+  It pushes the branches, creates draft PRs by default, and can retarget
+  existing PRs. For a branch-only push, push just the named branch with Git.
+- Confirm each published PR's base and head with `gh pr view`. Check each
+  head separately when reporting CI for the stack.
 
 ## Check Green Loop
 
