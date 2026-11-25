@@ -38,10 +38,10 @@ sources:
     resource: repo://tools/tests/pi-runtime.test.mjs
   - id: openwiki-source-1c86dc4352b4d3810fb862e2
     resource: repo://tools/toolchain.json
-generated: { by: "codex", at: "2026-11-20T18:23:08.613Z" }
+generated: { by: "codex", at: "2026-11-25T23:51:07.810Z" }
 verified:
-  - by: openwiki/0.9.0
-    at: 2026-11-25T20:41:04.632Z
+  - by: openwiki/0.6.1
+    at: 2026-11-25T23:51:07.810Z
 ---
 
 # Match checks to the engineering claim
@@ -54,14 +54,14 @@ Run a wider gate only for repository policy, changed consumers, or a named unres
 
 | Surface | Gate | What the result establishes |
 | --- | --- | --- |
-| Python automation | `npm run check:python` | Ruff, strict Pyright within its include list, and selected pytest assertions |
+| Python automation | `python3 tools/toolchain.py run -- slopsentral-check` | Ruff, strict Pyright within its include list, and selected pytest assertions |
 | Source composition | `node tools/validate-source-graph.mjs` | Declared schemas, canonical identities, paths, and graph invariants |
 | Catalog | `node tools/catalog.mjs --check` | Agreement between source composition and the generated catalog |
-| Provider shape | Fresh `project-marketplaces.mjs` output | Native Pkl evaluation, accepted operations, sealed payloads, and no-replace output |
-| Knowledge | `npm run check:docs` | Named coverage, local links, native completion prerequisites, and reviewed byte agreement |
-| Changed prose | `node tools/toolchain.mjs run -- slopsentral-prose changed` | Pinned local prose rules and glossary assessment |
+| Provider shape | Fresh `project_marketplaces.py` output | Native Pkl evaluation, accepted operations, sealed payloads, and no-replace output |
+| Knowledge | `python3 tools/toolchain.py run -- slopsentral-docs check` | Named coverage, local links, native completion prerequisites, and reviewed byte agreement |
+| Changed prose | `python3 tools/toolchain.py run -- slopsentral-prose changed` | Pinned local prose rules and glossary assessment |
 | Offline evaluation controls | `npm run check:evals` | Types, deterministic controls, and adapter contracts without fresh model evidence |
-| Unified version | `npm run check:release` | Synchronized authored product versions and release configuration |
+| Unified version | `python3 tools/toolchain.py run -- uv run --locked python -m tools.release_version check` | Synchronized authored product versions and release configuration |
 
 Use the focused commands in [projection](../architecture/projection.md), [installation](../integrations/installation.md), [profiles](../integrations/profiles.md), and [releases](../operations/releases.md) for their contracts.
 Their guides name the responsible fixtures and tests.
@@ -136,7 +136,7 @@ A local pass does not establish hosted CI or release publication for another rev
 ## Examine the public documentation separately
 
 The [site guide](../../docs/mintlify.md) separates source admission, native Mintlify results, returned content, and browser evidence.
-`npm run docs:check` first rejects missing or stale projected pages.
+`python3 tools/toolchain.py run -- uv run --locked tools/ci.py docs` first rejects missing or stale projected pages.
 It then runs the pinned Mintlify build and examines links, heading anchors, and redirects.
 The ordinary source workflow also runs the projection gate without a path filter.
 

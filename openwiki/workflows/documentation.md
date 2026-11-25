@@ -34,10 +34,10 @@ sources:
     resource: repo://tools/public_docs.py
   - id: openwiki-source-00110e15b75d856174b63939
     resource: repo://tools/python_checks/test_documentation.py
-generated: { by: "codex", at: "2026-11-20T18:23:08.613Z" }
+generated: { by: "codex", at: "2026-11-25T23:51:07.810Z" }
 verified:
-  - by: openwiki/0.9.0
-    at: 2026-11-25T20:41:04.632Z
+  - by: openwiki/0.6.1
+    at: 2026-11-25T23:51:07.810Z
 ---
 
 # Maintain source-backed documentation
@@ -73,7 +73,7 @@ An OpenWiki project keeps the native lifecycle and its stronger admission prereq
 Slopsentral's `bin/slopsentral-docs` uses that same runtime.
 Its project policy lives in `docs/coverage.json`, including the deliberate product-version exceptions.
 The runtime contains no implicit Slopsentral paths or release exceptions.
-The [package assertions](../testing/validation.md#exercise-the-distributed-practice-independently) run shipped bytes in independent Git projects for all four providers.
+The [package assertions](../testing/validation.md#exercise-the-distributed-practice-independently) run shipped bytes in independent Git projects for Codex, Copilot, Amp, and Pi.
 
 The review lock must use a separate output path outside every prepared input.
 It cannot replace a source, document, configuration, or native evidence file.
@@ -107,7 +107,7 @@ Never repair those files by hand or substitute standalone OKF validation.
 After native finalization, use the repository gate:
 
 ```sh
-node tools/toolchain.mjs run -- slopsentral-docs check
+python3 tools/toolchain.py run -- slopsentral-docs check
 ```
 
 A changed source or page invalidates the recorded byte agreement.
@@ -120,7 +120,7 @@ The gate establishes coverage and byte agreement. It does not grade the meaning 
 Assess changed technical prose with the pinned Vale procedure:
 
 ```sh
-node tools/toolchain.mjs run -- slopsentral-prose changed
+python3 tools/toolchain.py run -- slopsentral-prose changed
 ```
 
 Keep the report and examine findings at their reported lines.
@@ -157,8 +157,8 @@ Code examples keep their literal content.
 After source review and native finalization, refresh the public projection:
 
 ```sh
-node tools/toolchain.mjs run -- slopsentral-site sync
-npm run docs:check
+python3 tools/toolchain.py run -- slopsentral-site sync
+python3 tools/toolchain.py run -- uv run --locked tools/ci.py docs
 ```
 
 The first command changes generated site input.

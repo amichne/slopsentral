@@ -6,6 +6,8 @@ tags: [ownership, composition, marketplace, resources]
 sources:
   - id: openwiki-source-2bf8a58918c9cbf16d14dae1
     resource: repo://docs/coverage.json
+  - id: openwiki-source-2a773b8dcd244b49fcf7a60f
+    resource: repo://docs/pkl-projection.md
   - id: openwiki-source-7b9274b65c9eaeeaedaee564
     resource: repo://guidance/source-graph.md
   - id: openwiki-source-817f5a68830289f58734f532
@@ -16,16 +18,16 @@ sources:
     resource: repo://source/skills/reviewable-artifacts/SKILL.md
   - id: openwiki-source-f261246d6145c6810b1500c8
     resource: repo://tools/catalog.mjs
-  - id: openwiki-source-0de19b70b13c7683e196f562
-    resource: repo://tools/project-marketplaces.mjs
+  - id: openwiki-source-24c2e5fb15011b196a066fdc
+    resource: repo://tools/projection/Project.pkl
   - id: openwiki-source-2402abcd09d5c9c6105c476c
     resource: repo://tools/tests/documentation-portability.test.mjs
   - id: openwiki-source-189732a09916d203a41803e6
     resource: repo://tools/validate-source-graph.mjs
-generated: { by: "codex", at: "2026-11-09T13:20:54.909Z" }
+generated: { by: "codex", at: "2026-11-25T23:51:07.810Z" }
 verified:
-  - by: openwiki/0.9.0
-    at: 2026-11-20T18:23:08.613Z
+  - by: openwiki/0.6.1
+    at: 2026-11-25T23:51:07.810Z
 ---
 
 # Source ownership and plugin composition
@@ -85,7 +87,7 @@ Slopsentral's `bin/slopsentral-docs` points to that same runtime.
 Project roots, backend selection, and fingerprint exceptions stay in `docs/coverage.json`.
 
 The [portable procedure](../../source/skills/code-knowledge-base/references/portable-documentation.md) supports another project without a Slopsentral checkout.
-The [package proof](../testing/validation.md) exercises unchanged shipped bytes through all four provider projections.
+The [package proof](../testing/validation.md) exercises unchanged shipped bytes through the Codex, Copilot, Amp, and Pi projections.
 A copied runtime remains a pinned consumer with explicit upstream provenance.
 Do not fork project-specific policy into another runtime implementation.
 

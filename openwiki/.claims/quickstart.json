@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:07f236ae173f2d5764a91f2f015b268e33c5922b8019f54ce057c1e1b6f055fa",
+  "pageVersion": "sha256:9e45d058085bd8351d0f5e563fda41c752e4a2ee340d212922197b559f5a8ed7",
   "claims": [
     {
       "id": "claim_00b3d0c940c943d0bb4ebf94bfc1c873",
@@ -74,25 +74,25 @@
     },
     {
       "id": "claim_ca42cf1e6cb84735a106ee5ef3125bd4",
-      "statement": "A maintainer checkout needs only Node.js and npm; the toolchain resolver supplies Gum, uv, Pkl, and Vale pinned by version and SHA-256.",
+      "statement": "Checkout setup uses system Python to resolve checksum-pinned Gum, uv, Pkl, and Vale. Node.js and npm supply the JavaScript dependencies.",
       "evidence": [
         {
-          "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:add49813dc6f315df8f8107747a62d359b391a90b53f48d7e63adc521894f3ec"
+          "resource": "repo://tools/setup.py#L19-L28",
+          "version": "repo-lines-v1:sha256:3c5565852ba656cc345dc6e9c0e3af4874ce3754f9ba12d40c59c095b79ad1b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiYjQ0OTA0ZjY0YzliN2ZjNTE2YjA0ZDg2ZDZkNTJhNTdlMjE3YTM1ZTVmZjBiNTBlZjg3Y2U1YmQ3ZjE0MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3Mjc2YWQ2NjY5OGE2NzU3ZjQ4MDY4Njk1NTkwMGE1ZmQzOTc0MTJkYzk1NmJiNjEzNmM4NmRkOWU1ZGFhNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJiOTQwMDMyMzY3MzFkNGIzYTEzNTZjYTIxYmU3MjcyM2MxODdhYTY0ZDYwN2Y3ZmE4NDNjNjk1YzJhNmRkMWEifQ"
         },
         {
           "resource": "repo://tools/toolchain.json",
           "version": "repo-file-v1:sha256:3c742837f985e6482a6eb8ee42075ac6adb0a35a99efd1e8960edaa2ea47440f"
         },
         {
-          "resource": "repo://tools/toolchain.mjs",
-          "version": "repo-file-v1:sha256:cd74f6e6149ec0c8c202ab7a6a50c9eaef7e592cb191acb4ffd6960ff98b0211"
+          "resource": "repo://tools/toolchain.py#L290-L311",
+          "version": "repo-lines-v1:sha256:530807c82c2b28e8fde2ca9a2250003d61729e9e57fc604f5009079c832ebabb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MDZjYTgzODIyMDgyOTAwNTJiZThlYWJmZjJmODI2ZmRmMmQ1OGRkOTc4OGJkZmMwYjhhZDYzMjFiNmY1YWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3ZjM3MmQwNThkMzdmYTE5YjMyOTUzMDM1ZTMyOWU0YjIzODQ4ZmY5MWFhZTBlN2VhY2NmN2ExNTg4MmMyMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MDE0OWUwNjlhZDY3ZWNjZjQ3MzY0NmZmMWM3NTAwNTBkMzI5ZDExMDAxOGRjNTc2Njg3OGVhZmExZDYwN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3ZWIxNzJiNGI2YjNlZjI1NDk3Y2ZkOGFmMTFkYzFiYjJiYjVlYTQyNjcwNjE5ZjM1YTgxZTVkNjI5MGZmMGYifQ"
         }
       ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.9.0",
-    "at": "2026-11-25T20:41:04.632Z"
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-25T23:51:07.810Z"
   }
 }

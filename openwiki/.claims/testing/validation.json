@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:08f32b7998d9f7ff4f570b955e7f57c7a3245814bb3a3fa5b6c5b7e5c6f45339",
+  "pageVersion": "sha256:034abf83439cddb6162638c583ef74740bca04fc2b5fe5feabe432f442369feb",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
@@ -46,15 +46,11 @@
     },
     {
       "id": "claim_2194060070df4a6ea691d81a4fd111c6",
-      "statement": "All four provider projection cases execute shipped documentation scripts in independent OKF Git projects, exercise accepted and rejected inputs, and assert that check preserves consumer files, modes, and Git status.",
+      "statement": "The Codex, Copilot, Amp, and Pi projection cases execute shipped documentation scripts in independent OKF Git projects, exercise accepted and rejected inputs, and assert that check preserves consumer files, modes, and Git status.",
       "evidence": [
         {
-          "resource": "repo://tools/tests/documentation-portability.test.mjs#L164-L210",
-          "version": "repo-lines-v1:sha256:eabfe63fef3ba93417119250c779928f12b0e1a9b58725298fdf930a592375e6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1OWQ1MmExOGQ3OTMzMjExN2M0M2QxYTJiNGI5MDljOTAyNDE2NjUzYjMzZTA1YTk4ZTMyMjYxYTM3NDBhNzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjZjliOTNhNjY4ZjViNzY2MTQ0YTcyNzc4MTdkYTAwYjI2YjI4ZWZjY2YwYzcwMDdmMTIyYmIwZDRiMjdmMjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0Mzg1OTM1YjZlNGU2MDNlZTQyMjQzNDViZDFjZTVjMGFlMDRmMzIxZjBkOGM3MDEyM2Q0ZDZhMGE1ZmNmNzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwMWJmMmE1NjhkYmY2MmM0ZTQ4MGNiMTliOGZjM2QxNTNjMzIzMmRjYjc1ZWQ1ZDE5MWIwZGMxODE4YzY3MzIifQ"
-        },
-        {
-          "resource": "repo://tools/tests/documentation-portability.test.mjs#L90-L160",
-          "version": "repo-lines-v1:sha256:e86ac3dd6f1dffe8ff18f4ab52679aec672bbb96533e917697bc76597e4dcefc:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0YzlkZTE2NDlmYjg0MGVlY2FiNmY4ZDcxMDIwY2ZkNjYyNzJjNmU0NzkzYWQxMmQwMzM5MjJjMTRmZDZmNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMjEwOWU2ZjU1OWYxMTExYzAwNzc0MTQwMDM2Y2M3NWQ4YTIxNTE4NjVhYTkxYTg3NmMyMGI1N2Y2ZTg1Y2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3NzlhYjk5YTc1NDQ2M2Q2MWYyYTY3YjIzYTNiN2ZiMjYyYWZjYTk1ZDNiMjY3OWU0Yjk2NTQxNGM4NDE4N2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0Mzg1OTM1YjZlNGU2MDNlZTQyMjQzNDViZDFjZTVjMGFlMDRmMzIxZjBkOGM3MDEyM2Q0ZDZhMGE1ZmNmNzIifQ"
+          "resource": "repo://tools/tests/documentation-portability.test.mjs",
+          "version": "repo-file-v1:sha256:4800c1360530399a4a963d8da2da7a52f112c0ee26dbf86e93252c10580d7d8c"
         }
       ]
     },
@@ -82,7 +78,7 @@
         },
         {
           "resource": "repo://tools/tests/pi-host.test.mjs",
-          "version": "repo-file-v1:sha256:9bcbab303b5ae18fb2c9a54a50841040c62161889946143faf21598117fffe3e"
+          "version": "repo-file-v1:sha256:a686f242e267c46a5d7755f8f4b9d57e97c2845f549032a8e1289c8bf6bc7dea"
         },
         {
           "resource": "repo://tools/tests/pi-runtime.test.mjs",
@@ -96,7 +92,7 @@
       "evidence": [
         {
           "resource": "repo://tools/ci.py",
-          "version": "repo-file-v1:sha256:31e4cb736201f7e3c7a985c430d793c59759187806366c746ebb7725f744e0d4"
+          "version": "repo-file-v1:sha256:376ca753536a9f6aaf9ff7c23c52e70a124ca94152b118d5fb2372d2ef424f3c"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -114,7 +110,7 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/documentation-site.yml",
-          "version": "repo-file-v1:sha256:b00d71e632888ae5e758a1908432619f68df1c4a604ace2b9e04e416d09919e7"
+          "version": "repo-file-v1:sha256:e7602c7ea202c861bd9a2b4744c08d665ab3fcbcc0dd5e684e08b0012720bf41"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -156,11 +152,11 @@
       "evidence": [
         {
           "resource": "repo://.github/actions/toolchain/action.yml",
-          "version": "repo-file-v1:sha256:4264596fd4787726737c87c37ec4443c761189cbdf9a06ebbb4138effff5da7d"
+          "version": "repo-file-v1:sha256:97343b0232e395152f242740c8a467124588d7cfd4c73e3fa8fbfb6fe6b25709"
         },
         {
-          "resource": "repo://tools/ci.py#L107-L140",
-          "version": "repo-lines-v1:sha256:19f9daf94bc7f351c46e843bc88c92c4cf98099b47f20cd18935024585f9e247:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwOTVhNTU1ZmE0ZTU2ZTFhYjZhZTFjM2YyOTc5OTFhNTExN2JkYjE0MGQ1NjYyNTI0MWZmN2FlMmYyMmEzNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmMjAxYjYxNWUzNmRlZmZiNDBiNzMwMmU1NjU5YTI0YWY2OWQyMmI4M2FlYTI4MjA0ZWNkNjZlMTA3ZjAwZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjYzhhZDNhYzIzYzFmYjA5NmJlMDQxZTExN2VkYmJjMWRjZGFhM2ZiMzk4NDY2MTkzNWFjOWU5Y2NiZGJmYjIifQ"
+          "resource": "repo://tools/ci.py#L134-L160",
+          "version": "repo-lines-v1:sha256:a1b404bd86d0648fadbd2e9785fa736659597a577d3c319772e1c5968060ccad:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmOGY4ZmQ4Yjg2M2JkOGJhNDJlZTgwNGUxOTE5MDg3Njc4NzIxY2EyNzVkMGVjMTQ2NTkyNGNlMDA1MDIxZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5YTgwYjZkOTYwYzY2NTQwYTNmMmZmNWJhZDliNTI5YjQ5OWIyMjE4YzE4Y2Q1YWE5MmFlZDBiNTc5MmNhZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3Y2YzM2NiZGU0N2Q1MDEzZTRkMmQyMjYwMGMzNjZlMmViZmJhZGY0NGVmMzAzZjRkYmY5YTMzMjAyYTBmMjEifQ"
         },
         {
           "resource": "repo://tools/toolchain.json",
@@ -170,7 +166,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.9.0",
-    "at": "2026-11-25T20:41:04.632Z"
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-25T23:51:07.810Z"
   }
 }

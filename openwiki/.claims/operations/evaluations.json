@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:4ddd4fef30030d0a4a8ff813ff27d34244eb55819a640f906649de4ef806fa17",
+  "pageVersion": "sha256:af145c7236af5db5c16de6fceecaac524bdc2da02f86f2a781651c96cd549fa9",
   "claims": [
     {
       "id": "claim_d7e9d4a7075f48ebb828e74b6f5f28c5",
@@ -41,16 +41,12 @@
       "statement": "Ready Codex execution cases use isolated private worktrees, native plugin installation, retained streamed events, and the benchmark model, sandbox, and approval settings. The Codex runner disables sandbox network access and web search.",
       "evidence": [
         {
-          "resource": "repo://tools/promptfoo/execution-runtime.mts#L161-L168",
-          "version": "repo-lines-v1:sha256:c8b2cf887ed31c56988801b2c9224bf317705278e15268adaa1dc78517f52459:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjkwOTQ5ZDE4MjhhMDkyNzIxMzIwNWIyZmM1ZWQ3YzNmYzQ1MGM5YWJiY2JhN2UwMTRiOWVhODYzOGRmOTY3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjMyZDdkM2RjZmQwNDZhYThiMGQyZjhmYWMyOTY2ODNiMzY0NDI2MjQ1NjA0ZTliNjBlMzY5NDg5ZjljZTc4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWYyNTQ1ZTBiYzc3NGEzYjAzNTI0NTgwYTFlZmFmY2IxZWQ5MmUwZDBiNjczODI3YTA3ODZlNDNiYjhmNzc3MSJ9"
-        },
-        {
-          "resource": "repo://tools/promptfoo/execution-runtime.mts#L192-L212",
-          "version": "repo-lines-v1:sha256:6df642f4f63134043cb2e0c2ab92f498ddaf805293a95f492db87f016396bdf9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlZTJiZmNkZTM1ODMzMDNjYjZkZTlhYmI4MDhlNDg1Njg0Y2FmMTJjNWY5NGI4MzU4ZjAyMDk0Mzg1ZWYyMDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2NmQ1ZTE5MzU2MzBkMDRkMzI3YzZjYWYwNzVlYzlmN2JmMzFkNjQ0ZjcyNWUyZDQxMWE1ZDY0MjljYjUyNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzNmZmNjE3MDZhMmNmMmUzNDNiZjQwNTIyMjZkMGQyMDEzYjRjMDNjNTAxNDYwODRiNjYyNjk3MmQzMzY4ZTcifQ"
+          "resource": "repo://tools/promptfoo/execution-runtime.mts#L150-L185",
+          "version": "repo-lines-v1:sha256:28ba6dbf2168c800938ba01e6120ada37991e7b06390547b40ab4015d746e64a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwNmNhNzBjNTg1MTMyODMxN2EzMGM0ZGIxYzhhNDA3MDUyYjc5ZGVhODI3YzIxZjg4MjMzZmZlNGRiYTc0NzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4Y2VjMDE1NTE4ZTIyNWM3YzZkNDMwYmIzODMyOWE3YzljYzE3ZDlkY2U5MDg5MGY0MjA5ZDgxNzUzODE5OWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmMjJkN2E3MmE5ZjExYmRhMTc3YmE2ZTVlMjJmMDRmZjk0MjI3YTI4NWQwZGIzNWI1ZmE4MjEzYzJlMWUwZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI5MWZhNmQ3MmVmMzNjZTliYjBkYjYwZjc5NWU4ZDY3Mzk3OTZiOTg5NGM5Y2FmZDZiZTI1NDU2NWY3Njc2NzAifQ"
         },
         {
           "resource": "repo://tools/promptfoo/execution-runtime.mts#L72-L112",
-          "version": "repo-lines-v1:sha256:97af426443a3b0b56aef3e88d3bc311b094d9ffce3f9d2085526ff573275a543:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2YmIwNmIwNzcwMjJhMmI1MWViZjJlN2Q4OGJlMDlhMzc2MmU5YzdhYzdhNDBiZmQ5ZTNmNDIyOGNiOTIxNTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNzcwN2M1OGM4ZGQ5YzJhNjFkODk1YzA4ZTMyNTQ2NWViZDI2NDliOWM5NzEzNjdlNDIwZDI3NmNiZjgyOWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNzIwNTBjYTFjMGY4NTMwYmQzYjFkNDNiOGY1Y2JkZDMwNTU0OTEyNWY2YmM4NDM5MTZjMjYxMzNlYzRhMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhiMTUyOGQzZjJiMzg0MGI4MDg3OTRjZmExNWRlZWU2MzJmZjQ2OTZhOGI4NzY4NWQyNjJhOWY4N2IyYjliN2MifQ"
+          "version": "repo-lines-v1:sha256:d4c363d225afbfa06770bd71b7353a068c63337d53faf030ffc880ce2706011f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2YmIwNmIwNzcwMjJhMmI1MWViZjJlN2Q4OGJlMDlhMzc2MmU5YzdhYzdhNDBiZmQ5ZTNmNDIyOGNiOTIxNTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNzcwN2M1OGM4ZGQ5YzJhNjFkODk1YzA4ZTMyNTQ2NWViZDI2NDliOWM5NzEzNjdlNDIwZDI3NmNiZjgyOWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNzIwNTBjYTFjMGY4NTMwYmQzYjFkNDNiOGY1Y2JkZDMwNTU0OTEyNWY2YmM4NDM5MTZjMjYxMzNlYzRhMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhiMTUyOGQzZjJiMzg0MGI4MDg3OTRjZmExNWRlZWU2MzJmZjQ2OTZhOGI4NzY4NWQyNjJhOWY4N2IyYjliN2MifQ"
         }
       ]
     },
@@ -74,7 +70,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.9.0",
-    "at": "2026-11-17T03:49:32.846Z"
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-25T23:51:07.810Z"
   }
 }
