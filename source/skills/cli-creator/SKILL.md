@@ -1,6 +1,6 @@
 ---
 name: "cli-creator"
-description: "Create or extend composable CLIs, personal utilities, and terminal interfaces. Use for command contracts, JSON output, explicit writes, completion, teach mode, or terminal behavior."
+description: "Create or extend composable CLIs, personal utilities, and terminal interfaces. Use for command contracts, JSON output, explicit writes, completion, teach mode, terminal behavior, or interactive shell prompts with Charm's Gum."
 ---
 
 # CLI Creator
@@ -58,6 +58,7 @@ Preserve useful output with redirected streams, narrow widths, `NO_COLOR`, and l
 - Read [agent commands](references/agent-cli-patterns.md) for external IDs, discovery, resolution, pagination, and JSON contracts.
 - Read [command structure](references/command-building-blocks.md) for parameters, pure transformations, and composable personal tools.
 - Read [terminal behavior](references/terminal-behavior.md) for interactive states, keyboard flow, and degraded output.
+- When a shell interface needs a picker, text prompt, or confirmation, read [Gum prompts](references/gum.md).
 - When teach mode is requested or part of the existing command contract, read
   [teach mode](references/teach-mode.md) for source-backed guidance, privacy limits, and assistant adapters.
 - Reuse [teach.mjs](scripts/teach.mjs) only when the existing Node runtime fits the consumer.

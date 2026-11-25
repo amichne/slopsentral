@@ -1,4 +1,5 @@
 export type Skill =
+  | "cli-creator"
   | "semantic-ratchet"
   | "tdd"
   | "git-change-flow"
@@ -77,6 +78,32 @@ const defects = "Flag every edit that either restores stale bytes or executes de
 
 // The oracle stays outside the rendered prompt. Change a case ID when its meaning changes.
 export const cases: readonly DecisionCase[] = [
+  {
+    id: "gum-format-interactive",
+    skill: "cli-creator",
+    references: ["references/gum.md"],
+    scenario: "A shell CLI accepts an optional format argument. Its owner wants a Gum picker when a person omits the argument. The caller omitted it in a terminal, Gum is installed, and machine-output mode is off. Select the behavior for this invocation.",
+    choices: {
+      A: "Capture the picker result, validate the format, and stop if the person cancels.",
+      B: "Reject the invocation because the caller omitted the format argument.",
+      C: "Use the first format if the picker exits unsuccessfully.",
+    },
+    expected: ["A"],
+    rationale: "The terminal and missing argument enable the picker. Cancellation leaves the operation unstarted.",
+  },
+  {
+    id: "gum-format-unattended",
+    skill: "cli-creator",
+    references: ["references/gum.md"],
+    scenario: "A shell CLI accepts an optional format argument and offers a Gum picker in a terminal. A CI job omits the format, disconnects stdin, and has Gum installed. The command has no default format. Select the behavior for this invocation.",
+    choices: {
+      A: "Open the picker because Gum is installed.",
+      B: "Return the first supported format so the job can continue.",
+      C: "Exit nonzero and tell the caller on stderr how to supply the format.",
+    },
+    expected: ["C"],
+    rationale: "The job cannot answer the prompt. The command has no format to use.",
+  },
   archiveCase("digest", "The input uses @Classpath. The task emits the SHA-256 of the complete first JAR file.", stale,
     ["time", "service", "entries", "propsOrder", "rename"], ["A", "C", "D"],
     "Repacking or reordering distinct properties changes raw bytes while preserving the normalized classpath. Renaming alone preserves the emitted digest."),
