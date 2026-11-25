@@ -83,7 +83,7 @@ Profile contracts keep their own versions.
 Run the focused resource proof with pinned Pkl:
 
 ```sh
-node tools/toolchain.mjs run -- node --test tools/tests/workflow-resources.test.mjs
+python3 tools/toolchain.py run -- node --test tools/tests/workflow-resources.test.mjs
 node tools/validate-source-graph.mjs
 ```
 

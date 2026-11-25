@@ -8,7 +8,7 @@
     ],
     "checks_all": [
       "validate-source-graph",
-      "project-marketplaces"
+      "project_marketplaces\\.py"
     ]
   },
   {
@@ -34,7 +34,7 @@
     ],
     "checks_all": [
       "validate-source-graph",
-      "project-marketplaces"
+      "project_marketplaces\\.py"
     ]
   },
   {

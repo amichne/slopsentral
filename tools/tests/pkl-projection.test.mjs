@@ -103,7 +103,7 @@ for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot'
     fs.cpSync(path.join(repo, 'source/schemas'), path.join(runtime, 'source/schemas'), { recursive: true });
     fs.symlinkSync(path.join(root, 'node_modules'), path.join(runtime, 'node_modules'), 'dir');
     // Copy the current projector unchanged so this proves current mapping compatibility, not an old projector replay.
-    for (const name of ['project-marketplaces.mjs', 'catalog.mjs', 'resource-contract.mjs', 'routing-source-evidence.mjs'])
+    for (const name of ['project-marketplaces.mjs', 'project_marketplaces.py', 'catalog.mjs', 'resource-contract.mjs', 'routing-source-evidence.mjs'])
       fs.copyFileSync(path.join(root, 'tools', name), path.join(runtime, 'tools', name));
     fs.cpSync(path.join(root, 'tools/projection'), path.join(runtime, 'tools/projection'), { recursive: true });
     fs.mkdirSync(path.join(runtime, 'source/schemas/primitives'), { recursive: true });
@@ -384,7 +384,7 @@ test('atomic publication preserves existing empty directories and admits one com
 // Exercise the native typed boundary, independently of the source graph gate.
 test('Pkl rejects impossible asset variants and unknown nested input fields', native, t => {
   const dir = temporary(t);
-  for (const name of ['Schema.pkl', 'Decode.pkl', 'Targets.pkl', 'Project.pkl'])
+  for (const name of ['Schema.pkl', 'Decode.pkl', 'Targets.pkl', 'Project.pkl', 'Amp.pkl', 'Pi.pkl'])
     fs.copyFileSync(path.join(root, 'tools/projection', name), path.join(dir, name));
   const base = { type: 'SKILL', name: 'fixture', sourcePath: 'source/skills/fixture', sha256: 'sha256:' + 'a'.repeat(64) };
   const references = [

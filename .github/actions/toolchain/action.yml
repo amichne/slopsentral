@@ -13,6 +13,6 @@ runs:
       env:
         PROFILE: ${{ inputs.profile }}
       run: |
-        node tools/toolchain.mjs fetch --profile "$PROFILE"
-        node tools/toolchain.mjs env --profile "$PROFILE" >> "$GITHUB_ENV"
-        node tools/toolchain.mjs paths --profile "$PROFILE" >> "$GITHUB_PATH"
+        python3 tools/toolchain.py fetch --profile "$PROFILE"
+        python3 tools/toolchain.py env --profile "$PROFILE" >> "$GITHUB_ENV"
+        python3 tools/toolchain.py paths --profile "$PROFILE" >> "$GITHUB_PATH"

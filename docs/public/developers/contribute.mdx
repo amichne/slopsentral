@@ -10,15 +10,15 @@ Change canonical source, run the gates for that surface, and regenerate affected
 
 ## Prepare a checkout
 
-Install Node.js and npm. Everything else comes from [the toolchain manifest](https://github.com/amichne/slopsentral/blob/main/tools/toolchain.json),
+Install Python 3, Node.js, and npm. The Python bootstrap reads [the toolchain manifest](https://github.com/amichne/slopsentral/blob/main/tools/toolchain.json),
 which pins uv, Pkl, and Vale to exact versions and SHA-256 digests.
 Prepare the checkout:
 
 ```sh
-npm run setup
+python3 tools/toolchain.py run -- slopsentral-setup
 ```
 
-`node tools/toolchain.mjs run -- COMMAND` downloads and verifies the pinned tools into
+`python3 tools/toolchain.py run -- COMMAND` downloads and verifies the pinned tools into
 `~/.cache/slopsentral/toolchain`, then runs the command with those tools and `bin/` first
 on `PATH`. It sets `PKL_BIN` and `VALE_BIN` unless you set them yourself, and changes
 nothing outside the child process. `uv.toml` requires the exact uv version, so a
@@ -26,7 +26,7 @@ different uv fails with a named error. The npm scripts already use the runner.
 For the command from source, run:
 
 ```sh
-node tools/toolchain.mjs run -- uv run --locked --script tools/slopsentral.py self install
+python3 tools/toolchain.py run -- uv run --locked --script tools/slopsentral.py self install
 ```
 
 The [Worktrunk runbook](/maintainers/contribute) describes hooks for CLI-owned worktrees.
@@ -36,13 +36,13 @@ Host-managed worktrees keep their host lifecycle.
 
 | Changed surface | Gate |
 | --- | --- |
-| Python automation | `npm run check:python` |
+| Python automation | `python3 tools/toolchain.py run -- slopsentral-check` |
 | Marketplace or plugin composition | Graph and fresh provider projections in [plugins and profiles](/developers/composition#admission-and-projection) |
 | Pi installer or release | `npm run check:pi`, Pi Node tests, and focused Python Pi tests |
 | Unified releases | `npm run check:release` and `node --test tools/tests/release-please.test.mjs` |
 | Evaluations | `npm run check:evals` |
-| Prose | `node tools/toolchain.mjs run -- slopsentral-prose changed` |
-| Documentation | `npm run check:docs` and `npm run docs:check` |
+| Prose | `python3 tools/toolchain.py run -- slopsentral-prose changed` |
+| Documentation | `python3 tools/toolchain.py run -- slopsentral-docs check` and `python3 tools/toolchain.py run -- uv run --locked tools/ci.py docs` |
 
 [Repository instructions](https://github.com/amichne/slopsentral/blob/main/AGENTS.md) define the exact surface-specific commands.
 `npm run verify` combines repository gates for integration.

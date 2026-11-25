@@ -17,24 +17,24 @@ test("source validation projects both harnesses through pinned local Pkl", () =>
   assert.match(validateWorkflow, /uv run --locked tools\/ci.py native/);
   const verifier = read("tools/verify_marketplaces.py");
   assert.match(verifier, /"codex", "github-copilot"/);
-  assert.match(verifier, /tools\/project-marketplaces.mjs/);
-  assert.match(read("tools/ci.py"), /"tools\/toolchain\.mjs", "fetch", "--profile", "ci"/);
+  assert.match(verifier, /tools\/project_marketplaces\.py/);
+  assert.match(read("tools/ci.py"), /"tools\/toolchain\.py", "fetch", "--profile", "ci"/);
   assert.ok(validateWorkflow.indexOf('Install checksum-verified native tools') < validateWorkflow.indexOf('Validate source, Python'));
 
 });
 
 test("publication projects a harness matrix through the same local Pkl boundary", () => {
-  assert.match(publicationWorkflow, /node tools\/project-marketplaces.mjs --source \./);
+  assert.match(publicationWorkflow, /python3 tools\/project_marketplaces\.py --source \./);
   assert.match(publicationWorkflow, /--harness '\$\{\{ matrix\.harness \}\}'/);
   assert.match(publicationWorkflow, /uses: \.\/\.github\/actions\/toolchain/);
-  assert.match(publicationWorkflow, /npm ci --ignore-scripts/);
+  assert.deepEqual(publicationWorkflow.match(/run: npm ci[^\n]*/g), Array(2).fill("run: npm ci --omit=dev --ignore-scripts"));
   assert.doesNotMatch(publicationWorkflow, /amichne\/projeKtor|intelligence project/);
 });
 
 test("publication maps each projection to its dedicated harness branch", () => {
   assert.match(publicationWorkflow, /harness: codex\s+branch: harness\/codex/);
   assert.match(publicationWorkflow, /harness: github-copilot\s+branch: harness\/github-copilot/);
-  assert.match(publicationWorkflow, /harness: dotagents\s+branch: harness\/dotagents/);
+  assert.match(publicationWorkflow, /harness: claude\s+branch: harness\/claude/);
   assert.match(publicationWorkflow, /tools\/publish.py harness/);
   assert.doesNotMatch(publicationWorkflow, /git push origin "HEAD:\$\{GITHUB_REF_NAME\}"/);
 });
@@ -71,5 +71,5 @@ test("every workflow provisions tools from the manifest, never a version manager
       assert.match(workflow, /uses: \.\/\.github\/actions\/toolchain/, name);
     }
   }
-  assert.match(read(".github/actions/toolchain/action.yml"), /node tools\/toolchain\.mjs fetch/);
+  assert.match(read(".github/actions/toolchain/action.yml"), /python3 tools\/toolchain\.py fetch/);
 });

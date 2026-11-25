@@ -37,8 +37,8 @@ with tempfile.TemporaryDirectory(prefix="slopsentral-projections-") as temporary
     for harness in ("codex", "github-copilot", "amp"):
         result = subprocess.run(
             [
-                "node",
-                "tools/project-marketplaces.mjs",
+                "python3",
+                "tools/project_marketplaces.py",
                 "--source",
                 ".",
                 "--harness",

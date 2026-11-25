@@ -37,6 +37,7 @@ See [plugins and profiles](developers/composition.md) and [hooks and resources](
 | Host | Package and capability limits |
 | --- | --- |
 | Codex | Native marketplace plugins, skills, agents, hooks, and explicit workflow profiles |
+| Claude Code | Native marketplace plugins with skills, Markdown agents, and a session instruction hook. |
 | GitHub Copilot | Native plugin projection with provider-specific adapters |
 | Amp | Directory plugins with skills and turn-start instructions. Hooks, agents, and MCP configuration remain reference-only. Profiles are unsupported. |
 | Pi | Native packages, skills, review prompts, and event adapters. The shared command installs the aggregate. |

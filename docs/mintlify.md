@@ -25,7 +25,7 @@ Use the [portable procedure](../source/skills/code-knowledge-base/references/por
 Install the pinned site tools through checkout setup:
 
 ```sh
-npm run setup
+python3 tools/toolchain.py run -- slopsentral-setup
 ```
 
 1. Change the mapped canonical document.
@@ -35,7 +35,7 @@ npm run setup
 5. Refresh the generated public pages.
 
 ```sh
-node tools/toolchain.mjs run -- slopsentral-site sync
+python3 tools/toolchain.py run -- slopsentral-site sync
 ```
 
 The npm alias uses the same operation:
@@ -47,7 +47,7 @@ npm run docs:sync
 Examine the projection and Mintlify input before a push:
 
 ```sh
-npm run docs:check
+python3 tools/toolchain.py run -- uv run --locked tools/ci.py docs
 ```
 
 That command examines the projection, Mintlify configuration, navigation, local links, heading anchors, and redirects.
@@ -77,7 +77,7 @@ Package publication and a passing source build do not establish website publicat
 Examine the live site with:
 
 ```sh
-node tools/toolchain.mjs run -- slopsentral-site live
+python3 tools/toolchain.py run -- slopsentral-site live
 ```
 
 The command compares every projected page's normalized rendered Markdown content with the expected canonical blocks.

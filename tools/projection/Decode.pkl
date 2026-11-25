@@ -69,9 +69,10 @@ function reference(raw: Dynamic): Schema.Asset =
       .toTyped(Schema.AgentReference)
   else if (raw.type == "HOOK")
     (
-      checked(raw, List("type", "name", "sourcePath", "sha256", "hook"))
+      checked(raw, List("type", "name", "sourcePath", "sha256", "hook", "supportFiles"))
         .toTyped(Schema.HookReference)
     ) {
+      supportFiles = raw.getPropertyOrNull("supportFiles")?.toList() ?? List()
       hook = module.hook(raw.hook)
     }
   else

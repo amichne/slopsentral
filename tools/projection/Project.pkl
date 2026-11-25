@@ -12,14 +12,17 @@ import "Targets.pkl"
 local input = Decode.input((new json.Parser {}).parse(read(read("prop:input"))))
 local selectedHarness: Schema.Harness = read("prop:harness")
 local outputRoot =
-  if (selectedHarness == "codex" || selectedHarness == "dotagents")
+  if (selectedHarness == "codex")
     ".agents/plugins"
+  else if (selectedHarness == "claude")
+    "plugins"
   else if (selectedHarness == "amp")
     ".amp/plugins"
   else if (selectedHarness == "pi")
     ".pi/slopsentral"
   else
     ".github/plugin"
+local catalogRoot = if (selectedHarness == "claude") ".claude-plugin" else outputRoot
 local commandPath = Regex("\\bhooks/[A-Za-z0-9_.-]+")
 local acronyms =
   Map(
@@ -82,7 +85,9 @@ function hooks(p: Schema.Plugin): List<Schema.HookReference> =
     .filter((r) -> r is Schema.HookReference)
     .map((r) -> r as Schema.HookReference)
 function automaticCodexHooks(p: Schema.Plugin): List<Schema.HookReference> =
-  hooks(p).filter((r) -> r.hook.codexActivation == "automatic").sortBy((r) -> referenceTarget(r))
+  hooks(p)
+    .filter((r) -> r.hook.codexActivation == "automatic")
+    .sortBy((r) -> referenceTarget(r))
 function agents(p: Schema.Plugin): List<Schema.AgentReference> =
   p.references
     .filter((r) -> r is Schema.AgentReference)
@@ -149,8 +154,6 @@ function codex(p: Schema.Plugin): Targets.CodexPlugin = new {
   hooks =
     if (registeredHooks.isEmpty)
       null
-    else if (selectedHarness == "dotagents")
-      "./hooks.json"
     else
       registeredHooks.map((r) -> "./" + referenceTarget(r))
   mcpServers = if (p.mcp != null) "./.mcp.json" else null
@@ -179,22 +182,32 @@ function codex(p: Schema.Plugin): Targets.CodexPlugin = new {
   }
 }
 
-function combinedCodexHooks(p: Schema.Plugin): Schema.HookAdapter = new {
-  local adapters = automaticCodexHooks(p).map((r) -> adapter(r))
-  hooks {
-    for (event in adapters.flatMap((a) -> a.hooks.keys.toList()).distinct.sort()) {
-      [event] {
-        for (a in adapters) {
-          for (group in a.hooks.getOrNull(event) ?? new Listing<Schema.HookGroup> {}) {
-            group
+// Only the shared instruction injector implements Claude's SessionStart protocol.
+function claudeContext(p: Schema.Plugin): List<Schema.HookGroup> =
+  automaticCodexHooks(p)
+    .flatMap((r) -> r.hook.adapter.hooks.getOrNull("SessionStart")?.toList() ?? List())
+    .flatMap((group) ->
+      group.hooks
+        .toList()
+        .filter((c) ->
+          c.command.startsWith("uv run --locked --script hooks/inject-instruction-context.py ")
+        )
+        .map((c) -> new Schema.HookGroup {
+          matcher = group.matcher
+          hooks {
+            new Schema.Command {
+              type = "command"
+              command =
+                "PLUGIN_ROOT=\"${CLAUDE_PLUGIN_ROOT}\" "
+                  + rewritten(c.command).replaceAll("$PLUGIN_ROOT", "${CLAUDE_PLUGIN_ROOT}")
+              timeout = c.timeout
+              statusMessage = c.statusMessage
+            }
           }
-        }
-      }
-    }
-  }
-}
+        })
+    )
 
-function agentPlugin(p: Schema.Plugin): Targets.AgentPlugin = new {
+function claude(p: Schema.Plugin): Targets.ClaudePlugin = new {
   name = p.name
   version = p.version
   description = p.description
@@ -329,6 +342,25 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
         source = r.sourcePath
         target = referenceTarget(r)
       })
+      + hooks(p)
+        .flatMap((r) ->
+          r.supportFiles.map((file) -> new Schema.Copy {
+            source = "source/" + file
+            target = file
+          })
+        )
+      + (
+        if (selectedHarness == "pi" && (!hooks(p).isEmpty || !refs(p, "INSTRUCTION").isEmpty))
+          List(
+            new Schema.Copy {
+              source = "source/hooks/pi/adapter.ts"
+              target = "hooks/pi-adapter.ts"
+            },
+            new Schema.Copy { source = "source/hooks/pi/controls.ts"; target = "hooks/controls.ts" },
+          )
+        else
+          List()
+      )
       + (
         if (selectedHarness != "github-copilot" && p.mcp != null)
           List(new Schema.Copy {
@@ -361,17 +393,13 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
           jsonFile("package.json", Map("type", "module", "version", p.version))
           jsonFile("capabilities.json", new Amp.Capabilities {})
         }
-        when (selectedHarness == "dotagents") {
-          jsonFile("plugin.json", agentPlugin(p))
-          when (!automaticCodexHooks(p).isEmpty) {
-            jsonFile("hooks.json", combinedCodexHooks(p))
+        when (selectedHarness == "claude") {
+          jsonFile(".claude-plugin/plugin.json", claude(p))
+          when (!claudeContext(p).isEmpty) {
+            jsonFile("hooks/hooks.json", Map("hooks", Map("SessionStart", claudeContext(p))))
           }
         }
-        when (
-          selectedHarness == "codex"
-            || (selectedHarness == "dotagents"
-              && (!automaticCodexHooks(p).isEmpty || !agents(p).isEmpty || p.mcp != null))
-        ) {
+        when (selectedHarness == "codex") {
           jsonFile(".codex-plugin/plugin.json", codex(p))
         }
         when (selectedHarness == "github-copilot") {
@@ -385,7 +413,7 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
           )
         }
         for (r in agents(p)) {
-          when (selectedHarness != "amp" && selectedHarness != "pi") {
+          when (selectedHarness == "codex" || selectedHarness == "github-copilot") {
             textFile("agents/" + basename(r.sourcePath).replaceLast(".md", ".toml"), agentToml(r))
           }
           when (selectedHarness == "github-copilot") {
@@ -393,8 +421,7 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
           }
         }
         when (
-          selectedHarness != "amp"
-            && selectedHarness != "pi"
+          (selectedHarness == "codex" || selectedHarness == "github-copilot")
             && (!refs(p, "INSTRUCTION").isEmpty || !agents(p).isEmpty)
         ) {
           textFile("AGENTS.md", agentsIndex(p))
@@ -431,8 +458,12 @@ function pluginPlan(p: Schema.Plugin): Schema.PluginPlan = new {
 }
 
 local plans = input.plugins.toList().map((p) -> pluginPlan(p))
-local marketplace: Targets.CodexMarketplace | Targets.CopilotMarketplace | Amp.Catalog | Pi.Catalog =
-  if (selectedHarness == "codex" || selectedHarness == "dotagents")
+local marketplace: Targets.CodexMarketplace
+  | Targets.CopilotMarketplace
+  | Targets.ClaudeMarketplace
+  | Amp.Catalog
+  | Pi.Catalog =
+  if (selectedHarness == "codex")
     new Targets.CodexMarketplace {
       name = input.name
       interface = new { displayName = title(input.name) }
@@ -443,6 +474,19 @@ local marketplace: Targets.CodexMarketplace | Targets.CopilotMarketplace | Amp.C
             name = p.name
             source = new { path = "./" + outputRoot + "/" + p.name }
             category = pluginCategory(p.tags)
+          })
+    }
+  else if (selectedHarness == "claude")
+    new Targets.ClaudeMarketplace {
+      description = input.description
+      name = input.name
+      owner = input.owner
+      plugins =
+        input.plugins
+          .toList()
+          .map((p) -> new Targets.ClaudeEntry {
+            name = p.name
+            source = "./" + outputRoot + "/" + p.name
           })
     }
   else if (selectedHarness == "pi")
@@ -491,7 +535,7 @@ output {
     harness = selectedHarness
     plugins = plans
     files =
-      List(jsonFile(outputRoot + "/marketplace.json", marketplace))
+      List(jsonFile(catalogRoot + "/marketplace.json", marketplace))
         + (
           if (selectedHarness == "pi")
             List(
@@ -503,7 +547,7 @@ output {
         )
         + (
           if (selectedHarness != "github-copilot" && input.phase == "SEALED")
-            List(jsonFile(outputRoot + "/marketplace-lock.json", lock))
+            List(jsonFile(catalogRoot + "/marketplace-lock.json", lock))
           else
             List()
         )

@@ -3,7 +3,7 @@
 Run the checks for each surface the change touches. `npm run verify` runs the
 full local gate. [The toolchain manifest](../tools/toolchain.json) pins every
 external tool; run commands outside npm scripts through
-`node tools/toolchain.mjs run --`. Missing tools or unassessed effects do not
+`python3 tools/toolchain.py run --`. Missing tools or unassessed effects do not
 pass a gate.
 
 ## Source graph
@@ -14,25 +14,27 @@ evals, or catalogs:
 ```bash
 node tools/validate-source-graph.mjs
 node tools/catalog.mjs --check
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
-node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp
+python3 tools/project_marketplaces.py --source . --harness codex --out /tmp/slopsentral-codex
+python3 tools/project_marketplaces.py --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+python3 tools/project_marketplaces.py --source . --harness amp --out /tmp/slopsentral-amp
+python3 tools/project_marketplaces.py --source . --harness claude --out /tmp/slopsentral-claude
+python3 tools/project_marketplaces.py --source . --harness pi --out /tmp/slopsentral-pi
 git diff --check
 ```
 
-Run them through `node tools/toolchain.mjs run --`, which supplies the pinned Pkl
+Run them through `python3 tools/toolchain.py run --`, which supplies the pinned Pkl
 through `PKL_BIN`; projection itself never downloads a runtime or replaces an
 existing tree. Use fresh output directories.
 
 ## Python
 
-Run `npm run check:python` for Ruff, strict Pyright, and pytest under the exact
+Run `python3 tools/toolchain.py run -- slopsentral-check` for Ruff, strict Pyright, and pytest under the exact
 uv pin. The `python-tooling` skill owns PEP 723, adjacent locks, and portable
 execution.
 
 ## Prose and explanations
 
-Run `node tools/toolchain.mjs run -- slopsentral-prose changed`, keep its report, and review the
+Run `python3 tools/toolchain.py run -- slopsentral-prose changed`, keep its report, and review the
 located findings. For source changes, examine affected explanations through the
 [documentation procedure](../docs/documentation.md). For changed bundled assets,
 refresh and verify the portable snapshot through its producer.

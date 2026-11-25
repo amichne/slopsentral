@@ -48,13 +48,15 @@ After a composition edit, run:
 
 ```sh
 node tools/validate-source-graph.mjs
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
-node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp
+python3 tools/project_marketplaces.py --source . --harness codex --out /tmp/slopsentral-codex
+python3 tools/project_marketplaces.py --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+python3 tools/project_marketplaces.py --source . --harness amp --out /tmp/slopsentral-amp
+python3 tools/project_marketplaces.py --source . --harness claude --out /tmp/slopsentral-claude
+python3 tools/project_marketplaces.py --source . --harness pi --out /tmp/slopsentral-pi
 git diff --check
 ```
 
-Run them through `node tools/toolchain.mjs run --`, which supplies the pinned Pkl, and use fresh destinations.
+Run them through `python3 tools/toolchain.py run --`, which supplies the pinned Pkl, and use fresh destinations.
 The [projection runbook](/maintainers/projection) includes runtime setup and Pi packaging.
 These gates establish composition and package content.
 Native discovery and model behavior need separate host evidence.

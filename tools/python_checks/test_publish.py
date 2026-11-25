@@ -30,7 +30,6 @@ def test_invalid_publication_has_no_effect_plan(arguments: list[str]) -> None:
     [
         (Destination.CODEX, ".agents/plugins"),
         (Destination.AMP, ".amp/plugins"),
-        (Destination.DOTAGENTS, ".agents/plugins"),
     ],
 )
 def test_valid_projection_retains_source_identity(
@@ -45,6 +44,20 @@ def test_valid_projection_retains_source_identity(
     assert inspect(parsed) is parsed
     _ = (tmp_path / "source.txt").write_text("authored source must not publish")
     assert isinstance(inspect(parsed), Failure)
+
+
+def test_claude_publication_requires_catalog_and_plugins(tmp_path: Path) -> None:
+    catalog = tmp_path / ".claude-plugin"
+    catalog.mkdir()
+    _ = (catalog / "marketplace.json").write_text("{}")
+    _ = (catalog / "marketplace-lock.json").write_text("{}")
+    plugin = tmp_path / "plugins/example/.claude-plugin"
+    plugin.mkdir(parents=True)
+    parsed = parse(["harness", str(tmp_path), "harness/claude", "main", "a" * 40])
+    assert isinstance(parsed, Publication)
+    assert isinstance(inspect(parsed), Failure)
+    _ = (plugin / "plugin.json").write_text("{}")
+    assert inspect(parsed) is parsed
 
 
 def test_symlink_projection_is_rejected(tmp_path: Path) -> None:

@@ -101,7 +101,7 @@ async function runExecution(host: ExecutionHost, item: ExecutionCase, fixture: F
 
     stage = "provisioning";
     const marketplace = join(temporary, "marketplace");
-    await save("projection.json", await required(process.execPath, [join(repository, "tools/project-marketplaces.mjs"), "--source", repository, "--harness", host, "--out", marketplace], home, env, signal));
+    await save("projection.json", await required("python3", [join(repository, "tools/project_marketplaces.py"), "--source", repository, "--harness", host, "--out", marketplace], home, env, signal));
     await cp(marketplace, join(artifacts, "marketplace"), { recursive: true });
     const provision = [];
     const amp = process.env.AMP_BIN ?? "amp";
