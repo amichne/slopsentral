@@ -32,10 +32,10 @@ sources:
     resource: repo://tools/toolchain.json
   - id: openwiki-source-3d889b7c5ac4531f061827ed
     resource: repo://tools/toolchain.mjs
-generated: { by: "codex", at: "2026-11-20T18:23:08.613Z" }
+generated: { by: "codex", at: "2026-11-25T20:41:04.632Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-20T18:23:08.613Z
+    at: 2026-11-25T20:41:04.632Z
 ---
 
 # Slopsentral quickstart
@@ -66,7 +66,7 @@ A plugin installation grants no authority to publish, deploy, or change personal
 
 ## Prepare a maintainer checkout
 
-Install Node.js and npm. [The toolchain manifest](../tools/toolchain.json) pins uv, Pkl,
+Install Node.js and npm. [The toolchain manifest](../tools/toolchain.json) pins Gum, uv, Pkl,
 and Vale by version and SHA-256, and `node tools/toolchain.mjs run --` runs a command with
 those tools first on `PATH`. From the repository root:
 

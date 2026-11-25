@@ -22,10 +22,10 @@ sources:
     resource: repo://tools/toolchain.json
   - id: openwiki-source-fd7a7b438f5903a2a9ba6c2f
     resource: repo://uv.toml
-generated: { by: "codex", at: "2026-11-20T18:23:08.613Z" }
+generated: { by: "codex", at: "2026-11-25T20:41:04.632Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-20T18:23:08.613Z
+    at: 2026-11-25T20:41:04.632Z
 ---
 
 # Change source with linked evidence
@@ -57,7 +57,7 @@ Install Node.js and npm, then prepare the checkout:
 npm run setup
 ```
 
-The npm scripts run through `node tools/toolchain.mjs run --`, which fetches the uv, Pkl,
+The npm scripts run through `node tools/toolchain.mjs run --`, which fetches the Gum, uv, Pkl,
 and Vale versions pinned with SHA-256 digests in [the toolchain manifest](../../tools/toolchain.json)
 and puts them first on `PATH` for that command only.
 `uv.toml` requires the exact uv version, so another uv fails with a named error.

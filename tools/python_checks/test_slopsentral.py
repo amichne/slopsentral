@@ -40,7 +40,7 @@ def test_public_help_and_explicit_host(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr
     for command in ["install", "update", "remove", "self", "kotlin-horizontalization"]:
         assert command in result.stdout
-    rejected = invoke(tmp_path, "install")
+    rejected = invoke(tmp_path, "install", "--plugin", "software-engineering")
     assert rejected.returncode == 2
     assert "--host" in rejected.stderr
     assert not (tmp_path / "data").exists()
@@ -62,7 +62,7 @@ def test_installed_horizontalization_is_offline_and_advisory(tmp_path: Path) -> 
         "UV_CACHE_DIR": str(tmp_path / "uv-cache"),
         "PATH": str(tmp_path / ".local/bin") + os.pathsep + os.environ["PATH"],
     }
-    # Prepare the pinned runtime before the offline operation, including fzf.
+    # Prepare the pinned runtime before the offline operation.
     ready = subprocess.run(
         ["slopsentral", "--help"],
         cwd=tmp_path,
@@ -324,6 +324,7 @@ def host_fixture(home: Path, host: str, *, disabled: bool = False, fail: bool = 
     )
     _ = executable.write_text(
         f"#!{sys.executable}\nimport json,sys\n"
+        "assert sys.stdin.read() == ''\n"
         f"with open({str(log)!r}, 'a') as log: log.write(json.dumps(sys.argv[1:]) + '\\n')\n"
         f"marketplaces = {marketplaces!r}\nplugins = {plugins!r}\n"
         "if sys.argv[1:4] == ['plugin','marketplace','list']: print(json.dumps(marketplaces))\n"
@@ -443,10 +444,25 @@ def release_fixture(home: Path, assets: dict[str, bytes]) -> Path:
     _ = (remote / "latest").write_text(json.dumps(metadata))
     binaries = home / "bin"
     binaries.mkdir(exist_ok=True)
+    gh = binaries / "gh"
+    _ = gh.write_text(
+        f"#!{sys.executable}\nimport os,sys\nfrom pathlib import Path\n"
+        "assert os.environ['GH_PROMPT_DISABLED'] == '1' and sys.stdin.read() == ''\n"
+        "args = sys.argv[1:]\n"
+        "if args[:3] == ['api', '--hostname', 'github.com']:\n"
+        " assert args[3] in ('repos/amichne/slopsentral/releases/latest', 'repos/amichne/slopsentral/releases/tags/slopsentral-v4.0.7')\n"
+        " name = 'latest'\n"
+        "else:\n"
+        " assert args[:6] == ['release','download','slopsentral-v4.0.7','--repo','github.com/amichne/slopsentral','--pattern'] and args[7:] == ['--output','-']\n"
+        " name = args[6]\n"
+        f"sys.stdout.buffer.write((Path({str(remote)!r}) / name).read_bytes())\n"
+    )
+    gh.chmod(0o755)
     curl = binaries / "curl"
     _ = curl.write_text(
         f"#!{sys.executable}\nimport sys\nfrom pathlib import Path\n"
-        f"sys.stdout.buffer.write((Path({str(remote)!r}) / sys.argv[-1].split('/')[-1]).read_bytes())\n"
+        f"Path(sys.argv[sys.argv.index('--output')+1]).write_bytes((Path({str(remote)!r}) / sys.argv[-1].split('/')[-1]).read_bytes())\n"
+        "sys.stdout.write('200')\n"
     )
     curl.chmod(0o755)
     return remote
@@ -518,8 +534,9 @@ def test_bulk_update_preserves_disabled_codex_plugin(
     log = host_fixture(tmp_path, "codex", disabled=True)
     monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
     result = invoke(tmp_path, "update", "--host", "codex", "--all")
-    assert result.returncode == 1
-    assert json.loads(result.stdout)["reason"] == "PLUGIN_DISABLED"
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(result.stdout)["plugins"] == []
+    assert json.loads(result.stdout)["skippedDisabled"] == ["software-engineering"]
     assert all("list" in json.loads(line) for line in log.read_text().splitlines())
 
 
@@ -532,6 +549,75 @@ def test_bulk_catalog_rejection_precedes_native_mutation(
     result = invoke(tmp_path, "install", "--host", "codex", "--all")
     assert result.returncode == 1
     assert json.loads(result.stdout)["reason"] == "INVALID_RELEASE"
+    assert "slopsentral-codex.tar.gz (4.0.7)" in json.loads(result.stdout)["detail"]
+    assert all("list" in json.loads(line) for line in log.read_text().splitlines())
+
+
+@pytest.mark.parametrize("gh_status", [1, 4])
+def test_shared_download_falls_back_only_for_login(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, gh_status: int
+) -> None:
+    _ = host_fixture(tmp_path, "codex")
+    _ = release_fixture(tmp_path, {"slopsentral-codex.tar.gz": catalog_archive()})
+    binaries = tmp_path / "bin"
+    _ = (binaries / "gh").write_text(f"#!/bin/sh\nexit {gh_status}\n")
+    monkeypatch.setenv("PATH", str(binaries) + os.pathsep + os.environ["PATH"])
+    result = invoke(tmp_path, "install", "--host", "codex", "--all")
+    if gh_status == 4:
+        assert result.returncode == 0, result.stdout + result.stderr
+        assert "kotlin-engineering" in json.loads(result.stdout)["plugins"]
+    else:
+        assert result.returncode == 1
+        assert "gh exited 1" in json.loads(result.stdout)["detail"]
+
+
+@pytest.mark.parametrize(("size", "detail"), [(0, "exceeded"), (129, "Oversized")])
+def test_gh_download_limits(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, size: int, detail: str
+) -> None:
+    gh = tmp_path / "gh"
+    _ = gh.write_text(
+        f"#!{sys.executable}\nimport sys,time\n"
+        f"sys.stdout.buffer.write(b'x' * {size})\nsys.stdout.flush()\ntime.sleep(10)\n"
+    )
+    gh.chmod(0o755)
+    monkeypatch.setenv("PATH", str(tmp_path))
+    monkeypatch.setattr(cli, "MAX_BYTES", 128)
+    monkeypatch.setattr(cli, "DOWNLOAD_TIMEOUT", 1)
+    result = cli.fetch_release(cli.API + "/releases/latest", ["api", "fixture"])
+    assert isinstance(result, cli.Rejected)
+    assert result.reason is cli.Reason.DOWNLOAD_FAILED
+    assert detail in result.detail
+
+
+@pytest.mark.parametrize(
+    ("exit_code", "status", "detail"), [(60, "000", "CURL_CA_BUNDLE"), (22, "429", "HTTP 429")]
+)
+def test_bulk_download_reports_tls_or_api_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, exit_code: int, status: str, detail: str
+) -> None:
+    log = host_fixture(tmp_path, "codex")
+    curl = tmp_path / "bin/curl"
+    gh = tmp_path / "bin/gh"
+    _ = gh.write_text("#!/bin/sh\nexit 4\n")
+    gh.chmod(0o755)
+    _ = curl.write_text(
+        f"#!{sys.executable}\nimport sys\n"
+        "assert 'Authorization:' not in ' '.join(sys.argv)\n"
+        "assert sys.stdin.read() == 'Authorization: Bearer fixture-token\\n'\n"
+        "assert '--no-insecure' in sys.argv and '--retry' in sys.argv\n"
+        f"sys.stdout.write({status!r})\nsys.exit({exit_code})\n"
+    )
+    curl.chmod(0o755)
+    monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
+    monkeypatch.setenv("GH_TOKEN", "fixture-token")
+    result = invoke(tmp_path, "install", "--host", "codex", "--all")
+    assert result.returncode == 1
+    rejection = json.loads(result.stdout)
+    assert rejection["reason"] == "DOWNLOAD_FAILED"
+    assert detail in rejection["detail"]
+    assert "api.github.com" in rejection["detail"]
+    assert "fixture-token" not in result.stdout + result.stderr
     assert not log.exists() or all(
         "list" in json.loads(line) for line in log.read_text().splitlines()
     )
@@ -567,7 +653,7 @@ def test_amp_update_all_preserves_foreign_plugins(
 
 
 def test_guided_setup_has_no_effect_before_acceptance(monkeypatch: pytest.MonkeyPatch) -> None:
-    picks = iter([("install",), ("codex", "amp"), ("cancel",)])
+    picks = iter([("install",), ("codex", "amp")])
     calls: list[cli.Host] = []
 
     def dispatch(
@@ -582,7 +668,11 @@ def test_guided_setup_has_no_effect_before_acceptance(monkeypatch: pytest.Monkey
         _ = multiple
         return next(picks)
 
+    def decline(_prompt: str) -> cli.Rejected:
+        return cli.Rejected(cli.Reason.CANCELLED, "declined")
+
     monkeypatch.setattr(cli, "choose", choose)
+    monkeypatch.setattr(cli, "confirm", decline)
     monkeypatch.setattr(cli, "dispatch", dispatch)
     result = cli.setup()
     assert isinstance(result, cli.Rejected)
@@ -649,27 +739,75 @@ def test_bulk_rejects_empty_or_duplicate_catalog(names: tuple[str, ...]) -> None
     assert rejected.reason is cli.Reason.INVALID_RELEASE
 
 
-def test_redirected_setup_rejects_without_effects(tmp_path: Path) -> None:
-    result = invoke(tmp_path, "setup")
+@pytest.mark.parametrize("action", ["setup", "install", "update", "remove", "self"])
+def test_redirected_setup_rejects_without_effects(tmp_path: Path, action: str) -> None:
+    result = invoke(tmp_path, action)
     assert result.returncode == 1
     assert json.loads(result.stdout)["reason"] == "TERMINAL_REQUIRED"
     assert not (tmp_path / "data").exists()
 
 
-@pytest.mark.parametrize("width", [80, 40])
-def test_real_selector_keyboard_and_terminal_restoration(tmp_path: Path, width: int) -> None:
+def test_gum_missing_reports_flag_fallback(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("PATH", str(tmp_path))
+    monkeypatch.setattr(cli.sys.stdin, "isatty", lambda: True)
+    monkeypatch.setattr(cli.sys.stderr, "isatty", lambda: True)
+    result = cli.setup()
+    assert isinstance(result, cli.Rejected)
+    assert result.reason is cli.Reason.SELECTOR_FAILED
+    assert "Gum on PATH" in result.detail
+
+
+def menu_steps(action: str) -> list[tuple[bytes, bytes]]:
+    if action == "self":
+        return [(b"Slopsentral command", b"\r")]
+    steps: list[tuple[bytes, bytes]] = []
+    if action == "setup":
+        steps.append((b"Install all plugins", b"\r"))
+    if action == "remove":
+        steps.extend([(b"Copilot", b"\r"), (b"software-engineering", b"x")])
+    else:
+        steps.append((b"Copilot", b"x"))
+    steps.append((b"[x]", b"\r"))
+    return steps
+
+
+@pytest.fixture
+def installed_launcher(tmp_path: Path) -> Path:
+    installed = invoke(tmp_path, "self", "install")
+    assert installed.returncode == 0, installed.stdout + installed.stderr
+    return tmp_path / ".local/bin/slopsentral"
+
+
+@pytest.mark.parametrize(
+    ("action", "width", "accept"),
+    [
+        ("setup", 40, False),
+        ("install", 80, True),
+        ("update", 40, True),
+        ("remove", 80, False),
+        ("self", 80, False),
+    ],
+)
+def test_real_selector_keyboard_and_terminal_restoration(
+    tmp_path: Path, installed_launcher: Path, action: str, width: int, *, accept: bool
+) -> None:
     stdout = tmp_path / "stdout.json"
+    log = host_fixture(tmp_path, "codex")
+    _ = release_fixture(tmp_path, {"slopsentral-codex.tar.gz": catalog_archive()})
     environment = {
         **os.environ,
         "HOME": str(tmp_path),
         "NO_COLOR": "1",
         "TERM": "xterm-256color",
-        "FZF_DEFAULT_OPTS": "--filter=untrusted",
+        "GUM_CHOOSE_TIMEOUT": "1ms",
+        "PATH": str(tmp_path / "bin") + os.pathsep + os.environ["PATH"],
+        "XDG_DATA_HOME": str(tmp_path / "data"),
     }
     terminal, slave = pty.openpty()
+    termios.tcsetwinsize(terminal, (24, width))
     with stdout.open("wb") as output:
         process = subprocess.Popen(
-            [sys.executable, str(SCRIPT), "setup"],
+            [str(installed_launcher), action],
             cwd=tmp_path,
             env=environment,
             stdin=slave,
@@ -688,29 +826,32 @@ def test_real_selector_keyboard_and_terminal_restoration(tmp_path: Path, width: 
                 data = os.read(terminal, 65536)
                 chunk.extend(data)
                 transcript.extend(data)
-                if b"\x1b[6n" in data:
-                    _ = os.write(terminal, b"\x1b[1;1R")
         assert text in chunk, bytes(chunk)
 
     try:
-        termios.tcsetwinsize(terminal, (24, width))
-        wait_for(b"Install all plugins")
-        _ = os.write(terminal, b"\r")
-        wait_for(b"Copilot")
-        _ = os.write(terminal, b"\x01\r")
-        wait_for(b"Install all for")
-        _ = os.write(terminal, b"\x1b")
+        for prompt, keys in [*menu_steps(action), (b"Yes", b"y" if accept else b"\x1b")]:
+            wait_for(prompt)
+            _ = os.write(terminal, keys)
         end = time.monotonic() + 10
         while process.poll() is None and time.monotonic() < end:
             ready, _, _ = select.select([terminal], [], [], 0.1)
             if ready:
                 transcript.extend(os.read(terminal, 65536))
-        assert process.wait(timeout=1) == 130
-        assert json.loads(stdout.read_text())["reason"] == "CANCELLED"
+        assert process.wait(timeout=1) == (0 if accept else 130), bytes(transcript)
+        result = json.loads(stdout.read_text())
+        if accept:
+            assert result["action"] == action
+            assert [host["host"] for host in result["hosts"]] == ["codex"]
+            assert "plugin" in log.read_text()
+        else:
+            assert result["reason"] == "CANCELLED"
+            assert not log.exists() or all(
+                "list" in json.loads(line) for line in log.read_text().splitlines()
+            )
         flags = termios.tcgetattr(terminal)[3]
         assert flags & termios.ECHO
         assert flags & termios.ICANON
-        assert not (tmp_path / ".local").exists()
+        assert installed_launcher.is_file()
         assert b"\x1b[?25h" in transcript
     finally:
         if process.poll() is None:
@@ -832,9 +973,12 @@ def test_pi_removal_delegates_to_the_release_installer(
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-@pytest.mark.parametrize("existing_uv", [True, False])
+@pytest.mark.parametrize(
+    ("existing_uv", "gh_status"), [(True, None), (False, None), (True, 0), (True, 4), (True, 1)]
+)
 def test_shell_bootstrap_reuses_or_installs_uv(
     tmp_path: Path,
+    gh_status: int | None,
     *,
     existing_uv: bool,
 ) -> None:
@@ -849,6 +993,8 @@ def test_shell_bootstrap_reuses_or_installs_uv(
     _ = fake_uv.write_text(
         f"#!{sys.executable}\nimport json,os,sys\n"
         f"with open({str(log)!r}, 'a') as log: log.write(json.dumps(sys.argv[1:]) + '\\n')\n"
+        "if sys.argv[1:3] == ['run', '--no-project']:\n"
+        " os.execv(sys.executable, [sys.executable, *sys.argv[sys.argv.index('python')+1:]])\n"
         "assert sys.argv[1:4] == ['run', '--locked', '--script']\n"
         "os.execv(sys.executable, [sys.executable, *sys.argv[4:]])\n"
     )
@@ -871,6 +1017,20 @@ def test_shell_bootstrap_reuses_or_installs_uv(
         "shutil.copyfile(source, sys.argv[sys.argv.index('-o') + 1])\n"
     )
     curl.chmod(0o755)
+    if gh_status is not None:
+        gh = binaries / "gh"
+        _ = gh.write_text(
+            f"#!{sys.executable}\nimport os,sys,shutil\nfrom pathlib import Path\n"
+            "assert os.environ['GH_PROMPT_DISABLED'] == '1' and sys.stdin.read() == ''\n"
+            "assert sys.argv[1:6] == ['release','download','--repo','github.com/amichne/slopsentral','--dir']\n"
+            f"if {gh_status}: sys.exit({gh_status})\n"
+            "for name in sys.argv[8::2]:\n"
+            f" source = Path({str(ROOT)!r}) / ('source/hooks' if name.startswith('kotlin-horizontalization-check') else 'tools') / name\n"
+            " shutil.copyfile(source, Path(sys.argv[6]) / name)\n"
+        )
+        gh.chmod(0o755)
+        if gh_status != 4:
+            _ = curl.write_text("#!/bin/sh\nexit 99\n")
     environment = {
         **os.environ,
         "HOME": str(tmp_path),
@@ -885,16 +1045,24 @@ def test_shell_bootstrap_reuses_or_installs_uv(
         text=True,
         check=False,
     )
+    if gh_status == 1:
+        assert result.returncode == 1
+        assert not (tmp_path / ".local/bin/slopsentral").exists()
+        return
     assert result.returncode == 0, result.stdout + result.stderr
     assert (tmp_path / ".local/bin/slopsentral").is_file()
     assert (tmp_path / ".local/bin/uv").exists() is not existing_uv
-    assert json.loads(log.read_text().splitlines()[0])[-2:] == ["self", "install"]
+    assert json.loads(log.read_text().splitlines()[-1])[-2:] == ["self", "install"]
     assert not (tmp_path / ".zshrc").exists()
 
 
 def test_shell_download_failure_stops_before_python(tmp_path: Path) -> None:
     binaries = tmp_path / "bin"
     binaries.mkdir()
+    for utility in ("uname", "mktemp", "rm"):
+        location = shutil.which(utility)
+        assert location is not None
+        (binaries / utility).symlink_to(location)
     curl = binaries / "curl"
     _ = curl.write_text("#!/bin/sh\nexit 22\n")
     curl.chmod(0o755)
@@ -904,7 +1072,7 @@ def test_shell_download_failure_stops_before_python(tmp_path: Path) -> None:
         env={
             **os.environ,
             "HOME": str(tmp_path),
-            "PATH": str(binaries) + os.pathsep + os.environ["PATH"],
+            "PATH": str(binaries),
         },
         capture_output=True,
         text=True,

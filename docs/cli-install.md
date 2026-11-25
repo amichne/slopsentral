@@ -8,7 +8,12 @@ Consumers need no Slopsentral checkout, npm, or Pkl.
 Use macOS or Linux for the shell bootstrap.
 The command needs uv and Python 3.12 or 3.13.
 The bootstrap installs pinned uv when it is absent. uv can download Python.
+The bootstrap and shared command prefer a signed-in GitHub CLI for Slopsentral releases.
+If `gh` is absent or requests login, they use curl. The uv bootstrap uses curl.
 If an existing uv is too old, update it before installation.
+For guided setup, install Charm Gum on `PATH`. On macOS, run `brew install gum`.
+On Linux, use [Gum's installation guide](https://github.com/charmbracelet/gum#installation).
+Commands with an explicit host and plugin selection work without Gum.
 
 Install your coding host first.
 Codex and Copilot need their CLI commands on `PATH`.
@@ -34,7 +39,9 @@ Start guided setup:
 slopsentral setup
 ```
 
-Choose the bulk action and hosts, then accept the action summary.
+Choose an action. Press `x` to select each host, then press Enter.
+Review the summary and choose Yes to start.
+Use `slopsentral install` or `slopsentral update` to go straight to host selection.
 For selected plugins, use an explicit command instead:
 
 ```sh
@@ -86,7 +93,7 @@ The installed launcher runs the audit with `uv run --no-project`.
 Explicit host operations use `--host`.
 Codex, Copilot, and Amp accept `--plugin` selections or `--all` for installation and updates.
 `slopsentral setup` selects a bulk action and harnesses interactively.
-Bulk commands without `--host` open the harness selector. Removal keeps explicit selections.
+Install and update without a host open the Gum selector. Guided removal asks for a host and its installed plugins.
 Use native Codex and Copilot commands for their host configuration.
 Amp uses managed links to release archives. Pi delegates to `tools/setup-pi.mts`.
 `tools/setup_assets.py` keeps the bootstrap, Python script, lock, and setup receipt.

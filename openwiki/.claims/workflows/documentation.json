@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e22c465a66cc74349e16de894b9e25fcd17290e15c2266124969220fa268a07c",
+  "pageVersion": "sha256:57751654b9f32f091b916cf5e19bc19c48c2f0097e47b1866d8608d041480d3e",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -142,7 +142,7 @@
       "evidence": [
         {
           "resource": "repo://source/skills/code-knowledge-base/references/portable-documentation.md",
-          "version": "repo-file-v1:sha256:d361ea010047317bac9df6c3bbd6d706f7a0017d590c2e29c6b655335081b561"
+          "version": "repo-file-v1:sha256:08ae8b956f8f57c6a63084efd904f9421073ecf09c68ee3fc9c27ce0e3c82650"
         }
       ]
     },
@@ -184,7 +184,7 @@
         },
         {
           "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:5637cf6288a0a6b0bf7e4224e3cd0f706f09bf75f28df63314db0c32250aeaa9"
+          "version": "repo-file-v1:sha256:add49813dc6f315df8f8107747a62d359b391a90b53f48d7e63adc521894f3ec"
         },
         {
           "resource": "repo://tools/ci.py",
@@ -217,6 +217,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-20T18:23:08.613Z"
+    "at": "2026-11-25T20:41:04.632Z"
   }
 }

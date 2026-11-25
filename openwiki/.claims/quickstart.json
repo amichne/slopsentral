@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:85e642f7ca812805f1f7c85fb895645efc3acc88d7659316cd22968e2ed0cb65",
+  "pageVersion": "sha256:07f236ae173f2d5764a91f2f015b268e33c5922b8019f54ce057c1e1b6f055fa",
   "claims": [
     {
       "id": "claim_00b3d0c940c943d0bb4ebf94bfc1c873",
@@ -74,15 +74,15 @@
     },
     {
       "id": "claim_ca42cf1e6cb84735a106ee5ef3125bd4",
-      "statement": "A maintainer checkout needs only Node.js and npm; the toolchain resolver supplies uv, Pkl, and Vale pinned by version and SHA-256.",
+      "statement": "A maintainer checkout needs only Node.js and npm; the toolchain resolver supplies Gum, uv, Pkl, and Vale pinned by version and SHA-256.",
       "evidence": [
         {
           "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:5637cf6288a0a6b0bf7e4224e3cd0f706f09bf75f28df63314db0c32250aeaa9"
+          "version": "repo-file-v1:sha256:add49813dc6f315df8f8107747a62d359b391a90b53f48d7e63adc521894f3ec"
         },
         {
           "resource": "repo://tools/toolchain.json",
-          "version": "repo-file-v1:sha256:2a124cf259b8ba3dda4875b9249d619665cb7214f3a5eb4f5c685707444175c9"
+          "version": "repo-file-v1:sha256:3c742837f985e6482a6eb8ee42075ac6adb0a35a99efd1e8960edaa2ea47440f"
         },
         {
           "resource": "repo://tools/toolchain.mjs",
@@ -93,6 +93,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-20T18:23:08.613Z"
+    "at": "2026-11-25T20:41:04.632Z"
   }
 }

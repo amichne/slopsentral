@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run --locked --script
 # /// script
 # requires-python = ">=3.12,<3.14"
-# dependencies = ["fzf-bin==0.73.1"]
+# dependencies = []
 # [tool.uv]
 # no-build = true
 # required-version = ">=0.12.9"
@@ -22,10 +22,12 @@ import os
 import re
 import shlex
 import shutil
+import socket
 import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 import zlib
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -37,6 +39,9 @@ REPOSITORY = "amichne/slopsentral"
 API = f"https://api.github.com/repos/{REPOSITORY}"
 DOWNLOAD = f"https://github.com/{REPOSITORY}/releases/download"
 MAX_BYTES = 64 * 1024 * 1024
+CURL_HTTP_RETURNED_ERROR = 22
+GH_AUTH_REQUIRED = 4
+DOWNLOAD_TIMEOUT = 65
 VERSION = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\Z")
 IDENTITY = re.compile(r"[a-z][a-z0-9-]*\Z")
 LAYOUT_HELPER = "kotlin-horizontalization-check"
@@ -126,17 +131,87 @@ def parse(data: bytes) -> Result[object]:
 
 
 def process(arguments: list[str]) -> Result[bytes]:
+    stage = " ".join(arguments) if arguments[0] != "node" else "Pi setup"
+    if sys.stderr.isatty():
+        print(stage, file=sys.stderr, flush=True)
     try:
-        result = subprocess.run(arguments, capture_output=True, check=False, timeout=120)
+        result = subprocess.run(
+            arguments,
+            stdin=subprocess.DEVNULL,
+            capture_output=True,
+            check=False,
+            timeout=120,
+            env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
+        )
     except FileNotFoundError:
         return Rejected(Reason.HOST_UNAVAILABLE, arguments[0])
     except subprocess.TimeoutExpired:
-        return Rejected(Reason.HOST_FAILED, f"{arguments[0]} exceeded 120 seconds.")
+        return Rejected(Reason.HOST_FAILED, f"{stage} exceeded 120 seconds.")
     if result.returncode:
         # Native commands own their diagnostics; stdout of this command stays JSON.
         _ = sys.stderr.buffer.write(result.stderr[:8192] + result.stdout[:8192])
-        return Rejected(Reason.HOST_FAILED, f"{arguments[0]} exited {result.returncode}.")
+        return Rejected(Reason.HOST_FAILED, f"{stage} exited {result.returncode}.")
     return result.stdout
+
+
+def gh_download(arguments: list[str]) -> tuple[int, bytes]:
+    reader, writer = socket.socketpair()
+    with (
+        reader,
+        writer,
+        subprocess.Popen(
+            ["gh", *arguments],
+            stdin=subprocess.DEVNULL,
+            stdout=writer.fileno(),
+            env={
+                **os.environ,
+                "GH_FORCE_TTY": "",
+                "GH_PROMPT_DISABLED": "1",
+                "GH_NO_UPDATE_NOTIFIER": "1",
+            },
+        ) as child,
+    ):
+        writer.close()
+        deadline = time.monotonic() + DOWNLOAD_TIMEOUT
+        data = bytearray()
+        try:
+            while len(data) <= MAX_BYTES:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise subprocess.TimeoutExpired(arguments, DOWNLOAD_TIMEOUT)
+                reader.settimeout(remaining)
+                chunk = reader.recv(min(65536, MAX_BYTES + 1 - len(data)))
+                if not chunk:
+                    break
+                data.extend(chunk)
+            if len(data) > MAX_BYTES:
+                child.kill()
+            return child.wait(timeout=max(0, deadline - time.monotonic())), bytes(data)
+        finally:
+            if child.poll() is None:
+                child.kill()
+
+
+def fetch_release(url: str, gh_arguments: list[str]) -> Result[bytes]:
+    if sys.stderr.isatty():
+        print(f"Downloading {url}", file=sys.stderr, flush=True)
+    try:
+        status, data = gh_download(gh_arguments)
+    except FileNotFoundError:
+        pass
+    except (TimeoutError, subprocess.TimeoutExpired):
+        return Rejected(Reason.DOWNLOAD_FAILED, f"gh exceeded {DOWNLOAD_TIMEOUT} seconds: {url}")
+    except OSError as error:
+        return Rejected(Reason.DOWNLOAD_FAILED, f"Cannot run gh for {url}: {error.strerror}.")
+    else:
+        if len(data) > MAX_BYTES:
+            return Rejected(Reason.DOWNLOAD_FAILED, f"Oversized gh download: {url}")
+        if status == 0:
+            return data
+        if status != GH_AUTH_REQUIRED:
+            return Rejected(Reason.DOWNLOAD_FAILED, f"gh exited {status} for {url}. See stderr.")
+        print("GitHub CLI needs a login. Using curl for this public download.", file=sys.stderr)
+    return fetch(url)
 
 
 def fetch(url: str) -> Result[bytes]:
@@ -144,41 +219,68 @@ def fetch(url: str) -> Result[bytes]:
     authenticated = url.startswith(API + "/") and token is not None
     if authenticated and token is not None and not re.fullmatch(r"[A-Za-z0-9_.-]+", token):
         return Rejected(Reason.DOWNLOAD_FAILED, "Unsupported token characters.")
-    try:
-        result = subprocess.run(
-            [
-                "curl",
-                "--fail",
-                "--silent",
-                "--show-error",
-                "--no-insecure",
-                "--no-proxy-insecure",
-                "--no-location-trusted",
-                "--location",
-                "--proto",
-                "=https",
-                "--proto-redir",
-                "=https",
-                "--max-time",
-                "60",
-                "--max-filesize",
-                str(MAX_BYTES),
-                *(["--header", "@-"] if authenticated else []),
-                url,
-            ],
-            input=f"Authorization: Bearer {token}\n".encode() if authenticated else b"",
-            capture_output=True,
-            check=False,
-            timeout=65,
-        )
-    except (OSError, subprocess.TimeoutExpired):
-        return Rejected(Reason.DOWNLOAD_FAILED, "curl could not complete the HTTPS request.")
-    if result.returncode or len(result.stdout) > MAX_BYTES:
-        return Rejected(
-            Reason.DOWNLOAD_FAILED,
-            f"curl exited {result.returncode}; examine proxy and certificate settings.",
-        )
-    return result.stdout
+    with tempfile.TemporaryDirectory(prefix="slopsentral-download-") as temporary:
+        output = Path(temporary) / "payload"
+        arguments = [
+            "curl",
+            "--fail",
+            "--silent",
+            "--show-error",
+            "--no-insecure",
+            "--no-proxy-insecure",
+            "--no-location-trusted",
+            "--location",
+            "--proto",
+            "=https",
+            "--proto-redir",
+            "=https",
+            "--max-time",
+            "60",
+            "--connect-timeout",
+            "10",
+            "--retry",
+            "2",
+            "--retry-max-time",
+            "30",
+            "--max-filesize",
+            str(MAX_BYTES),
+            "--output",
+            str(output),
+            "--write-out",
+            "%{http_code}",
+            *(["--header", "@-"] if authenticated else []),
+            url,
+        ]
+        try:
+            result = subprocess.run(
+                arguments,
+                input=f"Authorization: Bearer {token}\n".encode() if authenticated else b"",
+                capture_output=True,
+                check=False,
+                timeout=DOWNLOAD_TIMEOUT,
+            )
+        except OSError as error:
+            return Rejected(Reason.DOWNLOAD_FAILED, f"Cannot run curl for {url}: {error.strerror}.")
+        except subprocess.TimeoutExpired:
+            return Rejected(
+                Reason.DOWNLOAD_FAILED, f"Download exceeded {DOWNLOAD_TIMEOUT} seconds: {url}"
+            )
+        if result.returncode:
+            return download_failure(url, result.returncode, result.stdout)
+        if not output.is_file() or output.stat().st_size > MAX_BYTES:
+            return Rejected(Reason.DOWNLOAD_FAILED, f"Missing or oversized download: {url}")
+        return output.read_bytes()
+
+
+def download_failure(url: str, code: int, status: bytes) -> Rejected:
+    detail = f"curl exit {code}"
+    if code == CURL_HTTP_RETURNED_ERROR and re.fullmatch(rb"[1-5]\d\d", status):
+        detail = "HTTP " + status.decode("ascii")
+        if url.startswith(API + "/") and status in {b"403", b"429"}:
+            detail += ". For GitHub API limits, set GH_TOKEN or GITHUB_TOKEN"
+    elif code in {35, 51, 58, 60, 77}:
+        detail += ". TLS failed. Check the proxy and the trusted CA bundle (CURL_CA_BUNDLE)"
+    return Rejected(Reason.DOWNLOAD_FAILED, f"{url}: {detail}.")
 
 
 @dataclass(frozen=True)
@@ -189,7 +291,9 @@ class _Release:
     @staticmethod
     def latest(version: str | None = None) -> Result[_Release]:
         route = f"/releases/tags/slopsentral-v{version}" if version else "/releases/latest"
-        data = fetch(API + route)
+        data = fetch_release(
+            API + route, ["api", "--hostname", "github.com", f"repos/{REPOSITORY}{route}"]
+        )
         if isinstance(data, Rejected):
             return data
         value = parse(data)
@@ -216,7 +320,20 @@ class _Release:
         url = f"{DOWNLOAD}/slopsentral-v{self.version}/{name}"
         if len(matches) != 1 or matches[0].get("browser_download_url") != url:
             return Rejected(Reason.INVALID_RELEASE, f"Missing unique release asset: {name}")
-        data = fetch(url)
+        data = fetch_release(
+            url,
+            [
+                "release",
+                "download",
+                f"slopsentral-v{self.version}",
+                "--repo",
+                f"github.com/{REPOSITORY}",
+                "--pattern",
+                name,
+                "--output",
+                "-",
+            ],
+        )
         if isinstance(data, Rejected):
             return data
         if (
@@ -273,20 +390,25 @@ def release_plugins(release: _Release) -> Result[tuple[PluginName, ...]]:
     if isinstance(data, Rejected):
         return data
     catalog = catalog_bytes(data)
-    return catalog if isinstance(catalog, Rejected) else catalog_names(parse(catalog))
+    if isinstance(catalog, Rejected):
+        result = catalog
+    else:
+        value = parse(catalog)
+        result = (
+            Rejected(Reason.INVALID_RELEASE, "Plugin catalog contains invalid JSON.")
+            if isinstance(value, Rejected)
+            else catalog_names(value)
+        )
+    if isinstance(result, Rejected):
+        return Rejected(
+            result.reason, f"slopsentral-codex.tar.gz ({release.version}): {result.detail}"
+        )
+    return result
 
 
 def all_names(version: str | None = None) -> Result[tuple[PluginName, ...]]:
     release = _Release.latest(version)
     return release if isinstance(release, Rejected) else release_plugins(release)
-
-
-def native_selection(
-    action: Action, plugins: Selection, own: dict[PluginName, InstalledPlugin]
-) -> Result[tuple[PluginName, ...]]:
-    if not isinstance(plugins, AllPlugins):
-        return plugins
-    return all_names() if action is Action.INSTALL else tuple(own)
 
 
 def direct(path: Path) -> bool:
@@ -594,10 +716,17 @@ def native(action: Action, host: NativeHost, plugins: Selection) -> Result[dict[
     own = native_plugins(host)
     if isinstance(own, Rejected):
         return own
-    names = native_selection(action, plugins, own)
-    if isinstance(names, Rejected):
-        return names
-    plugins = names
+    skipped: tuple[PluginName, ...] = ()
+    if isinstance(plugins, AllPlugins):
+        if action is Action.INSTALL:
+            names = all_names()
+            if isinstance(names, Rejected):
+                return names
+            plugins = names
+        else:
+            if host is Host.CODEX and action is Action.UPDATE:
+                skipped = tuple(name for name, state in own.items() if not state.enabled)
+            plugins = tuple(name for name in own if name not in skipped)
     commands = native_plan(action, host, plugins, selected, own)
     if isinstance(commands, Rejected):
         return commands
@@ -605,7 +734,13 @@ def native(action: Action, host: NativeHost, plugins: Selection) -> Result[dict[
         result = process(arguments)
         if isinstance(result, Rejected):
             return result
-    return {"type": "COMPLETED", "host": host, "action": action, "plugins": plugins}
+    return {
+        "type": "COMPLETED",
+        "host": host,
+        "action": action,
+        "plugins": plugins,
+        **({"skippedDisabled": skipped} if skipped else {}),
+    }
 
 
 def unpack(data: bytes, destination: Path) -> Result[Path]:
@@ -722,6 +857,11 @@ def amp_selection(
             return release
         names = release_plugins(release)
         return names if isinstance(names, Rejected) else (names, release)
+    names = amp_installed(root, cache)
+    return names if isinstance(names, Rejected) else (names, None)
+
+
+def amp_installed(root: Path, cache: Path) -> Result[tuple[PluginName, ...]]:
     installed_names: list[PluginName] = []
     for target in sorted(root.iterdir()) if root.exists() else ():
         if target.is_symlink() and target.readlink().parent.parent == cache:
@@ -729,11 +869,15 @@ def amp_selection(
                 installed_names.append(PluginName(target.name))
             except ValueError:
                 return Rejected(Reason.OWNERSHIP_CONFLICT, "Invalid managed Amp plugin identity.")
-    return tuple(installed_names), None
+    return tuple(installed_names)
+
+
+def amp_root() -> Path:
+    return Path(os.environ.get("XDG_CONFIG_HOME", str(Path.home() / ".config"))) / "amp/plugins"
 
 
 def amp(action: Action, plugins: Selection, version: str | None) -> Result[dict[str, object]]:
-    root = Path(os.environ.get("XDG_CONFIG_HOME", str(Path.home() / ".config"))) / "amp/plugins"
+    root = amp_root()
     cache = data_home() / "amp"
     if not direct(root) or not direct(cache):
         return Rejected(Reason.OWNERSHIP_CONFLICT, "Indirect Amp path.")
@@ -836,58 +980,59 @@ def horizontalization(arguments: list[str]) -> int:
     ).returncode
 
 
-def choose(
-    title: str, rows: tuple[tuple[str, str], ...], *, multiple: bool = False
-) -> Result[tuple[str, ...]]:
+def gum(arguments: list[str]) -> Result[str]:
     if not sys.stdin.isatty() or not sys.stderr.isatty():
         return Rejected(
             Reason.TERMINAL_REQUIRED,
-            "Use an interactive terminal or explicit --host and --all options.",
+            "Use a terminal for guided setup or supply the operation and its flags.",
         )
-    executable = Path(sys.executable).parent / ("fzf.exe" if os.name == "nt" else "fzf")
-    if not executable.is_file():
+    try:
+        result = subprocess.run(
+            ["gum", *arguments],
+            stdout=subprocess.PIPE,
+            text=True,
+            check=False,
+            env={key: value for key, value in os.environ.items() if not key.startswith("GUM_")},
+        )
+    except FileNotFoundError:
         return Rejected(
             Reason.SELECTOR_FAILED,
-            "Start slopsentral through its locked uv launcher to supply fzf.",
+            "Install Charm Gum on PATH (brew install gum on macOS), or use explicit flags.",
         )
-    environment = {key: value for key, value in os.environ.items() if not key.startswith("FZF_")}
-    controls = "Tab select | Ctrl-A all | Ctrl-D none\n" if multiple else ""
-    arguments = [
-        str(executable),
-        "--layout=reverse",
-        "--height=80%",
-        "--border=rounded",
-        "--border-label= Slopsentral ",
-        "--prompt=" + title + " > ",
-        "--header=" + controls + "Enter accept | Esc cancel",
-        "--delimiter=\t",
-        "--with-nth=2..",
-        "--no-sort",
-        "--no-mouse",
-        *(["--multi", "--bind=ctrl-a:select-all,ctrl-d:deselect-all"] if multiple else []),
-        *(
-            ["--no-color"]
-            if "NO_COLOR" in environment
-            else ["--color=border:blue,label:blue,prompt:cyan,pointer:cyan,marker:green"]
-        ),
-        *(["--no-unicode"] if environment.get("TERM") == "dumb" else []),
-    ]
-    result = subprocess.run(
-        arguments,
-        input="".join(key + "\t" + label + "\n" for key, label in rows),
-        stdout=subprocess.PIPE,
-        text=True,
-        check=False,
-        env=environment,
-    )
+    except OSError as error:
+        return Rejected(Reason.SELECTOR_FAILED, f"Could not start Gum: {error.strerror}.")
     if result.returncode in {1, 130, -2}:
-        return Rejected(Reason.CANCELLED, "No host operation started.")
+        return Rejected(Reason.CANCELLED, "No changes made.")
     if result.returncode:
-        return Rejected(Reason.SELECTOR_FAILED, f"fzf exited {result.returncode}.")
-    selected = tuple(line.split("\t", 1)[0] for line in result.stdout.splitlines())
+        return Rejected(Reason.SELECTOR_FAILED, f"gum {arguments[0]} exited {result.returncode}.")
+    return result.stdout
+
+
+def choose(
+    title: str, rows: tuple[tuple[str, str], ...], *, multiple: bool = False
+) -> Result[tuple[str, ...]]:
+    result = gum(
+        [
+            "choose",
+            "--header",
+            title + (" (x to select, Enter to continue)" if multiple else ""),
+            "--label-delimiter",
+            "\t",
+            *(
+                ["--no-limit", "--selected-prefix", "[x] ", "--unselected-prefix", "[ ] "]
+                if multiple
+                else []
+            ),
+            *(label + "\t" + key for key, label in rows),
+        ]
+    )
+    if isinstance(result, Rejected):
+        return result
+    selected = tuple(result.rstrip("\n").splitlines())
+    if not selected:
+        return Rejected(Reason.CANCELLED, "Nothing selected. No changes made.")
     if (
-        not selected
-        or len(set(selected)) != len(selected)
+        len(set(selected)) != len(selected)
         or any(key not in dict(rows) for key in selected)
         or (not multiple and len(selected) != 1)
     ):
@@ -905,6 +1050,56 @@ def dispatch(
     return pi(action, version)
 
 
+def choose_hosts(*, multiple: bool) -> Result[tuple[str, ...]]:
+    return choose(
+        "Harnesses" if multiple else "Harness",
+        tuple(
+            (host.value, host.value.title() + ("  [on PATH]" if shutil.which(host.value) else ""))
+            for host in Host
+        ),
+        multiple=multiple,
+    )
+
+
+def confirm(prompt: str) -> Result[str]:
+    return gum(["confirm", "--default=false", prompt])
+
+
+def guided_removal(host: Host, version: str | None) -> Result[dict[str, object]]:
+    plugins: tuple[PluginName, ...] = ()
+    target = "the aggregate package"
+    if host != Host.PI:
+        installed = (
+            amp_installed(amp_root(), data_home() / "amp")
+            if host is Host.AMP
+            else native_plugins(host)
+        )
+        if isinstance(installed, Rejected):
+            return installed
+        if not installed:
+            return Rejected(Reason.NOT_INSTALLED, f"No installed Slopsentral plugins for {host}.")
+        selected = choose("Plugins to remove", tuple((p, p) for p in installed), multiple=True)
+        if isinstance(selected, Rejected):
+            return selected
+        plugins = tuple(PluginName(p) for p in selected)
+        target = ", ".join(plugins)
+    accepted = confirm(f"Remove {target} from {host}?")
+    return (
+        accepted
+        if isinstance(accepted, Rejected)
+        else dispatch(Action.REMOVE, host, plugins, version)
+    )
+
+
+def guided_self() -> Result[dict[str, object]]:
+    selected = choose("Slopsentral command", tuple((a.value, a.value.title()) for a in Action))
+    if isinstance(selected, Rejected):
+        return selected
+    action = Action(selected[0])
+    accepted = confirm(f"{action.value.title()} the slopsentral command?")
+    return accepted if isinstance(accepted, Rejected) else command(action, None)
+
+
 def setup(action: Action | None = None, version: str | None = None) -> Result[dict[str, object]]:
     if action is None:
         selected = choose(
@@ -914,14 +1109,7 @@ def setup(action: Action | None = None, version: str | None = None) -> Result[di
         if isinstance(selected, Rejected):
             return selected
         action = Action(selected[0])
-    hosts = choose(
-        "Harnesses",
-        tuple(
-            (host.value, host.value.title() + ("  [on PATH]" if shutil.which(host.value) else ""))
-            for host in Host
-        ),
-        multiple=True,
-    )
+    hosts = choose_hosts(multiple=True)
     if isinstance(hosts, Rejected):
         return hosts
     if version is not None and any(host in {"codex", "copilot"} for host in hosts):
@@ -929,17 +1117,9 @@ def setup(action: Action | None = None, version: str | None = None) -> Result[di
             Reason.INVALID_RELEASE,
             "Codex and Copilot use their native marketplace channel; omit --version.",
         )
-    accepted = choose(
-        "Apply",
-        (
-            ("apply", f"{action.value.title()} all for {', '.join(hosts)}"),
-            ("cancel", "Cancel without changes"),
-        ),
-    )
+    accepted = confirm(f"{action.value.title()} all for {', '.join(hosts)}?")
     if isinstance(accepted, Rejected):
         return accepted
-    if accepted != ("apply",):
-        return Rejected(Reason.CANCELLED, "No host operation started.")
     return apply_hosts(action, hosts, version)
 
 
@@ -966,15 +1146,23 @@ def host_operation(
     action = Action(args.action)
     all_plugins = getattr(args, "all", False) is True
     if args.host is None:
-        if not all_plugins:
-            parser.error("Use --host, or --all for interactive harness selection.")
-        return setup(action, args.version)
-    host = Host(args.host)
+        if args.plugin:
+            parser.error("Use --host for a named plugin selection.")
+        if action != Action.REMOVE:
+            return setup(action, args.version)
+        selected = choose_hosts(multiple=False)
+        if isinstance(selected, Rejected):
+            return selected
+        host = Host(selected[0])
+    else:
+        host = Host(args.host)
+    if host in {Host.CODEX, Host.COPILOT} and args.version is not None:
+        parser.error("Codex and Copilot use their configured native marketplace channel.")
+    if action is Action.REMOVE and args.host is None:
+        return guided_removal(host, args.version)
     plugins: Selection = AllPlugins.ALL if all_plugins else tuple(dict.fromkeys(args.plugin))
     if (host is Host.PI and args.plugin) or (host is not Host.PI and not plugins):
         parser.error("Pi uses its aggregate package; other hosts need --plugin or --all.")
-    if host in {Host.CODEX, Host.COPILOT} and args.version is not None:
-        parser.error("Codex and Copilot use their configured native marketplace channel.")
     return dispatch(action, host, plugins, args.version)
 
 
@@ -987,8 +1175,12 @@ def manage() -> int:
         help="Inspect Kotlin package layout without edits.",
         add_help=False,
     )
-    for action in ("install", "update", "remove"):
-        operation = sub.add_parser(action)
+    for action, description in (
+        ("install", "Install plugins. Run without flags to choose hosts with Gum."),
+        ("update", "Update installed plugins. Run without flags to choose hosts with Gum."),
+        ("remove", "Remove plugins. Run without flags to choose installed plugins with Gum."),
+    ):
+        operation = sub.add_parser(action, help=description, description=description)
         _ = operation.add_argument("--host", type=Host, choices=tuple(Host))
         selection = operation.add_mutually_exclusive_group()
         _ = selection.add_argument("--plugin", type=identity, action="append", default=[])
@@ -1001,7 +1193,7 @@ def manage() -> int:
         _ = operation.add_argument("--version", type=version_number)
     _ = sub.add_parser("setup", help="Select a bulk action and harnesses interactively.")
     own = sub.add_parser("self", help="Install, update, or remove the executable command.")
-    _ = own.add_argument("operation", type=Action, choices=tuple(Action))
+    _ = own.add_argument("operation", nargs="?", type=Action, choices=tuple(Action))
     _ = own.add_argument("--version", type=version_number)
     args = parser.parse_args()
     try:
@@ -1010,7 +1202,11 @@ def manage() -> int:
         elif args.action == "self":
             if args.version is not None and args.operation != Action.UPDATE:
                 parser.error("Only self update accepts --version.")
-            result = command(Action(args.operation), args.version)
+            result = (
+                guided_self()
+                if args.operation is None
+                else command(Action(args.operation), args.version)
+            )
         else:
             result = host_operation(parser, args)
     except KeyboardInterrupt:
