@@ -584,7 +584,7 @@ def test_gh_download_limits(
     monkeypatch.setenv("PATH", str(tmp_path))
     monkeypatch.setattr(cli, "MAX_BYTES", 128)
     monkeypatch.setattr(cli, "DOWNLOAD_TIMEOUT", 1)
-    result = cli.fetch(cli.API + "/releases/latest", ["api", "fixture"])
+    result = cli.fetch_release(cli.API + "/releases/latest", ["api", "fixture"])
     assert isinstance(result, cli.Rejected)
     assert result.reason is cli.Reason.DOWNLOAD_FAILED
     assert detail in result.detail

@@ -192,7 +192,7 @@ def gh_download(arguments: list[str]) -> tuple[int, bytes]:
                 child.kill()
 
 
-def fetch(url: str, gh_arguments: list[str]) -> Result[bytes]:
+def fetch_release(url: str, gh_arguments: list[str]) -> Result[bytes]:
     if sys.stderr.isatty():
         print(f"Downloading {url}", file=sys.stderr, flush=True)
     try:
@@ -211,10 +211,10 @@ def fetch(url: str, gh_arguments: list[str]) -> Result[bytes]:
         if status != GH_AUTH_REQUIRED:
             return Rejected(Reason.DOWNLOAD_FAILED, f"gh exited {status} for {url}. See stderr.")
         print("GitHub CLI needs a login. Using curl for this public download.", file=sys.stderr)
-    return curl_download(url)
+    return fetch(url)
 
 
-def curl_download(url: str) -> Result[bytes]:
+def fetch(url: str) -> Result[bytes]:
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     authenticated = url.startswith(API + "/") and token is not None
     if authenticated and token is not None and not re.fullmatch(r"[A-Za-z0-9_.-]+", token):
@@ -291,7 +291,9 @@ class _Release:
     @staticmethod
     def latest(version: str | None = None) -> Result[_Release]:
         route = f"/releases/tags/slopsentral-v{version}" if version else "/releases/latest"
-        data = fetch(API + route, ["api", "--hostname", "github.com", f"repos/{REPOSITORY}{route}"])
+        data = fetch_release(
+            API + route, ["api", "--hostname", "github.com", f"repos/{REPOSITORY}{route}"]
+        )
         if isinstance(data, Rejected):
             return data
         value = parse(data)
@@ -318,7 +320,7 @@ class _Release:
         url = f"{DOWNLOAD}/slopsentral-v{self.version}/{name}"
         if len(matches) != 1 or matches[0].get("browser_download_url") != url:
             return Rejected(Reason.INVALID_RELEASE, f"Missing unique release asset: {name}")
-        data = fetch(
+        data = fetch_release(
             url,
             [
                 "release",
