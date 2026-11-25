@@ -129,6 +129,5 @@ An older PR request without a bound head is also quarantined.
 After that rejection, arm a new request against the intended revision. Terminal run failure logs are fetched once
 through `gh run view <run-id> --log-failed` after classification.
 
-Use the connected GitHub app for supported repository and PR metadata. Use
-authenticated native `gh` for Actions reads and the local observer. Local
-`git` remains the authority for local repository metadata.
+Use authenticated `gh` for PR metadata and Actions reads. The local observer
+uses the same CLI. Read local repository metadata with `git`.
