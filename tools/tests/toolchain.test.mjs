@@ -30,8 +30,8 @@ function cache(t) {
 
 test('the committed manifest pins every asset to an https GitHub release and a SHA-256', () => {
   const manifest = loadManifest();
-  assert.deepEqual(Object.keys(manifest.tools).sort(), ['kotlin', 'pkl', 'uv', 'vale', 'worktrunk']);
-  for (const name of ['uv', 'pkl', 'vale']) {
+  assert.deepEqual(Object.keys(manifest.tools).sort(), ['gum', 'kotlin', 'pkl', 'uv', 'vale', 'worktrunk']);
+  for (const name of ['gum', 'uv', 'pkl', 'vale']) {
     assert.ok(manifest.tools[name].profiles.includes('core'), name);
     for (const platform of ['darwin-arm64', 'darwin-x64', 'linux-x64', 'linux-arm64']) {
       assert.ok(manifest.tools[name].assets[platform], `${name} ${platform}`);

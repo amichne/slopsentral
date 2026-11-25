@@ -53,14 +53,14 @@ slopsentral setup
 
 Choose **Install all plugins** or **Update all installed plugins**.
 Select one or more harnesses, then accept the action summary.
-Type to filter each list. Press Tab to select a harness.
-Press Ctrl-A to select all visible harnesses. Press Ctrl-D to deselect them.
-Press Enter to accept the selection. Press Escape or Ctrl-C to cancel.
+Use the arrow keys to move. Press `x` to select a harness.
+Press Ctrl-A to toggle all harnesses. Press Enter to review the selection.
+Choose Yes to start. Press Escape or Ctrl-C to cancel.
 Cancellation before acceptance starts no host operation and returns status 130.
 
-The locked `fzf-bin` dependency supplies fzf 0.73.1 through the existing uv runtime.
-A separate fzf installation is unnecessary.
-The selector ignores personal `FZF_*` options and honors `NO_COLOR`.
+Guided commands use Charm Gum from `PATH`. On macOS, run `brew install gum`.
+On Linux, use [Gum's installation guide](https://github.com/charmbracelet/gum#installation).
+The selector ignores personal `GUM_*` options and honors `NO_COLOR`.
 It needs terminal input and stderr. Redirected stdout still contains one JSON result.
 For automation, supply `--host` and `--all` without a selector.
 
@@ -69,6 +69,8 @@ For automation, supply `--host` and `--all` without a selector.
 ```sh
 slopsentral install --host codex --all
 slopsentral update --host codex --all
+slopsentral install
+slopsentral update
 slopsentral install --all
 slopsentral update --all
 ```
@@ -77,11 +79,12 @@ Without `--host`, these bulk commands open the harness selector and action summa
 `install --all` reads the catalog from the stable release archive after its digest examination.
 It installs every catalog plugin. Existing native installations keep their enabled choices.
 `update --all` selects installed Slopsentral plugins for Codex and Copilot.
+For Codex, it skips disabled plugins and lists their names in the JSON field `skippedDisabled`.
 For Amp, it selects links that the command manages.
 An empty update succeeds without host changes. Foreign plugins remain outside the selection.
 Pi delegates its aggregate operation to the existing qualified installer.
 
-`--all` and `--plugin` are mutually exclusive. Removal needs explicit selections.
+`--all` and `--plugin` are mutually exclusive.
 The command stops at the first harness failure and names completed harnesses on stderr.
 Earlier successful operations remain in effect.
 
@@ -113,6 +116,9 @@ A different existing Amp directory or an unknown marketplace named `slopsentral`
 
 ## Update and remove plugins
 
+Run `slopsentral remove` to choose a host and its installed plugins with Gum.
+For Pi, the confirmation names the aggregate package.
+
 Use the same explicit scope for updates and removal:
 
 ```sh
@@ -141,6 +147,9 @@ Pi removal preserves unrelated settings, project registrations, payloads, and pr
 Its [native bootstrap](/guides/pi#scope-updates-and-recovery) owns project installation and rollback.
 
 ## Update or remove the command
+
+Run `slopsentral self` to choose and review a command operation with Gum.
+For automation, pass the operation directly.
 
 ```sh
 slopsentral self update

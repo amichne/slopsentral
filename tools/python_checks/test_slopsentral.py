@@ -40,7 +40,7 @@ def test_public_help_and_explicit_host(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr
     for command in ["install", "update", "remove", "self", "kotlin-horizontalization"]:
         assert command in result.stdout
-    rejected = invoke(tmp_path, "install")
+    rejected = invoke(tmp_path, "install", "--plugin", "software-engineering")
     assert rejected.returncode == 2
     assert "--host" in rejected.stderr
     assert not (tmp_path / "data").exists()
@@ -62,7 +62,7 @@ def test_installed_horizontalization_is_offline_and_advisory(tmp_path: Path) -> 
         "UV_CACHE_DIR": str(tmp_path / "uv-cache"),
         "PATH": str(tmp_path / ".local/bin") + os.pathsep + os.environ["PATH"],
     }
-    # Prepare the pinned runtime before the offline operation, including fzf.
+    # Prepare the pinned runtime before the offline operation.
     ready = subprocess.run(
         ["slopsentral", "--help"],
         cwd=tmp_path,
@@ -324,6 +324,7 @@ def host_fixture(home: Path, host: str, *, disabled: bool = False, fail: bool = 
     )
     _ = executable.write_text(
         f"#!{sys.executable}\nimport json,sys\n"
+        "assert sys.stdin.read() == ''\n"
         f"with open({str(log)!r}, 'a') as log: log.write(json.dumps(sys.argv[1:]) + '\\n')\n"
         f"marketplaces = {marketplaces!r}\nplugins = {plugins!r}\n"
         "if sys.argv[1:4] == ['plugin','marketplace','list']: print(json.dumps(marketplaces))\n"
@@ -518,8 +519,9 @@ def test_bulk_update_preserves_disabled_codex_plugin(
     log = host_fixture(tmp_path, "codex", disabled=True)
     monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
     result = invoke(tmp_path, "update", "--host", "codex", "--all")
-    assert result.returncode == 1
-    assert json.loads(result.stdout)["reason"] == "PLUGIN_DISABLED"
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(result.stdout)["plugins"] == []
+    assert json.loads(result.stdout)["skippedDisabled"] == ["software-engineering"]
     assert all("list" in json.loads(line) for line in log.read_text().splitlines())
 
 
@@ -567,7 +569,7 @@ def test_amp_update_all_preserves_foreign_plugins(
 
 
 def test_guided_setup_has_no_effect_before_acceptance(monkeypatch: pytest.MonkeyPatch) -> None:
-    picks = iter([("install",), ("codex", "amp"), ("cancel",)])
+    picks = iter([("install",), ("codex", "amp")])
     calls: list[cli.Host] = []
 
     def dispatch(
@@ -582,7 +584,11 @@ def test_guided_setup_has_no_effect_before_acceptance(monkeypatch: pytest.Monkey
         _ = multiple
         return next(picks)
 
+    def decline(_prompt: str) -> cli.Rejected:
+        return cli.Rejected(cli.Reason.CANCELLED, "declined")
+
     monkeypatch.setattr(cli, "choose", choose)
+    monkeypatch.setattr(cli, "confirm", decline)
     monkeypatch.setattr(cli, "dispatch", dispatch)
     result = cli.setup()
     assert isinstance(result, cli.Rejected)
@@ -649,27 +655,68 @@ def test_bulk_rejects_empty_or_duplicate_catalog(names: tuple[str, ...]) -> None
     assert rejected.reason is cli.Reason.INVALID_RELEASE
 
 
-def test_redirected_setup_rejects_without_effects(tmp_path: Path) -> None:
-    result = invoke(tmp_path, "setup")
+@pytest.mark.parametrize("action", ["setup", "install", "update", "remove", "self"])
+def test_redirected_setup_rejects_without_effects(tmp_path: Path, action: str) -> None:
+    result = invoke(tmp_path, action)
     assert result.returncode == 1
     assert json.loads(result.stdout)["reason"] == "TERMINAL_REQUIRED"
     assert not (tmp_path / "data").exists()
 
 
-@pytest.mark.parametrize("width", [80, 40])
-def test_real_selector_keyboard_and_terminal_restoration(tmp_path: Path, width: int) -> None:
+def test_gum_missing_reports_flag_fallback(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("PATH", str(tmp_path))
+    monkeypatch.setattr(cli.sys.stdin, "isatty", lambda: True)
+    monkeypatch.setattr(cli.sys.stderr, "isatty", lambda: True)
+    result = cli.setup()
+    assert isinstance(result, cli.Rejected)
+    assert result.reason is cli.Reason.SELECTOR_FAILED
+    assert "Gum on PATH" in result.detail
+
+
+def menu_steps(action: str) -> list[tuple[bytes, bytes]]:
+    if action == "self":
+        return [(b"Slopsentral command", b"\r")]
+    steps: list[tuple[bytes, bytes]] = []
+    if action == "setup":
+        steps.append((b"Install all plugins", b"\r"))
+    if action == "remove":
+        steps.extend([(b"Copilot", b"\r"), (b"software-engineering", b"x")])
+    else:
+        steps.append((b"Copilot", b"x"))
+    steps.append((b"[x]", b"\r"))
+    return steps
+
+
+@pytest.mark.parametrize(
+    ("action", "width", "accept"),
+    [
+        ("setup", 40, False),
+        ("install", 80, True),
+        ("update", 40, True),
+        ("remove", 80, False),
+        ("self", 80, False),
+    ],
+)
+def test_real_selector_keyboard_and_terminal_restoration(
+    tmp_path: Path, action: str, width: int, *, accept: bool
+) -> None:
     stdout = tmp_path / "stdout.json"
+    log = host_fixture(tmp_path, "codex")
+    _ = release_fixture(tmp_path, {"slopsentral-codex.tar.gz": catalog_archive()})
     environment = {
         **os.environ,
         "HOME": str(tmp_path),
         "NO_COLOR": "1",
         "TERM": "xterm-256color",
-        "FZF_DEFAULT_OPTS": "--filter=untrusted",
+        "GUM_CHOOSE_TIMEOUT": "1ms",
+        "PATH": str(tmp_path / "bin") + os.pathsep + os.environ["PATH"],
+        "XDG_DATA_HOME": str(tmp_path / "data"),
     }
     terminal, slave = pty.openpty()
+    termios.tcsetwinsize(terminal, (24, width))
     with stdout.open("wb") as output:
         process = subprocess.Popen(
-            [sys.executable, str(SCRIPT), "setup"],
+            [sys.executable, str(SCRIPT), action],
             cwd=tmp_path,
             env=environment,
             stdin=slave,
@@ -688,25 +735,28 @@ def test_real_selector_keyboard_and_terminal_restoration(tmp_path: Path, width: 
                 data = os.read(terminal, 65536)
                 chunk.extend(data)
                 transcript.extend(data)
-                if b"\x1b[6n" in data:
-                    _ = os.write(terminal, b"\x1b[1;1R")
         assert text in chunk, bytes(chunk)
 
     try:
-        termios.tcsetwinsize(terminal, (24, width))
-        wait_for(b"Install all plugins")
-        _ = os.write(terminal, b"\r")
-        wait_for(b"Copilot")
-        _ = os.write(terminal, b"\x01\r")
-        wait_for(b"Install all for")
-        _ = os.write(terminal, b"\x1b")
+        for prompt, keys in [*menu_steps(action), (b"Yes", b"y" if accept else b"\x1b")]:
+            wait_for(prompt)
+            _ = os.write(terminal, keys)
         end = time.monotonic() + 10
         while process.poll() is None and time.monotonic() < end:
             ready, _, _ = select.select([terminal], [], [], 0.1)
             if ready:
                 transcript.extend(os.read(terminal, 65536))
-        assert process.wait(timeout=1) == 130
-        assert json.loads(stdout.read_text())["reason"] == "CANCELLED"
+        assert process.wait(timeout=1) == (0 if accept else 130), bytes(transcript)
+        result = json.loads(stdout.read_text())
+        if accept:
+            assert result["action"] == action
+            assert [host["host"] for host in result["hosts"]] == ["codex"]
+            assert "plugin" in log.read_text()
+        else:
+            assert result["reason"] == "CANCELLED"
+            assert not log.exists() or all(
+                "list" in json.loads(line) for line in log.read_text().splitlines()
+            )
         flags = termios.tcgetattr(terminal)[3]
         assert flags & termios.ECHO
         assert flags & termios.ICANON
