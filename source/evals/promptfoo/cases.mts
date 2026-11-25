@@ -39,8 +39,68 @@ const reportTrees = {
   D: "Wait for at least three filenames to share a leading word before proposing a directory.",
 };
 
+// Each letter is an independent edit to the seed. The native fixture assigns the same row IDs.
+const archiveSetup = "Gradle 9.8.2 seeds a cacheable task. A fresh checkout restores from that cache. Five independent edits each start from the same seed. The task receives two resource-only JARs as individual file roots, one.jar then two.jar. Both have the same entry names but different service.txt contents. Properties files and manifests parse successfully. The task has no other changing inputs, custom normalization, or remote cache.";
+const edits = {
+  time: "Change only ZIP entry timestamps in one.jar.",
+  service: "Change only the contents of service.txt in one.jar.",
+  entries: "Reverse ZIP entry order in one.jar.",
+  propsOrder: "Reverse two distinct property declarations in app.properties inside one.jar.",
+  rename: "Rename one.jar to new.jar at the same classpath position.",
+  move: "Move one.jar into a subdirectory, retaining its basename and position.",
+  comment: "Add a comment to app.properties in one.jar.",
+  protocol: "Change the protocol property in app.properties in one.jar.",
+  otherProp: "Change a different property's value in app.properties in one.jar.",
+  attrCase: "Change only the case of a main-section manifest attribute name in one.jar.",
+  attrValue: "Change the value of that manifest attribute in one.jar.",
+  attrOrder: "Reverse two distinct main-section manifest attributes after Manifest-Version in one.jar.",
+  swap: "Reverse the two JAR roots in the declared file collection.",
+};
+
+function archiveCase(
+  id: string, task: string, question: string, changes: readonly (keyof typeof edits)[],
+  expected: readonly string[], rationale: string,
+): DecisionCase {
+  return {
+    id: `gradle-fingerprint-${id}`,
+    skill: "gradle-performance-engineering",
+    references: ["references/cacheability.md"],
+    scenario: [archiveSetup, task, question].join(" "),
+    choices: Object.fromEntries(changes.map((edit, i) => ["ABCDE"[i], edits[edit]])),
+    expected, rationale,
+  };
+}
+
+const stale = "Select every edit that restores stale output compared with a fresh cache-disabled execution.";
+const waste = "Select every edit that executes the task but produces byte-identical output to the seed.";
+const defects = "Flag every edit that either restores stale bytes or executes despite byte-identical output.";
+
 // The oracle stays outside the rendered prompt. Change a case ID when its meaning changes.
 export const cases: readonly DecisionCase[] = [
+  archiveCase("digest", "The input uses @Classpath. The task emits the SHA-256 of the complete first JAR file.", stale,
+    ["time", "service", "entries", "propsOrder", "rename"], ["A", "C", "D"],
+    "Repacking or reordering distinct properties changes raw bytes while preserving the normalized classpath. Renaming alone preserves the emitted digest."),
+  archiveCase("manifest", "The input uses @Classpath. The task copies the first JAR's raw META-INF/MANIFEST.MF bytes.", stale,
+    ["attrValue", "attrCase", "service", "attrOrder", "rename"], ["B", "D"],
+    "Attribute name case and attribute order change the copied bytes while preserving the manifest fingerprint."),
+  archiveCase("raw", "The input uses @Classpath. The task copies the first JAR's raw app.properties bytes.", stale,
+    ["comment", "protocol", "propsOrder", "entries", "service"], ["A", "C"],
+    "The runtime fingerprint ignores comments and property order. The raw-byte copier preserves both."),
+  archiveCase("protocol", "The input uses @Classpath. The output contains only the parsed protocol value from the first JAR.", waste,
+    ["time", "service", "otherProp", "comment", "protocol"], ["B", "C"],
+    "The unrelated service and property change the key without changing protocol. A protocol edit changes the result."),
+  archiveCase("origin", "The input uses @Classpath. The output contains only the first JAR's basename.", defects,
+    ["move", "rename", "otherProp", "swap", "entries"], ["B", "C"],
+    "A root rename restores the old basename. A changed property needlessly executes the reader. Swapping these distinct roots changes both key and output."),
+  archiveCase("files", "The task declares @InputFiles with RELATIVE path sensitivity and emits the first JAR's service.txt contents.", defects,
+    ["entries", "swap", "service", "rename", "move"], ["A", "B", "D"],
+    "ZIP repacking and a different basename cause needless execution. Reversing an ordinary file collection preserves its fingerprint but changes the first service."),
+  archiveCase("abi", "The task declares @CompileClasspath and emits the first JAR's service.txt contents.", stale,
+    ["comment", "service", "swap", "attrValue", "move"], ["B", "C"],
+    "Both resource-only JARs have no class ABI. Changing or rebinding the first service changes the output without invalidating the cache."),
+  archiveCase("stamp", "The task declares @InputFiles with NAME_ONLY path sensitivity and emits the SHA-256 of the complete first JAR file.", defects,
+    ["move", "time", "rename", "entries", "swap"], ["C", "E"],
+    "Renaming a root invalidates identical bytes. Reversing the collection preserves the key but selects a different archive."),
   {
     id: "prompt-preserve-standing-authority",
     skill: "model-instruction-design",

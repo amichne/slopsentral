@@ -4,6 +4,9 @@ on:
     paths:
       - source/skills/gradle-performance-engineering/assets/cacheability/**
       - source/skills/gradle-performance-engineering/scripts/cacheability.py*
+      - source/evals/promptfoo/cases.mts
+      - tools/promptfoo/fixtures/classpath-probe.gradle
+      - tools/tests/gradle-fingerprints.test.mjs
       - .github/workflows/gradle-cacheability.yml
   workflow_dispatch:
 permissions:
@@ -27,3 +30,8 @@ jobs:
           cache-disabled: true
       - name: Exercise independent builds, relocation, invalidation, and the false-hit control
         run: uv run --locked --script source/skills/gradle-performance-engineering/scripts/cacheability.py "$(command -v gradle)"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - name: Compare the decision oracle with real restores and fresh outputs
+        run: GRADLE_BIN="$(command -v gradle)" node --test tools/tests/gradle-fingerprints.test.mjs
