@@ -447,7 +447,8 @@ def release_fixture(home: Path, assets: dict[str, bytes]) -> Path:
     curl = binaries / "curl"
     _ = curl.write_text(
         f"#!{sys.executable}\nimport sys\nfrom pathlib import Path\n"
-        f"sys.stdout.buffer.write((Path({str(remote)!r}) / sys.argv[-1].split('/')[-1]).read_bytes())\n"
+        f"Path(sys.argv[sys.argv.index('--output')+1]).write_bytes((Path({str(remote)!r}) / sys.argv[-1].split('/')[-1]).read_bytes())\n"
+        "sys.stdout.write('200')\n"
     )
     curl.chmod(0o755)
     return remote
@@ -534,6 +535,35 @@ def test_bulk_catalog_rejection_precedes_native_mutation(
     result = invoke(tmp_path, "install", "--host", "codex", "--all")
     assert result.returncode == 1
     assert json.loads(result.stdout)["reason"] == "INVALID_RELEASE"
+    assert "slopsentral-codex.tar.gz (4.0.7)" in json.loads(result.stdout)["detail"]
+    assert all("list" in json.loads(line) for line in log.read_text().splitlines())
+
+
+@pytest.mark.parametrize(
+    ("exit_code", "status", "detail"), [(60, "000", "CURL_CA_BUNDLE"), (22, "429", "HTTP 429")]
+)
+def test_bulk_download_reports_tls_or_api_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, exit_code: int, status: str, detail: str
+) -> None:
+    log = host_fixture(tmp_path, "codex")
+    curl = tmp_path / "bin/curl"
+    _ = curl.write_text(
+        f"#!{sys.executable}\nimport sys\n"
+        "assert 'Authorization:' not in ' '.join(sys.argv)\n"
+        "assert sys.stdin.read() == 'Authorization: Bearer fixture-token\\n'\n"
+        "assert '--no-insecure' in sys.argv and '--retry' in sys.argv\n"
+        f"sys.stdout.write({status!r})\nsys.exit({exit_code})\n"
+    )
+    curl.chmod(0o755)
+    monkeypatch.setenv("PATH", str(tmp_path / "bin") + os.pathsep + os.environ["PATH"])
+    monkeypatch.setenv("GH_TOKEN", "fixture-token")
+    result = invoke(tmp_path, "install", "--host", "codex", "--all")
+    assert result.returncode == 1
+    rejection = json.loads(result.stdout)
+    assert rejection["reason"] == "DOWNLOAD_FAILED"
+    assert detail in rejection["detail"]
+    assert "api.github.com" in rejection["detail"]
+    assert "fixture-token" not in result.stdout + result.stderr
     assert not log.exists() or all(
         "list" in json.loads(line) for line in log.read_text().splitlines()
     )
@@ -687,6 +717,13 @@ def menu_steps(action: str) -> list[tuple[bytes, bytes]]:
     return steps
 
 
+@pytest.fixture
+def installed_launcher(tmp_path: Path) -> Path:
+    installed = invoke(tmp_path, "self", "install")
+    assert installed.returncode == 0, installed.stdout + installed.stderr
+    return tmp_path / ".local/bin/slopsentral"
+
+
 @pytest.mark.parametrize(
     ("action", "width", "accept"),
     [
@@ -698,7 +735,7 @@ def menu_steps(action: str) -> list[tuple[bytes, bytes]]:
     ],
 )
 def test_real_selector_keyboard_and_terminal_restoration(
-    tmp_path: Path, action: str, width: int, *, accept: bool
+    tmp_path: Path, installed_launcher: Path, action: str, width: int, *, accept: bool
 ) -> None:
     stdout = tmp_path / "stdout.json"
     log = host_fixture(tmp_path, "codex")
@@ -716,7 +753,7 @@ def test_real_selector_keyboard_and_terminal_restoration(
     termios.tcsetwinsize(terminal, (24, width))
     with stdout.open("wb") as output:
         process = subprocess.Popen(
-            [sys.executable, str(SCRIPT), action],
+            [str(installed_launcher), action],
             cwd=tmp_path,
             env=environment,
             stdin=slave,
@@ -760,7 +797,7 @@ def test_real_selector_keyboard_and_terminal_restoration(
         flags = termios.tcgetattr(terminal)[3]
         assert flags & termios.ECHO
         assert flags & termios.ICANON
-        assert not (tmp_path / ".local").exists()
+        assert installed_launcher.is_file()
         assert b"\x1b[?25h" in transcript
     finally:
         if process.poll() is None:

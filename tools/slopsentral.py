@@ -37,6 +37,7 @@ REPOSITORY = "amichne/slopsentral"
 API = f"https://api.github.com/repos/{REPOSITORY}"
 DOWNLOAD = f"https://github.com/{REPOSITORY}/releases/download"
 MAX_BYTES = 64 * 1024 * 1024
+CURL_HTTP_RETURNED_ERROR = 22
 VERSION = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\Z")
 IDENTITY = re.compile(r"[a-z][a-z0-9-]*\Z")
 LAYOUT_HELPER = "kotlin-horizontalization-check"
@@ -156,41 +157,66 @@ def fetch(url: str) -> Result[bytes]:
     authenticated = url.startswith(API + "/") and token is not None
     if authenticated and token is not None and not re.fullmatch(r"[A-Za-z0-9_.-]+", token):
         return Rejected(Reason.DOWNLOAD_FAILED, "Unsupported token characters.")
-    try:
-        result = subprocess.run(
-            [
-                "curl",
-                "--fail",
-                "--silent",
-                "--show-error",
-                "--no-insecure",
-                "--no-proxy-insecure",
-                "--no-location-trusted",
-                "--location",
-                "--proto",
-                "=https",
-                "--proto-redir",
-                "=https",
-                "--max-time",
-                "60",
-                "--max-filesize",
-                str(MAX_BYTES),
-                *(["--header", "@-"] if authenticated else []),
-                url,
-            ],
-            input=f"Authorization: Bearer {token}\n".encode() if authenticated else b"",
-            capture_output=True,
-            check=False,
-            timeout=65,
-        )
-    except (OSError, subprocess.TimeoutExpired):
-        return Rejected(Reason.DOWNLOAD_FAILED, "curl could not complete the HTTPS request.")
-    if result.returncode or len(result.stdout) > MAX_BYTES:
-        return Rejected(
-            Reason.DOWNLOAD_FAILED,
-            f"curl exited {result.returncode}; examine proxy and certificate settings.",
-        )
-    return result.stdout
+    with tempfile.TemporaryDirectory(prefix="slopsentral-download-") as temporary:
+        output = Path(temporary) / "payload"
+        arguments = [
+            "curl",
+            "--fail",
+            "--silent",
+            "--show-error",
+            "--no-insecure",
+            "--no-proxy-insecure",
+            "--no-location-trusted",
+            "--location",
+            "--proto",
+            "=https",
+            "--proto-redir",
+            "=https",
+            "--max-time",
+            "60",
+            "--connect-timeout",
+            "10",
+            "--retry",
+            "2",
+            "--retry-max-time",
+            "30",
+            "--max-filesize",
+            str(MAX_BYTES),
+            "--output",
+            str(output),
+            "--write-out",
+            "%{http_code}",
+            *(["--header", "@-"] if authenticated else []),
+            url,
+        ]
+        try:
+            result = subprocess.run(
+                arguments,
+                input=f"Authorization: Bearer {token}\n".encode() if authenticated else b"",
+                capture_output=True,
+                check=False,
+                timeout=65,
+            )
+        except OSError as error:
+            return Rejected(Reason.DOWNLOAD_FAILED, f"Cannot run curl for {url}: {error.strerror}.")
+        except subprocess.TimeoutExpired:
+            return Rejected(Reason.DOWNLOAD_FAILED, f"Download exceeded 65 seconds: {url}")
+        if result.returncode:
+            return download_failure(url, result.returncode, result.stdout)
+        if not output.is_file() or output.stat().st_size > MAX_BYTES:
+            return Rejected(Reason.DOWNLOAD_FAILED, f"Missing or oversized download: {url}")
+        return output.read_bytes()
+
+
+def download_failure(url: str, code: int, status: bytes) -> Rejected:
+    detail = f"curl exit {code}"
+    if code == CURL_HTTP_RETURNED_ERROR and re.fullmatch(rb"[1-5]\d\d", status):
+        detail = "HTTP " + status.decode("ascii")
+        if url.startswith(API + "/") and status in {b"403", b"429"}:
+            detail += ". For GitHub API limits, set GH_TOKEN or GITHUB_TOKEN"
+    elif code in {35, 51, 58, 60, 77}:
+        detail += ". TLS failed. Check the proxy and the trusted CA bundle (CURL_CA_BUNDLE)"
+    return Rejected(Reason.DOWNLOAD_FAILED, f"{url}: {detail}.")
 
 
 @dataclass(frozen=True)
@@ -285,7 +311,20 @@ def release_plugins(release: _Release) -> Result[tuple[PluginName, ...]]:
     if isinstance(data, Rejected):
         return data
     catalog = catalog_bytes(data)
-    return catalog if isinstance(catalog, Rejected) else catalog_names(parse(catalog))
+    if isinstance(catalog, Rejected):
+        result = catalog
+    else:
+        value = parse(catalog)
+        result = (
+            Rejected(Reason.INVALID_RELEASE, "Plugin catalog contains invalid JSON.")
+            if isinstance(value, Rejected)
+            else catalog_names(value)
+        )
+    if isinstance(result, Rejected):
+        return Rejected(
+            result.reason, f"slopsentral-codex.tar.gz ({release.version}): {result.detail}"
+        )
+    return result
 
 
 def all_names(version: str | None = None) -> Result[tuple[PluginName, ...]]:
@@ -884,7 +923,7 @@ def gum(arguments: list[str]) -> Result[str]:
     except OSError as error:
         return Rejected(Reason.SELECTOR_FAILED, f"Could not start Gum: {error.strerror}.")
     if result.returncode in {1, 130, -2}:
-        return Rejected(Reason.CANCELLED, "No host operation started.")
+        return Rejected(Reason.CANCELLED, "No changes made.")
     if result.returncode:
         return Rejected(Reason.SELECTOR_FAILED, f"gum {arguments[0]} exited {result.returncode}.")
     return result.stdout
