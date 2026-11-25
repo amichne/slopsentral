@@ -1,13 +1,14 @@
-# Gum prompts
+# Gum command guides and terminal recipes
 
-Use Charm's `gum` executable when a shell interface needs a prompt. Keep argument parsing and the underlying operation in the existing command. Both interactive and unattended callers must be able to supply the same values.
+For an individual element, use the [command inventory](#command-inventory). For a complete flow, choose a recipe below. Keep prompts and progress on the interactive path. When the caller requests machine output, bypass the terminal UI even if a terminal is available.
 
-| What the person needs to do | Gum command |
+| Terminal flow | Recipe |
 | --- | --- |
-| Pick from a short list | `gum choose` |
-| Search a longer list | `gum filter` |
-| Enter one line or several lines | `gum input` or `gum write` |
-| Approve an action | `gum confirm` |
+| Offer a menu but support pipelines | [Accept a value from an argument or a picker](#accept-a-value-from-an-argument-or-a-picker) |
+| Compose a handoff and approve its contents | [Draft a handoff note](#draft-a-handoff-note) |
+| Find a branch and inspect its history | [Search and page through Git history](#search-and-page-through-git-history) |
+| Show progress and preserve failure status | [Check a Git repository](#check-a-git-repository) |
+| Inspect a CSV export as a table | [Preview an inventory file](#preview-an-inventory-file) |
 
 ## Accept a value from an argument or a picker
 
@@ -36,12 +37,68 @@ case "$format" in
 esac
 ```
 
-Capture the selected value on stdout. Pass it to the operation as one quoted argument. For a CLI with a machine-output mode, bypass prompts when that mode is active, even in a terminal.
+Capture the selected value on stdout. Pass it to the operation as one quoted argument.
 
-## Confirm a write
+## Draft a handoff note
 
-Name the target in the prompt. Use the exit status of `gum confirm` to decide whether to write. For example, `gum confirm --default=false "Overwrite $target?" || exit "$?"` stops the script on refusal or interruption. Place the write after this guard. Keep unattended approval in the command's existing flags.
+Run this in a terminal. Enter submits the title. In the body, Ctrl-J adds a line and Enter submits the text. The preview goes to stderr. Only an approved note reaches stdout.
 
-Exercise the picker with Enter and Ctrl-C. Make sure that cancellation prevents the operation. Run the explicit argument path with standard input disconnected and Gum absent. Compare captured stdout with the documented result.
+```sh
+title=$(gum input --prompt 'Title: ') || exit "$?"
+[ -n "$title" ] || { printf '%s\n' 'A title is required.' >&2; exit 2; }
+body=$(gum write --header 'Handoff details') || exit "$?"
+note=$(printf '# %s\n\n%s' "$title" "$body")
+printf '%s\n' "$note" | gum format --type markdown >&2 || exit "$?"
+gum confirm --default=false 'Return this handoff note?' || exit "$?"
+printf '%s\n' "$note"
+```
 
-For installation options and command examples, see [Charm's Gum documentation](https://github.com/charmbracelet/gum#readme). Use `gum <command> --help` for the flags in the installed version.
+If the caller saves the note, open the destination after approval. Shell redirection opens a destination before the script starts.
+
+## Search and page through Git history
+
+Run this in a terminal inside a Git repository with local branches. The filter searches branch names. The pager displays the chosen branch's commits. Press q to return.
+
+```sh
+branches=$(git for-each-ref --format='%(refname:strip=2)' refs/heads/) || exit "$?"
+[ -n "$branches" ] || { printf '%s\n' 'No local branches.' >&2; exit 0; }
+branch=$(printf '%s\n' "$branches" | gum filter --placeholder 'Find a branch') || exit "$?"
+[ -n "$branch" ] || exit 1
+history=$(git log -30 --oneline "refs/heads/$branch" --) || exit "$?"
+printf '%s\n' "$history" | gum pager
+```
+
+## Check a Git repository
+
+Run the same integrity check from a terminal or a job. The interactive path shows a spinner and a completion message. The job receives Git's ordinary diagnostics and exit status.
+
+```sh
+if [ -t 1 ] && [ -t 2 ] && command -v gum >/dev/null 2>&1; then
+  gum spin --show-error --title 'Checking Git objects' -- git fsck --connectivity-only >&2 || exit "$?"
+  gum log --level info 'Git object check passed' >&2
+else
+  git fsck --connectivity-only
+fi
+```
+
+## Preview an inventory file
+
+In a terminal, pick a CSV file with a header row. This preview labels the file and prints its rows. For a pipeline, accept a path argument and send the original CSV to stdout.
+
+```sh
+printf '%s\n' 'Pick an inventory CSV' >&2
+path=$(gum file --height 0 .) || exit "$?"
+heading=$(gum style --bold 'Inventory') || exit "$?"
+gum join --vertical -- "$heading" "$path" || exit "$?"
+gum table --print --file "$path"
+```
+
+## Command inventory
+
+Gum 2.0.2 lists 14 commands in `gum --help`. It also provides two packaging commands, `completion` and `man`. For the options in your installed version, use `gum <command> --help`. [Charm’s command definitions](https://github.com/charmbracelet/gum/blob/v2.0.2/gum.go) and [Gum documentation](https://github.com/charmbracelet/gum#readme).
+
+- To select a value, use [choose](gum-choose.md) for a short menu, [filter](gum-filter.md) for search, [file](gum-file.md) for a path, or [table](gum-table.md) for rows with several fields.
+- To collect text, use [input](gum-input.md) for one line or [write](gum-write.md) for several. To ask permission for an action, use [confirm](gum-confirm.md).
+- To present results, use [format](gum-format.md) for Markdown or code, [style](gum-style.md) for a labeled block, [join](gum-join.md) for layout, or [pager](gum-pager.md) for long output.
+- To report work, use [spin](gum-spin.md) while a command runs or [log](gum-log.md) for persistent diagnostics.
+- To check compatibility, use [version-check](gum-version-check.md). To package Gum's shell completions or manual, use [completion](gum-completion.md) or [man](gum-man.md).
