@@ -171,6 +171,19 @@ test('malformed evaluation and incomplete plans cannot create output; diagnostic
   }
 });
 
+test('a noisy evaluator is stopped at the diagnostic size limit before publication', t => {
+  const { dir, executable } = fake(t, `
+    const fs = require('node:fs');
+    process.stderr.end(Buffer.alloc(40 * 1024 * 1024),
+      () => fs.writeFileSync(process.argv[1] + '.exceeded', 'emitted 40 MiB'));
+  `);
+  const out = path.join(dir, 'output');
+  assert.throws(() => project({ source: root, harness: 'codex', out, pkl: executable }),
+    e => e.outcome?.code === 'PKL_REJECTED');
+  assert.equal(fs.existsSync(out), false);
+  assert.equal(fs.existsSync(executable + '.exceeded'), false);
+});
+
 function sourceFixture(t) {
   const dir = temporary(t);
   const repo = path.join(dir, 'repo');

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import selectors
 import stat
 import subprocess
 import sys
@@ -12,6 +13,7 @@ import tempfile
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
+from time import monotonic
 
 from projection.materialize import (
     TREES,
@@ -113,18 +115,51 @@ def snapshot(repository: Path) -> dict[str, File]:
     return files
 
 
+def capture(
+    command: list[str], timeout: int, cwd: Path | None = None
+) -> subprocess.CompletedProcess[bytes]:
+    """Drain both pipes with finite time and size limits, including a child that never exits."""
+    deadline = monotonic() + timeout
+    with subprocess.Popen(
+        command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    ) as child:
+        try:
+            if child.stdout is None or child.stderr is None:
+                raise subprocess.SubprocessError
+            out, err = child.stdout.fileno(), child.stderr.fileno()
+            buffers = {out: bytearray(), err: bytearray()}
+            with selectors.DefaultSelector() as streams:
+                for fd in buffers:
+                    _ = streams.register(fd, selectors.EVENT_READ)
+                while streams.get_map():
+                    remaining = deadline - monotonic()
+                    if remaining <= 0:
+                        raise subprocess.TimeoutExpired(command, timeout)
+                    for key, _event in streams.select(remaining):
+                        chunk = os.read(key.fd, 65_536)
+                        if not chunk:
+                            _ = streams.unregister(key.fd)
+                            continue
+                        buf = buffers[key.fd]
+                        if len(buf) + len(chunk) > MAX_OUTPUT:
+                            raise subprocess.SubprocessError
+                        buf.extend(chunk)
+            code = child.wait(timeout=max(0, deadline - monotonic()))
+        finally:
+            if child.poll() is None:
+                child.kill()
+    return subprocess.CompletedProcess(command, code, bytes(buffers[out]), bytes(buffers[err]))
+
+
 def graph(operation: str, frozen: Path, repository: Path) -> object:
-    result = subprocess.run(
-        ["node", str(MODELS / "source-graph.mjs"), operation, str(frozen), str(repository)],
-        capture_output=True,
-        check=False,
-        timeout=60,
+    result = capture(
+        ["node", str(MODELS / "source-graph.mjs"), operation, str(frozen), str(repository)], 60
     )
     if result.returncode == UNSUPPORTED_GRAPH:
         raise ProjectionError(
             Failure.UNSUPPORTED_SOURCE, "Only repository-local source and assets are supported"
         )
-    if result.returncode or len(result.stdout) > MAX_OUTPUT:
+    if result.returncode:
         raise ProjectionError(
             Failure.SOURCE_REJECTED, "The authored source did not pass validation"
         )
@@ -226,7 +261,8 @@ def freeze(repository: Path, frozen: Path) -> Frozen:
 
 def pkl_version(pkl: str) -> None:
     try:
-        version = subprocess.run([pkl, "--version"], capture_output=True, check=True, timeout=10)
+        version = capture([pkl, "--version"], 10)
+        version.check_returncode()
         if re.match(rb"^Pkl 0\.32\.0\b", version.stdout):
             return
     except (OSError, subprocess.SubprocessError):
@@ -267,23 +303,17 @@ def evaluate(
             str(work / "Project.pkl"),
         ]
         try:
-            # Spool untrusted diagnostic and output streams. Only admit bounded bytes into memory.
-            with tempfile.TemporaryFile() as out, tempfile.TemporaryFile() as err:
-                result = subprocess.run(
-                    command, cwd=work, stdout=out, stderr=err, check=False, timeout=65
-                )
-                if not result.returncode and out.tell() <= MAX_OUTPUT:
-                    _ = out.seek(0)
-                    return json.load(out)
-                _ = err.seek(0)
-                location = re.search(rb"/([A-Za-z]+\.pkl), line ([0-9]+)\)", err.read(65536))
-                if location and location[1].decode() in models:
-                    detail = {
-                        "type": "MODEL_LOCATION",
-                        "module": location[1].decode(),
-                        "line": int(location[2]),
-                    }
-        except (OSError, ValueError, subprocess.TimeoutExpired):
+            result = capture(command, 65, work)
+            if result.returncode == 0:
+                return json.loads(result.stdout)
+            location = re.search(rb"/([A-Za-z]+\.pkl), line ([0-9]+)\)", result.stderr)
+            if location and location[1].decode() in models:
+                detail = {
+                    "type": "MODEL_LOCATION",
+                    "module": location[1].decode(),
+                    "line": int(location[2]),
+                }
+        except (OSError, ValueError, subprocess.SubprocessError):
             pass
     raise ProjectionError(
         Failure.PKL_REJECTED, "Pkl could not render a complete projection plan", detail
