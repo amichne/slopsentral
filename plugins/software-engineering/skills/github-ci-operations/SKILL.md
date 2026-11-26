@@ -1,0 +1,140 @@
+---
+name: "github-ci-operations"
+description: "Design, inspect, diagnose, or change GitHub Actions workflows, PR checks, dispatches, caches, artifacts, secrets, permissions, release pipelines, and CI performance. Select diagnosis, design, observation, or repair from the request; a design task need not have a failing run."
+---
+
+# GitHub CI Operations
+
+Use this skill for GitHub-hosted workflow and CI work. Inspect the repository workflows, logs, scripts, and package metadata before a diagnosis.
+
+## Operating Contract
+
+- Use the authenticated GitHub CLI (`gh`) for repository, PR, issue, review,
+  and Actions operations. Use `pull-request-lifecycle` for PR delivery.
+- Use local `git` for local repository state.
+- Verify the target repository and authentication context before remote work.
+- Use live PR checks, workflow runs, logs, annotations, and job summaries as
+  evidence when debugging failures.
+- When the local observer is available, wait with one target, event predicate,
+  and bounded timeout. Otherwise use available structured check reads at meaningful
+  transitions. An unavailable observer must not block diagnosis or PR creation.
+- Before you dispatch work to a self-hosted runner, examine capacity for the
+  full label set with the observer's `capacity` command. Report API failures separately.
+- When a linked worktree already owns the wait, use the local `status` result.
+  Report the required PR checks and native qualification jobs as separate facts.
+- Prefer `--timeout auto`; inspect its duration-informed choice and override it
+  deliberately when needed.
+- Treat non-GitHub providers as external checks unless the repo has local
+  tooling for them. Report their details URL rather than scraping unrelated
+  systems.
+- Fix root causes in code, tests, scripts, workflow YAML, or docs. Do not paper
+  over failures by disabling checks unless the user explicitly asks and the risk
+  is stated.
+- Treat workflow optimization as a dependency-graph and proof-equivalence
+  change. Budget expanded task cardinality and modeled critical-path duration;
+  do not infer performance from YAML line count or one runner observation.
+- Apply only the external changes authorized by the request. Existing explicit
+  authorization need not be requested again. Secrets, environment protection,
+  deployment, release tags, and destructive state need authority for that action.
+- Re-run the smallest relevant local check first, then use GitHub checks to
+  confirm remote behavior when available.
+
+## Workflow
+
+1. Resolve the target.
+   Identify the repository and affected workflow or pipeline owner. Resolve the
+   branch, PR, and run URL when those objects exist and matter to the request.
+   Select diagnosis, repair, workflow design, check observation, release work,
+   or publication. Keep proposed changes separate from authorized execution.
+
+2. Inspect live state.
+   Check the account with `gh auth status`. In a checkout, confirm the target
+   with `git remote get-url origin`. For a remote PR, use
+   `gh pr view <number> --repo OWNER/REPO --json url,headRefOid,baseRefName`.
+   Inspect Actions state with `gh` JSON and inspect workflow YAML under
+   `.github/workflows/`. For a failure, capture the job name, command, error
+   snippet, run URL, head SHA, and owning local file. For design, inspect the
+   existing stage graph and contracts without inventing a failing run.
+   Use `gh` JSON and typed observer snapshots as evidence.
+
+3. Establish the claim.
+   For diagnosis, trace the failed gate through its dependencies to the first failed operation
+   on each causal path. Record the job, step, head SHA, run attempt, and dependent
+   checks. Use the smallest reproduction at the failed interface. When a provider
+   response caused the failure, reproduce that response before you change the
+   adapter or retry the workflow.
+   For design or optimization, name the stage inputs, outputs, required proof,
+   and the contract that the proposed change must preserve. For observation
+   alone, report the requested check state without entering a repair workflow.
+
+4. Change the owner when implementation is in scope.
+   Extend the existing source, test, generator, script, or workflow file. Preserve
+   existing matrix, permissions, concurrency, cache, and artifact conventions
+   unless they are the cause.
+   A diagnosis or design request can finish with supported findings and proposed
+   changes; do not turn it into a dispatch, edit, or deployment.
+
+5. Validate.
+   For an implemented change, run the local equivalent and `actionlint` for
+   workflow changes when present.
+   For dependency, matrix, cache, or startup-latency changes, run the deterministic
+   workflow graph model and preserve the baseline proof-output set.
+   Re-read the PR head with `gh pr view`. For pending checks, use the local
+   observer when available, or read `gh pr checks` JSON at meaningful transitions.
+
+6. Hand off.
+   Report the requested result: diagnosis, design, observed state, or implemented
+   change. Include the failed signal and root cause when established, files
+   changed when any, checks run, and remote verification still pending.
+
+## Reference Routing
+
+- Load [ci-failure-triage.md](references/ci-failure-triage.md) for failed PR
+  checks, failing runs, log extraction, or rerun decisions.
+- Load [event-driven-observation.md](references/event-driven-observation.md)
+  when waiting, selecting an event predicate, choosing a timeout, inspecting
+  evidence, or sharing duration knowledge.
+- Load [actions-workflows.md](references/actions-workflows.md) when creating or
+  editing `.github/workflows/*.yml`.
+- Load [workflow-graph-optimization.md](references/workflow-graph-optimization.md)
+  when changing `needs`, matrices, fan-out gates, Gradle/cache grouping, OCI
+  image validation, or workflow/task cardinality.
+- For partial retries, use the [artifact retry fixture](references/artifact-retry.md).
+- For a PR performance report, use the [attempt signals](references/attempt-signals.md).
+- Load [Gradle CI performance](references/gradle-ci-performance.md) for
+  Gradle on GitHub Actions, Develocity correlation, cache ownership, affected-task
+  selection, measured latency/runner consumption, and CI/CD handoff. Use
+  `gradle-performance-engineering` for build-internal diagnosis and experiments.
+- Load [release-flow.md](references/release-flow.md) for GitHub releases, tags,
+  generated notes, artifacts, or release automation.
+
+When designing or changing permissions, untrusted input handling, artifact
+identity, or cancellation, read [workflow trust boundaries](references/workflow-trust-boundaries.md).
+Use the artifact promotion procedure when the stage graph or promotion contract is the main decision.
+
+## Completion Criteria
+
+- Diagnosis identifies the failing GitHub signal with a run or check URL when
+  available. Design identifies the intended stage contract and proposed evidence.
+- An implemented fix targets the owning source rather than masking the symptom.
+- Required local validation passed, or the missing environment/tool is stated.
+- Claims about remote checks use structured observations, or identify the exact
+  pending verification. Proposed checks are not reported as executed results.
+
+Read [provenance](references/provenance.md) when updating this skill.
+
+## Artifact promotion and installed proof
+
+For pipeline design, name each stage input, output, authority, failure, and evidence.
+Bind tests and deployment evidence to the same source revision and immutable artifact.
+Promote the tested artifact without a duplicate release build when the target permits it.
+Separate untrusted PR processes from publication credentials.
+Name health signals, stop conditions, schema compatibility, and recovery limits before a rollout.
+A design or local test grants no deployment authority.
+
+When designing stages or promotion, read [pipeline review](references/pipeline-review.md)
+for the contract and rejection cases.
+When the claim concerns an installed artifact, read
+[installed qualification](references/installed-qualification.md) for fresh discovery,
+semantic invocation, and recovery proof.
+Read [delivery provenance](references/delivery-provenance.md) when revising these procedures.

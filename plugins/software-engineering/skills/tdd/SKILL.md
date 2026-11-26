@@ -1,0 +1,95 @@
+---
+name: tdd
+description: Use when proving behavior changes, validating an existing live integration, comparing runtime performance, or auditing executable proof, including empty test selections, runner failures, and RED/GREEN claims. Characterize refactors with existing checks; prose and formatting changes use their normal validators.
+---
+
+# Executable-Check TDD
+
+Choose the smallest executable oracle for the changed claim: a test, compiler,
+type checker, schema validator, linter, or repository command. Read the nearest
+repository instructions and inspect the current owner, callers, and existing
+checks first. An inherited plan describes a hypothesis, not a missing feature.
+
+## Workflow
+
+1. State the acceptance behavior and inspect whether the current code already
+   satisfies it. Choose reuse, characterization, a behavior change, or a bounded
+   investigation. Name the invariant, the cheapest existing entry point that
+   exercises it, and the closest input that must fail. Use a value assertion
+   for a pure decision. Use a real process, protocol, or installed artifact
+   when its behavior determines the result. Before you add a harness, name
+   the proof that the existing entry points cannot supply.
+   Do not create a duplicate implementation or manufacture RED when the existing
+   invariant is proved. A validation-only request skips implementation.
+2. Specify the working directory, exact command, fixtures, meaningful
+   environment, assertion source, expected failure, and passing criterion.
+   Check tooling readiness separately. Zero selected tests and infrastructure
+   failures do not prove the product behavior.
+3. Select the proof path from the current behavior.
+   When the requirement already holds, run its existing check and report reuse.
+   For a behavior-preserving refactor, establish passing characterization.
+   For a behavior change, add or tighten the focused check and run it before
+   implementation. Accept RED only when the intended missing invariant causes
+   the failure. If the cause is unresolved, investigate before implementing.
+4. When an implementation change is required and authorized, build the smallest
+   real path that satisfies the claim. Keep effects explicit and preserve
+   refined domain values and finite expected failures. Validation-only work
+   continues with the existing implementation.
+   Do not refactor while red or add behavior outside the acceptance boundary.
+5. After an implementation change, run the same check specification. Accept GREEN only when the relevant
+   assertion executed and passed. Explain skips and cached evidence. Refactor
+   while green and rerun the affected check after meaningful changes.
+6. Run the checks that the repository needs. Name the consumer or behavior
+   that each optional wider check exercises.
+   Repeat or broaden only for changed inputs, failures, or a named unresolved
+   concern. Do not add implementation-mirroring tests for reversible prose or
+   formatting changes.
+7. Report the exact checks, observed outcomes, changed invariant, and limits.
+   Keep evidence in native reports and the handoff; ordinary work needs no new
+   task filesystem. Commit or push only when the requested end state or
+   applicable repository policy authorizes publication. Do not request again
+   for authority already supplied. A local TDD loop does not require a remote.
+
+A timeout, missing command, broken fixture, permission error, or unrelated
+failure requires readiness repair or isolation; it is not product RED. A passing
+aggregate without a relevant assertion is not GREEN. Remaining required work
+prevents completion.
+
+## Reference Routing
+
+- Read [real-interface-proof.md](references/real-interface-proof.md) when asked
+  to smoke-test a live integration or verify an installed or running change.
+  Passing tests are supporting checks, not a substitute for that interface.
+- Read [runtime-performance.md](references/runtime-performance.md) when the
+  acceptance claim concerns runtime latency, throughput, or reduced semantic work.
+  Use `gradle-performance-engineering` for build performance and `intellij-platform-testing`
+  for live IDE capture; this reference qualifies comparison proof.
+
+- Read [codebase-preflight.md](references/codebase-preflight.md) when deciding
+  whether a proposed implementation is needed.
+- Read [executable-check-contract.md](references/executable-check-contract.md)
+  when selecting a non-test oracle or qualifying RED/GREEN evidence.
+- Read [isolation.md](references/isolation.md) when checks mutate state, call a
+  service, or evaluate an agent in a disposable workspace.
+- Read [tracer-bullets.md](references/tracer-bullets.md) for an uncertain boundary;
+  distinguish a retained real path from a disposable feasibility spike.
+- Read [tests.md](references/tests.md) for behavior tests and
+  [real components](references/real-components.md) for test-local state and external effects.
+- Read [interface-design.md](references/interface-design.md) or
+  [deep-modules.md](references/deep-modules.md) when test friction exposes a seam.
+- Read [refactoring.md](references/refactoring.md) only after passing proof.
+- Read [handoff.md](references/handoff.md) for interrupted or sustained work.
+
+## Completion Criteria
+
+The current-codebase decision is supported by source and consumer evidence.
+The focused oracle and necessary repository gates passed.
+Publication matches the requested scope.
+The handoff distinguishes reuse, characterization, and measured RED/GREEN.
+A narrow result supports only the mechanism that its oracle exercises.
+
+## Optional procedures
+
+For a validation plan or explicit goal request, read [planning and scope](references/planning-and-scope.md).
+Planning alone grants no execution authority.
+For independent work across agents, read [delegation](references/delegation.md).

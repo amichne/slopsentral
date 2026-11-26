@@ -1,0 +1,15 @@
+extends: existence
+message: "Give the main point its own sentence. Move conditions or supporting details to the next sentence."
+level: warning
+scope: sentence
+nonword: true
+# Match a full sentence so the editor highlights the passage to revise.
+raw:
+  - |-
+    (?isx)^
+    (?:
+      (?:\W*\w+\b){41}
+      |
+      (?=(?:\W*\w+\b){26})
+      (?:.*?\b(?:if|unless|when|while|until)\b){2}
+    ).*

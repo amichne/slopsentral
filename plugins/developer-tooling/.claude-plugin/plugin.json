@@ -1,0 +1,19 @@
+{
+  "author": {
+    "name": "Amichne"
+  },
+  "description": "Author typed Python tools, schemas, Pkl contracts, and agent resources. Install language servers and ast-grep or change requested personal configuration.",
+  "keywords": [
+    "ast-grep",
+    "cli",
+    "developer-tooling",
+    "language-server",
+    "lsp",
+    "skills",
+    "structural-search",
+    "tools"
+  ],
+  "license": "UNLICENSED",
+  "name": "developer-tooling",
+  "version": "4.0.21"
+}

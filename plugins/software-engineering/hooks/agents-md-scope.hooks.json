@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "uv run --locked --script \"$PLUGIN_ROOT/hooks/agents-md-scope.py\"",
+            "statusMessage": "Examine instruction maintenance",
+            "timeout": 30,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "additionalContextLimit": 32768,
+            "command": "uv run --locked --script \"$PLUGIN_ROOT/hooks/agents-md-scope.py\"",
+            "statusMessage": "Examine instruction scopes",
+            "timeout": 30,
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+extends: existence
+message: "Spell out '%s' so the reader can identify the verb."
+level: warning
+ignorecase: true
+tokens:
+  - "[a-z]+(?:n['’]t|['’](?:d|ll))['’]ve"
+  - "ain['’]t"

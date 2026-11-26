@@ -1,0 +1,28 @@
+extends: substitution
+message: "Use '%s' instead of '%s'. Keep the source meaning."
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  utilize: use
+  utilizes: uses
+  utilized: used
+  utilizing: using
+  leverage: use
+  commence: start
+  initiate: start
+  facilitate: help
+  obtain: get
+  approximately: about
+  prior to: before
+  subsequent to: after
+  in order to: to
+  by means of: with
+  in the event that: if
+  demonstrate: show
+  retain possession of: keep
+  proceed: continue
+  accomplish: do
+  at this point in time: now
+  indicate: show

@@ -1,0 +1,8 @@
+extends: existence
+message: "Review '%s'. Give the instruction directly or state the condition that makes it optional."
+level: warning
+ignorecase: true
+tokens:
+  - 'you should'
+  - 'you (?:may|might|could) want to'
+  - '(?:may|might|could) (?:possibly|potentially)'

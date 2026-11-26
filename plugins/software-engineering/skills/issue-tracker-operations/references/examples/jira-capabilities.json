@@ -1,0 +1,28 @@
+{
+  "type": "ISSUE_BACKEND_RESULT",
+  "schemaVersion": 1,
+  "result": {
+    "type": "ISSUE_BACKEND_CAPABILITIES_RESULT",
+    "outcome": "COMPLETE",
+    "backend": "JIRA",
+    "operation": "CAPABILITIES",
+    "capabilities": [
+      {
+        "type": "ISSUE_BACKEND_CAPABILITY",
+        "name": "DIRECT_BLOCKER_MAP",
+        "support": "NATIVE"
+      },
+      {
+        "type": "ISSUE_BACKEND_CAPABILITY",
+        "name": "VIEW",
+        "support": "NATIVE"
+      },
+      {
+        "type": "ISSUE_BACKEND_CAPABILITY",
+        "name": "CREATE",
+        "support": "UNSUPPORTED"
+      }
+    ],
+    "evidence": []
+  }
+}

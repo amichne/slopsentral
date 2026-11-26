@@ -1,0 +1,29 @@
+{
+  "description": "Kotlin-first engineering with proof-preserving design, focused tests, and locked uv Python automation.",
+  "name": "slopsentral",
+  "owner": {
+    "name": "Amichne"
+  },
+  "plugins": [
+    {
+      "name": "software-engineering",
+      "source": "./plugins/software-engineering"
+    },
+    {
+      "name": "kotlin-engineering",
+      "source": "./plugins/kotlin-engineering"
+    },
+    {
+      "name": "intellij-plugin-development",
+      "source": "./plugins/intellij-plugin-development"
+    },
+    {
+      "name": "repository-knowledge",
+      "source": "./plugins/repository-knowledge"
+    },
+    {
+      "name": "developer-tooling",
+      "source": "./plugins/developer-tooling"
+    }
+  ]
+}

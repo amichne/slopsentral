@@ -1,0 +1,31 @@
+// The negative control omits flavor from the cache key.
+@CacheableTask
+abstract class RenderLabel extends DefaultTask {
+    @Input abstract Property<String> getLabel()
+    @Internal abstract RegularFileProperty getFlavor()
+    @OutputFile abstract RegularFileProperty getOutput()
+
+    @TaskAction void render() {
+        output.get().asFile.text = "${label.get()}:${flavor.get().asFile.text.trim()}\n"
+    }
+}
+
+def render = tasks.register('render', RenderLabel) {
+    label.set('tea')
+    flavor.set(layout.projectDirectory.file('flavor.txt'))
+    output.set(layout.buildDirectory.file('label.txt'))
+    if (!providers.gradleProperty('omitInput').isPresent()) {
+        inputs.file(flavor).withPropertyName('flavor').withPathSensitivity(PathSensitivity.RELATIVE)
+    }
+}
+
+tasks.register('consume') {
+    dependsOn(render)
+    def product = render.flatMap { it.output }
+    doLast {
+        def expected = "tea:${file('flavor.txt').text.trim()}\n"
+        if (product.get().asFile.text != expected) {
+            throw new GradleException('restored label does not match requested flavor')
+        }
+    }
+}
