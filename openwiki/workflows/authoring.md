@@ -22,10 +22,10 @@ sources:
     resource: repo://tools/toolchain.py
   - id: openwiki-source-fd7a7b438f5903a2a9ba6c2f
     resource: repo://uv.toml
-generated: { by: "codex", at: "2026-11-25T23:51:07.810Z" }
+generated: { by: "codex", at: "2026-11-26T00:11:01.470Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-25T23:51:07.810Z
+    at: 2026-11-26T00:11:01.470Z
 ---
 
 # Change source with linked evidence
@@ -60,7 +60,7 @@ python3 tools/toolchain.py run -- slopsentral-setup
 The Python runner fetches the Gum, uv, Pkl,
 and Vale versions pinned with SHA-256 digests in [the toolchain manifest](../../tools/toolchain.json)
 and puts them first on `PATH` for that command only.
-`uv.toml` requires the exact uv version, so another uv fails with a named error.
+The checkout accepts uv 0.12.9 or later. CI resolves the exact uv release in the toolchain manifest.
 Setup synchronizes locked Python dependencies and runs `npm ci --ignore-scripts`.
 It installs the pinned documentation tools from `docs/tooling` with lifecycle scripts disabled.
 Projection accepts exactly Pkl 0.32.0, which the runner supplies through `PKL_BIN`.

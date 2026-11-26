@@ -95,7 +95,7 @@ A local pass does not establish hosted CI or release publication for another rev
 ## Examine the public documentation separately
 
 The [site guide](/maintainers/site) separates source admission, native Mintlify results, returned content, and browser evidence.
-`python3 tools/toolchain.py run -- uv run --locked tools/ci.py docs` first rejects missing or stale projected pages.
+`bin/slopsentral-ci docs` first rejects missing or stale projected pages.
 It then runs the pinned Mintlify build and examines links, heading anchors, and redirects.
 The ordinary source workflow also runs the projection gate without a path filter.
 
