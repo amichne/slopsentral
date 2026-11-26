@@ -29,7 +29,7 @@
       "tools/compile_kotlin_concepts.py.lock": "493285fe04f5efab7e81bec868ca14f5408ee8e80f7139851a11491665598a3d",
       "tools/create_skill_fixtures.py": "18951aed45d2ae7738cd71ff720258d90ff86c41f9c877e86137c5181e07dd13",
       "tools/fixtures/kotlin-concepts/non-exhaustive-sealed-when.fail.kt": "0c2bb5e182462838b2967b887e8bb91aa311fb95be7e93f13e0eed7f137b5920",
-      "tools/global_agents.lock.json": "960f9fa9192baee782ec5b38c2029dc45a9faee4462dc40794557555b5cd7933",
+      "tools/global_agents.lock.json": "50e86dea9d2618ea9f81edcc413f0c317e9d694b4b18eb65aa352cd49d414df3",
       "tools/install-pi.sh": "e74ca3e94225cc844f4b8fb1c4276cbd52355b60a96cbd2a3299299e66a9238e",
       "tools/install_agents_hook.py": "93abdaa8ef318b53bc3621f6eda6a18ecc2609751d833d3a069ce5891c8088ca",
       "tools/install_agents_hook.py.lock": "493285fe04f5efab7e81bec868ca14f5408ee8e80f7139851a11491665598a3d",
