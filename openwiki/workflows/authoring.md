@@ -6,12 +6,10 @@ tags: [authoring, workflow, checks, knowledge]
 sources:
   - id: openwiki-source-29733941fb1d8a282d0caafb
     resource: repo://.github/workflows/validate-source.yml
-  - id: openwiki-source-8037e2358a2c4f9b2c722a11
-    resource: repo://AGENTS.md
+  - id: openwiki-source-2a773b8dcd244b49fcf7a60f
+    resource: repo://docs/pkl-projection.md
   - id: openwiki-source-5b532353fce7bdd07bec31d1
     resource: repo://guidance/verification.md
-  - id: openwiki-source-5b54a58d1b51cd490b0e7162
-    resource: repo://package.json
   - id: openwiki-source-66c6b4ed1002f7045a480f19
     resource: repo://tools/check.py
   - id: openwiki-source-f0a86d14d800938edb2bf80a
@@ -20,12 +18,14 @@ sources:
     resource: repo://tools/setup.py
   - id: openwiki-source-1c86dc4352b4d3810fb862e2
     resource: repo://tools/toolchain.json
+  - id: openwiki-source-8e19a201713737e2b24afa79
+    resource: repo://tools/toolchain.py
   - id: openwiki-source-fd7a7b438f5903a2a9ba6c2f
     resource: repo://uv.toml
-generated: { by: "codex", at: "2026-11-25T20:41:04.632Z" }
+generated: { by: "codex", at: "2026-11-25T23:51:07.810Z" }
 verified:
-  - by: openwiki/0.9.0
-    at: 2026-11-25T20:41:04.632Z
+  - by: openwiki/0.6.1
+    at: 2026-11-25T23:51:07.810Z
 ---
 
 # Change source with linked evidence
@@ -51,13 +51,13 @@ For reuse or a behavior-preserving refactor, start from passing characterization
 
 ## Prepare the checkout
 
-Install Node.js and npm, then prepare the checkout:
+Install Python 3, Node.js, and npm. Prepare the checkout with the toolchain runner.
 
 ```sh
-npm run setup
+python3 tools/toolchain.py run -- slopsentral-setup
 ```
 
-The npm scripts run through `node tools/toolchain.mjs run --`, which fetches the Gum, uv, Pkl,
+The Python runner fetches the Gum, uv, Pkl,
 and Vale versions pinned with SHA-256 digests in [the toolchain manifest](../../tools/toolchain.json)
 and puts them first on `PATH` for that command only.
 `uv.toml` requires the exact uv version, so another uv fails with a named error.
@@ -82,7 +82,7 @@ The public contract excludes named illegal calls where the language can express 
 
 Run the focused oracle under the same setup as its initial failure or characterization.
 Then run the [required gates](../testing/validation.md) for the edited surface.
-Composition edits need the source graph and fresh Codex, Copilot, and Amp projections listed in the [verification guide](../../guidance/verification.md).
+Composition edits need the source graph and fresh Codex, Copilot, Amp, Claude Code, and Pi projections listed in the [verification guide](../../guidance/verification.md).
 Python changes need Ruff, strict Pyright, and pytest within the declared scope.
 The Python gate stops on the first failed or unavailable stage and keeps a distinct unavailable exit.
 

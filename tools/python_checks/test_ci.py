@@ -131,6 +131,6 @@ def test_native_provisions_zsh_from_checked_package(
         assert str(command.parent) in github_path.read_text().splitlines()
         assert "/cache/bin" in github_path.read_text().splitlines()
         assert (tmp_path / "env").read_text() == "PKL_BIN=/cache/pkl\n"
-        assert ("node", "tools/toolchain.mjs", "fetch", "--profile", "ci") in calls
+        assert ("python3", "tools/toolchain.py", "fetch", "--profile", "ci") in calls
     else:
         assert not github_path.exists()

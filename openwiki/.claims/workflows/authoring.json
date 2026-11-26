@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:8437af8896ac2ff6f86a5d7c47bb587976b27922d881ba8457617920b2cb8884",
+  "pageVersion": "sha256:1ca048a435975e0c73cd0a1bd89c96f7b42102a713ba007daaa32a47e7f9a3e6",
   "claims": [
     {
       "id": "claim_bc6d8aad02404020823dda2dc37e4a40",
@@ -14,15 +14,15 @@
     },
     {
       "id": "claim_aa54c3af670645438a9259746dabc280",
-      "statement": "Composition edits require source graph validation and fresh Codex, Copilot and Amp projections through Pkl 0.32.0, with generated consumers left untouched.",
+      "statement": "Composition edits require source graph validation and fresh Codex, Copilot, Amp, Claude Code, and Pi projections through Pkl 0.32.0.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L9-L11",
-          "version": "repo-lines-v1:sha256:e8f832b333f37d0cbb5ac393b6bf9dbddb6301112ed10b0c61053d0dcd6bee9f:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDg2NWI0NzcxZWUzYTE1MmNiODJkODQ5OGY2MWE5MTRkYWRhNzhkMjJmMjQxMzBjM2MwNGI0NWYxZmRhZTRhZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTg0ZjU5Yjc5YzcyZjg0MzliMTUzMzZhMGEwMWZlN2U4NGNjNWJlYWE5NzkxYTU5NDkzNzliYjM4NTllMGUwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQxMGZiM2EzM2VjNzIwZDc1MTQyMDhmYjViMTYzNTllMDAwM2E0YmIyMGJlZDc4YzgyMzg1YWE4MTZlYTNmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzc5NWEzZTg1OTRhNmUzMzM3NGJiOTFlYzA0OGQ3ZWRjZjc3ZDA2Y2FjZDVlMDYyMDY3YjY3NmI0MGViMjJkZSJ9"
+          "resource": "repo://docs/pkl-projection.md#L35-L48",
+          "version": "repo-lines-v1:sha256:c410fa78e0c86a9db488c237883f24bdb4e789dd7da563b9b4496b3ce7faf70d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MzdmN2UwMGQ2Mzc1ZDdjMWUyNDc2NmU3MmFlYmM5MjFhNGE1ZDdkMmY4ZjJjYTMyNDBkYmFhNTM5YzY2MjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1M2NlMDY4YWFlN2M1YTdiNGRkNDc1Y2RmYjVlYzkwZTliNjU2MjkwYWM0Y2U0MDljOWJiMGZiNzEwMmY5ODIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2NjFmODVhYThjOGNmODVlMmQ1NjU5ZDg3MzYyZTI5ZTJjMWY4Mjg4MWM2OTUzZmMwNmUwZGU3OTcxZWUzMmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkNjAyZjZkYmM2NzAwZDMyMzlhOGE4MjAzODExZGE1ODI4OWFiYmZjMjNkMjAyN2M2YzY5OWNiY2U2YTVhYWYifQ"
         },
         {
-          "resource": "repo://guidance/verification.md#L9-L25",
-          "version": "repo-lines-v1:sha256:181a054cbb859a0a634488da558aedaf7e9c24af580b90098b1d3e6d08a27522:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNTIzZWE2N2NmYTJiZjhjZDk1MjhiOWJiMWVmYzMwNjY2ZDM2NmM1NmFmYzA4ZDYxODlmMzFiOTkzNDQ5M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2NTM0MGZlYTBlOTgyMmI1YjNhNzJkY2I0OWRiMGU2ZDE1ODgyZmNhYWFlNGIxNWE3NjhlYmUzYmViNzBmMGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5MzdmNmY5YzQwNGY4ZjlkYzg4ZWZmNTE5NDBkYTJmMThlZGJjYmJkZjcyYzNkZDQ1NjhlYzIwYzJkNDdlNzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmYzU4NGU0NzhkMmQ1NWFlNjY1YzY0ZmJlYjEwZGMyODU0MzlkMjcxNjVkMjA3MjVjN2RhMTA0MDhhODAxODEifQ"
+          "resource": "repo://guidance/verification.md#L9-L29",
+          "version": "repo-lines-v1:sha256:492f1786d2e0c45d2d0cdcace50c47735d9f17159a297c99a08220b8316d3576:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNTIzZWE2N2NmYTJiZjhjZDk1MjhiOWJiMWVmYzMwNjY2ZDM2NmM1NmFmYzA4ZDYxODlmMzFiOTkzNDQ5M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2Y2QzM2U0ZTkyMGRiNjNkNDI2ZWQxODJhYWU0ZWFjYzI2OGQxMjcyNWNkM2UxNzA0ODdlMDgyZDRkMWIzNzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyZGVlNzE4Y2EwMGUwZjBmNDYwNGFhZDQ5Mzk5NTlhODNiMTQ5ZWM2ODAyYjU1NmY4M2U0NjlhMWY0ZWE0OGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4ZDJlNWE4NWZlNzdkYTE5MWRkNDFjZDU5Mjc4M2MzYWViZTk3N2FlMDU5NjQ2MDg3NjVlODMxNmI2OGNlMWMifQ"
         }
       ]
     },
@@ -62,15 +62,19 @@
     },
     {
       "id": "claim_2776389758a1410898791d7299ff30a0",
-      "statement": "Checkout setup runs through npm scripts that resolve Gum, uv, Pkl, and Vale from the SHA-256-pinned toolchain manifest, and uv.toml requires the exact uv version.",
+      "statement": "The Python runner resolves Gum, uv, Pkl, and Vale from a SHA-256-pinned toolchain manifest. Checkout setup synchronizes locked dependencies, and uv.toml requires the exact uv version.",
       "evidence": [
         {
-          "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:add49813dc6f315df8f8107747a62d359b391a90b53f48d7e63adc521894f3ec"
+          "resource": "repo://tools/setup.py#L19-L28",
+          "version": "repo-lines-v1:sha256:3c5565852ba656cc345dc6e9c0e3af4874ce3754f9ba12d40c59c095b79ad1b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiYjQ0OTA0ZjY0YzliN2ZjNTE2YjA0ZDg2ZDZkNTJhNTdlMjE3YTM1ZTVmZjBiNTBlZjg3Y2U1YmQ3ZjE0MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3Mjc2YWQ2NjY5OGE2NzU3ZjQ4MDY4Njk1NTkwMGE1ZmQzOTc0MTJkYzk1NmJiNjEzNmM4NmRkOWU1ZGFhNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJiOTQwMDMyMzY3MzFkNGIzYTEzNTZjYTIxYmU3MjcyM2MxODdhYTY0ZDYwN2Y3ZmE4NDNjNjk1YzJhNmRkMWEifQ"
         },
         {
           "resource": "repo://tools/toolchain.json",
           "version": "repo-file-v1:sha256:3c742837f985e6482a6eb8ee42075ac6adb0a35a99efd1e8960edaa2ea47440f"
+        },
+        {
+          "resource": "repo://tools/toolchain.py#L290-L311",
+          "version": "repo-lines-v1:sha256:530807c82c2b28e8fde2ca9a2250003d61729e9e57fc604f5009079c832ebabb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MDZjYTgzODIyMDgyOTAwNTJiZThlYWJmZjJmODI2ZmRmMmQ1OGRkOTc4OGJkZmMwYjhhZDYzMjFiNmY1YWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3ZjM3MmQwNThkMzdmYTE5YjMyOTUzMDM1ZTMyOWU0YjIzODQ4ZmY5MWFhZTBlN2VhY2NmN2ExNTg4MmMyMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MDE0OWUwNjlhZDY3ZWNjZjQ3MzY0NmZmMWM3NTAwNTBkMzI5ZDExMDAxOGRjNTc2Njg3OGVhZmExZDYwN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3ZWIxNzJiNGI2YjNlZjI1NDk3Y2ZkOGFmMTFkYzFiYjJiYjVlYTQyNjcwNjE5ZjM1YTgxZTVkNjI5MGZmMGYifQ"
         },
         {
           "resource": "repo://uv.toml",
@@ -80,7 +84,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.9.0",
-    "at": "2026-11-25T20:41:04.632Z"
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-25T23:51:07.810Z"
   }
 }

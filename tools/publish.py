@@ -30,7 +30,7 @@ class Destination(StrEnum):
     CODEX = "harness/codex"
     COPILOT = "harness/github-copilot"
     AMP = "harness/amp"
-    DOTAGENTS = "harness/dotagents"
+    CLAUDE = "harness/claude"
 
 
 class FailureCode(StrEnum):
@@ -65,7 +65,9 @@ class Publication:
         match self.target:
             case Destination.MAIN:
                 return (".agents/plugins", ".github/plugin")
-            case Destination.CODEX | Destination.DOTAGENTS:
+            case Destination.CLAUDE:
+                return (".claude-plugin", "plugins")
+            case Destination.CODEX:
                 return (".agents/plugins",)
             case Destination.COPILOT:
                 return (".github/plugin",)
@@ -95,7 +97,7 @@ def parse(arguments: list[str]) -> Publication | Failure:
                 Destination.CODEX,
                 Destination.COPILOT,
                 Destination.AMP,
-                Destination.DOTAGENTS,
+                Destination.CLAUDE,
             }:
                 return Failure(FailureCode.INPUT, "unsupported target branch")
             target = Destination(target_name)
@@ -142,11 +144,25 @@ def inspect_provider(directory: Path, root: str) -> Output | Failure:
     top = directory / root.split("/")[0]
     if top.is_symlink() or not top.is_dir():
         return Failure(FailureCode.PROJECTION, "invalid provider directory")
+    if root in {".claude-plugin", "plugins"}:
+        return inspect_claude_root(top)
     if {p.name for p in top.iterdir()} != {root.split("/")[1]}:
         return Failure(FailureCode.PROJECTION, f"projection must contain only {root}")
     if not (directory / root / "marketplace.json").is_file():
         return Failure(FailureCode.PROJECTION, f"missing {root}/marketplace.json")
     return Output(root)
+
+
+def inspect_claude_root(top: Path) -> Output | Failure:
+    if top.name == "plugins":
+        bundles = tuple(top.iterdir())
+        if not bundles or any(not (p / ".claude-plugin/plugin.json").is_file() for p in bundles):
+            return Failure(FailureCode.PROJECTION, "missing Claude plugin manifest")
+    else:
+        manifests = {top / "marketplace.json", top / "marketplace-lock.json"}
+        if set(top.iterdir()) != manifests or not all(p.is_file() for p in manifests):
+            return Failure(FailureCode.PROJECTION, "incomplete Claude marketplace")
+    return Output(top.name)
 
 
 def git(repo: Path, *arguments: str) -> Output | Failure:

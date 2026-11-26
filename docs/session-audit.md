@@ -8,7 +8,7 @@ Use the [Promptfoo suites](skill-evals.md) for scored decisions and execution ca
 Use Pi 1.5.2 and sign in with `pi auth`.
 Use the [installed Slopsentral command](cli-install.md) for these examples.
 If the command reports missing audit modules, run `slopsentral self update`.
-From a checkout, run `node tools/toolchain.mjs run -- slopsentral audit --help`.
+From a checkout, run `python3 tools/toolchain.py run -- slopsentral audit --help`.
 The checkout launcher uses its `uv.toml` and Python version.
 Set `UV_CONFIG_FILE` to use your company's uv settings.
 Set `UV_SYSTEM_CERTS=true` to use the operating system's certificate store.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:aa5f91f3583d5858a04192721fccc3ba362e3fe3724f3b97905065adac59d05c",
+  "pageVersion": "sha256:1f3b6ee603c2b7a6449ae273238eccebfc09e8e94e4d17a4f0e30957df43b270",
   "claims": [
     {
       "id": "claim_d1bc8d787e7348afa9f084f58f304d0e",
@@ -59,12 +59,12 @@
       "statement": "Provider output and installed caches remain consumers, while Pkl mappings and canonical source own projection behavior.",
       "evidence": [
         {
-          "resource": "repo://guidance/source-graph.md#L88-L92",
-          "version": "repo-lines-v1:sha256:155b4ae1ebc9ed93953339009556351ad7597b9e4366dd96505a891c1c913fea:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTY1MjI4MWNlZjkxNzVmMzg2Njg5MjcxOGJjMjZhOTkzNDRkZmRjZmU0MDkwMzE4NzBmMmIyZmRlNDY3ZGIyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc2ZTA2MGFkZWY0Y2VhODY4YmY5ZWJjNzY3OTg4ZTMzMjg4MDU1MjY5NTI2M2E2MzljNDBkZjE1MmU0NjQwMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjMxOTY5ZWQxYjFlMjViZTVmOWVmZDhlZGVkN2RmMGIwODM4MjYwMTIzMDhlM2FiNzY3NDU2OTI2YTViM2M5OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjc4MzliZDI0MGUwMzFiOThmNjMzNTIwN2UwYTliMjk4OWQ5NjE3OTcwNjVjYWM3M2ExNTkzOGU2OTg2OTkxMiJ9"
+          "resource": "repo://docs/pkl-projection.md#L3-L16",
+          "version": "repo-lines-v1:sha256:bd90624d9419097a335622bf2966a3d5d51d8924515e5e6cc64b57a00412bfb0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4YzA0NGVmN2QyZjE2ZWY4YTc3MDNhOTU1ZmRjMzhkYmYzZDJlNzJkNDg0NTBiODc5YmI0ZjA3ZTI5YjJiY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5YmM4NDJiOWJlYzQ0YWJiN2ViNjVhYzVlNjcyNTA4M2FlNGIwOWFlZDAxZWQ5NWY4MDM3MDI5Y2MyYjMyZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxNTc4ZjhmNzZkYmVmYWQ4Mzk4YWY3ZmFmMmYyMzI1ZTk2YjQ3MTNiODdkZjA0ZWJiOWQ2Mzg5MDA5MWU4ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZkMWU4OTk5NmEyYTFiZGY0ODhiN2VkNGY1ZmM5MDI5MzBlOWVjNTdkZjc2NTU5NjEzMTg4OWUzMThjNTA1YWIifQ"
         },
         {
-          "resource": "repo://tools/project-marketplaces.mjs#L303-L328",
-          "version": "repo-lines-v1:sha256:53f3f953d4b3cf89db2f783e912a22b69ca4ed6d35e3596433fb4d3cb0dbe1eb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZDE4YmJhZWZkMTg0OTFjZjhjYzE2ZGQ1ZjIwNmM5MTdmMmE1YmVlM2JjNDliMTgwYmJiYTAyN2Q4NmE5NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzMmY2ZTRmOGY3MjUzOGQ0ZTczZTAzODUwODcyMmVjYWFlNzIwZmE2N2Y0OTk5NTY5N2Y3MDY2MjFhNGM0NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzYWM1MzliYzEwN2MwY2IzNDM1Y2Y2NTEzZDkzMzU3OGViMjJiMTc0ZmM0NzZkZmVkZDMzODc3NmQ3M2NjMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMjlkZDQ1MzFiOGE5ZmIxMDJkYjY4YTAyMzYyZDdiMTIwYzRmMGRjZDY0YzI2NDRhMDY1NjIzODZlOGNiY2UifQ"
+          "resource": "repo://tools/projection/Project.pkl",
+          "version": "repo-file-v1:sha256:85e09ed2049a5c875d8e7cd6890c0701d9d641b47d8035be1a8c7498e62c0002"
         }
       ]
     },
@@ -74,7 +74,7 @@
       "evidence": [
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:10164309ecb3ea28a03259a149ac60b744c894ab83b7b86422c9b79a884e41d4"
+          "version": "repo-file-v1:sha256:b8280bf14b051d6a14b09015305f3c0176475adc559a9770cb29727db0c3fd5a"
         },
         {
           "resource": "repo://tools/tests/documentation-portability.test.mjs#L90-L113",
@@ -98,7 +98,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.9.0",
-    "at": "2026-11-20T18:23:08.613Z"
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-25T23:51:07.810Z"
   }
 }

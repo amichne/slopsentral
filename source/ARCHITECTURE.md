@@ -32,13 +32,13 @@ The [graph validator](../tools/validate-source-graph.mjs) resolves references an
 The [catalog generator](../tools/catalog.mjs) reads plugin manifests for the installation catalog.
 It reads canonical skill descriptions for the [task catalog](CATALOG.md).
 
-The [projector](../tools/project-marketplaces.mjs) captures source bytes and file modes before Pkl evaluation.
+The [projector](../tools/project_marketplaces.py) captures source bytes and file modes before Pkl evaluation.
 Pkl 0.32.0 evaluates the isolated provider models with explicit access limits.
-The projector copies resources, seals digests, and rejects changed inputs before publication.
+The [Python materializer](../tools/projection/materialize.py) copies resources and hashes projected files. The projector checks those hashes and the frozen input before publication.
 The [directory publisher](../tools/projection/publish_directory.py) rejects an existing destination. It never replaces that destination.
 
 Codex and Copilot output appears on their harness branches and in the corresponding trees on `main`.
-Amp output appears only on `harness/amp` during harness publication.
+Amp publishes to `harness/amp`. Claude Code publishes its native marketplace to `harness/claude`.
 Pi projection produces native packages for the catalog plugins.
 See the [projection guide](../docs/pkl-projection.md) for commands and provider limits.
 

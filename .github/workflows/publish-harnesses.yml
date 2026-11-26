@@ -33,7 +33,7 @@ jobs:
           cache: npm
 
       - name: Install schema validation dependencies
-        run: npm ci
+        run: npm ci --omit=dev --ignore-scripts
 
       - name: Validate source marketplace
         run: node tools/validate-source-graph.mjs
@@ -54,8 +54,8 @@ jobs:
             branch: harness/github-copilot
           - harness: amp
             branch: harness/amp
-          - harness: dotagents
-            branch: harness/dotagents
+          - harness: claude
+            branch: harness/claude
 
     steps:
       - name: Check out source
@@ -73,13 +73,13 @@ jobs:
           cache: npm
 
       - name: Install schema validation dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci --omit=dev --ignore-scripts
 
       - name: Project ${{ matrix.harness }} marketplace
         id: projection
         run: |
           projection_path="$RUNNER_TEMP/projected-${{ matrix.harness }}"
-          node tools/project-marketplaces.mjs --source . --harness '${{ matrix.harness }}' --out "$projection_path"
+          python3 tools/project_marketplaces.py --source . --harness '${{ matrix.harness }}' --out "$projection_path"
           echo "projection-path=$projection_path" >> "$GITHUB_OUTPUT"
 
       - name: Verify Amp adapter and installed schema commands before publication
@@ -89,11 +89,11 @@ jobs:
           SLOPSENTRAL_SCHEMA_SKILL_ROOT: ${{ steps.projection.outputs.projection-path }}/.amp/plugins/developer-tooling/skills/manage-json-schemas
         run: node --test tools/tests/amp-projection.test.mjs tools/tests/schema-contracts-runtime.test.mjs
 
-      - name: Examine the dotagents projection before publication
-        if: matrix.harness == 'dotagents'
+      - name: Examine the Claude projection before publication
+        if: matrix.harness == 'claude'
         env:
-          SLOPSENTRAL_DOTAGENTS_PROJECTION: ${{ steps.projection.outputs.projection-path }}
-        run: node --test tools/tests/dotagents-projection.test.mjs
+          SLOPSENTRAL_CLAUDE_PROJECTION: ${{ steps.projection.outputs.projection-path }}
+        run: uv run --locked pytest tools/python_checks/test_claude_projection.py
 
       - name: Publish ${{ matrix.branch }}
         env:

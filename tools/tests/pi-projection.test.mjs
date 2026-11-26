@@ -47,7 +47,7 @@ test('Pi workflow-profile emulation remains unsupported', t => {
   const directory = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'pi-profile-rejected-')));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
   const out = path.join(directory, 'output');
-  const result = spawnSync(process.execPath, ['tools/project-marketplaces.mjs', '--source', root,
+  const result = spawnSync('python3', ['tools/project_marketplaces.py', '--source', root,
     '--harness', 'pi', '--profile', 'local-development-default', '--out', out], { cwd: root, encoding: 'utf8' });
   assert.equal(result.status, 1);
   assert.equal(JSON.parse(result.stderr).code, 'INVALID_INVOCATION');

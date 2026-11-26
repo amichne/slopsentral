@@ -3,9 +3,6 @@ type: Evidence Model
 title: Skill and plugin evaluation evidence
 description: Separate routing expectations, decision responses, native execution traces, independent verification, and historical field records.
 tags: [evals, evidence, routing, codex, fixtures]
-verified:
-  - by: openwiki/0.9.0
-    at: 2026-11-17T03:49:32.846Z
 sources:
   - id: openwiki-source-1e12eb7aff1ffc5476d523a1
     resource: repo://tools/promptfoo/execution-runtime.mts
@@ -16,6 +13,9 @@ sources:
   - id: openwiki-source-f0a86d14d800938edb2bf80a
     resource: repo://tools/promptfoo/suite.mts
 generated: { by: "codex", at: "2026-11-17T03:42:03.917Z" }
+verified:
+  - by: openwiki/0.6.1
+    at: 2026-11-25T23:51:07.810Z
 ---
 
 # Skill and plugin evaluation evidence

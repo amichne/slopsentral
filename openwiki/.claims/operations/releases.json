@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5377629dd66e472fe83b896c3b21f38a89ad29c4acc72d9b1f1be049824b9987",
+  "pageVersion": "sha256:8ee08262ba7cd8e41a2843d4109a414ba3e9fa96fefdaa09d6018ef2235d240c",
   "claims": [
     {
       "id": "claim_c2ca89c216ca435081601804a99ce408",
@@ -48,19 +48,19 @@
     },
     {
       "id": "claim_86bab4a93ecf4a8e9266bbd36b7877f1",
-      "statement": "Publish Harnesses separately maintains four provider branches and updates the Codex and Copilot generated trees on main. Amp output remains absent from main.",
+      "statement": "Publish Harnesses writes the Codex, Copilot, Amp, and Claude Code provider branches. It also updates the Codex and Copilot generated trees on main.",
       "evidence": [
         {
           "resource": "repo://.github/workflows/publish-harnesses.yml",
-          "version": "repo-file-v1:sha256:a1467e023d64896f7bb6f0fbad62e2daff6e26547647194c36043a94b4ae6bce"
+          "version": "repo-file-v1:sha256:1b4b8d272bf3c791d6ed77031814045a403a0523720f5772539ab62f06e73a61"
         },
         {
-          "resource": "repo://tools/publish.py#L28-L33",
-          "version": "repo-lines-v1:sha256:8c84b7dd9fcffa31b5b91128da278e74ce0cc83715a58ba5716e5a4fbf7edb1f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQ4MjE1NWRhOTk4ZGFmNTZhMjMzZWVlMzZjMDc2Nzg5ZjA0ZTc0MzA4NTgxYjE2YWM5MjViOTkxNTliZGEyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDU0OGQ4YmM4NjgyODY4NTRhNDY5ZTE4OTdmOWFlZGI2NTE3MTY0OTY2Yzk4ZmQ1ODk4YjRhYmMzZjM3MGRhMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzY2YjRhYTFhODU0ZTEwZmU5YWI3ZDRiM2QxZWE2ZmU5YmY2NTQ3NjZhZGEyODU4YTA4Yjk1YjQxY2Y5N2NlOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDcyZGNkNWZmZDFjN2IxZTNkZTkwNjEwNzM3NDNjNGQ2YzZmOGE1MmQ0Y2M4MjA5Zjc5NmM4MzRlMTk3YzUzYSJ9"
+          "resource": "repo://tools/publish.py#L28-L34",
+          "version": "repo-lines-v1:sha256:129bee0703262b9e0944b249019aa796e567c72ad24c72f7adf4b40fc3361ac6:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQ4MjE1NWRhOTk4ZGFmNTZhMjMzZWVlMzZjMDc2Nzg5ZjA0ZTc0MzA4NTgxYjE2YWM5MjViOTkxNTliZGEyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzY2YjRhYTFhODU0ZTEwZmU5YWI3ZDRiM2QxZWE2ZmU5YmY2NTQ3NjZhZGEyODU4YTA4Yjk1YjQxY2Y5N2NlOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTRlMzIwN2Q4YTRmYTIxMWM0M2FmNjYxNGNiNWZiNmU2Yzg1MTBkMWU0YjU0ZDM5OGY2NTEyYTBhMzQxZjI4YiJ9"
         },
         {
-          "resource": "repo://tools/publish.py#L64-L74",
-          "version": "repo-lines-v1:sha256:5ca592f0ab7cb3b25c0ecbbe5cff82494e90a666401134fe92bd765cb3a926d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5NmJhM2ExMjA0NjAyZDM0MTUyYThmZWZlNzFiZTlmZDg2ZjFjMTMwNjY5ZGI4MDE4Mzk2Zjk1MjA2Y2UyNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NWQ2MWExMzU4NDhlNjkyOTkyZGZjZTg4ZTQ5NTIwNTIzMWUwYzcwYTA4YmFmYzZhYmU4YzFkMDhkMDQyMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMGY4MjViODI0NTQ2ZDI5YzljMGUwYTdiYzU5NWFmZDIzZDU0MzVhOWRmYjYxODUwYTlhMmJhNzQ3ZTYyZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhOGI5Y2MwZmJmZGU2Y2ZlMGRiNjFlMTBjOGFmYTkzNzg4NDkxZTY5ZWViZGRhMjJkNWZjOWUzODkxODNlMzYifQ"
+          "resource": "repo://tools/publish.py#L64-L75",
+          "version": "repo-lines-v1:sha256:e7ac07dbd0d121dc535cf2bc9990f5b55c3ea33b7eec48c8a1c111901ee68f71:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5NmJhM2ExMjA0NjAyZDM0MTUyYThmZWZlNzFiZTlmZDg2ZjFjMTMwNjY5ZGI4MDE4Mzk2Zjk1MjA2Y2UyNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxYzM5MmRjNTEyN2VmNGFlNGI1NGI1Njc4NGUyMjEyZmY1NzIxN2NjMzNiNzY3MjY4ZDFjNTkyM2U4Yjk4YWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMGY4MjViODI0NTQ2ZDI5YzljMGUwYTdiYzU5NWFmZDIzZDU0MzVhOWRmYjYxODUwYTlhMmJhNzQ3ZTYyZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4YmUwYzcyODEzMDFmZTAyOTJlMGRlMjQ5NjMyMDU0NjQwMzdiNDM3MTBjZDA5YWQwMzhlMDc5MjY1NjQyMjIifQ"
         }
       ]
     },
@@ -80,7 +80,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.9.0",
-    "at": "2026-11-20T18:23:08.613Z"
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-25T23:51:07.810Z"
   }
 }

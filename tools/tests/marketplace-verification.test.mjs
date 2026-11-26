@@ -95,7 +95,7 @@ function verify(t, failedHarness) {
   for (const directory of [path.join(repo, 'tools'), bin, temp]) fs.mkdirSync(directory, { recursive: true });
   fs.copyFileSync(path.join(repoRoot, 'tools/verify_marketplaces.py'), path.join(repo, 'tools/verify_marketplaces.py'));
   const log = path.join(root, 'commands.jsonl');
-  for (const command of ['node']) {
+  for (const command of ['node', 'python3']) {
     fs.writeFileSync(path.join(bin, command), `#!${process.execPath}
 const fs = require('node:fs');
 const args = process.argv.slice(2);
@@ -126,7 +126,9 @@ if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
   delete env.REUSE_COPILOT_PROJECTION;
   if (failedHarness) env.VERIFY_TEST_FAILED_HARNESS = failedHarness;
   else delete env.VERIFY_TEST_FAILED_HARNESS;
-  const result = spawnSync('uv', ['run', '--script', path.join(repo, 'tools/verify_marketplaces.py')], {
+  const python = spawnSync('python3', ['-c', 'import sys; print(sys.executable)'], { encoding: 'utf8' });
+  assert.equal(python.status, 0, python.stderr);
+  const result = spawnSync(python.stdout.trim(), [path.join(repo, 'tools/verify_marketplaces.py')], {
     cwd: root, env, encoding: 'utf8', timeout: 30_000,
   });
   const commands = fs.readFileSync(log, 'utf8').trim().split('\n').map(line => JSON.parse(line));
@@ -138,11 +140,11 @@ if (args.includes(process.env.VERIFY_TEST_FAILED_HARNESS)) process.exit(37);
 test('verification projects all three providers and checks installed adapters', t => {
   const { result, commands } = verify(t);
   assert.equal(result.status, 0, result.stderr);
-  assert.deepEqual(commands.map(({ command }) => command), Array(12).fill('node'));
+  assert.deepEqual(commands.map(({ command }) => command), [...Array(3).fill('python3'), ...Array(9).fill('node')]);
   assert.deepEqual(commands.slice(0, 3).map(({ args }) => args.slice(0, 5)), [
-    ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'codex'],
-    ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'github-copilot'],
-    ['tools/project-marketplaces.mjs', '--source', '.', '--harness', 'amp'],
+    ['tools/project_marketplaces.py', '--source', '.', '--harness', 'codex'],
+    ['tools/project_marketplaces.py', '--source', '.', '--harness', 'github-copilot'],
+    ['tools/project_marketplaces.py', '--source', '.', '--harness', 'amp'],
   ]);
   const codexRoot = commands[0].args[6];
   assert.notEqual(codexRoot, commands[1].args[6]);

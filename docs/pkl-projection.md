@@ -1,7 +1,7 @@
 # Project a provider package
 
 The projector turns canonical source references into complete provider packages.
-Pkl owns typed provider shapes. Node owns frozen reads, materialization, digest sealing, and process effects.
+Pkl defines provider manifests and copy plans. Python runs Pkl, copies frozen assets, hashes projected files, and stages the output. The source graph validator checks plugin composition.
 Authored source stays under `source/`. Generated trees and installed caches remain consumers.
 The [projection concept](../openwiki/architecture/projection.md) explains the system relationships.
 
@@ -33,18 +33,19 @@ Unsupported systems or filesystems reject publication. No replacement fallback e
 ## Runtime and commands
 
 Use a Git checkout with a resolvable HEAD.
-The repository needs Node.js 22.22.0 or later, Python 3, and exactly Pkl 0.32.0.
+The Python projector requires Pkl 0.32.0. Source graph validation requires Node.js 22.22.0 or later and the locked npm dependencies.
 [The toolchain manifest](../tools/toolchain.json) pins each platform's Pkl asset and digest.
-`node tools/toolchain.mjs fetch` downloads and verifies it as an explicit setup step;
-the projector never downloads a runtime. The runner supplies `PKL_BIN`:
+Fetch the pinned evaluator and pass its path to the projector.
 
 ```sh
 npm ci --ignore-scripts
-R="node tools/toolchain.mjs run --"
-$R node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/codex-new
-$R node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/copilot-new
-$R node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/amp-new
-$R node tools/project-marketplaces.mjs --source . --harness dotagents --out /tmp/dotagents-new
+python3 tools/toolchain.py fetch pkl
+export PKL_BIN="$(python3 tools/toolchain.py path pkl)"
+python3 tools/project_marketplaces.py --source . --harness codex --out /tmp/codex-new
+python3 tools/project_marketplaces.py --source . --harness github-copilot --out /tmp/copilot-new
+python3 tools/project_marketplaces.py --source . --harness amp --out /tmp/amp-new
+python3 tools/project_marketplaces.py --source . --harness pi --out /tmp/pi-new
+python3 tools/project_marketplaces.py --source . --harness claude --out /tmp/claude-new
 ```
 
 Use fresh output paths outside the checkout with existing parent directories.
@@ -68,7 +69,7 @@ A digest proves byte agreement. It does not prove host discovery or instruction 
 
 ## Compatibility and supported scope
 
-Supported targets are `codex`, `github-copilot`, `amp`, `pi`, and `dotagents`.
+Supported targets are `codex`, `github-copilot`, `amp`, `pi`, and `claude`.
 Only local marketplace assets are supported.
 Remote resolution and provider overrides stop projection until their typed implementation exists.
 A new shape needs accepted and rejected cases before distribution.
@@ -80,24 +81,20 @@ Historical projector comparisons remain in Git history rather than current quali
 
 [Publish Harnesses](../.github/workflows/publish-harnesses.yml) updates Codex and Copilot trees together on `main` and their provider branches.
 Amp publishes only to `harness/amp`.
-The dotagents catalog publishes only to `harness/dotagents`.
+Claude Code publishes to `harness/claude`.
 [Stable releases](releases.md) keep immutable provider archives.
 Local projection grants no publication authority.
 
-## dotagents plugin bundles
+## Claude Code native plugins
 
-The dotagents projection gives each catalog entry an Agent Plugins v1 manifest and its complete skill directories.
-The projector uses the same source graph as the native packages.
-Dotagents generates its own host outputs for Claude Code, Cursor, Codex, GitHub Copilot, Grok, OpenCode, and Pi.
-For Codex, a native fallback groups automatic hooks in one `hooks.json` file.
-Opt-in hooks remain separate files.
-Other targets get portable skills and metadata.
-Use the native packages for Slopsentral-specific features such as Pi hook extensions and Copilot agents.
+The marketplace manifest is `.claude-plugin/marketplace.json`. Each entry points to a bundle under `plugins/`.
+Claude discovers each bundle’s skills and Markdown agents through its native directory layout.
+The software engineering plugin registers a `SessionStart` hook that delivers its bundled instructions.
+The projector activates only automatic session hooks that use the shared instruction injector. Other adapters remain reference files.
 
-Run the [dotagents install test](../tools/tests/dotagents-projection.test.mjs) with `PKL_BIN` set to the pinned Pkl executable.
-The test installs all catalog entries with dotagents 3.4.0 and examines its generated files.
-Host discovery and hook delivery need separate evidence.
-The [marketplace guide](agent-marketplaces.md#install-through-dotagents) gives the consumer command.
+To test a local projection, run `claude plugin validate /tmp/claude-new --strict`.
+Validate each bundle under `/tmp/claude-new/plugins` with the same command.
+The [marketplace guide](agent-marketplaces.md#install-in-claude-code) gives the installation commands.
 
 ## Amp native plugins
 
@@ -152,7 +149,7 @@ Amp adds interpreter guidance to a successful skill load when the skill bundles
 scripts. The packaged skill keeps its canonical bytes.
 The turn-start event supplies the canonical instructions for the plugin.
 
-`npm run verify:marketplaces` exercises Codex, Copilot, and Amp adapters and installed scripts.
+`python3 tools/toolchain.py run -- uv run --locked tools/verify_marketplaces.py` exercises Codex, Copilot, and Amp adapters and installed scripts.
 For optional native Amp discovery, select `AMP_BIN`:
 
 ```sh

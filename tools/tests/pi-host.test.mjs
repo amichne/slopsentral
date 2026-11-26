@@ -20,7 +20,7 @@ for (const managed of [false, true]) test(`native Pi delivers instructions and e
   let pkg = process.env.SLOPSENTRAL_PI_PACKAGE;
   if (!pkg) {
     const out = path.join(directory, 'projection');
-    execFileSync(process.execPath, ['tools/project-marketplaces.mjs', '--source', root, '--harness', 'pi', '--out', out], { cwd: root });
+    execFileSync('python3', ['tools/project_marketplaces.py', '--source', root, '--harness', 'pi', '--out', out], { cwd: root });
     pkg = path.join(out, '.pi/slopsentral');
   }
   if (process.env.SLOPSENTRAL_PI_PACKAGE) {

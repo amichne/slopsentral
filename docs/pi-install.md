@@ -133,7 +133,7 @@ The [adapter](../source/hooks/pi/adapter.ts) owns event translation.
 Use a fresh external output with pinned Pkl 0.32.0:
 
 ```sh
-node tools/project-marketplaces.mjs --source . --harness pi --out /tmp/slopsentral-pi-fresh
+python3 tools/project_marketplaces.py --source . --harness pi --out /tmp/slopsentral-pi-fresh
 npm run check:pi
 node --test tools/tests/pi-*.test.mjs
 ```

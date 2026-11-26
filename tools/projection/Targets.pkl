@@ -18,9 +18,19 @@ class CodexInterface {
 
 typealias Category = "Coding" | "Engineering" | "Productivity"
 
-class AgentPlugin {
-  `$schema`: "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json" =
-    "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
+class ClaudeEntry {
+  name: Schema.Identity
+  source: Schema.RelativePath(startsWith("./plugins/"))
+}
+
+class ClaudeMarketplace {
+  description: String
+  name: Schema.Identity
+  owner: Schema.Person
+  plugins: List<ClaudeEntry>
+}
+
+class ClaudePlugin {
   name: Schema.Identity
   version: String
   description: String
@@ -37,7 +47,7 @@ class CodexPlugin {
   license: "UNLICENSED" = "UNLICENSED"
   keywords: List<String>
   skills: "./skills/"? = null
-  hooks: (List<Schema.RelativePath> | "./hooks.json")? = null
+  hooks: List<Schema.RelativePath>? = null
   mcpServers: "./.mcp.json"? = null
   interface: CodexInterface
 }

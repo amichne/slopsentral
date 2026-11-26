@@ -8,9 +8,11 @@ after source validation passes:
 
 ```sh
 node tools/validate-source-graph.mjs
-node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
-node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp
+python3 tools/project_marketplaces.py --source . --harness codex --out /tmp/slopsentral-codex
+python3 tools/project_marketplaces.py --source . --harness github-copilot --out /tmp/slopsentral-github-copilot
+python3 tools/project_marketplaces.py --source . --harness amp --out /tmp/slopsentral-amp
+python3 tools/project_marketplaces.py --source . --harness claude --out /tmp/slopsentral-claude
+python3 tools/project_marketplaces.py --source . --harness pi --out /tmp/slopsentral-pi
 ```
 
 Use fresh output directories. Amp registers skills and turn-start instructions;

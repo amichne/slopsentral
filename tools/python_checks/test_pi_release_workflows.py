@@ -65,7 +65,7 @@ def test_release_only_promotes_a_successful_main_push_without_rebuilding() -> No
     for forbidden in [
         "npm ci",
         "package_pi.py",
-        "project-marketplaces.mjs",
+        "project_marketplaces.py",
         "--clobber",
         "git push",
         "gh release delete",
@@ -87,7 +87,7 @@ def test_pi_candidate_is_source_bound_and_installed_before_sealing() -> None:
     assert field(candidate, "permissions") == {"contents": "read", "actions": "read"}
     assert "github.event.pull_request.head.sha || github.sha" in str(candidate)
     script = commands(candidate)
-    assert "tools/project-marketplaces.mjs --source . --harness pi" in script
+    assert "tools/project_marketplaces.py --source . --harness pi" in script
     assert "tools/tests/pi-*.test.mjs" in script
     assert script.index("pi-install.test.mjs") < script.index("pi_candidate.py seal")
     assert script.index("pi-setup.test.mjs") < script.index("setup_assets package")

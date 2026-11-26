@@ -103,7 +103,7 @@ for (const [harness, prefix] of [['codex', '.agents/plugins'], ['github-copilot'
     fs.cpSync(path.join(repo, 'source/schemas'), path.join(runtime, 'source/schemas'), { recursive: true });
     fs.symlinkSync(path.join(root, 'node_modules'), path.join(runtime, 'node_modules'), 'dir');
     // Copy the current projector unchanged so this proves current mapping compatibility, not an old projector replay.
-    for (const name of ['project-marketplaces.mjs', 'catalog.mjs', 'resource-contract.mjs', 'routing-source-evidence.mjs'])
+    for (const name of ['project-marketplaces.mjs', 'project_marketplaces.py', 'catalog.mjs', 'resource-contract.mjs', 'routing-source-evidence.mjs'])
       fs.copyFileSync(path.join(root, 'tools', name), path.join(runtime, 'tools', name));
     fs.cpSync(path.join(root, 'tools/projection'), path.join(runtime, 'tools/projection'), { recursive: true });
     fs.mkdirSync(path.join(runtime, 'source/schemas/primitives'), { recursive: true });
@@ -169,6 +169,19 @@ test('malformed evaluation and incomplete plans cannot create output; diagnostic
     assert.equal(fs.existsSync(out), false);
     assert.deepEqual(fs.readdirSync(dir), ['fake-pkl']);
   }
+});
+
+test('a noisy evaluator is stopped at the diagnostic size limit before publication', t => {
+  const { dir, executable } = fake(t, `
+    const fs = require('node:fs');
+    process.stderr.end(Buffer.alloc(40 * 1024 * 1024),
+      () => fs.writeFileSync(process.argv[1] + '.exceeded', 'emitted 40 MiB'));
+  `);
+  const out = path.join(dir, 'output');
+  assert.throws(() => project({ source: root, harness: 'codex', out, pkl: executable }),
+    e => e.outcome?.code === 'PKL_REJECTED');
+  assert.equal(fs.existsSync(out), false);
+  assert.equal(fs.existsSync(executable + '.exceeded'), false);
 });
 
 function sourceFixture(t) {
@@ -384,7 +397,7 @@ test('atomic publication preserves existing empty directories and admits one com
 // Exercise the native typed boundary, independently of the source graph gate.
 test('Pkl rejects impossible asset variants and unknown nested input fields', native, t => {
   const dir = temporary(t);
-  for (const name of ['Schema.pkl', 'Decode.pkl', 'Targets.pkl', 'Project.pkl'])
+  for (const name of ['Schema.pkl', 'Decode.pkl', 'Targets.pkl', 'Project.pkl', 'Amp.pkl', 'Pi.pkl'])
     fs.copyFileSync(path.join(root, 'tools/projection', name), path.join(dir, name));
   const base = { type: 'SKILL', name: 'fixture', sourcePath: 'source/skills/fixture', sha256: 'sha256:' + 'a'.repeat(64) };
   const references = [

@@ -49,7 +49,7 @@ They prove byte identity and portable command behavior, without host registratio
 When changing the portable runtime or its package, run the existing independent-project check:
 
 ```sh
-node tools/toolchain.mjs run -- node --test tools/tests/documentation-portability.test.mjs
+python3 tools/toolchain.py run -- node --test tools/tests/documentation-portability.test.mjs
 ```
 
 ## Connect a change to its explanation
@@ -98,7 +98,7 @@ It compares reviewed source and document fingerprints with `knowledge.lock.json`
 New, changed, renamed, and deleted selected inputs invalidate that record.
 
 ```sh
-node tools/toolchain.mjs run -- slopsentral-docs check
+python3 tools/toolchain.py run -- slopsentral-docs check
 ```
 
 `CURRENT` means that the selected fingerprints match the record.
@@ -123,8 +123,8 @@ After source review, complete OpenWiki's native lifecycle and examine the source
 Then record the reviewed inputs:
 
 ```sh
-node tools/toolchain.mjs run -- slopsentral-docs record
-node tools/toolchain.mjs run -- slopsentral-docs check
+python3 tools/toolchain.py run -- slopsentral-docs record
+python3 tools/toolchain.py run -- slopsentral-docs check
 ```
 
 `record` refuses broken structure and unfinished native state.
@@ -152,9 +152,10 @@ See [the native procedure](../openwiki/workflows/documentation.md) and [backend 
 ## Examine prose and report evidence
 
 ```sh
-node tools/toolchain.mjs run -- slopsentral-prose changed
+python3 tools/toolchain.py run -- slopsentral-prose changed
 uv run --locked --script source/skills/controlled-technical-writing/scripts/check_glossary.py docs/glossary.json --check-render docs/GLOSSARY.md
-npm run check:docs
+python3 tools/toolchain.py run -- slopsentral-docs check
+python3 tools/toolchain.py run -- slopsentral-site check
 ```
 
 The prose command uses the pinned Vale 3.24.0 procedure and repository glossary.

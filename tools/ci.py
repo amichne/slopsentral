@@ -137,7 +137,7 @@ def commands(
 def toolchain(action: str) -> list[str] | None:
     """Read GitHub Actions lines from the repository toolchain resolver."""
     result = subprocess.run(
-        ["node", "tools/toolchain.mjs", action, "--profile", "ci"],
+        ["python3", "tools/toolchain.py", action, "--profile", "ci"],
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -151,7 +151,7 @@ def native(temporary: Path) -> int:
     if isinstance(zsh, SetupFailure):
         print(json.dumps({"stage": "setup", "type": zsh.value, "tool": "zsh"}))
         return 2
-    status = commands((("node", "tools/toolchain.mjs", "fetch", "--profile", "ci"),))
+    status = commands((("python3", "tools/toolchain.py", "fetch", "--profile", "ci"),))
     if status:
         return status
     environment, directories = toolchain("env"), toolchain("paths")
@@ -287,7 +287,8 @@ def main() -> int:
             return commands(
                 (
                     ("npm", "run", "check:source"),
-                    ("npm", "run", "check:docs"),
+                    ("slopsentral-docs", "check"),
+                    ("slopsentral-site", "check"),
                     ("uv", "run", "--locked", "tools/check.py"),
                     ("node", "tools/run-routing-evals.mjs", "--require-all-fixtures"),
                     *(

@@ -26,13 +26,13 @@ For reuse or a behavior-preserving refactor, start from passing characterization
 
 ## Prepare the checkout
 
-Install Node.js and npm, then prepare the checkout:
+Install Python 3, Node.js, and npm. Prepare the checkout with the toolchain runner.
 
 ```sh
-npm run setup
+python3 tools/toolchain.py run -- slopsentral-setup
 ```
 
-The npm scripts run through `node tools/toolchain.mjs run --`, which fetches the Gum, uv, Pkl,
+The Python runner fetches the Gum, uv, Pkl,
 and Vale versions pinned with SHA-256 digests in [the toolchain manifest](https://github.com/amichne/slopsentral/blob/main/tools/toolchain.json)
 and puts them first on `PATH` for that command only.
 `uv.toml` requires the exact uv version, so another uv fails with a named error.
@@ -57,7 +57,7 @@ The public contract excludes named illegal calls where the language can express 
 
 Run the focused oracle under the same setup as its initial failure or characterization.
 Then run the [required gates](/knowledge/testing/validation) for the edited surface.
-Composition edits need the source graph and fresh Codex, Copilot, and Amp projections listed in the [verification guide](https://github.com/amichne/slopsentral/blob/main/guidance/verification.md).
+Composition edits need the source graph and fresh Codex, Copilot, Amp, Claude Code, and Pi projections listed in the [verification guide](https://github.com/amichne/slopsentral/blob/main/guidance/verification.md).
 Python changes need Ruff, strict Pyright, and pytest within the declared scope.
 The Python gate stops on the first failed or unavailable stage and keeps a distinct unavailable exit.
 

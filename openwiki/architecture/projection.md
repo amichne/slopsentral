@@ -4,34 +4,40 @@ title: Source-bound provider projection
 description: Follow frozen authored bytes through Pkl evaluation, sealed payload digests, and publication that never replaces a destination.
 tags: [projection, pkl, provenance, providers]
 verified:
-  - by: openwiki/0.9.0
-    at: 2026-11-25T20:41:04.632Z
+  - by: openwiki/0.6.1
+    at: 2026-11-25T23:51:07.810Z
 sources:
-  - id: openwiki-source-0de19b70b13c7683e196f562
-    resource: repo://tools/project-marketplaces.mjs
+  - id: openwiki-source-2a773b8dcd244b49fcf7a60f
+    resource: repo://docs/pkl-projection.md
+  - id: openwiki-source-807a6d12541ccce1af9c76cb
+    resource: repo://tools/project_marketplaces.py
   - id: openwiki-source-fc855c6faec3d10981287a01
     resource: repo://tools/projection/Amp.pkl
+  - id: openwiki-source-e6b983bb7d255d730352ff15
+    resource: repo://tools/projection/materialize.py
   - id: openwiki-source-20306a8272518c1714fe0273
     resource: repo://tools/projection/Pi.pkl
+  - id: openwiki-source-24c2e5fb15011b196a066fdc
+    resource: repo://tools/projection/Project.pkl
   - id: openwiki-source-394daa51fe52aaa0810ba746
     resource: repo://tools/projection/publish_directory.py
   - id: openwiki-source-29b8d13ca4d0c5f112b0bb17
     resource: repo://tools/tests/pkl-projection.test.mjs
   - id: openwiki-source-1c86dc4352b4d3810fb862e2
     resource: repo://tools/toolchain.json
-  - id: openwiki-source-3d889b7c5ac4531f061827ed
-    resource: repo://tools/toolchain.mjs
-generated: { by: "codex", at: "2026-11-20T18:23:08.613Z" }
+  - id: openwiki-source-8e19a201713737e2b24afa79
+    resource: repo://tools/toolchain.py
+generated: { by: "codex", at: "2026-11-25T23:51:07.810Z" }
 ---
 
 # Source-bound provider projection
 
 The projector turns one accepted authored graph into a complete provider tree.
-JavaScript owns file and process effects. Pkl owns provider-specific shapes and text transformations.
+Pkl defines provider manifests and copy plans. Python runs the evaluator, copies frozen assets, hashes the output, and publishes the staged tree.
 
 ## Freeze, evaluate, seal, publish
 
-The [entry point](../../tools/project-marketplaces.mjs) reads regular source files once and keeps their bytes and Unix modes.
+The [entry point](../../tools/project_marketplaces.py) reads regular source files once and keeps their bytes and Unix modes.
 It rejects source symlinks and nonregular resources.
 It also captures local evidence outside `source/` when current routing cases cite those files.
 Graph and catalog checks run against a temporary copy of those same inputs.
@@ -58,6 +64,7 @@ The projector does not download a runtime or replace a previous tree.
 | --- | --- | --- |
 | Codex | Marketplace, plugins, skills, declared adapters, and provenance | Host trust and live consumption remain host obligations |
 | GitHub Copilot | Marketplace and projected plugin payloads | Provider packaging differs from Codex |
+| Claude Code | Native marketplace, plugin bundles, skills, Markdown agents, and the software engineering SessionStart hook | Other hook adapters remain reference files |
 | Amp | Complete directory plugins, native skills, and `agent.start` instructions | Hooks, agents, and MCP stay reference-only. Profiles are unsupported |
 | Pi | Aggregate and per-plugin packages, native skills and prompts, and hook adapters | Workflow profiles are unsupported. MCP needs an explicit adapter |
 
@@ -74,16 +81,19 @@ The retired single-skill Pi package does not describe current projection.
 ## Generate a provider tree
 
 [The toolchain manifest](../../tools/toolchain.json) pins Pkl 0.32.0 for each platform by digest.
-`node tools/toolchain.mjs fetch` downloads and verifies it as an explicit setup step, and
-`node tools/toolchain.mjs run --` supplies it to a command through `PKL_BIN`.
+`python3 tools/toolchain.py fetch` downloads and verifies it as an explicit setup step, and
+`python3 tools/toolchain.py run --` supplies it to a command through `PKL_BIN`.
 The projector itself never downloads a runtime.
 Use a fresh output path for each provider:
 
 ```sh
-R="node tools/toolchain.mjs run --"
-$R node tools/project-marketplaces.mjs --source . --harness codex --out /tmp/slopsentral-codex-new
-$R node tools/project-marketplaces.mjs --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
-$R node tools/project-marketplaces.mjs --source . --harness amp --out /tmp/slopsentral-amp-new
+python3 tools/toolchain.py fetch pkl
+export PKL_BIN="$(python3 tools/toolchain.py path pkl)"
+python3 tools/project_marketplaces.py --source . --harness codex --out /tmp/slopsentral-codex-new
+python3 tools/project_marketplaces.py --source . --harness github-copilot --out /tmp/slopsentral-copilot-new
+python3 tools/project_marketplaces.py --source . --harness amp --out /tmp/slopsentral-amp-new
+python3 tools/project_marketplaces.py --source . --harness claude --out /tmp/slopsentral-claude-new
+python3 tools/project_marketplaces.py --source . --harness pi --out /tmp/slopsentral-pi-new
 ```
 
 The [projection guide](../../docs/pkl-projection.md) explains installation and provider-specific recovery.

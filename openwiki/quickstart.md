@@ -14,8 +14,6 @@ sources:
     resource: repo://AGENTS.md
   - id: openwiki-source-7b9274b65c9eaeeaedaee564
     resource: repo://guidance/source-graph.md
-  - id: openwiki-source-5b54a58d1b51cd490b0e7162
-    resource: repo://package.json
   - id: openwiki-source-59e94a76c36256a0ceee4f2d
     resource: repo://source/hooks/pi/adapter.ts
   - id: openwiki-source-1b7d2f4ea3c52b3ee1894e61
@@ -30,12 +28,12 @@ sources:
     resource: repo://tools/setup.py
   - id: openwiki-source-1c86dc4352b4d3810fb862e2
     resource: repo://tools/toolchain.json
-  - id: openwiki-source-3d889b7c5ac4531f061827ed
-    resource: repo://tools/toolchain.mjs
-generated: { by: "codex", at: "2026-11-25T20:41:04.632Z" }
+  - id: openwiki-source-8e19a201713737e2b24afa79
+    resource: repo://tools/toolchain.py
+generated: { by: "codex", at: "2026-11-25T23:51:07.810Z" }
 verified:
-  - by: openwiki/0.9.0
-    at: 2026-11-25T20:41:04.632Z
+  - by: openwiki/0.6.1
+    at: 2026-11-25T23:51:07.810Z
 ---
 
 # Slopsentral quickstart
@@ -66,14 +64,14 @@ A plugin installation grants no authority to publish, deploy, or change personal
 
 ## Prepare a maintainer checkout
 
-Install Node.js and npm. [The toolchain manifest](../tools/toolchain.json) pins Gum, uv, Pkl,
-and Vale by version and SHA-256, and `node tools/toolchain.mjs run --` runs a command with
+Install Python 3, Node.js, and npm. [The toolchain manifest](../tools/toolchain.json) pins Gum, uv, Pkl,
+and Vale by version and SHA-256, and `python3 tools/toolchain.py run --` runs a command with
 those tools first on `PATH`. From the repository root:
 
 ```sh
-npm run setup
-npm run check:python
-npm run check:docs
+python3 tools/toolchain.py run -- slopsentral-setup
+python3 tools/toolchain.py run -- slopsentral-check
+python3 tools/toolchain.py run -- slopsentral-docs check
 ```
 
 Setup synchronizes locked Python and Node dependencies.
@@ -98,7 +96,7 @@ These OKF pages preserve Claims and source evidence through OpenWiki.
 The repository gate links functional areas to explanations and compares reviewed source bytes.
 Neither a fresh digest nor valid Markdown proves factual accuracy, host consumption, or model compliance.
 Slopsentral uses the same distributed documentation runtime that the portable procedure supplies to other projects.
-The package assertions exercise that runtime in independent projects through all four provider projections.
+The package assertions exercise that runtime in independent projects through the Codex, Copilot, Amp, and Pi projections.
 Historical audits keep their original evidence scope in the [guide index](../docs/index.md).
 
 Documentation automation proposes generated wiki changes for review.

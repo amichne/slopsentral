@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:57751654b9f32f091b916cf5e19bc19c48c2f0097e47b1866d8608d041480d3e",
+  "pageVersion": "sha256:571b470d67b7bd7fd9b00bc685be12a02a371e9d19b3dde3c5c7061e4bc3be0d",
   "claims": [
     {
       "id": "claim_1d161c4387234f5a91bcdd08d9a57052",
@@ -96,7 +96,7 @@
       "evidence": [
         {
           "resource": "repo://docs/coverage.json",
-          "version": "repo-file-v1:sha256:10164309ecb3ea28a03259a149ac60b744c894ab83b7b86422c9b79a884e41d4"
+          "version": "repo-file-v1:sha256:b8280bf14b051d6a14b09015305f3c0176475adc559a9770cb29727db0c3fd5a"
         },
         {
           "resource": "repo://source/skills/code-knowledge-base/scripts/documentation.py#L230-L280",
@@ -162,7 +162,7 @@
       "evidence": [
         {
           "resource": "repo://docs/mintlify.md",
-          "version": "repo-file-v1:sha256:bb7dddc073bbf3f7406863310f69a052d648b071b2e684601b13e42e8ec1d8cc"
+          "version": "repo-file-v1:sha256:b48853c47fda954a8aff6e1220ab140470947ab93f06f3bd7aa2d89c840cb923"
         },
         {
           "resource": "repo://docs/site.json",
@@ -180,15 +180,15 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/documentation-site.yml",
-          "version": "repo-file-v1:sha256:b00d71e632888ae5e758a1908432619f68df1c4a604ace2b9e04e416d09919e7"
+          "version": "repo-file-v1:sha256:e7602c7ea202c861bd9a2b4744c08d665ab3fcbcc0dd5e684e08b0012720bf41"
         },
         {
           "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:add49813dc6f315df8f8107747a62d359b391a90b53f48d7e63adc521894f3ec"
+          "version": "repo-file-v1:sha256:388818381d08ee4c9d23dd64b039150b7e863a24f112c7f85946ebba7c920acf"
         },
         {
           "resource": "repo://tools/ci.py",
-          "version": "repo-file-v1:sha256:31e4cb736201f7e3c7a985c430d793c59759187806366c746ebb7725f744e0d4"
+          "version": "repo-file-v1:sha256:376ca753536a9f6aaf9ff7c23c52e70a124ca94152b118d5fb2372d2ef424f3c"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -202,11 +202,11 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/documentation-site.yml",
-          "version": "repo-file-v1:sha256:b00d71e632888ae5e758a1908432619f68df1c4a604ace2b9e04e416d09919e7"
+          "version": "repo-file-v1:sha256:e7602c7ea202c861bd9a2b4744c08d665ab3fcbcc0dd5e684e08b0012720bf41"
         },
         {
           "resource": "repo://docs/mintlify.md",
-          "version": "repo-file-v1:sha256:bb7dddc073bbf3f7406863310f69a052d648b071b2e684601b13e42e8ec1d8cc"
+          "version": "repo-file-v1:sha256:b48853c47fda954a8aff6e1220ab140470947ab93f06f3bd7aa2d89c840cb923"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -216,7 +216,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.9.0",
-    "at": "2026-11-25T20:41:04.632Z"
+    "by": "openwiki/0.6.1",
+    "at": "2026-11-25T23:51:07.810Z"
   }
 }

@@ -107,7 +107,7 @@ jobs:
         id: version
         run: uv run --locked python -m tools.release_version check --github-output "$GITHUB_OUTPUT"
       - name: Project the source package
-        run: node tools/project-marketplaces.mjs --source . --harness pi --out "$RUNNER_TEMP/projected-pi"
+        run: python3 tools/project_marketplaces.py --source . --harness pi --out "$RUNNER_TEMP/projected-pi"
       - name: Examine every Pi contract through the native host
         env:
           SLOPSENTRAL_PI_PACKAGE: ${{ runner.temp }}/projected-pi/.pi/slopsentral
