@@ -36,7 +36,7 @@ jobs:
           uv sync --locked
           npm ci --ignore-scripts --prefix docs/tooling
       - name: Reject absent or stale site input and examine Mintlify
-        run: uv run --locked tools/ci.py docs
+        run: slopsentral-ci docs
       - name: Exercise missing-site and stale-deployment rejection cases
         run: uv run --locked pytest tools/python_checks/test_public_docs.py
 

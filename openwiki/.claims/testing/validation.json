@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:034abf83439cddb6162638c583ef74740bca04fc2b5fe5feabe432f442369feb",
+  "pageVersion": "sha256:e85a1b0b2df3a206ac43fa4070c67222700f70e6c51cdf503b8f915b66141614",
   "claims": [
     {
       "id": "claim_68463121d0f748239e2c063cad7c76ae",
@@ -92,7 +92,7 @@
       "evidence": [
         {
           "resource": "repo://tools/ci.py",
-          "version": "repo-file-v1:sha256:376ca753536a9f6aaf9ff7c23c52e70a124ca94152b118d5fb2372d2ef424f3c"
+          "version": "repo-file-v1:sha256:3fc0dc96f6d445ad66232a743ee5d082ff2f1393384a757e8909980aa8903d73"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -110,7 +110,7 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/documentation-site.yml",
-          "version": "repo-file-v1:sha256:e7602c7ea202c861bd9a2b4744c08d665ab3fcbcc0dd5e684e08b0012720bf41"
+          "version": "repo-file-v1:sha256:93b24b38e8ede90be4b3949eaab7f5900f7e262ab3eac0975f06d34e92b022ac"
         },
         {
           "resource": "repo://tools/public_docs.py",
@@ -155,7 +155,7 @@
           "version": "repo-file-v1:sha256:97343b0232e395152f242740c8a467124588d7cfd4c73e3fa8fbfb6fe6b25709"
         },
         {
-          "resource": "repo://tools/ci.py#L134-L160",
+          "resource": "repo://tools/ci.py#L135-L161",
           "version": "repo-lines-v1:sha256:a1b404bd86d0648fadbd2e9785fa736659597a577d3c319772e1c5968060ccad:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmOGY4ZmQ4Yjg2M2JkOGJhNDJlZTgwNGUxOTE5MDg3Njc4NzIxY2EyNzVkMGVjMTQ2NTkyNGNlMDA1MDIxZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5YTgwYjZkOTYwYzY2NTQwYTNmMmZmNWJhZDliNTI5YjQ5OWIyMjE4YzE4Y2Q1YWE5MmFlZDBiNTc5MmNhZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3Y2YzM2NiZGU0N2Q1MDEzZTRkMmQyMjYwMGMzNjZlMmViZmJhZGY0NGVmMzAzZjRkYmY5YTMzMjAyYTBmMjEifQ"
         },
         {
@@ -167,6 +167,6 @@
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-25T23:51:07.810Z"
+    "at": "2026-11-26T00:11:01.470Z"
   }
 }

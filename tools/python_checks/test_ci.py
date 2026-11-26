@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import io
 import os
+import subprocess
 import sys
 import tarfile
 from http import HTTPStatus
@@ -16,6 +17,21 @@ from tools import ci
 
 if TYPE_CHECKING:
     from pathlib import Path
+
+
+def test_checkout_command_runs_on_path_from_another_directory(tmp_path: Path) -> None:
+    env = {**os.environ, "PATH": os.pathsep.join((str(ci.ROOT / "bin"), os.environ["PATH"]))}
+    for arg, status in (("--help", 0), ("unknown-task", 2)):
+        result = subprocess.run(
+            ["slopsentral-ci", arg],
+            cwd=tmp_path,
+            env=env,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert result.returncode == status, result.stderr
+        assert "usage: slopsentral-ci" in result.stdout + result.stderr
 
 
 @pytest.mark.parametrize("registry_status", [HTTPStatus.NOT_FOUND, HTTPStatus.FORBIDDEN])

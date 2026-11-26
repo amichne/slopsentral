@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:1ca048a435975e0c73cd0a1bd89c96f7b42102a713ba007daaa32a47e7f9a3e6",
+  "pageVersion": "sha256:4cfabf667787043c50093b533b9a4a45721820e296bceb66a906b5ff50f29ef0",
   "claims": [
     {
       "id": "claim_bc6d8aad02404020823dda2dc37e4a40",
@@ -55,14 +55,14 @@
       "statement": "Validate Source runs offline skill controls and retains verified provider archives rather than running the live skill suite as a normal CI gate.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/validate-source.yml#L41-L84",
-          "version": "repo-lines-v1:sha256:7763a55279e6137489324b5a337f5ce48d11ac795dc620d7b150510adc96c881:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NTFjYmY3OWZiMjNiYmZkMmVlZTBhZDk4ODA4NjNkMDk3MGQzMmE5YTc1MDQwNDgzYzNhODEwMjBhODJjMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMzJhYzIwODBhMTM0NWM2NDY4ZDBlMGUwOWE0OTMyMDE1MTc2NzQzZjkyYTUyNTM1NWNmZGZkNTg5N2NmZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiN2M5ZTBiZmFhODc3ZmE0ZjMzMWMxNWQ4OWYxYmUzZWQ2ZWFhMDkzYzVlYjlmMTE1NmIzNGY2Yjk3YTdhY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMDgzNWQ1MDUwYzMwOWQ1MGZiN2RlYmU0ZWM1MTE0Yzc1NWYxMTcwOTIzNGI5ODFiMTc3ZTZhNzA4NzAyYzUifQ"
+          "resource": "repo://.github/workflows/validate-source.yml#L56-L84",
+          "version": "repo-lines-v1:sha256:cfafcc872a299cceb67ea84e20ea07227cba2e73ffb0bd2dcc1b4b3e444b7e9f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyOTE0YTQyMjgwMzQzNmMzYzkyMTEwYjkxYzU3NTU1ZjhiMGVlMmU5OTFhYjMxZDZkMWIwZjJkNTUyYWMzZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMzJhYzIwODBhMTM0NWM2NDY4ZDBlMGUwOWE0OTMyMDE1MTc2NzQzZjkyYTUyNTM1NWNmZGZkNTg5N2NmZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1Zjc5M2IxNjYxODZjMjZkYTJkYjUzNzNjMzVmMThiZDdhOTNjNGI0ZDk1MGU2NzVkZjYwZDlhZjdjMWViMzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMDgzNWQ1MDUwYzMwOWQ1MGZiN2RlYmU0ZWM1MTE0Yzc1NWYxMTcwOTIzNGI5ODFiMTc3ZTZhNzA4NzAyYzUifQ"
         }
       ]
     },
     {
       "id": "claim_2776389758a1410898791d7299ff30a0",
-      "statement": "The Python runner resolves Gum, uv, Pkl, and Vale from a SHA-256-pinned toolchain manifest. Checkout setup synchronizes locked dependencies, and uv.toml requires the exact uv version.",
+      "statement": "The Python runner resolves Gum, uv, Pkl, and Vale from a SHA-256-pinned manifest. Checkout setup synchronizes locked dependencies, and the checkout accepts uv 0.12.9 or later.",
       "evidence": [
         {
           "resource": "repo://tools/setup.py#L19-L28",
@@ -78,13 +78,13 @@
         },
         {
           "resource": "repo://uv.toml",
-          "version": "repo-file-v1:sha256:8f54d60e6848e25572c4913c04c3497cb74c2341d7b75691c3e2f745a37bb0fc"
+          "version": "repo-file-v1:sha256:211e6eef9b9bf35cfc18ab8e852784c098c20a924097ba133971dc27ec36b989"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.6.1",
-    "at": "2026-11-25T23:51:07.810Z"
+    "at": "2026-11-26T00:11:01.470Z"
   }
 }

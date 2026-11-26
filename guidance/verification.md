@@ -2,9 +2,9 @@
 
 Run the checks for each surface the change touches. `npm run verify` runs the
 full local gate. [The toolchain manifest](../tools/toolchain.json) pins every
-external tool; run commands outside npm scripts through
-`python3 tools/toolchain.py run --`. Missing tools or unassessed effects do not
-pass a gate.
+external tool used in CI. From a prepared checkout, run
+`bin/slopsentral-ci validate` for source validation, documentation freshness,
+Python checks, and adapter tests. Its executable header starts uv in locked script mode.
 
 ## Source graph
 

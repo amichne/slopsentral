@@ -34,10 +34,10 @@ sources:
     resource: repo://tools/public_docs.py
   - id: openwiki-source-00110e15b75d856174b63939
     resource: repo://tools/python_checks/test_documentation.py
-generated: { by: "codex", at: "2026-11-25T23:51:07.810Z" }
+generated: { by: "codex", at: "2026-11-26T00:11:01.470Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-25T23:51:07.810Z
+    at: 2026-11-26T00:11:01.470Z
 ---
 
 # Maintain source-backed documentation
@@ -158,7 +158,7 @@ After source review and native finalization, refresh the public projection:
 
 ```sh
 python3 tools/toolchain.py run -- slopsentral-site sync
-python3 tools/toolchain.py run -- uv run --locked tools/ci.py docs
+bin/slopsentral-ci docs
 ```
 
 The first command changes generated site input.

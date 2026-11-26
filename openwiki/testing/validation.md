@@ -38,10 +38,10 @@ sources:
     resource: repo://tools/tests/pi-runtime.test.mjs
   - id: openwiki-source-1c86dc4352b4d3810fb862e2
     resource: repo://tools/toolchain.json
-generated: { by: "codex", at: "2026-11-25T23:51:07.810Z" }
+generated: { by: "codex", at: "2026-11-26T00:11:01.470Z" }
 verified:
   - by: openwiki/0.6.1
-    at: 2026-11-25T23:51:07.810Z
+    at: 2026-11-26T00:11:01.470Z
 ---
 
 # Match checks to the engineering claim
@@ -136,7 +136,7 @@ A local pass does not establish hosted CI or release publication for another rev
 ## Examine the public documentation separately
 
 The [site guide](../../docs/mintlify.md) separates source admission, native Mintlify results, returned content, and browser evidence.
-`python3 tools/toolchain.py run -- uv run --locked tools/ci.py docs` first rejects missing or stale projected pages.
+`bin/slopsentral-ci docs` first rejects missing or stale projected pages.
 It then runs the pinned Mintlify build and examines links, heading anchors, and redirects.
 The ordinary source workflow also runs the projection gate without a path filter.
 

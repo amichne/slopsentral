@@ -16,8 +16,8 @@ python3 tools/toolchain.py run -- slopsentral-setup
 `python3 tools/toolchain.py run -- COMMAND` downloads and verifies the pinned tools into
 `~/.cache/slopsentral/toolchain`, then runs the command with those tools and `bin/` first
 on `PATH`. It sets `PKL_BIN` and `VALE_BIN` unless you set them yourself, and changes
-nothing outside the child process. `uv.toml` requires the exact uv version, so a
-different uv fails with a named error. The npm scripts already use the runner.
+nothing outside the child process. CI uses the manifest’s exact uv version.
+Checkout commands accept uv 0.12.9 or later for locked script execution.
 For the command from source, run:
 
 ```sh
@@ -37,7 +37,7 @@ Host-managed worktrees keep their host lifecycle.
 | Unified releases | `npm run check:release` and `node --test tools/tests/release-please.test.mjs` |
 | Evaluations | `npm run check:evals` |
 | Prose | `python3 tools/toolchain.py run -- slopsentral-prose changed` |
-| Documentation | `python3 tools/toolchain.py run -- slopsentral-docs check` and `python3 tools/toolchain.py run -- uv run --locked tools/ci.py docs` |
+| Documentation | `bin/slopsentral-docs check` and `bin/slopsentral-ci docs` |
 
 [Repository instructions](../../AGENTS.md) define the exact surface-specific commands.
 `npm run verify` combines repository gates for integration.
