@@ -9,6 +9,14 @@ checks, and no assumed provider-specific agent. Examples and wording are locally
 authored; upstream scripts and templates are not imported. For writing, keep
 the user's voice and terminology rather than the upstream author's style profile.
 
+## Editorial guidance
+
+Factory's examples informed the rules on vague attribution and claims of importance.
+[Factory human-writing 2.1.0](https://github.com/factory-ai/factory-plugins/blob/e63e519a736140c86f37be95a529a0c44dc9a96e/plugins/droid-evolved/skills/human-writing/SKILL.md).
+
+Eve's editorial checklist informed the rules on voice and passage-level review.
+[Eve human-writing evaluation](https://github.com/vercel/eve/blob/cbe71057bf2de70af08378e51900e35740f780b9/.agents/skills/human-writing/eval.md).
+
 ## Vale Text Assessment
 
 Reviewed 2026-10-08. The engine is
