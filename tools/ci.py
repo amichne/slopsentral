@@ -21,6 +21,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import tarfile
 import tempfile
 import urllib.error
@@ -197,15 +198,9 @@ def pkl_fixture(temporary: Path, registry_port: int) -> int:
     )
     facade = str(ROOT / "source/skills/pkl-engineering/scripts/pkl_agent")
     common = (
-        "uv",
-        "run",
-        "--locked",
-        "python",
         facade,
         "--workspace",
         str(fixture),
-        "--pkl-bin",
-        os.environ["PKL_BIN"],
         "--allow-resource",
         f"http://127[.]0[.]0[.]1:{registry_port}/pkl-agent-fixture@1[.]0[.]0(?:[.]zip)?$",
     )
@@ -242,7 +237,7 @@ def pkl_fixture(temporary: Path, registry_port: int) -> int:
 
 
 def documentation(task: Task) -> int:
-    status = commands((("uv", "run", "--locked", "--script", "tools/public_docs.py", "check"),))
+    status = commands((("bin/slopsentral-site", "check"),))
     if status:
         return status
     mint = str(ROOT / "docs/tooling/node_modules/.bin/mint")
@@ -255,6 +250,11 @@ def documentation(task: Task) -> int:
         )
     )
     return commands(operations, cwd=ROOT / "docs/public")
+
+
+def with_test_tools(*command: str) -> tuple[str, ...]:
+    """Supply the native fixtures used by pytest, including the pinned Vale archive."""
+    return (sys.executable, "tools/toolchain.py", "run", "pkl", "vale", "gum", "--", *command)
 
 
 def main() -> int:
@@ -271,9 +271,12 @@ def main() -> int:
         case Task.UNIT:
             # All retained unittest suites are collected by pytest; no parallel
             # shell list can silently omit newly added Python tests.
-            return commands((("uv", "run", "--locked", "pytest", "source", "tools/python_checks"),))
+            pytest = with_test_tools(
+                "uv", "run", "--locked", "pytest", "source", "tools/python_checks"
+            )
+            return commands((pytest,))
         case Task.KOTLIN:
-            return commands((("uv", "run", "--locked", "tools/compile_kotlin_concepts.py"),))
+            return commands((("tools/compile_kotlin_concepts.py",),))
         case Task.PKL:
             return pkl_smoke(temporary)
         case Task.VALIDATE:
@@ -287,9 +290,9 @@ def main() -> int:
             return commands(
                 (
                     ("npm", "run", "check:source"),
-                    ("slopsentral-docs", "check"),
-                    ("slopsentral-site", "check"),
-                    ("uv", "run", "--locked", "tools/check.py"),
+                    ("bin/slopsentral-docs", "check"),
+                    ("bin/slopsentral-site", "check"),
+                    with_test_tools("bin/slopsentral-check"),
                     ("node", "tools/run-routing-evals.mjs", "--require-all-fixtures"),
                     *(
                         (

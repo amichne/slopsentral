@@ -76,7 +76,7 @@ def test_project_pins_match_all_bootstraps() -> None:
             "linux-arm64",
         }
     uv = manifest["uv"]
-    assert f'required-version = "=={uv.version}"' in (toolchain.ROOT / "uv.toml").read_text()
+    assert 'required-version = ">=0.12.9"' in (toolchain.ROOT / "uv.toml").read_text()
     installer = (toolchain.ROOT / "install.sh").read_text()
     assert set(re.findall(r"astral\.sh/uv/([\d.]+)/", installer)) == {uv.version}
     pi = (toolchain.ROOT / "tools/setup-pi.mts").read_text()

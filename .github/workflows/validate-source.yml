@@ -37,7 +37,7 @@ jobs:
         id: version
         run: uv run --locked python -m tools.release_version check --github-output "$GITHUB_OUTPUT"
       - name: Install checksum-verified native tools
-        run: uv run --locked tools/ci.py native
+        run: slopsentral-ci native
       - name: Assess changed prose with the proposed policy
         if: github.event_name == 'pull_request'
         env:
@@ -54,17 +54,17 @@ jobs:
           path: ${{ runner.temp }}/prose-preview.json
           if-no-files-found: error
       - name: Validate source, Python, schemas, and retained contracts
-        run: uv run --locked tools/ci.py validate
+        run: slopsentral-ci validate
       - name: Run offline skill eval controls
         run: npm run check:evals
       - name: Run all Python unit checks
-        run: uv run --locked tools/ci.py unit
+        run: slopsentral-ci unit
       - name: Compile Kotlin concepts and forbidden calls
-        run: uv run --locked tools/ci.py kotlin
+        run: slopsentral-ci kotlin
       - name: Validate Pkl facade against native Pkl
         env:
           GH_TOKEN: ${{ github.token }}
-        run: uv run --locked tools/ci.py pkl
+        run: slopsentral-ci pkl
       - name: Project all three harnesses and execute installed adapter contracts
         run: uv run --locked tools/verify_marketplaces.py --out "$RUNNER_TEMP/qualified-projections"
       - name: Archive the verified provider bytes

@@ -14,7 +14,7 @@ const publicationWorkflow = read(".github/workflows/publish-harnesses.yml");
 
 test("source validation projects both harnesses through pinned local Pkl", () => {
   assert.match(validateWorkflow, /uv run --locked tools\/verify_marketplaces.py/);
-  assert.match(validateWorkflow, /uv run --locked tools\/ci.py native/);
+  assert.match(validateWorkflow, /run: slopsentral-ci native/);
   const verifier = read("tools/verify_marketplaces.py");
   assert.match(verifier, /"codex", "github-copilot"/);
   assert.match(verifier, /tools\/project_marketplaces\.py/);

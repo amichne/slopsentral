@@ -22,8 +22,8 @@
     "check:pi": "tsc --project tools/pi-tsconfig.json",
     "check:docs": "python3 tools/toolchain.py run -- sh -c \"slopsentral-docs check && slopsentral-site check\"",
     "docs:sync": "python3 tools/toolchain.py run -- slopsentral-site sync",
-    "docs:check": "python3 tools/toolchain.py run -- uv run --locked tools/ci.py docs",
-    "docs:dev": "python3 tools/toolchain.py run -- uv run --locked tools/ci.py preview",
+    "docs:check": "bin/slopsentral-ci docs",
+    "docs:dev": "bin/slopsentral-ci preview",
     "setup": "python3 tools/toolchain.py run -- slopsentral-setup"
   },
   "dependencies": {
