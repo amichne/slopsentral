@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T21:28:59Z",
+  "generatedAt": "2026-11-25T19:03:30-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -321,7 +321,7 @@
         },
         {
           "name": "plugin-composition-authoring",
-          "sha256": "sha256:81a41bb576c6779177adad9a452e7ef6836e2f52d32006045c35a67f38795e61",
+          "sha256": "sha256:6f239c888f38656e06600c39c3d088defc6dc81a04d7fe3078702531856e80f6",
           "sourcePath": "source/skills/plugin-composition-authoring",
           "targetPath": "skills/plugin-composition-authoring",
           "type": "SKILL"
@@ -353,6 +353,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "549ff20645915804866c6d9fa369bdb99b0f3799",
+  "sourceSha": "f60c335272f53949e0c5ac7c969b7645dab8095d",
   "type": "HYDRATED_MARKETPLACE"
 }
