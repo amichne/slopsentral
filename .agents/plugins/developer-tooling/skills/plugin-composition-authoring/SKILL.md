@@ -45,16 +45,14 @@ Do not infer runtime delivery from a valid manifest.
 ## Slopsentral Source Graph
 
 Use this branch only when the target owns `source/adaptable.marketplace.json`
-and `tools/project-marketplaces.mjs`. Resolve `<skill-dir>` from the loaded
+and `tools/project_marketplaces.py`. Resolve `<skill-dir>` from the loaded
 skill, independently of `<repo>`, then run the repository commands from `<repo>`.
 The helper below checks this source layout; it is not a generic host installer.
 
 ```sh
 node tools/validate-source-graph.mjs
 uv run --locked --script <skill-dir>/scripts/check_plugin_composition --repo <repo> --plugin <name>
-node tools/project-marketplaces.mjs --source . --harness codex --out <fresh-codex-directory>
-node tools/project-marketplaces.mjs --source . --harness github-copilot --out <fresh-copilot-directory>
-node tools/project-marketplaces.mjs --source . --harness amp --out <fresh-amp-directory>
+python3 tools/project_marketplaces.py --source . --harness <host> --out <fresh-directory>
 git diff --check
 ```
 
