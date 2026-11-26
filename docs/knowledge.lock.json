@@ -83,7 +83,7 @@
       "tools/python_checks/test_claude_projection.py": "8f9fd548d8db00b5273f363ceb22bb24b4a00785d89121cf423fe9e77804fdc2",
       "tools/python_checks/test_contracts.py": "c28f9c94c4f9faf838cf80237ce57442dfe4a455116b0e2e9173d23b69d4803e",
       "tools/python_checks/test_documentation.py": "11cd35a2ec369b5d5af011880b6a630c5f35568adb6c7c77b4368751fe0e2947",
-      "tools/python_checks/test_global_agents.py": "0c64098a94769b67f9bb474812fb747040493d3bcf40fa5ee377c1ef3ef4b15a",
+      "tools/python_checks/test_global_agents.py": "d617c01bc5d2d2fe0a013ac295d8122d42025f480a6ecf62c60c592bf62de8f3",
       "tools/python_checks/test_gradle_repository.py": "14197f5e6730adc00f6e8614c7be68f478a103302d0a7d23e4ea7ee2f6164331",
       "tools/python_checks/test_openwiki_workflow.py": "ef4d67b0a64fda483239f0027996563b3cbd59a09421acf88edc51922b1e4b23",
       "tools/python_checks/test_package_pi.py": "dc0ea7823a51072c4fbdee625e2b50cf0b7554fcb583de8789ce06b1fba5a558",

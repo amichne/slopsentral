@@ -344,7 +344,12 @@ def test_copied_verifier_works_offline_without_source_checkout(
         files[name] = raw
         _ = (source / name).write_bytes(raw)
     write_manifest(source, files)
-    assert invoke(source, destination).returncode == 0
+    # The locked install populates the same uv cache that the offline verifier reads.
+    _ = subprocess.run(
+        [str(SCRIPT), "install", "--source", str(source), "--destination", str(destination)],
+        cwd=source,
+        check=True,
+    )
     snapshot = next((destination / ".slopsentral").iterdir())
     _ = source.rename(source.with_name("checkout removed"))
     result = subprocess.run(
