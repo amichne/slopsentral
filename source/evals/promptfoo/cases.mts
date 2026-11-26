@@ -662,6 +662,18 @@ export const cases: readonly DecisionCase[] = [
     rationale: "Literal errors and technical facts keep their identity. Readability advice does not authorize a changed fact.",
   },
   {
+    id: "writing-overriding-condition",
+    skill: "controlled-technical-writing",
+    scenario: "A print desk discards a cancelled job regardless of approval or paper. Drafts wait. Approved jobs print when paper is loaded and request a refill otherwise. Pick the reply that preserves every outcome and lets the reader decide what happens without revisiting an earlier instruction.",
+    choices: {
+      A: "Print an approved job if paper is loaded. Request a refill if it is empty. Leave drafts in the queue. If the job is cancelled, discard it instead of taking any of those actions.",
+      B: "Discard a cancelled job. Otherwise, leave a draft in the queue. For an approved job, print if paper is loaded and request a refill if it is empty.",
+      C: "Discard a cancelled job. Otherwise, print if paper is loaded and request a refill if it is empty.",
+    },
+    expected: ["B"],
+    rationale: "Cancellation settles the outcome before approval or paper matters. A draft stays queued even if the printer has paper.",
+  },
+  {
     id: "writing-assessment-limit",
     skill: "controlled-technical-writing",
     scenario: "The pinned prose tool returns INCOMPLETE because no glossary was supplied. Its grade estimate is 7. Pick every supported report statement.",

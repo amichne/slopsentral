@@ -90,8 +90,19 @@ Do not invent definitions to get a successful check.
 - Use a verb for an action instead of a noun phrase.
 - Put one instruction in each sentence.
 - Put conditions before the action they control.
+- If one condition overrides an outcome in every case, introduce it before
+  describing the cases it overrides. Then explain the remaining cases in the
+  order the reader can decide them. Preserve every outcome and exception.
 - Keep one topic in each paragraph.
 - Remove filler, marketing claims, and unsupported adjectives.
+- When a draft calls a change important, say what the reader can now do or what
+  happened. If the source gives no consequence, omit the claim of importance.
+- If a draft says "experts agree," name the source and state what it found.
+  If the source is missing, flag the claim for the author or omit it.
+- Keep the author's phrasing and rhythm where they carry meaning. Cut a stock
+  opening or an ending that repeats the point.
+- In a style review, quote the passage and explain what a reader can miss.
+  Wording alone cannot establish who wrote it.
 - Give each condition a clear action. If a sentence carries several conditions,
   put the main point first or break the cases into a list.
 - Preserve necessary precision and natural technical vocabulary.

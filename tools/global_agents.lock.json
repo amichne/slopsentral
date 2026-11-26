@@ -50,7 +50,7 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",
-      "sha256": "1b588260cf0c0b48219368b16af3ee675329a064ff7e96076cc65ec1d9b2250b"
+      "sha256": "f74dbd6cc1689154e195f4efc06a3f3cb01984aaf05b81640fc9e7e60f3f5f4e"
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/glossary-entry.json",
@@ -322,7 +322,7 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/references/provenance.md",
-      "sha256": "929248530debfbb05e15d46cacff1e38c00ef0960e23a5e115d7baad6c617863"
+      "sha256": "98450869e5675b0648181842fdcd0727bad50dedeb0b22619923acff02cf49a5"
     },
     {
       "path": "source/skills/controlled-technical-writing/references/text-assessment.md",
