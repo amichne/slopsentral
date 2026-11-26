@@ -90,6 +90,9 @@ Do not invent definitions to get a successful check.
 - Use a verb for an action instead of a noun phrase.
 - Put one instruction in each sentence.
 - Put conditions before the action they control.
+- If one condition overrides an outcome in every case, introduce it before
+  describing the cases it overrides. Then explain the remaining cases in the
+  order the reader can decide them. Preserve every outcome and exception.
 - Keep one topic in each paragraph.
 - Remove filler, marketing claims, and unsupported adjectives.
 - When a draft calls a change important, say what the reader can now do or what
