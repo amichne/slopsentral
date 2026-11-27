@@ -13,11 +13,16 @@ the user's voice and terminology rather than the upstream author's style profile
 
 Factory's examples informed the rules on vague attribution and claims of importance.
 [Factory human-writing 2.1.0](https://github.com/factory-ai/factory-plugins/blob/e63e519a736140c86f37be95a529a0c44dc9a96e/plugins/droid-evolved/skills/human-writing/SKILL.md).
-Its pattern catalogue also sets the sections of [writing patterns](writing-patterns.md), reviewed 2026-11-27.
+Its pattern catalogue, reviewed 2026-11-27, also informed the pattern rules below.
 The repository at that revision has no license file, so no upstream text or examples are copied.
-The local examples are technical, and each revision uses only the facts in its original.
 Factory's own revisions add facts in 13 of its 23 pairs. Its voice section asks for invented opinions and first person.
 This skill rejects both under the [grounding rules](grounding.md).
+
+A locally written reference of before-and-after examples was evaluated on 2026-11-27 and then removed.
+The revision eval ran gpt-6.1-sol, gpt-6.1-terra, and claude-sonnet-5-5 at low effort, with two repetitions.
+The skill with the examples passed 47 of 48 revisions, the skill without them passed 46, and no skill passed 40.
+The examples added 5,764 bytes to each load and raised the mean claude-sonnet-5-5 cost per call from $0.0091 to $0.0130.
+The one-revision difference is within the noise of two repetitions, so the cost was not justified.
 
 The pattern rules `Vocabulary`, `Chatbot`, `Framing`, and `Trailing` are local work, along with the `Repetition` rule for a repeated word.
 Two corpora set their tokens. The first was 150 package README files sampled from this repository's `node_modules` with seed 20261127 (132,547 words).

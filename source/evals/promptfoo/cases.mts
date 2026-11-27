@@ -715,7 +715,6 @@ export const cases: readonly DecisionCase[] = [
   {
     id: "writing-pattern-no-invented-specifics",
     skill: "controlled-technical-writing",
-    references: ["references/writing-patterns.md"],
     scenario: "Revise this sentence for a release note. The author supplied no other facts: \"Experts believe the remote cache plays a crucial role in build speed.\" Pick the justified revision.",
     choices: {
       A: "The remote cache cuts build time by 40%, according to a 2025 internal benchmark.",
@@ -729,7 +728,6 @@ export const cases: readonly DecisionCase[] = [
   {
     id: "writing-pattern-keep-information",
     skill: "controlled-technical-writing",
-    references: ["references/writing-patterns.md"],
     scenario: "Revise this passage: \"It's not just a formatter, it's a complete quality platform. It rewrites imports and wraps lines at 100 columns.\" Pick the justified revision.",
     choices: {
       A: "It rewrites imports and wraps lines at 100 columns.",
@@ -742,7 +740,6 @@ export const cases: readonly DecisionCase[] = [
   {
     id: "writing-pattern-not-authorship",
     skill: "controlled-technical-writing",
-    references: ["references/writing-patterns.md"],
     scenario: "A contributor's pull request description says: \"This change delves into the retry logic, highlighting its importance.\" The diff adds exponential backoff to retries. Pick every supported review comment.",
     choices: {
       A: "State that a model wrote this description and ask the contributor to disclose it.",
@@ -756,7 +753,6 @@ export const cases: readonly DecisionCase[] = [
   {
     id: "writing-pattern-leave-grounded-text",
     skill: "controlled-technical-writing",
-    references: ["references/writing-patterns.md"],
     scenario: "Check this passage for stock patterns before it is published: \"The benchmark ran 20 times on one machine. Median latency fell 12%.\" Pick the justified action.",
     choices: {
       A: "Leave it unchanged.",

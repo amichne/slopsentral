@@ -21,9 +21,8 @@ The fixed policy reports:
 - Diction findings from the fixed local substitution list and Google excessive
   claims rule. Suggestions require a meaning-preserving review, not blind edits.
 - Pattern findings for stock vocabulary, conversational residue, negative
-  parallelism, trailing significance clauses, and repeated words. The
-  [writing patterns](writing-patterns.md) reference pairs each pattern with a
-  revision that adds no facts.
+  parallelism, trailing significance clauses, and repeated words. Remove a
+  pattern without adding a fact that the source does not supply.
 - Terminology findings from the JSON contract's scoped replacement and review targets.
   Each document reports its terminology scope.
   Existing Markdown contracts keep their alias, casing, and marker rules.
