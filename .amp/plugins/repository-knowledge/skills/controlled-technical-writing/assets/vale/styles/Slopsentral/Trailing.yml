@@ -1,0 +1,8 @@
+extends: existence
+message: "The clause '%s' asserts significance. State the effect and its source, or end the sentence."
+level: warning
+ignorecase: true
+nonword: true
+# ', ensuring' is excluded: all four human-sample hits described a real effect.
+tokens:
+  - ', (?:highlighting|underscoring|showcasing|symbolizing|emphasizing|reflecting|cementing|solidifying) (?:the|its|their|a|an|how)\b'
