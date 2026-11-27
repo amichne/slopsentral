@@ -1,0 +1,33 @@
+extends: existence
+message: "Replace the stock phrase '%s' with the specific fact, or remove it."
+level: warning
+ignorecase: true
+# Each token had at most two hits in a 150-README human sample (132,547 words).
+# 'seamless' there was an unsupported claim; 'underscore' as a noun is excluded.
+tokens:
+  - 'delv(?:e|es|ed|ing)'
+  - 'tapestry'
+  - '(?:is|are|was|stands as) a testament'
+  - 'pivotal'
+  - 'seamless(?:ly)?'
+  - 'foster(?:s|ed|ing)?'
+  - 'intricacies'
+  - 'interplay'
+  - 'ever-evolving'
+  - 'evolving landscape'
+  - "in today['’]s"
+  - 'underscor(?:es|ed|ing) (?:the|its|their|how|that|why)'
+  - 'showcas(?:e|es|ed|ing)'
+  - 'groundbreaking'
+  - 'game[- ]chang(?:er|ing)'
+  - 'vibrant'
+  - 'boasts?'
+  - 'nestled'
+  - 'unlock(?:s|ing)? the (?:full )?potential'
+  - 'navigat(?:e|es|ing) the complexities'
+  - 'paving the way'
+  - 'setting the stage'
+  - 'despite (?:these|its|their) challenges'
+  - 'the future looks'
+  - 'exciting times'
+  - 'only time will tell'
