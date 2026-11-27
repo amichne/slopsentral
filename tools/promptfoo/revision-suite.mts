@@ -11,9 +11,7 @@ const hash = (text: string) => `sha256:${createHash("sha256").update(text).diges
 const read = (path: string) => readFileSync(new URL(path, root), "utf8");
 
 export const SKILL_ROOT = "source/skills/controlled-technical-writing";
-// The examples arm adds only the pattern reference, so the paired arms isolate its effect.
 export const SKILL_FILES = [`${SKILL_ROOT}/SKILL.md`, `${SKILL_ROOT}/references/grounding.md`] as const;
-export const EXAMPLE_FILES = [`${SKILL_ROOT}/references/writing-patterns.md`] as const;
 
 export const MODELS: readonly { readonly host: "codex" | "claude"; readonly model: string; readonly effort: Effort }[] = [
   { host: "codex", model: "gpt-6.1-sol", effort: "low" },
@@ -42,24 +40,20 @@ function supplied(paths: readonly string[]): { text: string; sources: { path: st
 
 export function buildRevisionTests(): TestCase[] {
   const skill = supplied(SKILL_FILES);
-  const examples = supplied([...SKILL_FILES, ...EXAMPLE_FILES]);
   const graderHash = hash(read("tools/promptfoo/grade-revision.mts"));
   const suiteHash = hash(JSON.stringify(revisionCases));
   return revisionCases.map((item) => {
-    const examplesTask = renderRevisionTask(item, examples.text);
     const skillTask = renderRevisionTask(item, skill.text);
     const controlTask = renderRevisionTask(item, "");
     return {
       description: `controlled-technical-writing: ${item.id}`,
-      vars: { examplesTask, skillTask, controlTask },
+      vars: { skillTask, controlTask },
       metadata: {
-        evidenceKind: "skill-revision-with-ablation-and-control",
+        evidenceKind: "skill-revision-with-control",
         caseId: item.id,
         skillSources: skill.sources,
-        exampleSources: examples.sources,
         suiteSha256: suiteHash,
         graderSha256: graderHash,
-        examplesTaskSha256: hash(examplesTask),
         skillTaskSha256: hash(skillTask),
         controlTaskSha256: hash(controlTask),
       },
@@ -79,11 +73,10 @@ export type RevisionConfig = Omit<UnifiedConfig, "providers"> & { providers: Api
 
 export function createRevisionConfig(runtime: Pick<EvalRuntime, "codexHome" | "workspace">, executables: Executables): RevisionConfig {
   return {
-    description: "Writing revisions v1: skill with examples, skill without examples, and no-skill control",
+    description: "Writing revisions v1: loaded skill and no-skill control",
     sharing: false,
     prompts: [
-      { id: "skill-with-examples-v1", label: "Skill with examples", raw: "{{examplesTask}}" },
-      { id: "skill-without-examples-v1", label: "Skill without examples", raw: "{{skillTask}}" },
+      { id: "loaded-skill-v1", label: "Loaded skill", raw: "{{skillTask}}" },
       { id: "without-skill-v1", label: "Without skill control", raw: "{{controlTask}}" },
     ],
     providers: MODELS.map(({ host, model, effort }) =>

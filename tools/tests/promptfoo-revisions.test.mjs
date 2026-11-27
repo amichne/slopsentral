@@ -6,7 +6,7 @@ import test from "node:test";
 import { revisionCases } from "../../source/evals/promptfoo/revisions.mts";
 import { claudeArgs, codexArgs, resolveExecutable } from "../promptfoo/cli-providers.mts";
 import { gradeRevision, sentences } from "../promptfoo/grade-revision.mts";
-import { EXAMPLE_FILES, MODELS, SKILL_FILES, buildRevisionTests, createRevisionConfig } from "../promptfoo/revision-suite.mts";
+import { MODELS, SKILL_FILES, buildRevisionTests, createRevisionConfig } from "../promptfoo/revision-suite.mts";
 
 test("each revision oracle accepts its authored revision and rejects every nearest error", () => {
   assert.ok(revisionCases.length >= 8);
@@ -44,18 +44,19 @@ test("a claim passes only when omitted or marked in its own sentence", () => {
   assert.equal(gradeRevision(item, marked).pass, true);
   const perfect = "In WAL mode, readers do not block the writer. Whether WAL mode supports concurrent writers has not been confirmed.";
   assert.equal(gradeRevision(item, perfect).pass, true, "present-perfect gap marker");
+  const declined = "In WAL mode, readers do not block the writer. This does not imply support for concurrent writers.";
+  assert.equal(gradeRevision(item, declined).pass, true, "declined inference");
   assert.equal(gradeRevision(item, separated).namedScores.claimsOmittedOrMarked, 0);
   assert.deepEqual(sentences("One. [source needed: x]\nTwo."), ["One.", "[source needed: x]", "Two."]);
 });
 
-test("live configuration isolates the examples, keeps the oracle hidden, and records identities", () => {
+test("live configuration supplies the skill only to its arm, keeps the oracle hidden, and records identities", () => {
   const tests = buildRevisionTests();
   assert.equal(tests.length, revisionCases.length);
-  const examples = EXAMPLE_FILES.map((path) => readFileSync(new URL(`../../${path}`, import.meta.url), "utf8"));
   const skill = SKILL_FILES.map((path) => readFileSync(new URL(`../../${path}`, import.meta.url), "utf8"));
   for (const [index, item] of revisionCases.entries()) {
     const { vars, metadata } = tests[index];
-    assert.deepEqual(Object.keys(vars), ["examplesTask", "skillTask", "controlTask"]);
+    assert.deepEqual(Object.keys(vars), ["skillTask", "controlTask"]);
     const controls = [item.controls.accepted, ...Object.values(item.controls.rejected)]
       .filter((text) => !item.passage.includes(text));
     for (const task of Object.values(vars)) {
@@ -63,15 +64,10 @@ test("live configuration isolates the examples, keeps the oracle hidden, and rec
       for (const text of controls) assert.equal(task.includes(text), false, `${item.id}: control text leaked`);
     }
     for (const text of skill) {
-      assert.ok(vars.examplesTask.includes(text));
       assert.ok(vars.skillTask.includes(text));
       assert.equal(vars.controlTask.includes(text), false);
     }
-    for (const text of examples) {
-      assert.ok(vars.examplesTask.includes(text));
-      assert.equal(vars.skillTask.includes(text), false);
-    }
-    for (const field of ["suiteSha256", "graderSha256", "examplesTaskSha256", "skillTaskSha256", "controlTaskSha256"]) {
+    for (const field of ["suiteSha256", "graderSha256", "skillTaskSha256", "controlTaskSha256"]) {
       assert.match(metadata[field], /^sha256:[a-f0-9]{64}$/u);
     }
   }
@@ -79,7 +75,7 @@ test("live configuration isolates the examples, keeps the oracle hidden, and rec
     { codex: "/bin/codex", claude: "/bin/claude" });
   assert.equal(config.sharing, false);
   assert.deepEqual(config.providers.map((provider) => provider.id()), MODELS.map(({ host, model, effort }) => `${host}-cli:${model}:${effort}`));
-  assert.deepEqual(config.prompts.map((prompt) => prompt.label), ["Skill with examples", "Skill without examples", "Without skill control"]);
+  assert.deepEqual(config.prompts.map((prompt) => prompt.label), ["Loaded skill", "Without skill control"]);
 });
 
 test("provider arguments exclude personal configuration, tools, and MCP servers", () => {

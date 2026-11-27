@@ -10,7 +10,7 @@ export const gapMarker = new RegExp(
     "\\bisn['’]t (?:established|confirmed|documented)\\b",
     "\\b(?:needs|requires) (?:confirmation|verification)\\b",
     "\\bconfirm whether\\b",
-    "\\bdoes not (?:establish|say|state)\\b",
+    "\\bdoes not (?:establish|say|state|imply)\\b",
   ].join("|"),
   "iu",
 );

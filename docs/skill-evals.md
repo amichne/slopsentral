@@ -8,7 +8,7 @@ Use the [session audit tool](session-audit.md) to examine Pi and Codex history.
 | Evidence surface | Source owner | Entry point | Evidence limit |
 | --- | --- | --- | --- |
 | Decision cases | `source/evals/promptfoo/cases.mts` | `npm run eval:skills` | Supplied instructions and choices, without tools or automatic routing |
-| Writing revisions | `source/evals/promptfoo/revisions.mts` | `npm run eval:revisions` | Supplied writing skill with and without its examples, graded by fixed lexical checks |
+| Writing revisions | `source/evals/promptfoo/revisions.mts` | `npm run eval:revisions` | Supplied writing skill against a no-skill control, graded by fixed lexical checks |
 | Offline controls | `tools/promptfoo/smoke.ts` and unit tests | `npm run check:evals` | Synthetic answers exercise the grader and pipeline |
 | Plugin execution | `source/evals/promptfoo/execution/` | `npm run eval:execution` | Ready fixtures, real turns, and independent effects evidence |
 | Routing contracts | `source/evals/routing/` | `node tools/run-routing-evals.mjs --require-all-fixtures` | Golden consistency and separately recorded historical evidence |
@@ -118,13 +118,15 @@ A passing offline result establishes the harness contract only.
 
 ## Run writing revisions
 
-The revision suite measures whether the Controlled Technical Writing examples change what a model writes.
+The revision suite measures whether Controlled Technical Writing changes what a model writes.
 Each [revision case](../source/evals/promptfoo/revisions.mts) supplies a passage with stock patterns, the facts a revision must keep, and the claims it must omit or mark.
-Each case runs under three prompts:
+Each case runs under two prompts:
 
-- **Skill with examples:** the skill, its grounding reference, and its writing-patterns reference.
-- **Skill without examples:** the skill and its grounding reference.
+- **Loaded skill:** the skill and its grounding reference.
 - **Without skill control:** no skill text.
+
+To measure a candidate reference, add a third prompt that supplies it and compare the two skill prompts.
+The skill's [provenance](../source/skills/controlled-technical-writing/references/provenance.md#editorial-guidance) records the examples reference that was measured this way and removed.
 
 The [suite owner](../tools/promptfoo/revision-suite.mts) selects `gpt-6.1-sol`, `gpt-6.1-terra`, and `claude-sonnet-5-5`, each at low effort.
 The [CLI providers](../tools/promptfoo/cli-providers.mts) run one turn through the installed `codex` and `claude` commands.
@@ -138,7 +140,7 @@ npm run eval:revisions -- --repeat 2
 npm run promptfoo -- view
 ```
 
-Budget one model call for each case, prompt, model, and repetition. Two repetitions make 144 calls.
+Budget one model call for each case, prompt, model, and repetition. Two repetitions make 96 calls.
 The JSON report uses `.promptfoo/results/revisions.json`.
 
 The [grader](../tools/promptfoo/grade-revision.mts) reports five named checks.
@@ -154,7 +156,6 @@ The checks are lexical. They do not judge readability, tone, or whether a reader
 Each case carries an accepted revision and at least two rejected revisions.
 `npm run check:evals` sends them through the offline pipeline, and the unit tests apply the same controls.
 Stock-pattern removal is not a separate check, because the no-skill control already removes most patterns.
-Compare the two skill prompts to measure the examples. Compare either one with the control to measure the skill.
 
 ## Run execution scenarios
 
