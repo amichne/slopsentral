@@ -1,0 +1,8 @@
+extends: existence
+message: "'%s' repeats a word."
+level: warning
+nonword: true
+# Replaces Vale.Repetition, which split dotted names: 7 of its 16 hits in a
+# 150-README human sample were '3.x.x', 'body.body', or 'glob.Glob'.
+raw:
+  - '(?i)(?<![\w.])([a-z]+)\s+\1(?![\w.])'

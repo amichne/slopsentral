@@ -169,10 +169,11 @@ CATEGORIES = {"Slopsentral.LongSentence": "STRUCTURE",
 
 CATEGORIES.update(dict.fromkeys((
     "Slopsentral.Modals", "Slopsentral.Contractions", "Vale.Terms", "Vale.Avoid",
-    "Vale.Spelling", "Vale.Repetition",
+    "Vale.Spelling", "Vale.Repetition", "Slopsentral.Repetition",
+    "Slopsentral.Vocabulary", "Slopsentral.Chatbot",
 ), "DICTION"))
 CATEGORIES.update(dict.fromkeys((
-    "Slopsentral.ProcedureLength",
+    "Slopsentral.ProcedureLength", "Slopsentral.Framing", "Slopsentral.Trailing",
     "Tutorial.Expectations", "Tutorial.Explanation", "Tutorial.Opening",
     "Tutorial.Options", "Tutorial.Steps", "Tutorial.We",
     "HowTo.Explanation", "HowTo.Imperative", "HowTo.Opening",

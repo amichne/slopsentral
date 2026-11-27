@@ -1,0 +1,17 @@
+extends: existence
+message: "Remove the conversational aside '%s'. Keep only the requested content."
+level: warning
+ignorecase: true
+# 'feel free to' is excluded: 8 of 150 human READMEs use it to invite issues.
+tokens:
+  - 'I hope (?:this|that) helps'
+  - 'let me know if'
+  - 'great question'
+  - "you['’]re (?:absolutely|completely) right"
+  - 'happy to help'
+  - 'would you like me to'
+  - "here['’]s (?:a|an) (?:quick |brief )?(?:overview|summary|breakdown)"
+  - 'here is (?:a|an) (?:quick |brief )?(?:overview|summary|breakdown)'
+  - 'as an AI'
+  - 'as of my (?:last|latest) (?:update|training)'
+  - 'my (?:training data|knowledge cutoff)'

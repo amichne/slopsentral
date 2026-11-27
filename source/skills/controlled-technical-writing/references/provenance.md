@@ -13,6 +13,29 @@ the user's voice and terminology rather than the upstream author's style profile
 
 Factory's examples informed the rules on vague attribution and claims of importance.
 [Factory human-writing 2.1.0](https://github.com/factory-ai/factory-plugins/blob/e63e519a736140c86f37be95a529a0c44dc9a96e/plugins/droid-evolved/skills/human-writing/SKILL.md).
+Its pattern catalogue, reviewed 2026-11-27, also informed the pattern rules below.
+The repository at that revision has no license file, so no upstream text or examples are copied.
+Factory's own revisions add facts in 13 of its 23 pairs. Its voice section asks for invented opinions and first person.
+This skill rejects both under the [grounding rules](grounding.md).
+
+A locally written reference of before-and-after examples was evaluated on 2026-11-27 and then removed.
+The revision eval ran gpt-6.1-sol, gpt-6.1-terra, and claude-sonnet-5-5 at low effort, with two repetitions.
+The skill with the examples passed 47 of 48 revisions, the skill without them passed 46, and no skill passed 40.
+The examples added 5,764 bytes to each load and raised the mean claude-sonnet-5-5 cost per call from $0.0091 to $0.0130.
+The one-revision difference is within the noise of two repetitions, so the cost was not justified.
+
+The pattern rules `Vocabulary`, `Chatbot`, `Framing`, and `Trailing` are local work, along with the `Repetition` rule for a repeated word.
+Two corpora set their tokens. The first was 150 package README files sampled from this repository's `node_modules` with seed 20261127 (132,547 words).
+The second was the 23 "before" passages in Factory's skill.
+The pinned policy before this change flagged a pattern in 2 of the 23 passages. The policy after it flags 12 and none of the 23 revisions.
+Tokens that the README sample showed in ordinary use were left out. Examples are "feel free to", ", ensuring", and "serves as".
+In the same sample, these changes removed measured false positives:
+
+- `indicate` to `show` changed the meaning in each of its 5 hits, so the swap was removed.
+- "The simplest way", "the best way", and "the best match" were 8 of 19 claim hits and are now excluded.
+- `Vale.Repetition` split dotted names such as `3.x.x` in 7 of 16 hits. `Slopsentral.Repetition` replaces it.
+- The glossary-marker rule matched section citations such as "RFC 4291 §2.7". A marker must now start with a letter.
+- 23 general software terms, such as `namespace`, `boolean`, and `middleware`, were added to the vocabulary. Spelling hits fell from 2,630 to 2,203.
 
 Eve's editorial checklist informed the rules on voice and passage-level review.
 [Eve human-writing evaluation](https://github.com/vercel/eve/blob/cbe71057bf2de70af08378e51900e35740f780b9/.agents/skills/human-writing/eval.md).

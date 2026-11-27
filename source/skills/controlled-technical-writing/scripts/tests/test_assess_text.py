@@ -176,6 +176,28 @@ class AssessTextTest(unittest.TestCase):
             ("Terminate the process.", "Utilize the process.", "Slopsentral.Diction"),
             ("Approval is mandatory.", "It guarantees success.", "Slopsentral.Claims"),
             ("The viewport has two renderers.", "The vieewport has two renderers.", "Vale.Spelling"),
+            # Human README sample false positives remain accepted.
+            ("Exit codes may indicate a timeout.", "Prior to exit, it logs.", "Slopsentral.Diction"),
+            ("The simplest way to start is the init command.", "This is the simplest tool.",
+             "Slopsentral.Claims"),
+            ("It returns the best match for the query.", "It is the fastest parser.", "Slopsentral.Claims"),
+            ("Version 3.x.x reads body.body and glob.Glob.", "Check if the the client is ready.",
+             "Slopsentral.Repetition"),
+            ("The middleware reads the namespace as a boolean.", "The middelware reads it.", "Vale.Spelling"),
+            ("See RFC 4291 §2.7 and RFC 4007 §6.", "Use the §REQUEST§ marker.", "Slopsentral.GlossaryMarker"),
+            # Stock patterns.
+            ("The cache stores task outputs.", "Let's delve into the cache.", "Slopsentral.Vocabulary"),
+            ("The parser rejects duplicate keys.",
+             "The parser rejects duplicate keys, highlighting the focus on correctness.",
+             "Slopsentral.Trailing"),
+            ("The parser rejects duplicate keys, ensuring each key has one value.",
+             "The parser rejects duplicate keys, underscoring its focus on correctness.",
+             "Slopsentral.Trailing"),
+            ("It checks formatting and import order.", "It's not just a linter, it's a platform.",
+             "Slopsentral.Framing"),
+            ("Feel free to open an issue.", "Great question. I hope this helps.", "Slopsentral.Chatbot"),
+            ("The API supports pagination.", "As of my last update, the API supports pagination.",
+             "Slopsentral.Chatbot"),
         )
         for accepted, flagged, rule in pairs:
             with self.subTest(rule=rule, text=accepted):

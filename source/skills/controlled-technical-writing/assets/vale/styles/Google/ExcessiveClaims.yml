@@ -6,8 +6,10 @@ ignorecase: true
 # The guide also names 'never', 'always', and 'ensure', but in technical writing
 # those are usually legitimate instructions ('never commit secrets') rather than
 # product claims: they accounted for 125 of 142 hits on a 950-file corpus.
-# 'best practices' is a fixed term, not a superlative.
+# 'best practices' is a fixed term, not a superlative. 'The simplest way to',
+# 'the best way to', and 'the best match' are idioms: they were 8 of 19 hits
+# in a 150-README human sample and made no product claim.
 tokens:
-  - 'the (?:best(?![- ]effort\b| practices?\b)|simplest|fastest)'
+  - 'the (?:best|simplest|fastest)(?![- ](?:effort|practices?|way|match)\b)'
   - 'best[- ]in[- ]class'
   - 'we guarantee|(?:it|this) guarantees'
