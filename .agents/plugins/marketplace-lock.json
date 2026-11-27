@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T16:44:15-05:00",
+  "generatedAt": "2026-11-27T16:44:46-05:00",
   "plugins": [
     {
       "name": "software-engineering",
@@ -209,7 +209,7 @@
         },
         {
           "name": "controlled-technical-writing",
-          "sha256": "sha256:5dfeb3f0215afb013b828736b882cf023fc275b798a3b68411c0df7dcae53816",
+          "sha256": "sha256:a560ec914c125b77e5609709dc5f7a44bbf5bd68744fea3786711c3a4358dc38",
           "sourcePath": "source/skills/controlled-technical-writing",
           "targetPath": "skills/controlled-technical-writing",
           "type": "SKILL"
@@ -353,6 +353,6 @@
     }
   ],
   "schemaVersion": 1,
-  "sourceSha": "44698322b9c85ec2e5155cda66d4318039e840fb",
+  "sourceSha": "5c560ac919989e5847555b76cd0e85c1c2265d4a",
   "type": "HYDRATED_MARKETPLACE"
 }
