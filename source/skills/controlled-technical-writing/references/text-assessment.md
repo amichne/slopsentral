@@ -20,6 +20,10 @@ The fixed policy reports:
   Vale exposes to that rule. Document metrics use Vale's own tokenizer.
 - Diction findings from the fixed local substitution list and Google excessive
   claims rule. Suggestions require a meaning-preserving review, not blind edits.
+- Pattern findings for stock vocabulary, conversational residue, negative
+  parallelism, trailing significance clauses, and repeated words. The
+  [writing patterns](writing-patterns.md) reference pairs each pattern with a
+  revision that adds no facts.
 - Terminology findings from the JSON contract's scoped replacement and review targets.
   Each document reports its terminology scope.
   Existing Markdown contracts keep their alias, casing, and marker rules.
@@ -103,7 +107,7 @@ The wrapper never fetches citation URLs.
 The generated Markdown view remains a reader artifact, not another editable contract.
 
 The assessment and editor use the locked `assets/vale/.vale.ini`.
-The common prose rules include contractions, modal verbs, spelling, diction, and excessive claims.
+The common prose rules include contractions, modal verbs, spelling, repeated words, diction, excessive claims, and stock patterns.
 The document path selects tutorial, how-to, reference, or explanation rules. The wrapper also loads scoped glossary rules.
 
 ## Resource Maintenance

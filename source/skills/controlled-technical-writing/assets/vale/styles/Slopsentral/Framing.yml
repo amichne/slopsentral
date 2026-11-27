@@ -1,0 +1,10 @@
+extends: existence
+message: "State what the subject does instead of framing it against '%s'."
+level: warning
+ignorecase: true
+nonword: true
+# Negative parallelism. 'not only ... but also' had one hit in the human sample.
+tokens:
+  - "\\b(?:it|this|that)(?:['’]s| is) not (?:just|only|merely|simply) [^.;:!?\\n]{1,60}?[,;—–-] ?(?:it|this|that)(?:['’]s| is)\\b"
+  - "\\b(?:it|this|that) isn['’]t (?:just|only|merely|simply) [^.;:!?\\n]{1,60}?[,;—–-] ?(?:it|this|that)(?:['’]s| is)\\b"
+  - "\\bnot (?:just|only|merely) (?:a|an|about) [^.;:!?\\n]{1,40}?[,;—–] but\\b"

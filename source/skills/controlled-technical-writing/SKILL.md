@@ -101,6 +101,10 @@ Do not invent definitions to get a successful check.
   If the source is missing, flag the claim for the author or omit it.
 - Keep the author's phrasing and rhythm where they carry meaning. Cut a stock
   opening or an ending that repeats the point.
+- Before you revise or review text for stock patterns, read
+  [writing patterns](references/writing-patterns.md). Patterns include
+  inflated significance, negative parallelism, and conversational residue. Remove the
+  pattern without adding a fact that the source does not supply.
 - In a style review, quote the passage and explain what a reader can miss.
   Wording alone cannot establish who wrote it.
 - Give each condition a clear action. If a sentence carries several conditions,
