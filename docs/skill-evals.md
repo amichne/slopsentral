@@ -8,6 +8,7 @@ Use the [session audit tool](session-audit.md) to examine Pi and Codex history.
 | Evidence surface | Source owner | Entry point | Evidence limit |
 | --- | --- | --- | --- |
 | Decision cases | `source/evals/promptfoo/cases.mts` | `npm run eval:skills` | Supplied instructions and choices, without tools or automatic routing |
+| Writing revisions | `source/evals/promptfoo/revisions.mts` | `npm run eval:revisions` | Supplied writing skill with and without its examples, graded by fixed lexical checks |
 | Offline controls | `tools/promptfoo/smoke.ts` and unit tests | `npm run check:evals` | Synthetic answers exercise the grader and pipeline |
 | Plugin execution | `source/evals/promptfoo/execution/` | `npm run eval:execution` | Ready fixtures, real turns, and independent effects evidence |
 | Routing contracts | `source/evals/routing/` | `node tools/run-routing-evals.mjs --require-all-fixtures` | Golden consistency and separately recorded historical evidence |
@@ -114,6 +115,46 @@ For every case, the grader must accept the expected choices and reject an omitte
 The [unit tests](../tools/tests/promptfoo-core.test.mjs) also toggle choices to expose a permissive grader.
 Normal CI uses these controls without credentials or model calls.
 A passing offline result establishes the harness contract only.
+
+## Run writing revisions
+
+The revision suite measures whether the Controlled Technical Writing examples change what a model writes.
+Each [revision case](../source/evals/promptfoo/revisions.mts) supplies a passage with stock patterns, the facts a revision must keep, and the claims it must omit or mark.
+Each case runs under three prompts:
+
+- **Skill with examples:** the skill, its grounding reference, and its writing-patterns reference.
+- **Skill without examples:** the skill and its grounding reference.
+- **Without skill control:** no skill text.
+
+The [suite owner](../tools/promptfoo/revision-suite.mts) selects `gpt-6.1-sol`, `gpt-6.1-terra`, and `claude-sonnet-5-5`, each at low effort.
+The [CLI providers](../tools/promptfoo/cli-providers.mts) run one turn through the installed `codex` and `claude` commands.
+The bundled Codex SDK cannot select those Codex models for a ChatGPT login.
+Both providers exclude personal configuration, tools, plugins, MCP servers, and web search.
+Codex uses the same temporary home as the decision suite.
+Command lookup skips `node_modules/.bin`, which holds the older Codex CLI that the SDK bundles.
+
+```sh
+npm run eval:revisions -- --repeat 2
+npm run promptfoo -- view
+```
+
+Budget one model call for each case, prompt, model, and repetition. Two repetitions make 144 calls.
+The JSON report uses `.promptfoo/results/revisions.json`.
+
+The [grader](../tools/promptfoo/grade-revision.mts) reports five named checks.
+A revision passes only when every check passes:
+
+- `keptFacts`: each required fact appears, in one of its accepted spellings.
+- `noNewNumbers`: no number appears that the passage does not contain.
+- `noAddedFirstPerson`: the revision adds no "I" or "my".
+- `noForbidden`: no listed hedge, promotion, or conversational residue remains.
+- `claimsOmittedOrMarked`: each listed claim is removed, or its sentence marks the gap.
+
+The checks are lexical. They do not judge readability, tone, or whether a reader understands the text.
+Each case carries an accepted revision and at least two rejected revisions.
+`npm run check:evals` sends them through the offline pipeline, and the unit tests apply the same controls.
+Stock-pattern removal is not a separate check, because the no-skill control already removes most patterns.
+Compare the two skill prompts to measure the examples. Compare either one with the control to measure the skill.
 
 ## Run execution scenarios
 
