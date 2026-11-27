@@ -50,7 +50,7 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/SKILL.md",
-      "sha256": "ab7d858d06e2273677767567d9a24c917d09a1f44b7fcdd421b5d1d082310561"
+      "sha256": "c4cbcfc22f8218582f8dcb253ea59322c73d0507551b4353c67d285ddc4fe3f7"
     },
     {
       "path": "source/skills/controlled-technical-writing/assets/glossary-entry.json",
@@ -342,11 +342,11 @@
     },
     {
       "path": "source/skills/controlled-technical-writing/references/provenance.md",
-      "sha256": "579b5befe320e460d34c79f85b3688461755e8cf2d482a5e53208a4e923f1e41"
+      "sha256": "9cc13c98c3c6188cba4e47adeddcf3f0cd3399104b4bce861f71a41143bb2a90"
     },
     {
       "path": "source/skills/controlled-technical-writing/references/text-assessment.md",
-      "sha256": "4a71dbafdf2e78c066b7a4be9c6faaf9649dba5119ebb2a4d8254c1f73616297"
+      "sha256": "44fec20840edbf4653feaaef0a8d6d20185c72fdb287a87b56eabd6b572b2662"
     },
     {
       "path": "source/skills/controlled-technical-writing/references/text-assessment.schema.json",
@@ -355,10 +355,6 @@
     {
       "path": "source/skills/controlled-technical-writing/references/vale-local.md",
       "sha256": "8676e43d23c5e86b35b5428d2aa4c8671e68595774dedf1af88619776ba62617"
-    },
-    {
-      "path": "source/skills/controlled-technical-writing/references/writing-patterns.md",
-      "sha256": "ffbde4469cf2d5015778f1bede3f81d93508ff77cdad26e732a58c3288e9a07d"
     },
     {
       "path": "source/skills/controlled-technical-writing/scripts/assess_text.py",
