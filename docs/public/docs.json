@@ -13,6 +13,9 @@
     "dark": "/images/logo-dark.svg"
   },
   "favicon": "/images/favicon.svg",
+  "metadata": {
+    "timestamp": true
+  },
   "navigation": {
     "groups": [
       {
